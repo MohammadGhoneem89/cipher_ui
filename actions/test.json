@@ -1,0 +1,46 @@
+{
+    "exportDeclarationList":
+{
+        "action": "ExportDeclarationList",
+        "data": {
+            "exportDeclarationList": {
+                "pageData": {
+                    "totalRecords": 1
+                },
+                "rows": [
+                    {
+                        "id": 1,
+                        "declarationNumber": "1233",
+                        "address": "0x18C638b1195Ff6b987a670faf2FC94458cBedd10",
+                        "owner": "0xed9d02e382b34818e88B88a309c7fe71E65f419d",
+                        "declarationType": "Export",
+                        "modeOfPayment": "Cheque",
+                        "exporterName": "Sony",
+                        "exporterCountry": "U.A.E",
+                        "portOfDischarge": "0xed9d02e382b34818e88B88a309c7fe71E65f419d",
+                        "nextPortOfDischarge": "0xed9d02e382b34818e88B88a309c7fe71E65f419d",
+                        "destinationCountry": "K.S.A",
+                        "etd": 12313,
+                        "deposit": 45,
+                        "invoiceValue": 32425,
+                        "status": 0,
+                        "containers": [
+                            "1dfg"
+                        ],
+                        "shipments": [
+                            {
+                                "hs_code": 1,
+                                "description": "Nothing here",
+                                "qty": 345,
+                                "value": 1000
+                            }
+                        ],
+                        "txHash": "0x224832e388f604894f2821bcd8a812b5750702452d889a4fa561e82e23f6004b",
+                        "createdAt": "2018-03-04T14:57:39.480Z",
+                        "updatedAt": "2018-03-04T14:57:39.480Z"
+                    }
+                ]
+            }
+        }
+    }
+}

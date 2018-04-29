@@ -1,0 +1,75 @@
+.upload-progress-widget {
+    max-width: 620px;
+}
+
+.box {
+    
+    margin: 0 auto 55px;
+}
+.upload-animation {
+    position: relative;
+    background-color: #ddd;
+    height: 2px;
+    width: 620px;
+    
+}
+.upload-background-fill {
+    
+    bottom: 0;
+    height: 10px;
+    background-color: #659be0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transition: all .4s ease;
+    -moz-transition: all .4s ease;
+    -o-transition: all .4s ease;
+    transition: all .4s ease;
+}
+.percent_box {
+    display: table;
+    
+}
+.percent_box span {
+    color: #969696;
+    font-size: 24px;
+    font-weight: 100;
+}
+
+.percent_box .percentage {
+    color: #969696;
+    font-size: 24px;
+    display: inline-block;
+}
+.upload-info {
+    height: 18px;
+}
+
+.inline-upload-status-container {
+    position: fixed;
+    bottom: 17px;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+    pointer-events: none;
+}
+.inline-upload-status {
+    position: static;
+    width: auto;
+    margin: 0 280px;
+    min-width: 420px;
+    pointer-events: all;
+}
+.inline-upload-status {
+    position: fixed;
+    bottom: 17px;
+    margin: 0;
+    width: 800px;
+    z-index: 5;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+}
+.inline-upload-status .inline-upload-bar .inline-upload-progress {
+    background-color: #97c8f3;
+    height: 5px;
+}
