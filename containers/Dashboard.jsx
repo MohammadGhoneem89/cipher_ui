@@ -65,7 +65,7 @@ class Dashboard extends React.Component {
         }
 
 
-        
+
         this.props.actions.sendWSData(params);
         */
         this.fetchDashboard(this.state.entitySelectedVal, this.state.pageNumner);

@@ -199,7 +199,7 @@ class Datatable extends React.Component {
                             }
                         }}
                         style={{ verticalAlign: "middle", padding: "3px 9px" }}
-                        className="text-center">{utils.getLabelByID(colData.alias)}
+                        className="text-center">{utils.getLabelByID(colData.alias)|| colData.alias}
                         {isSortedColumn && <i className={className} style={{ marginLeft: "10px" }} />}
                     </th>);
         }

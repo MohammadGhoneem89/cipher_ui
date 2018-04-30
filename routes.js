@@ -31,8 +31,27 @@ import Locked from './components/Locked.jsx';
 
 
 import blockchainWorkboard from './components/Blockchain/blockchainWorkboard.jsx';
+import userDashboard from './containers/userDashboard.jsx';
+import merchantDashboard from './containers/merchantDashboard.jsx';
+import rewardsProviderDashboard from './containers/RewardsProviderDashboard.jsx';
 // import BlockTransactionList from './containers/BlockTransactionList.jsx'
 
+
+function getDashboard() {
+  if(window.sessionStorage.orgType === "buyer"){
+    return userDashboard
+  }
+  else if(window.sessionStorage.orgType === "merchant"){
+    return merchantDashboard
+  }
+  else if(window.sessionStorage.orgType === "provider"){
+    return rewardsProviderDashboard;
+  }
+  else {
+    return blockchainWorkboard;
+  }
+
+}
 
 export default (
   <Router history={browserHistory}>
@@ -42,7 +61,10 @@ export default (
     <Route path="/blockChainViewer/:blockChainID" component={BlockchainViewerQR} onEnter={isAuthorized}/>
 
     <Route path="/entityWorkboard" component={master} onEnter={requireAuth}>
-      <IndexRoute component={blockchainWorkboard}/>
+      {/*<IndexRoute component={userDashboard}/>*/}
+      <IndexRoute component={getDashboard()}/>
+      {/*<IndexRoute component={merchantDashboard}/>*/}
+      {/*<IndexRoute component={rewardsProviderDashboard}/>*/}
       <Route path="/notification" component={notification}/>
 
       <Route path="/emailTemplateSearch" component={EmailTemplateSearch}/>

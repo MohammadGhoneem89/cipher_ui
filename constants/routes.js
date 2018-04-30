@@ -4,7 +4,7 @@ const routes = {
   webSocketURL: "http://104.211.189.150:10051",
   repostActionURL: "http://104.211.189.150:10051/API",
   blockChainViewerURL: "http://104.211.189.150:10051",
-  loyaltyBaseURL: "http://192.168.1.125:8080",
+  loyaltyBaseURL: "http://104.211.189.150:9090",
   qrCode: "https://185.78.244.54"
 };
 /*

@@ -5,6 +5,7 @@ let blockChainURL = routes.blockChainURL;
 let webSocketURL = routes.webSocketURL;
 let repostActionURL = routes.repostActionURL;
 let blockChainViewerURL = routes.blockChainViewerURL;
+let loyaltyBaseURL = routes.loyaltyBaseURL;
 let qrCode = routes.qrCode;
 
 
@@ -89,7 +90,20 @@ module.exports = {
   updateCollectionValueByKey: baseUrl + "/API/ePay/upsert",
   notificationViewed: baseUrl + "/API/UI/notificationViewed",
   getSLAWorkboardData: baseUrl + "/API/UI/getSLAData",
-  getOrganizationTypes: baseUrl + "/API/UI/organizationType"
+  getOrganizationTypes: baseUrl + "/API/UI/organizationType",
 
-  loyaltyBaseURL
+  userPoints: loyaltyBaseURL + "/users/details/points",
+  userOrderList: loyaltyBaseURL + "/merchant/order",
+  userPlaceOrder: loyaltyBaseURL + "/users/order",
+
+  merchantPoints: loyaltyBaseURL + "/merchant/details/points",
+  getMerchantCatalogue: loyaltyBaseURL + "/merchant/Catalogue",
+  getOrderList: loyaltyBaseURL + "/merchant/order",
+  getRewardCoinList: loyaltyBaseURL + "/merchant/pointDetails",
+  getRequestSettlement: loyaltyBaseURL + "/merchant/requestBurning",
+  merchantMarkComplete: loyaltyBaseURL + "/merchant/order/finalize",
+
+  pgStats: loyaltyBaseURL + "/admin/stats",
+  pgSettlement: loyaltyBaseURL + "/admin/settle",
+  pgSettlementList: loyaltyBaseURL + "/admin/settlementList"
 };

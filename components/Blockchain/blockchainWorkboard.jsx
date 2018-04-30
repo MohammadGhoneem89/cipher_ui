@@ -46,8 +46,10 @@ class blockchainWorkboard extends React.Component {
   }
 
   componentWillMount() {
+    let _this = this;
+    _this.fetchDashboard(_this.state.entitySelectedVal, _this.state.pageNumner);
     let timerID = setInterval(() => {
-      this.fetchDashboard(this.state.entitySelectedVal, this.state.pageNumner);
+      _this.fetchDashboard(_this.state.entitySelectedVal, _this.state.pageNumner);
     }, 2000);
     this.setState({timerID});
   }
@@ -85,7 +87,6 @@ class blockchainWorkboard extends React.Component {
   }
 
   fetchDashboard(entityValue, pageNo, qType) {
-
     let data = {
       "currentPageNo": pageNo || this.state.pageNumner,
       "pageSize": 5,
@@ -99,7 +100,7 @@ class blockchainWorkboard extends React.Component {
     this.props.actions.generalProcess(constants.getblockchainWorkboardData, data);
   }
 
-  componentDidMount() {
+  componentWillUnmount() {
     clearInterval(this.state.timerID);
   }
 
