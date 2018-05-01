@@ -59,7 +59,7 @@ class Locked extends React.Component {
             firstPage = firstPage.replace("/", "");
             if (this.props.LoginResult.success === true) {
                 sessionStorage.token=this.props.LoginResult.token;
-                browserHistory.push('/entityWorkboard');
+                browserHistory.push(sessionStorage.firstScreen);
                // document.location.href ='/login/dof'
             } else {
                 //alert("wrong Username or Password");
@@ -142,8 +142,7 @@ class Locked extends React.Component {
                             <div className="logo">
                                 <img src="https://admin.qa.dubaipay.gov.ae/assets/layouts/layout2/img/logo-default.png" alt="" />
                             </div>
-                            <h3 className="form-title">{"Blockchain Reconciliation"}
-                                {" and Settlement"} </h3>
+                            <h3 className="form-title">Demystifying Blockchain</h3>
 
 
 

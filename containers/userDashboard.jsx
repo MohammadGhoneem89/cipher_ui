@@ -93,17 +93,17 @@ class UserDashboard extends React.Component {
 
   purchaseOrder(e) {
     e.preventDefault();
-    let val = $( e.target ).serialize();
+    let val = $(e.target).serialize();
 
     val = val.split('&');
     let data = {id: this.state.selectedItem.id};
-    val.forEach(value=>{
+    val.forEach(value => {
       const temp = value.split('=');
-      data[temp[0]]=temp[1];
+      data[temp[0]] = temp[1];
     });
     this.props.actions.generalProcess(constants.userPlaceOrder, data)
-      .then(()=>{
-        this.updateState({purchaseModalIsOpen: false})
+      .then(() => {
+        this.updateState({purchaseModalIsOpen: false});
       });
   }
 
@@ -144,37 +144,49 @@ class UserDashboard extends React.Component {
             </div>
           </div>
         </div>
+        <hr/>
         {_this.state.selectedItem &&
         <form onSubmit={this.purchaseOrder.bind(this)}>
           <div className="row">
-            <div className="col-md-12">
-              <div className="form-group col-md-4">
-                <label className="control-label"><span style={{textAlign: "left", fontWeight: "bold"}}>Category: </span>
-                  {_this.state.selectedItem.category}
+            <div className="form-group col-md-6">
+              <div className="row">
+                <div className="form-group col-md-6">
+                  <label className="control-label"><span
+                    style={{textAlign: "left", fontWeight: "bold"}}>Category: </span>
+                    {_this.state.selectedItem.category}
                   </label>
+                </div>
+                <div className="form-group col-md-6">
+                  <label className="control-label"><span style={{textAlign: "left", fontWeight: "bold"}}>Price: </span>
+                    {_this.state.selectedItem.unitPrice}
+                  </label>
+                </div>
               </div>
-              <div className="form-group col-md-4">
-                <label className="control-label"><span style={{textAlign: "left", fontWeight: "bold"}}>Price: </span>
-                  {_this.state.selectedItem.unitPrice}
-                </label>
+              <div className="row">
+                <div className="form-group col-md-4">
+                  <label className="control-label" style={{textAlign: "left", fontWeight: "bold"}}>Quantity</label>
+                </div>
+                <div className="form-group col-md-8">
+                  <input name="quantity" type="text" className="form-control"/>
+                </div>
+              </div>
+              <div className="row">
+                <div className="form-group col-md-4">
+                  <label className="control-label" style={{textAlign: "left", fontWeight: "bold"}}>Location</label>
+                </div>
+                <div className="form-group col-md-8">
+                  <input name="location" type="text" className="form-control"/>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-md-6">
-              <div className="form-group col-md-4">
-                <label className="control-label">Quantity</label>
-              </div>
-              <div className="form-group col-md-8">
-                <input name="quantity" type="text" className="form-control"/>
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="form-group col-md-4">
-                <label className="control-label">Location</label>
-              </div>
-              <div className="form-group col-md-8">
-                <input name="location" type="text" className="form-control"/>
+            <div className="form-group col-md-6">
+              <div className="row">
+                <div className="form-group col-md-4">
+                  <img src={_this.state.selectedItem.imageURL}  height="200px"/>
+                </div>
+                <div className="form-group col-md-8">
+                  {_this.state.selectedItem.description}
+                </div>
               </div>
             </div>
           </div>
@@ -253,5 +265,5 @@ function mapDispatchToProps(dispatch) {
   return {actions: bindActionCreators(actions, dispatch)}
 }
 
-UserDashboard.displayName = "Buyer_Heading";
+UserDashboard.displayName = "RAD_Heading";
 export default connect(mapStateToProps, mapDispatchToProps)(UserDashboard);

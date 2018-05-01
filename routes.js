@@ -61,10 +61,7 @@ export default (
     <Route path="/blockChainViewer/:blockChainID" component={BlockchainViewerQR} onEnter={isAuthorized}/>
 
     <Route path="/entityWorkboard" component={master} onEnter={requireAuth}>
-      {/*<IndexRoute component={userDashboard}/>*/}
       <IndexRoute component={getDashboard()}/>
-      {/*<IndexRoute component={merchantDashboard}/>*/}
-      {/*<IndexRoute component={rewardsProviderDashboard}/>*/}
       <Route path="/blockchain" component={blockchainWorkboard}/>
       <Route path="/buyerDashboard" component={buyerDashboard}/>
       <Route path="/merchantDashboard" component={merchantDashboard}/>
