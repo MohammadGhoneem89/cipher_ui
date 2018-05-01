@@ -142,14 +142,17 @@ class blockchainWorkboard extends React.Component {
 
                     <div className="input-group input-large">
                       <select id="network" name="Network" className="form-control">
-                        <option value={""}>Quorum</option>
-                        <option value={""}>Hyperledger Fabric</option>
-                        <option value={""}>Ethereum</option>
-                        <option value={""}>Stellar</option>
-                        <option value={""}>Ripple</option>
-                        <option value={""}>Corda R3</option>
-                        <option value={""}>Iroha</option>
-                        <option value={""}>Sawtooth Lake</option>
+                        <option value={""}>Avanza Rewards - Quorum</option>
+                        <option value={""}>Asset Transfer - Quorum</option>
+                        <option value={""}>Recon & Settle - Fabric</option>
+                        <option value={""}>KYC - Fabric</option>
+                        <option value={""}>Property Leasing - Fabric</option>
+                        <option value={""}>Consortium Name 1 - Ethereum</option>
+                        {/*<option value={""}>Stellar</option>*/}
+                        {/*<option value={""}>Ripple</option>*/}
+                        {/*<option value={""}>Corda R3</option>*/}
+                        {/*<option value={""}>Iroha</option>*/}
+                        {/*<option value={""}>Sawtooth Lake</option>*/}
                       </select>
                     </div>
 
