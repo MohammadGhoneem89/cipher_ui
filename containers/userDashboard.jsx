@@ -158,7 +158,7 @@ class UserDashboard extends React.Component {
                 </div>
                 <div className="form-group col-md-6">
                   <label className="control-label"><span style={{textAlign: "left", fontWeight: "bold"}}>Price: </span>
-                    {_this.state.selectedItem.unitPrice}
+                    {_this.state.selectedItem.unitPrice}{" ===> "+ (parseInt(_this.state.selectedItem.unitPrice)*10)+" AED"}
                   </label>
                 </div>
               </div>

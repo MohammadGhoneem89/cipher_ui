@@ -37,8 +37,9 @@ const SmartContractComponent = ({updateState, containerState, onCompile}) => {
                 </Portlet>
                 <Portlet title={"Define Smart Contract Template"}>
                     <SmartContractForm onChange={templateChanges} containerState={containerState}/>
+                  {console.log(containerState.consortiumDetail.consortiumType)}
                     <FileUploader type="Document" source="smartContractUpload"
-                                  acceptedFiles={config.smartContractAllowedFilesQuorum}
+                                  acceptedFiles={containerState.consortiumDetail.consortiumType === "HyperLedger Fabric"? ".go":".sol"}
                                   getUploadResponse={msg => {
                                       if (msg && msg.contextData) {
                                           files = msg.contextData;

@@ -26,7 +26,7 @@ class FileUploader extends React.Component {
         let contextID = utils.CreateGuid();
         this.djsConfig = {
             addRemoveLinks: true,
-            acceptedFiles: this.props.acceptedFiles,
+            acceptedFiles: ".txt",
             createImageThumbnails: true,
             thumbnailWidth: 200,
             params: {
@@ -128,7 +128,7 @@ class FileUploader extends React.Component {
                     <div>
 
                         <div className="alert alert-info">
-                            <strong> {"Allowed Files: "}</strong> {this.djsConfig.acceptedFiles || configTag.allowedUploadFilesMessage}
+                            <strong> {"Allowed Files: "}</strong> {this.props.acceptedFiles || configTag.allowedUploadFilesMessage}
                         </div>
                         <DropzoneComponent config={config} eventHandlers={eventHandlers} djsConfig={djsConfig} /> </div>}
             </div>

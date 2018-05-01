@@ -5,7 +5,6 @@ import {bindActionCreators} from 'redux';
 import TileUnit from '../components/customTileUnit.jsx';
 import * as actions from '../actions/generalAction';
 import Portlet from '../common/Portlet.jsx';
-import ModalBox from '../common/ModalBox.jsx';
 import * as constants from '../constants/Communication.js';
 import * as utils from '../common/utils.js';
 import Table from '../standard/Datatable.jsx';
@@ -26,7 +25,7 @@ class MerchantDashboard extends React.Component {
       orderList: undefined,
       catalogue: undefined,
       rewardList: undefined,
-      selectedItem: undefined,
+      selectedItem: 0,
       purchaseModalIsOpen: false
     };
     this.pageChangedOrder = this.pageChangedOrder.bind(this);
@@ -82,6 +81,7 @@ class MerchantDashboard extends React.Component {
   refreshScreen() {
     let _this = this;
     this.timeoutHandler = setInterval(() => {
+      _this.props.actions.generalProcess(constants.merchantPoints, {});
       _this.props.actions.generalProcess(constants.getOrderList, {
         page: {
           currentPageNo: _this.state.currentPageNo,
@@ -94,10 +94,14 @@ class MerchantDashboard extends React.Component {
           pageSize: _this.state.pageSize
         }
       });
-      _this.props.actions.generalProcess(constants.merchantPoints, {
-        currentPageNo: 1,
-        pageSize: _this.state.pageSize
+      _this.props.actions.generalProcess(constants.getRewardCoinList, {
+        page: {
+          currentPageNo: _this.state.currentPageNo,
+          pageSize: _this.state.pageSize
+        }
       });
+
+
     }, 10000);
   }
 
@@ -145,15 +149,15 @@ class MerchantDashboard extends React.Component {
     this.setState(data);
   }
 
-  merchantActionHandler({actionName, index}){
+  merchantActionHandler({actionName, index}) {
     console.log({actionName, index});
-    switch (actionName){
+    switch (actionName) {
       case "Mark Complete":
         let id = this.state.orderList[index].id;
         this.props.actions.generalProcess(constants.merchantMarkComplete, {id});
         break;
       case "Request Settlement":
-        this.props.actions.generalProcess(constants.getRequestSettlement,{});
+        this.props.actions.generalProcess(constants.getRequestSettlement, {});
         break;
     }
   }

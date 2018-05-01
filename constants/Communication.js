@@ -105,5 +105,11 @@ module.exports = {
 
   pgStats: loyaltyBaseURL + "/admin/stats",
   pgSettlement: loyaltyBaseURL + "/admin/settle",
-  pgSettlementList: loyaltyBaseURL + "/admin/settlementList"
+  pgSettlementList: loyaltyBaseURL + "/admin/settlementList",
+
+  getblockchainWorkboardData1: baseUrl + "/SIMU/1",
+  getblockchainWorkboardData2: baseUrl + "/SIMU/2",
+  getblockchainWorkboardData3: baseUrl + "/SIMU/3",
+  getblockchainWorkboardData4: baseUrl + "/SIMU/4",
+  getblockchainWorkboardData5: baseUrl + "/SIMU/5",
 };

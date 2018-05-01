@@ -30,6 +30,7 @@ class blockchainWorkboard extends React.Component {
       entitySelectedVal: "",
       entityNames: undefined,
       settlementDate: '',
+      selectedProject: undefined,
       xAxis: []
     };
     for (let i = 59; i >= 0; i--) {
@@ -42,6 +43,7 @@ class blockchainWorkboard extends React.Component {
     this.dateChangeExceptions = this.dateChangeExceptions.bind(this);
     this.changeEntityVal = this.changeEntityVal.bind(this);
     this.fetchDashboard = this.fetchDashboard.bind(this);
+    this.projectChanged = this.projectChanged.bind(this);
 
   }
 
@@ -96,8 +98,24 @@ class blockchainWorkboard extends React.Component {
       "toDate": this.state.toDate,
       "filter": entityValue === "" ? "" : (entityValue || this.state.entitySelectedVal)
     };
-    //alert(JSON.stringify(data));
-    this.props.actions.generalProcess(constants.getblockchainWorkboardData, data);
+    if(this.state.selectedProject === "1"){
+      this.props.actions.generalProcess(constants.getblockchainWorkboardData1, data);
+    }
+    else if(this.state.selectedProject === "2"){
+      this.props.actions.generalProcess(constants.getblockchainWorkboardData2, data);
+    }
+    else if(this.state.selectedProject === "3"){
+      this.props.actions.generalProcess(constants.getblockchainWorkboardData3, data);
+    }
+    else if(this.state.selectedProject === "4"){
+      this.props.actions.generalProcess(constants.getblockchainWorkboardData4, data);
+    }
+    else if(this.state.selectedProject === "5"){
+      this.props.actions.generalProcess(constants.getblockchainWorkboardData5, data);
+    }
+    else {
+      this.props.actions.generalProcess(constants.getblockchainWorkboardData, data);
+    }
   }
 
   componentWillUnmount() {
@@ -106,15 +124,14 @@ class blockchainWorkboard extends React.Component {
 
   pageChanged(pageNo) {
 
-    this.setState({pageNumner: pageNo})
+    this.setState({pageNumner: pageNo});
     this.fetchDashboard(this.state.entitySelectedVal, pageNo)
     //<!-- <DateControl id="dateToView" dateChange={this.dateChange} /> -->
 
   }
 
-  exceptionSearch() {
-
-
+  projectChanged(e){
+    this.setState({selectedProject: e.target.value});
   }
 
   renderPopupBody(dataID) {
@@ -141,13 +158,13 @@ class blockchainWorkboard extends React.Component {
                   <div className="input-group input-large">
 
                     <div className="input-group input-large">
-                      <select id="network" name="Network" className="form-control">
-                        <option value={""}>Avanza Rewards - Quorum</option>
-                        <option value={""}>Asset Transfer - Quorum</option>
-                        <option value={""}>Recon & Settle - Fabric</option>
-                        <option value={""}>KYC - Fabric</option>
-                        <option value={""}>Property Leasing - Fabric</option>
-                        <option value={""}>Consortium Name 1 - Ethereum</option>
+                      <select id="network" name="Network" className="form-control" onChange={this.projectChanged}>
+                        <option value="0">Avanza Rewards - Quorum</option>
+                        <option value="1">Asset Transfer - Quorum</option>
+                        <option value="2">Recon & Settle - Fabric</option>
+                        <option value="3">KYC - Fabric</option>
+                        <option value="4">Property Leasing - Fabric</option>
+                        <option value="5">Consortium Name 1 - Ethereum</option>
                         {/*<option value={""}>Stellar</option>*/}
                         {/*<option value={""}>Ripple</option>*/}
                         {/*<option value={""}>Corda R3</option>*/}
