@@ -31,7 +31,7 @@ import Locked from './components/Locked.jsx';
 
 
 import blockchainWorkboard from './components/Blockchain/blockchainWorkboard.jsx';
-import userDashboard from './containers/userDashboard.jsx';
+import buyerDashboard from './containers/userDashboard.jsx';
 import merchantDashboard from './containers/merchantDashboard.jsx';
 import rewardsProviderDashboard from './containers/RewardsProviderDashboard.jsx';
 // import BlockTransactionList from './containers/BlockTransactionList.jsx'
@@ -39,7 +39,7 @@ import rewardsProviderDashboard from './containers/RewardsProviderDashboard.jsx'
 
 function getDashboard() {
   if(window.sessionStorage.orgType === "buyer"){
-    return userDashboard
+    return buyerDashboard
   }
   else if(window.sessionStorage.orgType === "merchant"){
     return merchantDashboard
@@ -65,8 +65,12 @@ export default (
       <IndexRoute component={getDashboard()}/>
       {/*<IndexRoute component={merchantDashboard}/>*/}
       {/*<IndexRoute component={rewardsProviderDashboard}/>*/}
-      <Route path="/notification" component={notification}/>
+      <Route path="/blockchain" component={blockchainWorkboard}/>
+      <Route path="/buyerDashboard" component={buyerDashboard}/>
+      <Route path="/merchantDashboard" component={merchantDashboard}/>
+      <Route path="/rewardsProviderDashboard" component={rewardsProviderDashboard}/>
 
+      <Route path="/notification" component={notification}/>
       <Route path="/emailTemplateSearch" component={EmailTemplateSearch}/>
       <Route path="/emailTemplateSetup" component={EmailTemplateSetup}/>
       <Route path="/emailTemplateSetup/edit/:emailTemplateID" component={EmailTemplateSetup}/>
@@ -97,8 +101,6 @@ export default (
 
 
       {/*<Route path="/BlockTransactionList/:blockHeight" component={BlockTransactionList}/>*/}
-      <Route path="/blockchain" component={blockchainWorkboard}/>
-
     </Route>
   </Router>
 );
