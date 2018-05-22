@@ -106,6 +106,7 @@ module.exports = {
   pgStats: loyaltyBaseURL + "/admin/stats",
   pgSettlement: loyaltyBaseURL + "/admin/settle",
   pgSettlementList: loyaltyBaseURL + "/admin/settlementList",
+  pgPointSummary: loyaltyBaseURL + "/admin/getMerchantsPoints",
 
   getblockchainWorkboardData1: baseUrl + "/SIMU/1",
   getblockchainWorkboardData2: baseUrl + "/SIMU/2",

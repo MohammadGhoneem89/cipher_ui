@@ -23,6 +23,7 @@ class RewardsProviderDashboard extends React.Component {
       totalRecords: undefined,
       currentPageNo: 1,
       stats: undefined,
+      pointSummary: undefined,
       settlementList: undefined
     };
     this.pageChanged = this.pageChanged.bind(this);
@@ -36,6 +37,7 @@ class RewardsProviderDashboard extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.props.actions.generalProcess(constants.pgStats, {});
+    this.props.actions.generalProcess(constants.pgPointSummary, {});
     this.props.actions.generalProcess(constants.pgSettlementList, {
       page: {
         currentPageNo: this.state.currentPageNo,
@@ -46,10 +48,11 @@ class RewardsProviderDashboard extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.stats && nextProps.settlementList) {
+    if (nextProps.stats && nextProps.settlementList && nextProps.pointSummary) {
       this.setState({
         stats: nextProps.stats,
         settlementList: nextProps.settlementList,
+        pointSummary: nextProps.pointSummary,
         totalRecords: nextProps.totalRecords,
         isLoading: false
       });
@@ -64,6 +67,7 @@ class RewardsProviderDashboard extends React.Component {
     let _this = this;
     this.timeoutHandler = setInterval(() => {
       _this.props.actions.generalProcess(constants.pgStats, {});
+      _this.props.actions.generalProcess(constants.pgPointSummary, {});
       _this.props.actions.generalProcess(constants.pgSettlementList, {
         page: {
           currentPageNo: _this.state.currentPageNo,
@@ -126,6 +130,24 @@ class RewardsProviderDashboard extends React.Component {
               </Portlet>
             </div>
           </div>
+          <div className="row">
+            <div className="col-md-12">
+              <Portlet title={"Points Summary"}>
+                <Table
+                  pagination={false}
+                  export={false}
+                  search={false}
+                  gridColumns={utils.getGridColumnByName("pointSummary")}
+                  componentFunction={this.PGActionHandler}
+                  gridData={this.state.pointSummary.reverse()}
+                  pageChanged={this.pageChanged}
+                  activePage={this.state.currentPageNo}
+                  pageSize={this.state.pageSize}
+                  totalRecords={this.state.totalRecords}
+                />
+              </Portlet>
+            </div>
+          </div>
         </div>
       );
     }
@@ -138,6 +160,7 @@ function mapStateToProps(state, ownProps) {
   return {
     stats: state.app.adminStats.data,
     settlementList: state.app.Settlements.data,
+    pointSummary: state.app.pointSummary.data,
     totalRecords: state.app.Settlements.count
   };
 }

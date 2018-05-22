@@ -688,6 +688,12 @@ module.exports = {
     {alias: "Status", key: "status", type: "statusLabel"},
     {alias: "Amount", key: "amount", type: 'amount'},
     {alias: "EDItem_action", key: "actions", type: "action"}
+  ],
+
+  pointSummary: [
+    {alias: "Name", key: "name", type: 'string'},
+    {alias: "Available", key: "circulation", type: "string"},
+    {alias: "Settled", key: "burnt", type: "string"}
   ]
 };
 

@@ -747,6 +747,7 @@ export default {
   merchantPoints: {},
   adminStats: {},
   Settlements: {},
-  rewardList:{}
+  rewardList:{},
+  pointSummary:{}
 }
 
