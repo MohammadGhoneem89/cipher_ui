@@ -142,7 +142,7 @@ class Locked extends React.Component {
                             <div className="logo">
                                 <img src="https://admin.qa.dubaipay.gov.ae/assets/layouts/layout2/img/emirates-logo.jpg" alt="" />
                             </div>
-                            <h3 className="form-title">Skyward Blockchain</h3>
+                            <h3 className="form-title">Skywards Blockchain</h3>
 
 
 
