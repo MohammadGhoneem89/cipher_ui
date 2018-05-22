@@ -162,7 +162,7 @@ class Login extends React.Component {
 
                         <div className="login-form" >
                             {this.getLogosForSDGUser()}
-                            <h3 className="form-title">Demystifying Blockchain</h3>
+                            <h3 className="form-title">Skyward Blockchain</h3>
                             <div className="alert alert-danger display-hide">
                                 <button className="close" data-close="alert"></button>
                                 <span> Enter any username and password. </span>
