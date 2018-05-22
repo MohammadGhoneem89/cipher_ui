@@ -9,14 +9,14 @@ body, .dashdate .btn.btn-outline.green, .page-sidebar, .page-sidebar-closed.page
 	background: #b5b5b5 !important;
 }
 .logo-default{
-width: 111px !important;
+	width: 111px !important;
 }
 .sdg_tbl thead {
-    border-bottom: 2px solid #C60C30;
-    background: #f9fdf2;
+	border-bottom: 2px solid #C60C30;
+	background: #f9fdf2;
 }
 .page-header.navbar .top-menu .navbar-nav>li.dropdown .dropdown-toggle .badge.badge-default{
-		background: #353733!important;
+	background: #353733!important;
 }
 .page-header.navbar.navbar-fixed-top, .page-header.navbar.navbar-static-top {
 	border-top: 4px solid #C60C30;
@@ -49,13 +49,13 @@ width: 111px !important;
 
 
 .page-sidebar .page-sidebar-menu>li>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li>a{
-	
-	    border-bottom: 1px solid #40423e;
+
+	border-bottom: 1px solid #40423e;
 }
 .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
 	color: #fff;
-	    background-color: #C60C30 !important;
-    border-color: #C60C30 !important;
+	background-color: #C60C30 !important;
+	border-color: #C60C30 !important;
 }
 .page-sidebar .page-sidebar-menu>li.active.open>a, .page-sidebar .page-sidebar-menu>li.active>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.active.open>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.active>a {
 	color: #fff;
@@ -65,7 +65,7 @@ width: 111px !important;
 	color: #fff;
 }
 .page-sidebar-menu-hover-submenu li:hover>.sub-menu {
-	    background: #2a2b28!important;
+	background: #2a2b28!important;
 }
 .page-sidebar-menu-hover-submenu li:hover a>.arrow {
 	border-right: 8px solid #323550;
@@ -76,7 +76,7 @@ width: 111px !important;
 
 
 .page-sidebar .page-sidebar-menu .sub-menu>li.active>a, .page-sidebar .page-sidebar-menu .sub-menu>li.open>a, .page-sidebar .page-sidebar-menu .sub-menu>li:hover>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li.active>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li.open>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li:hover>a {
-    background: #C60C30  !important;
+	background: #C60C30  !important;
 }
 
 .page-sidebar .page-sidebar-menu>li>a>i{
@@ -93,18 +93,18 @@ width: 111px !important;
 }
 .btn.green:not(.btn-outline), .btn-success {
 	background-color: #C60C30 !important;
-    border-color: #C60C30 !important;
+	border-color: #C60C30 !important;
 	-webkit-border-radius: 4px !important;
 	-moz-border-radius: 4px !important;
 	border-radius: 4px !important;
 }
 .btn.green:not(.btn-outline):hover, .btn-success.active, .btn-success:active, .btn-success:hover, .open>.btn-success.dropdown-toggle {
-	    background-color: #555 !important;
-    border-color: #666 !important;
+	background-color: #555 !important;
+	border-color: #666 !important;
 }
 .btn.green:not(.btn-outline):focus, .btn.green:not(.btn-outline):active {
 	background-color: #C60C30 !important;
-    border-color: #C60C30 !important;
+	border-color: #C60C30 !important;
 }
 .btn.btn-outline.red.active, .btn.btn-outline.red:active, .btn.btn-outline.red:active:focus, .btn.btn-outline.red:active:hover, .btn.btn-outline.red:focus, .btn.btn-outline.red:hover {
 	border-color: #009fe3;
@@ -113,14 +113,14 @@ width: 111px !important;
 }
 .btn.btn-outline.red {
 	border-color: #C60C30 !important;
-    color: #C60C30 !important;
+	color: #C60C30 !important;
 	background: 0 0;
 }
 
 .btn.btn-outline.red.active, .btn.btn-outline.red:active, .btn.btn-outline.red:active:focus, .btn.btn-outline.red:active:hover, .btn.btn-outline.red:focus, .btn.btn-outline.red:hover {
-   border-color: #C60C30 !important;
-    color: #fff !important;
-    background-color: #C60C30 !important;
+	border-color: #C60C30 !important;
+	color: #fff !important;
+	background-color: #C60C30 !important;
 }
 
 .btn.btn-outline.green.active, .btn.btn-outline.green:active, .btn.btn-outline.green:active:focus, .btn.btn-outline.green:active:hover, .btn.btn-outline.green:focus, .btn.btn-outline.green:hover {
@@ -133,3 +133,9 @@ width: 111px !important;
 }
 
 
+.page-header.navbar .page-logo{
+	background: url(../layouts/layout2/img/emirates-logo.jpg);
+	background-repeat: no-repeat;
+	margin-left: 3.5%;
+	width: 111px !important;
+}

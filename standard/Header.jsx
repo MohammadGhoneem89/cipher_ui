@@ -123,8 +123,7 @@ class Header extends React.Component {
             return (
                 <div className="page-header-inner ">
                     <div className="page-logo">
-                        <a href="javascript:;" onClick={this.navigate.bind(this, "/entityWorkboard")}>
-                            <img src="/assets/layouts/layout2/img/emirates-logo.jpg" height="45" alt="logo" className="logo-default" /> </a>
+                        
                     </div>
                     <a href="javascript:;" className="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
 
