@@ -145,7 +145,7 @@ class Login extends React.Component {
 
     }
     getLogosForSDGUser() {
-        return (<div className="logo"><img src="/assets/pages/img/organization/logo-default.png" alt=""  height="100px"/></div>);
+        return (<div className="logo"/>);
     }
 
     render() {
@@ -154,8 +154,8 @@ class Login extends React.Component {
         return (
 
             <div>
-                <div className=" login">
-                <div id="particles-js"></div>
+                <div className="login">
+                {/*<div id="particles-js"></div>*/}
                     <div className="content" style={{ marginTop: "0px" }}>
 
                         {this.getLogosbyUserType()}
@@ -164,7 +164,7 @@ class Login extends React.Component {
                             {this.getLogosForSDGUser()}
                             <h3 className="form-title">Skywards Blockchain</h3>
                             <div className="alert alert-danger display-hide">
-                                <button className="close" data-close="alert"></button>
+                                <button className="close" data-close="alert"/>
                                 <span> Enter any username and password. </span>
                             </div>
                             <div className="form-group">
