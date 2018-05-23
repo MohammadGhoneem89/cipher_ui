@@ -139,7 +139,7 @@ class RewardsProviderDashboard extends React.Component {
                   search={false}
                   gridColumns={utils.getGridColumnByName("pointSummary")}
                   componentFunction={this.PGActionHandler}
-                  gridData={this.state.pointSummary.reverse()}
+                  gridData={this.state.pointSummary}
                   pageChanged={this.pageChanged}
                   activePage={this.state.currentPageNo}
                   pageSize={this.state.pageSize}

@@ -158,7 +158,7 @@ class UserDashboard extends React.Component {
                 </div>
                 <div className="form-group col-md-6">
                   <label className="control-label"><span style={{textAlign: "left", fontWeight: "bold"}}>Price: </span>
-                    {_this.state.selectedItem.unitPrice}{" ===> "+ (parseInt(_this.state.selectedItem.unitPrice)*10)+" AED"}
+                    {_this.state.selectedItem.unitPrice}{" ===> " + (parseInt(_this.state.selectedItem.unitPrice) * 10) + " AED"}
                   </label>
                 </div>
               </div>
@@ -182,10 +182,19 @@ class UserDashboard extends React.Component {
             <div className="form-group col-md-6">
               <div className="row">
                 <div className="form-group col-md-4">
-                  <img src={_this.state.selectedItem.imageURL}  height="200px"/>
+                  <img src={_this.state.selectedItem.imageURL} height="200px"/>
                 </div>
                 <div className="form-group col-md-8">
-                  {_this.state.selectedItem.description}
+                  <div className="row">
+                    <div className="col-md-12">
+                      {_this.state.selectedItem.description}
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-12">
+                      <img src={_this.state.selectedItem.merchantLogo} width="75px"/>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
