@@ -691,7 +691,7 @@ module.exports = {
   ],
 
   pointSummary: [
-    {alias: "Name", key: "name", type: "sss"},
+    {alias: "Name", key: "name", type: "image"},
     {alias: "Available", key: "circulation", type: "string"},
     {alias: "Settled", key: "burnt", type: "string"}
   ]
