@@ -664,7 +664,6 @@ export default {
       "dashboardTiles": [],
       "workboardData": {"pageData": {}}, "exceptionData": {
         "exceptionSummary": {}, "chartData": {
-
           "fromDate": "2/2/2012",
           "toDate": "1/1/2012",
           "reconciledData": [],
@@ -684,6 +683,7 @@ export default {
       }
     }
   },
+  health: {},
   passwordReset: {},
   blockDetail: {},
   getTxByHash: {},
@@ -742,6 +742,7 @@ export default {
     "organizations": []
   },
   userPoints: {},
+  fetchPasswordPolicy: {},
   order: {},
   catlogue:{},
   merchantPoints: {},

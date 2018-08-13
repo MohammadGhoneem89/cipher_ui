@@ -556,6 +556,20 @@ module.exports = {
 
   header_changePassword: "Change Password",
   ChangePassword_Heading: "Change Password",
+  minimumPasswordLength: "Minimum Password Length",
+  maximumPasswordLength: "Maximum Password Length",
+  minimumAlphabetCount: "Minimum Alphabet Count",
+  maximumAlphabetCount: "Maximum Alphabet Count",
+  minimumDigitCount: "Minimum Digit Count",
+  maximumDigitCount: "Maximum Digit Count",
+  allowIncorrectLoginAttempts: "Allow Incorrect Login Attempts",
+  minimumUpperCase: "Minimum Upper Case",
+  minimumLowerCase: "Minimum Lower Case",
+  lockTimeInMinutes: "Lock Time In Minutes",
+  unAcceptedKeywords: "Unaccepted Keywords",
+  changePeriodDays: "Change Period Days",
+  errorMessage: "Error Message",
+  PasswordPolicyHeading: "Password Policy",
 
   ChangePassword_CurrentPassword: "Current Password",
   ChangePassword_NewPassword: "New Password",
@@ -760,6 +774,14 @@ module.exports = {
   Cipher_channelAction: "Action",
   cipher_orgName: "Organization Name",
   cipher_nodeName: "Node Name",
+
+  HML_servicesName: "Service",
+  HML_containerID: "Container ID",
+  HML_dockerIP: "Docker IP",
+  HML_status: "Status",
+  HML_lastTime: "Last Update",
+  HML_errorDesc: "Error Description",
+  HML_Heading: "Services Health Monitor",
 
   RBL_TotalAmount: "Total Amount",
 

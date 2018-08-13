@@ -193,7 +193,7 @@ class HashSearchContainer extends React.Component {
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="col-md-12" style={{height: "auto"}}>
-                                    <textarea
+                                    <textarea style={{minHeight: "100px", width: "100%"}}
                                         disabled>{this.state.searchResult.receipt.logs? JSON.stringify(this.state.searchResult.receipt.logs): "No Logs Data"}</textarea>
                                 </div>
                             </div>

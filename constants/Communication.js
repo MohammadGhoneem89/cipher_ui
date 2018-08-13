@@ -19,6 +19,17 @@ module.exports = {
   getLogin: baseUrl + "/login",
   getSocket: webSocketURL,
   performActionToBlockChain: blockChainURL,
+
+  getFileTemplateList: baseUrl + '/API/UI/fileTemplateList',
+  getFileTemplateDetail: baseUrl + '/API/UI/fileTemplateDetail',
+  fileTemplateUpdate: baseUrl + '/API/UI/fileTemplateUpdate',
+  fileTemplateInsert: baseUrl + '/API/UI/fileTemplateInsert',
+
+  getCommissionTemplateList: baseUrl + '/API/UI/commissionTemplateList',
+  getCommissionTemplateDetails: baseUrl + '/API/UI/commissionTemplateDetail',
+  commissionTemplateUpdate: baseUrl + '/API/UI/commissionTemplateUpdate',
+  commissionTemplateInsert: baseUrl + '/API/UI/commissionTemplateInsert',
+
   getEmailTemplateList: baseUrl + '/API/UI/emailTemplateList',
   getEmailTemplateDetails: baseUrl + '/API/UI/emailTemplateDetail',
   emailTemplateUpdate: baseUrl + '/API/UI/emailTemplateUpdate',
@@ -61,19 +72,12 @@ module.exports = {
   getConsortiumDetails: baseUrl + "/API/UI/consortiumDetail",
   getTxByBlock: baseUrl + "/API/Quorum/getTxByBlock",
   getTxByHash: baseUrl + "/API/Quorum/getTxByHash",
+  getHealthData: baseUrl + "/API/Cipher/health",
 
   getReportFilters: baseUrl + "/getFilter", //"/SIMU/reportFilters",
 
-  getRefundBatchList: baseUrl + "/API/UI/refundBatchList",
-  getViewRefundBatch: baseUrl + "/API/UI/viewRefundBatchDetail",
-
-  getRefundList: baseUrl + "/API/UI/refundList",
-  getRefundListView: baseUrl + "/API/UI/refundList",
-
-
   passwordChange: baseUrl + "/API/UI/passwordChange",
   passwordReset: baseUrl + "/API/UI/passwordReset",
-  report: baseUrl + "/reports",
 
   getAPIPayLoadListData: baseUrl + "/API/UI/APIPayLoadList",
   getAPIPayloadDetail: baseUrl + "/API/UI/APIPayLoadDetail",
@@ -92,25 +96,12 @@ module.exports = {
   getSLAWorkboardData: baseUrl + "/API/UI/getSLAData",
   getOrganizationTypes: baseUrl + "/API/UI/organizationType",
 
-  userPoints: loyaltyBaseURL + "/users/details/points",
-  userOrderList: loyaltyBaseURL + "/merchant/order",
-  userPlaceOrder: loyaltyBaseURL + "/users/order",
-
-  merchantPoints: loyaltyBaseURL + "/merchant/details/points",
-  getMerchantCatalogue: loyaltyBaseURL + "/merchant/Catalogue",
-  getOrderList: loyaltyBaseURL + "/merchant/order",
-  getRewardCoinList: loyaltyBaseURL + "/merchant/pointDetails",
-  getRequestSettlement: loyaltyBaseURL + "/merchant/requestBurning",
-  merchantMarkComplete: loyaltyBaseURL + "/merchant/order/finalize",
-
-  pgStats: loyaltyBaseURL + "/admin/stats",
-  pgSettlement: loyaltyBaseURL + "/admin/settle",
-  pgSettlementList: loyaltyBaseURL + "/admin/settlementList",
-  pgPointSummary: loyaltyBaseURL + "/admin/getMerchantsPoints",
-
   getblockchainWorkboardData1: baseUrl + "/SIMU/1",
   getblockchainWorkboardData2: baseUrl + "/SIMU/2",
   getblockchainWorkboardData3: baseUrl + "/SIMU/3",
   getblockchainWorkboardData4: baseUrl + "/SIMU/4",
   getblockchainWorkboardData5: baseUrl + "/SIMU/5",
+
+  passwordPolicyDetail: baseUrl + "/API/UI/fetchAllPasswordPolicy",
+  updatePasswordPolicy: baseUrl + "/API/UI/updatePasswordPolicy"
 };

@@ -10,6 +10,8 @@ import notification from './containers/Notifications.jsx';
 import auth from './auth/authenticator';
 import EmailTemplateSearch from './components/EmailTemplateSearchScreen/EmailTemplateSearchContainer.jsx';
 import EmailTemplateSetup from './components/EmailTemplateSetupScreen/EmailTemplateSetupContainer.jsx';
+import OrgSearch from './components/EntitySearchScreen/EntitySearchContainer.jsx';
+import OrgSetup from './components/EntitySetupScreen/EntitySetupContainer.jsx';
 import GroupSearch from './components/GroupSearchScreen/GroupSearchContainer.jsx';
 import GroupSetup from './components/GroupSetupScreen/GroupSetupContainer.jsx';
 import UserSearch from './components/UserSearchScreen/UserSearchContainer.jsx';
@@ -17,6 +19,7 @@ import UserSetup from './components/UserSetupScreen/UserSetupContainer.jsx';
 import WorkingCalendar from './components/WorkingCalendar/WorkingCalContainer.jsx';
 
 import ChangePassword from './containers/changePassword.jsx';
+import PasswordPolicy from './components/PasswordPolicyScreen/PasswordPolicyContainer.jsx';
 import APIPayloadSearch from './containers/APIPayloadList.jsx';
 import BlockchainViewerQR from './components/Blockchain/Viewer/BlockchainViewerQR.jsx';
 import BlockSearchScreen from './components/Blockchain/BlockSearchScreen/BlockSearchScreenContainer.jsx';
@@ -26,15 +29,21 @@ import ConsortiumSearch from './components/Blockchain/ConsortiumSearchScreen/Con
 import ConsortiumSetup from './components/Blockchain/ConsortiumSetupScreen/ConsortiumSetupContainer.jsx';
 import SmartContract from './components/Blockchain/SmartContractScreen/SmartContract.jsx';
 import SmartContractFileViewer from './components/Blockchain/SmartContractScreen/SmartContractFileViewer.jsx';
-
-import Locked from './components/Locked.jsx';
-
-
 import blockchainWorkboard from './components/Blockchain/blockchainWorkboard.jsx';
 import buyerDashboard from './containers/userDashboard.jsx';
 import merchantDashboard from './containers/merchantDashboard.jsx';
 import rewardsProviderDashboard from './containers/RewardsProviderDashboard.jsx';
+import HealthMonitor from './components/HealthMonitor.jsx';
 // import BlockTransactionList from './containers/BlockTransactionList.jsx'
+
+
+import Locked from './components/Locked.jsx';
+
+import FileTemplateSearch from './components/FileTemplateSearchScreen/FileTemplateSearchContainer.jsx';
+import FileTemplateSetup from './components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx';
+import CommissionTemplateSearch from './components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
+import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
+import AuditLogList from './containers/auditLogList.jsx';
 
 
 function getDashboard() {
@@ -67,12 +76,6 @@ export default (
       <Route path="/merchantDashboard" component={merchantDashboard}/>
       <Route path="/rewardsProviderDashboard" component={rewardsProviderDashboard}/>
 
-      <Route path="/notification" component={notification}/>
-      <Route path="/emailTemplateSearch" component={EmailTemplateSearch}/>
-      <Route path="/emailTemplateSetup" component={EmailTemplateSetup}/>
-      <Route path="/emailTemplateSetup/edit/:emailTemplateID" component={EmailTemplateSetup}/>
-
-
       <Route path="/groupList" component={GroupSearch}/>
       <Route path="/groupSetup" component={GroupSetup}/>
       <Route path="/groupSetup/:groupID" component={GroupSetup}/>
@@ -93,9 +96,30 @@ export default (
       <Route path="/cipher/:consortiumID/smartContractFiles/:smartContractIndex" component={SmartContractFileViewer}/>
 
       <Route path="/changePassword" component={ChangePassword}/>
+      <Route path="/passwordPolicy" component={PasswordPolicy}/>
       <Route path="/APIPayloadSearch" component={APIPayloadSearch}/>
       <Route path="/APIPayloadSearch/:payLoadField/:payLoadFieldValue" component={APIPayloadSearch}/>
 
+
+      <Route path="/auditLogList" component={AuditLogList}/>
+      <Route path="/healthMonitor" component={HealthMonitor}/>
+
+      <Route path="/fileTemplateSearch" component={FileTemplateSearch}/>
+      <Route path="/fileTemplateSetup" component={FileTemplateSetup}/>
+      <Route path="/fileTemplateSetup/edit/:fileTemplateID" component={FileTemplateSetup}/>
+
+      <Route path="/commissionTemplateSearch" component={CommissionTemplateSearch}/>
+      <Route path="/commissionTemplateSetup" component={CommissionTemplateSetup}/>
+      <Route path="/commissionTemplateSetup/edit/:commissionTemplateID" component={CommissionTemplateSetup}/>
+
+      <Route path="/notification" component={notification}/>
+      <Route path="/emailTemplateSearch" component={EmailTemplateSearch}/>
+      <Route path="/emailTemplateSetup" component={EmailTemplateSetup}/>
+      <Route path="/emailTemplateSetup/edit/:emailTemplateID" component={EmailTemplateSetup}/>
+
+      <Route path="/entitySearch" component={OrgSearch}/>
+      <Route path="/entitySetup" component={OrgSetup}/>
+      <Route path="/entitySetup/:mode/:entityID" component={OrgSetup}/>
 
       {/*<Route path="/BlockTransactionList/:blockHeight" component={BlockTransactionList}/>*/}
     </Route>
