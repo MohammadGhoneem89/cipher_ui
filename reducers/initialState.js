@@ -749,6 +749,7 @@ export default {
   adminStats: {},
   Settlements: {},
   rewardList:{},
+  getTypeDataDetailByID: {},
   pointSummary:{}
 }
 

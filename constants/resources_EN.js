@@ -385,6 +385,7 @@ module.exports = {
   TLPF_ExceptionType: "Exception Type",
 
 
+  submit: "Submit",
   Loading: "Loading..",
   Search: "Search",
   Clear: "Clear",
@@ -775,6 +776,13 @@ module.exports = {
   cipher_orgName: "Organization Name",
   cipher_nodeName: "Node Name",
 
+  PL_TypeName: "Type Name",
+  PLIST_Name: "Pick List Name",
+  PLIST_Key: "Label",
+  PLIST_Value: "Value",
+  PickupList_Heading: "Pickup List",
+  PickupListSetup_Heading: "Pickup List Setup",
+
   HML_servicesName: "Service",
   HML_containerID: "Container ID",
   HML_dockerIP: "Docker IP",
@@ -822,11 +830,6 @@ module.exports = {
   EDItem_value: "Value",
   EDItem_action: "Action",
   EDItem_container: "Container",
-
-  PLIST_Name: "Pick List Name",
-  PLIST_Key: "Label",
-  PLIST_Value: "Value",
-  PickupList_Heading: "Pickup List",
 
   Buyer_Heading: "Buyer Dashboard",
   Merchant_Heading: "Merchant Dashboard",

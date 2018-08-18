@@ -645,6 +645,12 @@ module.exports = {
 
   ],
 
+  pickupList:[
+    {alias: "", key: "_id", type: "hiddenID"},
+    {alias: "ESEARCH_entityName", key: "typeName", type: "string"},
+    {alias: "ESEARCH_action", key: "actions", type: "action"}
+  ],
+
   buyerOrders: [
     {alias: "", key: "id", type: 'hiddenID'},
     {alias: "Order Id", key: "id", type: 'string'},

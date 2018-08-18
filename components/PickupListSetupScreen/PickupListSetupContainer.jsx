@@ -95,7 +95,6 @@ function mapStateToProps(state, ownProps) {
   if(state.app.getTypeDataDetailByID.data){
     getTypeDataDetailByID = state.app.getTypeDataDetailByID.data;
     typeName = state.app.getTypeDataDetailByID.data.typeName;
-    console.log(getTypeDataDetailByID,typeName);
     pickupListDetail = getTypeDataDetailByID.data?  getTypeDataDetailByID :  (getTypeDataDetailByID.data=getTypeDataDetailByID[typeName]);
   }
 
