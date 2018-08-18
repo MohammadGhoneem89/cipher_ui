@@ -20,6 +20,8 @@ import WorkingCalendar from './components/WorkingCalendar/WorkingCalContainer.js
 
 import ChangePassword from './containers/changePassword.jsx';
 import PasswordPolicy from './components/PasswordPolicyScreen/PasswordPolicyContainer.jsx';
+import PickupListSearch from './components/PickupListSearchScreen/PickupListSearchContainer.jsx';
+import PickupListSetup from './components/PickupListSetupScreen/PickupListSetupContainer.jsx';
 import APIPayloadSearch from './containers/APIPayloadList.jsx';
 import BlockchainViewerQR from './components/Blockchain/Viewer/BlockchainViewerQR.jsx';
 import BlockSearchScreen from './components/Blockchain/BlockSearchScreen/BlockSearchScreenContainer.jsx';
@@ -95,11 +97,14 @@ export default (
       <Route path="/cipher/consortiums/:consortiumID/smartContracts/:smartContactID" component={SmartContract}/>
       <Route path="/cipher/:consortiumID/smartContractFiles/:smartContractIndex" component={SmartContractFileViewer}/>
 
+      <Route path="/pickupListSearch" component={PickupListSearch}/>
+      <Route path="/pickupListSetup" component={PickupListSetup}/>
+      <Route path="/pickupListSetup/edit/:pickupListID" component={PickupListSetup}/>
+
       <Route path="/changePassword" component={ChangePassword}/>
       <Route path="/passwordPolicy" component={PasswordPolicy}/>
       <Route path="/APIPayloadSearch" component={APIPayloadSearch}/>
       <Route path="/APIPayloadSearch/:payLoadField/:payLoadFieldValue" component={APIPayloadSearch}/>
-
 
       <Route path="/auditLogList" component={AuditLogList}/>
       <Route path="/healthMonitor" component={HealthMonitor}/>

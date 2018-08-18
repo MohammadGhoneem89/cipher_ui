@@ -823,6 +823,11 @@ module.exports = {
   EDItem_action: "Action",
   EDItem_container: "Container",
 
+  PLIST_Name: "Pick List Name",
+  PLIST_Key: "Label",
+  PLIST_Value: "Value",
+  PickupList_Heading: "Pickup List",
+
   Buyer_Heading: "Buyer Dashboard",
   Merchant_Heading: "Merchant Dashboard",
   RewardsProvider_Heading: "Rewards Provider Dashboard"

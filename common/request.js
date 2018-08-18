@@ -473,3 +473,18 @@ export function createNotificationViewedRequest(data) {
         data
     };
 }
+
+export function createPickupListRequest(page, searchCriteria) {
+  return {
+    "action": "typeDataList",
+    searchCriteria,
+    page
+  }
+}
+
+export function createPickupListDetailRequest(typeDataId) {
+  return {
+    "action": "typeDataDetail",
+    typeDataId
+  }
+}

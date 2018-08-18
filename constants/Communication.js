@@ -101,7 +101,8 @@ module.exports = {
   getblockchainWorkboardData3: baseUrl + "/SIMU/3",
   getblockchainWorkboardData4: baseUrl + "/SIMU/4",
   getblockchainWorkboardData5: baseUrl + "/SIMU/5",
-
+  getPickupList: baseUrl + "/API/UI/typeDataList",
+  getPickupListDetail: baseUrl + "/API/UI/getTypeDataDetailByID",
   passwordPolicyDetail: baseUrl + "/API/UI/fetchAllPasswordPolicy",
   updatePasswordPolicy: baseUrl + "/API/UI/updatePasswordPolicy"
 };
