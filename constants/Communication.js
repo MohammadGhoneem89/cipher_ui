@@ -42,6 +42,12 @@ module.exports = {
   getGroupDetail: baseUrl + "/API/UI/groupDetail",
   groupUpdate: baseUrl + "/API/UI/groupUpdate",
   getGroupList: baseUrl + "/API/UI/groupList",
+
+  getEntityList: baseUrl + "/API/UI/orgList",
+  entityInsert: baseUrl + "/API/UI/orgInsert",
+  getEntityDetail: baseUrl + "/API/UI/orgDetail",
+  entityUpdate: baseUrl + "/API/UI/orgUpdate",
+
   getworkingCalendarDetail: baseUrl + "/SIMU/workingCalendarDetail",
   workingCalendarUpdate: baseUrl + "/SIMU/workingCalendarUpdate",
   uploadImg: baseUrl + "/uploadImg",

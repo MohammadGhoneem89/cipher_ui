@@ -5,7 +5,7 @@ import {TextInput} from '../../common/FormControls.jsx';
 import * as utils from '../../common/utils.js';
 import Portlet from '../../common/Portlet.jsx';
 
-const EntityServicesForm = ({handleSubmit, updateState, pristine, reset, submitting, initialValues, index}) => {
+const OrgServicesForm = ({handleSubmit, updateState, pristine, reset, submitting, initialValues, index}) => {
     let servicesActions = [
         {
             type: "icon",
@@ -52,7 +52,7 @@ const EntityServicesForm = ({handleSubmit, updateState, pristine, reset, submitt
 
 
 export default reduxForm({
-    form: 'EntityServicesForm', // a unique identifier for this form
+    form: 'OrgServicesForm', // a unique identifier for this form
     validate,
     enableReinitialize: false
-})(EntityServicesForm);
+})(OrgServicesForm);

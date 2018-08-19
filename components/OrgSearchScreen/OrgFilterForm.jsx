@@ -3,7 +3,7 @@ import {reduxForm} from 'redux-form';
 import {CheckboxInput, CheckboxList, TextInput, DataList} from '../../common/FormControls.jsx';
 import * as utils from '../../common/utils.js';
 
-const EntityFilterForm = props => {
+const OrgFilterForm = props => {
     const {handleSubmit, pristine, reset, submitting, state} = props;
 
 
@@ -72,5 +72,5 @@ const EntityFilterForm = props => {
 
 
 export default reduxForm({
-    form: 'EntityFilterForm', // a unique identifier for this form
-})(EntityFilterForm);
+    form: 'OrgFilterForm', // a unique identifier for this form
+})(OrgFilterForm);

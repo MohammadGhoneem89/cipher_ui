@@ -7,18 +7,15 @@ import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import * as utils from '../../common/utils.js';
-import EntitySetupForm from '../../components/EntitySetupScreen/EntitySetupForm.jsx'
-import EntityUpdateForm from '../../components/EntitySetupScreen/EntityUpdateForm.jsx'
+import EntitySetupForm from './OrgSetupForm.jsx'
 
-class EntitySetupContainer extends React.Component {
+class OrgSetupContainer extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
             entityDetail: {...initialState.entityDetail.data},
-            entityID: undefined,
+            orgID: undefined,
             entityNames: undefined,
-            fileTemplateNames: undefined,
-            commissionTemplateNames: undefined,
             typeData: undefined,
             isLoading: true,
             readOnly: false
@@ -32,7 +29,7 @@ class EntitySetupContainer extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actions.generalProcess(constants.getEntityDetail, requestCreator.createEntityDetailRequest(this.props.entityID));
+        this.props.actions.generalProcess(constants.getEntityDetail, requestCreator.createEntityDetailRequest(this.props.orgID));
         if (!this.props.entityNames.length > 0) {
             this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({
                 "currentPageNo": 1,
@@ -45,12 +42,7 @@ class EntitySetupContainer extends React.Component {
                 "pageSize": 1
             }));
         }
-        if (!this.props.commissionTemplateNames.length > 0) {
-            this.props.actions.generalProcess(constants.getCommissionTemplateList, requestCreator.createCommissionTemplateListRequest({
-                "currentPageNo": 1,
-                "pageSize": 1
-            }));
-        }
+
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['settlementCriteria', 'settlementType']));
     }
 
@@ -60,17 +52,15 @@ class EntitySetupContainer extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.entityDetail && nextProps.entityNames && nextProps.fileTemplateNames) {
             //Add permissions
-            let entityDetail = this.props.entityID ? nextProps.entityDetail : {
+            let entityDetail = this.props.orgID ? nextProps.entityDetail : {
                 ...this.state.entityDetail,
                 actions: nextProps.entityDetail.actions
             };
             this.setState({
-                entityID: this.props.entityID,
+                orgID: this.props.orgID,
                 entityDetail: entityDetail,
                 readOnly: nextProps.readOnly,
                 entityNames: nextProps.entityNames,
-                fileTemplateNames: nextProps.fileTemplateNames,
-                commissionTemplateNames: nextProps.commissionTemplateNames,
                 typeData: nextProps.typeData,
                 isLoading: false
             })
@@ -79,8 +69,8 @@ class EntitySetupContainer extends React.Component {
 
 
     submit(data) {
-        if (this.state.entityID) {
-            data._id = this.state.entityID; //Hack to avoid replication.
+        if (this.state.orgID) {
+            data._id = this.state.orgID; //Hack to avoid replication.
             return this.props.actions.reduxFormProcess(constants.entityUpdate, requestCreator.createEntityUpdateRequest(data))
                 .catch((error) => {
                     throw new SubmissionError(error);
@@ -97,12 +87,8 @@ class EntitySetupContainer extends React.Component {
         if (!this.state.isLoading) {
             return (
                 <div>
-                    {sessionStorage.orgType === "DSG" &&
-                    <EntitySetupForm onSubmit={this.submit} initialValues={this.state.entityDetail}
-                                     containerState={this.state} containerProps={this.props}/>}
-                    {sessionStorage.orgType === "Entity" &&
-                    <EntityUpdateForm onSubmit={this.submit} initialValues={this.state.entityDetail}
-                                      containerState={this.state} containerProps={this.props}/>}
+                  <EntitySetupForm onSubmit={this.submit} initialValues={this.state.entityDetail}
+                                   containerState={this.state} containerProps={this.props}/>
                 </div>
             );
         }
@@ -113,14 +99,13 @@ class EntitySetupContainer extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    let entityID = ownProps.params.entityID;
+    let orgID = ownProps.params.orgID;
 
     return {
         entityDetail: state.app.entityDetail.data,
-        entityID: entityID,
+        orgID: orgID,
         entityNames: state.app.entityList.data.typeData.entityNames,
         fileTemplateNames: state.app.fileTemplateList.data.typeData.fileTemplateNames,
-        commissionTemplateNames: state.app.commissionTemplateList.data.typeData.commissionTemplateNames,
         typeData: state.app.typeData,
         readOnly: ownProps.params.mode === "view"
     };
@@ -132,5 +117,5 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-EntitySetupContainer.displayName = "ES_Heading";
-export default connect(mapStateToProps, mapDispatchToProps)(EntitySetupContainer);
+OrgSetupContainer.displayName = "ES_Heading";
+export default connect(mapStateToProps, mapDispatchToProps)(OrgSetupContainer);

@@ -6,10 +6,10 @@ import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import Portlet from '../../common/Portlet.jsx';
 import Table from '../../standard/Datatable.jsx';
-import EntityFilterForm from './EntityFilterForm.jsx';
+import EntityFilterForm from './OrgFilterForm.jsx';
 import * as utils from '../../common/utils.js';
 
-class EntitySearchContainer extends React.Component {
+class OrgSearchContainer extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.submit = this.submit.bind(this);
@@ -132,6 +132,6 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-EntitySearchContainer.displayName = "ESearch_Heading";
+OrgSearchContainer.displayName = "ESearch_Heading";
 
-export default connect(mapStateToProps, mapDispatchToProps)(EntitySearchContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(OrgSearchContainer)

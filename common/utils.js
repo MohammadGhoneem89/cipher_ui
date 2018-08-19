@@ -11,9 +11,9 @@ export function getLabelByID (labelId)
 {
     let retValue;
       switch(lang){
-            case "EN": retValue=resEnglish[labelId];
+            case "EN": retValue=resEnglish[labelId] || labelId;
             break;
-            case "AR":  retValue=resArabic[labelId];
+            case "AR":  retValue=resArabic[labelId] || labelId ;
             break;
             default: retValue=labelId;
             break;

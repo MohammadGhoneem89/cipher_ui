@@ -10,8 +10,8 @@ import notification from './containers/Notifications.jsx';
 import auth from './auth/authenticator';
 import EmailTemplateSearch from './components/EmailTemplateSearchScreen/EmailTemplateSearchContainer.jsx';
 import EmailTemplateSetup from './components/EmailTemplateSetupScreen/EmailTemplateSetupContainer.jsx';
-import OrgSearch from './components/EntitySearchScreen/EntitySearchContainer.jsx';
-import OrgSetup from './components/EntitySetupScreen/EntitySetupContainer.jsx';
+import OrgSearch from './components/OrgSearchScreen/OrgSearchContainer.jsx';
+import OrgSetup from './components/OrgSetupScreen/OrgSetupContainer.jsx';
 import GroupSearch from './components/GroupSearchScreen/GroupSearchContainer.jsx';
 import GroupSetup from './components/GroupSetupScreen/GroupSetupContainer.jsx';
 import UserSearch from './components/UserSearchScreen/UserSearchContainer.jsx';
@@ -122,9 +122,9 @@ export default (
       <Route path="/emailTemplateSetup" component={EmailTemplateSetup}/>
       <Route path="/emailTemplateSetup/edit/:emailTemplateID" component={EmailTemplateSetup}/>
 
-      <Route path="/entitySearch" component={OrgSearch}/>
-      <Route path="/entitySetup" component={OrgSetup}/>
-      <Route path="/entitySetup/:mode/:entityID" component={OrgSetup}/>
+      <Route path="/orgSearch" component={OrgSearch}/>
+      <Route path="/orgSetup" component={OrgSetup}/>
+      <Route path="/orgSetup/:mode/:orgID" component={OrgSetup}/>
 
       {/*<Route path="/BlockTransactionList/:blockHeight" component={BlockTransactionList}/>*/}
     </Route>

@@ -7,9 +7,8 @@ import Table from '../../standard/Datatable.jsx';
 import FileUploader from '../FileUploader.jsx';
 import Portlet from '../../common/Portlet.jsx';
 import ModalBox from '../../common/ModalBox.jsx';
-import EntityServicesForm from './EntityServicesForm.jsx';
-import EntityContactsForm from './EntityContactsForm.jsx';
-import CommissionPreview from '../CommissionTemplateSetupScreen/CommissionPreview.jsx';
+import EntityServicesForm from './OrgServicesForm.jsx';
+import EntityContactsForm from './OrgContactsForm.jsx';
 import * as utils from '../../common/utils.js';
 import ActionButton from '../../components/ActionButtonNew.jsx';
 
@@ -17,44 +16,7 @@ import {CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput} from '
 
 //https://github.com/erikras/redux-form/issues/369
 const FormSection1 = ({error, initialValues, updateState, state, containerProps}) => {
-  let servicesActions = [
-    {
-      type: "link",
-      className: "btn btn-default",
-      label: utils.getLabelByID("Add"),
-      icon: "plus",
-      actionHandler: updateState.bind(this, {
-        servicesModalIsOpen: true,
-        index: state.services.length
-      })
-    }
-  ];
-  let entityType = [
-    {value: "GOVERNMENT", label: utils.getLabelByID("Government")},
-    {value: "NON_GOVERNMENT", label: utils.getLabelByID("NonGovernment")}
-  ];
-
-  function serviceActionHandlers({actionName, index}) {
-    switch (actionName) {
-      case "Edit":
-        updateState({
-          servicesModalIsOpen: true,
-          index
-        });
-        break;
-      case "Delete":
-        if (index > -1) {
-          let a = state.services;
-          a.splice(index, 1);
-          updateState({services: a});
-        }
-        break;
-    }
-  }
-
-
   return (
-
     <div>
       <Portlet title={"Entity"}>
         <div className="row">
@@ -119,20 +81,6 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps}
               </div>
             </div>
             <div className="row">
-              <div className="col-md-4 col-sm-4">
-                <TextInput
-                  name="legacyCode"
-                  label={utils.getLabelByID("legacyCode")}
-                  type="text"
-                  disabled={state.readOnly}
-                />
-              </div>
-              <div className="col-md-4 col-sm-4">
-                <DropdownInput name="entityType" options={entityType}
-                               label={utils.getLabelByID("entityType")}
-                               disabled={state.readOnly}
-                />
-              </div>
               <div className="col-md-2 col-sm-2">
                 <CheckboxList>
                   <CheckboxInput
@@ -147,212 +95,9 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps}
           </div>
         </div>
       </Portlet>
-
-      <Portlet title={utils.getLabelByID("HML_servicesName")} actions={state.readOnly ? false : servicesActions}>
-        <Table
-          pagination={false}
-          export={false}
-          search={false}
-          gridColumns={utils.getGridColumnByName("entityServices")}
-          componentFunction={serviceActionHandlers}
-          gridData={state.services ? state.services : []}
-          totalRecords={state.services ? state.services.length : 0}
-        />
-      </Portlet>
     </div>
 
 
-  )
-};
-
-const FormSection2 = ({initialValues, updateState, containerState, state}) => {
-  let months = [
-    {value: "Jan", label: "January"},
-    {value: "Feb", label: "February"},
-    {value: "Mar", label: "March"},
-    {value: "Apr", label: "April"},
-    {value: "May", label: "May"},
-    {value: "Jun", label: "June"},
-    {value: "Jul", label: "July"},
-    {value: "Aug", label: "August"},
-    {value: "Sep", label: "September"},
-    {value: "oct", label: "October"},
-    {value: "Nov", label: "November"},
-    {value: "Dec", label: "December"}
-  ];
-
-  return (
-    <div className="row" style={{padding: "15px"}}>
-      <div className="col-md-3 col-sm-3">
-        <TextInput
-          name="accounting.GISAccountNo"
-          label={utils.getLabelByID("GISAccountNo")}
-          type="text"
-          disabled={state.readOnly}
-        />
-      </div>
-      <div className="col-md-3 col-sm-3">
-        <DropdownInput name="commissionTemplate" options={containerState.commissionTemplateNames}
-                       label={utils.getLabelByID("commissionTemplate")}
-                       onChange={(data) => {
-                         updateState({
-                           commissionTemplateID: data.target.value
-                         });
-                       }}
-                       disabled={state.readOnly}
-        />
-        {state.commissionTemplateID && state.commissionTemplateID !== 'NOT_SET' && <a href="javascript:" onClick={() => {
-          updateState({previewModalIsOpen: true})
-        }}>{utils.getLabelByID("Details")}</a>}
-      </div>
-      <div className="col-md-3 col-sm-3">
-        <DateInput
-          name="accounting.exemptedTillDate"
-          label={utils.getLabelByID("exemptedTillDate")}
-          type="date"
-          disabled={state.readOnly}
-        />
-      </div>
-      <div className="col-md-3 col-sm-3">
-        <DropdownInput
-          name="accounting.notifyBeforeMonth"
-          label={utils.getLabelByID("notifyBeforeMonth")}
-          options={months}
-          disabled={state.readOnly}
-        />
-      </div>
-    </div>
-  )
-};
-
-const FormSection3 = ({initialValues, updateState, state}) => {
-  let settlementType = [
-    {value: "Auto", label: utils.getLabelByID("Auto")},
-    {value: "Manual", label: utils.getLabelByID("Manual")}
-  ];
-  let settlementCriteria = [
-    {value: "BANK", label: utils.getLabelByID("TwoWay")},
-    {value: "ENTITY", label: utils.getLabelByID("ThreeWay")},
-    {value: "COMPLETE", label: utils.getLabelByID("Complete")}
-  ];
-
-  return (
-    <div className="row" style={{padding: "15px"}}>
-      <div className="col-md-3 col-sm-3">
-        <DropdownInput name="settlement.settlementType" options={settlementType}
-                       label={utils.getLabelByID("settlementType")} disabled={state.readOnly}/>
-      </div>
-      <div className="col-md-3 col-sm-3">
-        <DropdownInput name="settlement.settlementCriteria" options={settlementCriteria}
-                       label={utils.getLabelByID("SettlementCriteria")} disabled={state.readOnly}/>
-      </div>
-      <div className="col-md-3 col-sm-3">
-        <TextInput
-          name="settlement.autoPeriod"
-          label={utils.getLabelByID("autoPeriod")}
-          type="number"
-          disabled={state.readOnly}
-        />
-      </div>
-      <div className="col-md-3 col-sm-3">
-        <TextInput
-          name="settlement.escalationAfter"
-          label={utils.getLabelByID("escalationAfter")}
-          type="number"
-          disabled={state.readOnly}
-        />
-      </div>
-    </div>
-  )
-};
-const FormSection4 = ({initialValues, updateState, state, containerState}) => {
-  return (
-    <div className="row">
-      <div className="col-md-10 col-sm-10">
-        {utils.getLabelByID("recon_label")}
-        <div className="row" style={{paddingLeft: "15px"}}>
-          <div className="col-md-12 col-sm-12">
-            <CheckboxList>
-              <CheckboxInput
-                name="recon.isBlockchain"
-                label={utils.getLabelByID("isBlockchain")}
-                type="checkbox"
-                disabled={state.readOnly}
-              />
-            </CheckboxList>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12 col-sm-12">
-            <div className="col-md-3 col-sm-3">
-              <CheckboxList>
-                <CheckboxInput
-                  name="recon.isFile"
-                  label={utils.getLabelByID("isFile")}
-                  type="checkbox"
-                  disabled={state.readOnly}
-                />
-                <CheckboxInput
-                  name="recon.isSFTP"
-                  label={utils.getLabelByID("isSFTP")}
-                  type="checkbox"
-                  disabled={state.readOnly}
-                />
-              </CheckboxList>
-            </div>
-            <div className="col-md-4 col-sm-4">
-              <DropdownInput
-                name="recon.fileFormatTemplate"
-                label={utils.getLabelByID("fileFormatTemplate")}
-                options={containerState.fileTemplateNames}
-                disabled={state.readOnly}
-              />
-            </div>
-            <div className="col-md-4 col-sm-4">
-              <TextInput
-                name="recon.noOfDays"
-                label={utils.getLabelByID("noOfDays")}
-                type="number"
-                disabled={state.readOnly}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="row" style={{paddingLeft: "15px"}}>
-          <div className="col-md-3 col-sm-3">
-            <CheckboxList>
-              <CheckboxInput
-                name="recon.isService"
-                label={utils.getLabelByID("isAutoReconService")}
-                type="checkbox"
-                disabled={state.readOnly}
-              />
-            </CheckboxList>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-2 col-sm-2">
-        {utils.getLabelByID("Integrations_label")}
-        <CheckboxList>
-          <div>
-            <CheckboxInput
-              name="isGRP"
-              label={utils.getLabelByID("isGRP")}
-              type="checkbox"
-              disabled={state.readOnly}
-            />
-          </div>
-          <div>
-            <CheckboxInput
-              name="isCTS"
-              label={utils.getLabelByID("isCTS")}
-              type="checkbox"
-              disabled={state.readOnly}
-            />
-          </div>
-        </CheckboxList>
-      </div>
-    </div>
   )
 };
 
@@ -441,16 +186,14 @@ const FormSection6 = ({initialValues, updateState, state}) => {
   </div>);
 };
 
-class EntitySetupForm extends React.Component {
+class OrgSetupForm extends React.Component {
 
   constructor(props, context) {
     super(props, context);
     this.state = {
       index: undefined,
       readOnly: false,
-      previewModalIsOpen: false,
-      servicesModalIsOpen: false,
-      contactsModalIsOpen: false,
+      isModalOpen: false,
       entityLogo: undefined,
       commissionTemplateID: "NOT_SET",
       services: [],
@@ -567,16 +310,6 @@ class EntitySetupForm extends React.Component {
 
     return (
       <div>
-        <ModalBox isOpen={this.state.previewModalIsOpen}>
-          <CommissionPreview commissionTemplateID={this.state.commissionTemplateID}
-                             containerProps={containerProps}
-                             updateState={this.updateState}/>
-        </ModalBox>
-        <ModalBox isOpen={this.state.servicesModalIsOpen}>
-          <EntityServicesForm onSubmit={this.updateServices} initialValues={this.state}
-                              index={this.state.index} updateState={this.updateState}
-          />
-        </ModalBox>
         <ModalBox isOpen={this.state.contactsModalIsOpen}>
           <EntityContactsForm onSubmit={this.updateContacts} initialValues={this.state}
                               index={this.state.index} updateState={this.updateState}
@@ -585,19 +318,10 @@ class EntitySetupForm extends React.Component {
         <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)} ref={this._form = this}>
           <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state}
                         containerProps={containerProps}/>
-          <Portlet title={utils.getLabelByID("EntitySetupDetails")}>
-            <FormSection2 initialValues={initialValues} updateState={this.updateState} state={this.state}
-                          containerState={containerState}/>
-
-            <FormSection3 initialValues={initialValues} updateState={this.updateState} state={this.state}/>
-
-            <FormSection4 initialValues={initialValues} updateState={this.updateState} state={this.state}
-                          containerState={containerState}/>
-            <FormSection6 initialValues={initialValues} updateState={this.updateState} state={this.state}/>
-
-          </Portlet>
-
           <FormSection5 initialValues={initialValues} updateState={this.updateState} state={this.state}/>
+          <Portlet title={utils.getLabelByID("EntitySetupDetails")}>
+            <FormSection6 initialValues={initialValues} updateState={this.updateState} state={this.state}/>
+          </Portlet>
 
 
           {!this.state.readOnly &&
@@ -605,20 +329,6 @@ class EntitySetupForm extends React.Component {
             <ActionButton actionList={containerState.entityDetail.actions}
                           performAction={this.performAction}
                           submitting={submitting} pristine={pristine}/>
-            {/*<button type="submit" className="pull-right btn green" disabled={submitting}>*/}
-            {/*Save*/}
-            {/*</button>*/}
-            {/*<button type="button" className="pull-right btn default"*/}
-            {/*disabled={pristine || submitting}*/}
-            {/*onClick={reset}>*/}
-            {/*Clear Values*/}
-            {/*</button>*/}
-            {/*<button type="submit" className="pull-right btn btn-success" disabled={submitting}>*/}
-            {/*Approve*/}
-            {/*</button>*/}
-            {/*<button type="submit" className="pull-right btn btn-danger" disabled={submitting}>*/}
-            {/*Reject*/}
-            {/*</button>*/}
           </div>
           }
         </form>
@@ -628,8 +338,8 @@ class EntitySetupForm extends React.Component {
 }
 
 export default reduxForm({
-  form: 'EntitySetupForm', // a unique identifier for this form
+  form: 'OrgSetupForm', // a unique identifier for this form
   validate,
   enableReinitialize: true,
   keepDirtyOnReinitialize: true
-})(EntitySetupForm);
+})(OrgSetupForm);

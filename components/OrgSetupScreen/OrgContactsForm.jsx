@@ -6,7 +6,7 @@ import * as utils from '../../common/utils.js';
 import Portlet from '../../common/Portlet.jsx';
 
 
-const EntityContactsForm = ({handleSubmit, updateState, pristine, reset, submitting, initialValues, index}) => {
+const OrgContactsForm = ({handleSubmit, updateState, pristine, reset, submitting, initialValues, index}) => {
   let contactsActions = [
     {
       type: "icon",
@@ -80,7 +80,7 @@ const EntityContactsForm = ({handleSubmit, updateState, pristine, reset, submitt
 
 
 export default reduxForm({
-  form: 'EntityContactsForm', // a unique identifier for this form
+  form: 'OrgContactsForm', // a unique identifier for this form
   enableReinitialize: false,
   validate,
-})(EntityContactsForm);
+})(OrgContactsForm);
