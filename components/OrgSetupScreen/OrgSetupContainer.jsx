@@ -43,14 +43,14 @@ class OrgSetupContainer extends React.Component {
             }));
         }
 
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['settlementCriteria', 'settlementType']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES']));
     }
 
     componentWillUnmount() {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.entityDetail && nextProps.entityNames && nextProps.fileTemplateNames) {
+        if (nextProps.entityDetail && nextProps.entityNames && nextProps.fileTemplateNames && nextProps.typeData) {
             //Add permissions
             let entityDetail = this.props.orgID ? nextProps.entityDetail : {
                 ...this.state.entityDetail,
@@ -106,7 +106,7 @@ function mapStateToProps(state, ownProps) {
         orgID: orgID,
         entityNames: state.app.entityList.data.typeData.entityNames,
         fileTemplateNames: state.app.fileTemplateList.data.typeData.fileTemplateNames,
-        typeData: state.app.typeData,
+        typeData: state.app.typeData.data,
         readOnly: ownProps.params.mode === "view"
     };
 }

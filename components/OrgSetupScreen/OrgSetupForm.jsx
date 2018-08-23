@@ -15,10 +15,10 @@ import ActionButton from '../../components/ActionButtonNew.jsx';
 import {CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput} from '../../common/FormControls.jsx';
 
 //https://github.com/erikras/redux-form/issues/369
-const FormSection1 = ({error, initialValues, updateState, state, containerProps}) => {
+const FormSection1 = ({error, initialValues, updateState, state, containerProps, containerState}) => {
   return (
     <div>
-      <Portlet title={"Entity"}>
+      <Portlet title={"Details"}>
         <div className="row">
           <div className="col-md-6 col-sm-6">
             <TextInput
@@ -33,6 +33,10 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps}
               type="text"
               style={{textAlign: "right"}}
               disabled={state.readOnly}
+            />
+            <DropdownInput name="orgType" options={containerState.typeData.ORG_TYPES}
+                           label={utils.getLabelByID("ESEARCH_orgType")}
+                           disabled={state.readOnly}
             />
           </div>
           <div className="col-md-6 col-sm-6 offset4">
@@ -61,14 +65,6 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps}
                 <DropdownInput name="parentEntity" options={containerProps.entityNames}
                                label={utils.getLabelByID("parentEntity")}
                                disabled={state.readOnly}
-                />
-              </div>
-              <div className="col-md-4 col-sm-4">
-                <DateInput
-                  name="transactionStartDate"
-                  label={utils.getLabelByID("ES_transactionStartDate")}
-                  type="date"
-                  disabled={state.readOnly}
                 />
               </div>
               <div className="col-md-4 col-sm-4">
@@ -317,9 +313,9 @@ class OrgSetupForm extends React.Component {
         </ModalBox>
         <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)} ref={this._form = this}>
           <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state}
-                        containerProps={containerProps}/>
+                        containerProps={containerProps} containerState={containerState}/>
           <FormSection5 initialValues={initialValues} updateState={this.updateState} state={this.state}/>
-          <Portlet title={utils.getLabelByID("EntitySetupDetails")}>
+          <Portlet title={utils.getLabelByID("Documents")}>
             <FormSection6 initialValues={initialValues} updateState={this.updateState} state={this.state}/>
           </Portlet>
 

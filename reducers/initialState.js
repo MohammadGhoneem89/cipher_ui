@@ -736,11 +736,6 @@ export default {
       "containers": []
     }
   },
-  organizationType: {
-    "action": "organizationType",
-    "organizationType": [],
-    "organizations": []
-  },
   userPoints: {},
   fetchPasswordPolicy: {},
   order: {},

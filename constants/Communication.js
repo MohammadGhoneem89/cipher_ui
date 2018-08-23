@@ -43,7 +43,7 @@ module.exports = {
   groupUpdate: baseUrl + "/API/UI/groupUpdate",
   getGroupList: baseUrl + "/API/UI/groupList",
 
-  getEntityList: baseUrl + "/API/UI/orgList",
+    getEntityList: baseUrl + "/API/UI/orgList",
   entityInsert: baseUrl + "/API/UI/orgInsert",
   getEntityDetail: baseUrl + "/API/UI/orgDetail",
   entityUpdate: baseUrl + "/API/UI/orgUpdate",
@@ -100,7 +100,6 @@ module.exports = {
   updateCollectionValueByKey: baseUrl + "/API/ePay/upsert",
   notificationViewed: baseUrl + "/API/UI/notificationViewed",
   getSLAWorkboardData: baseUrl + "/API/UI/getSLAData",
-  getOrganizationTypes: baseUrl + "/API/UI/organizationType",
 
   getblockchainWorkboardData1: baseUrl + "/SIMU/1",
   getblockchainWorkboardData2: baseUrl + "/SIMU/2",

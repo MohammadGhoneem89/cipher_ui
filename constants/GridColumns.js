@@ -207,6 +207,7 @@ module.exports = {
     {alias: "ESEARCH_entityName", key: "entityName", type: "image"},
     {alias: "ESEARCH_arabicName", key: "arabicName", type: "string"},
     {alias: "ESEARCH_spCode", key: "spCode", type: "string"},
+    {alias: "ESEARCH_orgType", key: "orgType", type: "string"},
     {alias: "ESEARCH_isActive", key: "isActive", type: "cbDisabled"},
     {alias: "ESEARCH_status", key: "status", type: "statusLabel"},
     {alias: "ESEARCH_action", key: "actions", type: "action"}

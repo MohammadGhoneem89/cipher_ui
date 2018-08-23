@@ -80,11 +80,11 @@ class OrgSearchContainer extends React.Component {
         if (!this.state.isLoading && this.state.entityList){
             return (
                 <div>
-                    <Portlet title={utils.getLabelByID("Entity")}>
+                    <Portlet title={utils.getLabelByID("Organization")}>
                         <EntityFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria}
                                           state={this.state}/>
                     </Portlet>
-                    <Portlet title={utils.getLabelByID("EntityList")} isPermissioned={true} actions={this.state.entityList.data.actions}>
+                    <Portlet title={utils.getLabelByID("List")} isPermissioned={true} actions={this.state.entityList.data.actions}>
                         <Table
                             pagination={true}
                             export={true}
