@@ -43,7 +43,7 @@ module.exports = {
   groupUpdate: baseUrl + "/API/UI/groupUpdate",
   getGroupList: baseUrl + "/API/UI/groupList",
 
-    getEntityList: baseUrl + "/API/UI/orgList",
+  getEntityList: baseUrl + "/API/UI/orgList",
   entityInsert: baseUrl + "/API/UI/orgInsert",
   getEntityDetail: baseUrl + "/API/UI/orgDetail",
   entityUpdate: baseUrl + "/API/UI/orgUpdate",
@@ -109,5 +109,12 @@ module.exports = {
   getPickupList: baseUrl + "/API/UI/typeDataList",
   getPickupListDetail: baseUrl + "/API/UI/getTypeDataDetailByID",
   passwordPolicyDetail: baseUrl + "/API/UI/fetchAllPasswordPolicy",
-  updatePasswordPolicy: baseUrl + "/API/UI/updatePasswordPolicy"
+  updatePasswordPolicy: baseUrl + "/API/UI/updatePasswordPolicy",
+
+  getSampleDashboardData: blockChainURL + "/SIMU/sampleDashboardData",
+  getSampleDashboardDataType2: blockChainURL + "/SIMU/sampleDashboardDataType2",
+  getSampleDropDownList: baseUrl + "/SIMU/sampleDropDownListData",
+  getSampleListData: baseUrl + "/SIMU/getSampleListPageData",
+  getSampleViewPageData: baseUrl + "/SIMU/getSampleViewPageData",
+  getSampleRecordByID: baseUrl + "/SIMU/getSampleRecordByID"
 };

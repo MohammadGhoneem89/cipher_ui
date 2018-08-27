@@ -36,6 +36,12 @@ import buyerDashboard from './containers/userDashboard.jsx';
 import merchantDashboard from './containers/merchantDashboard.jsx';
 import rewardsProviderDashboard from './containers/RewardsProviderDashboard.jsx';
 import HealthMonitor from './components/HealthMonitor.jsx';
+
+import sampleDashboard from './containers/Samples/SampleDashboard.jsx';
+import sampleDashboardType2 from './containers/Samples/SampleDashboardType2.jsx';
+import SampleListPage from './containers/Samples/SampleListPage.jsx';
+import SampleViewPage from './containers/Samples/SampleViewPage.jsx';
+import SampleCrudPage from './containers/Samples/SampleCrudPage.jsx';
 // import BlockTransactionList from './containers/BlockTransactionList.jsx'
 
 
@@ -43,19 +49,20 @@ import Locked from './components/Locked.jsx';
 
 import FileTemplateSearch from './components/FileTemplateSearchScreen/FileTemplateSearchContainer.jsx';
 import FileTemplateSetup from './components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx';
-import CommissionTemplateSearch from './components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
+import CommissionTemplateSearch
+  from './components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
 import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
 import AuditLogList from './containers/auditLogList.jsx';
 
 
 function getDashboard() {
-  if(window.sessionStorage.orgType === "buyer"){
+  if (window.sessionStorage.orgType === "buyer") {
     return buyerDashboard
   }
-  else if(window.sessionStorage.orgType === "merchant"){
+  else if (window.sessionStorage.orgType === "merchant") {
     return merchantDashboard
   }
-  else if(window.sessionStorage.orgType === "provider"){
+  else if (window.sessionStorage.orgType === "provider") {
     return rewardsProviderDashboard;
   }
   else {
@@ -125,6 +132,13 @@ export default (
       <Route path="/orgSearch" component={OrgSearch}/>
       <Route path="/orgSetup" component={OrgSetup}/>
       <Route path="/orgSetup/:mode/:orgID" component={OrgSetup}/>
+
+      <Route path="/sampleDashboard" component={sampleDashboard}/>
+      <Route path="/sampleDashboardType2" component={sampleDashboardType2}/>
+      <Route path="/sampleListPage" component={SampleListPage}/>
+      <Route path="/sampleDetailPage/:recordID" component={SampleViewPage}/>
+      <Route path="/sampleCrudPage" component={SampleCrudPage}/>
+      <Route path="/sampleCrudPage/:recordID" component={SampleCrudPage}/>
 
       {/*<Route path="/BlockTransactionList/:blockHeight" component={BlockTransactionList}/>*/}
     </Route>
