@@ -1,0 +1,41 @@
+@media (min-width: 992px){
+    .login .lng li.actv {
+        padding: 2px 8px !important;
+        background: #333 !important;
+    }
++}
+
+.logo-default{
+    width: 111px !important;
+}
+.login .logo{
+    background: url("logo-default.png") no-repeat top center;
+    height: 100px;
+    background-size: 75%;
+}
+body .login {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    /*background: #fff url(emirates-bg.png) no-repeat !important;*/
+    background-position: center center;
+    background-size: cover !important;
+}
+
+.page-sidebar-menu-hover-submenu li:hover a>.arrow {
+    border-right: 8px solid;
+}
+.btn.green:not(.btn-outline), .btn-success {
+    -webkit-border-radius: 4px !important;
+    -moz-border-radius: 4px !important;
+    border-radius: 4px !important;
+}
+
+.page-header.navbar .page-logo{
+    background: url(logo-default.png);
+    background-repeat: no-repeat;
+    margin-left: 3.5%;
+    width: 111px !important;
+}

@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import brandConfig from '../assets/skins/default/brandConfig.json';
 import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
@@ -162,7 +163,7 @@ class Login extends React.Component {
 
                         <div className="login-form" >
                             {this.getLogosForSDGUser()}
-                            <h3 className="form-title">Skywards Blockchain</h3>
+                            <h3 className="form-title">{brandConfig.projectName}</h3>
                             <div className="alert alert-danger display-hide">
                                 <button className="close" data-close="alert"/>
                                 <span> Enter any username and password. </span>
@@ -208,7 +209,7 @@ class Login extends React.Component {
 
                     </div>
 
-                    <div className="copyright">Copyright &copy; 2000-2018 Smart Dubai. All Rights Reserved.</div>
+                    <div className="copyright">{brandConfig.footer}</div>
                 </div>
             </div>
 

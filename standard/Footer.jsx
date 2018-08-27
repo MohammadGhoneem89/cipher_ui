@@ -9,9 +9,8 @@ class Footer extends React.Component {
         return (
 
             <div className="page-footer-inner"> {utils.getLabelByID("Footer")}
-
                 <div className="scroll-to-top">
-                    <i className="icon-arrow-up"></i>
+                    <i className="icon-arrow-up"/>
                 </div>
             </div>
 

@@ -739,12 +739,12 @@ export default {
   userPoints: {},
   fetchPasswordPolicy: {},
   order: {},
-  catlogue:{},
+  catlogue: {},
   merchantPoints: {},
   adminStats: {},
   Settlements: {},
-  rewardList:{},
+  rewardList: {},
   getTypeDataDetailByID: {},
-  pointSummary:{}
+  pointSummary: {}
 }
 

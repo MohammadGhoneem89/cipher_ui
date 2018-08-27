@@ -366,7 +366,7 @@ a:hover {
 
 
 .page-header.navbar .page-logo{
-	background: url(../../layouts/layout2/img/emirates-logo.jpg);
+	background: url("emirates-logo.jpg");
 	background-repeat: no-repeat;
 	margin-left: 3.5%;
 	width: 111px !important;
