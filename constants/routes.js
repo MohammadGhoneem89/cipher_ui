@@ -1,4 +1,4 @@
-/*
+
 const routes = {
   baseUrl: "http://104.211.155.19:10051",
   blockChainURL: "http://104.211.155.19:10051",
@@ -8,7 +8,7 @@ const routes = {
   loyaltyBaseURL: "http://104.211.155.19:9090",
   qrCode: "https://185.78.244.54"
 };
-*/
+/*
 const routes = {
   baseUrl: "http://localhost:10051",
   blockChainURL: "http://localhost:10051",
@@ -18,7 +18,7 @@ const routes = {
   loyaltyBaseURL: "http://localhost:9090",
   qrCode: "https://185.78.244.54"
 };
-
+*/
 //
 // const routes = {
 //     baseUrl: "http://10.65.11.14:10051",
