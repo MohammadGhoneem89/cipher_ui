@@ -1,8 +1,8 @@
 /*global constants import*/
-import * as resArabic from '../../constants/resources_AR.js';
-import * as resEnglish from '../../constants/resources_EN.js';
-import * as gridColumns from '../../constants/GridColumns.js';
-import * as cresEnglish from '../../constants/componentResources_EN.js';
+import * as resArabic from '../constants/resources_AR.js';
+import * as resEnglish from '../constants/resources_EN.js';
+import * as gridColumns from '../constants/GridColumns.js';
+import * as cresEnglish from '../constants/componentResources_EN.js';
 
 
 let lang="EN";

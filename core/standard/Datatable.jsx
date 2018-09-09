@@ -1,5 +1,5 @@
 import React from 'react';
-import {baseUrl} from '../../constants/Communication.js';
+import {baseUrl} from '../constants/Communication.js';
 import * as utils from '../common/utils.js';
 import * as Loaders from '../common/loaders.jsx';
 //import Pagination from '../components/paginator.jsx';

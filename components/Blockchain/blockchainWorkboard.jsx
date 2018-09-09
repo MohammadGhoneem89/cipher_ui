@@ -9,7 +9,7 @@ import TileUnit from '../../core/components/customTileUnit.jsx';
 import Table from '../../core/standard/Datatable.jsx';
 import BarChartLine from '../../core/components/barChartLine.jsx'
 import * as utils from '../../core/common/utils.js';
-import * as constants from '../../constants/Communication.js';
+import * as constants from '../../core/constants/Communication.js';
 import moment from 'moment';
 
 

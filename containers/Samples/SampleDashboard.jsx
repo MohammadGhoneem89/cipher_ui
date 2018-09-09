@@ -9,8 +9,8 @@ import TileUnit from '../../core/components/tileUnit.jsx';
 import Table from '../../core/standard/Datatable.jsx';
 import CommonBarChart from '../../core/components/CommonBarChart.jsx'
 import * as utils from '../../core/common/utils.js';
-import * as constants from '../../constants/Communication.js';
-import { baseUrl } from '../../constants/Communication.js';
+import * as constants from '../../core/constants/Communication.js';
+import { baseUrl } from '../../core/constants/Communication.js';
 import moment from 'moment';
 import config from '../../config'
 

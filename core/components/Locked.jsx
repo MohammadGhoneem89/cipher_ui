@@ -7,12 +7,12 @@ import {bindActionCreators} from 'redux';
 import * as actions from '../actions/generalAction';
 
 
-import * as constants from '../../constants/Communication.js';
+import * as constants from '../constants/Communication.js';
 import * as requestCreator from '../common/request.js';
 import * as toaster from '../common/toaster.js';
 
 import auth from '../auth/authenticator';
-import {baseUrl} from '../../constants/Communication.js';
+import {baseUrl} from '../constants/Communication.js';
 
 
 class Locked extends React.Component {

@@ -22,7 +22,7 @@ import Footer from './core/standard/Footer.jsx';
 import $ from 'jquery';
 import EMD from './core/components/errorMessage.jsx';
 /*global constants import*/
-import * as constants from './constants/Communication.js';
+import * as constants from './core/constants/Communication.js';
 import * as utils from './core/common/utils.js';
 
 import * as requestCreator from './core/common/request.js';

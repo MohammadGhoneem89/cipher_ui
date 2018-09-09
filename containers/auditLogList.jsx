@@ -16,7 +16,7 @@ import * as utils from '../core/common/utils.js';
 import AuditLogDetail from '../core/components/AuditLogDetail.jsx';
 
 
-import * as constants from '../constants/Communication.js';
+import * as constants from '../core/constants/Communication.js';
 import * as requestCreator from '../core/common/request.js';
 import DateControl from '../core/components/DateControl.jsx'
 

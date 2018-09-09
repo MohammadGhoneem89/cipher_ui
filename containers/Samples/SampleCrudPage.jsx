@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form'
 import { bindActionCreators } from 'redux';
 import * as actions from '../../core/actions/generalAction';
-import * as constants from '../../constants/Communication.js';
-import { baseUrl } from '../../constants/Communication.js';
+import * as constants from '../../core/constants/Communication.js';
+import { baseUrl } from '../../core/constants/Communication.js';
 import QRCodeJquery from '../../core/components/QRCodeJquery.jsx';
 import ActionButton from '../../core/components/ActionButtonNew.jsx';
 import * as requestCreator from '../../core/common/request.js';

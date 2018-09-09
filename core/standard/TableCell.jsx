@@ -1,6 +1,6 @@
 import React from 'react';
-import * as constants from '../../constants/Communication.js';
-import { baseUrl } from '../../constants/Communication.js';
+import * as constants from '../constants/Communication.js';
+import { baseUrl } from '../constants/Communication.js';
 import { browserHistory } from 'react-router';
 import * as utils from '../common/utils.js';
 import * as dates from '../common/dates.js';

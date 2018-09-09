@@ -2,7 +2,7 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from '../../../core/actions/generalAction';
-import * as constants from '../../../constants/Communication.js';
+import * as constants from '../../../core/constants/Communication.js';
 import * as requestCreator from '../../../core/common/request.js';
 import Portlet from '../../../core/common/Portlet.jsx';
 import Table from '../../../core/standard/Datatable.jsx';

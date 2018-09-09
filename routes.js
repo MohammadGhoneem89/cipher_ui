@@ -8,20 +8,20 @@ import Login from './core/components/Login.jsx';
 
 import notification from './containers/Notifications.jsx';
 import auth from './core/auth/authenticator';
-import EmailTemplateSearch from './components/EmailTemplateSearchScreen/EmailTemplateSearchContainer.jsx';
-import EmailTemplateSetup from './components/EmailTemplateSetupScreen/EmailTemplateSetupContainer.jsx';
-import OrgSearch from './components/OrgSearchScreen/OrgSearchContainer.jsx';
-import OrgSetup from './components/OrgSetupScreen/OrgSetupContainer.jsx';
-import GroupSearch from './components/GroupSearchScreen/GroupSearchContainer.jsx';
-import GroupSetup from './components/GroupSetupScreen/GroupSetupContainer.jsx';
-import UserSearch from './components/UserSearchScreen/UserSearchContainer.jsx';
-import UserSetup from './components/UserSetupScreen/UserSetupContainer.jsx';
-import WorkingCalendar from './components/WorkingCalendar/WorkingCalContainer.jsx';
+import EmailTemplateSearch from './core/components/EmailTemplateSearchScreen/EmailTemplateSearchContainer.jsx';
+import EmailTemplateSetup from './core/components/EmailTemplateSetupScreen/EmailTemplateSetupContainer.jsx';
+import OrgSearch from './core/components/OrgSearchScreen/OrgSearchContainer.jsx';
+import OrgSetup from './core/components/OrgSetupScreen/OrgSetupContainer.jsx';
+import GroupSearch from './core/components/GroupSearchScreen/GroupSearchContainer.jsx';
+import GroupSetup from './core/components/GroupSetupScreen/GroupSetupContainer.jsx';
+import UserSearch from './core/components/UserSearchScreen/UserSearchContainer.jsx';
+import UserSetup from './core/components/UserSetupScreen/UserSetupContainer.jsx';
+import WorkingCalendar from './core/components/WorkingCalendar/WorkingCalContainer.jsx';
 
 import ChangePassword from './containers/changePassword.jsx';
-import PasswordPolicy from './components/PasswordPolicyScreen/PasswordPolicyContainer.jsx';
-import PickupListSearch from './components/PickupListSearchScreen/PickupListSearchContainer.jsx';
-import PickupListSetup from './components/PickupListSetupScreen/PickupListSetupContainer.jsx';
+import PasswordPolicy from './core/components/PasswordPolicyScreen/PasswordPolicyContainer.jsx';
+import PickupListSearch from './core/components/PickupListSearchScreen/PickupListSearchContainer.jsx';
+import PickupListSetup from './core/components/PickupListSetupScreen/PickupListSetupContainer.jsx';
 import APIPayloadSearch from './containers/APIPayloadList.jsx';
 import BlockchainViewerQR from './components/Blockchain/Viewer/BlockchainViewerQR.jsx';
 import BlockSearchScreen from './components/Blockchain/BlockSearchScreen/BlockSearchScreenContainer.jsx';
@@ -47,11 +47,11 @@ import SampleCrudPage from './containers/Samples/SampleCrudPage.jsx';
 
 import Locked from './core/components/Locked.jsx';
 
-import FileTemplateSearch from './components/FileTemplateSearchScreen/FileTemplateSearchContainer.jsx';
-import FileTemplateSetup from './components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx';
+import FileTemplateSearch from './core/components/FileTemplateSearchScreen/FileTemplateSearchContainer.jsx';
+import FileTemplateSetup from './core/components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx';
 import CommissionTemplateSearch
-  from './components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
-import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
+  from './core/components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
+import CommissionTemplateSetup from './core/components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
 import AuditLogList from './containers/auditLogList.jsx';
 
 

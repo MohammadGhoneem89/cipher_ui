@@ -5,14 +5,14 @@ import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/generalAction';
-import * as connts from '../../constants/Communication.js';
+import * as connts from '../constants/Communication.js';
 import StatusBar from './StatusBar.jsx';
 import QRCodeJquery from './QRCodeJquery.jsx';
 import ActionButton from './ActionButton.jsx';
-import * as constants from '../../constants/Communication.js';
+import * as constants from '../constants/Communication.js';
 import * as requestCreator from '../common/request.js';
 import * as utils from '../common/utils.js';
-import { baseUrl } from '../../constants/Communication.js';
+import { baseUrl } from '../constants/Communication.js';
 
 
 

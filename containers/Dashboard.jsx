@@ -15,7 +15,7 @@ import BarChartExceptions from '../core/components/barChart.jsx'
 import * as utils from '../core/common/utils.js';
 
 import DateRangePickerInput from '../core/components/DateRangePickerInput.jsx';
-import * as constants from '../constants/Communication.js';
+import * as constants from '../core/constants/Communication.js';
 import ManualSettlementPopup from '../components/ManualSettlementPopup.jsx';
 import * as requestCreator from '../core/common/request.js';
 import DateControl from '../core/components/DateControl.jsx'

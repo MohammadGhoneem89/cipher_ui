@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux';
 import * as actions from '../../../core/actions/generalAction';
 import Portlet from '../../../core/common/Portlet.jsx';
 
-import * as constants from '../../../constants/Communication.js';
+import * as constants from '../../../core/constants/Communication.js';
 // import JSONPretty from 'react-json-pretty';
 import * as utils from '../../../core/common/utils.js';
 

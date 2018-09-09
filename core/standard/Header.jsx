@@ -7,7 +7,7 @@ import auth from '../auth/authenticator';
 
 import * as utils from '../common/utils';
 
-import { baseUrl } from '../../constants/Communication.js';
+import { baseUrl } from '../constants/Communication.js';
 
 class Header extends React.Component {
 

@@ -9,7 +9,7 @@ import initialState from '../../../core/reducers/initialState.js';
 import * as actions from '../../../core/actions/generalAction';
 import ModalBox from '../../../core/common/ModalBox.jsx';
 import * as utils from '../../../core/common/utils.js';
-import * as constants from '../../../constants/Communication.js';
+import * as constants from '../../../core/constants/Communication.js';
 import * as requestCreator from '../../../core/common/request.js';
 import ConsortiumSetupForm from './ConsortiumSetupForm.jsx'
 import ParticipantsComponent from './ParticipantsComponent.jsx'
