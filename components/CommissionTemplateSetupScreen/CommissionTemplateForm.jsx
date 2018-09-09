@@ -1,12 +1,12 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
-import Portlet from '../../common/Portlet.jsx';
-import ModalBox from '../../common/ModalBox.jsx';
-import * as utils from '../../common/utils.js';
-import {TextInput} from '../../common/FormControls.jsx';
-import Table from '../../standard/Datatable.jsx';
+import Portlet from '../../core/common/Portlet.jsx';
+import ModalBox from '../../core/common/ModalBox.jsx';
+import * as utils from '../../core/common/utils.js';
+import {TextInput} from '../../core/common/FormControls.jsx';
+import Table from '../../core/standard/Datatable.jsx';
 import CommissionDetailsForm from './CommissionDetailsForm.jsx';
-import ActionButton from '../../components/ActionButtonNew.jsx';
+import ActionButton from '../../core/components/ActionButtonNew.jsx';
 import validate from './validate.js';
 import { SubmissionError }  from 'redux-form/lib/SubmissionError'
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import Portlet from '../../../common/Portlet.jsx';
-import Table from '../../../standard/Datatable.jsx';
-import * as utils from '../../../common/utils.js';
+import Portlet from '../../../core/common/Portlet.jsx';
+import Table from '../../../core/standard/Datatable.jsx';
+import * as utils from '../../../core/common/utils.js';
 
 const ParticipantsComponent = ({updateState, containerState}) => {
     let ownerDetails = containerState.consortiumDetail.owner;

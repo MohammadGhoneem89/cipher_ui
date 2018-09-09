@@ -2,13 +2,13 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from '../../actions/generalAction';
+import * as actions from '../../core/actions/generalAction';
 /*container specific imports*/
-import Table from '../../standard/Datatable.jsx';
-import * as utils from '../../common/utils.js';
+import Table from '../../core/standard/Datatable.jsx';
+import * as utils from '../../core/common/utils.js';
 import * as constants from '../../constants/Communication.js';
-import * as requestCreator from '../../common/request.js';
-import DateControl from '../../components/DateControl.jsx'
+import * as requestCreator from '../../core/common/request.js';
+import DateControl from '../../core/components/DateControl.jsx'
 
 class SampleListPage extends React.Component {
 

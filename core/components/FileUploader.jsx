@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import DropzoneComponent from 'react-dropzone-component';
-import * as constants from '../constants/Communication.js';
+import * as constants from '../../constants/Communication.js';
 import * as utils from '../common/utils.js';
 import InnerGrid from '../standard/innerGrid.jsx';
-import configTag from '../config.js';
+import configTag from '../../config.js';
 
 let tempGridData = {
     "message": "Successfully Uploaded",

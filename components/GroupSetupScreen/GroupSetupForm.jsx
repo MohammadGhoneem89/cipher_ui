@@ -1,14 +1,14 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-import Table from '../../standard/Datatable.jsx';
-import Portlet from '../../common/Portlet.jsx';
-import * as utils from '../../common/utils.js';
+import Table from '../../core/standard/Datatable.jsx';
+import Portlet from '../../core/common/Portlet.jsx';
+import * as utils from '../../core/common/utils.js';
 import CheckboxTree from 'react-checkbox-tree';
 import 'react-checkbox-tree/lib/react-checkbox-tree.css'
-import { CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput } from '../../common/FormControls.jsx';
+import { CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput } from '../../core/common/FormControls.jsx';
 import GroupTree from '../../components/GroupSetupScreen/GroupTree.jsx'
 import validate from './validate';
-import ActionButton from '../../components/ActionButtonNew.jsx';
+import ActionButton from '../../core/components/ActionButtonNew.jsx';
 
 
 const FormSection1 = ({ error, initialValues, updateState, state }) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
-import {TextInput, DataList, DropdownInput} from '../../common/FormControls.jsx';
-import * as utils from '../../common/utils.js';
+import {TextInput, DataList, DropdownInput} from '../../core/common/FormControls.jsx';
+import * as utils from '../../core/common/utils.js';
 
 const EmailTemplateFilterForm = props => {
     const {handleSubmit, pristine, reset, submitting, containerSate} = props;

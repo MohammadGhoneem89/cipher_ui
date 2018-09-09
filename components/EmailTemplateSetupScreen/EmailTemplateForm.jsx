@@ -1,10 +1,10 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
 import RichTextEditor from 'react-rte';
-import Portlet from '../../common/Portlet.jsx';
-import * as utils from '../../common/utils.js';
-import {DropdownInput, TextInput, DataList} from '../../common/FormControls.jsx';
-import ActionButton from '../../components/ActionButtonNew.jsx';
+import Portlet from '../../core/common/Portlet.jsx';
+import * as utils from '../../core/common/utils.js';
+import {DropdownInput, TextInput, DataList} from '../../core/common/FormControls.jsx';
+import ActionButton from '../../core/components/ActionButtonNew.jsx';
 import validate from './validate.js';
 
 class EmailTemplateForm extends React.Component {

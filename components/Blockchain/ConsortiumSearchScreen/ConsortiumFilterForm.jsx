@@ -1,7 +1,7 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
-import {CheckboxInput, CheckboxList, DropdownInput, DataList, TextInput} from '../../../common/FormControls.jsx';
-import * as utils from '../../../common/utils.js';
+import {CheckboxInput, CheckboxList, DropdownInput, DataList, TextInput} from '../../../core/common/FormControls.jsx';
+import * as utils from '../../../core/common/utils.js';
 
 const ConsortiumFilterForm = props => {
     const {handleSubmit, pristine, reset, submitting, state} = props;

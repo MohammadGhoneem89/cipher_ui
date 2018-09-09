@@ -2,15 +2,15 @@ import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import { browserHistory } from 'react-router';
 import {connect} from 'react-redux';
-import Portlet from '../../../common/Portlet.jsx';
-import Table from '../../../standard/Datatable.jsx';
+import Portlet from '../../../core/common/Portlet.jsx';
+import Table from '../../../core/standard/Datatable.jsx';
 import {SubmissionError} from 'redux-form'
-import initialState from '../../../reducers/initialState.js';
-import * as actions from '../../../actions/generalAction';
-import ModalBox from '../../../common/ModalBox.jsx';
-import * as utils from '../../../common/utils.js';
+import initialState from '../../../core/reducers/initialState.js';
+import * as actions from '../../../core/actions/generalAction';
+import ModalBox from '../../../core/common/ModalBox.jsx';
+import * as utils from '../../../core/common/utils.js';
 import * as constants from '../../../constants/Communication.js';
-import * as requestCreator from '../../../common/request.js';
+import * as requestCreator from '../../../core/common/request.js';
 import ConsortiumSetupForm from './ConsortiumSetupForm.jsx'
 import ParticipantsComponent from './ParticipantsComponent.jsx'
 import SmartContractComponent from './SmartContractComponent.jsx'

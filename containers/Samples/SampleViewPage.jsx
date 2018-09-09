@@ -4,15 +4,15 @@ import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form'
 import { bindActionCreators } from 'redux';
-import * as actions from '../../actions/generalAction';
+import * as actions from '../../core/actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import { baseUrl } from '../../constants/Communication.js';
-import QRCodeJquery from '../../components/QRCodeJquery.jsx';
-import ActionButton from '../../components/ActionButtonNew.jsx';
-import * as requestCreator from '../../common/request.js';
-import * as utils from '../../common/utils.js';
-import Table from '../../standard/Datatable.jsx';
-import Steps from '../../components/Steps.jsx';
+import QRCodeJquery from '../../core/components/QRCodeJquery.jsx';
+import ActionButton from '../../core/components/ActionButtonNew.jsx';
+import * as requestCreator from '../../core/common/request.js';
+import * as utils from '../../core/common/utils.js';
+import Table from '../../core/standard/Datatable.jsx';
+import Steps from '../../core/components/Steps.jsx';
 import { isThisSecond } from 'date-fns';
 
 

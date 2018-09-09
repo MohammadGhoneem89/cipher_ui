@@ -1,6 +1,6 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
-import {TextInput} from '../../../common/FormControls.jsx';
+import {TextInput} from '../../../core/common/FormControls.jsx';
 
 const ExecutionForm = ({handleSubmit, updateState, pristine, reset, submitting, initialValues, containerState, index}) => {
     return (

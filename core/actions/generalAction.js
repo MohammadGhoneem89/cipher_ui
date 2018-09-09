@@ -3,7 +3,7 @@ import {browserHistory} from 'react-router';
 import generalAPI from '../api/generalAPI';
 import * as ChainBreaker from '../common/ChainBreaker';
 import auth from '../auth/authenticator';
-import config from '../config';
+import config from '../../config';
 
 let ws;
 

@@ -2,12 +2,12 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import {SubmissionError} from 'redux-form';
 import {connect} from 'react-redux';
-import initialState from '../../reducers/initialState.js';
-import * as actions from '../../actions/generalAction';
+import initialState from '../../core/reducers/initialState.js';
+import * as actions from '../../core/actions/generalAction';
 import FileTemplateForm from './FileTemplateForm.jsx';
 import * as constants from '../../constants/Communication.js';
-import * as requestCreator from '../../common/request.js';
-import * as utils from '../../common/utils.js';
+import * as requestCreator from '../../core/common/request.js';
+import * as utils from '../../core/common/utils.js';
 
 class FileTemplateContainer extends React.Component {
     constructor(props, context) {

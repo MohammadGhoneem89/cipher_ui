@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from '../actions/generalAction';
-import * as utils from '../common/utils';
+import * as actions from '../core/actions/generalAction';
+import * as utils from '../core/common/utils';
 import * as constants from '../constants/Communication.js';
 
 class ChangePassword extends React.Component {

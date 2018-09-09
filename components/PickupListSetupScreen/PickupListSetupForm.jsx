@@ -1,8 +1,8 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
 import validate from './validate';
-import {TextInput} from '../../common/FormControls.jsx';
-import * as utils from '../../common/utils.js';
+import {TextInput} from '../../core/common/FormControls.jsx';
+import * as utils from '../../core/common/utils.js';
 
 
 const PickupListSetupForm = ({handleSubmit, updateState, pristine, reset, submitting, initialValues}) => {

@@ -1,10 +1,10 @@
 import React from 'react';
-import Portlet from '../../../common/Portlet.jsx';
-import Table from '../../../standard/Datatable.jsx';
+import Portlet from '../../../core/common/Portlet.jsx';
+import Table from '../../../core/standard/Datatable.jsx';
 import SmartContractForm from './SmartContractForm.jsx';
-import FileUploader from '../../FileUploader.jsx';
+import FileUploader from '../../../core/components/FileUploader.jsx';
 import config from '../../../config';
-import * as utils from '../../../common/utils.js';
+import * as utils from '../../../core/common/utils.js';
 
 const SmartContractComponent = ({updateState, containerState, onCompile}) => {
     let smartContractTemplates = containerState.consortiumDetail.smartContractTemplates;

@@ -1,11 +1,11 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import initialState from '../../reducers/initialState.js';
-import * as actions from '../../actions/generalAction';
+import initialState from '../../core/reducers/initialState.js';
+import * as actions from '../../core/actions/generalAction';
 import * as constants from '../../constants/Communication.js';
-import * as requestCreator from '../../common/request.js';
-import Portlet from '../../common/Portlet.jsx';
+import * as requestCreator from '../../core/common/request.js';
+import Portlet from '../../core/common/Portlet.jsx';
 import UserSetupForm from '../../components/UserSetupScreen/UserSetupForm.jsx'
 import {SubmissionError, initialize} from 'redux-form'
 import config from '../../config';

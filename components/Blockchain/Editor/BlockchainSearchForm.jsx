@@ -1,7 +1,7 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
-import {DropdownInput, TextInput} from '../../../common/FormControls.jsx';
-import * as utils from '../../../common/utils.js';
+import {DropdownInput, TextInput} from '../../../core/common/FormControls.jsx';
+import * as utils from '../../../core/common/utils.js';
 
 const BlockchainSearchForm = props => {
     const {handleSubmit, pristine, reset, submitting, state} = props;

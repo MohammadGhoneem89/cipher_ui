@@ -2,17 +2,17 @@ import React from 'react';
 import {reduxForm} from 'redux-form';
 import validate from './validate';
 import * as constants from '../../constants/Communication.js';
-import * as requestCreator from '../../common/request.js';
-import Table from '../../standard/Datatable.jsx';
-import FileUploader from '../FileUploader.jsx';
-import Portlet from '../../common/Portlet.jsx';
-import ModalBox from '../../common/ModalBox.jsx';
+import * as requestCreator from '../../core/common/request.js';
+import Table from '../../core/standard/Datatable.jsx';
+import FileUploader from '../../core/components/FileUploader.jsx';
+import Portlet from '../../core/common/Portlet.jsx';
+import ModalBox from '../../core/common/ModalBox.jsx';
 import EntityServicesForm from './OrgServicesForm.jsx';
 import EntityContactsForm from './OrgContactsForm.jsx';
-import * as utils from '../../common/utils.js';
-import ActionButton from '../../components/ActionButtonNew.jsx';
+import * as utils from '../../core/common/utils.js';
+import ActionButton from '../../core/components/ActionButtonNew.jsx';
 
-import {CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput} from '../../common/FormControls.jsx';
+import {CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput} from '../../core/common/FormControls.jsx';
 
 //https://github.com/erikras/redux-form/issues/369
 const FormSection1 = ({error, initialValues, updateState, state, containerProps, containerState}) => {

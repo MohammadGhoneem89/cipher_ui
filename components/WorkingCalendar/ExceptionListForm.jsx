@@ -1,8 +1,8 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
-import {TextInput} from '../../common/FormControls.jsx';
-import * as utils from '../../common/utils.js';
-import Portlet from '../../common/Portlet.jsx';
+import {TextInput} from '../../core/common/FormControls.jsx';
+import * as utils from '../../core/common/utils.js';
+import Portlet from '../../core/common/Portlet.jsx';
 
 
 const ExceptionListForm = ({handleSubmit, updateState, pristine, reset, submitting, initialValues, index}) => {

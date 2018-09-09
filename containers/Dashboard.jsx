@@ -3,22 +3,22 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import DateRangePicker from '../components/DateRangePicker.jsx';
+import DateRangePicker from '../core/components/DateRangePicker.jsx';
 import { bindActionCreators } from 'redux';
-import * as actions from '../actions/generalAction';
+import * as actions from '../core/actions/generalAction';
 
 /*container specific imports*/
-import TileUnit from '../components/tileUnit.jsx';
-import Table from '../standard/Datatable.jsx';
-import ExceptionTileUnit from '../components/exceptionsTile.jsx'
-import BarChartExceptions from '../components/barChart.jsx'
-import * as utils from '../common/utils.js';
+import TileUnit from '../core/components/tileUnit.jsx';
+import Table from '../core/standard/Datatable.jsx';
+import ExceptionTileUnit from '../core/components/exceptionsTile.jsx'
+import BarChartExceptions from '../core/components/barChart.jsx'
+import * as utils from '../core/common/utils.js';
 
-import DateRangePickerInput from '../components/DateRangePickerInput.jsx';
+import DateRangePickerInput from '../core/components/DateRangePickerInput.jsx';
 import * as constants from '../constants/Communication.js';
 import ManualSettlementPopup from '../components/ManualSettlementPopup.jsx';
-import * as requestCreator from '../common/request.js';
-import DateControl from '../components/DateControl.jsx'
+import * as requestCreator from '../core/common/request.js';
+import DateControl from '../core/components/DateControl.jsx'
 import moment from 'moment';
 
 

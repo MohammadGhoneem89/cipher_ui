@@ -4,7 +4,7 @@ import { Link, browserHistory } from 'react-router';
 import * as utils from '../common/utils.js';
 import { Field } from 'redux-form';
 import DateControl from './DateControl.jsx'
-import config from '../config.js'
+import config from '../../config.js'
 import * as dates from '../common/dates.js';
 
 

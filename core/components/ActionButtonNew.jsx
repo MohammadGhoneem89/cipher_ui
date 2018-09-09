@@ -7,7 +7,7 @@ import * as actions from '../actions/generalAction';
 
 
 import * as utils from '../common/utils.js';
-import * as constants from '../constants/Communication.js';
+import * as constants from '../../constants/Communication.js';
 
 import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css

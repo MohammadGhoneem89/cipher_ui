@@ -1,8 +1,8 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
-import * as utils from '../../common/utils.js';
-import Portlet from '../../common/Portlet.jsx';
-import {CheckboxInput, CheckboxList, DropdownInput, TextInput} from '../../common/FormControls.jsx';
+import * as utils from '../../core/common/utils.js';
+import Portlet from '../../core/common/Portlet.jsx';
+import {CheckboxInput, CheckboxList, DropdownInput, TextInput} from '../../core/common/FormControls.jsx';
 import validate from './validate.js';
 
 const FieldMappingForm = props => {

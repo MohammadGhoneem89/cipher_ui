@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import brandConfig from '../assets/skins/default/brandConfig.json';
+import brandConfig from '../../assets/skins/default/brandConfig.json';
 import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/generalAction';
 
 
-import * as constants from '../constants/Communication.js';
+import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../common/request.js';
 import * as toaster from '../common/toaster.js';
 

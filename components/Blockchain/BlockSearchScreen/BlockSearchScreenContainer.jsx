@@ -2,13 +2,13 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import { browserHistory } from 'react-router';
 import {connect} from 'react-redux';
-import initialState from '../../../reducers/initialState.js';
-import * as actions from '../../../actions/generalAction';
+import initialState from '../../../core/reducers/initialState.js';
+import * as actions from '../../../core/actions/generalAction';
 import * as constants from '../../../constants/Communication.js';
-import Portlet from '../../../common/Portlet.jsx';
-import Table from '../../../standard/Datatable.jsx';
+import Portlet from '../../../core/common/Portlet.jsx';
+import Table from '../../../core/standard/Datatable.jsx';
 import BlockSearchForm from './BlockSearchForm.jsx';
-import * as utils from '../../../common/utils.js';
+import * as utils from '../../../core/common/utils.js';
 
 class BlockSearchContainer extends React.Component {
     constructor(props, context) {

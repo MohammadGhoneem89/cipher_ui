@@ -1,9 +1,9 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
 import validate from './validate';
-import * as utils from '../../../common/utils.js';
+import * as utils from '../../../core/common/utils.js';
 
-import {DropdownInput, TextInput} from '../../../common/FormControls.jsx';
+import {DropdownInput, TextInput} from '../../../core/common/FormControls.jsx';
 
 //https://github.com/erikras/redux-form/issues/369
 

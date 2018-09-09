@@ -2,10 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {SubmissionError} from 'redux-form';
-import * as actions from '../../actions/generalAction';
+import * as actions from '../../core/actions/generalAction';
 import * as constants from '../../constants/Communication.js';
-import Portlet from '../../common/Portlet.jsx';
-import ActionButton from '../ActionButtonNew.jsx';
+import Portlet from '../../core/common/Portlet.jsx';
+import ActionButton from '../../core/components/ActionButtonNew.jsx';
 import PasswordPolicyForm from  './PasswordPolicyForm.jsx';
 
 class PasswordPolicy extends React.Component {

@@ -2,12 +2,12 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import {SubmissionError} from 'redux-form';
 import {connect} from 'react-redux';
-import initialState from '../../reducers/initialState.js';
-import * as actions from '../../actions/generalAction';
-import Portlet from '../../common/Portlet.jsx';
+import initialState from '../../core/reducers/initialState.js';
+import * as actions from '../../core/actions/generalAction';
+import Portlet from '../../core/common/Portlet.jsx';
 import EmailTemplateForm from './EmailTemplateForm.jsx';
 import * as constants from '../../constants/Communication.js';
-import * as requestCreator from '../../common/request.js';
+import * as requestCreator from '../../core/common/request.js';
 
 class EmailTemplateContainer extends React.Component {
     constructor(props, context) {

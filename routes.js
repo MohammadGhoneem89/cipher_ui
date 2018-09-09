@@ -3,11 +3,11 @@ import React from 'react';
 import master from './master.jsx';
 import {browserHistory, IndexRoute, Route, Router} from 'react-router';
 /*container imports*/
-import Login from './components/Login.jsx';
+import Login from './core/components/Login.jsx';
 
 
 import notification from './containers/Notifications.jsx';
-import auth from './auth/authenticator';
+import auth from './core/auth/authenticator';
 import EmailTemplateSearch from './components/EmailTemplateSearchScreen/EmailTemplateSearchContainer.jsx';
 import EmailTemplateSetup from './components/EmailTemplateSetupScreen/EmailTemplateSetupContainer.jsx';
 import OrgSearch from './components/OrgSearchScreen/OrgSearchContainer.jsx';
@@ -35,7 +35,7 @@ import blockchainWorkboard from './components/Blockchain/blockchainWorkboard.jsx
 import buyerDashboard from './containers/userDashboard.jsx';
 import merchantDashboard from './containers/merchantDashboard.jsx';
 import rewardsProviderDashboard from './containers/RewardsProviderDashboard.jsx';
-import HealthMonitor from './components/HealthMonitor.jsx';
+import HealthMonitor from './core/components/HealthMonitor.jsx';
 
 import sampleDashboard from './containers/Samples/SampleDashboard.jsx';
 import sampleDashboardType2 from './containers/Samples/SampleDashboardType2.jsx';
@@ -45,7 +45,7 @@ import SampleCrudPage from './containers/Samples/SampleCrudPage.jsx';
 // import BlockTransactionList from './containers/BlockTransactionList.jsx'
 
 
-import Locked from './components/Locked.jsx';
+import Locked from './core/components/Locked.jsx';
 
 import FileTemplateSearch from './components/FileTemplateSearchScreen/FileTemplateSearchContainer.jsx';
 import FileTemplateSetup from './components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx';

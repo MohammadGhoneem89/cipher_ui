@@ -1,6 +1,6 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
-import {TextArea} from '../../../common/FormControls.jsx';
+import {TextArea} from '../../../core/common/FormControls.jsx';
 
 
 const BlockchainEditorFrom = props => {

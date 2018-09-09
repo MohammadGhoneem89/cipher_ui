@@ -9,10 +9,10 @@ import { Router,browserHistory} from 'react-router'
 import routes from './routes';
 
 /*action imports*/
-import {generalActionLoad} from './actions/generalAction';
+import {generalActionLoad} from './core/actions/generalAction';
 
 /*store configurations imports*/
-import configureStore from './store/configureStore';
+import configureStore from './core/store/configureStore';
 
 
 

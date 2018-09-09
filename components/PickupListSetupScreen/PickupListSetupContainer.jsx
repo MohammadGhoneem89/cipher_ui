@@ -1,12 +1,12 @@
 import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Portlet from '../../common/Portlet.jsx';
+import Portlet from '../../core/common/Portlet.jsx';
 import {SubmissionError} from 'redux-form'
-import initialState from '../../reducers/initialState.js';
-import * as actions from '../../actions/generalAction';
+import initialState from '../../core/reducers/initialState.js';
+import * as actions from '../../core/actions/generalAction';
 import * as constants from '../../constants/Communication.js';
-import * as requestCreator from '../../common/request.js';
+import * as requestCreator from '../../core/common/request.js';
 import PickupListSetupForm from  './PickupListSetupForm.jsx';
 
 class PickupListSetupContainer extends React.Component {

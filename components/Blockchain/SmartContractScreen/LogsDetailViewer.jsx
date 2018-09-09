@@ -1,5 +1,5 @@
 import React from 'react';
-import Portlet from '../../../common/Portlet.jsx';
+import Portlet from '../../../core/common/Portlet.jsx';
 
 const LogsDetailViewer = ({updateState, containerState}) => {
     let actions = [

@@ -1,14 +1,14 @@
 /*standard imports*/
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
-import DateRangePicker from '../DateRangePicker.jsx';
+import DateRangePicker from '../../core/components/DateRangePicker.jsx';
 import {bindActionCreators} from 'redux';
-import * as actions from '../../actions/generalAction';
+import * as actions from '../../core/actions/generalAction';
 /*container specific imports*/
-import TileUnit from '../customTileUnit.jsx';
-import Table from '../../standard/Datatable.jsx';
-import BarChartLine from '../barChartLine.jsx'
-import * as utils from '../../common/utils.js';
+import TileUnit from '../../core/components/customTileUnit.jsx';
+import Table from '../../core/standard/Datatable.jsx';
+import BarChartLine from '../../core/components/barChartLine.jsx'
+import * as utils from '../../core/common/utils.js';
 import * as constants from '../../constants/Communication.js';
 import moment from 'moment';
 

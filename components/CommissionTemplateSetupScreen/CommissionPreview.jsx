@@ -1,14 +1,14 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import initialState from '../../reducers/initialState.js';
-import * as actions from '../../actions/generalAction';
-import * as utils from '../../common/utils.js';
-import Portlet from '../../common/Portlet.jsx';
-import * as Loaders from '../../common/loaders.jsx';
-import Table from '../../standard/Datatable.jsx';
+import initialState from '../../core/reducers/initialState.js';
+import * as actions from '../../core/actions/generalAction';
+import * as utils from '../../core/common/utils.js';
+import Portlet from '../../core/common/Portlet.jsx';
+import * as Loaders from '../../core/common/loaders.jsx';
+import Table from '../../core/standard/Datatable.jsx';
 import * as Communication from '../../constants/Communication.js';
-import * as requestCreator from '../../common/request.js';
+import * as requestCreator from '../../core/common/request.js';
 
 
 class CommissionPreview extends React.Component {

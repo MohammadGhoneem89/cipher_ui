@@ -2,17 +2,17 @@ import React from 'react';
 import {reduxForm} from 'redux-form';
 import 'react-dropzone-component/styles/filepicker.css'
 import '../../node_modules/dropzone/dist/min/dropzone.min.css';
-import Table from '../../standard/Datatable.jsx';
-import FileUploader from '../FileUploader.jsx';
-import Portlet from '../../common/Portlet.jsx';
-import ModalBox from '../../common/ModalBox.jsx';
-import * as utils from '../../common/utils.js';
-import * as requestCreator from '../../common/request.js';
+import Table from '../../core/standard/Datatable.jsx';
+import FileUploader from '../../core/components/FileUploader.jsx';
+import Portlet from '../../core/common/Portlet.jsx';
+import ModalBox from '../../core/common/ModalBox.jsx';
+import * as utils from '../../core/common/utils.js';
+import * as requestCreator from '../../core/common/request.js';
 import * as constants from '../../constants/Communication.js';
 import validate from './validate';
-import ActionButton from '../../components/ActionButtonNew.jsx';
+import ActionButton from '../../core/components/ActionButtonNew.jsx';
 
-import {CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput} from '../../common/FormControls.jsx';
+import {CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput} from '../../core/common/FormControls.jsx';
 
 const FormSection1 = ({error, initialValues, updateState, state, containerProps, containerState}) => {
 

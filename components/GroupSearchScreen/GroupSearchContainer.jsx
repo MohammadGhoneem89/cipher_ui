@@ -2,13 +2,13 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/generalAction';
+import * as actions from '../../core/actions/generalAction';
 import * as constants from '../../constants/Communication.js';
-import * as requestCreator from '../../common/request.js';
-import Portlet from '../../common/Portlet.jsx';
-import Table from '../../standard/Datatable.jsx';
+import * as requestCreator from '../../core/common/request.js';
+import Portlet from '../../core/common/Portlet.jsx';
+import Table from '../../core/standard/Datatable.jsx';
 import GroupFilterForm from './GroupFilterForm.jsx';
-import * as utils from '../../common/utils.js';
+import * as utils from '../../core/common/utils.js';
 
 class GroupSearchContainer extends React.Component {
     constructor(props, context) {

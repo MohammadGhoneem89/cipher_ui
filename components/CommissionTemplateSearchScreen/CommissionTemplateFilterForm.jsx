@@ -1,7 +1,7 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
-import {DataList} from '../../common/FormControls.jsx';
-import * as utils from '../../common/utils.js';
+import {DataList} from '../../core/common/FormControls.jsx';
+import * as utils from '../../core/common/utils.js';
 
 const CommissionTemplateFilterForm = props => {
     const {handleSubmit, pristine, reset, submitting, state} = props;

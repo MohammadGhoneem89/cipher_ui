@@ -1,11 +1,11 @@
 import React from 'react';
-import {baseUrl} from '../constants/Communication.js';
+import {baseUrl} from '../../constants/Communication.js';
 import * as utils from '../common/utils.js';
 import * as Loaders from '../common/loaders.jsx';
 //import Pagination from '../components/paginator.jsx';
 import TableCell from './TableCell.jsx';
 import Pagination from "react-js-pagination";
-import config from '../config.js';
+import config from '../../config.js';
 
 
 let _ = require('lodash');
