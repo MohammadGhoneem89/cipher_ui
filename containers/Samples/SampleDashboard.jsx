@@ -55,8 +55,9 @@ class SampleDashboard extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.sampleDashboardData.graphData !== nextProps.sampleDashboardData.graphData)
+    if (nextProps.sampleDashboardData)
       this.setState({
+        sampleDashboardData: nextProps.sampleDashboardData,
         isLoading: false
       });
   }
@@ -128,7 +129,7 @@ class SampleDashboard extends React.Component {
 
   render() {
 
-    if (this.props.sampleDashboardData && this.props.sampleDashboardData.dashboardGridData.rows) {
+    if (this.state.sampleDashboardData && this.state.sampleDashboardData.dashboardGridData.rows) {
 
       return (
         <div className="coreDiv">
@@ -172,16 +173,16 @@ class SampleDashboard extends React.Component {
 
               <div className="row">
 
-                <TileUnit data={this.props.sampleDashboardData.dashboardTiles} />
+                <TileUnit data={this.state.sampleDashboardData.dashboardTiles} />
               </div>
 
               <div className="row">
                 <div className="col-md-12">
                   <Table gridColumns={utils.getGridColumnByName("sampleDashboardGrid")}
-                    gridData={this.props.sampleDashboardData.dashboardGridData.rows}
+                    gridData={this.state.sampleDashboardData.dashboardGridData.rows}
                     title={utils.getLabelByID("SampleDashboard_Heading")} fontclass=""
                     TableClass="portlet light bordered sdg_portlet"
-                    totalRecords={this.props.sampleDashboardData.dashboardGridData.pageData.totalRecords}
+                    totalRecords={this.state.sampleDashboardData.dashboardGridData.pageData.totalRecords}
                     searchCallBack={this.searchCallBack} pageSize={5}
                     pageChanged={this.pageChanged}
                     pagination={true} activePage={this.state.pageNumner}
@@ -210,9 +211,9 @@ class SampleDashboard extends React.Component {
 
                 <CommonBarChart toDate={this.state.toDate}
                   fromDate={this.state.fromDate}
-                  firstBarData={this.props.sampleDashboardData.graphData.chartData.firstBarData}
-                  secondBarData={this.props.sampleDashboardData.graphData.chartData.seconBarData}
-                  thirdBarData={this.props.sampleDashboardData.graphData.chartData.thirdBarData}                
+                  firstBarData={this.state.sampleDashboardData.graphData.chartData.firstBarData}
+                  secondBarData={this.state.sampleDashboardData.graphData.chartData.seconBarData}
+                  thirdBarData={this.state.sampleDashboardData.graphData.chartData.thirdBarData}
                   graphLabels={this.state.graphLabels}
                 />
               </div>}
