@@ -7,7 +7,7 @@ import config from '../../config';
 let ws;
 
 export function generalActionLoad(resultData) {
-    return {type: types.GENRAL_LOAD_SUCCESS, resultData};
+    return {type: 'GENRAL_LOAD_SUCCESS', resultData};
 }
 
 export function generalProcess(fetchURL, actionData) {
