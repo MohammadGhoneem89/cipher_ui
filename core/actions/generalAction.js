@@ -1,7 +1,6 @@
 import * as types from './actionTypes';
 import {browserHistory} from 'react-router';
 import generalAPI from '../api/generalAPI';
-import * as ChainBreaker from '../common/ChainBreaker';
 import auth from '../auth/authenticator';
 import config from '../../config';
 
@@ -52,14 +51,14 @@ export function reduxFormProcess(fetchURL, actionData) {
             dispatch(generalActionLoad(resultSet));
             window.scrollTo(0, 0);
             if (resultSet.responseMessage && resultSet.responseMessage.data.error) {
-                return ChainBreaker.reject(resultSet.responseMessage.data.error);
+                return Promise.reject(resultSet.responseMessage.data.error);
 
             }
             else {
                 if (resultSet.responseMessage.data.message.status === "OK") {
                     browserHistory.push(resultSet.responseMessage.data.message.newPageURL);
                 }
-                return ChainBreaker.success(resultSet.responseMessage.data);
+                return Promise.resolve(resultSet.responseMessage.data);
 
             }
         });
@@ -72,10 +71,10 @@ export function generalAjxProcess(fetchURL, actionData) {
         return generalAPI.getData(fetchURL, actionData).then(resultSet => {
             dispatch(generalActionLoad(resultSet));
             if (resultSet.responseMessage && resultSet.responseMessage.data.error) {
-                return ChainBreaker.reject(resultSet.responseMessage.data.error);
+                return Promise.reject(resultSet.responseMessage.data.error);
             }
             else {
-                return ChainBreaker.success(resultSet.responseMessage.data);
+                return Promise.resolve(resultSet.responseMessage.data);
             }
 
         });
