@@ -1,4 +1,3 @@
-import * as types from './actionTypes';
 import {browserHistory} from 'react-router';
 import generalAPI from '../api/generalAPI';
 import auth from '../auth/authenticator';

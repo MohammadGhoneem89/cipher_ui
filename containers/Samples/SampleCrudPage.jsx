@@ -53,10 +53,10 @@ class SampleDetailPage extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.recordID != undefined) {
+    if (this.props.recordID) {
       let request = {
         "reconID": this.props.recordID
-      }
+      };
       this.props.actions.generalProcess(constants.getSampleRecordByID, request);
     }
 
@@ -589,7 +589,7 @@ function mapStateToProps(state, ownProps) {
 
     typeData: state.app.typeData.data,
     recordID: ownProps.params.recordID,
-    sampleDetail: state.app.sampelDetail.data,
+    sampleDetail: state.app.sampleDetail.data,
   };
 }
 

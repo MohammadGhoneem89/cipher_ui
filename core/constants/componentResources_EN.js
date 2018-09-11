@@ -147,39 +147,15 @@ module.exports = {
             "displayClass": "btn green"
 
         },
-        Reset: {
-            "displayText": "Reset",
-            "displayClass": "btn green"
-
-        },
-        Initiate: {
-            "displayText": "Initiate",
-            "displayClass": "btn green"
-
-        },
         Approve: {
             "displayText": "Approve",
             "displayClass": "btn green"
 
         },
-        MarkExit: {
-            "displayText": "Mark Exit",
+        Unlock_User: {
+            "displayText": "Unlock",
             "displayClass": "btn green"
-
-        },
-        MarkEntered: {
-            "displayText": "Mark Entered",
-            "displayClass": "btn green"
-
-        },
-        MarkExported: {
-            "displayText": "Mark Exported",
-            "displayClass": "btn green"
-
         }
-       
-
-        
         
     }
 };

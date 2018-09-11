@@ -161,78 +161,10 @@ export default {
     }
   },
 
-  settlementBatchData: {
-    action: "",
-    data: {
-      BatchID: {},
-      Entity: {EntityLogo: {Logo: {SizeSmall: "", SizeMedium: ""}}},
-      SettlementSchedule: {},
-      SettlementSummary: {
-        PreviousResolvedExceptions: {Amount: 0},
-        CurrentPeriodTrans: {Amount: 0},
-        ProcessedPastRefund: {Amount: 0},
-        TotalPayable: {Amount: 0}
-      },
-      CommissionBreakUp: {},
-      CommissionBreakUpDetail: [],
-      CurrentStatus: "",
-      StatusList: [],
-      actions: []
-    }
-  },
-  settlementBatchProcessedData: {action: "", data: {StatusList: [], CurrentStatus: ""}},
-  exceptionListData: {
-    action: "", data: {
-      SearchComponent: "", ExceptionList: {
-        "pageData": {
-          "PageSize": -1,
-          "currentPage": -1,
-          "totalRecords": -1
-        }
-      }
-    }
-  },
   pickListData: {action: "", data: {List: {}}},
   processorListData: {action: "", data: {ProcessorList: []}},
-  transactionDetailData: {
-    action: "",
-    data: {Entity: {EntityLogo: {SizeSmall: "", sizeMedium: ""}}, StatusList: [], ActionList: [], CurrentStatus: ""}
-  },
-  transactionListData: {
-    action: "", data: {
-      SearchComponent: "", TransactionList: {
-        "pageData": {
-          "PageSize": -1,
-          "currentPage": -1,
-          "totalRecords": -1
-        }
-      }
-    }
-  },
   processActionResponseData: {action: "", data: {}},
   settlementListData: {action: "", data: {settlementData: {"pageData": {}}}},
-  manualReconData: {
-    "action": "manualRecon",
-    "manualReconData": {
-      "data": {}
-    }
-  },
-  manualReconStatsData: {
-    "action": "manualReconStatsData",
-    "manualReconStatsData": {
-      "data": {}
-    }
-  },
-  manualReconProgressData: {},
-  reconAuditTrail: {
-    "action": "",
-    "pageData": {
-      "pageSize": 0,
-      "currentPageNo": 0,
-      "totalRecords": 0
-    },
-    "data": undefined
-  },
   consortiumDetail: {
     "action": "consortiumDetail",
     "data": undefined
@@ -282,112 +214,6 @@ export default {
   },
 
 
-  initiateDisputeData: {
-    "action": "getRefundDataById",
-    "data": {
-      "statusList": [],
-      "selectedItem": "",
-      "actionButtons": [],
-      "disputeData": {
-        "PGRefNo": "",
-        "DEGRefNo": "",
-        "RefundRefNo": "",
-        "RefNo": "",
-        "PGAmount": "",
-        "DEGAmount": "",
-        "TransactionDate": "",
-        "IPAddress": "",
-        "customerEmail": "",
-        "cardType": "",
-        "customerMobile": ""
-      },
-      "typeData": {
-        "reasonData": []
-      }
-    }
-  },
-  initiateRefundData: {
-    "action": "getRefundDataById",
-    "data": {
-      "statusList": [],
-      "selectedItem": "",
-      "actionButtons": [],
-      "refundData": {
-        "PGRefNo": "",
-        "DEGRefNo": "",
-        "RefundRefNo": "",
-        "RefNo": "",
-        "PGAmount": "",
-        "DEGAmount": "",
-        "TransactionDate": "",
-        "IPAddress": "",
-        "customerEmail": "",
-        "cardType": "",
-        "customerMobile": ""
-      },
-      "typeData": {
-        "reasonData": []
-      }
-    }
-
-  },
-  refundListData: {
-    "action": "",
-    "data": {
-      "allowUpload": false,
-      "allowComment": false,
-      "actionButtons": [],
-      "typeData": {
-        "reasonData": []
-      },
-      "refundData": {
-        "pageData": {},
-        "rows": []
-      }
-    }
-  },
-
-
-  refundListViewData: {
-    "action": "",
-    "data": {
-      "allowUpload": false,
-      "allowComment": false,
-      "actionButtons": [],
-      "typeData": {
-        "reasonData": []
-      },
-      "refundData": {
-        "pageData": {},
-        "rows": []
-      }
-    }
-  },
-
-
-  viewRefundData: {
-    "action": "viewRefundData",
-    "data": {
-      "statusList": [],
-      "RRN": "",
-      "selectedStatus": "",
-      "allowUpload": true,
-      "allowComment": true,
-      "refundData": {},
-      "documents": [],
-      "comments": [],
-      "counter": {},
-      "SLA": {},
-      "typeData": {
-        "reasonData": []
-      },
-      "actionButtons": []
-    }
-  },
-
-  viewSettlementBatch: {
-    "action": "", "data": {"settlementSummaryData": {"rows": []}},
-  },
   groupDetail: {
     action: "",
     "data": {
@@ -440,9 +266,6 @@ export default {
 
   auditLogList: {"action": "", "auditLogList": {"pageData": {"totalRecords": 0}}},
 
-  viewCommissionBatch: {
-    "action": "", "data": {"commissionSummaryData": {"rows": []}},
-  },
   auditLogDetail: {"action": "", "data": ""},
 
   nodeDetail: {
@@ -458,58 +281,6 @@ export default {
   },
   reconAuditList: {action: "", "reconAuditList": {"pageData": {"totalRecords": 0}}},
 
-  refundBatchListData: {
-    "action": "refundBatchListData",
-    "data": {
-      "refundData": {
-        "pageData": {
-          "PageSize": -1,
-          "currentPage": -1,
-          "totalRecords": -1
-        },
-        "rows": []
-      }
-    }
-  },
-  refundBatchData: {
-    "action": "refundBatchData",
-    "data": {
-      "statusList": [],
-      "selectedStatus": "",
-      "acquirer": {
-        "name": "",
-        "imageURL": ""
-      },
-      "refundBatchNo": "",
-      "refundData": {
-        "pageData": {
-          "PageSize": 0,
-          "currentPage": 0,
-          "totalRecords": 0
-        },
-        "rows": []
-      }
-    }
-  },
-  refundListViewData: {
-    "action": "",
-    "data": {
-      "allowUpload": false,
-      "allowComment": false,
-      "actionButtons": [],
-      "typeData": {
-        "reasonData": []
-      },
-      "refundData": {
-        "pageData": {
-          "PageSize": 10,
-          "currentPage": 1,
-          "totalRecords": 20
-        },
-        "rows": []
-      }
-    }
-  },
   changeResponseData: {action: "", data: {}},
 
   APIPayLoadList: {"action": "", "APIPayloadList": {"pageData": {"totalRecords": 0}}},
@@ -567,77 +338,6 @@ export default {
 
   },
 
-  disputeListViewData: {
-    "action": "",
-    "data": {
-      "allowUpload": false,
-      "allowComment": false,
-      "actionButtons": [],
-      "typeData": {
-        "reasonData": []
-      },
-      "disputeData": {
-        "pageData": {},
-        "rows": []
-      }
-    }
-  },
-  disputeListData: {
-    "action": "",
-    "data": {
-      "allowUpload": false,
-      "allowComment": false,
-      "actionButtons": [],
-      "typeData": {
-        "reasonData": []
-      },
-      "disputeData": {
-        "pageData": {},
-        "rows": []
-      }
-    }
-  },
-  viewDisputeData: {
-    "action": "viewDisputeData",
-    "data": {
-      "statusList": [],
-      "RRN": "",
-      "selectedStatus": "",
-      "allowUpload": true,
-      "allowComment": true,
-      "actionButtons": [],
-      "refundData": {},
-      "documents": [],
-      "comments": [],
-      "counter": {},
-      "SLA": {},
-      "typeData": {
-        "reasonData": []
-      },
-      "actionButtons": []
-    }
-  },
-  disputeBatchListData: {
-    "action": "disputeBatchListData",
-    "data": {
-      "disputeData": {
-        "pageData": {
-          "PageSize": -1,
-          "currentPage": -1,
-          "totalRecords": -1
-        },
-        "rows": []
-      }
-    }
-  },
-  getTransactions: {
-    "action": "getTransactions",
-    "data": {
-      "monthList": [],
-      "amountList": [],
-      "countList": []
-    }
-  },
 
   disputeBatchData: {
     "action": "disputeBatchData",
@@ -796,37 +496,8 @@ export default {
     }
 
   },
-
-  sampleDetail: {
-    "action": "sampleDetail",
-    "data": {
-      "owner": "",
-      "status": "",
-      "declarationNumber": "",
-      "dropdownValue": "",
-      "exporterName": "",
-      "exporterCountry": "",
-      "destinationCountry": "",
-      "portOfDischarge": "",
-      "nextPortOfDischarge": "",
-      "weight": "",
-      "etd": "",
-      "invoiceValue": "",
-      "deposit": "",
-      "modeOfPayment": "",
-      "address": "",
-      "items": [],
-      "containers": []
-    }
-  },
   sampleDetail: {
     data: {
-      recordID: "",
-      dropdownValue: "",
-      textboxValue: "",
-      dateValue: "",
-      popupGrid: [],
-      containers: []
     }
   }
 }

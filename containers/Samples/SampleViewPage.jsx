@@ -35,13 +35,14 @@ class SampleViewPage extends React.Component {
   componentDidMount() {
     let request = {
       "recordID": this.props.recordID
-    }
+    };
     this.props.actions.generalProcess(constants.getSampleViewPageData, request);
     window.scrollTo(0, 0);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.sampleViewPageData && (nextProps.sampleViewPageData.recordID === nextProps.recordID)) {
+    if (nextProps.sampleViewPageData) {
+
       this.setState({
         sampleViewPageData: nextProps.sampleViewPageData,
         isLoading: false
@@ -76,7 +77,7 @@ class SampleViewPage extends React.Component {
         "label": "Item 2",
         "value": "Value 2"
       }
-    ]
+    ];
     if (!this.state.isLoading) {
       return (
         <div>
