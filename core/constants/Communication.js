@@ -6,7 +6,6 @@ let webSocketURL = routes.webSocketURL;
 let repostActionURL = routes.repostActionURL;
 let blockChainViewerURL = routes.blockChainViewerURL;
 let loyaltyBaseURL = routes.loyaltyBaseURL;
-let qrCode = routes.qrCode;
 
 
 module.exports = {

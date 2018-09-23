@@ -5,8 +5,7 @@ const routes = {
   webSocketURL: "http://104.211.155.19:10051",
   repostActionURL: "http://104.211.155.19:10051/API",
   blockChainViewerURL: "http://104.211.155.19:10051",
-  loyaltyBaseURL: "http://104.211.155.19:9090",
-  qrCode: "https://185.78.244.54"
+  loyaltyBaseURL: "http://104.211.155.19:9090"
 };
 */
 const routes = {
@@ -15,8 +14,7 @@ const routes = {
   webSocketURL: "http://localhost:10051",
   repostActionURL: "http://localhost:10051/API",
   blockChainViewerURL: "http://localhost:10051",
-  loyaltyBaseURL: "http://localhost:9090",
-  qrCode: "https://185.78.244.54"
+  loyaltyBaseURL: "http://localhost:9090"
 };
 
 //

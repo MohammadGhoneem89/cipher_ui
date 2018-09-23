@@ -1,18 +1,18 @@
 /*standard imports*/
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import DateRangePicker from '../../core/components/DateRangePicker.jsx';
+import DateRangePicker from '../../../core/components/DateRangePicker.jsx';
 import { bindActionCreators } from 'redux';
-import * as actions from '../../core/actions/generalAction';
+import * as actions from '../../../core/actions/generalAction';
 /*container specific imports*/
-import TileUnit from '../../core/components/tileUnit.jsx';
-import Table from '../../core/standard/Datatable.jsx';
-import CommonBarChart from '../../core/components/CommonBarChart.jsx'
-import * as utils from '../../core/common/utils.js';
-import * as constants from '../../core/constants/Communication.js';
-import { baseUrl } from '../../core/constants/Communication.js';
+import TileUnit from '../../../core/components/tileUnit.jsx';
+import Table from '../../../core/standard/Datatable.jsx';
+import CommonBarChart from '../../../core/components/CommonBarChart.jsx'
+import * as utils from '../../../core/common/utils.js';
+import * as constants from '../../../core/constants/Communication.js';
+import { baseUrl } from '../../../core/constants/Communication.js';
 import moment from 'moment';
-import config from '../../config'
+import config from '../../../config'
 
 
 class SampleDashboardType2 extends React.Component {
