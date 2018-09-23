@@ -4,8 +4,8 @@
   "description": "abc",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --port 3000 --hot --host 0.0.0.0",
-    "prod": "webpack-dev-server --port 3000 --hot --host 10.65.11.14"
+    "start": "webpack-dev-server --port 3005 --hot --host 0.0.0.0",
+    "prod": "webpack-dev-server --port 3005 --hot --host 10.65.11.14"
   },
   "repository": {
     "type": "git",
