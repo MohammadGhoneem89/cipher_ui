@@ -5,7 +5,6 @@ let blockChainURL = routes.blockChainURL;
 let webSocketURL = routes.webSocketURL;
 let repostActionURL = routes.repostActionURL;
 let blockChainViewerURL = routes.blockChainViewerURL;
-let loyaltyBaseURL = routes.loyaltyBaseURL;
 
 
 module.exports = {

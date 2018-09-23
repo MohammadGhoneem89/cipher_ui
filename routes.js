@@ -42,6 +42,7 @@ import sampleDashboardType2 from './applications/SampleApp/containers/SampleDash
 import SampleListPage from './containers/Samples/SampleListPage.jsx';
 import SampleViewPage from './containers/Samples/SampleViewPage.jsx';
 import SampleCrudPage from './containers/Samples/SampleCrudPage.jsx';
+import ApplicationsRoute from './applications/routesIndex';
 // import BlockTransactionList from './containers/BlockTransactionList.jsx'
 
 
@@ -70,6 +71,8 @@ function getDashboard() {
   }
 
 }
+
+console.log(ApplicationsRoute);
 
 export default (
   <Router history={browserHistory}>
@@ -133,12 +136,13 @@ export default (
       <Route path="/orgSetup" component={OrgSetup}/>
       <Route path="/orgSetup/:mode/:orgID" component={OrgSetup}/>
 
-      <Route path="/sampleDashboard" component={sampleDashboard}/>
-      <Route path="/sampleDashboardType2" component={sampleDashboardType2}/>
-      <Route path="/sampleListPage" component={SampleListPage}/>
-      <Route path="/sampleDetailPage/:recordID" component={SampleViewPage}/>
-      <Route path="/sampleCrudPage" component={SampleCrudPage}/>
-      <Route path="/sampleCrudPage/:recordID" component={SampleCrudPage}/>
+      {ApplicationsRoute}
+      {/*<Route path="/sampleDashboard" component={sampleDashboard}/>*/}
+      {/*<Route path="/sampleDashboardType2" component={sampleDashboardType2}/>*/}
+      {/*<Route path="/sampleListPage" component={SampleListPage}/>*/}
+      {/*<Route path="/sampleDetailPage/:recordID" component={SampleViewPage}/>*/}
+      {/*<Route path="/sampleCrudPage" component={SampleCrudPage}/>*/}
+      {/*<Route path="/sampleCrudPage/:recordID" component={SampleCrudPage}/>*/}
 
       {/*<Route path="/BlockTransactionList/:blockHeight" component={BlockTransactionList}/>*/}
     </Route>

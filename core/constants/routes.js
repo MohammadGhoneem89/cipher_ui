@@ -1,13 +1,12 @@
-/*
+
 const routes = {
-  baseUrl: "http://104.211.155.19:10051",
-  blockChainURL: "http://104.211.155.19:10051",
-  webSocketURL: "http://104.211.155.19:10051",
-  repostActionURL: "http://104.211.155.19:10051/API",
-  blockChainViewerURL: "http://104.211.155.19:10051",
-  loyaltyBaseURL: "http://104.211.155.19:9090"
+  baseUrl: "http://104.211.155.19:10055",
+  blockChainURL: "http://104.211.155.19:10055",
+  webSocketURL: "http://104.211.155.19:10055",
+  repostActionURL: "http://104.211.155.19:10055/API",
+  blockChainViewerURL: "http://104.211.155.19:10055"
 };
-*/
+/*
 const routes = {
   baseUrl: "http://localhost:10051",
   blockChainURL: "http://localhost:10051",
@@ -16,7 +15,7 @@ const routes = {
   blockChainViewerURL: "http://localhost:10051",
   loyaltyBaseURL: "http://localhost:9090"
 };
-
+*/
 //
 // const routes = {
 //     baseUrl: "http://10.65.11.14:10051",
