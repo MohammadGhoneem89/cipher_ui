@@ -4,15 +4,15 @@ import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form'
 import { bindActionCreators } from 'redux';
-import * as actions from '../../core/actions/generalAction';
-import * as constants from '../../core/constants/Communication.js';
-import { baseUrl } from '../../core/constants/Communication.js';
-import QRCodeJquery from '../../core/components/QRCodeJquery.jsx';
-import ActionButton from '../../core/components/ActionButtonNew.jsx';
-import * as requestCreator from '../../core/common/request.js';
-import * as utils from '../../core/common/utils.js';
-import Table from '../../core/standard/Datatable.jsx';
-import Steps from '../../core/components/Steps.jsx';
+import * as actions from '../../../core/actions/generalAction';
+import * as constants from '../../../core/constants/Communication.js';
+import { baseUrl } from '../../../core/constants/Communication.js';
+import QRCodeJquery from '../../../core/components/QRCodeJquery.jsx';
+import ActionButton from '../../../core/components/ActionButtonNew.jsx';
+import * as requestCreator from '../../../core/common/request.js';
+import * as utils from '../../../core/common/utils.js';
+import Table from '../../../core/standard/Datatable.jsx';
+import Steps from '../../../core/components/Steps.jsx';
 import { isThisSecond } from 'date-fns';
 
 

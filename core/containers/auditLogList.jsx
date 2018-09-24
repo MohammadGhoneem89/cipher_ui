@@ -4,28 +4,28 @@ import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from '../core/actions/generalAction';
+import * as actions from '../actions/generalAction';
 
 
 /*container specific imports*/
-import TileUnit from '../core/components/tileUnit.jsx';
-import Table from '../core/standard/Datatable.jsx';
-import ExceptionTileUnit from '../core/components/exceptionsTile.jsx'
-import BarChartExceptions from '../core/components/barChart.jsx'
-import * as utils from '../core/common/utils.js';
-import APIPayloadDetail from '../core/components/APIPayloadDetail.jsx';
+import TileUnit from '../components/tileUnit.jsx';
+import Table from '../standard/Datatable.jsx';
+import ExceptionTileUnit from '../components/exceptionsTile.jsx'
+import BarChartExceptions from '../components/barChart.jsx'
+import * as utils from '../common/utils.js';
+import AuditLogDetail from '../components/AuditLogDetail.jsx';
 
 
-import * as constants from '../core/constants/Communication.js';
-import * as requestCreator from '../core/common/request.js';
-import DateControl from '../core/components/DateControl.jsx'
+import * as constants from '../constants/Communication.js';
+import * as requestCreator from '../common/request.js';
+import DateControl from '../components/DateControl.jsx'
 
 
-class APIPayloadList extends React.Component {
+class AuditLogList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { searchFilters: "", currentPageNo: 1, APIPayloadID: undefined }
+        this.state = { searchFilters: "", currentPageNo: 1, auditLogID: undefined }
         this.pageChanged = this.pageChanged.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
         this.getRequest = this.getRequest.bind(this);
@@ -35,47 +35,47 @@ class APIPayloadList extends React.Component {
 
     }
     renderPopupBody(dataID) {
-        this.setState({ APIPayloadID: dataID })
+        this.setState({ auditLogID: dataID })
     }
 
     getRequest() {
         let toDate = $("#toDate").find("input").val()
         let fromDate = $("#fromDate").find("input").val()
-        let uuid = (document.getElementById('uuid') == null || document.getElementById('uuid') == undefined) ? "" : document.getElementById('uuid').value;
-        let channel = document.getElementById('channel') == null ? "" : document.getElementById('channel').value;
-        let action = document.getElementById('action') == null ? "" : document.getElementById('action').value;
-        let payloadField = document.getElementById('payloadField') == null ? "" : document.getElementById('payloadField').value;
-        let payloadFieldValue = document.getElementById('payloadFieldValue') == null ? "" : document.getElementById('payloadFieldValue').value;
+        let event = (document.getElementById('event') == null || document.getElementById('event') == undefined) ? "" : document.getElementById('event').value;
+        let collectionName = document.getElementById('collectionName') == null ? "" : document.getElementById('collectionName').value;
+        let ipAddress = document.getElementById('ipAddress') == null ? "" : document.getElementById('ipAddress').value;
+        let createdBy = document.getElementById('createdBy') == null ? "" : document.getElementById('createdBy').value;
+
 
         var searchCriteria = {
         }
 
-        if (uuid != "")
-            searchCriteria.uuid = uuid
+        if (event != "")
+            searchCriteria.event = event
 
-        if (channel != "")
-            searchCriteria.channel = channel
+        if (collectionName != "")
+            searchCriteria.collectionName = collectionName
 
-        if (action != "")
-            searchCriteria.action = action
+        if (ipAddress != "")
+            searchCriteria.ipAddress = ipAddress
 
         if (fromDate != "")
             searchCriteria.fromDate = fromDate;
 
-        if (payloadField != "" || this.props.payLoadField)
-            searchCriteria.payloadField = (payloadField == undefined || payloadField == '') ? this.props.payLoadField : payloadField;
+        if (toDate != "")
+            searchCriteria.toDate = toDate;
 
-        if (payloadFieldValue != "" || this.props.payLoadFieldValue)
-            searchCriteria.payloadFieldValue = (payloadFieldValue == undefined || payloadFieldValue == '') ? this.props.payLoadFieldValue : payloadFieldValue;
+        if (createdBy != "")
+            searchCriteria.createdBy = createdBy
 
 
         this.setState({ searchFilters: searchCriteria })
 
         var request = {
-            "action": "APIPayLoadList",
+            "action": "auditLogList",
             searchCriteria,
             "page": {
-                "currentPageNo": 1,
+                "currentPageNo": 1,//this.state.pageNo ? this.state.pageNo : 1,
                 "pageSize": 10
             }
         }
@@ -88,16 +88,7 @@ class APIPayloadList extends React.Component {
 
     componentWillMount() {
 
-        this.props.actions.generalProcess(constants.getAPIPayLoadListData, this.getRequest());
-        try {
-            if (this.props.payLoadField)
-                document.getElementById('payloadField').value = this.props.payLoadField
-            if (this.props.payLoadFieldValue)
-                document.getElementById('payloadFieldValue').value = this.props.payLoadFieldValue
-        }
-        catch (ex) {
-
-        }
+        this.props.actions.generalProcess(constants.getAuditLogListData, this.getRequest());
 
     }
     searchCallBack(keyWord) {
@@ -105,10 +96,10 @@ class APIPayloadList extends React.Component {
     }
     componentDidMount() {
         window.scrollTo(0, 0);
-
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['Audit_Events', 'Collections']));
     }
     formSubmit() {
-        this.props.actions.generalProcess(constants.getAPIPayLoadListData, this.getRequest());
+        this.props.actions.generalProcess(constants.getAuditLogListData, this.getRequest());
     }
     pageChanged(pageNo) {
         if (pageNo != undefined) {
@@ -118,7 +109,7 @@ class APIPayloadList extends React.Component {
             if (this.state.searchFilters == undefined) {
 
                 request = {
-                    "action": "APIPayloadList",
+                    "action": "auditLogList",
                     "searchCriteria": {
                     },
                     "page": {
@@ -129,7 +120,7 @@ class APIPayloadList extends React.Component {
             } else {
                 var searchCriteria = this.state.searchFilters
                 request = {
-                    "action": "APIPayloadList",
+                    "action": "auditLogList",
                     searchCriteria,
                     "page": {
                         "currentPageNo": pageNo,
@@ -140,20 +131,21 @@ class APIPayloadList extends React.Component {
 
             this.setState({ currentPageNo: pageNo })
 
-            this.props.actions.generalProcess(constants.getAPIPayLoadListData, request);
+            this.props.actions.generalProcess(constants.getAuditLogListData, request);
 
         }
     }
     clearFields() {
-        $('#APIPayloadList').find('input:text').val('');
-        $('#APIPayloadList').find('select').each(function () {
+        $('#auditLogList').find('input:text').val('');
+        $('#auditLogList').find('select').each(function () {
             $(this)[0].selectedIndex = 0;
         });
     }
 
 
     render() {
-        if (this.props.APIPayloadListData.data) {
+        if (this.props.AuditLogListData.data) {
+
             return (
                 <div>
                     <div className="row">
@@ -161,17 +153,17 @@ class APIPayloadList extends React.Component {
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
                                     <div className="caption">
-                                        <i className="fa fa-settings"></i>{"API Payload List Filters"}</div>
+                                        <i className="fa fa-settings"></i> {utils.getLabelByID("AuditLogListFilters")} </div>
                                     <div className="tools">
                                         <a href="javascript:;" className="collapse" data-original-title title> </a>
                                     </div>
                                 </div>
                                 <div className="portlet-body">
-                                    <div className="form-body" id="APIPayloadList">
+                                    <div className="form-body" id="auditLogList">
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_FromDate")}</label>
+                                                    <label className="control-label">{utils.getLabelByID("RA_FromDate")}</label>
                                                 </div>
                                                 <div className="form-group col-md-8">
                                                     <DateControl id="fromDate" />
@@ -179,7 +171,7 @@ class APIPayloadList extends React.Component {
                                             </div>
                                             <div className="col-md-6">
                                                 <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_ToDate")}</label>
+                                                    <label className="control-label">{utils.getLabelByID("RA_ToDate")}</label>
                                                 </div>
                                                 <div className="form-group col-md-8">
                                                     <DateControl id="toDate" />
@@ -187,49 +179,54 @@ class APIPayloadList extends React.Component {
                                             </div>
                                         </div>
                                         <div className="row">
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_UUID")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <input type="text" className="form-control" name="uuid" id="uuid" />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_Channel")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <input type="text" className="form-control" name="channel" id="channel" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_PayloadField")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <input type="text" className="form-control" name="payloadField" id="payloadField" />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_PayloadFieldValue")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <input type="text" className="form-control" name="payloadFieldValue" id="payloadFieldValue" />
-                                                </div>
-                                            </div>
-                                        </div>
 
+                                            <div className="col-md-6">
+                                                <div className="form-group col-md-4">
+                                                    <label className="control-label">{utils.getLabelByID("Event")}</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                    <select name="event" id="event" className="form-control">
+                                                        <option key="-1" value="">{utils.getLabelByID("RA_Select")} </option>
+                                                        {this.props.typeData && this.props.typeData.Audit_Events.map((option, index) => {
+                                                            return (
+                                                                <option key={index} value={option.value}>{option.label}</option>
+                                                            );
+                                                        })}
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div className="col-md-6">
+                                                <div className="form-group col-md-4">
+                                                    <label className="control-label"> {utils.getLabelByID("CollectionName")}</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                    <select name="collection" id="collectionName" className="form-control">
+                                                        <option key="-1" value="">{utils.getLabelByID("RA_Select")} </option>
+                                                        {this.props.typeData.Collections.map((option, index) => {
+                                                            return (
+                                                                <option key={index} value={option.value}>{option.label}</option>
+                                                            );
+                                                        })}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_Action")}</label>
+                                                    <label className="control-label">{utils.getLabelByID("IPAddress")}</label>
                                                 </div>
                                                 <div className="form-group col-md-8">
-                                                    <input type="text" className="form-control" name="action" id="action" />
+                                                    <input type="text" className="form-control" name="ipAddress" id="ipAddress" />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="form-group col-md-4">
+                                                    <label className="control-label">{utils.getLabelByID("ActionBy")}</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                    <input type="text" className="form-control" name="createdBy" id="createdBy" />
                                                 </div>
                                             </div>
                                         </div>
@@ -250,53 +247,51 @@ class APIPayloadList extends React.Component {
                     </div>
                     <div className="row">
                         <div className="col-md-12">
-                            <Table title="API Payload List" fontclass="" TableClass="portlet light bordered sdg_portlet" gridColumns={utils.getGridColumnByName("APIPayloadListData")} gridData={this.props.APIPayloadListData.data.searchResult}
-                                totalRecords={this.props.APIPayloadListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
+                            <Table title={utils.getLabelByID("AuditLogList")}  fontclass="" TableClass="portlet light bordered sdg_portlet" gridColumns={utils.getGridColumnByName("auditLogListData")} gridData={this.props.AuditLogListData.data.searchResult}
+                                totalRecords={this.props.AuditLogListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
                                 pagination={true} pageChanged={this.pageChanged} export={false} search={true}
-                                renderPopupBody={this.renderPopupBody} activePage={this.state.currentPageNo} />
+                                renderPopupBody={this.renderPopupBody} activePage={this.state.currentPageNo}
+                                searchCriteria={this.state.searchFilters} gridType={"auditLogList"} export={true} />
                         </div>
                     </div>
-                    <div className="modal fade in modal-overflow" id="modelWindows" tabindex="-1" role="basic" aria-hidden="true" style={{ display: "none",  paddingTop: "10" }}>
+                    <div className="modal fade in modal-overflow" id="modelWindows" tabIndex="-1" role="basic" aria-hidden="true" style={{ display: "none",paddingTop: "10" }}>
                     <div className="modal-dialog" style={{ width: "1050" }}>
                         <div className="modal-content" style={{ padding: "10px" }}>
                             <div className="modal-header">
                                 <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">{utils.getLabelByID("TLP_Close")}</span></button>
-                                <h3 className="modal-title">{"API Payload Detail"}</h3>
+                                <h3 className="modal-title">{utils.getLabelByID("AuditLogDetail")}</h3>
                             </div>
 
                             {<div className="modal-body" id="popup">
-                                <APIPayloadDetail APIPayloadID={this.state.APIPayloadID} />
+                                <AuditLogDetail auditLogID={this.state.auditLogID} />
 
                             </div>
                             }
-                          
+                            
                         </div>
                         </div>
                     </div>
-
                 </div>
             );
 
         }
         else
-            return (<div className="loader">Loading...</div>)
+            return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
     }
 }
 
-APIPayloadList.propTypes = {
-    APIPayloadListData: PropTypes.object,
+AuditLogList.propTypes = {
+    AuditLogListData: PropTypes.object,
     children: PropTypes.object,
-
+    typeData: PropTypes.object,
 };
 
 function mapStateToProps(state, ownProps) {
 
 
     return {
-        APIPayloadListData: state.app.APIPayLoadList,
-        payLoadField: ownProps.params.payLoadField,
-        payLoadFieldValue: ownProps.params.payLoadFieldValue,
-
+        AuditLogListData: state.app.auditLogList,
+        typeData: state.app.typeData.data
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -304,5 +299,5 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-APIPayloadList.displayName = "API Payload List";
-export default connect(mapStateToProps, mapDispatchToProps)(APIPayloadList);
+AuditLogList.displayName = "Audit_Log";
+export default connect(mapStateToProps, mapDispatchToProps)(AuditLogList);

@@ -6,7 +6,7 @@ import {browserHistory, IndexRoute, Route, Router} from 'react-router';
 import Login from './core/components/Login.jsx';
 
 
-import notification from './containers/Notifications.jsx';
+import notification from './core/containers/Notifications.jsx';
 import auth from './core/auth/authenticator';
 import EmailTemplateSearch from './core/components/EmailTemplateSearchScreen/EmailTemplateSearchContainer.jsx';
 import EmailTemplateSetup from './core/components/EmailTemplateSetupScreen/EmailTemplateSetupContainer.jsx';
@@ -18,11 +18,11 @@ import UserSearch from './core/components/UserSearchScreen/UserSearchContainer.j
 import UserSetup from './core/components/UserSetupScreen/UserSetupContainer.jsx';
 import WorkingCalendar from './core/components/WorkingCalendar/WorkingCalContainer.jsx';
 
-import ChangePassword from './containers/changePassword.jsx';
+import ChangePassword from './core/containers/changePassword.jsx';
 import PasswordPolicy from './core/components/PasswordPolicyScreen/PasswordPolicyContainer.jsx';
 import PickupListSearch from './core/components/PickupListSearchScreen/PickupListSearchContainer.jsx';
 import PickupListSetup from './core/components/PickupListSetupScreen/PickupListSetupContainer.jsx';
-import APIPayloadSearch from './containers/APIPayloadList.jsx';
+import APIPayloadSearch from './core/containers/APIPayloadList.jsx';
 import BlockchainViewerQR from './core/components/Blockchain/Viewer/BlockchainViewerQR.jsx';
 import BlockSearchScreen from './core/components/Blockchain/BlockSearchScreen/BlockSearchScreenContainer.jsx';
 import HashSearchScreen from './core/components/Blockchain/HashSearchScreen/HashSearchScreenContainer.jsx';
@@ -32,16 +32,11 @@ import ConsortiumSetup from './core/components/Blockchain/ConsortiumSetupScreen/
 import SmartContract from './core/components/Blockchain/SmartContractScreen/SmartContract.jsx';
 import SmartContractFileViewer from './core/components/Blockchain/SmartContractScreen/SmartContractFileViewer.jsx';
 import blockchainWorkboard from './core/components/Blockchain/blockchainWorkboard.jsx';
-import buyerDashboard from './containers/userDashboard.jsx';
-import merchantDashboard from './containers/merchantDashboard.jsx';
-import rewardsProviderDashboard from './containers/RewardsProviderDashboard.jsx';
+import buyerDashboard from './core/containers/userDashboard.jsx';
+import merchantDashboard from './core/containers/merchantDashboard.jsx';
+import rewardsProviderDashboard from './core/containers/RewardsProviderDashboard.jsx';
 import HealthMonitor from './core/components/HealthMonitor.jsx';
 
-import sampleDashboard from './applications/SampleApp/containers/SampleDashboard.jsx';
-import sampleDashboardType2 from './applications/SampleApp/containers/SampleDashboardType2.jsx';
-import SampleListPage from './containers/Samples/SampleListPage.jsx';
-import SampleViewPage from './containers/Samples/SampleViewPage.jsx';
-import SampleCrudPage from './containers/Samples/SampleCrudPage.jsx';
 import ApplicationsRoute from './applications/routesIndex';
 // import BlockTransactionList from './containers/BlockTransactionList.jsx'
 
@@ -53,7 +48,7 @@ import FileTemplateSetup from './core/components/FileTemplateSetupScreen/FileTem
 import CommissionTemplateSearch
   from './core/components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
 import CommissionTemplateSetup from './core/components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
-import AuditLogList from './containers/auditLogList.jsx';
+import AuditLogList from './core/containers/auditLogList.jsx';
 
 
 function getDashboard() {
