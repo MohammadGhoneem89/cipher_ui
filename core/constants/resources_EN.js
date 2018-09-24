@@ -1,9 +1,7 @@
-/**
- * Created by bilal.mahroof on 8/21/2017.
- */
-
+import ENResourcesIndex from '../../applications/constants/ENResourcesIndex';
 
 module.exports = {
+  ...ENResourcesIndex,
   breadcrumbHome: "Home",
   batchView_Heading: "Batch View",
   EntityWorkboard_Heading: "Organization Workboard",

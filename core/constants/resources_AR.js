@@ -1,4 +1,7 @@
+import ARResourcesIndex from '../../applications/constants/ARResourcesIndex';
+
 module.exports = {
+  ...ARResourcesIndex,
   breadcrumbHome: "الصفحة الرئيسية ",
   batchView_Heading: "عرض المجموعة ",
   EntityWorkboard_Heading: "لوحة عمل المؤسسة المالية ",

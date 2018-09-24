@@ -1,5 +1,5 @@
 import React from 'react';
-import {browserHistory, IndexRoute, Route, Router} from 'react-router';
+import {Route, Router} from 'react-router';
 import sampleDashboard from './containers/SampleDashboard.jsx';
 import sampleDashboardType2 from './containers/SampleDashboardType2.jsx';
 import SampleListPage from './containers/SampleListPage.jsx';

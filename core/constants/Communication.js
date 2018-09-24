@@ -1,4 +1,5 @@
 import routes from './routes';
+import CommunicationIndex from '../../applications/constants/CommunicationIndex';
 
 let baseUrl = routes.baseUrl;
 let blockChainURL = routes.blockChainURL;
@@ -8,6 +9,7 @@ let blockChainViewerURL = routes.blockChainViewerURL;
 
 
 module.exports = {
+  CommunicationIndex,
   baseUrl,
   getPermission: baseUrl + "/API/UI/permission",
   getUserData: baseUrl + "/API/UI/user",
@@ -107,12 +109,5 @@ module.exports = {
   getPickupList: baseUrl + "/API/UI/typeDataList",
   getPickupListDetail: baseUrl + "/API/UI/getTypeDataDetailByID",
   passwordPolicyDetail: baseUrl + "/API/UI/fetchAllPasswordPolicy",
-  updatePasswordPolicy: baseUrl + "/API/UI/updatePasswordPolicy",
-
-  getSampleDashboardData: blockChainURL + "/SIMU/sampleDashboardData",
-  getSampleDashboardDataType2: blockChainURL + "/SIMU/sampleDashboardDataType2",
-  getSampleDropDownList: baseUrl + "/SIMU/sampleDropDownListData",
-  getSampleListData: baseUrl + "/SIMU/getSampleListPageData",
-  getSampleViewPageData: baseUrl + "/SIMU/getSampleViewPageData",
-  getSampleRecordByID: baseUrl + "/SIMU/getSampleRecordByID"
+  updatePasswordPolicy: baseUrl + "/API/UI/updatePasswordPolicy"
 };

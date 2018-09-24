@@ -1,4 +1,7 @@
+import GridColumnsIndex from '../../applications/constants/GridColumnsIndex'
+
 module.exports = {
+  ...GridColumnsIndex,
   exceptionList: [
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
     {alias: "", key: "TransactionID", type: "hiddenID"},
@@ -431,33 +434,7 @@ module.exports = {
     {alias: "CBV_Status", key: "tranStatus", type: "statusLabel"},
     {alias: "CBV_action", key: "actions", type: "action"}
   ],
-  refundListViewData: [
-    {alias: "", key: "refNo", type: "hiddenID"},
-    {alias: "RL_entity", key: "ServiceProvider", type: "image"},
-    {alias: "RL_acquirer", key: "acquirerName", type: "string"},
-    {alias: "RL_refNo", key: "refNo", type: "string", type: 'hyperlink', url: '/viewRefund'},
-    {alias: "RL_ePayRefNo", key: "ePayRefNo", type: 'hyperlink', url: '/viewTransactionDetail'},
-    {alias: "RL_SPRefNo", key: "SPRefNo", type: "string"},
-    {alias: "RL_PGRefNo", key: "PGRefNo", type: "string"},
-    {alias: "RL_date", key: "date", type: "string"},
-    {alias: "RL_status", key: "status", type: "statusLabel"},
-    {alias: "RL_action", key: "actions", type: "action"}
 
-  ],
-
-  viewrefundBatchListData: [
-    {alias: "", key: "refNo", type: "hiddenID"},
-    {alias: "RL_entity", key: "ServiceProvider", type: "image"},
-    {alias: "RL_acquirer", key: "acquirerName", type: "string"},
-    {alias: "RL_refNo", key: "refNo", type: 'hyperlink', url: '/viewRefund'},
-    {alias: "RL_ePayRefNo", key: "ePayRefNo", type: 'hyperlink', url: '/viewTransactionDetail'},
-    {alias: "RL_SPRefNo", key: "SPRefNo", type: "string"},
-    {alias: "RL_PGRefNo", key: "PGRefNo", type: "string"},
-    {alias: "RL_date", key: "date", type: "string"},
-    {alias: "RL_amount", key: "Amount", type: "amount"},
-    {alias: "RL_status", key: "status", type: "statusLabel"},
-    {alias: "RL_action", key: "actions", type: "action"}
-  ],
   serviceBeneficiaryDetails: [
     {alias: "SBD_accountID", key: "accountId", type: "string", width: "30%"},
     {alias: "SBD_txnAmount", key: "txnAmount", type: "string", width: "20%"},
@@ -650,102 +627,6 @@ module.exports = {
     {alias: "", key: "_id", type: "hiddenID"},
     {alias: "ESEARCH_entityName", key: "typeName", type: "string"},
     {alias: "ESEARCH_action", key: "actions", type: "action"}
-  ],
-
-  sampleDashboardGrid: [
-    {alias: "", key: "objectID", type: "hiddenID"},
-    {alias: "sampleGrid_column1", key: "columnValue1", type: "image", width: "20%", url: ''},
-    {alias: "sampleGrid_column2", key: "columnValue2", type: "string"},
-    {alias: "sampleGrid_column3", key: "columnValue3", type: "string"},
-    {alias: "sampleGrid_column4", key: "columnValue4", type: "string"},
-    {alias: "sampleGrid_column5", key: "columnValue5", type: "string"},
-    {alias: "sampleGrid_column6", key: "columnValue6s", type: "string"}
-  ],
-
-  sampleGridColumns: [
-    {alias: "", key: "recordID", type: "hiddenID"},
-    {alias: "sampleGrid_column1", key: "columnValue1", type: "image", width: "20%", url: ''},
-    {alias: "sampleGrid_column2", key: "columnValue2", type: "string"},
-    {alias: "sampleGrid_column3", key: "columnValue3", type: "string"},
-    {alias: "sampleGrid_column4", key: "columnValue4", type: "string"},
-    {alias: "sampleGrid_column5", key: "columnValue5", type: "string"},
-    {alias: "sampleGrid_column6", key: "columnValue6", type: "epochDate"},
-    {alias: "sampleGrid_status", key: "status", type: "statusLabel"},
-    {alias: "sampleGrid_action", key: "actions", type: "action"}
-  ],
-
-  sampleViewPageGridColumns: [
-    {alias: "", key: "recordID", type: "hiddenID"},
-    {alias: "sampleGrid_column1", key: "columnValue1", type: "image", width: "20%", url: ''},
-    {alias: "sampleGrid_column2", key: "columnValue2", type: "string"},
-    {alias: "sampleGrid_column3", key: "columnValue3", type: "string"},
-    {alias: "sampleGrid_column4", key: "columnValue4", type: "string"},
-    {alias: "sampleGrid_column5", key: "columnValue5", type: "string"},
-    {alias: "sampleGrid_column6", key: "columnValue6", type: "string"}
-  ],
-  SampleCrud_PopupGridItems: [
-    {alias: "SampleCrud_Grid_Code", key: "code", type: 'string'},
-    {alias: "SampleCrud_Grid_Description", key: "description", type: "string"},
-    {alias: "SampleCrud_Grid_Quantity", key: "qty", type: "string"},
-    {alias: "SampleCrud_Grid_Value", key: "value", type: 'string'},
-    {alias: "SampleCrud_Grid_Action", key: "actions", type: "action"}
-  ],
-
-  SampleCrud_InputGrid: [
-    {alias: "SampleCrud_Grid_Container", key: "container", type: 'string'},
-    {alias: "SampleCrud_Grid_Action", key: "actions", type: "action"}
-
-  ],
-  
-  buyerOrders: [
-    {alias: "", key: "id", type: 'hiddenID'},
-    {alias: "Order Id", key: "id", type: 'string'},
-    {alias: "Item Id", key: "items", type: "string"},
-    {alias: "Quantity", key: "quantities", type: "string"},
-    {alias: "Amount", key: "billedAmount", type: 'amount'},
-    {alias: "Location", key: "location", type: 'string'},
-    {alias: "Date", key: "timestamp", type: "epochDate"},
-    {alias: "Status", key: "delivered", type: 'statusLabel'}
-  ],
-
-  merchantOrders: [
-    {alias: "", key: "id", type: 'hiddenID'},
-    {alias: "Order Id", key: "id", type: 'string'},
-    {alias: "Item Id", key: "items", type: "string"},
-    {alias: "Quantity", key: "quantities", type: "string"},
-    {alias: "Amount", key: "billedAmount", type: 'amount'},
-    {alias: "Location", key: "location", type: 'string'},
-    {alias: "Date", key: "timestamp", type: "epochDate"},
-    {alias: "Status", key: "delivered", type: 'statusLabel'},
-    {alias: "EDItem_action", key: "actions", type: "action"}
-  ],
-
-  catalogue: [
-    {alias: "", key: "id", type: 'hiddenID'},
-    {alias: "Name", key: "label", type: 'string'},
-    {alias: "Category", key: "category", type: "string"},
-    {alias: "Price", key: "unitPrice", type: 'amount'},
-    {alias: "Quantity", key: "quantity", type: "string"}
-  ],
-
-  rewardList: [
-    {alias: "Name", key: "name", type: 'string'},
-    {alias: "Used", key: "used", type: "string"},
-    {alias: "Available", key: "avaialable", type: 'string'},
-    {alias: "EDItem_action", key: "actions", type: "action"}
-  ],
-
-  settlementsList: [
-    {alias: "Name", key: "merchantName", type: 'string'},
-    {alias: "Status", key: "status", type: "statusLabel"},
-    {alias: "Amount", key: "amount", type: 'amount'},
-    {alias: "EDItem_action", key: "actions", type: "action"}
-  ],
-
-  pointSummary: [
-    {alias: "Name", key: "name", type: "image"},
-    {alias: "Available", key: "circulation", type: "string"},
-    {alias: "Settled", key: "burnt", type: "string"}
   ]
 };
 
