@@ -1,4 +1,4 @@
-/*
+
 const routes = {
   baseUrl: "http://104.211.155.19:10055",
   blockChainURL: "http://104.211.155.19:10055",
@@ -6,7 +6,7 @@ const routes = {
   repostActionURL: "http://104.211.155.19:10055/API",
   blockChainViewerURL: "http://104.211.155.19:10055"
 };
-*/
+/*
 const routes = {
   baseUrl: "http://localhost:10055",
   blockChainURL: "http://localhost:10055",
@@ -14,7 +14,7 @@ const routes = {
   repostActionURL: "http://localhost:10055/API",
   blockChainViewerURL: "http://localhost:10055"
 };
-
+*/
 //
 // const routes = {
 //     baseUrl: "http://10.65.11.14:10051",
