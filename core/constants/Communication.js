@@ -1,11 +1,11 @@
-import routes from './routes';
+import backOffices from '../../applications/backOffices';
 import CommunicationIndex from '../../applications/constants/CommunicationIndex';
 
-let baseUrl = routes.baseUrl;
-let blockChainURL = routes.blockChainURL;
-let webSocketURL = routes.webSocketURL;
-let repostActionURL = routes.repostActionURL;
-let blockChainViewerURL = routes.blockChainViewerURL;
+let baseUrl = backOffices.baseUrl;
+let blockChainURL = backOffices.blockChainURL;
+let webSocketURL = backOffices.webSocketURL;
+let repostActionURL = backOffices.repostActionURL;
+let blockChainViewerURL = backOffices.blockChainViewerURL;
 
 module.exports = {
   ...CommunicationIndex,

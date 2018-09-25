@@ -51,21 +51,6 @@ import CommissionTemplateSetup from './core/components/CommissionTemplateSetupSc
 import AuditLogList from './core/containers/auditLogList.jsx';
 
 
-function getDashboard() {
-  if (window.sessionStorage.orgType === "buyer") {
-    return buyerDashboard
-  }
-  else if (window.sessionStorage.orgType === "merchant") {
-    return merchantDashboard
-  }
-  else if (window.sessionStorage.orgType === "provider") {
-    return rewardsProviderDashboard;
-  }
-  else {
-    return blockchainWorkboard;
-  }
-
-}
 
 console.log(ApplicationsRoute);
 
@@ -76,13 +61,9 @@ export default (
     <Route path="/cipher/login" component={Login} onEnter={isAuthorized}/>
     <Route path="/blockChainViewer/:blockChainID" component={BlockchainViewerQR} onEnter={isAuthorized}/>
 
-    <Route path="/entityWorkboard" component={master} onEnter={requireAuth}>
-      <IndexRoute component={getDashboard()}/>
+    <Route component={master} onEnter={requireAuth}>
+      {/*<IndexRoute component={blockchainWorkboard}/>*/}
       <Route path="/blockchain" component={blockchainWorkboard}/>
-      <Route path="/buyerDashboard" component={buyerDashboard}/>
-      <Route path="/merchantDashboard" component={merchantDashboard}/>
-      <Route path="/rewardsProviderDashboard" component={rewardsProviderDashboard}/>
-
       <Route path="/groupList" component={GroupSearch}/>
       <Route path="/groupSetup" component={GroupSetup}/>
       <Route path="/groupSetup/:groupID" component={GroupSetup}/>

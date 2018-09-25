@@ -1,5 +1,5 @@
 
-const routes = {
+const backOffices = {
   baseUrl: "http://104.211.155.19:10055",
   blockChainURL: "http://104.211.155.19:10055",
   webSocketURL: "http://104.211.155.19:10055",
@@ -33,4 +33,4 @@ const routes = {
 // };
 
 
-export default routes;
+export default backOffices;

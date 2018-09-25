@@ -1,5 +1,5 @@
-import routes from '../../../core/constants/routes';
-let baseUrl = routes.baseUrl;
+import backOffices from '../../backOffices';
+let baseUrl = backOffices.baseUrl;
 
 
 module.exports = {
