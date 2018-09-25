@@ -7,9 +7,8 @@ let webSocketURL = routes.webSocketURL;
 let repostActionURL = routes.repostActionURL;
 let blockChainViewerURL = routes.blockChainViewerURL;
 
-
 module.exports = {
-  CommunicationIndex,
+  ...CommunicationIndex,
   baseUrl,
   getPermission: baseUrl + "/API/UI/permission",
   getUserData: baseUrl + "/API/UI/user",
