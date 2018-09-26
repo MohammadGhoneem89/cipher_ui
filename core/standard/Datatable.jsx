@@ -46,7 +46,6 @@ class Datatable extends React.Component {
   }
 
   getExportOptions(exportForDetail, enableXMLExport) {
-    let _this = this;
     if (exportForDetail && exportForDetail === true) {
       return (
         <ul className="dropdown-menu pull-right">
