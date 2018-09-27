@@ -1,58 +1,46 @@
 /*standard imports*/
 import React from 'react';
-import master from './core/master.jsx';
+import master from './master.jsx';
 import {browserHistory, IndexRoute, Route, Router} from 'react-router';
 /*container imports*/
-import Login from './core/components/AuthenticationScreens/Login.jsx';
+import Login from './components/AuthenticationScreens/Login.jsx';
 
 
-import notification from './core/containers/Notifications.jsx';
-import auth from './core/auth/authenticator';
-import EmailTemplateSearch from './core/components/EmailTemplateSearchScreen/EmailTemplateSearchContainer.jsx';
-import EmailTemplateSetup from './core/components/EmailTemplateSetupScreen/EmailTemplateSetupContainer.jsx';
-import OrgSearch from './core/components/OrgSearchScreen/OrgSearchContainer.jsx';
-import OrgSetup from './core/components/OrgSetupScreen/OrgSetupContainer.jsx';
-import GroupSearch from './core/components/GroupSearchScreen/GroupSearchContainer.jsx';
-import GroupSetup from './core/components/GroupSetupScreen/GroupSetupContainer.jsx';
-import UserSearch from './core/components/UserSearchScreen/UserSearchContainer.jsx';
-import UserSetup from './core/components/UserSetupScreen/UserSetupContainer.jsx';
-import WorkingCalendar from './core/components/WorkingCalendar/WorkingCalContainer.jsx';
+import notification from './containers/Notifications.jsx';
+import auth from './auth/authenticator';
+import EmailTemplateSearch from './components/EmailTemplateSearchScreen/EmailTemplateSearchContainer.jsx';
+import EmailTemplateSetup from './components/EmailTemplateSetupScreen/EmailTemplateSetupContainer.jsx';
+import OrgSearch from './components/OrgSearchScreen/OrgSearchContainer.jsx';
+import OrgSetup from './components/OrgSetupScreen/OrgSetupContainer.jsx';
+import GroupSearch from './components/GroupSearchScreen/GroupSearchContainer.jsx';
+import GroupSetup from './components/GroupSetupScreen/GroupSetupContainer.jsx';
+import UserSearch from './components/UserSearchScreen/UserSearchContainer.jsx';
+import UserSetup from './components/UserSetupScreen/UserSetupContainer.jsx';
+import WorkingCalendar from './components/WorkingCalendar/WorkingCalContainer.jsx';
 
-import ChangePassword from './core/components/AuthenticationScreens/changePassword.jsx';
-import PasswordPolicy from './core/components/PasswordPolicyScreen/PasswordPolicyContainer.jsx';
-import PickupListSearch from './core/components/PickupListSearchScreen/PickupListSearchContainer.jsx';
-import PickupListSetup from './core/components/PickupListSetupScreen/PickupListSetupContainer.jsx';
-import APIPayloadSearch from './core/components/APIPayloadScreen/APIPayloadList.jsx';
-import BlockchainViewerQR from './core/components/Blockchain/Viewer/BlockchainViewerQR.jsx';
-import BlockSearchScreen from './core/components/Blockchain/BlockSearchScreen/BlockSearchScreenContainer.jsx';
-import HashSearchScreen from './core/components/Blockchain/HashSearchScreen/HashSearchScreenContainer.jsx';
-import BlockchainEditor from './core/components/Blockchain/Editor/BlockchainEditorContainer.jsx';
-import ConsortiumSearch from './core/components/Blockchain/ConsortiumSearchScreen/ConsortiumSearchContainer.jsx';
-import ConsortiumSetup from './core/components/Blockchain/ConsortiumSetupScreen/ConsortiumSetupContainer.jsx';
-import SmartContract from './core/components/Blockchain/SmartContractScreen/SmartContract.jsx';
-import SmartContractFileViewer from './core/components/Blockchain/SmartContractScreen/SmartContractFileViewer.jsx';
-import blockchainWorkboard from './core/components/Blockchain/blockchainWorkboard.jsx';
-import buyerDashboard from './core/containers/userDashboard.jsx';
-import merchantDashboard from './core/containers/merchantDashboard.jsx';
-import rewardsProviderDashboard from './core/containers/RewardsProviderDashboard.jsx';
-import HealthMonitor from './core/components/HealthMonitor.jsx';
-
-import ApplicationsRoute from './applications/routesIndex';
-// import BlockTransactionList from './containers/BlockTransactionList.jsx'
-
-
-import Locked from './core/components/AuthenticationScreens/Locked.jsx';
-
-import FileTemplateSearch from './core/components/FileTemplateSearchScreen/FileTemplateSearchContainer.jsx';
-import FileTemplateSetup from './core/components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx';
+import ChangePassword from './components/AuthenticationScreens/changePassword.jsx';
+import PasswordPolicy from './components/PasswordPolicyScreen/PasswordPolicyContainer.jsx';
+import PickupListSearch from './components/PickupListSearchScreen/PickupListSearchContainer.jsx';
+import PickupListSetup from './components/PickupListSetupScreen/PickupListSetupContainer.jsx';
+import APIPayloadSearch from './components/APIPayloadScreen/APIPayloadList.jsx';
+import BlockchainViewerQR from './components/Blockchain/Viewer/BlockchainViewerQR.jsx';
+import BlockSearchScreen from './components/Blockchain/BlockSearchScreen/BlockSearchScreenContainer.jsx';
+import HashSearchScreen from './components/Blockchain/HashSearchScreen/HashSearchScreenContainer.jsx';
+import BlockchainEditor from './components/Blockchain/Editor/BlockchainEditorContainer.jsx';
+import ConsortiumSearch from './components/Blockchain/ConsortiumSearchScreen/ConsortiumSearchContainer.jsx';
+import ConsortiumSetup from './components/Blockchain/ConsortiumSetupScreen/ConsortiumSetupContainer.jsx';
+import SmartContract from './components/Blockchain/SmartContractScreen/SmartContract.jsx';
+import SmartContractFileViewer from './components/Blockchain/SmartContractScreen/SmartContractFileViewer.jsx';
+import blockchainWorkboard from './components/Blockchain/blockchainWorkboard.jsx';
+import HealthMonitor from './components/HealthMonitor.jsx';
+import ApplicationsRoute from '../applications/routesIndex';
+import Locked from './components/AuthenticationScreens/Locked.jsx';
+import FileTemplateSearch from './components/FileTemplateSearchScreen/FileTemplateSearchContainer.jsx';
+import FileTemplateSetup from './components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx';
 import CommissionTemplateSearch
-  from './core/components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
-import CommissionTemplateSetup from './core/components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
-import AuditLogList from './core/components/AuditLogScreen/auditLogList.jsx';
-
-
-
-console.log(ApplicationsRoute);
+  from './components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
+import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
+import AuditLogList from './components/AuditLogScreen/auditLogList.jsx';
 
 export default (
   <Router history={browserHistory}>
@@ -113,14 +101,6 @@ export default (
       <Route path="/orgSetup/:mode/:orgID" component={OrgSetup}/>
 
       {ApplicationsRoute}
-      {/*<Route path="/sampleDashboard" component={sampleDashboard}/>*/}
-      {/*<Route path="/sampleDashboardType2" component={sampleDashboardType2}/>*/}
-      {/*<Route path="/sampleListPage" component={SampleListPage}/>*/}
-      {/*<Route path="/sampleDetailPage/:recordID" component={SampleViewPage}/>*/}
-      {/*<Route path="/sampleCrudPage" component={SampleCrudPage}/>*/}
-      {/*<Route path="/sampleCrudPage/:recordID" component={SampleCrudPage}/>*/}
-
-      {/*<Route path="/BlockTransactionList/:blockHeight" component={BlockTransactionList}/>*/}
     </Route>
   </Router>
 );

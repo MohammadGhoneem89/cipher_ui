@@ -6,7 +6,7 @@ var React = require('react');
 import { Router,browserHistory} from 'react-router'
 
 /*Routing imports*/
-import routes from '../routes';
+import routes from './routes';
 
 /*action imports*/
 import {generalActionLoad} from './actions/generalAction';
