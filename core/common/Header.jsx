@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Confirmationmodal from './Confirmationmodal.jsx';
-import * as Loaders from '../common/loaders.jsx';
+import * as Loaders from './loaders.jsx';
 import { Link, browserHistory } from 'react-router';
 import auth from '../auth/authenticator';
 
-import * as utils from '../common/utils';
+import * as utils from './utils';
 
 import { baseUrl } from '../constants/Communication.js';
 

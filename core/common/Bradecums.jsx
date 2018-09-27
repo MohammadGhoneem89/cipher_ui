@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import * as utils from '../common/utils';
+import * as utils from './utils';
 
 
 

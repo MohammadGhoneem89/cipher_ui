@@ -1,7 +1,7 @@
 import React from 'react';
 import * as utils from '../common/utils.js';
 import * as constants from '../constants/Communication.js';
-import DateControl from './DateControl.jsx'
+import DateControl from '../common/DateControl.jsx'
 import * as dates from '../common/dates.js';
 import config from '../../config';
 

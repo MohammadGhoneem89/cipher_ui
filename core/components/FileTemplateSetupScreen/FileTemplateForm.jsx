@@ -4,8 +4,8 @@ import Portlet from '../../common/Portlet.jsx';
 import ModalBox from '../../common/ModalBox.jsx';
 import * as utils from '../../common/utils.js';
 import {CheckboxInput, CheckboxList, DropdownInput, TextInput} from '../../common/FormControls.jsx';
-import ActionButton from '../ActionButtonNew.jsx';
-import Table from '../../standard/Datatable.jsx';
+import ActionButton from '../../common/ActionButtonNew.jsx';
+import Table from '../../common/Datatable.jsx';
 import FieldMappingForm from './FieldMappingForm.jsx';
 import validate from './validate.js';
 

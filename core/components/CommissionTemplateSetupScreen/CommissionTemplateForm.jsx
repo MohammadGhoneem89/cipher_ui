@@ -4,9 +4,9 @@ import Portlet from '../../common/Portlet.jsx';
 import ModalBox from '../../common/ModalBox.jsx';
 import * as utils from '../../common/utils.js';
 import {TextInput} from '../../common/FormControls.jsx';
-import Table from '../../standard/Datatable.jsx';
+import Table from '../../common/Datatable.jsx';
 import CommissionDetailsForm from './CommissionDetailsForm.jsx';
-import ActionButton from '../ActionButtonNew.jsx';
+import ActionButton from '../../common/ActionButtonNew.jsx';
 import validate from './validate.js';
 import { SubmissionError }  from 'redux-form/lib/SubmissionError'
 

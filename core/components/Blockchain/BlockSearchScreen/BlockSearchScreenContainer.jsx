@@ -6,7 +6,7 @@ import initialState from '../../../reducers/initialState.js';
 import * as actions from '../../../actions/generalAction';
 import * as constants from '../../../constants/Communication.js';
 import Portlet from '../../../common/Portlet.jsx';
-import Table from '../../../standard/Datatable.jsx';
+import Table from '../../../common/Datatable.jsx';
 import BlockSearchForm from './BlockSearchForm.jsx';
 import * as utils from '../../../common/utils.js';
 

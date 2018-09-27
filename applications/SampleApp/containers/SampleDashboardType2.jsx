@@ -1,13 +1,13 @@
 /*standard imports*/
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import DateRangePicker from '../../../core/components/DateRangePicker.jsx';
+import DateRangePicker from '../../../core/common/DateRangePicker.jsx';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../../core/actions/generalAction';
 /*container specific imports*/
-import TileUnit from '../../../core/components/tileUnit.jsx';
-import Table from '../../../core/standard/Datatable.jsx';
-import CommonBarChart from '../../../core/components/CommonBarChart.jsx'
+import TileUnit from '../../../core/common/tileUnit.jsx';
+import Table from '../../../core/common/Datatable.jsx';
+import CommonBarChart from '../../../core/common/CommonBarChart.jsx'
 import * as utils from '../../../core/common/utils.js';
 import * as constants from '../../../core/constants/Communication.js';
 import { baseUrl } from '../../../core/constants/Communication.js';

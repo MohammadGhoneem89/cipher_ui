@@ -1,8 +1,8 @@
 import React from 'react';
 import Portlet from '../../../common/Portlet.jsx';
-import Table from '../../../standard/Datatable.jsx';
+import Table from '../../../common/Datatable.jsx';
 import SmartContractForm from './SmartContractForm.jsx';
-import FileUploader from '../../FileUploader.jsx';
+import FileUploader from '../../../common/FileUploader.jsx';
 import config from '../../../../config';
 import * as utils from '../../../common/utils.js';
 

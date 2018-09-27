@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router';
 
 import moment from 'moment';
 import { Bar } from 'react-chartjs-2';
-import * as utils from '../common/utils.js';
+import * as utils from './utils.js';
 
 var fullDate = [];
 var x = new Date();

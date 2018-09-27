@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import DropzoneComponent from 'react-dropzone-component';
 import * as constants from '../constants/Communication.js';
-import * as utils from '../common/utils.js';
-import InnerGrid from '../standard/innerGrid.jsx';
+import * as utils from './utils.js';
+import InnerGrid from './innerGrid.jsx';
 import configTag from '../../config.js';
 
 let tempGridData = {

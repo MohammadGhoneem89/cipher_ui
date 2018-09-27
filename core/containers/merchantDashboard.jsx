@@ -2,12 +2,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import TileUnit from '../components/customTileUnit.jsx';
+import TileUnit from '../common/customTileUnit.jsx';
 import * as actions from '../actions/generalAction';
 import Portlet from '../common/Portlet.jsx';
 import * as constants from '../constants/Communication.js';
 import * as utils from '../common/utils.js';
-import Table from '../standard/Datatable.jsx';
+import Table from '../common/Datatable.jsx';
 
 /*container specific imports*/
 

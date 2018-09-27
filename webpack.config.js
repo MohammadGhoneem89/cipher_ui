@@ -1,5 +1,5 @@
 var config = {
-  entry: ['whatwg-fetch', './main.js'],
+  entry: ['whatwg-fetch', './core/main.js'],
 
   output: {
     path: './',
@@ -33,6 +33,6 @@ var config = {
     ]
 
   }
-}
+};
 
 module.exports = config;

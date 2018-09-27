@@ -3,7 +3,7 @@ import {bindActionCreators} from 'redux';
 import { browserHistory } from 'react-router';
 import {connect} from 'react-redux';
 import Portlet from '../../../common/Portlet.jsx';
-import Table from '../../../standard/Datatable.jsx';
+import Table from '../../../common/Datatable.jsx';
 import {SubmissionError} from 'redux-form'
 import initialState from '../../../reducers/initialState.js';
 import * as actions from '../../../actions/generalAction';

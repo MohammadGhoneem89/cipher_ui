@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/generalAction';
 import Portlet from '../common/Portlet.jsx';
-import Table from '../standard/Datatable.jsx';
+import Table from '../common/Datatable.jsx';
 /*container specific imports*/
 import * as constants from '../constants/Communication.js';
 import * as requestCreator from '../common/request.js';

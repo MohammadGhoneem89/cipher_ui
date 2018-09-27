@@ -3,14 +3,14 @@ import {reduxForm} from 'redux-form';
 import validate from './validate';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
-import Table from '../../standard/Datatable.jsx';
-import FileUploader from '../FileUploader.jsx';
+import Table from '../../common/Datatable.jsx';
+import FileUploader from '../../common/FileUploader.jsx';
 import Portlet from '../../common/Portlet.jsx';
 import ModalBox from '../../common/ModalBox.jsx';
 import EntityServicesForm from './OrgServicesForm.jsx';
 import EntityContactsForm from './OrgContactsForm.jsx';
 import * as utils from '../../common/utils.js';
-import ActionButton from '../ActionButtonNew.jsx';
+import ActionButton from '../../common/ActionButtonNew.jsx';
 
 import {CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput} from '../../common/FormControls.jsx';
 

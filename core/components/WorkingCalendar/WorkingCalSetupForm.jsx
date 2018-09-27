@@ -2,8 +2,8 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import 'react-dropzone-component/styles/filepicker.css'
 import '../../../node_modules/dropzone/dist/min/dropzone.min.css';
-import Table from '../../standard/Datatable.jsx';
-import FileUploader from '../../components/FileUploader.jsx';
+import Table from '../../common/Datatable.jsx';
+import FileUploader from '../../common/FileUploader.jsx';
 import Portlet from '../../common/Portlet.jsx';
 import ModalBox from '../../common/ModalBox.jsx';
 import ExceptionListForm from './ExceptionListForm.jsx';

@@ -4,7 +4,7 @@ import RichTextEditor from 'react-rte';
 import Portlet from '../../common/Portlet.jsx';
 import * as utils from '../../common/utils.js';
 import {DropdownInput, TextInput, DataList} from '../../common/FormControls.jsx';
-import ActionButton from '../ActionButtonNew.jsx';
+import ActionButton from '../../common/ActionButtonNew.jsx';
 import validate from './validate.js';
 
 class EmailTemplateForm extends React.Component {

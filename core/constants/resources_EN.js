@@ -758,6 +758,8 @@ module.exports = {
   BTL_input: "Input",
   BTL_nonce: "Nonce",
   BTL_value: "Value",
+  BTL_Hex: "Input Hex",
+  BTL_InputUTF8: "Input UTF8",
   BTL_logData: "Log Data",
   BTL_Heading: "Block Transaction List",
   BLTLP_SearchFilter: "Block Transaction Search Filter",

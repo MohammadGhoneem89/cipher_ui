@@ -1,9 +1,9 @@
 /*standard imports*/
 import React from 'react';
-import master from './master.jsx';
+import master from './core/master.jsx';
 import {browserHistory, IndexRoute, Route, Router} from 'react-router';
 /*container imports*/
-import Login from './core/components/Login.jsx';
+import Login from './core/components/AuthenticationScreens/Login.jsx';
 
 
 import notification from './core/containers/Notifications.jsx';
@@ -18,11 +18,11 @@ import UserSearch from './core/components/UserSearchScreen/UserSearchContainer.j
 import UserSetup from './core/components/UserSetupScreen/UserSetupContainer.jsx';
 import WorkingCalendar from './core/components/WorkingCalendar/WorkingCalContainer.jsx';
 
-import ChangePassword from './core/containers/changePassword.jsx';
+import ChangePassword from './core/components/AuthenticationScreens/changePassword.jsx';
 import PasswordPolicy from './core/components/PasswordPolicyScreen/PasswordPolicyContainer.jsx';
 import PickupListSearch from './core/components/PickupListSearchScreen/PickupListSearchContainer.jsx';
 import PickupListSetup from './core/components/PickupListSetupScreen/PickupListSetupContainer.jsx';
-import APIPayloadSearch from './core/containers/APIPayloadList.jsx';
+import APIPayloadSearch from './core/components/APIPayloadScreen/APIPayloadList.jsx';
 import BlockchainViewerQR from './core/components/Blockchain/Viewer/BlockchainViewerQR.jsx';
 import BlockSearchScreen from './core/components/Blockchain/BlockSearchScreen/BlockSearchScreenContainer.jsx';
 import HashSearchScreen from './core/components/Blockchain/HashSearchScreen/HashSearchScreenContainer.jsx';
@@ -41,14 +41,14 @@ import ApplicationsRoute from './applications/routesIndex';
 // import BlockTransactionList from './containers/BlockTransactionList.jsx'
 
 
-import Locked from './core/components/Locked.jsx';
+import Locked from './core/components/AuthenticationScreens/Locked.jsx';
 
 import FileTemplateSearch from './core/components/FileTemplateSearchScreen/FileTemplateSearchContainer.jsx';
 import FileTemplateSetup from './core/components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx';
 import CommissionTemplateSearch
   from './core/components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
 import CommissionTemplateSetup from './core/components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
-import AuditLogList from './core/containers/auditLogList.jsx';
+import AuditLogList from './core/components/AuditLogScreen/auditLogList.jsx';
 
 
 

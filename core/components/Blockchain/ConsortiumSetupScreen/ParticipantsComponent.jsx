@@ -1,6 +1,6 @@
 import React from 'react';
 import Portlet from '../../../common/Portlet.jsx';
-import Table from '../../../standard/Datatable.jsx';
+import Table from '../../../common/Datatable.jsx';
 import * as utils from '../../../common/utils.js';
 
 const ParticipantsComponent = ({updateState, containerState}) => {

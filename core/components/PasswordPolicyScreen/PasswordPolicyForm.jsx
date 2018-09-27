@@ -2,7 +2,7 @@ import React from 'react';
 import {reduxForm} from 'redux-form';
 import {Input} from '../../common/FormControls.jsx';
 import * as utils from '../../common/utils.js';
-import ActionButton from '../ActionButtonNew.jsx';
+import ActionButton from '../../common/ActionButtonNew.jsx';
 
 const PasswordPolicyForm = props => {
   const {handleSubmit, updateState, pristine, reset, submitting, initialValues, index, containerState} = props;

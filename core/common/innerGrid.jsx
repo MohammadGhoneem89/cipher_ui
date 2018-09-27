@@ -1,5 +1,5 @@
 import React from 'react';
-import * as utils from '../common/utils.js';
+import * as utils from './utils.js';
 import Pagination from '../components/paginator.jsx';
 import TableCell from './TableCell.jsx';
 

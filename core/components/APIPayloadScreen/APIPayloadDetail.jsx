@@ -4,17 +4,17 @@ import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from '../actions/generalAction';
-import * as connts from '../constants/Communication.js';
-import StatusBar from './StatusBar.jsx';
-import QRCodeJquery from './QRCodeJquery.jsx';
-import ActionButton from './ActionButtonNew.jsx';
-import * as constants from '../constants/Communication.js';
-import * as requestCreator from '../common/request.js';
-import * as utils from '../common/utils.js';
-import { baseUrl } from '../constants/Communication.js';
+import * as actions from '../../actions/generalAction';
+import * as connts from '../../constants/Communication.js';
+import StatusBar from '../../common/StatusBar.jsx';
+import QRCodeJquery from '../../common/QRCodeJquery.jsx';
+import ActionButton from '../../common/ActionButtonNew.jsx';
+import * as constants from '../../constants/Communication.js';
+import * as requestCreator from '../../common/request.js';
+import * as utils from '../../common/utils.js';
+import { baseUrl } from '../../constants/Communication.js';
 import JSONPretty from 'react-json-pretty';
-import * as toaster from '../common/toaster.js';
+import * as toaster from '../../common/toaster.js';
 
 
 

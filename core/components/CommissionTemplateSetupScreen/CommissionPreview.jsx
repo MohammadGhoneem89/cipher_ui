@@ -6,7 +6,7 @@ import * as actions from '../../actions/generalAction';
 import * as utils from '../../common/utils.js';
 import Portlet from '../../common/Portlet.jsx';
 import * as Loaders from '../../common/loaders.jsx';
-import Table from '../../standard/Datatable.jsx';
+import Table from '../../common/Datatable.jsx';
 import * as Communication from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 

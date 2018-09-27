@@ -5,7 +5,7 @@ import {SubmissionError} from 'redux-form';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import Portlet from '../../common/Portlet.jsx';
-import ActionButton from '../ActionButtonNew.jsx';
+import ActionButton from '../../common/ActionButtonNew.jsx';
 import PasswordPolicyForm from './PasswordPolicyForm.jsx';
 
 class PasswordPolicy extends React.Component {

@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import * as utils from './utils.js';
-import ActionButton from '../components/ActionButtonNew.jsx';
+import ActionButton from './ActionButtonNew.jsx';
 
 const Portlet = props => {
     const {title, noCollapse, actions, className, children, color = "blue", style} = props;

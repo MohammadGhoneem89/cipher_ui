@@ -6,10 +6,10 @@ import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import Portlet from '../../common/Portlet.jsx';
-import Table from '../../standard/Datatable.jsx';
+import Table from '../../common/Datatable.jsx';
 import UserFilterForm from './UserFilterForm.jsx';
 import * as utils from '../../common/utils.js';
-import ActionButton from '../ActionButtonNew.jsx';
+import ActionButton from '../../common/ActionButtonNew.jsx';
 
 
 class UserSearchContainer extends React.Component {

@@ -2,15 +2,15 @@ import React from 'react';
 import {reduxForm} from 'redux-form';
 import 'react-dropzone-component/styles/filepicker.css'
 import '../../../node_modules/dropzone/dist/min/dropzone.min.css';
-import Table from '../../standard/Datatable.jsx';
-import FileUploader from '../../components/FileUploader.jsx';
+import Table from '../../common/Datatable.jsx';
+import FileUploader from '../../common/FileUploader.jsx';
 import Portlet from '../../common/Portlet.jsx';
 import ModalBox from '../../common/ModalBox.jsx';
 import * as utils from '../../common/utils.js';
 import * as requestCreator from '../../common/request.js';
 import * as constants from '../../constants/Communication.js';
 import validate from './validate';
-import ActionButton from '../../components/ActionButtonNew.jsx';
+import ActionButton from '../../common/ActionButtonNew.jsx';
 
 import {CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput} from '../../common/FormControls.jsx';
 

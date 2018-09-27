@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../../core/actions/generalAction';
 /*container specific imports*/
-import Table from '../../../core/standard/Datatable.jsx';
+import Table from '../../../core/common/Datatable.jsx';
 import * as utils from '../../../core/common/utils.js';
 import * as constants from '../../../core/constants/Communication.js';
 import * as requestCreator from '../../../core/common/request.js';
-import DateControl from '../../../core/components/DateControl.jsx'
+import DateControl from '../../../core/common/DateControl.jsx'
 
 class SampleListPage extends React.Component {
 

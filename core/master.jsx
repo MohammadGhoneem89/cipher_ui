@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 
 
 
-import * as actions from './core/actions/generalAction';
+import * as actions from './actions/generalAction';
 import { Router, Route, Link, browserHistory, IndexRoute } from 'react-router'
 import IdleTimer from 'react-idle-timer';
 
@@ -15,20 +15,20 @@ import IdleTimer from 'react-idle-timer';
 
 
 /*container specific imports*/
-import Bradecums from './core/standard/Bradecums.jsx';
-import Header from './core/standard/Header.jsx';
-import Sidebar from './core/standard/Sidebar.jsx';
-import Footer from './core/standard/Footer.jsx';
+import Bradecums from './common/Bradecums.jsx';
+import Header from './common/Header.jsx';
+import Sidebar from './common/Sidebar.jsx';
+import Footer from './common/Footer.jsx';
 import $ from 'jquery';
-import EMD from './core/components/errorMessage.jsx';
+import EMD from './common/errorMessage.jsx';
 /*global constants import*/
-import * as constants from './core/constants/Communication.js';
-import * as utils from './core/common/utils.js';
+import * as constants from './constants/Communication.js';
+import * as utils from './common/utils.js';
 
-import * as requestCreator from './core/common/request.js';
+import * as requestCreator from './common/request.js';
 import { Motion, spring } from 'react-motion';
-import config from './config';
-import auth from './core/auth/authenticator';
+import config from '../config';
+import auth from './auth/authenticator';
 
 class master extends React.Component {
 	constructor() {

@@ -7,12 +7,12 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../../../core/actions/generalAction';
 import * as constants from '../../../core/constants/Communication.js';
 import { baseUrl } from '../../../core/constants/Communication.js';
-import QRCodeJquery from '../../../core/components/QRCodeJquery.jsx';
-import ActionButton from '../../../core/components/ActionButtonNew.jsx';
+import QRCodeJquery from '../../../core/common/QRCodeJquery.jsx';
+import ActionButton from '../../../core/common/ActionButtonNew.jsx';
 import * as requestCreator from '../../../core/common/request.js';
 import * as utils from '../../../core/common/utils.js';
-import Table from '../../../core/standard/Datatable.jsx';
-import Steps from '../../../core/components/Steps.jsx';
+import Table from '../../../core/common/Datatable.jsx';
+import Steps from '../../../core/common/Steps.jsx';
 import { isThisSecond } from 'date-fns';
 
 
