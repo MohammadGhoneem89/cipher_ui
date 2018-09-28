@@ -2,10 +2,7 @@
 import React from 'react';
 import master from './master.jsx';
 import {browserHistory, IndexRoute, Route, Router} from 'react-router';
-/*container imports*/
 import Login from './components/AuthenticationScreens/Login.jsx';
-
-
 import notification from './containers/Notifications.jsx';
 import auth from './auth/authenticator';
 import EmailTemplateSearch from './components/EmailTemplateSearchScreen/EmailTemplateSearchContainer.jsx';
@@ -17,7 +14,6 @@ import GroupSetup from './components/GroupSetupScreen/GroupSetupContainer.jsx';
 import UserSearch from './components/UserSearchScreen/UserSearchContainer.jsx';
 import UserSetup from './components/UserSetupScreen/UserSetupContainer.jsx';
 import WorkingCalendar from './components/WorkingCalendar/WorkingCalContainer.jsx';
-
 import ChangePassword from './components/AuthenticationScreens/changePassword.jsx';
 import PasswordPolicy from './components/PasswordPolicyScreen/PasswordPolicyContainer.jsx';
 import PickupListSearch from './components/PickupListSearchScreen/PickupListSearchContainer.jsx';
