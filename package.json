@@ -4,9 +4,12 @@
   "description": "abc",
   "main": "index.js",
   "scripts": {
-    "precloneCore": "mkdirp temp",
-    "cloneCore": "cd temp && git clone -b master https://github.com/Avanza-Innovations/cipher_ui.git",
-    "clean": " cd temp/ && rimraf test1 test2",
+    "build:core": "npm-run-all core:*",
+    "precore:clone": "mkdirp temp",
+    "core:clone": "cd temp && git clone -b master https://github.com/Avanza-Innovations/cipher_ui.git",
+    "core:clean": "rimraf core",
+    "core:copy": "cd temp/cipher_ui/ && cpy ./core ../../ --parents",
+    "postcore:copy": "rimraf temp",
     "start": "webpack-dev-server --port 3005 --hot --host 0.0.0.0",
     "prod": "webpack-dev-server --port 3005 --hot --host 10.65.11.14"
   },
