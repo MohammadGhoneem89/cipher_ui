@@ -499,6 +499,7 @@ export default {
   sampleDetail: {
     data: {
     }
-  }
+  },
+  fetchPasswordPolicy: {}
 }
 
