@@ -829,5 +829,43 @@ module.exports = {
 
   Buyer_Heading: "Buyer Dashboard",
   Merchant_Heading: "Merchant Dashboard",
-  RewardsProvider_Heading: "Rewards Provider Dashboard"
+  RewardsProvider_Heading: "Rewards Provider Dashboard",
+
+  policyType : "Policy Type",
+  InitiatePending: "Initiating",
+  CancelPending: "Cancelling",
+  EventListFilters: "Event List Filters",
+  EventList: "Registered Event List",
+  DatasourceListFilters:"Datasource List Filters",
+  DatasourceList: "Datasource List",
+  EL_DataSource:"Data Source",
+  EL_Dispatcher:"Dispatcher",
+  EVNTL_EVENTNAME:"Event Name",
+  EVNTL_DATASOURCE:"Event DataSource",
+  EVNTL_DIPATCHER:"Event Dispatcher",
+  EVNTL_ISACTIVE: "Active",
+  EVNTL_CREATEDBY:"Created By",
+
+  DL_DataSource:"Data Source Name",
+  DL_Function:"Function",
+  DL_FilePath:"File Path",
+
+  AddUpdateDatasource: "Add / Update Datasource",
+
+  AddUpdateDataEventsRules:"Event Rules Details",
+  AddUpdateDatasourceRules:"Datasource Defination",
+  AddUpdateDatasourceFilters:"Add / Update Datasource Fiters",
+  AddUpdateEventListFilters:"Event Details",
+  EAU_EventName:"Event Name",
+  EAU_Datasource:"Data Source",
+  EAU_Dispatcher:"Dispatcher",
+  EAU_EventTemplate:"Event Template",
+  EAU_TemplateFields: "Field",
+  EAU_Operator: "Operator",
+  EAU_Value:"Value",
+  AddUpdateEventList:"Add / Update Event",
+  EAU_isActive:"is Active",
+  DSR_TemplateFields:"Field",
+  DSR_Type:"Type"
+
 };

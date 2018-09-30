@@ -627,7 +627,43 @@ module.exports = {
     {alias: "", key: "_id", type: "hiddenID"},
     {alias: "ESEARCH_entityName", key: "typeName", type: "string"},
     {alias: "ESEARCH_action", key: "actions", type: "action"}
+  ],
+
+  DatasourceListData: [
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "", key: "dataSourceName", type: "hiddenID"},
+    {alias: "DL_DataSource", key: "dataSourceName", type: "string"},
+    {alias: "DL_FilePath", key: "filePath", type: "string"},
+    {alias: "DL_Function", key: "sourceFunction" , type: "string"},
+    {alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  EventListData: [
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "", key: "eventName", type: "hiddenID"},
+    {alias: "EVNTL_EVENTNAME", key: "eventName", type: "string"},
+    {alias: "EVNTL_DATASOURCE", key: "dataSource", type: "string"},
+    {alias: "EVNTL_DIPATCHER", key: "dipatcher" , type: "string"},
+    {alias: "EVNTL_ISACTIVE", key: "isActive", type: "cbDisabled"},
+    {alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  EventRules:[
+
+    {alias: "", key: "field", type: "hiddenID"},
+    {alias: "EAU_EventTemplate", key: "sourceEvent", type: "string"},
+    {alias: "EAU_TemplateFields", key: "field" , type: "string"},
+    {alias: "EAU_Operator", key: "operator", type: "string"},
+    {alias: "EAU_Value", key: "value", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  DataSourceRules:[
+    {alias: "", key: "field", type: "hiddenID"},
+    {alias: "DSR_TemplateFields", key: "fieldName" , type: "string"},
+    {alias: "DSR_Type", key: "type", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
   ]
+
 };
 
 

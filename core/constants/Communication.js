@@ -108,5 +108,14 @@ module.exports = {
   getPickupList: baseUrl + "/API/UI/typeDataList",
   getPickupListDetail: baseUrl + "/API/UI/getTypeDataDetailByID",
   passwordPolicyDetail: baseUrl + "/API/UI/fetchAllPasswordPolicy",
-  updatePasswordPolicy: baseUrl + "/API/UI/updatePasswordPolicy"
+  updatePasswordPolicy: baseUrl + "/API/UI/updatePasswordPolicy",
+
+  getEventListData:baseUrl + "/API/UI/getEventRegistry",
+  getEventRegistryByID:baseUrl + "/API/UI/getEventRegistryByID",
+  getDispatcherList:baseUrl + "/API/UI/getDispatcherList",
+  upsertEventsList:baseUrl + "/API/UI/upsertEventRegistry",
+  getDataSourceByID:baseUrl + "/APII/UI/getdataSourceByID",
+  getDatasourceListData:baseUrl + "/API/UI/getdataSource",
+  upsertDataSource:baseUrl + "/APII/UI/upsertDataSource"
+
 };

@@ -37,6 +37,11 @@ import CommissionTemplateSearch
   from './components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
 import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
 import AuditLogList from './components/AuditLogScreen/auditLogList.jsx';
+import eventList from './components/eventService/eventList.jsx';
+import AddUpdateEventList from './components/eventService/addUpdateEvent.jsx';
+import DatasourceList from './components/dataSource/datasourceList.jsx';
+import AddUpdateDatasource from './components/dataSource/addUpdateDatasource.jsx';
+
 
 export default (
   <Router history={browserHistory}>
@@ -95,6 +100,13 @@ export default (
       <Route path="/orgSearch" component={OrgSearch}/>
       <Route path="/orgSetup" component={OrgSetup}/>
       <Route path="/orgSetup/:mode/:orgID" component={OrgSetup}/>
+
+      <Route path="/eventList" component={eventList}/>
+      <Route path="/editEventRegistry/:eventName" component={AddUpdateEventList}/>
+
+      <Route path="/datasourceList" component={DatasourceList}/>
+      <Route path="/editDatasource/:datasource" component={AddUpdateDatasource}/>
+
 
       {ApplicationsRoute}
     </Route>
