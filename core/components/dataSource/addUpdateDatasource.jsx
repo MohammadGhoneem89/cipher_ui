@@ -8,17 +8,11 @@ import * as actions from '../../actions/generalAction';
 
 
 /*container specific imports*/
-import TileUnit from '../../components/tileUnit.jsx';
-import Table from '../../standard/Datatable.jsx';
-import ExceptionTileUnit from '../../components/exceptionsTile.jsx'
-import BarChartExceptions from '../../components/barChart.jsx'
+import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
-import APIPayloadDetail from '../../components/APIPayloadDetail.jsx';
-
-
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
-import DateControl from '../../components/DateControl.jsx'
+
 
 
 class AddUpdateDatasource extends React.Component {

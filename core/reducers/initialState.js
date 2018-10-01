@@ -500,6 +500,32 @@ export default {
     data: {
     }
   },
-  fetchPasswordPolicy: {}
+  fetchPasswordPolicy: {},
+  EventList: {"action": "", "EventList": {"pageData": {"totalRecords": 0}}},
+  AddUpdateEventList: {
+    "action": "",
+    "data": {
+      "dispatcherListAll": [],
+      "datasourceListAll": [],
+      "eventData": {
+      }
+    }
+  },
+  DatasourceList: {"action": "", "datasourceList": {"pageData": {"totalRecords": 0}}},
+  AddUpdateDatasource: {
+    "action": "",
+    "data": {
+      "datasource": {
+      }
+    }
+  },
+  DispatchList: {"action": "", "dispatchList": {"pageData": {"totalRecords": 0}}},
+  AddUpdateDispatcher: {
+    "action": "",
+    "data": {
+      "dispatcher": {
+      }
+    }
+  }
 }
 
