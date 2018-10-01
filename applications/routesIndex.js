@@ -1,7 +1,9 @@
 import SampleCrudPage from './SampleApp/appRoutes';
 
 let routesIndex = {
-  ...SampleCrudPage
+  ...SampleCrudPage.authRoutes
 };
-
-export default routesIndex
+let unAuthRouteIndex ={
+  ...SampleCrudPage.unAuthRoutes
+};
+export default {routesIndex, unAuthRouteIndex}

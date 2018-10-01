@@ -49,7 +49,7 @@ export default (
     <Route path="/Locked" component={Locked} onEnter={isAuthorized}/>
     <Route path="/cipher/login" component={Login} onEnter={isAuthorized}/>
     <Route path="/blockChainViewer/:blockChainID" component={BlockchainViewerQR} onEnter={isAuthorized}/>
-
+    {ApplicationsRoute.unAuthRouteIndex}
     <Route component={master} onEnter={requireAuth}>
       {/*<IndexRoute component={blockchainWorkboard}/>*/}
       <Route path="/blockchain" component={blockchainWorkboard}/>
@@ -108,7 +108,7 @@ export default (
       <Route path="/editDatasource/:datasource" component={AddUpdateDatasource}/>
 
 
-      {ApplicationsRoute}
+      {ApplicationsRoute.routesIndex}
     </Route>
   </Router>
 );
