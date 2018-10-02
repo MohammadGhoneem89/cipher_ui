@@ -41,6 +41,7 @@ import eventList from './components/eventService/eventList.jsx';
 import AddUpdateEventList from './components/eventService/addUpdateEvent.jsx';
 import DatasourceList from './components/dataSource/datasourceList.jsx';
 import AddUpdateDatasource from './components/dataSource/addUpdateDatasource.jsx';
+import NotFound from "./components/NotFound.jsx";
 
 
 export default (
@@ -110,6 +111,7 @@ export default (
 
       {ApplicationsRoute.routesIndex}
     </Route>
+    <Route path="*" components={NotFound}/>
   </Router>
 );
 

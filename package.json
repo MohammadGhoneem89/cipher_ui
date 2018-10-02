@@ -6,7 +6,7 @@
   "scripts": {
     "build:core": "npm-run-all core:*",
     "precore:clone": "mkdirp temp",
-    "core:clone": "cd temp && git clone -b master https://github.com/Avanza-Innovations/cipher_ui.git",
+    "core:clone": "cd temp && git clone -b core https://github.com/Avanza-Innovations/cipher_ui.git",
     "core:clean": "rimraf core",
     "core:copy": "cd temp/cipher_ui/ && cpy ./core ../../ --parents",
     "postcore:copy": "rimraf temp",
@@ -73,9 +73,11 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
+    "cpy-cli": "^2.0.0",
     "css-loader": "^0.28.7",
     "datatables.net": "^1.10.16",
     "jquery": "^3.2.1",
+    "mkdirp": "^0.5.1",
     "npm-run-all": "^4.1.3",
     "rimraf": "^2.6.2"
   }
