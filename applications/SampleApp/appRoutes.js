@@ -1,10 +1,10 @@
 import React from 'react';
 import {Route, Router} from 'react-router';
-import sampleDashboard from './containers/SampleDashboard.jsx';
-import sampleDashboardType2 from './containers/SampleDashboardType2.jsx';
-import SampleListPage from './containers/SampleListPage.jsx';
-import SampleViewPage from './containers/SampleViewPage.jsx';
-import SampleCrudPage from './containers/SampleCrudPage.jsx';
+import sampleDashboard from './components/SampleDashboard.jsx';
+import sampleDashboardType2 from './components/SampleDashboardType2.jsx';
+import SampleListPage from './components/SampleListPage.jsx';
+import SampleViewPage from './components/SampleViewPage.jsx';
+import SampleCrudPage from './components/SampleCrudPage.jsx';
 import Locked from "../../core/components/AuthenticationScreens/Locked.jsx";
 import Login from "../../core/components/AuthenticationScreens/Login.jsx";
 

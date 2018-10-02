@@ -3,7 +3,7 @@ import React from 'react';
 import master from './master.jsx';
 import {browserHistory, IndexRoute, Route, Router} from 'react-router';
 import Login from './components/AuthenticationScreens/Login.jsx';
-import notification from './containers/Notifications.jsx';
+import notification from './components/Notifications.jsx';
 import auth from './auth/authenticator';
 import EmailTemplateSearch from './components/EmailTemplateSearchScreen/EmailTemplateSearchContainer.jsx';
 import EmailTemplateSetup from './components/EmailTemplateSetupScreen/EmailTemplateSetupContainer.jsx';
