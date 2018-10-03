@@ -4,8 +4,7 @@ FROM node:6.9.5
 WORKDIR /usr/src/app
 
 # Install app dependencies
-#COPY package.json .
-
+COPY package.json .
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -20,6 +19,8 @@ WORKDIR /usr/src/app
 # Bundle app source
 COPY . .
 
-EXPOSE 3000
+RUN npm install
+
+EXPOSE 3005
 CMD [ "npm", "start"]
 
