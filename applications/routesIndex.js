@@ -1,14 +1,15 @@
 import React from 'react';
-import {Router} from 'react-router';
-import SampleCrudPage from './SampleApp/appRoutes';
+import SampleAppRputes from './SampleApp/appRoutes';
 
 
-let routesIndex = <Router>
-    {[...SampleCrudPage.authRoutes.props.children]}
-  </Router>;
+let routesIndex =
+    [
+      SampleAppRputes.authRoutes.props.children
+    ];
 
-let unAuthRouteIndex = <Router>
-    {[...SampleCrudPage.unAuthRoutes.props.children]}
-  </Router>;
+let unAuthRouteIndex =
+    [
+      SampleAppRputes.unAuthRoutes.props.children
+    ];
 
 export default {routesIndex, unAuthRouteIndex}
