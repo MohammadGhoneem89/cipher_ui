@@ -1,15 +1,15 @@
 import React from 'react';
-import SampleAppRputes from './SampleApp/appRoutes';
+import SampleAppRoutes from './SampleApp/appRoutes';
 
 
 let routesIndex =
     [
-      SampleAppRputes.authRoutes.props.children
+      SampleAppRoutes.authRoutes.props.children
     ];
 
 let unAuthRouteIndex =
     [
-      SampleAppRputes.unAuthRoutes.props.children
+      SampleAppRoutes.unAuthRoutes.props.children
     ];
 
 export default {routesIndex, unAuthRouteIndex}
