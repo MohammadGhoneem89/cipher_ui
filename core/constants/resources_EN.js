@@ -866,6 +866,10 @@ module.exports = {
   AddUpdateEventList:"Add / Update Event",
   EAU_isActive:"is Active",
   DSR_TemplateFields:"Field",
-  DSR_Type:"Type"
-
+  DSR_Type:"Type",
+  EVNTL_ID:"Request ID",
+  EVNTL_Date:"Event Date",
+  EVNTL_DispatchDate:"Dispatch Date",
+  EL_Error:"Error",
+  EL_Status:"Status"
 };

@@ -638,21 +638,31 @@ module.exports = {
     {alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string"},
     {alias: "EL_actions", key: "actions", type: "action"}
   ],
+  DispatchQueueData:[
+    {alias: "", key: "internalid", type: "hiddenID"},
+    {alias: "EVNTL_ID", key: "internalid", type: "string"},
+    {alias: "EVNTL_EVENTNAME", key: "sourceevent", type: "string"},
+    {alias: "EVNTL_DIPATCHER", key: "dispatcher" , type: "string"},
+    {alias: "EVNTL_Date", key: "createdon", type: "string"},
+    {alias: "EVNTL_DispatchDate", key: "updatedon", type: "string"},
+    {alias: "EL_Error", key: "error", type: "string"},
+    {alias: "EL_Status", key: "status", type: "statusLabel"}
+  ],
   EventListData: [
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
     {alias: "", key: "eventName", type: "hiddenID"},
     {alias: "EVNTL_EVENTNAME", key: "eventName", type: "string"},
     {alias: "EVNTL_DATASOURCE", key: "dataSource", type: "string"},
-    {alias: "EVNTL_DIPATCHER", key: "dipatcher" , type: "string"},
+    {alias: "EVNTL_DIPATCHER", key: "dipatcher", type: "string"},
     {alias: "EVNTL_ISACTIVE", key: "isActive", type: "cbDisabled"},
     {alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string"},
     {alias: "EL_actions", key: "actions", type: "action"}
   ],
-  EventRules:[
+  EventRules: [
 
     {alias: "", key: "field", type: "hiddenID"},
     {alias: "EAU_EventTemplate", key: "sourceEvent", type: "string"},
-    {alias: "EAU_TemplateFields", key: "field" , type: "string"},
+    {alias: "EAU_TemplateFields", key: "field", type: "string"},
     {alias: "EAU_Operator", key: "operator", type: "string"},
     {alias: "EAU_Value", key: "value", type: "string"},
     {alias: "EL_actions", key: "actions", type: "action"}

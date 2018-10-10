@@ -1,7 +1,5 @@
 /*standard imports*/
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
