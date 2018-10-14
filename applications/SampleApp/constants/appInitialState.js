@@ -62,5 +62,6 @@ export default {
   sampleDetail: {
     data: {
     }
-  }
+  },
+  blockchainAccountList: {}
 }

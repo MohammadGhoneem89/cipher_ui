@@ -8,5 +8,7 @@ module.exports = {
   getSampleDropDownList: baseUrl + "/SIMU/sampleDropDownListData",
   getSampleListData: baseUrl + "/SIMU/getSampleListPageData",
   getSampleViewPageData: baseUrl + "/SIMU/getSampleViewPageData",
-  getSampleRecordByID: baseUrl + "/SIMU/getSampleRecordByID"
+  getSampleRecordByID: baseUrl + "/SIMU/getSampleRecordByID",
+  getBlockchainAccountList: baseUrl + "/API/SampleApp/getAccountList",
+  updateBlockchainAccountList: baseUrl + "/API/SampleApp/updateAccountList"
 };

@@ -37,5 +37,9 @@ module.exports ={
   sample_Label1: "Label 1",
   sample_Label2: "Label 2",
   sample_Label3: "Label 3",
-  sample_Label4: "Label 4"
+  sample_Label4: "Label 4",
+  SampleBlockchain_AccountInfoInsert: "Insert Account Information",
+  SampleBlockchain_AccountList: "Account List",
+  SampleBlockchain_AccountName: "Name",
+  SampleBlockchain_AccountBalance: "Balance"
 };

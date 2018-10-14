@@ -42,5 +42,9 @@ module.exports = {
     {alias: "SampleCrud_Grid_Container", key: "container", type: 'string'},
     {alias: "SampleCrud_Grid_Action", key: "actions", type: "action"}
 
-  ]
+  ],
+  SampleBlockchain_AccountList: [
+    {alias: "SampleBlockchain_AccountName", key: "accountName", type: 'string'},
+    {alias: "SampleBlockchain_AccountBalance", key: "accountBalance", type: "string"}
+  ],
 };

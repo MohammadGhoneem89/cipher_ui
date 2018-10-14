@@ -39,8 +39,8 @@ import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/
 import AuditLogList from './components/AuditLogScreen/auditLogList.jsx';
 import eventList from './components/eventService/eventList.jsx';
 import AddUpdateEventList from './components/eventService/addUpdateEvent.jsx';
-import DatasourceList from './components/dataSource/datasourceList.jsx';
-import AddUpdateDatasource from './components/dataSource/addUpdateDatasource.jsx';
+import DataSourceList from './components/dataSource/datasourceList.jsx';
+import AddUpdateDataSource from './components/dataSource/addUpdateDatasource.jsx';
 import NotFound from "./components/NotFound.jsx";
 
 
@@ -105,8 +105,8 @@ export default (
       <Route path="/eventList" component={eventList}/>
       <Route path="/editEventRegistry/:eventName" component={AddUpdateEventList}/>
 
-      <Route path="/datasourceList" component={DatasourceList}/>
-      <Route path="/editDatasource/:datasource" component={AddUpdateDatasource}/>
+      <Route path="/datasourceList" component={DataSourceList}/>
+      <Route path="/editDatasource/:datasource" component={AddUpdateDataSource}/>
 
 
       {ApplicationsRoute.routesIndex}
