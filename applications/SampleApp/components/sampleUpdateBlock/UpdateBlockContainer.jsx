@@ -81,13 +81,15 @@ class UpdateBlockContainer extends React.Component {
       [pair[0]]: pair[1],
     }), {});
     console.log(data);
-    e.target.reset();
 
     let request = {
       action: "UpdateBlockchainAccountList",
       data
     };
-    this.props.actions.generalProcess(constants.updateBlockchainAccountList, request);
+    this.props.actions.reduxFormProcess(constants.updateBlockchainAccountList, request)
+      .then(result=>{
+       e.target.reset();
+      });
   }
 
   clearFields() {
