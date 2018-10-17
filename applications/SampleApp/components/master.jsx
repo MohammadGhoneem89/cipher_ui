@@ -16,7 +16,7 @@ class OrgSearchContainer extends React.Component {
 
   render() {
     return <div>
-      <a href="https://drive.google.com/open?id=1yZOEaWowg7CIUhVRqSSIeWF1wjx9X7jQ"  target="_blank" style={{"fontSize": "20px"}}>Download the guide</a>
+      <a href="https://drive.google.com/drive/folders/1RNkLklihGzQpCFli-ED7n1Hbjyt66g3H?usp=sharing"  target="_blank" style={{"fontSize": "20px"}}>Download the guide</a>
       {this.props.children}
       </div>;
   }
