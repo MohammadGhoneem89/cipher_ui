@@ -50,8 +50,8 @@ module.exports = {
   getworkingCalendarDetail: baseUrl + "/SIMU/workingCalendarDetail",
   workingCalendarUpdate: baseUrl + "/SIMU/workingCalendarUpdate",
   uploadImg: baseUrl + "/uploadImg",
-  uploadFile: baseUrl + "/uploadFile",
-  getUploadedFile: baseUrl + "/getUploadedFile",
+  uploadFile: baseUrl + "/uploadFile/local",
+  uploadFileFPS: baseUrl + "/uploadFile/fps",
   getAuditLogListData: baseUrl + "/API/UI/auditLogList",
   getAuditLogDetail: baseUrl + "/API/UI/auditLogDetail",
 
