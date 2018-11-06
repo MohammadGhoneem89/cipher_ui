@@ -103,7 +103,8 @@ class AddUpdateEventList extends React.Component {
 
     componentWillMount() {
 
-
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['EAU_OPERATOR']));
+        this.props.actions.generalProcess(constants.getEventRegistryByID, this.getRequest());
 
     }
     searchCallBack(keyWord) {
@@ -261,8 +262,7 @@ class AddUpdateEventList extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['EAU_OPERATOR']));
-        this.props.actions.generalProcess(constants.getEventRegistryByID, this.getRequest());
+
     }
     formSubmit() {
         let activeStatus = $("#isActive").is(":checked");
@@ -353,6 +353,7 @@ class AddUpdateEventList extends React.Component {
     render() {
 
         //alert(this.state.isActive)
+        if(this.props.typeData && this.props.typeDataPage)
         return (
             <div>
                 <div className="row">

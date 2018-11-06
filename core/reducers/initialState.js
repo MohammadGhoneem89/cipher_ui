@@ -456,6 +456,7 @@ export default {
       }
     }
   },
+  EventDispatcherStatus: {"action": "", "dispatchList": {"pageData": {"totalRecords": 0}}},
   DispatchList: {"action": "", "dispatchList": {"pageData": {"totalRecords": 0}}},
   AddUpdateDispatcher: {
     "action": "",

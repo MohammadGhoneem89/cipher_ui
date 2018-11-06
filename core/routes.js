@@ -33,15 +33,21 @@ import ApplicationsRoute from '../applications/routesIndex';
 import Locked from './components/AuthenticationScreens/Locked.jsx';
 import FileTemplateSearch from './components/FileTemplateSearchScreen/FileTemplateSearchContainer.jsx';
 import FileTemplateSetup from './components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx';
-import CommissionTemplateSearch
-  from './components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
+import CommissionTemplateSearch from './components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
 import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
 import AuditLogList from './components/AuditLogScreen/auditLogList.jsx';
+
+import NotFound from "./components/NotFound.jsx";
+
 import eventList from './components/eventService/eventList.jsx';
 import AddUpdateEventList from './components/eventService/addUpdateEvent.jsx';
 import DataSourceList from './components/dataSource/datasourceList.jsx';
 import AddUpdateDataSource from './components/dataSource/addUpdateDatasource.jsx';
-import NotFound from "./components/NotFound.jsx";
+import DispatchQueue from './components/dispatchSource/DispatchQueue.jsx'
+
+import HyperledgerBlockSearchScreen from './components/hyperledger/BlockSearchScreen/BlockSearchScreenContainer.jsx';
+import HyperledgerHashSearchScreen from './components/hyperledger/HashSearchScreen/HashSearchScreenContainer.jsx';
+import HyperledgerWorkboard from './components/hyperledger/blockchainWorkboard.jsx';
 
 
 export default (
@@ -73,6 +79,16 @@ export default (
       <Route path="/cipher/consortiums/:consortiumID/smartContracts/:smartContactID" component={SmartContract}/>
       <Route path="/cipher/:consortiumID/smartContractFiles/:smartContractIndex" component={SmartContractFileViewer}/>
 
+
+
+
+			<Route path="/hyperledger/blockSearch" component={HyperledgerBlockSearchScreen}/>
+			<Route path="/hyperledger/blockSearch/:blockNumber" component={HyperledgerBlockSearchScreen}/>
+			<Route path="/hyperledger/hashSearch" component={HyperledgerHashSearchScreen}/>
+			<Route path="/hyperledger/hashSearch/:hash" component={HyperledgerHashSearchScreen}/>
+      <Route path="/hyperledger/workboard" component={HyperledgerWorkboard}/>
+
+
       <Route path="/pickupListSearch" component={PickupListSearch}/>
       <Route path="/pickupListSetup" component={PickupListSetup}/>
       <Route path="/pickupListSetup/edit/:pickupListID" component={PickupListSetup}/>
@@ -102,11 +118,16 @@ export default (
       <Route path="/orgSetup" component={OrgSetup}/>
       <Route path="/orgSetup/:mode/:orgID" component={OrgSetup}/>
 
+
+
+
       <Route path="/eventList" component={eventList}/>
       <Route path="/editEventRegistry/:eventName" component={AddUpdateEventList}/>
-
+      <Route path="/dispatchQueue" component={DispatchQueue}/>
       <Route path="/datasourceList" component={DataSourceList}/>
       <Route path="/editDatasource/:datasource" component={AddUpdateDataSource}/>
+
+
 
 
       {ApplicationsRoute.routesIndex}
@@ -124,8 +145,6 @@ function requireAuth(nextState, replace) {
       state: {nextPathname: nextState.location.pathname}
     })
   }
-
-
 }
 
 function isAuthorized(nextState, replace) {

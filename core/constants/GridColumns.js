@@ -567,6 +567,21 @@ module.exports = {
     {alias: "BWB_Size", key: "size", type: "string"},
     {alias: "BLTLP_GridTitle", key: "noOfTransactions", type: "string"},
   ],
+  blockchainWorkBoardHyperledger: [
+    {alias: "", key: "number", type: "hiddenID"},
+    {alias: "BTL_blockNumber", key: "blockNumber", type: "hyperlink", url: '/hyperledger/blockSearch'},
+    {alias: "BWB_Hash", key: "blockHash", type: "string"},
+    {alias: "BWB_Time", key: "timestamp", type: "string"},
+    {alias: "BLTLP_GridTitle", key: "noOfTransactions", type: "string"},
+  ],  
+  blockTransactionsHyperledger: [
+    {alias: "", key: "blockHash", type: "hiddenID"},
+    {alias: "BTL_hash", key: "blockHash", type: "string"},
+    {alias: "BTL_nonce", key: "nonce", type: "string"},
+    {alias: "BTL_from", key: "from", type: 'string'},
+    {alias: "BTL_value", key: "value", type: "string"},
+    {alias: "BWB_Action", key: "actions", type: "action"}
+  ],
 
   blockTransactionList: [
     {alias: "BTL_blockNumber", key: "blockNumber", type: "string"},

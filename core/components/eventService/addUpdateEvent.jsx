@@ -8,36 +8,41 @@ import * as actions from '../../actions/generalAction';
 
 
 /*container specific imports*/
+import TileUnit from '../../common/tileUnit.jsx';
 import Table from '../../common/Datatable.jsx';
+import BarChartExceptions from '../../common/barChart.jsx'
 import * as utils from '../../common/utils.js';
-
+import cloneDeep from 'lodash/cloneDeep';
 
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
+import DateControl from '../../common/DateControl.jsx'
 
+const stateParent = {
+    searchFilters: "",
+    currentPageNo: 1,
+    APIPayloadID: undefined,
+    selectedDatasource: [],
+    selectedDispatcher: [],
+    selectedDatasourceObj: [],
+    selectedDispatcherObj: [],
+    eventNames: [],
+    fields: [],
+    rules: [],
+    selectedDSObject: {},
+    selectedField: -1,
+    selectedEventNameID: -1,
+    isActive: false,
+    eventName: "",
+    blockSubmit: true
+}
 
 class AddUpdateEventList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            searchFilters: "",
-            currentPageNo: 1,
-            APIPayloadID: undefined,
-            selectedDatasource: [],
-            selectedDispatcher: [],
-            selectedDatasourceObj: [],
-            selectedDispatcherObj: [],
-            eventNames: [],
-            fields: [],
-            rules: [],
-            selectedDSObject: {},
-            selectedField: -1,
-            selectedEventNameID: -1,
-            isActive: false,
-            eventName: ""
-
-        };
+        
+        this.state = cloneDeep(stateParent)
         this.ActionHandlers = this.ActionHandlers.bind(this);
 
         this.addRow = this.addRow.bind(this);
@@ -63,63 +68,56 @@ class AddUpdateEventList extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
 
-        if (nextProps.selectedDatasource) {
+        if (this.props.datasource !== "NEWEVENT") {
 
-            this.setState({
-                selectedDatasource: nextProps.selectedDatasource,
-                isActive: nextProps.AddUpdateEventListData.eventData ? nextProps.AddUpdateEventListData.eventData.isActive || false : false
-            }, () => {
-                if (nextProps.selectedDatasource.length > 0) {
-                    this.getEventNameList(nextProps.selectedDatasource[0]);
-                } else {
-                    this.getEventNameList(0);
-                }
+            if (nextProps.selectedDatasource) {
 
-            });
-
-        }
-
-        if (nextProps.selectedDispatcher) {
-            this.setState({
-                selectedDispatcher: nextProps.selectedDispatcher,
-                selectedDispatcherObj: nextProps.AddUpdateEventListData.eventData ? nextProps.AddUpdateEventListData.eventData.dipatcher : null
-            });
-        }
-
-        if (nextProps.AddUpdateEventListData.eventData) {
-            if (!(this.state.rules.length > 0) && nextProps.AddUpdateEventListData.eventData.rule.length && nextProps.AddUpdateEventListData.eventData.rule.length > 0) {
                 this.setState({
-                    rules: nextProps.AddUpdateEventListData.eventData.rule
+                    selectedDatasource: nextProps.selectedDatasource,
+                    isActive: nextProps.AddUpdateEventListData.eventData ? nextProps.AddUpdateEventListData.eventData.isActive || false : false
+                }, () => {
+                    if (nextProps.selectedDatasource.length > 0) {
+                        this.getEventNameList(nextProps.selectedDatasource[0]);
+                    } else {
+                        this.getEventNameList(0);
+                    }
+
+                });
+
+            }
+
+            if (nextProps.selectedDispatcher) {
+                this.setState({
+                    selectedDispatcher: nextProps.selectedDispatcher,
+                    selectedDispatcherObj: nextProps.AddUpdateEventListData.eventData ? nextProps.AddUpdateEventListData.eventData.dipatcher : null
                 });
             }
-            this.setState({
-                eventName: nextProps.AddUpdateEventListData.eventData.eventName
-            });
 
+            if (nextProps.AddUpdateEventListData.eventData) {
+                if (nextProps.AddUpdateEventListData.eventData.rule && nextProps.AddUpdateEventListData.eventData.rule.length && nextProps.AddUpdateEventListData.eventData.rule.length > 0) {
+                    let rulelist = nextProps.AddUpdateEventListData.eventData.rule
+                    rulelist.forEach((item) => {
+                        item.actions = [{ label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+                    })
+                    this.setState({
+                        rules: rulelist
+                    });
+                }
+                this.setState({
+                    eventName: nextProps.AddUpdateEventListData.eventData.eventName
+                });
+
+            }
+        } else {
+            this.setState(cloneDeep(stateParent))
         }
+        
+        this.setState({ blockSubmit: false })
 
     }
 
     componentWillMount() {
-
-        this.setState({
-            searchFilters: "",
-            currentPageNo: 1,
-            APIPayloadID: undefined,
-            selectedDatasource: [],
-            selectedDispatcher: [],
-            selectedDatasourceObj: [],
-            selectedDispatcherObj: [],
-            eventNames: [],
-            fields: [],
-            rules: [],
-            selectedDSObject: {},
-            selectedField: -1,
-            selectedEventNameID: -1,
-            isActive: false,
-            eventName: ""
-        })
-
+        this.setState(cloneDeep(stateParent))
     }
     searchCallBack(keyWord) {
 
@@ -276,8 +274,10 @@ class AddUpdateEventList extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
+        this.setState({ ...stateParent })
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['EAU_OPERATOR']));
         this.props.actions.generalProcess(constants.getEventRegistryByID, this.getRequest());
+
     }
     formSubmit() {
         if (this.state.rules.length == 0) {
@@ -297,6 +297,7 @@ class AddUpdateEventList extends React.Component {
             "isActive": activeStatus
         }
         console.log(JSON.stringify(requestBody));
+        this.setState({ blockSubmit: true });
         this.props.actions.generalProcess(constants.upsertEventsList, requestBody);
     }
 
@@ -327,6 +328,7 @@ class AddUpdateEventList extends React.Component {
                 "operator": op,
                 "field": selectedField.fieldName,
                 "sourceEvent": ds.eventName,
+                "type": selectedField.type,
                 "actions": [{ label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
             }
             let litmus = this.containsObject(tupple, rows)
@@ -560,7 +562,7 @@ class AddUpdateEventList extends React.Component {
                                             <div className="form-group col-md-12">
                                                 <div className="col-md-12">
                                                     <div className="btn-toolbar pull-right">
-                                                        <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Save / Update")} </button>
+                                                        <button type="submit" className="btn green" disabled={this.state.blockSubmit} onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Save / Update")} </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -591,8 +593,8 @@ function mapStateToProps(state, ownProps) {
         AddUpdateEventListData: state.app.AddUpdateEventList.data,
         selectedDatasource: state.app.AddUpdateEventList.data.selectedDatasource,
         selectedDispatcher: state.app.AddUpdateEventList.data.selectedDispatcher,
-        typeDataPage: state.app.typeData.data ? state.app.typeData.data.EAU_OPERATOR : [],
-        typeData: state.app.typeData.data ? state.app.typeData.data : {},
+        typeDataPage: state.app.typeData.data ? (state.app.typeData.data.EAU_OPERATOR ? state.app.typeData.data.EAU_OPERATOR : []) : [],
+        typeData: state.app.typeData.data ? state.app.typeData.data : [],
         eventName: ownProps.params.eventName,
     };
 }

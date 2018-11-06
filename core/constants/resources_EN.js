@@ -871,5 +871,15 @@ module.exports = {
   EVNTL_Date:"Event Date",
   EVNTL_DispatchDate:"Dispatch Date",
   EL_Error:"Error",
-  EL_Status:"Status"
+  EL_Status:"Status",
+  BWB_Time:"Block Timestamp",
+  BWB_Type:"Tranx Type",
+  BWB_TimeStamp:"Blockchain Time",
+  BTL_channelID:"Channel",
+  BTL_Version:"Version",
+  BTL_MSP:"Provider",
+  BTL_TCERT:"Transaction Certificate",
+  BTL_Payload:"Chaincode PayLoad",
+  BTL_logData:"Orderer Logs",
+  NoRecordsFound:"No Records Found!"
 };

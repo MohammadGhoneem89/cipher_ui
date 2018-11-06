@@ -1,44 +1,47 @@
+'use strict';
 /*standard imports*/
 import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
-
+import cloneDeep from 'lodash/cloneDeep';
 
 /*container specific imports*/
+import TileUnit from '../../common/tileUnit.jsx';
 import Table from '../../common/Datatable.jsx';
+import BarChartExceptions from '../../common/barChart.jsx'
 import * as utils from '../../common/utils.js';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
+import DateControl from '../../common/DateControl.jsx'
 
-
-
+const parentState={
+    searchFilters: "",
+    currentPageNo: 1,
+    APIPayloadID: undefined,
+    selectedDatasource: [],
+    selectedDispatcher: [],
+    selectedDatasourceObj: [],
+    selectedDispatcherObj: [],
+    eventNames: [],
+    fields: [],
+    rules: [],
+    selectedDSObject: {},
+    selectedField: -1,
+    selectedEventNameID: -1,
+    isActive: false,
+    eventName: "",
+    dataSourceName: "",
+    sourceFunction: "",
+    filePath: ""
+}
 class AddUpdateDatasource extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            searchFilters: "",
-            currentPageNo: 1,
-            APIPayloadID: undefined,
-            selectedDatasource: [],
-            selectedDispatcher: [],
-            selectedDatasourceObj: [],
-            selectedDispatcherObj: [],
-            eventNames: [],
-            fields: [],
-            rules: [],
-            selectedDSObject: {},
-            selectedField: -1,
-            selectedEventNameID: -1,
-            isActive: false,
-            eventName: "",
-
-            dataSourceName: "",
-            sourceFunction: "",
-            filePath: ""
-
-        }
+        this.state = cloneDeep(parentState)
         this.ActionHandlers = this.ActionHandlers.bind(this);
         this.addRow = this.addRow.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
@@ -48,8 +51,6 @@ class AddUpdateDatasource extends React.Component {
         this.onChangeDatasource = this.onChangeDatasource.bind(this);
         this.onChangeFilepath = this.onChangeFilepath.bind(this);
         this.onChangeFunction = this.onChangeFunction.bind(this);
-
-
     }
 
     getRequest() {
@@ -57,21 +58,14 @@ class AddUpdateDatasource extends React.Component {
         var request = {
             "dataSourceName": this.props.datasource
         }
-        console.log(JSON.stringify(request))
+       
+        console.log(JSON.stringify(this.state))
         return request;
     }
-    componentWillMount() {
-        this.setState({
-            fields: [],
-            dataSourceName: "",
-            sourceFunction: "",
-            filePath: ""
 
-        });
-    }
     componentWillReceiveProps(nextProps) {
 
-        if (nextProps.AddUpdateDatasourceData.dataSourceName) {
+        if (this.props.datasource!=="NEWDATASOURCE" && nextProps.AddUpdateDatasourceData.dataSourceName) {
             if (nextProps.AddUpdateDatasourceData.sourceDataDefination.length && nextProps.AddUpdateDatasourceData.sourceDataDefination.length > 0) {
                 let ruleList = [];
                 nextProps.AddUpdateDatasourceData.sourceDataDefination.forEach(elem => {
@@ -86,6 +80,10 @@ class AddUpdateDatasource extends React.Component {
                     filePath: nextProps.AddUpdateDatasourceData.filePath
                 });
             }
+        } else {
+          
+            this.setState(cloneDeep(parentState));
+
         }
 
     }
@@ -109,11 +107,12 @@ class AddUpdateDatasource extends React.Component {
 
 
     componentDidMount() {
-
+        
         window.scrollTo(0, 0);
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DSR_TYPE']));
-        this.props.actions.generalProcess(constants.getDataSourceByID, this.getRequest());
-
+        
+            this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DSR_TYPE']));
+            this.props.actions.generalProcess(constants.getDataSourceByID, this.getRequest());
+        
     }
     formSubmit() {
 
@@ -370,7 +369,7 @@ AddUpdateDatasource.propTypes = {
 function mapStateToProps(state, ownProps) {
     return {
         AddUpdateDatasourceData: state.app.AddUpdateDatasource.data.datasource,
-        typeDataPage: state.app.typeData.data ? state.app.typeData.data.DSR_TYPE : [],
+        typeDataPage: state.app.typeData.data ? state.app.typeData.data.DSR_TYPE ? state.app.typeData.data.DSR_TYPE : [] : [],
         typeData: state.app.typeData.data ? state.app.typeData.data : {},
         datasource: ownProps.params.datasource,
     };

@@ -99,7 +99,7 @@ module.exports = {
   updateCollectionValueByKey: baseUrl + "/API/ePay/upsert",
   notificationViewed: baseUrl + "/API/UI/notificationViewed",
   getSLAWorkboardData: baseUrl + "/API/UI/getSLAData",
-
+  getblockchainWorkboardDataHF: baseUrl + "/API/Cipher/Query",
   getblockchainWorkboardData1: baseUrl + "/SIMU/1",
   getblockchainWorkboardData2: baseUrl + "/SIMU/2",
   getblockchainWorkboardData3: baseUrl + "/SIMU/3",
@@ -116,6 +116,6 @@ module.exports = {
   upsertEventsList:baseUrl + "/API/UI/upsertEventRegistry",
   getDataSourceByID:baseUrl + "/APII/UI/getdataSourceByID",
   getDatasourceListData:baseUrl + "/API/UI/getdataSource",
-  upsertDataSource:baseUrl + "/APII/UI/upsertDataSource",
-  getEventDispatcherStatus:baseUrl + "APII/UI/getEventDispatcherStatus"
+  upsertDataSource:baseUrl + "/API/UI/upsertDataSource",
+  getEventDispatcherStatus:baseUrl + "/APII/UI/getEventDispatcherStatus"
 };

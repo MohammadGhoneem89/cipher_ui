@@ -8,10 +8,14 @@ import * as actions from '../../actions/generalAction';
 
 import Portlet from '../../common/Portlet.jsx';
 /*container specific imports*/
+import TileUnit from '../../common/tileUnit.jsx';
 import Table from '../../common/Datatable.jsx';
+import BarChartExceptions from '../../common/barChart.jsx'
 import * as utils from '../../common/utils.js';
 
+
 import * as constants from '../../constants/Communication.js';
+import * as requestCreator from '../../common/request.js';
 import DateControl from '../../common/DateControl.jsx'
 
 
@@ -40,28 +44,29 @@ class EventList extends React.Component {
         let dispatcher = document.getElementById('dispatcher') == null ? "" : document.getElementById('dispatcher').value;
         let dataSource = document.getElementById('dataSource') == null ? "" : document.getElementById('dataSource').value;
 
-        let searchCriteria = {};
+        var searchCriteria = {
+        }
 
-        if (uuid !== "")
-            searchCriteria.uuid = uuid;
+        if (uuid != "")
+            searchCriteria.uuid = uuid
 
-        if (channel !== "")
-            searchCriteria.channel = channel;
+        if (channel != "")
+            searchCriteria.channel = channel
 
-        if (action !== "")
-            searchCriteria.action = action;
+        if (action != "")
+            searchCriteria.action = action
 
-        if (fromDate !== "")
+        if (fromDate != "")
             searchCriteria.fromDate = fromDate;
 
-        if (dispatcher !== "")
+        if (dispatcher != "")
             searchCriteria.dispatcherName = dispatcher;
 
-        if (dataSource !== "")
+        if (dataSource != "")
             searchCriteria.dataSourceName = dataSource;
 
 
-        this.setState({ searchFilters: searchCriteria });
+        this.setState({ searchFilters: searchCriteria })
 
         var request = {
             "action": "EventListData",

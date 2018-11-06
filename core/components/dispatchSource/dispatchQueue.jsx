@@ -13,12 +13,13 @@ import Table from '../../common/Datatable.jsx';
 import BarChartExceptions from '../../common/barChart.jsx'
 import * as utils from '../../common/utils.js';
 
+
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import DateControl from '../../common/DateControl.jsx'
 
 
-class DatasourceList extends React.Component {
+class DispatchQueue extends React.Component {
 
     constructor(props) {
         super(props);
@@ -40,7 +41,7 @@ class DatasourceList extends React.Component {
         let uuid = (document.getElementById('uuid') == null || document.getElementById('uuid') == undefined) ? "" : document.getElementById('uuid').value;
         let channel = document.getElementById('channel') == null ? "" : document.getElementById('channel').value;
         let action = document.getElementById('action') == null ? "" : document.getElementById('action').value;
-        let func = document.getElementById('func') == null ? "" : document.getElementById('func').value;
+        let dispatcher = document.getElementById('dispatcher') == null ? "" : document.getElementById('dispatcher').value;
         let dataSource = document.getElementById('dataSource') == null ? "" : document.getElementById('dataSource').value;
 
         var searchCriteria = {
@@ -58,8 +59,8 @@ class DatasourceList extends React.Component {
         if (fromDate != "")
             searchCriteria.fromDate = fromDate;
 
-        if (func != "")
-            searchCriteria.sourceFunction = func;
+        if (dispatcher != "")
+            searchCriteria.dispatcherName = dispatcher;
 
         if (dataSource != "")
             searchCriteria.dataSourceName = dataSource;
@@ -68,7 +69,7 @@ class DatasourceList extends React.Component {
         this.setState({ searchFilters: searchCriteria })
 
         var request = {
-            "action": "DatasourceListData",
+            "action": "DispatchQueueData",
             searchCriteria,
             "page": {
                 "currentPageNo": 1,
@@ -92,12 +93,11 @@ class DatasourceList extends React.Component {
     }
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.props.actions.generalProcess(constants.getDatasourceListData, this.getRequest());
-        this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/editDatasource/NEWDATASOURCE", "children": [] }] })
+        this.props.actions.generalProcess(constants.getEventDispatcherStatus, this.getRequest());
+        this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/editEventRegistry/NEWEVENT", "children": [] }] })
     }
     formSubmit() {
-
-        this.props.actions.generalProcess(constants.getDatasourceListData, this.getRequest());
+        this.props.actions.generalProcess(constants.getEventDispatcherStatus, this.getRequest());
     }
     pageChanged(pageNo) {
         if (pageNo != undefined) {
@@ -107,7 +107,7 @@ class DatasourceList extends React.Component {
             if (this.state.searchFilters == undefined) {
 
                 request = {
-                    "action": "DatasourceList",
+                    "action": "DispatchQueue",
                     "searchCriteria": {
                     },
                     "page": {
@@ -118,7 +118,7 @@ class DatasourceList extends React.Component {
             } else {
                 var searchCriteria = this.state.searchFilters
                 request = {
-                    "action": "DatasourceList",
+                    "action": "DispatchQueue",
                     searchCriteria,
                     "page": {
                         "currentPageNo": pageNo,
@@ -129,13 +129,13 @@ class DatasourceList extends React.Component {
 
             this.setState({ currentPageNo: pageNo })
 
-            this.props.actions.generalProcess(constants.getDatasourceListData, request);
+            this.props.actions.generalProcess(constants.getDispatchQueueData, request);
 
         }
     }
     clearFields() {
-        $('#DatasourceList').find('input:text').val('');
-        $('#DatasourceList').find('select').each(function () {
+        $('#DispatchQueue').find('input:text').val('');
+        $('#DispatchQueue').find('select').each(function () {
             $(this)[0].selectedIndex = 0;
         });
     }
@@ -143,7 +143,7 @@ class DatasourceList extends React.Component {
 
     render() {
 
-        if (this.props.DatasourceListData.data) {
+        if (this.props.DispatchQueueData.data) {
             return (
                 <div>
                     <div className="row">
@@ -151,13 +151,13 @@ class DatasourceList extends React.Component {
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
                                     <div className="caption">
-                                        <span className="caption-subject">{utils.getLabelByID("DatasourceListFilters")}</span></div>
+                                        <span className="caption-subject">{utils.getLabelByID("DispatchQueueFilters")}</span></div>
                                     <div className="tools">
                                         <a href="javascript:;" className="collapse" data-original-title title> </a>
                                     </div>
                                 </div>
                                 <div className="portlet-body">
-                                    <div className="form-body" id="DatasourceList">
+                                    <div className="form-body" id="DispatchQueue">
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <div className="row">
@@ -182,7 +182,7 @@ class DatasourceList extends React.Component {
 
                                                     <div className="col-md-6">
                                                         <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("DL_DataSource")}</label>
+                                                            <label className="control-label">{utils.getLabelByID("EL_DataSource")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
                                                             <input type="text" className="form-control" name="dataSource" id="dataSource" />
@@ -190,10 +190,10 @@ class DatasourceList extends React.Component {
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("DL_Function")}</label>
+                                                            <label className="control-label">{utils.getLabelByID("EL_Dispatcher")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="func" id="func" />
+                                                            <input type="text" className="form-control" name="dispatcher" id="dispatcher" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -216,10 +216,10 @@ class DatasourceList extends React.Component {
                         </div>
                     </div>
 
-                    <Portlet title={utils.getLabelByID("DatasourceList")} isPermissioned={true}
-                        actions={this.state.actions}>
-                        <Table  fontclass="" gridColumns={utils.getGridColumnByName("DatasourceListData")} gridData={this.props.DatasourceListData.data.searchResult}
-                            totalRecords={this.props.DatasourceListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
+                    <Portlet title={utils.getLabelByID("DispatchQueue")} isPermissioned={true}
+                        >
+                        <Table  fontclass="" gridColumns={utils.getGridColumnByName("DispatchQueueData")} gridData={this.props.DispatchQueueData.data.searchResult}
+                            totalRecords={this.props.DispatchQueueData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
                             pagination={true} pageChanged={this.pageChanged} export={false} search={true}
                             activePage={this.state.currentPageNo} />
                     </Portlet>
@@ -234,8 +234,8 @@ class DatasourceList extends React.Component {
     }
 }
 
-DatasourceList.propTypes = {
-    DatasourceListData: PropTypes.object,
+DispatchQueue.propTypes = {
+    DispatchQueueData: PropTypes.object,
     children: PropTypes.object,
 
 };
@@ -244,7 +244,7 @@ function mapStateToProps(state, ownProps) {
 
 
     return {
-        DatasourceListData: state.app.DatasourceList,
+        DispatchQueueData: state.app.EventDispatcherStatus,
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -252,5 +252,5 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-DatasourceList.displayName = "DatasourceList";
-export default connect(mapStateToProps, mapDispatchToProps)(DatasourceList);
+DispatchQueue.displayName = "DispatchQueue";
+export default connect(mapStateToProps, mapDispatchToProps)(DispatchQueue);
