@@ -1,13 +1,4 @@
 module.exports = {
-  sampleDashboardGrid: [
-    {alias: "", key: "objectID", type: "hiddenID"},
-    {alias: "sampleGrid_column1", key: "columnValue1", type: "image", width: "20%", url: ''},
-    {alias: "sampleGrid_column2", key: "columnValue2", type: "string"},
-    {alias: "sampleGrid_column3", key: "columnValue3", type: "string"},
-    {alias: "sampleGrid_column4", key: "columnValue4", type: "string"},
-    {alias: "sampleGrid_column5", key: "columnValue5", type: "string"},
-    {alias: "sampleGrid_column6", key: "columnValue6s", type: "string"}
-  ],
 
   sampleGridColumns: [
     {alias: "", key: "recordID", type: "hiddenID"},
@@ -20,6 +11,16 @@ module.exports = {
     {alias: "sampleGrid_status", key: "status", type: "statusLabel"},
     {alias: "sampleGrid_action", key: "actions", type: "action"}
   ],
+  sampleDashboardGrid: [
+    {alias: "", key: "objectID", type: "hiddenID"},
+    {alias: "sampleGrid_column1", key: "columnValue1", type: "image", width: "20%", url: ''},
+    {alias: "sampleGrid_column2", key: "columnValue2", type: "string"},
+    {alias: "sampleGrid_column3", key: "columnValue3", type: "string"},
+    {alias: "sampleGrid_column4", key: "columnValue4", type: "string"},
+    {alias: "sampleGrid_column5", key: "columnValue5", type: "string"},
+    {alias: "sampleGrid_column6", key: "columnValue6s", type: "string"}
+  ],
+
 
   sampleViewPageGridColumns: [
     {alias: "", key: "recordID", type: "hiddenID"},

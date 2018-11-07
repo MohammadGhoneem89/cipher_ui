@@ -10,5 +10,6 @@ module.exports = {
   getSampleViewPageData: baseUrl + "/SIMU/getSampleViewPageData",
   getSampleRecordByID: baseUrl + "/SIMU/getSampleRecordByID",
   getBlockchainAccountList: baseUrl + "/API/SampleApp/getAccountList",
-  updateBlockchainAccountList: baseUrl + "/API/SampleApp/updateAccountList"
+  updateBlockchainAccountList: baseUrl + "/API/SampleApp/updateAccountList",
+  getListingScreen : baseUrl + "/SIMU/APIListingScreen"
 };

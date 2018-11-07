@@ -10,8 +10,6 @@ import Locked from "../../core/components/AuthenticationScreens/Locked.jsx";
 import Login from "../../core/components/AuthenticationScreens/Login.jsx";
 import master from "./components/master.jsx";
 
-
-
 let authRoutes = <div>
   <Route component={master}>
     <Route path="/sampleDashboard" component={sampleDashboard}/>
