@@ -1,5 +1,5 @@
 import SampleAppENResources from '../SampleApp/constants/appENResources';
-import SampleAppENResources1 from '../SampleApp.1/constants/appENResources';
+import SampleAppENResources1 from '../SampleApp.2/constants/appENResources';
 
 let langResources = {
   //...SampleAppENResources,
