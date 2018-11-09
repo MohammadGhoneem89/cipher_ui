@@ -1,7 +1,9 @@
-import SampleAppENResources from '../SampleApp/constants/appENResources'
+import SampleAppENResources from '../SampleApp/constants/appENResources';
+import  IqraApp from '../IqraApp/constants/appENResources';
 
 let langResources = {
-  ...SampleAppENResources
+  ...SampleAppENResources,
+  ...IqraApp
 };
 
 module.exports = langResources;

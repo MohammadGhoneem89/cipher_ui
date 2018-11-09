@@ -1,15 +1,15 @@
 module.exports = {
 
   sampleGridColumns: [
-    {alias: "", key: "recordID", type: "hiddenID"},
-    {alias: "sampleGrid_column1", key: "columnValue1", type: "image", width: "20%", url: ''},
-    {alias: "sampleGrid_column2", key: "columnValue2", type: "string"},
-    {alias: "sampleGrid_column3", key: "columnValue3", type: "string"},
-    {alias: "sampleGrid_column4", key: "columnValue4", type: "string"},
-    {alias: "sampleGrid_column5", key: "columnValue5", type: "string"},
-    {alias: "sampleGrid_column6", key: "columnValue6", type: "epochDate"},
-    {alias: "sampleGrid_status", key: "status", type: "statusLabel"},
-    {alias: "sampleGrid_action", key: "actions", type: "action"}
+    // {alias: "", key: "_id", type: "hiddenID"},
+    { alias: "app1_docList_useCase", key: "useCase", type: "string" },
+    { alias: "app1_docList_route", key: "route", type: "string" },
+    { alias: "app1_docList_documentPath", key: "documentPath", type: "hyperlink" },
+    { alias: "app1_docList_createdAt", key: "createdAt", type: "string" },
+    { alias: "app1_docList_createdBy", key: "createdBy", type: "string" },
+    { alias: "app1_docList_isActive", key: "isActive", type: "cbDisabled" },
+    { alias: "app1_docList_isSimulated", key: "isSimulated", type: "cbDisabled" },
+    { alias: "app1_docList_actions", key: "actions", type: "action" }
   ],
   sampleDashboardGrid: [
     {alias: "", key: "objectID", type: "hiddenID"},

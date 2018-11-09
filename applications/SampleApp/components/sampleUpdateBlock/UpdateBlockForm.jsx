@@ -8,7 +8,6 @@ const UpdateBlockForm = ({submit}) => {
     formRef.reset();
   }
 
-
   return <form onSubmit={submit} ref={el => formRef = el}>
     <div className="row">
       <div className="col-md-6 ">
