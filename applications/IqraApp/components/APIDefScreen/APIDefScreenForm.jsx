@@ -15,7 +15,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems }) 
 
                 <div className="col-md-5">
                   <div className="form-group">
-                    <label className="control-label col-md-5" style={{textAlign:"left"}}>{utils.getLabelByID("APIDefScreen_route")}</label>
+                    <label className="control-label col-md-5" style={{ textAlign: "left" }}>{utils.getLabelByID("APIDefScreen_route")}</label>
                     <div className="col-md-7">
                       {/* {console.log(initialValues)} */}
                       <input type="text" className="form-control" name="route" defaultValue={initialValues.route} />
@@ -51,7 +51,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems }) 
 
                 <div className="col-md-5">
                   <div className="form-group">
-    
+
                     <label className="control-label col-md-5" style={{
                       textAlign: "left",
                       fontWeight: "normal"
@@ -181,11 +181,11 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems }) 
                         textAlign: "left",
                         fontWeight: "normal"
                       }}>{utils.getLabelByID("APIDefScreen_async")}</label>
-                       <div className="col-md-7">
+                      <div className="col-md-7">
 
-<input type="checkbox" name="isAsync" className="form-control" defaultChecked={initialValues.isAsync} />
+                        <input type="checkbox" name="isAsync" className="form-control" defaultChecked={initialValues.isAsync} />
 
-</div>
+                      </div>
                     </div>
                   </div>
 
@@ -386,23 +386,3 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems }) 
   );
 }
 export default APIDefScreenForm;
-
-
-// "APIDef_RequestMapping" : [ 
-  //             {
-  //                 "label" : "mappingName",
-  //                 "value" : "WASL Request"
-  //             }
-  //         ],
-  //         "APIDef_ResponseMapping" : [ 
-  //             {
-  //                 "label" : "mappingName",
-  //                 "value" : "WASL Response"
-  //             }
-  //         ],
-  //         "APIDef_simulatorResponse" : [ 
-  //             {
-  //                 "label" : "any",
-  //                 "value" : "object"
-  //             }
-  //         ]

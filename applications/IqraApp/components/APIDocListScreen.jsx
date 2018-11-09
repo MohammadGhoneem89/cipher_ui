@@ -14,7 +14,7 @@ class APIDocListScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { currentPageNo: 1, isLoading: true };
+    this.state = { currentPageNo: 1, isLoading: true , APIDocumentationList :{}};
     this.pageChanged = this.pageChanged.bind(this);
     this.fetchListData = this.fetchListData.bind(this);
     this.formSubmit = this.formSubmit.bind(this);
@@ -24,8 +24,10 @@ class APIDocListScreen extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.APIDocumentationList.data) {
+    console.log(nextProps.APIDocumentationList.data.searchResult)
+    if (nextProps.APIDocumentationList.data.searchResult) {
       this.setState({
+        APIDocumentationList : nextProps.APIDocumentationList.data.searchResult,
         isLoading: false
       });
     }
@@ -44,12 +46,10 @@ class APIDocListScreen extends React.Component {
   fetchListData(currentPageNo) {
     let toDate = $("#toDate").find("input").val();
     let fromDate = $("#fromDate").find("input").val();
-    let textbox = document.getElementById('textbox') == null ? "" : document.getElementById('textbox').value;
+     let textbox = document.getElementById('textbox') == null ? "" : document.getElementById('textbox').value;
 
     let filtersData = {
-      "fromDate": fromDate,
-      "toDate": toDate,
-      "textbox": textbox,
+     
     };
     let searchRequest = {
       "currentPageNo": currentPageNo || this.state.currentPageNo,
@@ -93,7 +93,8 @@ class APIDocListScreen extends React.Component {
                             <label className="control-label">{utils.getLabelByID("app1_docList_useCase")}</label>
                           </div>
                           <div className="form-group col-md-8">
-                            <input type="text" className="form-control" name="textbox" id="textbox" />
+                          {/* {console.log(this.state.APIDocumentationList.useCase)} */}
+                            <input type="text" className="form-control" name="useCase" id="textbox" />
                           </div>
                         </div>
                         <div className="col-md-6">
@@ -101,7 +102,7 @@ class APIDocListScreen extends React.Component {
                             <label className="control-label">{utils.getLabelByID("app1_docList_route")}</label>
                           </div>
                           <div className="form-group col-md-8">
-                            <input type="text" className="form-control" name="textbox" id="textbox" />
+                            <input type="text" className="form-control" name="route" id="textbox" />
                           </div>
                         </div>
                       </div>
@@ -111,7 +112,7 @@ class APIDocListScreen extends React.Component {
                             <label className="control-label">{utils.getLabelByID("app1_docList_createdBy")}</label>
                           </div>
                           <div className="form-group col-md-8">
-                            <input type="text" className="form-control" name="textbox" id="textbox" />
+                            <input type="text" className="form-control" name="createdBy" id="textbox" />
                           </div>
                         </div>
 
@@ -120,7 +121,7 @@ class APIDocListScreen extends React.Component {
                             <label className="control-label">{utils.getLabelByID("app1_docList_isSimulated")}</label>
                           </div>
                           <div className="form-group col-md-8">
-                            <input type="text" className="form-control" name="textbox" id="textbox" />
+                            <input type="text" className="form-control" name="isSimulated" id="textbox" />
                           </div>
                         </div>
 
@@ -130,7 +131,7 @@ class APIDocListScreen extends React.Component {
                             <label className="control-label">{utils.getLabelByID("app1_docList_isActive")}</label>
                           </div>
                           <div className="form-group col-md-8">
-                            <input type="text" className="form-control" name="textbox" id="textbox" />
+                            <input type="text" className="form-control" name="isActive" id="textbox" />
                           </div>
                         </div>
 
