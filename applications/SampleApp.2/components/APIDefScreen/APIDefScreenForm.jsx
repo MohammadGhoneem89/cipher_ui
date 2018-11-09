@@ -181,9 +181,11 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems }) 
                         textAlign: "left",
                         fontWeight: "normal"
                       }}>{utils.getLabelByID("APIDefScreen_async")}</label>
-                      <div className="mt-checkbox mt-checkbox-outline">
-                        <input type="checkbox" className="form-control" name="isAsync" defaultChecked={initialValues.isAsync} />
-                      </div>
+                       <div className="col-md-7">
+
+<input type="checkbox" name="isAsync" className="form-control" defaultChecked={initialValues.isAsync} />
+
+</div>
                     </div>
                   </div>
 
