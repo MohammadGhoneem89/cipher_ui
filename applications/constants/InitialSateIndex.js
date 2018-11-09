@@ -1,7 +1,7 @@
 import sampleAppInitialState from '../SampleApp/constants/appInitialState';
-import sampleAppInitialState1 from '../SampleApp.2/constants/appInitialState';
+import  IqraApp from '../IqraApp/constants/appInitialState';
 
 export default {
- // ...sampleAppInitialState,
- ...sampleAppInitialState1
+  ...sampleAppInitialState,
+ ...IqraApp
 }

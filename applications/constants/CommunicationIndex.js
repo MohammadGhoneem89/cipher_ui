@@ -1,6 +1,6 @@
 import SampleAppCommunication from '../SampleApp/constants/appCommunication';
-import SampleAppCommunication1 from '../SampleApp.2/constants/appCommunication';
+import IqraApp from '../IqraApp/constants/appCommunication';
 module.exports = {
-  // ...SampleAppCommunication,
-  ...SampleAppCommunication1
+  ...SampleAppCommunication,
+  ...IqraApp
 };
