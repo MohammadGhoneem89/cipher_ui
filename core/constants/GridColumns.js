@@ -682,13 +682,53 @@ module.exports = {
     {alias: "EAU_Value", key: "value", type: "string"},
     {alias: "EL_actions", key: "actions", type: "action"}
   ],
+  MappingListData: [
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "", key: "mappingName", type: "hiddenID"},
+    {alias: "MAU_RequestName", key: "mappingName", type: "string"},
+    {alias: "MAU_RequestType", key: "mappingType", type: "string"},
+    {alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  ApiListData: [
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "", key: "hiddenID", type: "hiddenID"},
+    {alias: "AAU_UseCase", key: "useCase", type: "string"},
+    {alias: "AAU_Route", key: "route", type: "string"},
+    {alias: "AAU_Doc", key: "hiddenID", type: 'hyperlinkNewTab', url: '/Documentation'},
+    {alias: "AAU_isActive", key: "isActive", type: "cbDisabled"},
+    {alias: "AAU_isSimulated", key: "isSimulated", type: "cbDisabled"},
+    {alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  
+  mappingConfig:[
+    {alias: "COM_SerialNo", key: "Sequence", type: "string"},
+    {alias: "MAU_incField", key: "IN_FIELD", type: "string"},
+    {alias: "MAU_incFieldType", key: "IN_FIELDTYPE", type: "string"},
+    {alias: "MAU_IN_ISREQUIRED", key: "IN_ISREQUIRED", type: "string"},
+    {alias: "MAU_incDataType", key: "IN_FIELDDT", type: "string"},
+    {alias: "MAU_mapField", key: "MAP_FIELD", type: "string"},
+    {alias: "MAU_mapDataType", key: "MAP_FIELDDT", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
   DataSourceRules:[
     {alias: "", key: "field", type: "hiddenID"},
     {alias: "DSR_TemplateFields", key: "fieldName" , type: "string"},
     {alias: "DSR_Type", key: "type", type: "string"},
     {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  APIDoc:[
+    {alias: "DOC_FIELD", key: "IN_FIELD" , type: "string"},
+    {alias: "DOC_Type", key: "IN_FIELDDT" , type: "string"},
+    {alias: "DOC_DESCRIPTION", key: "IN_FIELDDESCRIPTION", type: "string"},
+    {alias: "DOC_REQUIRED", key: "IN_ISREQUIRED", type: "string"}
+  ],
+  APIDocRes:[
+    {alias: "DOC_FIELD", key: "MAP_FIELD" , type: "string"},
+    {alias: "DOC_Type", key: "MAP_FIELDDT" , type: "string"},
+    {alias: "DOC_DESCRIPTION", key: "IN_FIELDDESCRIPTION", type: "string"},
   ]
-
 };
 
 

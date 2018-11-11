@@ -48,6 +48,7 @@
     "react-checkbox-tree": "^1.0.1",
     "react-confirm-alert": "^1.0.7",
     "react-confirm-bootstrap": "^3.1.4",
+    "react-custom-scrollbars": "^4.2.1",
     "react-datepicker": "^0.61.0",
     "react-dom": "^15.6.2",
     "react-dropzone-component": "^2.0.0",

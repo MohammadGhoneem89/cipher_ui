@@ -49,10 +49,15 @@ import HyperledgerBlockSearchScreen from './components/hyperledger/BlockSearchSc
 import HyperledgerHashSearchScreen from './components/hyperledger/HashSearchScreen/HashSearchScreenContainer.jsx';
 import HyperledgerWorkboard from './components/hyperledger/blockchainWorkboard.jsx';
 
+import AddUpdateMapping from './components/mappingConfig/AddUpdateMapping.jsx';
+import MappingList from './components/mappingConfig/mappingList.jsx';
 
+import APIDefScreen from "./components/APIDefScreen/APIDefScreenContainer.jsx";
+import ApiList from "./components/APIDefScreen/ApiList.jsx";
+import Documentation from "./components/Documentation/DocumentationContainer.jsx";
 export default (
   <Router history={browserHistory}>
-
+    <Route path="/Documentation(/:useCase)(/:route)" component={Documentation} />
     <Route path="/Locked" component={Locked} onEnter={isAuthorized}/>
     <Route path="/cipher/login" component={Login} onEnter={isAuthorized}/>
     <Route path="/blockChainViewer/:blockChainID" component={BlockchainViewerQR} onEnter={isAuthorized}/>
@@ -127,9 +132,13 @@ export default (
       <Route path="/datasourceList" component={DataSourceList}/>
       <Route path="/editDatasource/:datasource" component={AddUpdateDataSource}/>
 
+      <Route path="/editMapping/:mappingName" component={AddUpdateMapping}/>
+      <Route path="/mappingList" component={MappingList}/>
 
 
-
+      <Route path="/APIDefScreen/:useCase/:route" component={APIDefScreen}/>
+      <Route path="/ApiList" component={ApiList}/>
+      
       {ApplicationsRoute.routesIndex}
     </Route>
     <Route path="*" components={NotFound}/>

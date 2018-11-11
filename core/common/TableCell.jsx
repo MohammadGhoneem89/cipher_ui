@@ -126,7 +126,15 @@ class TableCell extends React.Component {
   redirectAnchor(address) {
     browserHistory.push(address)
   }
-
+  openInNewTab(url) {
+    var win = window.open(url, '_blank');
+    win.focus();
+  }
+  renderHyperLinkFieldNewTab(cellData) {
+    //console.log(this.props.url + "/" + cellData);
+    return (<a href='javascript:void(0)' onClick={this.openInNewTab.bind(this, this.props.url + "/" + cellData)}>
+      {cellData} </a>);
+  }
   renderHyperLinkField(cellData) {
     //console.log(this.props.url + "/" + cellData);
     return (<a href='javascript:void(0)' onClick={this.redirectAnchor.bind(this, this.props.url + "/" + cellData)}>
@@ -321,6 +329,8 @@ class TableCell extends React.Component {
         return (<td><span className="clp_val">{this.props.cellData}</span></td>)
       case "hyperlink":
         return (<td><span>{this.renderHyperLinkField(this.props.cellData)}</span></td>)
+      case "hyperlinkNewTab":
+        return (<td><span>{this.renderHyperLinkFieldNewTab(this.props.cellData)}</span></td>)
       case "orgType":
         return (<td> {this.props.cellData === "E" ? "Entity" : "Acquirer"} </td>);
       case "errors":

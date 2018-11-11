@@ -254,6 +254,13 @@ export default {
       "actions": []
     }
   },
+  MappingConfigData: {
+        "action": "MappingConfigData",
+        "data": {}
+  },
+  ApiListData:{"action": "", "datasourceList": {"pageData": {"totalRecords": 0}}},
+  APIDefinitionAddUpdate: {},
+  RouteList:{},
   workingCalendarDetail: {
     action: "workingCalendarDetail",
     data: {
@@ -448,6 +455,17 @@ export default {
       }
     }
   },
+  AddUpdateMapping:{
+    "action": "",
+    "data": {
+
+    }
+  },FunctionData: {
+    "action": "FunctionData",
+    "data": {
+    }
+  },
+  MappingList:{"action": "", "datasourceList": {"pageData": {"totalRecords": 0}}},
   DatasourceList: {"action": "", "datasourceList": {"pageData": {"totalRecords": 0}}},
   AddUpdateDatasource: {
     "action": "",

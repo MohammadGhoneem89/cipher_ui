@@ -117,5 +117,15 @@ module.exports = {
   getDataSourceByID:baseUrl + "/APII/UI/getdataSourceByID",
   getDatasourceListData:baseUrl + "/API/UI/getdataSource",
   upsertDataSource:baseUrl + "/API/UI/upsertDataSource",
-  getEventDispatcherStatus:baseUrl + "/APII/UI/getEventDispatcherStatus"
+  getEventDispatcherStatus:baseUrl + "/APII/UI/getEventDispatcherStatus",
+  getFunctionData: baseUrl + '/API/core/getListFunction',
+  upsertMappingConfig: baseUrl + '/API/core/upsertMappingConfig',
+  getMappingConfigByID: baseUrl + '/API/core/getMappingConfigByID',
+  getMappingListData:baseUrl + '/API/core/getMappingConfig',
+  getAPIDefinitionAddUpdate:baseUrl+ "/SIMU/APIDefinitionScreen",
+  getMappingList:baseUrl+ "/API/core/getMappingList",
+  upsertAPIDefinition:baseUrl+ "/API/core/upsertAPIDefinition",
+  getAPIDefinitionID:baseUrl+ "/API/core/getAPIDefinitionID",
+  getApiListData:baseUrl+ "/API/core/getAPIDefinition",
+  APIDocs:baseUrl+  "/API/core/getActiveAPIList"
 };
