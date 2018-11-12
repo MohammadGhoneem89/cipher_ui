@@ -43,17 +43,17 @@ import eventList from './components/eventService/eventList.jsx';
 import AddUpdateEventList from './components/eventService/addUpdateEvent.jsx';
 import DataSourceList from './components/dataSource/datasourceList.jsx';
 import AddUpdateDataSource from './components/dataSource/addUpdateDatasource.jsx';
-import DispatchQueue from './components/dispatchSource/DispatchQueue.jsx'
+import DispatchQueue from './components/dispatchSource/dispatchQueue.jsx'
 
 import HyperledgerBlockSearchScreen from './components/hyperledger/BlockSearchScreen/BlockSearchScreenContainer.jsx';
 import HyperledgerHashSearchScreen from './components/hyperledger/HashSearchScreen/HashSearchScreenContainer.jsx';
 import HyperledgerWorkboard from './components/hyperledger/blockchainWorkboard.jsx';
 
-import AddUpdateMapping from './components/mappingConfig/AddUpdateMapping.jsx';
+import AddUpdateMapping from './components/mappingConfig/addUpdateMapping.jsx';
 import MappingList from './components/mappingConfig/mappingList.jsx';
 
 import APIDefScreen from "./components/APIDefScreen/APIDefScreenContainer.jsx";
-import ApiList from "./components/APIDefScreen/ApiList.jsx";
+import ApiList from "./components/APIDefScreen/apiList.jsx";
 import Documentation from "./components/Documentation/DocumentationContainer.jsx";
 export default (
   <Router history={browserHistory}>
