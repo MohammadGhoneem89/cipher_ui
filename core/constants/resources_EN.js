@@ -940,6 +940,10 @@ module.exports = {
   DOC_REQUIRED: "Required",
   AAU_Doc: "Documentation Link",
   MAU_useCase:"Use Case",
-  MAU_TypeData:"Enum"
+  MAU_TypeData:"Enum",
+  APIDefScreen_Label6:"Rule Based Simulator",
+  APIDefScreen_SimuField:"Request Field",
+  APIDefScreen_SimuValue:"Equals Value",
+  APIDefScreen_RuleName:"Rule Name",
 
 };

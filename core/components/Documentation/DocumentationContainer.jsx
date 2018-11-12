@@ -60,12 +60,12 @@ class Documentation extends React.Component {
             _.set(response, element.MAP_FIELD, `${element.MAP_FIELDDT}`);
           });
         } else {
-          this.state.RouteList[useCase][route].ResponseMapping=[];
-          this.state.RouteList[useCase][route].RequestMapping=[]
+          this.state.RouteList[useCase][route].ResponseMapping = [];
+          this.state.RouteList[useCase][route].RequestMapping = []
         }
-        
-        if(this.state.RouteList[useCase][route].isSimulated===true) {
-          response=JSON.parse(this.state.RouteList[useCase][route].simulatorResponse);
+
+        if (this.state.RouteList[useCase][route].isSimulated === true) {
+          response = JSON.parse(this.state.RouteList[useCase][route].simulatorResponse);
         }
         resp.push(<DocumentComponent initialValues={this.state.RouteList[useCase][route]} useCase={useCase} route={route} request={request} response={response} baseurl={constants.baseUrl} />);
       }
@@ -74,25 +74,36 @@ class Documentation extends React.Component {
   }
   render() {
     return (
-      <div className="login" >
 
-        <div className="content" style={{
-          width: "97%",
-          height: "95% ",
-          top: "-9% ",
-          borderRadius: "0px",
-          overflowY: "scroll"
-        }}><div class="logo"></div>
-
-
-          <div className="row">
-            {this.getDocumentation()}
-
-
+      <div>
+        <div className="row">
+          <div className="col-md-12 ">
+            <div className="portlet light bordered sdg_portlet" style={{marginBottom:"0px"}}>
+              <div className="portlet-title">
+                <div className="caption">
+                  <span className="caption-subject">API Documentation</span></div>
+                <div className="tools">
+                <a className="btn btn-default upercase" href="javascript:;"
+                
+                style={{
+                  height:"30px",
+                  fontSize: "12px"
+                }}
+                > export </a>
+                </div>
+              </div>
+              <div className="portlet-body">
+                <div className="form-body" id="clear">
+                  <div className="row">
+                    <div className="col-md-12">
+                      {this.getDocumentation()}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
         </div>
-
       </div>
 
 

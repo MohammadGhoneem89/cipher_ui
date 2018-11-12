@@ -9,7 +9,7 @@ const DocumentComponent = ({ initialValues, useCase, route, request, response, b
     <div className="row">
       <div className="col-md-12">
         <div className="row">
-
+        <div className="col-md-12">
           <div className="note note-success">
             <div className="row">
               <div className="col-md-12">
@@ -35,10 +35,12 @@ const DocumentComponent = ({ initialValues, useCase, route, request, response, b
               </div>
             </div>
           </div>
+          </div>
           <div className="col-md-12">
             <div className="well">
            
             <div>
+            <h3 className="pull-left bold">Format Specification</h3>
               <div className="row">
                 <div className="col-md-12">
                   <h4 className="pull-left bold">Request</h4>
@@ -56,6 +58,20 @@ const DocumentComponent = ({ initialValues, useCase, route, request, response, b
                   <pre>{JSON.stringify(response,null,2)}</pre>
                 </div>
               </div>
+              <h3 className="pull-left bold">Sample Responses</h3>
+{initialValues.simucases && initialValues.simucases.map((option, index) => {
+  
+  return (
+          <div className="row">
+            <div className="col-md-12">
+              <h4 className="pull-left bold">{option.RuleName}</h4>
+            </div>
+            <div className="col-md-12">
+              <pre>{JSON.stringify(JSON.parse(option.SimulatorResponse),null,2)}</pre>
+            </div>
+          </div>
+  )})}
+
             </div>
             
 

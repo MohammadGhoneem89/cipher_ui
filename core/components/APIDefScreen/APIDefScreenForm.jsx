@@ -2,7 +2,8 @@
 import React, { PropTypes } from 'react';
 import Portlet from '../../common/Portlet.jsx';
 import * as utils from '../../common/utils.js';
-const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems , onInputChange}) => {
+import Table from '../../common/Datatable.jsx';
+const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, onInputChange, addRow, simucases,ActionHandlers }) => {
 
   return (
 
@@ -39,8 +40,8 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems , o
                     }}>{utils.getLabelByID("APIDefScreen_Authorization")}</label>
                     <div className="form-group col-md-8">
 
-                      <select name="authorization" value={initialValues.authorization}  onChange={onInputChange} className="form-control">
-                        
+                      <select name="authorization" value={initialValues.authorization} onChange={onInputChange} className="form-control">
+
                         {
                           typeData.API_Authtypes.map((option, index) => {
                             return (
@@ -166,7 +167,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems , o
                           }}>{utils.getLabelByID("APIDefScreen_MFunctionName")}</label>
                           <div className="form-group col-md-8">
 
-                            <input type="text" className="form-control" onChange={onInputChange} disabled={!initialValues.isCustomMapping||initialValues.isRouteOveride} name="MappingfunctionName" value={initialValues.MappingfunctionName} />
+                            <input type="text" className="form-control" onChange={onInputChange} disabled={!initialValues.isCustomMapping || initialValues.isRouteOveride} name="MappingfunctionName" value={initialValues.MappingfunctionName} />
 
                           </div>
                         </div>
@@ -182,7 +183,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems , o
                           }}>{utils.getLabelByID("APIDefScreen_CFileName")}</label>
                           <div className="form-group col-md-8">
 
-                            <input type="text" className="form-control" onChange={onInputChange}  disabled={!initialValues.isCustomMapping||initialValues.isRouteOveride} name="CustomMappingFile" value={initialValues.CustomMappingFile} />
+                            <input type="text" className="form-control" onChange={onInputChange} disabled={!initialValues.isCustomMapping || initialValues.isRouteOveride} name="CustomMappingFile" value={initialValues.CustomMappingFile} />
 
                           </div>
                         </div>
@@ -216,7 +217,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems , o
                       }}>{utils.getLabelByID("Communication Mode")}</label>
                       <div className="form-group col-md-8">
 
-                        <select name="communicationMode" value={initialValues.communicationMode} onChange={onInputChange} disabled={initialValues.isRouteOveride||initialValues.isCustomMapping} className="form-control">
+                        <select name="communicationMode" value={initialValues.communicationMode} onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping} className="form-control">
 
                           {
                             typeData.API_ComMode.map((option, index) => {
@@ -243,7 +244,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems , o
                           }}>{utils.getLabelByID("APIDefScreen_RSQueue")}</label>
                           <div className="form-group col-md-8">
 
-                            <input type="text" className="form-control" onChange={onInputChange} disabled={initialValues.isRouteOveride||initialValues.isCustomMapping||initialValues.communicationMode=="REST"} name="requestServiceQueue" value={initialValues.requestServiceQueue} />
+                            <input type="text" className="form-control" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "REST"} name="requestServiceQueue" value={initialValues.requestServiceQueue} />
 
                           </div>
                         </div>
@@ -256,7 +257,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems , o
                           }}>{utils.getLabelByID("APIDefScreen_ServiceIP")}</label>
                           <div className="form-group col-md-8">
 
-                            <input type="text" className="form-control" name="ServiceIP" onChange={onInputChange} disabled={initialValues.isRouteOveride||initialValues.isCustomMapping||initialValues.communicationMode=="QUEUE"} value={initialValues.ServiceIP} />
+                            <input type="text" className="form-control" name="ServiceIP" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} value={initialValues.ServiceIP} />
 
                           </div>
                         </div>
@@ -270,7 +271,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems , o
                           }}>{utils.getLabelByID("APIDefScreen_ResponseQueue")}</label>
                           <div className="form-group col-md-8">
 
-                            <input type="text" className="form-control" name="responseQueue" onChange={onInputChange} disabled={initialValues.isRouteOveride||initialValues.isCustomMapping||initialValues.communicationMode=="REST"} value={initialValues.responseQueue} />
+                            <input type="text" className="form-control" name="responseQueue" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "REST"} value={initialValues.responseQueue} />
 
                           </div>
                         </div>
@@ -283,7 +284,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems , o
                           }}>{utils.getLabelByID("APIDefScreen_ServicePort")}</label>
                           <div className="form-group col-md-8">
 
-                            <input type="text" className="form-control" name="ServicePort" onChange={onInputChange} disabled={initialValues.isRouteOveride||initialValues.isCustomMapping||initialValues.communicationMode=="QUEUE"} value={initialValues.ServicePort} />
+                            <input type="text" className="form-control" name="ServicePort" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} value={initialValues.ServicePort} />
 
                           </div>
                         </div>
@@ -298,21 +299,96 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems , o
 
                     <div className="col-md-12">
                       <div className="form-group">
-                        <textarea onChange={onInputChange}  name="description" value={initialValues.description} className="form-control" rows="4" style={{ resize: "none", width: "100%" }} />
+                        <textarea onChange={onInputChange} name="description" value={initialValues.description} className="form-control" rows="4" style={{ resize: "none", width: "100%" }} />
                       </div>
                     </div>
 
                     <label className="form-group control-label col-md-7" style={{
                       textAlign: "left",
                       fontWeight: "bold"
-                    }}>{utils.getLabelByID("APIDefScreen_Label5")}</label>
+                    }}>{utils.getLabelByID("APIDefScreen_Label6")}</label>
 
-                    <div className="col-md-12">
-                      <div className="form-group">
-                        <textarea className="form-control" name="simulatorResponse" value={initialValues.simulatorResponse} onChange={onInputChange} rows="4" style={{ resize: "none", width: "100%" }} />
+                    <div className="col-md-12" id="simuDefination">
+                      <div className="col-md-4">
+                        <div className="form-group">
+                          <label className="form-group control-label col-md-4" style={{
+                            textAlign: "left",
+                            fontWeight: "normal"
+                          }}>{utils.getLabelByID("APIDefScreen_RuleName")}</label>
+                          <div className="form-group col-md-8">
+                            <input type="text" className="form-control" name="RuleName" id="RuleName" />
+
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div className="col-md-4">
+                        <div className="form-group">
+                          <label className="form-group control-label col-md-4" style={{
+                            textAlign: "left",
+                            fontWeight: "normal"
+                          }}>{utils.getLabelByID("APIDefScreen_SimuField")}</label>
+                          <div className="form-group col-md-8">
+                            <input type="text" className="form-control" id="SimuField" />
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-md-4">
+                        <div className="form-group">
+                          <label className="form-group control-label col-md-4" style={{
+                            textAlign: "left",
+                            fontWeight: "normal"
+                          }}>{utils.getLabelByID("APIDefScreen_SimuValue")}</label>
+                          <div className="form-group col-md-8">
+                            <input type="text" className="form-control" id="SimuValue" />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-md-12">
+                        <label className="form-group control-label col-md-7" style={{
+                          textAlign: "left",
+                          fontWeight: "normal"
+                        }}>{utils.getLabelByID("APIDefScreen_Label5")}</label>
+                        <div className="col-md-12">
+                          <div className="form-group">
+                            <textarea className="form-control" id="SimulatorResponse" rows="4" style={{ resize: "none", width: "100%" }} />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-md-12">
+                        <div className="form-actions right">
+                          <div className="form-group col-md-12">
+                            <div className="btn-toolbar pull-right">
+                              <button type="submit" className="btn btn-default" onClick={addRow.bind(this)}> <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Setting")} </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-md-12">
+                        <div className="row">
+                          <div className="col-md-12">
+
+                            <div className="col-md-12">
+                              <Table
+                                gridColumns={utils.getGridColumnByName("SimuSetting")}
+                                gridData={simucases}
+                                export={false}
+                                componentFunction={ActionHandlers}
+                                pagination={false} />
+                            </div>
+
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
+
 
 
                   <div className="col-md-6">
@@ -346,8 +422,8 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems , o
                       }}>{utils.getLabelByID("APIDefScreen_ResponseMapping")}</label>
                       <div className="form-group col-md-8">
 
-                        <select name="ResponseMapping" value={initialValues.ResponseMapping} disabled={initialValues.isValBypass||initialValues.isSimulated} onChange={onInputChange} className="form-control">
-                         {dropdownItems.RESPONSE &&
+                        <select name="ResponseMapping" value={initialValues.ResponseMapping} disabled={initialValues.isValBypass || initialValues.isSimulated} onChange={onInputChange} className="form-control">
+                          {dropdownItems.RESPONSE &&
                             dropdownItems.RESPONSE.map((option, index) => {
                               return (
                                 <option key={index} value={option.value}>{option.label}</option>

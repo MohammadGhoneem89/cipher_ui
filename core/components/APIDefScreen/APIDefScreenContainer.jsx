@@ -31,8 +31,10 @@ const initialState = {
     "simulatorResponse": "",
     "ResponseMapping": "",
     "RequestMapping": "",
-    "isValBypass": false
+    "isValBypass": false,
+    "isResponseMapDisable": false,
   },
+  simucases: [],
   MappingConfigList: {},
   typeData: {},
   // dropDownItems:[],
@@ -44,6 +46,8 @@ class APIDefinitionScreen extends React.Component {
   constructor(props) {
     super(props)
     this.formSubmit = this.formSubmit.bind(this);
+    this.addRow = this.addRow.bind(this);
+    this.ActionHandlers = this.ActionHandlers.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.state = cloneDeep(initialState)
 
@@ -52,7 +56,44 @@ class APIDefinitionScreen extends React.Component {
   componentWillMount() {
 
   }
+  addRow() {
+    let SimulatorResponse = document.getElementById('SimulatorResponse') == null ? "" : document.getElementById('SimulatorResponse').value;
+    let SimuValue = document.getElementById('SimuValue') == null ? "" : document.getElementById('SimuValue').value;
+    let SimuField = document.getElementById('SimuField') == null ? "" : document.getElementById('SimuField').value;
+    let RuleName = document.getElementById('RuleName') == null ? "" : document.getElementById('RuleName').value;
 
+    let data = this.state.simucases;
+    let newtupple = {
+      SimulatorResponse: SimulatorResponse,
+      SimuValue: SimuValue,
+      SimuField: SimuField,
+      RuleName: RuleName,
+      actions: [{ label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }],
+    }
+
+    if (SimulatorResponse.trim() == "") {
+      alert("Simulator Response should be defined!")
+      return false;
+    }
+    if (SimuValue.trim() == "") {
+      alert("Simu Value should be defined!")
+      return false;
+    }
+    if (SimuField.trim() == "") {
+      alert("Simu Field should be defined!")
+      return false;
+    }
+
+    try {
+      let json = JSON.parse(SimulatorResponse.trim())
+    } catch (ex) {
+      alert("Simulator Response must be a Parsable JSON format!");
+      return false;
+    }
+    this.clearFields();
+    data.push(newtupple);
+    this.setState({ simucases: data });
+  }
   componentDidMount() {
 
 
@@ -68,10 +109,28 @@ class APIDefinitionScreen extends React.Component {
       this.props.actions.generalProcess(constants.getAPIDefinitionID, req);
     }
   }
+  clearFields() {
+    $('#simuDefination').find('input:text').val('');
+    $('#simuDefination').find('textarea').val('');
+
+  }
   componentWillReceiveProps(nextProps) {
 
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE") {
       if (nextProps.APIDefinitionAddUpdate.data) {
+        if (nextProps.APIDefinitionAddUpdate.data.simucases) {
+          let simucases = nextProps.APIDefinitionAddUpdate.data.simucases;
+          simucases.map(function (item) {
+            item.actions = [
+              { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
+              { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
+            ];
+            return item;
+          });
+          this.setState({
+            simucases: simucases
+          });
+        }
         this.setState({
           APIDefinitionAddUpdate: cloneDeep(nextProps.APIDefinitionAddUpdate.data)
         });
@@ -86,7 +145,7 @@ class APIDefinitionScreen extends React.Component {
 
       this.setState({
         MappingConfigList: nextProps.MappingConfigData,
-        
+
       });
     }
 
@@ -128,23 +187,18 @@ class APIDefinitionScreen extends React.Component {
 
 
     if (data.isSimulated === true) {
-      if (data.simulatorResponse.trim() === "") {
-        alert("Simulator Response must be defined!");
+      if (this.state.simucases.length == 0) {
+        alert("Simulator Rules must be defined!");
         return false;
-      } else {
-        try {
-          let json = JSON.parse(data.simulatorResponse.trim())
-        } catch (ex) {
-          alert("Simulator Response must be a Parsable JSON format!");
-        }
       }
     }
-  
+
     data.RequestMapping = (data.RequestMapping === "" ? this.state.MappingConfigList.REQUEST[0].value : data.RequestMapping);
     data.ResponseMapping = (data.ResponseMapping === "" ? this.state.MappingConfigList.RESPONSE[0].value : data.ResponseMapping);
-
+    data.simucases = this.state.simucases;
     console.log(JSON.stringify(data));
     this.props.actions.generalProcess(constants.upsertAPIDefinition, data);
+
 
   }
 
@@ -171,9 +225,38 @@ class APIDefinitionScreen extends React.Component {
       return (<div className="loader">isLoading...</div>)
     }
     return (
-      <APIDefScreenForm onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} />)
+      <APIDefScreenForm onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} />)
+  }
+  ActionHandlers({ actionName, index }) {
+    switch (actionName) {
+       case "Edit":
+                if (index > -1) {
+                    let a = this.state.simucases[index];
+                    document.getElementById('SimulatorResponse').value = a.SimulatorResponse;
+                    document.getElementById('SimuValue').value = a.SimuValue;
+                    document.getElementById('SimuField').value = a.SimuField;
+                    document.getElementById('RuleName').value = a.RuleName;
+                    let tempState = this.state.simucases;
+                    tempState.splice(index, 1);
+                    this.setState({ simucases: tempState });
+                }
+                break;
+      case "Delete":
+        let result = confirm("Are you you want to delete?");
+        if (result) {
+          if (index > -1) {
+            let a = this.state.simucases;
+            a.splice(index, 1);
+            this.setState({ simucases: a });
+          }
+        }
+        break;
+      default:
+        break;
+    }
   }
 }
+
 
 APIDefinitionScreen.propTypes = {
   children: PropTypes.object,

@@ -682,6 +682,15 @@ module.exports = {
     {alias: "EAU_Value", key: "value", type: "string"},
     {alias: "EL_actions", key: "actions", type: "action"}
   ],
+  SimuSetting:[
+    {alias: "APIDefScreen_RuleName", key: "RuleName", type: "string"},
+    {alias: "APIDefScreen_SimuField", key: "SimuField", type: "string"},
+    {alias: "APIDefScreen_SimuValue", key: "SimuValue", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+
+ 
+  
   MappingListData: [
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
     {alias: "", key: "mappingName", type: "hiddenID"},
