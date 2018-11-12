@@ -329,7 +329,7 @@ class Datatable extends React.Component {
                                          renderPopupBody={this.renderPopupBody.bind(this)}
                                          getCheckedItems={this.getCheckedItems.bind(this)}
                                          columnWidth={colData.width ? colData.width : ""}
-                                         searialNo={offSet + parseInt(index)}
+                                         searialNo={(offSet||1) + parseInt(index)}
                                          url={colData.url || ''} footerRow={footerRow}
                               />
                             ))

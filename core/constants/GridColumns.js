@@ -703,7 +703,7 @@ module.exports = {
   ],
   
   mappingConfig:[
-    {alias: "COM_SerialNo", key: "Sequence", type: "string"},
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
     {alias: "MAU_incField", key: "IN_FIELD", type: "string"},
     {alias: "MAU_incFieldType", key: "IN_FIELDTYPE", type: "string"},
     {alias: "MAU_IN_ISREQUIRED", key: "IN_ISREQUIRED", type: "string"},
