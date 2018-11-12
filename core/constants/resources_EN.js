@@ -938,6 +938,8 @@ module.exports = {
   DOC_DESCRIPTION: "Description",
   DOC_Type: "Field Type",
   DOC_REQUIRED: "Required",
-  AAU_Doc: "Documentation Link"
+  AAU_Doc: "Documentation Link",
+  MAU_useCase:"Use Case",
+  MAU_TypeData:"Enum"
 
 };

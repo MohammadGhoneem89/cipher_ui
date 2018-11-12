@@ -77,9 +77,9 @@ class Documentation extends React.Component {
       <div className="login" >
 
         <div className="content" style={{
-          width: "95%",
-          height: "90% ",
-          top: "-5% ",
+          width: "97%",
+          height: "95% ",
+          top: "-9% ",
           borderRadius: "0px",
           overflowY: "scroll"
         }}><div class="logo"></div>

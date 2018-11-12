@@ -19,6 +19,7 @@ import * as requestCreator from '../../common/request.js';
 import DateControl from '../../common/DateControl.jsx'
 
 const stateParent = {
+    useCase:"",
     mappingName: "",
     mappingType: undefined,
     description: "",
@@ -47,6 +48,10 @@ class AddUpdateMapping extends React.Component {
     }
     onMappingTypeChange = e => {
         this.setState({ mappingType: e.target.value });
+    }
+    
+    onUseCaseChange = e => {
+        this.setState({ useCase: e.target.value });
     }
     onChangeDesc = e => {
         this.setState({ description: e.target.value });
@@ -88,6 +93,7 @@ class AddUpdateMapping extends React.Component {
                 });
                 this.setState({
                     mappingConfig: mappingList,
+                    useCase: nextProps.AddUpdateMappingData.MappingConfig.useCase,
                     mappingName: nextProps.AddUpdateMappingData.MappingConfig.mappingName,
                     description: nextProps.AddUpdateMappingData.MappingConfig.description,
                     mappingType: nextProps.AddUpdateMappingData.MappingConfig.mappingType
@@ -131,6 +137,7 @@ class AddUpdateMapping extends React.Component {
                     document.getElementById('MAP_FIELDDT').value = a.MAP_FIELDDT;
                     document.getElementById('Sequence').value = a.Sequence;
                     document.getElementById('IN_ISREQUIRED').checked = a.IN_ISREQUIRED == "Y" ? true : false;
+                    document.getElementById('IN_FIELDTYPEDATA').value=a.IN_FIELDTYPEDATA;
                     let tempState = this.state.mappingConfig;
                     tempState.splice(index, 1);
                     this.setState({ mappingConfig: tempState });
@@ -187,6 +194,10 @@ class AddUpdateMapping extends React.Component {
 
     }
     formSubmit() {
+        if (this.state.useCase.trim() == "") {
+            alert("useCase must be defined");
+            return false;
+        }
         if (this.state.mappingConfig.length == 0) {
             alert("There must be at least 1 Mapping Configuration Defination");
             return false;
@@ -206,6 +217,7 @@ class AddUpdateMapping extends React.Component {
         }
 
         let requestBody = {
+            "useCase":this.state.useCase,
             "mappingName": mappingName,
             "mappingType": requestType,
             "description": description,
@@ -227,6 +239,7 @@ class AddUpdateMapping extends React.Component {
         let IN_FIELDDESCRIPTION = document.getElementById('IN_FIELDDESCRIPTION') == null ? "" : document.getElementById('IN_FIELDDESCRIPTION').value;
         let MAP_FIELD = document.getElementById('MAP_FIELD') == null ? "" : document.getElementById('MAP_FIELD').value;
         let MAP_FIELDDT = document.getElementById('MAP_FIELDDT') == null ? "" : document.getElementById('MAP_FIELDDT').value;
+        let IN_FIELDTYPEDATA =  document.getElementById('MAP_FIELDDT') == null ? "" : document.getElementById('IN_FIELDTYPEDATA').value;
         let Sequence = document.getElementById('Sequence') == null ? 9999 : parseInt(document.getElementById('Sequence').value) || this.state.mappingConfig.length + 1; ;
 
         
@@ -250,6 +263,7 @@ class AddUpdateMapping extends React.Component {
             "IN_ISREQUIRED": IN_ISREQUIRED ? "Y" : "N",
             "MAP_FIELD": MAP_FIELD,
             "MAP_FIELDDT": MAP_FIELDDT,
+            "IN_FIELDTYPEDATA" : IN_FIELDTYPEDATA,
             "actions": [
                 { label: "Move UP", iconName: "fa fa-arrow-up", actionType: "COMPONENT_FUNCTION" },
                 { label: "Move Down", iconName: "fa fa-arrow-down", actionType: "COMPONENT_FUNCTION" },
@@ -277,7 +291,7 @@ class AddUpdateMapping extends React.Component {
         for (let i = 0; i < list.length; i++) {
             let obj = list[i];
             if (
-                obj.MAP_FIELD == refObj.MAP_FIELD
+                obj.MAP_FIELD == refObj.MAP_FIELD && obj.MAP_FIELDDT==refObj.MAP_FIELDDT && refObj.MAP_FIELDDT != 'array'  
             ) {
                 return true;
             }
@@ -316,6 +330,16 @@ class AddUpdateMapping extends React.Component {
                                 <div className="form-body" id="clear">
                                     <div className="row">
                                         <div className="col-md-12">
+                                        <div className="row">
+                                                <div className="col-md-6">
+                                                    <div className="form-group col-md-4">
+                                                        <label className="control-label">{utils.getLabelByID("MAU_useCase")}</label>
+                                                    </div>
+                                                    <div className="form-group col-md-8">
+                                                        <input type="text" className="form-control" onChange={this.onUseCaseChange} value={this.state.useCase} id="useCase" />
+                                                    </div>
+                                                </div>
+                                                </div>
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="form-group col-md-4">
@@ -424,6 +448,8 @@ class AddUpdateMapping extends React.Component {
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                
                                                 <div className="row">
                                                     <div className="col-md-12">
                                                         <div className="form-group col-md-4">
@@ -432,6 +458,23 @@ class AddUpdateMapping extends React.Component {
                                                         <div className="form-group col-md-8">
                                                             <select id="IN_FIELDDT" name="IN_FIELDDT" onChange={this.onChangeEventName} className="form-control" >
                                                                 {this.state.typeData && this.state.typeData.DFM_DATATYPE && this.state.typeData.DFM_DATATYPE.map((option, index) => {
+                                                                    return (
+                                                                        <option key={index} value={option.value}>{option.label}</option>
+                                                                    );
+                                                                })}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-md-12">
+                                                        <div className="form-group col-md-4">
+                                                            <label className="control-label">{utils.getLabelByID("MAU_TypeData")}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-8">
+                                                            <select id="IN_FIELDTYPEDATA" name="IN_FIELDTYPEDATA" className="form-control" >
+                                                                <option value="">--Select--</option>
+                                                                {this.state.functionData && this.state.functionData.typeDataList && this.state.functionData.typeDataList.map((option, index) => {
                                                                     return (
                                                                         <option key={index} value={option.value}>{option.label}</option>
                                                                     );

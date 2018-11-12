@@ -85,11 +85,12 @@ class APIDefinitionScreen extends React.Component {
       console.log(JSON.stringify(nextProps.MappingConfigData));
 
       this.setState({
-        MappingConfigList: nextProps.MappingConfigData
+        MappingConfigList: nextProps.MappingConfigData,
+        
       });
     }
 
-    if (nextProps.typeData.data) {
+    if (nextProps.typeData.data && nextProps.typeData.data.API_Authtypes) {
       this.setState({
         typeData: nextProps.typeData.data,
         isLoading: false

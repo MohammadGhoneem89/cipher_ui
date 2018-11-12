@@ -685,6 +685,7 @@ module.exports = {
   MappingListData: [
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
     {alias: "", key: "mappingName", type: "hiddenID"},
+    {alias: "MAU_useCase", key: "useCase", type: "string"},
     {alias: "MAU_RequestName", key: "mappingName", type: "string"},
     {alias: "MAU_RequestType", key: "mappingType", type: "string"},
     {alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string"},
