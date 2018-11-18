@@ -59,7 +59,7 @@ import Documentation from "./components/Documentation/DocumentationContainer.jsx
 import ModuleDefinitionScreen from "./components/ModuleScreen/ModuleDefinitionScreen.jsx";
 export default (
   <Router history={browserHistory}>
-    <Route path="/Documentation(/:useCase)(/:route)" component={Documentation} />
+    <Route path="/Documentation/:useCase/:route" component={Documentation} />
     <Route path="/Locked" component={Locked} onEnter={isAuthorized}/>
     <Route path="/cipher/login" component={Login} onEnter={isAuthorized}/>
     <Route path="/blockChainViewer/:blockChainID" component={BlockchainViewerQR} onEnter={isAuthorized}/>

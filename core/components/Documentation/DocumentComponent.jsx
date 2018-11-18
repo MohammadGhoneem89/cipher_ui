@@ -5,7 +5,7 @@ import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
 import ReactJson from 'react-json-view';
 import Json from 'react-json'
-const DocumentComponent = ({ initialValues, useCase, route, request, response, baseurl, PG, onEdit,onAdd,onDelete, onRunApi }) => {
+const DocumentComponent = ({ initialValues, useCase, route, request, response, baseurl, PG, onEdit, onAdd, onDelete, onRunApi, onLoadSample }) => {
   ///alert(JSON.stringify(initialValues))
 
   return (
@@ -58,29 +58,35 @@ const DocumentComponent = ({ initialValues, useCase, route, request, response, b
                       padding: "20px"
                     }}
                   >
-                    <a className="btn dark uppercase pull-right" onClick={onRunApi.bind(this,`${baseurl}/API/${useCase}/${route}`,request)} href="javascript:;"> RUN API </a>
+
+
+                    <div className="btn-toolbar pull-right">
+                      <a className="btn dark uppercase " onClick={onLoadSample} href="javascript:;"> Load Sample Request </a>
+                      <a className="btn dark uppercase" onClick={onRunApi.bind(this, `${baseurl}/API/${useCase}/${route}`, request)} href="javascript:;"> Execute API </a>
+
+                    </div>
                   </div>
                   <div className="col-md-12">
                     <h4 className="title caption-subject bold uppercase pull-left bold">Request</h4>
                   </div>
-                  
-                    <div className="col-md-12">
-                      
-                      <ReactJson indentWidth={2}  name={false} theme="eighties" onEdit={onEdit}  onAdd={onAdd} onDelete={onDelete} src={request}  />
-                    </div>
+
+                  <div className="col-md-12">
+
+                    <ReactJson indentWidth={2} name={false} theme="eighties" onEdit={onEdit} onAdd={onAdd} onDelete={onDelete} src={request} />
+                  </div>
 
                   <hr />
 
-                  <div className="col-md-12" style={{ }}>
+                  <div className="col-md-12" style={{}}>
                     <h4 className="title caption-subject bold uppercase pull-left bold">Response </h4>
                   </div>
-                  
+
                   <div className="col-md-12" id="responseData" style={{ padding: "20px" }}>
 
-                  <ReactJson indentWidth={2}  name={false} theme="eighties" src={response}  />
-                    
+                    <ReactJson indentWidth={2} name={false} theme="eighties" src={response} />
+
                   </div>
-                  
+
                 </div>
               </div>
             </div>
@@ -93,7 +99,7 @@ const DocumentComponent = ({ initialValues, useCase, route, request, response, b
                     <h4 className="pull-left bold">{option.RuleName}</h4>
                   </div>
                   <div className="col-md-12">
-                    <pre> <ReactJson  src={JSON.parse(option.SimulatorResponse)} /></pre>
+                    <pre> <ReactJson src={JSON.parse(option.SimulatorResponse)} /></pre>
 
                   </div>
                 </div>

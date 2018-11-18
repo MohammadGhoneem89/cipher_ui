@@ -20,14 +20,16 @@ const initialState = {
   isCustom: true,
   enumList: {},
   request: undefined,
-  response: undefined
+  response: undefined,
+  requestSample:undefined
 };
 class Documentation extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = cloneDeep(initialState)
-
+    
+    this.onLoadSample = this.onLoadSample.bind(this);
     this.onEdit = this.onEdit.bind(this);
     this.onRunApi = this.onRunApi.bind(this);
     this.onAdd = this.onAdd.bind(this);
@@ -41,13 +43,19 @@ class Documentation extends React.Component {
   onEdit(data) {
     this.setState({ request: data.updated_src })
   }
+  onLoadSample(uri, request) {
+    if(this.state.requestSample)
+      this.setState({ request: this.state.requestSample });
+    else
+      alert("No Request Sample Found!");
+  }
   onRunApi(uri, request) {
     axios.post(uri, request)
     .then(res => {
      
       //return res;
       this.setState({ response: res.data });
-      $(window).scrollTop($('#responseData').offset().top);
+      $(window).scrollTop($('#responseData').offset().top-300);
     }).catch((ex)=>{
       alert (ex.message);
     });
@@ -75,6 +83,7 @@ class Documentation extends React.Component {
     }
     if (nextProps.RouteListData) {
       let routemap = nextProps.RouteListData;
+      let reqSample=undefined;
       for (let useCase in routemap) {
         for (let route in routemap[useCase]) {
           let request = {}
@@ -98,13 +107,13 @@ class Documentation extends React.Component {
           if (routemap[useCase][route].isResValBypass === true) {
             response = JSON.parse(routemap[useCase][route].simulatorResponse);
           }
-
+          reqSample = routemap[useCase][route].sampleRequest
           _.set(routemap, `${useCase}.${route}.requestSchema`, request)
           _.set(routemap, `${useCase}.${route}.responseSchema`, response)
 
         }
       }
-      this.setState({ RouteList: routemap })
+      this.setState({ requestSample:reqSample, RouteList: routemap })
     }
   }
 
@@ -120,7 +129,7 @@ class Documentation extends React.Component {
         let response = this.state.response;
         if (!this.state.response)
           response = _.get(this.state.RouteList, `${useCase}.${route}.responseSchema`, null);
-        resp.push(<DocumentComponent initialValues={this.state.RouteList[useCase][route]} useCase={useCase} route={route} request={request} response={response} baseurl={constants.baseUrl} PG={request} onEdit={this.onEdit} onDelete={this.onDelete} onAdd={this.onAdd} onRunApi={this.onRunApi} />);
+        resp.push(<DocumentComponent initialValues={this.state.RouteList[useCase][route]} useCase={useCase} route={route} request={request} response={response} baseurl={constants.baseUrl} PG={request} onEdit={this.onEdit} onDelete={this.onDelete} onAdd={this.onAdd} onLoadSample={this.onLoadSample} onRunApi={this.onRunApi} />);
       }
     }
     return (resp);
