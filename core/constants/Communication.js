@@ -127,5 +127,11 @@ module.exports = {
   upsertAPIDefinition:baseUrl+ "/API/core/upsertAPIDefinition",
   getAPIDefinitionID:baseUrl+ "/API/core/getAPIDefinitionID",
   getApiListData:baseUrl+ "/API/core/getAPIDefinition",
-  APIDocs:baseUrl+  "/API/core/getActiveAPIList"
+  APIDocs:baseUrl+  "/API/core/getActiveAPIList",
+  getTypeDataList:baseUrl+  "/API/core/getTypeDataList",
+  getModuleListData:baseUrl+  "/API/core/getModuleList",
+  getModuleConfigByID:baseUrl+ "/API/core/getModuleConfigByID",
+  getAPIList:baseUrl+ "/API/core/getAPIList",
+  updateModuleConfig:baseUrl+ "/API/core/updateModuleConfig",
+
 };

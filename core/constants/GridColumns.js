@@ -700,6 +700,29 @@ module.exports = {
     {alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string"},
     {alias: "EL_actions", key: "actions", type: "action"}
   ],
+  ModuleListData:[
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "", key: "_id", type: "hiddenID"},
+    {alias: "MAU_useCase", key: "useCase", type: "string"},
+    {alias: "MDAU_label", key: "label", type: "string"},
+    {alias: "MDAU_order", key: "order", type: "string"},
+    {alias: "MDAU_iconName", key: "iconName", type: "string"},
+    {alias: "MDAU_displayMenu", key: "displayMenu", type: "cbDisabled"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  ModuleDefination:[
+    {alias: "MDAU_PageLabel", key: "label", type: "string"},
+    {alias: "MDAU_Type", key: "type", type: "string"},
+    {alias: "MDAU_value", key: "value", type: "string"},
+    {alias: "MDAU_ParentValue", key: "parentVal", type: "string"},
+    {alias: "MDAU_ParentName", key: "parent", type: "string"},
+    {alias: "MDAU_displayMenu", key: "displayMenu", type: "cbDisabled"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  MDAU_APIList:[
+    {alias: "MAU_ApiUri", key: "API", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
   ApiListData: [
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
     {alias: "", key: "hiddenID", type: "hiddenID"},

@@ -24,6 +24,7 @@
   "license": "ISC",
   "dependencies": {
     "antd": "^2.13.2",
+    "axios": "^0.18.0",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
     "babel-polyfill": "^6.26.0",
@@ -56,7 +57,9 @@
     "react-idle-timer": "^2.0.0",
     "react-jquery-datatables": "^0.7.1",
     "react-js-pagination": "^3.0.0",
+    "react-json": "^0.2.1",
     "react-json-pretty": "^1.7.4",
+    "react-json-view": "^1.19.1",
     "react-loading-overlay": "^0.2.5",
     "react-modal": "^2.3.2",
     "react-motion": "^0.5.1",
@@ -70,6 +73,7 @@
     "redux-form": "^7.0.4",
     "redux-immutable-state-invariant": "^2.0.0",
     "redux-thunk": "^2.2.0",
+    "request-promise-native": "^1.0.5",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2",
     "whatwg-fetch": "^2.0.3"

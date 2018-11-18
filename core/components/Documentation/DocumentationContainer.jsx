@@ -10,13 +10,17 @@ import DocumentComponent from './DocumentComponent.jsx';
 import cloneDeep from 'lodash/cloneDeep';
 import Portlet from '../../common/Portlet.jsx';
 import { Scrollbars } from 'react-custom-scrollbars';
+import axios from 'axios'
 const initialState = {
   RouteList: {},
   MappingConfigList: {},
   typeData: {},
   // dropDownItems:[],
   isLoading: false,
-  isCustom: true
+  isCustom: true,
+  enumList: {},
+  request: undefined,
+  response: undefined
 };
 class Documentation extends React.Component {
 
@@ -24,10 +28,35 @@ class Documentation extends React.Component {
     super(props)
     this.state = cloneDeep(initialState)
 
+    this.onEdit = this.onEdit.bind(this);
+    this.onRunApi = this.onRunApi.bind(this);
+    this.onAdd = this.onAdd.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
+
 
   componentWillMount() {
 
+  }
+  onEdit(data) {
+    this.setState({ request: data.updated_src })
+  }
+  onRunApi(uri, request) {
+    axios.post(uri, request)
+    .then(res => {
+     
+      //return res;
+      this.setState({ response: res.data });
+      $(window).scrollTop($('#responseData').offset().top);
+    }).catch((ex)=>{
+      alert (ex.message);
+    });
+  }
+  onAdd(data) {
+    this.setState({ request: data.updated_src })
+  }
+  onDelete(data) {
+    this.setState({ request: data.updated_src })
   }
 
   componentDidMount() {
@@ -37,10 +66,45 @@ class Documentation extends React.Component {
       route: this.props.route
     }
     this.props.actions.generalProcess(constants.APIDocs, req);
+    this.props.actions.generalProcess(constants.getTypeDataList)
   }
   componentWillReceiveProps(nextProps) {
+
+    if (nextProps.enumList) {
+      this.setState({ enumList: nextProps.enumList })
+    }
     if (nextProps.RouteListData) {
-      this.setState({ RouteList: nextProps.RouteListData })
+      let routemap = nextProps.RouteListData;
+      for (let useCase in routemap) {
+        for (let route in routemap[useCase]) {
+          let request = {}
+          let requestPG = {}
+          let response = {}
+
+          if (routemap[useCase][route].isValBypass === false) {
+            routemap[useCase][route].RequestMapping.forEach(element => {
+              _.set(request, element.IN_FIELD, `${element.IN_FIELDDT}`);
+              _.set(requestPG, element.IN_FIELD, `${element.IN_FIELDDT}`);
+
+            });
+            routemap[useCase][route].ResponseMapping.forEach(element => {
+              _.set(response, element.MAP_FIELD, `${element.MAP_FIELDDT}`);
+            });
+          } else {
+            routemap[useCase][route].ResponseMapping = [];
+            routemap[useCase][route].RequestMapping = []
+          }
+
+          if (routemap[useCase][route].isResValBypass === true) {
+            response = JSON.parse(routemap[useCase][route].simulatorResponse);
+          }
+
+          _.set(routemap, `${useCase}.${route}.requestSchema`, request)
+          _.set(routemap, `${useCase}.${route}.responseSchema`, response)
+
+        }
+      }
+      this.setState({ RouteList: routemap })
     }
   }
 
@@ -49,25 +113,14 @@ class Documentation extends React.Component {
     let resp = [];
     for (let useCase in this.state.RouteList) {
       for (let route in this.state.RouteList[useCase]) {
-        let request = {}
-        let response = {}
-        if (this.state.RouteList[useCase][route].isValBypass === false) {
-          this.state.RouteList[useCase][route].RequestMapping.forEach(element => {
-            _.set(request, element.IN_FIELD, `${element.IN_FIELDDT}`);
-          });
+        let request = this.state.request;
+        if (!this.state.request)
+          request = _.get(this.state.RouteList, `${useCase}.${route}.requestSchema`, null);
 
-          this.state.RouteList[useCase][route].ResponseMapping.forEach(element => {
-            _.set(response, element.MAP_FIELD, `${element.MAP_FIELDDT}`);
-          });
-        } else {
-          this.state.RouteList[useCase][route].ResponseMapping = [];
-          this.state.RouteList[useCase][route].RequestMapping = []
-        }
-
-        if (this.state.RouteList[useCase][route].isSimulated === true) {
-          response = JSON.parse(this.state.RouteList[useCase][route].simulatorResponse);
-        }
-        resp.push(<DocumentComponent initialValues={this.state.RouteList[useCase][route]} useCase={useCase} route={route} request={request} response={response} baseurl={constants.baseUrl} />);
+        let response = this.state.response;
+        if (!this.state.response)
+          response = _.get(this.state.RouteList, `${useCase}.${route}.responseSchema`, null);
+        resp.push(<DocumentComponent initialValues={this.state.RouteList[useCase][route]} useCase={useCase} route={route} request={request} response={response} baseurl={constants.baseUrl} PG={request} onEdit={this.onEdit} onDelete={this.onDelete} onAdd={this.onAdd} onRunApi={this.onRunApi} />);
       }
     }
     return (resp);
@@ -78,18 +131,18 @@ class Documentation extends React.Component {
       <div>
         <div className="row">
           <div className="col-md-12 ">
-            <div className="portlet light bordered sdg_portlet" style={{marginBottom:"0px"}}>
+            <div className="portlet light bordered sdg_portlet" style={{ marginBottom: "0px" }}>
               <div className="portlet-title">
                 <div className="caption">
                   <span className="caption-subject">API Documentation</span></div>
                 <div className="tools">
-                <a className="btn btn-default upercase" href="javascript:;"
-                
-                style={{
-                  height:"30px",
-                  fontSize: "12px"
-                }}
-                > export </a>
+                  <a className="btn btn-default upercase" href="javascript:;"
+
+                    style={{
+                      height: "30px",
+                      fontSize: "12px"
+                    }}
+                  > export </a>
                 </div>
               </div>
               <div className="portlet-body">
@@ -122,6 +175,7 @@ function mapStateToProps(state, ownProps) {
     RouteListData: state.app.RouteList.data,
     useCase: ownProps.params.useCase,
     route: ownProps.params.route,
+    enumList: state.app.enumList.data
   };
 }
 

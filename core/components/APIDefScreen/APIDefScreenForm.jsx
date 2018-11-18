@@ -3,7 +3,8 @@ import React, { PropTypes } from 'react';
 import Portlet from '../../common/Portlet.jsx';
 import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
-const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, onInputChange, addRow, simucases,ActionHandlers }) => {
+
+const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers }) => {
 
   return (
 
@@ -19,7 +20,16 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, on
                     <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("useCase")}</label>
                     <div className="form-group col-md-8">
                       {/* {console.log(initialValues)} */}
-                      <input type="text" className="form-control" name="useCase" onChange={onInputChange} value={initialValues.useCase} />
+                      <select name="useCase" value={initialValues.useCase} onChange={onInputChange}  className="form-control">
+                        {
+                          typeData.ORG_TYPES.map((option, index) => {
+                            return (
+                              <option key={index} value={option.value}>{option.label}</option>
+                            );
+                          })
+                        }
+                      </select>
+                      
                     </div>
                   </div>
                 </div>
@@ -254,10 +264,10 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, on
                           <label className="form-group control-label col-md-4" style={{
                             textAlign: "left",
                             fontWeight: "normal"
-                          }}>{utils.getLabelByID("APIDefScreen_ServiceIP")}</label>
+                          }}>{utils.getLabelByID("APIDefScreen_ServiceURL")}</label>
                           <div className="form-group col-md-8">
 
-                            <input type="text" className="form-control" name="ServiceIP" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} value={initialValues.ServiceIP} />
+                            <input type="text" className="form-control" name="ServiceURL" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} value={initialValues.ServiceURL} />
 
                           </div>
                         </div>
@@ -281,10 +291,10 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, on
                           <label className="form-group control-label col-md-4" style={{
                             textAlign: "left",
                             fontWeight: "normal"
-                          }}>{utils.getLabelByID("APIDefScreen_ServicePort")}</label>
+                          }}>{utils.getLabelByID("APIDefScreen_ServiceHeader")}</label>
                           <div className="form-group col-md-8">
 
-                            <input type="text" className="form-control" name="ServicePort" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} value={initialValues.ServicePort} />
+                            <input type="text" className="form-control" name="ServiceHeader" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} value={initialValues.ServiceHeader} />
 
                           </div>
                         </div>
@@ -422,7 +432,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, on
                       }}>{utils.getLabelByID("APIDefScreen_ResponseMapping")}</label>
                       <div className="form-group col-md-8">
 
-                        <select name="ResponseMapping" value={initialValues.ResponseMapping} disabled={initialValues.isValBypass || initialValues.isSimulated} onChange={onInputChange} className="form-control">
+                        <select name="ResponseMapping" value={initialValues.ResponseMapping} disabled={initialValues.isResValBypass || initialValues.isSimulated} onChange={onInputChange} className="form-control">
                           {dropdownItems.RESPONSE &&
                             dropdownItems.RESPONSE.map((option, index) => {
                               return (
@@ -440,12 +450,29 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, on
                       <label className="form-group control-label col-md-4" style={{
                         textAlign: "left",
                         fontWeight: "normal"
-                      }}>{utils.getLabelByID("Bypass Mapping")}</label>
+                      }}>{utils.getLabelByID("Ignore Request Validation")}</label>
                       <div className="form-group col-md-8">
                         <div className="icheck-list">
                           <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
                             <label></label>
                             <input type="checkbox" className="form-control" onChange={onInputChange} name="isValBypass" id="isValBypass" checked={initialValues.isValBypass} />
+                            <span></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label className="form-group control-label col-md-4" style={{
+                        textAlign: "left",
+                        fontWeight: "normal"
+                      }}>{utils.getLabelByID("Ignore Response validation")}</label>
+                      <div className="form-group col-md-8">
+                        <div className="icheck-list">
+                          <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                            <label></label>
+                            <input type="checkbox" className="form-control" onChange={onInputChange} name="isResValBypass" id="isResValBypass" checked={initialValues.isResValBypass} />
                             <span></span>
                           </label>
                         </div>
@@ -467,9 +494,9 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, on
                           </label>
                         </div>
                       </div>
-
                     </div>
                   </div>
+  
                   <div className="col-md-12">
                     <div className="col-md-12">
                       <div className="btn-toolbar pull-right">

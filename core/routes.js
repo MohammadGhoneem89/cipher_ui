@@ -54,7 +54,9 @@ import MappingList from './components/mappingConfig/mappingList.jsx';
 
 import APIDefScreen from "./components/APIDefScreen/APIDefScreenContainer.jsx";
 import ApiList from "./components/APIDefScreen/apiList.jsx";
+import ModuleList from "./components/ModuleScreen/moduleList.jsx";
 import Documentation from "./components/Documentation/DocumentationContainer.jsx";
+import ModuleDefinitionScreen from "./components/ModuleScreen/ModuleDefinitionScreen.jsx";
 export default (
   <Router history={browserHistory}>
     <Route path="/Documentation(/:useCase)(/:route)" component={Documentation} />
@@ -138,6 +140,8 @@ export default (
 
       <Route path="/APIDefScreen/:useCase/:route" component={APIDefScreen}/>
       <Route path="/ApiList" component={ApiList}/>
+      <Route path="/ModuleList" component={ModuleList}/>
+      <Route path="/editModule(/:id)" component={ModuleDefinitionScreen}/>
       
       {ApplicationsRoute.routesIndex}
     </Route>

@@ -19,7 +19,7 @@ import * as requestCreator from '../../common/request.js';
 import DateControl from '../../common/DateControl.jsx'
 
 const stateParent = {
-    useCase:"",
+    useCase: "",
     mappingName: "",
     mappingType: undefined,
     description: "",
@@ -49,7 +49,7 @@ class AddUpdateMapping extends React.Component {
     onMappingTypeChange = e => {
         this.setState({ mappingType: e.target.value });
     }
-    
+
     onUseCaseChange = e => {
         this.setState({ useCase: e.target.value });
     }
@@ -137,7 +137,7 @@ class AddUpdateMapping extends React.Component {
                     document.getElementById('MAP_FIELDDT').value = a.MAP_FIELDDT;
                     document.getElementById('Sequence').value = a.Sequence;
                     document.getElementById('IN_ISREQUIRED').checked = a.IN_ISREQUIRED == "Y" ? true : false;
-                    document.getElementById('IN_FIELDTYPEDATA').value=a.IN_FIELDTYPEDATA;
+                    document.getElementById('IN_FIELDTYPEDATA').value = a.IN_FIELDTYPEDATA;
                     let tempState = this.state.mappingConfig;
                     tempState.splice(index, 1);
                     this.setState({ mappingConfig: tempState });
@@ -188,7 +188,7 @@ class AddUpdateMapping extends React.Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         this.setState(cloneDeep(stateParent))
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DFM_FROMATTYPE', 'DFM_DATATYPE', 'DFM_REQFIELDTYPE', 'DFM_RESFIELDTYPE']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DFM_FROMATTYPE', 'DFM_DATATYPE', 'DFM_REQFIELDTYPE', 'DFM_RESFIELDTYPE', 'ORG_TYPES']));
         this.props.actions.generalProcess(constants.getFunctionData, {});
         this.props.actions.generalProcess(constants.getMappingConfigByID, this.getRequest());
 
@@ -217,7 +217,7 @@ class AddUpdateMapping extends React.Component {
         }
 
         let requestBody = {
-            "useCase":this.state.useCase,
+            "useCase": this.state.useCase,
             "mappingName": mappingName,
             "mappingType": requestType,
             "description": description,
@@ -239,10 +239,10 @@ class AddUpdateMapping extends React.Component {
         let IN_FIELDDESCRIPTION = document.getElementById('IN_FIELDDESCRIPTION') == null ? "" : document.getElementById('IN_FIELDDESCRIPTION').value;
         let MAP_FIELD = document.getElementById('MAP_FIELD') == null ? "" : document.getElementById('MAP_FIELD').value;
         let MAP_FIELDDT = document.getElementById('MAP_FIELDDT') == null ? "" : document.getElementById('MAP_FIELDDT').value;
-        let IN_FIELDTYPEDATA =  document.getElementById('MAP_FIELDDT') == null ? "" : document.getElementById('IN_FIELDTYPEDATA').value;
-        let Sequence = document.getElementById('Sequence') == null ? 9999 : parseInt(document.getElementById('Sequence').value) || this.state.mappingConfig.length + 1; ;
+        let IN_FIELDTYPEDATA = document.getElementById('MAP_FIELDDT') == null ? "" : document.getElementById('IN_FIELDTYPEDATA').value;
+        let Sequence = document.getElementById('Sequence') == null ? 9999 : parseInt(document.getElementById('Sequence').value) || this.state.mappingConfig.length + 1;;
 
-        
+
         if (MAP_FIELD.trim() == "") {
             alert("Mapped Field must be defined!");
             return false;
@@ -263,7 +263,7 @@ class AddUpdateMapping extends React.Component {
             "IN_ISREQUIRED": IN_ISREQUIRED ? "Y" : "N",
             "MAP_FIELD": MAP_FIELD,
             "MAP_FIELDDT": MAP_FIELDDT,
-            "IN_FIELDTYPEDATA" : IN_FIELDTYPEDATA,
+            "IN_FIELDTYPEDATA": IN_FIELDTYPEDATA,
             "actions": [
                 { label: "Move UP", iconName: "fa fa-arrow-up", actionType: "COMPONENT_FUNCTION" },
                 { label: "Move Down", iconName: "fa fa-arrow-down", actionType: "COMPONENT_FUNCTION" },
@@ -291,7 +291,7 @@ class AddUpdateMapping extends React.Component {
         for (let i = 0; i < list.length; i++) {
             let obj = list[i];
             if (
-                obj.MAP_FIELD == refObj.MAP_FIELD && obj.MAP_FIELDDT==refObj.MAP_FIELDDT && refObj.MAP_FIELDDT != 'array'  
+                obj.MAP_FIELD == refObj.MAP_FIELD && obj.MAP_FIELDDT == refObj.MAP_FIELDDT && refObj.MAP_FIELDDT != 'array'
             ) {
                 return true;
             }
@@ -330,16 +330,22 @@ class AddUpdateMapping extends React.Component {
                                 <div className="form-body" id="clear">
                                     <div className="row">
                                         <div className="col-md-12">
-                                        <div className="row">
+                                            <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="form-group col-md-4">
                                                         <label className="control-label">{utils.getLabelByID("MAU_useCase")}</label>
                                                     </div>
                                                     <div className="form-group col-md-8">
-                                                        <input type="text" className="form-control" onChange={this.onUseCaseChange} value={this.state.useCase} id="useCase" />
+                                                        <select name="useCase" id="useCase" value={this.state.useCase} onChange={this.onUseCaseChange} className="form-control">
+                                                            {this.state.typeData && this.state.typeData.ORG_TYPES && this.state.typeData.ORG_TYPES.map((option, index) => {
+                                                                return (
+                                                                    <option key={index} value={option.value}>{option.label}</option>
+                                                                );
+                                                            })}
+                                                        </select>
                                                     </div>
                                                 </div>
-                                                </div>
+                                            </div>
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="form-group col-md-4">
@@ -449,7 +455,7 @@ class AddUpdateMapping extends React.Component {
                                                     </div>
                                                 </div>
 
-                                                
+
                                                 <div className="row">
                                                     <div className="col-md-12">
                                                         <div className="form-group col-md-4">
@@ -526,13 +532,13 @@ class AddUpdateMapping extends React.Component {
                                                                 <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
                                                                     <label></label>
                                                                     <input type="checkbox" className="form-control" name="IN_ISREQUIRED" id="IN_ISREQUIRED" />
-                                                                    <input type="number" className="form-control" name="Sequence" id="Sequence" 
-                                                                    style={{
+                                                                    <input type="number" className="form-control" name="Sequence" id="Sequence"
+                                                                        style={{
                                                                             display: "none"
                                                                         }}
                                                                     />
-                                                                    
-<span></span>
+
+                                                                    <span></span>
                                                                 </label>
                                                             </div>
                                                         </div>

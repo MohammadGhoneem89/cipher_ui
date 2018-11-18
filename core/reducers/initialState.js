@@ -1,6 +1,7 @@
 import ApplicationsInitialSate from '../../applications/constants/InitialSateIndex';
 export default {
   userData: {action: "", data: {}},
+  enumList:{action: "", data: {}},
   entityList: {action: "", data: {searchResult: [], typeData: {entityNames: []}}},
   acquirerList: {action: "", data: {searchResult: [], typeData: {acquirerNames: []}}},
   entityDetail: {
@@ -260,6 +261,8 @@ export default {
   },
   ApiListData:{"action": "", "datasourceList": {"pageData": {"totalRecords": 0}}},
   APIDefinitionAddUpdate: {},
+  AddUpdateModule:{},
+  ApiListCombo:{},
   RouteList:{},
   workingCalendarDetail: {
     action: "workingCalendarDetail",

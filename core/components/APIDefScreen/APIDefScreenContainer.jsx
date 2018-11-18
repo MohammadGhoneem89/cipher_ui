@@ -24,14 +24,15 @@ const initialState = {
     "communicationMode": "QUEUE",
     "requestServiceQueue": "",
     "responseQueue": "",
-    "ServiceIP": "",
-    "ServicePort": "",
+    "ServiceURL": "",
+    "ServiceHeader": "",
     "description": "",
     "authorization": "",
     "simulatorResponse": "",
     "ResponseMapping": "",
     "RequestMapping": "",
     "isValBypass": false,
+    "isResValBypass":false,
     "isResponseMapDisable": false,
   },
   simucases: [],
@@ -99,7 +100,7 @@ class APIDefinitionScreen extends React.Component {
 
 
     this.props.actions.generalProcess(constants.getMappingList);
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['API_Authtypes', 'API_ComMode']));
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['API_Authtypes', 'API_ComMode', 'ORG_TYPES']));
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE") {
       let req = {
         useCase: this.props.useCase,
@@ -175,8 +176,8 @@ class APIDefinitionScreen extends React.Component {
       }
     }
     if (data.isCustomMapping === false) {
-      if (data.communicationMode === "REST" && (data.ServiceIP.trim() == "" || data.ServicePort.trim() == "")) {
-        alert("ServiceIP and ServicePort must be defined!");
+      if (data.communicationMode === "REST" && (data.ServiceURL.trim() == "")) {
+        alert("ServiceURL must be defined!");
         return false;
       }
       if (data.communicationMode === "QUEUE" && (data.requestServiceQueue.trim() == "" || data.responseQueue.trim() == "")) {
