@@ -880,7 +880,7 @@ module.exports = {
   BTL_MSP: "Provider",
   BTL_TCERT: "Transaction Certificate",
   BTL_Payload: "Chaincode PayLoad",
-  BTL_logData: "Orderer Logs",
+  BTL_logData: "Logs",
   NoRecordsFound: "No Records Found!",
   MAU_Field: "Field Name",
   MAU_Value: "Value",
