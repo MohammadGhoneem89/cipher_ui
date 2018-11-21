@@ -39,6 +39,7 @@ const initialState = {
   MappingConfigList: {},
   typeData: {},
   // dropDownItems:[],
+  isEdit:false,
   isLoading: true,
   isCustom: true
 };
@@ -108,6 +109,7 @@ class APIDefinitionScreen extends React.Component {
       }
       console.log(req)
       this.props.actions.generalProcess(constants.getAPIDefinitionID, req);
+      this.setState({isEdit:true})
     }
   }
   clearFields() {
@@ -226,7 +228,7 @@ class APIDefinitionScreen extends React.Component {
       return (<div className="loader">isLoading...</div>)
     }
     return (
-      <APIDefScreenForm onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} />)
+      <APIDefScreenForm onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} parentState={this.state} />)
   }
   ActionHandlers({ actionName, index }) {
     switch (actionName) {

@@ -42,7 +42,7 @@ class OrgSetupContainer extends React.Component {
                 "pageSize": 1
             }));
         }
-
+       
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES']));
     }
 
@@ -67,12 +67,15 @@ class OrgSetupContainer extends React.Component {
         }
     }
 
-
+    disableFileds() {
+        $('#netconfig').find('input:text').disabled=this.state.readOnly;
+        $('#netconfig').find('textarea').disabled=this.state.readOnly;
+      }
     submit(data) {
         if (this.state.orgID) {
             data._id = this.state.orgID; //Hack to avoid replication.
             return this.props.actions.reduxFormProcess(constants.entityUpdate, requestCreator.createEntityUpdateRequest(data))
-                .catch((error) => {
+                .catch((error) => { 
                     throw new SubmissionError(error);
                 });
         }

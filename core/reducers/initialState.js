@@ -1,9 +1,9 @@
 import ApplicationsInitialSate from '../../applications/constants/InitialSateIndex';
 export default {
-  userData: {action: "", data: {}},
-  enumList:{action: "", data: {}},
-  entityList: {action: "", data: {searchResult: [], typeData: {entityNames: []}}},
-  acquirerList: {action: "", data: {searchResult: [], typeData: {acquirerNames: []}}},
+  userData: { action: "", data: {} },
+  enumList: { action: "", data: {} },
+  entityList: { action: "", data: { searchResult: [], typeData: { entityNames: [] } } },
+  acquirerList: { action: "", data: { searchResult: [], typeData: { acquirerNames: [] } } },
   entityDetail: {
     action: "", data: {
       "entityName": "",
@@ -87,7 +87,7 @@ export default {
       "actions": []
     }
   },
-  fileTemplateList: {action: "", data: {searchResult: [], typeData: {fileTemplateNames: []}}},
+  fileTemplateList: { action: "", data: { searchResult: [], typeData: { fileTemplateNames: [] } } },
   fileTemplateDetail: {
     action: "fileTemplateDetail",
     data: {
@@ -104,31 +104,31 @@ export default {
     action: "typeData",
     data: undefined
   },
-  emailTemplateList: {action: "", data: {searchResult: [], typeData: {emailTemplateNames: []}}},
+  emailTemplateList: { action: "", data: { searchResult: [], typeData: { emailTemplateNames: [] } } },
   emailTemplateDetail: {
     action: "emailTemplateDetail",
     data: {}
   },
   commissionTemplateList: {
     action: "commissionTemplateList",
-    data: {searchResult: [], typeData: {commissionTemplateNames: []}}
+    data: { searchResult: [], typeData: { commissionTemplateNames: [] } }
   },
   commissionTemplateDetail: {
     action: "commissionTemplateDetail",
     data: {}
   },
-  permissionData: {action: "", data: {menuPermissions: []}},
+  permissionData: { action: "", data: { menuPermissions: [] } },
   notificationList: {},
-  notificationDetailList: {action: "", data: {"pageData": {"totalRecords": 0}}},
-  containerData: {action: "", data: {}},
+  notificationDetailList: { action: "", data: { "pageData": { "totalRecords": 0 } } },
+  containerData: { action: "", data: {} },
   responseMessage: {
     action: "",
-    data: {status: "ERROR", errorDescription: "I am the problem", routeTo: "success", displayToUser: false}
+    data: { status: "ERROR", errorDescription: "I am the problem", routeTo: "success", displayToUser: false }
   },
-  loginResponse: {action: "", data: {}},
+  loginResponse: { action: "", data: {} },
   entityDashboardData: {
     action: "", data: {
-      "dashboardTiles": [], "workboardData": {"pageData": {}}, "exceptionData": {
+      "dashboardTiles": [], "workboardData": { "pageData": {} }, "exceptionData": {
         "exceptionSummary": {}, "chartData": {
 
           "fromDate": "2/2/2012",
@@ -163,10 +163,10 @@ export default {
     }
   },
 
-  pickListData: {action: "", data: {List: {}}},
-  processorListData: {action: "", data: {ProcessorList: []}},
-  processActionResponseData: {action: "", data: {}},
-  settlementListData: {action: "", data: {settlementData: {"pageData": {}}}},
+  pickListData: { action: "", data: { List: {} } },
+  processorListData: { action: "", data: { ProcessorList: [] } },
+  processActionResponseData: { action: "", data: {} },
+  settlementListData: { action: "", data: { settlementData: { "pageData": {} } } },
   consortiumDetail: {
     "action": "consortiumDetail",
     "data": undefined
@@ -174,20 +174,20 @@ export default {
   commissionBatchData: {
     action: "", "data": {
       "batchID": "",
-      "acquirer": {logo: {}},
+      "acquirer": { logo: {} },
       "lastCommissionDate": "",
       "toDate": "",
       "counterSLA": "",
       "commissionOverdue": "",
       "commissionTiles": [],
-      "commissionSummaryData": {"rows": []},
+      "commissionSummaryData": { "rows": [] },
       "currentStatus": "",
       "statusList": [],
       "actions": []
     }
   },
-  commissionBatchProcessedData: {action: "", data: {acquirer: {logo: {}}, currentStatus: "", statusList: []}},
-  commissionListData: {action: "", data: {commissionData: {"pageData": {}, "rows": []}}},
+  commissionBatchProcessedData: { action: "", data: { acquirer: { logo: {} }, currentStatus: "", statusList: [] } },
+  commissionListData: { action: "", data: { commissionData: { "pageData": {}, "rows": [] } } },
   commissionDetailData: {
     action: "", "data": {
       "acquirer": {
@@ -219,12 +219,12 @@ export default {
   groupDetail: {
     action: "",
     "data": {
-      "searchResult": {"groupName": "", "description": "", "nodes": [], "expanded": [], "checked": []},
+      "searchResult": { "groupName": "", "description": "", "nodes": [], "expanded": [], "checked": [] },
       "actions": []
     }
   },
-  groupList: {action: "", pageData: {}, data: {searchResult: []}},
-  userList: {action: "", pageData: {totalRecords: ""}, data: []},
+  groupList: { action: "", pageData: {}, data: { searchResult: [] } },
+  userList: { action: "", pageData: { totalRecords: "" }, data: [] },
   userDetails: {
     action: "", data: {
       "searchResult": {
@@ -256,14 +256,17 @@ export default {
     }
   },
   MappingConfigData: {
-        "action": "MappingConfigData",
-        "data": {}
+    "action": "MappingConfigData",
+    "data": {}
   },
-  ApiListData:{"action": "", "datasourceList": {"pageData": {"totalRecords": 0}}},
+  ApiListData: { "action": "", "datasourceList": { "pageData": { "totalRecords": 0 } } },
   APIDefinitionAddUpdate: {},
-  AddUpdateModule:{},
-  ApiListCombo:{},
-  RouteList:{},
+  AddUpdateModule: {},
+  ApiListCombo: {},
+  EventDispatcherList: {},
+  EventDispatcherDetails: {},
+  EventDispatcherTypeList: {},
+  RouteList: {},
   workingCalendarDetail: {
     action: "workingCalendarDetail",
     data: {
@@ -275,9 +278,9 @@ export default {
 
   },
 
-  auditLogList: {"action": "", "auditLogList": {"pageData": {"totalRecords": 0}}},
+  auditLogList: { "action": "", "auditLogList": { "pageData": { "totalRecords": 0 } } },
 
-  auditLogDetail: {"action": "", "data": ""},
+  auditLogDetail: { "action": "", "data": "" },
 
   nodeDetail: {
     action: "nodeDetail",
@@ -290,12 +293,12 @@ export default {
   reportFilters: {
     "data": []
   },
-  reconAuditList: {action: "", "reconAuditList": {"pageData": {"totalRecords": 0}}},
+  reconAuditList: { action: "", "reconAuditList": { "pageData": { "totalRecords": 0 } } },
 
-  changeResponseData: {action: "", data: {}},
+  changeResponseData: { action: "", data: {} },
 
-  APIPayLoadList: {"action": "", "APIPayloadList": {"pageData": {"totalRecords": 0}}},
-  APIPayLoadDetail: {"action": "", "data": ""},
+  APIPayLoadList: { "action": "", "APIPayloadList": { "pageData": { "totalRecords": 0 } } },
+  APIPayLoadDetail: { "action": "", "data": "" },
 
   tranBlockChainId: {
     "tranBlockChainId": {
@@ -373,7 +376,7 @@ export default {
   blockchainWorkboardData: {
     action: "", data: {
       "dashboardTiles": [],
-      "workboardData": {"pageData": {}}, "exceptionData": {
+      "workboardData": { "pageData": {} }, "exceptionData": {
         "exceptionSummary": {}, "chartData": {
           "fromDate": "2/2/2012",
           "toDate": "1/1/2012",
@@ -448,7 +451,7 @@ export default {
     }
   },
   fetchPasswordPolicy: {},
-  EventList: {"action": "", "EventList": {"pageData": {"totalRecords": 0}}},
+  EventList: { "action": "", "EventList": { "pageData": { "totalRecords": 0 } } },
   AddUpdateEventList: {
     "action": "",
     "data": {
@@ -458,18 +461,18 @@ export default {
       }
     }
   },
-  AddUpdateMapping:{
+  AddUpdateMapping: {
     "action": "",
     "data": {
 
     }
-  },FunctionData: {
+  }, FunctionData: {
     "action": "FunctionData",
     "data": {
     }
   },
-  MappingList:{"action": "", "datasourceList": {"pageData": {"totalRecords": 0}}},
-  DatasourceList: {"action": "", "datasourceList": {"pageData": {"totalRecords": 0}}},
+  MappingList: { "action": "", "datasourceList": { "pageData": { "totalRecords": 0 } } },
+  DatasourceList: { "action": "", "datasourceList": { "pageData": { "totalRecords": 0 } } },
   AddUpdateDatasource: {
     "action": "",
     "data": {
@@ -477,8 +480,8 @@ export default {
       }
     }
   },
-  EventDispatcherStatus: {"action": "", "dispatchList": {"pageData": {"totalRecords": 0}}},
-  DispatchList: {"action": "", "dispatchList": {"pageData": {"totalRecords": 0}}},
+  EventDispatcherStatus: { "action": "", "dispatchList": { "pageData": { "totalRecords": 0 } } },
+  DispatchList: { "action": "", "dispatchList": { "pageData": { "totalRecords": 0 } } },
   AddUpdateDispatcher: {
     "action": "",
     "data": {

@@ -36,17 +36,17 @@ class ApiList extends React.Component {
     }
 
     getRequest() {
-       let mappingName = document.getElementById('mappingName') == null ? "" : document.getElementById('mappingName').value;
-        let requestType = document.getElementById('requestType') == null ? "" : document.getElementById('requestType').value;
+       let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value;
+        let route = document.getElementById('route') == null ? "" : document.getElementById('route').value;
 
         var searchCriteria = {
         }
 
-        if (mappingName != "")
-            searchCriteria.mappingName = mappingName
+        if (useCase != "")
+            searchCriteria.useCase = useCase
 
-        if (requestType != "")
-            searchCriteria.mappingType = requestType
+        if (route != "")
+            searchCriteria.route = route
 
       
 

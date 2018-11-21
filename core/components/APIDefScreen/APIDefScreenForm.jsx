@@ -4,7 +4,7 @@ import Portlet from '../../common/Portlet.jsx';
 import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
 
-const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers }) => {
+const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState }) => {
 
   return (
 
@@ -20,7 +20,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, on
                     <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("useCase")}</label>
                     <div className="form-group col-md-8">
                       {/* {console.log(initialValues)} */}
-                      <select name="useCase" value={initialValues.useCase} onChange={onInputChange}  className="form-control">
+                      <select name="useCase" value={initialValues.useCase} disabled={parentState.isEdit} onChange={onInputChange} className="form-control">
                         {
                           typeData.ORG_TYPES.map((option, index) => {
                             return (
@@ -29,7 +29,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, on
                           })
                         }
                       </select>
-                      
+
                     </div>
                   </div>
                 </div>
@@ -38,7 +38,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, on
                     <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("APIDefScreen_route")}</label>
                     <div className="form-group col-md-8">
                       {/* {console.log(initialValues)} */}
-                      <input type="text" className="form-control" name="route" onChange={onInputChange} value={initialValues.route} />
+                      <input type="text" className="form-control" name="route" onChange={onInputChange} disabled={parentState.isEdit} value={initialValues.route} />
                     </div>
                   </div>
                 </div>
@@ -496,7 +496,7 @@ const APIDefScreenForm = ({ onSubmit, initialValues, typeData, dropdownItems, on
                       </div>
                     </div>
                   </div>
-  
+
                   <div className="col-md-12">
                     <div className="col-md-12">
                       <div className="btn-toolbar pull-right">

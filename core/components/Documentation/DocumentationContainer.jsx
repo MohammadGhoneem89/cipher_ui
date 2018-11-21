@@ -104,7 +104,7 @@ class Documentation extends React.Component {
             routemap[useCase][route].RequestMapping = []
           }
 
-          if (routemap[useCase][route].isResValBypass === true) {
+          if (routemap[useCase][route].isSimulated === true) {
             response = JSON.parse(routemap[useCase][route].simulatorResponse);
           }
           reqSample = routemap[useCase][route].sampleRequest

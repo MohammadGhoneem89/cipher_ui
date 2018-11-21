@@ -661,7 +661,18 @@ module.exports = {
     {alias: "EVNTL_Date", key: "createdon", type: "string"},
     {alias: "EVNTL_DispatchDate", key: "updatedon", type: "string"},
     {alias: "EL_Error", key: "error", type: "string"},
-    {alias: "EL_Status", key: "status", type: "statusLabel"}
+    {alias: "EL_Status", key: "status", type: "statusLabel"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  peerListOrg:[
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "peerName", key: "peerName", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  userListOrg:[
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "CAUserName", key: "userName", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
   ],
   EventListData: [
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
@@ -756,6 +767,15 @@ module.exports = {
     {alias: "DOC_Type", key: "IN_FIELDDT" , type: "string"},
     {alias: "DOC_DESCRIPTION", key: "IN_FIELDDESCRIPTION", type: "string"},
     {alias: "DOC_REQUIRED", key: "IN_ISREQUIRED", type: "string"}
+  ],
+  dispatchListData:[
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "", key: "dispatcherName", type: "hiddenID"},
+    {alias: "dispatcherName", key: "dispatcherName" , type: "string"},
+    {alias: "type", key: "type" , type: "string"},
+    {alias: "groupName", key: "groupName" , type: "string"},
+    {alias: "createdby", key: "createdBy" , type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
   ],
   APIDocRes:[
     {alias: "DOC_FIELD", key: "MAP_FIELD" , type: "string"},

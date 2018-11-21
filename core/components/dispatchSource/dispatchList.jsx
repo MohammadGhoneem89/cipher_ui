@@ -1,21 +1,29 @@
 /*standard imports*/
 import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
+
 import Portlet from '../../common/Portlet.jsx';
 /*container specific imports*/
+import TileUnit from '../../common/tileUnit.jsx';
 import Table from '../../common/Datatable.jsx';
+import BarChartExceptions from '../../common/barChart.jsx'
 import * as utils from '../../common/utils.js';
+
+
 import * as constants from '../../constants/Communication.js';
+import * as requestCreator from '../../common/request.js';
 import DateControl from '../../common/DateControl.jsx'
 
 
-class DispatchQueue extends React.Component {
+class dispatchList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [] };
+        this.state = { searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [], typeData: undefined }
         this.pageChanged = this.pageChanged.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
         this.getRequest = this.getRequest.bind(this);
@@ -28,40 +36,24 @@ class DispatchQueue extends React.Component {
     }
 
     getRequest() {
-        let toDate = $("#toDate").find("input").val()
-        let fromDate = $("#fromDate").find("input").val()
-        let uuid = (document.getElementById('uuid') == null || document.getElementById('uuid') == undefined) ? "" : document.getElementById('uuid').value;
-        let channel = document.getElementById('channel') == null ? "" : document.getElementById('channel').value;
-        let action = document.getElementById('action') == null ? "" : document.getElementById('action').value;
-        let dispatcher = document.getElementById('dispatcher') == null ? "" : document.getElementById('dispatcher').value;
-        let dataSource = document.getElementById('dataSource') == null ? "" : document.getElementById('dataSource').value;
+       let type = document.getElementById('type') == null ? "" : document.getElementById('type').value;
+        let dispatcherName = document.getElementById('dispatcherName') == null ? "" : document.getElementById('dispatcherName').value;
 
         var searchCriteria = {
         }
 
-        if (uuid != "")
-            searchCriteria.uuid = uuid
+        if (dispatcherName != "")
+            searchCriteria.dispatcherName = dispatcherName
 
-        if (channel != "")
-            searchCriteria.channel = channel
+        if (type != "")
+            searchCriteria.type = type
 
-        if (action != "")
-            searchCriteria.action = action
-
-        if (fromDate != "")
-            searchCriteria.fromDate = fromDate;
-
-        if (dispatcher != "")
-            searchCriteria.dispatcherName = dispatcher;
-
-        if (dataSource != "")
-            searchCriteria.dataSourceName = dataSource;
-
+      
 
         this.setState({ searchFilters: searchCriteria })
 
         var request = {
-            "action": "DispatchQueueData",
+            "action": "mappingData",
             searchCriteria,
             "page": {
                 "currentPageNo": 1,
@@ -74,7 +66,13 @@ class DispatchQueue extends React.Component {
 
         return request;
     }
-
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.typeData) {
+            this.setState({
+                typeData: nextProps.typeData
+            });
+        }
+    }
     componentWillMount() {
 
 
@@ -85,11 +83,12 @@ class DispatchQueue extends React.Component {
     }
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.props.actions.generalProcess(constants.getEventDispatcherStatus, this.getRequest());
-        this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/editEventRegistry/NEWEVENT", "children": [] }] })
+        this.props.actions.generalProcess(constants.getdispatchListData, this.getRequest());
+        this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/editDispatcher/NEWDISP", "children": [] }] })
     }
     formSubmit() {
-        this.props.actions.generalProcess(constants.getEventDispatcherStatus, this.getRequest());
+
+        this.props.actions.generalProcess(constants.getdispatchListData, this.getRequest());
     }
     pageChanged(pageNo) {
         if (pageNo != undefined) {
@@ -99,7 +98,7 @@ class DispatchQueue extends React.Component {
             if (this.state.searchFilters == undefined) {
 
                 request = {
-                    "action": "DispatchQueue",
+                    "action": "dispatchListData",
                     "searchCriteria": {
                     },
                     "page": {
@@ -110,7 +109,7 @@ class DispatchQueue extends React.Component {
             } else {
                 var searchCriteria = this.state.searchFilters
                 request = {
-                    "action": "DispatchQueue",
+                    "action": "dispatchListData",
                     searchCriteria,
                     "page": {
                         "currentPageNo": pageNo,
@@ -121,13 +120,13 @@ class DispatchQueue extends React.Component {
 
             this.setState({ currentPageNo: pageNo })
 
-            this.props.actions.generalProcess(constants.getDispatchQueueData, request);
+            this.props.actions.generalProcess(constants.getdispatchListData, request);
 
         }
     }
     clearFields() {
-        $('#DispatchQueue').find('input:text').val('');
-        $('#DispatchQueue').find('select').each(function () {
+        $('#dispatchListData').find('input:text').val('');
+        $('#dispatchListData').find('select').each(function () {
             $(this)[0].selectedIndex = 0;
         });
     }
@@ -135,7 +134,7 @@ class DispatchQueue extends React.Component {
 
     render() {
 
-        if (this.props.DispatchQueueData.data) {
+        if (this.props.dispatchListData && this.props.dispatchListData.data) {
             return (
                 <div>
                     <div className="row">
@@ -143,49 +142,32 @@ class DispatchQueue extends React.Component {
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
                                     <div className="caption">
-                                        <span className="caption-subject">{utils.getLabelByID("DispatchQueueFilters")}</span></div>
+                                        <span className="caption-subject">{utils.getLabelByID("dispatchListDataFilters")}</span></div>
                                     <div className="tools">
                                         <a href="javascript:;" className="collapse" data-original-title title> </a>
                                     </div>
                                 </div>
                                 <div className="portlet-body">
-                                    <div className="form-body" id="DispatchQueue">
+                                    <div className="form-body" id="dispatchListData">
                                         <div className="row">
                                             <div className="col-md-12">
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("APL_FromDate")}</label>
-                                                        </div>
-                                                        <div className="form-group col-md-8">
-                                                            <DateControl id="fromDate" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("APL_ToDate")}</label>
-                                                        </div>
-                                                        <div className="form-group col-md-8">
-                                                            <DateControl id="toDate" />
-                                                        </div>
-                                                    </div>
-                                                </div>
+
                                                 <div className="row">
 
                                                     <div className="col-md-6">
                                                         <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("EL_DataSource")}</label>
+                                                            <label className="control-label">{utils.getLabelByID("DAU_dispatcherName")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="dataSource" id="dataSource" />
+                                                            <input type="text" className="form-control" name="dispatcherName" id="dispatcherName" />
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("EL_Dispatcher")}</label>
+                                                            <label className="control-label">{utils.getLabelByID("DAU_type")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="dispatcher" id="dispatcher" />
+                                                            <input type="text" className="form-control" name="type" id="type" /> 
                                                         </div>
                                                     </div>
                                                 </div>
@@ -208,10 +190,10 @@ class DispatchQueue extends React.Component {
                         </div>
                     </div>
 
-                    <Portlet title={utils.getLabelByID("DispatchQueue")} isPermissioned={true}
+                    <Portlet title={utils.getLabelByID("dispatchList")} isPermissioned={true}
                         actions={this.state.actions}>
-                        <Table  fontclass="" gridColumns={utils.getGridColumnByName("DispatchQueueData")} gridData={this.props.DispatchQueueData.data.searchResult}
-                            totalRecords={this.props.DispatchQueueData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
+                        <Table fontclass="" gridColumns={utils.getGridColumnByName("dispatchListData")} gridData={this.props.dispatchListData.data.searchResult}
+                            totalRecords={this.props.dispatchListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
                             pagination={true} pageChanged={this.pageChanged} export={false} search={true}
                             activePage={this.state.currentPageNo} />
                     </Portlet>
@@ -226,17 +208,15 @@ class DispatchQueue extends React.Component {
     }
 }
 
-DispatchQueue.propTypes = {
-    DispatchQueueData: PropTypes.object,
+dispatchList.propTypes = {
+    dispatchListData: PropTypes.object,
     children: PropTypes.object,
 
 };
 
 function mapStateToProps(state, ownProps) {
-
-
     return {
-        DispatchQueueData: state.app.EventDispatcherStatus,
+        dispatchListData: state.app.EventDispatcherList
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -244,5 +224,5 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-DispatchQueue.displayName = "DispatchQueue";
-export default connect(mapStateToProps, mapDispatchToProps)(DispatchQueue);
+dispatchList.displayName = "dispatchList";
+export default connect(mapStateToProps, mapDispatchToProps)(dispatchList);

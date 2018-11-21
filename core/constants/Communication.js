@@ -133,5 +133,9 @@ module.exports = {
   getModuleConfigByID:baseUrl+ "/API/core/getModuleConfigByID",
   getAPIList:baseUrl+ "/API/core/getAPIList",
   updateModuleConfig:baseUrl+ "/API/core/updateModuleConfig",
-
+  getdispatchListData:baseUrl+ "/API/UI/getEventDispatcher",
+  getDispatcherMeta:baseUrl+ "/API/UI/getDispatcherMeta",
+  upsertEventDispatcher:baseUrl+ "/API/UI/upsertEventDispatcher",
+  getEventDispatcherByID:baseUrl+ "/API/UI/getEventDispatcherByID",
+  updateEventDispatcherStatus:baseUrl+ "/API/UI/updateEventDispatcherStatus"
 };

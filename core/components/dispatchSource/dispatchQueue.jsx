@@ -1,21 +1,13 @@
 /*standard imports*/
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
-
 import Portlet from '../../common/Portlet.jsx';
 /*container specific imports*/
-import TileUnit from '../../common/tileUnit.jsx';
 import Table from '../../common/Datatable.jsx';
-import BarChartExceptions from '../../common/barChart.jsx'
 import * as utils from '../../common/utils.js';
-
-
 import * as constants from '../../constants/Communication.js';
-import * as requestCreator from '../../common/request.js';
 import DateControl from '../../common/DateControl.jsx'
 
 
@@ -23,16 +15,17 @@ class DispatchQueue extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [] }
+        this.state = { searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [] };
         this.pageChanged = this.pageChanged.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
         this.getRequest = this.getRequest.bind(this);
         this.renderPopupBody = this.renderPopupBody.bind(this);
+        this.ActionHandlers = this.ActionHandlers.bind(this);
 
 
     }
     renderPopupBody(dataID) {
-        this.setState({ APIPayloadID: dataID })
+        this.setState({ APIPayloadID: dataID, isReQueued: false })
     }
 
     getRequest() {
@@ -88,9 +81,38 @@ class DispatchQueue extends React.Component {
 
 
     }
+    ActionHandlers({ actionName, index }) {
+        switch (actionName) {
+            case "ReQueue":
+                if (index > -1) {
+                    let a = this.props.DispatchQueueData.data.searchResult;
+                    let id = a[index].internalid;
+                    let request = {
+                        eventID: id
+                    }
+                    this.setState({ isReQueued: true }, () => {
+                         this.props.actions.generalProcess(constants.updateEventDispatcherStatus, request);
+                    })
+
+                    //this.props.actions.generalProcess(constants.getEventDispatcherStatus, this.getRequest());
+                }
+                break;
+            default:
+                break;
+        }
+    }
     searchCallBack(keyWord) {
 
     }
+    componentWillUpdate() {
+        if (this.state.isReQueued === true)
+            this.setState({
+                isReQueued: false
+            }, function () {
+                this.props.actions.generalProcess(constants.getEventDispatcherStatus, this.getRequest());
+            });
+    }
+    
     componentDidMount() {
         window.scrollTo(0, 0);
         this.props.actions.generalProcess(constants.getEventDispatcherStatus, this.getRequest());
@@ -216,12 +238,12 @@ class DispatchQueue extends React.Component {
                         </div>
                     </div>
 
-                    <Portlet title={utils.getLabelByID("DispatchQueue")} isPermissioned={true}
-                        >
-                        <Table  fontclass="" gridColumns={utils.getGridColumnByName("DispatchQueueData")} gridData={this.props.DispatchQueueData.data.searchResult}
+                    <Portlet title={utils.getLabelByID("DispatchQueue")} isPermissioned={true}>
+                        <Table componentFunction={this.ActionHandlers} fontclass="" gridColumns={utils.getGridColumnByName("DispatchQueueData")} gridData={this.props.DispatchQueueData.data.searchResult}
                             totalRecords={this.props.DispatchQueueData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
-                            pagination={true} pageChanged={this.pageChanged} export={false} search={true}
+                            pagination={true} pageChanged={this.pageChanged}
                             activePage={this.state.currentPageNo} />
+
                     </Portlet>
 
 
@@ -245,6 +267,7 @@ function mapStateToProps(state, ownProps) {
 
     return {
         DispatchQueueData: state.app.EventDispatcherStatus,
+        responseMessage: state.app.responseMessage
     };
 }
 function mapDispatchToProps(dispatch) {

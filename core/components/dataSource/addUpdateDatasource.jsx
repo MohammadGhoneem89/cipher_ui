@@ -17,15 +17,17 @@ import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import DateControl from '../../common/DateControl.jsx'
 
-const parentState={
+const parentState = {
     searchFilters: "",
     currentPageNo: 1,
     APIPayloadID: undefined,
+    dataSourceType: "",
     selectedDatasource: [],
     selectedDispatcher: [],
     selectedDatasourceObj: [],
     selectedDispatcherObj: [],
     eventNames: [],
+    typeData: undefined,
     fields: [],
     rules: [],
     selectedDSObject: {},
@@ -35,7 +37,10 @@ const parentState={
     eventName: "",
     dataSourceName: "",
     sourceFunction: "",
-    filePath: ""
+    filePath: "",
+    isLoading: true,
+    isQueue: false,
+    queueName: ""
 }
 class AddUpdateDatasource extends React.Component {
 
@@ -58,14 +63,15 @@ class AddUpdateDatasource extends React.Component {
         var request = {
             "dataSourceName": this.props.datasource
         }
-       
+
         console.log(JSON.stringify(this.state))
         return request;
     }
 
     componentWillReceiveProps(nextProps) {
 
-        if (this.props.datasource!=="NEWDATASOURCE" && nextProps.AddUpdateDatasourceData.dataSourceName) {
+
+        if (this.props.datasource !== "NEWDATASOURCE" && nextProps.AddUpdateDatasourceData.dataSourceName) {
             if (nextProps.AddUpdateDatasourceData.sourceDataDefination.length && nextProps.AddUpdateDatasourceData.sourceDataDefination.length > 0) {
                 let ruleList = [];
                 nextProps.AddUpdateDatasourceData.sourceDataDefination.forEach(elem => {
@@ -73,17 +79,34 @@ class AddUpdateDatasource extends React.Component {
                         ruleList.push(e);
                     })
                 })
+
                 this.setState({
                     rules: ruleList,
                     dataSourceName: nextProps.AddUpdateDatasourceData.dataSourceName,
+                    dataSourceType: nextProps.AddUpdateDatasourceData.type,
                     sourceFunction: nextProps.AddUpdateDatasourceData.sourceFunction,
-                    filePath: nextProps.AddUpdateDatasourceData.filePath
+                    filePath: nextProps.AddUpdateDatasourceData.filePath,
+                    queueName: nextProps.AddUpdateDatasourceData.queueName,
+                    isQueue: nextProps.AddUpdateDatasourceData.type === "queue" ? true : false
                 });
             }
         } else {
-          
-            this.setState(cloneDeep(parentState));
+            this.setState({
+                rules: parentState.rules,
+                dataSourceName: parentState.dataSourceName,
+                dataSourceType: parentState.dataSourceType,
+                sourceFunction: parentState.sourceFunction,
+                filePath: parentState.filePath,
+                queueName: parentState.queueName,
+                isQueue: parentState.dataSourceType === "queue" ? true : false
+            });
 
+        }
+        if (nextProps.typeData) {
+            this.setState({
+                typeData: nextProps.typeData,
+                isLoading: false
+            });
         }
 
     }
@@ -107,17 +130,30 @@ class AddUpdateDatasource extends React.Component {
 
 
     componentDidMount() {
-        
+
         window.scrollTo(0, 0);
-        
-            this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DSR_TYPE']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DSR_TYPE', 'dataSourceType']));
+        if (this.props.datasource !== "NEWDATASOURCE")
             this.props.actions.generalProcess(constants.getDataSourceByID, this.getRequest());
-        
+
     }
     formSubmit() {
 
         if (this.state.rules.length == 0) {
             alert("source data must be defined!");
+            return false;
+        }
+        if (this.state.dataSourceName.trim() === "") {
+            alert("Data Source Name must be defined!");
+            return false;
+        }
+
+        if (this.state.isQueue === true && this.state.queueName.trim() === "") {
+            alert("queue Name must be defined!");
+            return false;
+        }
+        if (this.state.isQueue === false && (this.state.sourceFunction.trim() === "" || this.state.filePath.trim() === "")) {
+            alert("filePath and sourceFunction must be defined!");
             return false;
         }
         let ruleList = this.state.rules.map(function (item) {
@@ -126,8 +162,10 @@ class AddUpdateDatasource extends React.Component {
         });
         let requestBody = {
             "dataSourceName": this.state.dataSourceName,
+            "type": this.state.dataSourceType,
             "sourceFunction": this.state.sourceFunction,
             "filePath": this.state.filePath,
+            "queueName": this.state.queueName,
             "sourceDataDefination": [{
                 "eventName": this.state.dataSourceName,
                 "dataJsonStructure": this.state.rules
@@ -139,13 +177,19 @@ class AddUpdateDatasource extends React.Component {
     onChangeDatasource = e => {
         this.setState({ dataSourceName: e.target.value });
     };
- 
+    onChangeType = e => {
+        this.setState({ dataSourceType: e.target.value, isQueue: e.target.value === "queue" ? true : false });
+    };
+
     onChangeFunction = e => {
         this.setState({ sourceFunction: e.target.value });
     };
 
     onChangeFilepath = e => {
         this.setState({ filePath: e.target.value });
+    };
+    onChangeQueueName = e => {
+        this.setState({ queueName: e.target.value });
     };
 
     addRow() {
@@ -205,6 +249,9 @@ class AddUpdateDatasource extends React.Component {
     render() {
 
         //alert(this.state.isActive)
+        if (this.state.isLoading) {
+            return (<div className="loader">isLoading...</div>)
+        }
         return (
             <div>
                 <div className="row">
@@ -231,8 +278,38 @@ class AddUpdateDatasource extends React.Component {
                                                     </div>
                                                 </div>
 
-                                                
 
+
+                                                <div className="col-md-6">
+                                                    <div className="form-group col-md-4">
+                                                        <label className="control-label">{utils.getLabelByID("DL_SourceType")}</label>
+                                                    </div>
+                                                    <div className="form-group col-md-8">
+                                                        <select id="sourcetype" name="sourcetype" value={this.state.dataSourceType} onChange={this.onChangeType} className="form-control">
+                                                            {
+                                                                this.state.typeData.dataSourceType && this.state.typeData.dataSourceType.map((option, index) => {
+                                                                    return (
+                                                                        <option key={index} value={option.value}>{option.label}</option>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div className="row" style={{ display: this.state.isQueue ? 'none' : 'block' }}>
+
+                                                <div className="col-md-6">
+                                                    <div className="form-group col-md-4">
+                                                        <label className="control-label">{utils.getLabelByID("DL_FilePath")}</label>
+                                                    </div>
+                                                    <div className="form-group col-md-8">
+                                                        <input type="text" onChange={this.onChangeFilepath} className="form-control" value={this.state.filePath} id="fPath" />
+
+                                                    </div>
+                                                </div>
                                                 <div className="col-md-6">
                                                     <div className="form-group col-md-4">
                                                         <label className="control-label">{utils.getLabelByID("DL_Function")}</label>
@@ -242,20 +319,16 @@ class AddUpdateDatasource extends React.Component {
 
                                                     </div>
                                                 </div>
-                                                
                                             </div>
-                                            <div className="row">
+                                            <div className="row" style={{ display: this.state.isQueue ? 'block' : 'none' }}>
                                                 <div className="col-md-6">
                                                     <div className="form-group col-md-4">
-                                                        <label className="control-label">{utils.getLabelByID("DL_FilePath")}</label>
+                                                        <label className="control-label">{utils.getLabelByID("DL_QueueName")}</label>
                                                     </div>
                                                     <div className="form-group col-md-8">
-                                                        <input type="text"  onChange={this.onChangeFilepath} className="form-control" value={this.state.filePath} id="fPath" />
-
+                                                        <input type="text" onChange={this.onChangeQueueName} className="form-control" value={this.state.queueName} id="queueName" />
                                                     </div>
                                                 </div>
-
-
                                             </div>
                                         </div>
                                     </div>
@@ -296,7 +369,7 @@ class AddUpdateDatasource extends React.Component {
                                                     <div className="form-group col-md-8">
                                                         <select id="fieldtype" name="fieldtype" className="form-control">
                                                             {
-                                                                this.props.typeDataPage.map((option, index) => {
+                                                                this.state.typeData.DSR_TYPE && this.state.typeData.DSR_TYPE.map((option, index) => {
                                                                     return (
                                                                         <option key={index} value={option.value}>{option.label}</option>
                                                                     )
@@ -361,7 +434,7 @@ class AddUpdateDatasource extends React.Component {
 
 AddUpdateDatasource.propTypes = {
     AddUpdateDatasourceData: PropTypes.object,
-
+    typeData: PropTypes.object,
     children: PropTypes.object,
 
 };
@@ -369,8 +442,7 @@ AddUpdateDatasource.propTypes = {
 function mapStateToProps(state, ownProps) {
     return {
         AddUpdateDatasourceData: state.app.AddUpdateDatasource.data.datasource,
-        typeDataPage: state.app.typeData.data ? state.app.typeData.data.DSR_TYPE ? state.app.typeData.data.DSR_TYPE : [] : [],
-        typeData: state.app.typeData.data ? state.app.typeData.data : {},
+        typeData: state.app.typeData.data,
         datasource: ownProps.params.datasource,
     };
 }

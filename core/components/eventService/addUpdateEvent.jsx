@@ -68,7 +68,7 @@ class AddUpdateEventList extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
 
-        if (this.props.datasource !== "NEWEVENT") {
+        if (this.props.eventName !== "NEWEVENT") {
 
             if (nextProps.selectedDatasource) {
 
@@ -109,6 +109,7 @@ class AddUpdateEventList extends React.Component {
 
             }
         } else {
+            //alert("test")
             this.setState(cloneDeep(stateParent))
         }
         
@@ -117,7 +118,6 @@ class AddUpdateEventList extends React.Component {
     }
 
     componentWillMount() {
-        this.setState(cloneDeep(stateParent))
     }
     searchCallBack(keyWord) {
 
@@ -274,7 +274,6 @@ class AddUpdateEventList extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.setState({ ...stateParent })
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['EAU_OPERATOR']));
         this.props.actions.generalProcess(constants.getEventRegistryByID, this.getRequest());
 
@@ -404,7 +403,9 @@ class AddUpdateEventList extends React.Component {
                                                         <label className="control-label">{utils.getLabelByID("EAU_Datasource")}</label>
                                                     </div>
                                                     <div className="form-group col-md-8">
+                                                    
                                                         <select id="datasource" name="datasource" value={this.state.selectedDatasource} disabled={this.props.AddUpdateEventListData.eventData ? true : false} onChange={this.onChangeDatasource} className="form-control">
+                                                        <option value="">--select--</option>
                                                             {this.props.AddUpdateEventListData.datasourceListAll.map((option, index) => {
                                                                 return (
                                                                     <option key={index} value={index}>{option.dataSourceName}</option>
