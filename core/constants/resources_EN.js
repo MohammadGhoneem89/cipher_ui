@@ -1000,5 +1000,13 @@ module.exports = {
   peerName:"Peer Name",
   requestURL:"Request URL",
   eventURL:"Event URL",
-  UserDefination:"Orginization Users Definition"
+  UserDefination:"Orginization Users Definition",
+  Channel:"Create Channel",
+  Channel_Name : "Channel Name",
+  Create_Channel:"Create Channel",
+  Network:"Network",
+  Create_Status:"Create Status",
+  Joinchannel:"Join Channel",
+  Join_Status:"Join Status",
+  PeerList:"Peer List"
 };

@@ -59,6 +59,8 @@ import Documentation from "./components/Documentation/DocumentationContainer.jsx
 import ModuleDefinitionScreen from "./components/ModuleScreen/ModuleDefinitionScreen.jsx";
 import dispatchList from "./components/dispatchSource/dispatchList.jsx";
 import AddUpdateDispatcher from "./components/dispatchSource/dispatchContainer.jsx";
+import CreateChannel from './components/Channel/CreateChannel.jsx';
+import JoinChannel from './components/Channel/JoinChannel.jsx';
 
 export default (
   <Router history={browserHistory}>
@@ -147,6 +149,9 @@ export default (
       <Route path="/editModule(/:id)" component={ModuleDefinitionScreen}/>
       <Route path="/DispatchList" component={dispatchList}/>
       <Route path="/editDispatcher/:dispatcherName" component={AddUpdateDispatcher}/>
+
+      <Route path="/CreateChannel" component={CreateChannel}/>
+      <Route path="/JoinChannel" component={JoinChannel}/>
       
       {ApplicationsRoute.routesIndex}
     </Route>
