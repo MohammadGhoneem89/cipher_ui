@@ -785,7 +785,7 @@ module.exports = {
   
   PeerList: [
     {alias: "Peer Name", key: "peername", type: "string"},
-    {alias: "List", key: "list", type: "string"},
+    {alias: "Network", key: "Network", type: "string"},
     {alias: "Action", key: "action", type: "string"},
   ]
 };

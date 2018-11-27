@@ -83,7 +83,7 @@ class Joinchannel extends React.Component {
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <Table gridColumns={utils.getGridColumnByName("PeerList")}
-                                                    gridData={[{ peername: "peer()", list: "RECON 1", action: "Join Channel" }]}
+                                                    gridData={[{ peername: "peer()", Network: "RECON 1", action: "Join Channel" }]}
                                                     title={utils.getLabelByID("PeerList")}
                                                     fontclass=""
                                                     TableClass="portlet light bordered sdg_portlet"
