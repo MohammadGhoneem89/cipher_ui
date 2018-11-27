@@ -1008,5 +1008,11 @@ module.exports = {
   Create_Status:"Create Status",
   Joinchannel:"Join Channel",
   Join_Status:"Join Status",
-  PeerList:"Peer List"
+  PeerList:"Peer List",
+  Playground:"Playground",
+  SmartContract_Name:"SmartContract Name",
+  Function_Name:"Function Name",
+  RequestType:"Request Type",
+  Parameters:"Parameters",
+  Response:"Response"
 };

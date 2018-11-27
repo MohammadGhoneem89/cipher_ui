@@ -61,6 +61,7 @@ import dispatchList from "./components/dispatchSource/dispatchList.jsx";
 import AddUpdateDispatcher from "./components/dispatchSource/dispatchContainer.jsx";
 import CreateChannel from './components/Channel/CreateChannel.jsx';
 import JoinChannel from './components/Channel/JoinChannel.jsx';
+import PlayGround from './components/Channel/Playground.jsx'
 
 export default (
   <Router history={browserHistory}>
@@ -152,6 +153,7 @@ export default (
 
       <Route path="/CreateChannel" component={CreateChannel}/>
       <Route path="/JoinChannel" component={JoinChannel}/>
+      <Route path="/Playground" component={PlayGround}/>
       
       {ApplicationsRoute.routesIndex}
     </Route>
