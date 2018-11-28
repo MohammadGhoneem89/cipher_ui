@@ -1008,5 +1008,19 @@ module.exports = {
   NAU_orginizationAlias:"Org Alias",
   NAU_createdBy:"Created By",
   NetworkListDataFilters:"Search Filters",
-  NetworkList:"Network List"
+  NetworkList:"Network List",
+  Channel:"Create Channel",
+  Channel_Name : "Channel Name",
+  Create_Channel:"Create Channel",
+  Network:"Network",
+  Create_Status:"Create Status",
+  Joinchannel:"Join Channel",
+  Join_Status:"Join Status",
+  PeerList:"Peer List",
+  Playground:"Playground",
+  SmartContract_Name:"SmartContract Name",
+  Function_Name:"Function Name",
+  RequestType:"Request Type",
+  Parameters:"Parameters",
+  Response:"Response"
 };

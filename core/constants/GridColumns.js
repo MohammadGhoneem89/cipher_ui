@@ -791,6 +791,12 @@ module.exports = {
     {alias: "DOC_FIELD", key: "MAP_FIELD" , type: "string"},
     {alias: "DOC_Type", key: "MAP_FIELDDT" , type: "string"},
     {alias: "DOC_DESCRIPTION", key: "IN_FIELDDESCRIPTION", type: "string"},
+  ],
+  
+  PeerList: [
+    {alias: "Peer Name", key: "peername", type: "string"},
+    {alias: "Network", key: "Network", type: "string"},
+    {alias: "Action", key: "action", type: "string"},
   ]
 };
 

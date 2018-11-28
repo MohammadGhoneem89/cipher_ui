@@ -61,6 +61,10 @@ import dispatchList from "./components/dispatchSource/dispatchList.jsx";
 import AddUpdateDispatcher from "./components/dispatchSource/dispatchContainer.jsx";
 import NetworkDefination from "./components/BLAConfiguration/NetworkDefinitionScreen.jsx";
 import NetworkList from "./components/BLAConfiguration/networkList.jsx";
+import CreateChannel from './components/Channel/CreateChannel/CreateChannelContainer.jsx';
+import JoinChannel from './components/Channel/JoinChannel/JoinChannelContainer.jsx';
+import PlayGround from './components/Channel/Playground/PlaygroundContainer.jsx'
+
 export default (
   <Router history={browserHistory}>
     <Route path="/Documentation/:useCase/:route" component={Documentation} />
@@ -78,7 +82,6 @@ export default (
       <Route path="/userSetup" component={UserSetup}/>
       <Route path="/userSetup/:userID" component={UserSetup}/>
       <Route path="/workingCalendarDetail" component={WorkingCalendar}/>
-
       <Route path="/cipher/blockchain/edit" component={BlockchainEditor}/>
       <Route path="/cipher/blockchain/blockSearch" component={BlockSearchScreen}/>
       <Route path="/cipher/blockchain/blockSearch/:blockNumber" component={BlockSearchScreen}/>
@@ -89,29 +92,20 @@ export default (
       <Route path="/cipher/consortiumSetup/:mode/:consortiumID" component={ConsortiumSetup}/>
       <Route path="/cipher/consortiums/:consortiumID/smartContracts/:smartContactID" component={SmartContract}/>
       <Route path="/cipher/:consortiumID/smartContractFiles/:smartContractIndex" component={SmartContractFileViewer}/>
-
-
-
-
 			<Route path="/hyperledger/blockSearch" component={HyperledgerBlockSearchScreen}/>
 			<Route path="/hyperledger/blockSearch/:blockNumber" component={HyperledgerBlockSearchScreen}/>
 			<Route path="/hyperledger/hashSearch" component={HyperledgerHashSearchScreen}/>
 			<Route path="/hyperledger/hashSearch/:hash" component={HyperledgerHashSearchScreen}/>
       <Route path="/hyperledger/workboard" component={HyperledgerWorkboard}/>
-
-
       <Route path="/pickupListSearch" component={PickupListSearch}/>
       <Route path="/pickupListSetup" component={PickupListSetup}/>
       <Route path="/pickupListSetup/edit/:pickupListID" component={PickupListSetup}/>
-
       <Route path="/changePassword" component={ChangePassword}/>
       <Route path="/passwordPolicy" component={PasswordPolicy}/>
       <Route path="/APIPayloadSearch" component={APIPayloadSearch}/>
       <Route path="/APIPayloadSearch/:payLoadField/:payLoadFieldValue" component={APIPayloadSearch}/>
-
       <Route path="/auditLogList" component={AuditLogList}/>
       <Route path="/healthMonitor" component={HealthMonitor}/>
-
       <Route path="/fileTemplateSearch" component={FileTemplateSearch}/>
       <Route path="/fileTemplateSetup" component={FileTemplateSetup}/>
       <Route path="/fileTemplateSetup/edit/:fileTemplateID" component={FileTemplateSetup}/>
@@ -124,34 +118,27 @@ export default (
       <Route path="/emailTemplateSearch" component={EmailTemplateSearch}/>
       <Route path="/emailTemplateSetup" component={EmailTemplateSetup}/>
       <Route path="/emailTemplateSetup/edit/:emailTemplateID" component={EmailTemplateSetup}/>
-
       <Route path="/orgSearch" component={OrgSearch}/>
       <Route path="/orgSetup" component={OrgSetup}/>
       <Route path="/orgSetup/:mode/:orgID" component={OrgSetup}/>
-
-
-
-
       <Route path="/eventList" component={eventList}/>
       <Route path="/editEventRegistry/:eventName" component={AddUpdateEventList}/>
       <Route path="/dispatchQueue" component={DispatchQueue}/>
       <Route path="/datasourceList" component={DataSourceList}/>
       <Route path="/editDatasource/:datasource" component={AddUpdateDataSource}/>
-
       <Route path="/editMapping/:mappingName" component={AddUpdateMapping}/>
       <Route path="/mappingList" component={MappingList}/>
-
-
       <Route path="/APIDefScreen/:useCase/:route" component={APIDefScreen}/>
       <Route path="/ApiList" component={ApiList}/>
-      
       <Route path="/NetworkList" component={NetworkList}/>
       <Route path="/ModuleList" component={ModuleList}/>
       <Route path="/editModule(/:id)" component={ModuleDefinitionScreen}/>
       <Route path="/DispatchList" component={dispatchList}/>
       <Route path="/editDispatcher/:dispatcherName" component={AddUpdateDispatcher}/>
       <Route path="/editNetwork(/:id)" component={NetworkDefination}/>
-      
+      <Route path="/CreateChannel" component={CreateChannel}/>
+      <Route path="/JoinChannel" component={JoinChannel}/>
+      <Route path="/Playground" component={PlayGround}/>
       {ApplicationsRoute.routesIndex}
     </Route>
     <Route path="*" components={NotFound}/>
