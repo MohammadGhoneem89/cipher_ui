@@ -59,9 +59,9 @@ import Documentation from "./components/Documentation/DocumentationContainer.jsx
 import ModuleDefinitionScreen from "./components/ModuleScreen/ModuleDefinitionScreen.jsx";
 import dispatchList from "./components/dispatchSource/dispatchList.jsx";
 import AddUpdateDispatcher from "./components/dispatchSource/dispatchContainer.jsx";
-import CreateChannel from './components/Channel/CreateChannel.jsx';
-import JoinChannel from './components/Channel/JoinChannel.jsx';
-import PlayGround from './components/Channel/Playground.jsx'
+import CreateChannel from './components/Channel/CreateChannel/CreateChannelContainer.jsx';
+import JoinChannel from './components/Channel/JoinChannel/JoinChannelContainer.jsx';
+import PlayGround from './components/Channel/Playground/PlaygroundContainer.jsx'
 
 export default (
   <Router history={browserHistory}>

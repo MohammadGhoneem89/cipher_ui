@@ -1,60 +1,12 @@
-/*standard imports*/
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as actions from '../../actions/generalAction';
-/*container specific imports*/
-import Table from '../../common/Datatable.jsx';
-import * as utils from '../../../core/common/utils.js';
-import * as constants from '../../../core/constants/Communication.js';
-import * as requestCreator from '../../../core/common/request.js';
-import DateControl from '../../../core/common/DateControl.jsx'
-
-class PlayGround extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = { currentPageNo: 1, isLoading: false };
-        this.pageChanged = this.pageChanged.bind(this);
-        // this.fetchListData = this.fetchListData.bind(this);
-        this.formSubmit = this.formSubmit.bind(this);
-    }
-    componentWillMount() {
-        // this.fetchListData(1);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        // if (this.props.sampleListData !== nextProps.sampleListData) {
-        //   this.setState({
-        //     isLoading: false
-        //   });
-        // }
-    }
-    componentDidMount() {
-        window.scrollTo(0, 0);
-    }
-    pageChanged(pageNo) {
-        this.setState({ currentPageNo: pageNo });
-        this.fetchListData(pageNo);
-    }
-    formSubmit(e) {
-        e.preventDefault();
-        this.fetchListData();
-    }
-    fetchListData(currentPageNo) {
+import React from 'react';
+// import Portlet from '../../../common/Portlet.jsx';
+import * as utils from '../../../common/utils.js';
 
 
-    }
+const PlaygroundForm = () => {
 
-    clearFields() {
-
-    }
-
-
-    render() {
-        //if (this.props.sampleListData.gridData) {
-        return (
-            <form onSubmit={this.formSubmit.bind(this)}>
+    return (
+<form>
                 <div>
                     <div className="row">
                         <div className="col-md-12 ">
@@ -164,26 +116,5 @@ class PlayGround extends React.Component {
                         </div>
                     </div>
                 </div>
-            </form >
-
-        );
-    }
-    // else
-    //   return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
-
-}
-
-
-function mapStateToProps(state, ownProps) {
-    return {
-
-
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return { actions: bindActionCreators(actions, dispatch) }
-
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PlayGround);
+            </form >)}
+            export default PlaygroundForm;
