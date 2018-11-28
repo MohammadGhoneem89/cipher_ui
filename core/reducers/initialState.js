@@ -262,6 +262,7 @@ export default {
   ApiListData: { "action": "", "datasourceList": { "pageData": { "totalRecords": 0 } } },
   APIDefinitionAddUpdate: {},
   AddUpdateModule: {},
+  AddUpdateNetwork:{},
   ApiListCombo: {},
   EventDispatcherList: {},
   EventDispatcherDetails: {},

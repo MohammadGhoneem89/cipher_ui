@@ -8,6 +8,44 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
 
   return (
     <Portlet title={utils.getLabelByID("NetworkConfiguration")}>
+          <div className="row">
+        <div className=" col-md-12">
+
+          <div className="row">
+            <div className="col-md-12">
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "bold"
+              }}>{utils.getLabelByID("orgDefinition")}</label>
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            <div className="form-group">
+
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "normal"
+              }}>{utils.getLabelByID("MSPID")}</label>
+              <div className="form-group col-md-8">
+                <input type="text" className="form-control" name="mspid" onChange={onInputChange} value={state.mspid} />
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "normal"
+              }}>{utils.getLabelByID("channel")}</label>
+              <div className="form-group col-md-8">
+                <input type="text" className="form-control" name="channelName" onChange={onInputChange} value={state.channelName} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="row">
         <div className="col-md-12">
           <div className="row">
@@ -60,44 +98,7 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
           </div>
         </div>
       </div>
-      <div className="row">
-        <div className=" col-md-12">
 
-          <div className="row">
-            <div className="col-md-12">
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "bold"
-              }}>{utils.getLabelByID("orgDefinition")}</label>
-            </div>
-          </div>
-
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("MSPID")}</label>
-              <div className="form-group col-md-8">
-                <input type="text" className="form-control" name="mspid" onChange={onInputChange} value={state.mspid} />
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("channel")}</label>
-              <div className="form-group col-md-8">
-                <input type="text" className="form-control" name="channelName" onChange={onInputChange} value={state.channelName} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="row">
         <div className="col-md-12">
           <div className="row">
@@ -250,7 +251,7 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
                   <div className="form-actions right">
                     <div className="form-group col-md-12">
                       <div className="btn-toolbar pull-right">
-                        <button type="submit" className="btn btn-default" > <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Peer")} </button>
+                        <button type="submit" className="btn btn-default" onClick={addPeer} > <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Peer")} </button>
                       </div>
 
                     </div>
@@ -350,7 +351,7 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
                   <div className="form-actions right">
                     <div className="form-group col-md-12">
                       <div className="btn-toolbar pull-right">
-                        <button type="submit" className="btn btn-default" > <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add User")} </button>
+                        <button type="submit" onClick={addUser} className="btn btn-default" > <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add User")} </button>
                       </div>
 
                     </div>

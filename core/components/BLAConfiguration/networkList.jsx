@@ -19,7 +19,7 @@ import * as requestCreator from '../../common/request.js';
 import DateControl from '../../common/DateControl.jsx'
 
 
-class ModuleList extends React.Component {
+class NetworkList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -36,17 +36,17 @@ class ModuleList extends React.Component {
     }
 
     getRequest() {
-       let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value;
-        let label = document.getElementById('label') == null ? "" : document.getElementById('label').value;
+       let networkName = document.getElementById('networkName') == null ? "" : document.getElementById('networkName').value;
+        let mspid = document.getElementById('mspid') == null ? "" : document.getElementById('mspid').value;
 
         var searchCriteria = {
         }
 
-        if (useCase != "")
-            searchCriteria.useCase = useCase
+        if (networkName != "")
+            searchCriteria.networkName = networkName
 
-        if (label != "")
-            searchCriteria.label = label
+        if (mspid != "")
+            searchCriteria.mspid = mspid
 
       
 
@@ -83,12 +83,12 @@ class ModuleList extends React.Component {
     }
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.props.actions.generalProcess(constants.getModuleListData, this.getRequest());
-        this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/APIDefScreen/NEWCASE/NEWROUTE", "children": [] }] })
+        this.props.actions.generalProcess(constants.getNetworkListData, this.getRequest());
+        this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/editNetwork/NEW", "children": [] }] })
     }
     formSubmit() {
 
-        this.props.actions.generalProcess(constants.getModuleListData, this.getRequest());
+        this.props.actions.generalProcess(constants.getNetworkListData, this.getRequest());
     }
     pageChanged(pageNo) {
         if (pageNo != undefined) {
@@ -98,7 +98,7 @@ class ModuleList extends React.Component {
             if (this.state.searchFilters == undefined) {
 
                 request = {
-                    "action": "ModuleList",
+                    "action": "NetworkList",
                     "searchCriteria": {
                     },
                     "page": {
@@ -109,7 +109,7 @@ class ModuleList extends React.Component {
             } else {
                 var searchCriteria = this.state.searchFilters
                 request = {
-                    "action": "ModuleListData",
+                    "action": "NetworkListData",
                     searchCriteria,
                     "page": {
                         "currentPageNo": pageNo,
@@ -120,13 +120,13 @@ class ModuleList extends React.Component {
 
             this.setState({ currentPageNo: pageNo })
 
-            this.props.actions.generalProcess(constants.getModuleListData, request);
+            this.props.actions.generalProcess(constants.getNetworkListData, request);
 
         }
     }
     clearFields() {
-        $('#ModuleListData').find('input:text').val('');
-        $('#ModuleListData').find('select').each(function () {
+        $('#NetworkListData').find('input:text').val('');
+        $('#NetworkListData').find('select').each(function () {
             $(this)[0].selectedIndex = 0;
         });
     }
@@ -134,7 +134,7 @@ class ModuleList extends React.Component {
 
     render() {
 
-        if (this.props.ModuleListData && this.props.ModuleListData.data) {
+        if (this.props.NetworkListData && this.props.NetworkListData.data) {
             return (
                 <div>
                     <div className="row">
@@ -142,13 +142,13 @@ class ModuleList extends React.Component {
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
                                     <div className="caption">
-                                        <span className="caption-subject">{utils.getLabelByID("ModuleListDataFilters")}</span></div>
+                                        <span className="caption-subject">{utils.getLabelByID("NetworkListDataFilters")}</span></div>
                                     <div className="tools">
                                         <a href="javascript:;" className="collapse" data-original-title title> </a>
                                     </div>
                                 </div>
                                 <div className="portlet-body">
-                                    <div className="form-body" id="ModuleListData">
+                                    <div className="form-body" id="NetworkListData">
                                         <div className="row">
                                             <div className="col-md-12">
 
@@ -156,18 +156,18 @@ class ModuleList extends React.Component {
 
                                                     <div className="col-md-6">
                                                         <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("AAU_UseCase")}</label>
+                                                            <label className="control-label">{utils.getLabelByID("NAU_networkName")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="useCase" id="useCase" />
+                                                            <input type="text" className="form-control" name="networkName" id="networkName" />
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("AAU_label")}</label>
+                                                            <label className="control-label">{utils.getLabelByID("NAU_MSPID")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="label" id="label" /> 
+                                                            <input type="text" className="form-control" name="mspid" id="mspid" /> 
                                                         </div>
                                                     </div>
                                                 </div>
@@ -190,10 +190,10 @@ class ModuleList extends React.Component {
                         </div>
                     </div>
 
-                    <Portlet title={utils.getLabelByID("ModuleList")} isPermissioned={true}
-                        >
-                        <Table fontclass="" gridColumns={utils.getGridColumnByName("ModuleListData")} gridData={this.props.ModuleListData.data.searchResult}
-                            totalRecords={this.props.ModuleListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
+                    <Portlet title={utils.getLabelByID("NetworkList")} isPermissioned={true} 
+                    actions={this.state.actions}>
+                        <Table fontclass="" gridColumns={utils.getGridColumnByName("NetworkListData")} gridData={this.props.NetworkListData.data.searchResult}
+                            totalRecords={this.props.NetworkListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
                             pagination={true} pageChanged={this.pageChanged} export={false} search={true}
                             activePage={this.state.currentPageNo} />
                     </Portlet>
@@ -208,15 +208,15 @@ class ModuleList extends React.Component {
     }
 }
 
-ModuleList.propTypes = {
-    ModuleListData: PropTypes.object,
+NetworkList.propTypes = {
+    NetworkListData: PropTypes.object,
     children: PropTypes.object,
 
 };
 
 function mapStateToProps(state, ownProps) {
     return {
-        ModuleListData: state.app.ModuleList
+        NetworkListData: state.app.NetworkList
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -224,5 +224,5 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-ModuleList.displayName = "ModuleList";
-export default connect(mapStateToProps, mapDispatchToProps)(ModuleList);
+NetworkList.displayName = "NetworkList";
+export default connect(mapStateToProps, mapDispatchToProps)(NetworkList);

@@ -295,14 +295,24 @@ class OrgSetupForm extends React.Component {
 
     
   addUser = (e) => {
-    let value;
-    if (e.target.name.indexOf('is') === 0) {
-      value = $("#" + e.target.name).is(":checked");
-    } else {
-      value = e.target.value;
-    }
+    let username = document.getElementById('username') == null ? "" : document.getElementById('username').value;
+    let usercertificate = document.getElementById('usercertificate') == null ? "" : document.getElementById('usercertificate').value;
+    let userkey = document.getElementById('userkey') == null ? "" : document.getElementById('userkey').value;
+
     let netConf=_.cloneDeep(this.state.networkConfig);
-    netConf.orderer[e.target.name] = value;
+    
+    let tupple={
+      "userName": "admin",
+      "key": userkey,
+      "cert": usercertificate,
+      "actions": [
+        { "label": "Delete Peer", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION" },
+        { "label": "Edit Peer", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" }
+      ]
+    }
+    
+    netConf.peerUser.push(tupple);
+
     this.setState({
       networkConfig: netConf
     })
@@ -435,7 +445,7 @@ class OrgSetupForm extends React.Component {
             <FormSection6 initialValues={initialValues} updateState={this.updateState} state={this.state} />
           </Portlet>
           <div id="netconfig">
-          <BLAConfig onInputChange={this.onInputChange} onInputChangeOrderer={this.onInputChangeOrderer} state={this.state.networkConfig} />
+          <BLAConfig onInputChange={this.onInputChange} addPeer={this.addPeer} addUser={this.addUser} onInputChangeOrderer={this.onInputChangeOrderer} state={this.state.networkConfig} />
           </div>
           {!this.state.readOnly &&
             <div className="clearfix">

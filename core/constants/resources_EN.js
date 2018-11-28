@@ -1000,5 +1000,13 @@ module.exports = {
   peerName:"Peer Name",
   requestURL:"Request URL",
   eventURL:"Event URL",
-  UserDefination:"Orginization Users Definition"
+  UserDefination:"Orginization Users Definition",
+  NetworkDefinitionScreen_Heading:"Network Configuration",
+  orginizationAlias:"Orginization Alias",
+  NAU_networkName:"Network Name",
+  NAU_MSPID:"MSP ID",
+  NAU_orginizationAlias:"Org Alias",
+  NAU_createdBy:"Created By",
+  NetworkListDataFilters:"Search Filters",
+  NetworkList:"Network List"
 };

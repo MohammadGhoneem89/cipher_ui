@@ -137,5 +137,8 @@ module.exports = {
   getDispatcherMeta:baseUrl+ "/API/UI/getDispatcherMeta",
   upsertEventDispatcher:baseUrl+ "/API/UI/upsertEventDispatcher",
   getEventDispatcherByID:baseUrl+ "/API/UI/getEventDispatcherByID",
-  updateEventDispatcherStatus:baseUrl+ "/API/UI/updateEventDispatcherStatus"
+  updateEventDispatcherStatus:baseUrl+ "/API/UI/updateEventDispatcherStatus",
+  updateNetworkConfig:baseUrl+ "/API/core/updateNetworkConfig",
+  getNetworkConfigByID:baseUrl+ "/API/core/getNetworkConfigByID",
+  getNetworkListData:baseUrl+ "/API/core/getNetworkList"
 };

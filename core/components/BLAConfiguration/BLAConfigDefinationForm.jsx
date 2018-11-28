@@ -4,155 +4,42 @@ import Portlet from '../../common/Portlet.jsx';
 import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
 
-const PageDefinationForm = ({ onSubmit, initialValues, typeData, addRowApi, onInputChange, addRow, state, ActionHandlers }) => {
+const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer, addUser, state, ActionHandlers, typeData, onSubmit }) => {
 
   return (
-    <Portlet title={utils.getLabelByID("MDAU_PageDefinition")}>
-      <div className="row">
-        <div className="col-md-12">
-          <div className="col-md-6">
-            <div className="form-group">
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("MDAU_Type")}</label>
-              <div className="form-group col-md-8">
-                <select id="pageType" className="form-control">
-                  {
-                    typeData.MDAU_TYPE.map((option, index) => {
-                      return (
-                        <option key={index} value={option.value}>{option.label}</option>
-                      );
-                    })
-                  }
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-md-12">
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("MDAU_PageValue")}</label>
-              <div className="form-group col-md-8">
-                <input type="text" className="form-control" id="pageValue" />
-
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("MDAU_PageLabel")}</label>
-              <div className="form-group col-md-8">
-                <input type="text" className="form-control" id="pageLabel" />
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col-md-12">
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("MDAU_actionType")}</label>
-              <div className="form-group col-md-8">
-                <select id="pageActionType" className="form-control">
-                <option  value="">--select--</option>
-                  {
-                    typeData.MDAU_ACTION.map((option, index) => {
-                      return (
-                        <option key={index} value={option.value}>{option.label}</option>
-                      );
-                    })
-                  }
-
-                </select>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("MDAU_iconName")}</label>
-              <div className="form-group col-md-8">
-                <select id="pageIconName" className="form-control">
-                <option  value="">--select--</option>
-                  {
-                    typeData.MDAU_ICON.map((option, index) => {
-                      return (
-                        <option key={index} value={option.value}>{option.label}</option>
-                      );
-                    })
-                  }
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col-md-12">
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("MDAU_PageURI")}</label>
-              <div className="form-group col-md-8">
-                <input type="text" className="form-control" id="pageURI" />
-
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("MDAU_ParentValue")}</label>
-              <div className="form-group col-md-8">
-                <input type="text" className="form-control" id="parentVal" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <Portlet title={utils.getLabelByID("NetworkConfiguration")}>
       <div className="row">
         <div className=" col-md-12">
 
-
-        
-        <div className="col-md-6">
+          <div className="row">
+            <div className="col-md-12">
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "bold"
+              }}>{utils.getLabelByID("orgDefinition")}</label>
+            </div>
+          </div>
+          <div className="col-md-6">
             <div className="form-group">
 
               <label className="form-group control-label col-md-4" style={{
                 textAlign: "left",
                 fontWeight: "normal"
-              }}>{utils.getLabelByID("MDAU_labelName")}</label>
+              }}>{utils.getLabelByID("NetworkName")}</label>
               <div className="form-group col-md-8">
-                <input type="text" className="form-control" id="labelName" />
+                <input type="text" className="form-control" name="networkName" onChange={onInputChange} value={state.networkName} />
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "normal"
+              }}>{utils.getLabelByID("orginizationAlias")}</label>
+              <div className="form-group col-md-8">
+                <input type="text" className="form-control" name="orginizationAlias" onChange={onInputChange} value={state.orginizationAlias} />
               </div>
             </div>
           </div>
@@ -165,22 +52,138 @@ const PageDefinationForm = ({ onSubmit, initialValues, typeData, addRowApi, onIn
               <label className="form-group control-label col-md-4" style={{
                 textAlign: "left",
                 fontWeight: "normal"
-              }}>{utils.getLabelByID("MDAU_displayMenu")}</label>
+              }}>{utils.getLabelByID("MSPID")}</label>
               <div className="form-group col-md-8">
-                <div className="icheck-list">
-                  <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                    <label></label>
-                    <input type="checkbox" className="form-control" id="pageDisplayMenu" />
-                    <span></span>
-                  </label>
+                <input type="text" className="form-control" name="mspid" onChange={onInputChange} value={state.mspid} />
+              </div>
+            </div>
+          </div>
+          {/*<div className="col-md-6">
+            <div className="form-group">
+
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "normal"
+              }}>{utils.getLabelByID("channel")}</label>
+              <div className="form-group col-md-8">
+                <input type="text" className="form-control" name="channelName" onChange={onInputChange} value={state.channelName} />
+              </div>
+            </div>
+          </div>*/}
+            </div>
+        </div>
+
+
+        <div className="row">
+          <div className="col-md-12">
+            <div className="row">
+              <div className="col-md-12">
+                <label className="form-group control-label col-md-4" style={{
+                  textAlign: "left",
+                  fontWeight: "bold"
+                }}>{utils.getLabelByID("CertificateAuth")}</label>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-group control-label col-md-4" style={{
+                  textAlign: "left",
+                  fontWeight: "normal"
+                }}>{utils.getLabelByID("CAURL")}</label>
+                <div className="form-group col-md-8">
+                  <input type="text" className="form-control" name="ca" onChange={onInputChange} value={state.ca} />
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className=" col-md-12">
-        <div className=" col-md-12">
+        <div className="row">
+          <div className="col-md-12">
+            <div className="col-md-6">
+              <div className="form-group">
+
+                <label className="form-group control-label col-md-4" style={{
+                  textAlign: "left",
+                  fontWeight: "normal"
+                }}>{utils.getLabelByID("CAUserName")}</label>
+                <div className="form-group col-md-8">
+
+                  <input type="text" className="form-control" onChange={onInputChange} name="username" value={state.username} />
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group">
+
+                <label className="form-group control-label col-md-4" style={{
+                  textAlign: "left",
+                  fontWeight: "normal"
+                }}>{utils.getLabelByID("CASecret")}</label>
+                <div className="form-group col-md-8">
+                  <input type="text" className="form-control" name="secret" onChange={onInputChange} value={state.secret} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-md-12">
+            <div className="row">
+              <div className="col-md-12">
+                <label className="form-group control-label col-md-4" style={{
+                  textAlign: "left",
+                  fontWeight: "bold"
+                }}>{utils.getLabelByID("ordererDefinition")}</label>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group">
+
+                <label className="form-group control-label col-md-4" style={{
+                  textAlign: "left",
+                  fontWeight: "normal"
+                }}>{utils.getLabelByID("OrdererURL")}</label>
+                <div className="form-group col-md-8">
+                  <input type="text" className="form-control" name="url" onChange={onInputChangeOrderer} value={state.orderer.url} />
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group">
+
+                <label className="form-group control-label col-md-4" style={{
+                  textAlign: "left",
+                  fontWeight: "normal"
+                }}>{utils.getLabelByID("ServerName")}</label>
+                <div className="form-group col-md-8">
+                  <input type="text" className="form-control" name="serverHostname" onChange={onInputChangeOrderer} value={state.orderer.serverHostname} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-md-12">
+
+            <div className="col-md-6">
+              <div className="form-group">
+
+                <label className="form-group control-label col-md-4" style={{
+                  textAlign: "left",
+                  fontWeight: "normal"
+                }}>{utils.getLabelByID("cacertificate")}</label>
+                <div className="form-group col-md-8">
+                  <textarea type="text" className="form-control" name="tlsCacerts" onChange={onInputChangeOrderer} value={state.orderer.tlsCacerts} rows="6" style={{ fontSize: "12px", resize: "none", width: "100%" }} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div className=" col-md-12" >
           <div className=" col-md-12"
             style={{
               padding: "20px",
@@ -193,10 +196,10 @@ const PageDefinationForm = ({ onSubmit, initialValues, typeData, addRowApi, onIn
                 <label className="form-group control-label col-md-4" style={{
                   textAlign: "left",
                   fontWeight: "bold"
-                }}>{utils.getLabelByID("MDAU_APIDefinition")}</label>
+                }}>{utils.getLabelByID("peerDefinition")}</label>
               </div>
             </div>
-            <div className="row" id="apiDefination" >
+            <div className="row" id="peerDefination" >
               <div className="col-md-12">
                 <div className="col-md-6">
                   <div className="form-group">
@@ -204,12 +207,69 @@ const PageDefinationForm = ({ onSubmit, initialValues, typeData, addRowApi, onIn
                     <label className="form-group control-label col-md-4" style={{
                       textAlign: "left",
                       fontWeight: "normal"
-                    }}>{utils.getLabelByID("MDAU_APIName")}</label>
+                    }}>{utils.getLabelByID("peerName")}</label>
                     <div className="form-group col-md-8">
-                      <select id="listedApi" className="form-control">
-                        <option value="C">Custom</option>
+                      <input type="text" className="form-control" id="peerName" />
+
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+
+                    <label className="form-group control-label col-md-4" style={{
+                      textAlign: "left",
+                      fontWeight: "normal"
+                    }}>{utils.getLabelByID("ServerName")}</label>
+                    <div className="form-group col-md-8">
+                      <input type="text" className="form-control" id="ServerName" />
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-12">
+                <div className="col-md-6">
+                  <div className="form-group">
+
+                    <label className="form-group control-label col-md-4" style={{
+                      textAlign: "left",
+                      fontWeight: "normal"
+                    }}>{utils.getLabelByID("requestURL")}</label>
+                    <div className="form-group col-md-8">
+                      <input type="text" className="form-control" id="requestURL" />
+
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+
+                    <label className="form-group control-label col-md-4" style={{
+                      textAlign: "left",
+                      fontWeight: "normal"
+                    }}>{utils.getLabelByID("eventURL")}</label>
+                    <div className="form-group col-md-8">
+                      <input type="text" className="form-control" id="eventURL" />
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-12">
+                <div className="col-md-6">
+                  <div className="form-group">
+
+                    <label className="form-group control-label col-md-4" style={{
+                      textAlign: "left",
+                      fontWeight: "normal"
+                    }}>{utils.getLabelByID("nlbType")}</label>
+                    <div className="form-group col-md-8">
+                      <select id="nlbType" className="form-control">
                         {
-                          state.apiItems.map((option, index) => {
+
+                          typeData.NLB_Type &&
+                          typeData.NLB_Type.map((option, index) => {
                             return (
                               <option key={index} value={option.value}>{option.label}</option>
                             );
@@ -225,9 +285,110 @@ const PageDefinationForm = ({ onSubmit, initialValues, typeData, addRowApi, onIn
                     <label className="form-group control-label col-md-4" style={{
                       textAlign: "left",
                       fontWeight: "normal"
-                    }}>{utils.getLabelByID("MDAU_CustomApi")}</label>
+                    }}>{utils.getLabelByID("certificate")}</label>
                     <div className="form-group col-md-8">
-                      <input type="text" className="form-control" id="customApiUri" />
+                      <textarea type="text" className="form-control" id="peercertificate" rows="4" style={{ resize: "none", width: "100%" }} />
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-12">
+
+                <div className="col-md-12">
+                  <div className="form-actions right">
+                    <div className="form-group col-md-12">
+                      <div className="btn-toolbar pull-right">
+                        <button type="submit" className="btn btn-default" onClick={addPeer} > <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Peer")} </button>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div className="col-md-12">
+
+
+                    <Table
+                      gridColumns={utils.getGridColumnByName("peerListOrg")}
+                      gridData={state.peerList}
+                      export={false}
+                      componentFunction={ActionHandlers}
+                      pagination={false} />
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+
+
+        <div className=" col-md-12">
+          <div className=" col-md-12"
+            style={{
+              padding: "20px",
+              border: "1px solid #EEE",
+              marginBottom: "20px"
+            }}
+          >
+            <div className="row">
+              <div className="col-md-12">
+                <label className="form-group control-label col-md-4" style={{
+                  textAlign: "left",
+                  fontWeight: "bold"
+                }}>{utils.getLabelByID("UserDefination")}</label>
+              </div>
+            </div>
+
+
+
+
+            <div className="row" id="userDefination" >
+              <div className="col-md-12">
+                <div className="col-md-6">
+                  <div className="form-group">
+
+                    <label className="form-group control-label col-md-4" style={{
+                      textAlign: "left",
+                      fontWeight: "normal"
+                    }}>{utils.getLabelByID("username")}</label>
+                    <div className="form-group col-md-8">
+                      <input type="text" className="form-control" id="username" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-12">
+                <div className="col-md-6">
+                  <div className="form-group">
+
+                    <label className="form-group control-label col-md-4" style={{
+                      textAlign: "left",
+                      fontWeight: "normal"
+                    }}>{utils.getLabelByID("certificate")}</label>
+                    <div className="form-group col-md-8">
+                      <textarea type="text" className="form-control" id="usercertificate" rows="4" style={{ resize: "none", width: "100%" }} />
+
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+
+                    <label className="form-group control-label col-md-4" style={{
+                      textAlign: "left",
+                      fontWeight: "normal"
+                    }}>{utils.getLabelByID("key")}</label>
+                    <div className="form-group col-md-8">
+                      <textarea type="text" className="form-control" id="userkey" rows="4" style={{ resize: "none", width: "100%" }} />
 
                     </div>
                   </div>
@@ -241,7 +402,7 @@ const PageDefinationForm = ({ onSubmit, initialValues, typeData, addRowApi, onIn
                   <div className="form-actions right">
                     <div className="form-group col-md-12">
                       <div className="btn-toolbar pull-right">
-                        <button type="submit" className="btn btn-default" onClick={addRowApi.bind(this)}> <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add API")} </button>
+                        <button type="submit" onClick={addUser} className="btn btn-default" > <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add User")} </button>
                       </div>
 
                     </div>
@@ -250,8 +411,8 @@ const PageDefinationForm = ({ onSubmit, initialValues, typeData, addRowApi, onIn
 
 
                     <Table
-                      gridColumns={utils.getGridColumnByName("MDAU_APIList")}
-                      gridData={state.apiList}
+                      gridColumns={utils.getGridColumnByName("userListOrg")}
+                      gridData={state.peerUser}
                       export={false}
                       componentFunction={ActionHandlers}
                       pagination={false} />
@@ -263,26 +424,23 @@ const PageDefinationForm = ({ onSubmit, initialValues, typeData, addRowApi, onIn
             </div>
           </div>
         </div>
-      </div>
-      <div className="row">
-        <div className="col-md-12">
+
+
+
+        <div className="row">
           <div className="col-md-12">
             <div className="col-md-12">
               <div className="btn-toolbar pull-right">
-                <button type="submit" onClick={addRow} className="btn dark"><i
-                /><i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Permission")}
+                <button type="submit" onClick={onSubmit} className="btn green">{' '}{utils.getLabelByID("Update Module")}
                 </button>
               </div>
             </div>
           </div>
-
         </div>
-
-      </div>
     </Portlet>
-  );
+      );
 }
-export default PageDefinationForm;
+export default BLAConfigDefinationForm;
 
 
 // "APIDef_RequestMapping" : [
