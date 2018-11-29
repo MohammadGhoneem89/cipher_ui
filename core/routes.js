@@ -65,7 +65,6 @@ import CreateChannel from './components/Channel/CreateChannel/CreateChannelConta
 import JoinChannel from './components/Channel/JoinChannel/JoinChannelContainer.jsx';
 import PlayGround from './components/Channel/Playground/PlaygroundContainer.jsx'
 
-
 export default (
   <Router history={browserHistory}>
     <Route path="/Documentation/:useCase/:route" component={GeneratePDF} />
@@ -94,12 +93,10 @@ export default (
       <Route path="/cipher/consortiums/:consortiumID/smartContracts/:smartContactID" component={SmartContract}/>
       <Route path="/cipher/:consortiumID/smartContractFiles/:smartContractIndex" component={SmartContractFileViewer}/>
 
-
 	  <Route path="/hyperledger/blockSearch" component={HyperledgerBlockSearchScreen}/>
 	  <Route path="/hyperledger/blockSearch/:blockNumber" component={HyperledgerBlockSearchScreen}/>
 	  <Route path="/hyperledger/hashSearch" component={HyperledgerHashSearchScreen}/>
 	  <Route path="/hyperledger/hashSearch/:hash" component={HyperledgerHashSearchScreen}/>
-
 
       <Route path="/hyperledger/workboard" component={HyperledgerWorkboard}/>
       <Route path="/pickupListSearch" component={PickupListSearch}/>
