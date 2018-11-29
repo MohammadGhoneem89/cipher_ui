@@ -667,6 +667,7 @@ module.exports = {
   peerListOrg:[
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
     {alias: "peerName", key: "peerName", type: "string"},
+    {alias: "loadBalancingLevel", key: "loadBalancingLevel", type: "string"},
     {alias: "EL_actions", key: "actions", type: "action"}
   ],
   userListOrg:[
@@ -719,6 +720,15 @@ module.exports = {
     {alias: "MDAU_order", key: "order", type: "string"},
     {alias: "MDAU_iconName", key: "iconName", type: "string"},
     {alias: "MDAU_displayMenu", key: "displayMenu", type: "cbDisabled"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  NetworkListData:[
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "", key: "_id", type: "hiddenID"},
+    {alias: "NAU_networkName", key: "networkName", type: "string"},
+    {alias: "NAU_MSPID", key: "mspid", type: "string"},
+    {alias: "NAU_orginizationAlias", key: "orginizationAlias", type: "string"},
+    {alias: "NAU_createdBy", key: "createdBy", type: "string"},
     {alias: "EL_actions", key: "actions", type: "action"}
   ],
   ModuleDefination:[
@@ -781,6 +791,12 @@ module.exports = {
     {alias: "DOC_FIELD", key: "MAP_FIELD" , type: "string"},
     {alias: "DOC_Type", key: "MAP_FIELDDT" , type: "string"},
     {alias: "DOC_DESCRIPTION", key: "IN_FIELDDESCRIPTION", type: "string"},
+  ],
+  
+  PeerList: [
+    {alias: "Peer Name", key: "peername", type: "string"},
+    {alias: "Network", key: "Network", type: "string"},
+    {alias: "Action", key: "action", type: "string"},
   ]
 };
 

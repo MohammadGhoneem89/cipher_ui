@@ -151,7 +151,7 @@ class DispatchQueue extends React.Component {
 
             this.setState({ currentPageNo: pageNo })
 
-            this.props.actions.generalProcess(constants.getDispatchQueueData, request);
+            this.props.actions.generalProcess(constants.getEventDispatcherStatus, request);
 
         }
     }
