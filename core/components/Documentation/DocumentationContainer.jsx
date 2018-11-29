@@ -143,15 +143,7 @@ class Documentation extends React.Component {
             <div className="portlet light bordered sdg_portlet" style={{ marginBottom: "0px" }}>
               <div className="portlet-title">
                 <div className="caption">
-                  <span className="caption-subject">API Documentation</span></div>
-                <div className="tools">
-                  <a className="btn btn-default upercase" href="javascript:;"
-
-                    style={{
-                      height: "30px",
-                      fontSize: "12px"
-                    }}
-                  > export </a>
+                  <span className="caption-subject">API Documentation</span>
                 </div>
               </div>
               <div className="portlet-body">
@@ -167,8 +159,6 @@ class Documentation extends React.Component {
           </div>
         </div>
       </div>
-
-
     )
   }
 }

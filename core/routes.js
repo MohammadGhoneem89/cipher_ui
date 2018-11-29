@@ -55,14 +55,15 @@ import MappingList from './components/mappingConfig/mappingList.jsx';
 import APIDefScreen from "./components/APIDefScreen/APIDefScreenContainer.jsx";
 import ApiList from "./components/APIDefScreen/apiList.jsx";
 import ModuleList from "./components/ModuleScreen/moduleList.jsx";
-import Documentation from "./components/Documentation/DocumentationContainer.jsx";
+import GeneratePDF from "./components/generatePDF/generatePDF";
 import ModuleDefinitionScreen from "./components/ModuleScreen/ModuleDefinitionScreen.jsx";
 import dispatchList from "./components/dispatchSource/dispatchList.jsx";
 import AddUpdateDispatcher from "./components/dispatchSource/dispatchContainer.jsx";
 
+
 export default (
   <Router history={browserHistory}>
-    <Route path="/Documentation/:useCase/:route" component={Documentation} />
+    <Route path="/Documentation/:useCase/:route" component={GeneratePDF} />
     <Route path="/Locked" component={Locked} onEnter={isAuthorized}/>
     <Route path="/cipher/login" component={Login} onEnter={isAuthorized}/>
     <Route path="/blockChainViewer/:blockChainID" component={BlockchainViewerQR} onEnter={isAuthorized}/>
@@ -92,10 +93,10 @@ export default (
 
 
 
-			<Route path="/hyperledger/blockSearch" component={HyperledgerBlockSearchScreen}/>
-			<Route path="/hyperledger/blockSearch/:blockNumber" component={HyperledgerBlockSearchScreen}/>
-			<Route path="/hyperledger/hashSearch" component={HyperledgerHashSearchScreen}/>
-			<Route path="/hyperledger/hashSearch/:hash" component={HyperledgerHashSearchScreen}/>
+	  <Route path="/hyperledger/blockSearch" component={HyperledgerBlockSearchScreen}/>
+	  <Route path="/hyperledger/blockSearch/:blockNumber" component={HyperledgerBlockSearchScreen}/>
+	  <Route path="/hyperledger/hashSearch" component={HyperledgerHashSearchScreen}/>
+	  <Route path="/hyperledger/hashSearch/:hash" component={HyperledgerHashSearchScreen}/>
       <Route path="/hyperledger/workboard" component={HyperledgerWorkboard}/>
 
 
