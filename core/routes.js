@@ -63,7 +63,8 @@ import NetworkDefination from "./components/BLAConfiguration/NetworkDefinitionSc
 import NetworkList from "./components/BLAConfiguration/networkList.jsx";
 import CreateChannel from './components/Channel/CreateChannel/CreateChannelContainer.jsx';
 import JoinChannel from './components/Channel/JoinChannel/JoinChannelContainer.jsx';
-import PlayGround from './components/Channel/Playground/PlaygroundContainer.jsx'
+import PlayGround from './components/Channel/Playground/PlaygroundContainer.jsx';
+import APIDocumentation from './components/APIDefScreen/APIDocumentation.js';
 
 export default (
   <Router history={browserHistory}>
@@ -141,6 +142,8 @@ export default (
       <Route path="/CreateChannel" component={CreateChannel}/>
       <Route path="/JoinChannel" component={JoinChannel}/>
       <Route path="/Playground" component={PlayGround}/>
+      <Route path="/apiDocumentation" component={APIDocumentation}/>
+
       {ApplicationsRoute.routesIndex}
     </Route>
     <Route path="*" components={NotFound}/>

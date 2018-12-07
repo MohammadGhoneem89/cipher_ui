@@ -126,6 +126,7 @@ module.exports = {
   getMappingList:baseUrl+ "/API/core/getMappingList",
   upsertAPIDefinition:baseUrl+ "/API/core/upsertAPIDefinition",
   getAPIDefinitionID:baseUrl+ "/API/core/getAPIDefinitionID",
+  getActiveAPIs:baseUrl+ "/API/core/getActiveAPIs",
   getApiListData:baseUrl+ "/API/core/getAPIDefinition",
   APIDocs:baseUrl+  "/API/core/getActiveAPIList",
   getTypeDataList:baseUrl+  "/API/core/getTypeDataList",

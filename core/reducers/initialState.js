@@ -260,6 +260,7 @@ export default {
     "data": {}
   },
   ApiListData: { "action": "", "datasourceList": { "pageData": { "totalRecords": 0 } } },
+  getActiveAPIs : {"action": "", "data": []},
   APIDefinitionAddUpdate: {},
   AddUpdateModule: {},
   AddUpdateNetwork:{},
