@@ -1,6 +1,6 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import * as actions from '../../../actions/generalAction';
 import * as constants from '../../../constants/Communication.js';
 import * as requestCreator from '../../../common/request.js';
@@ -19,25 +19,34 @@ class ConsortiumSearchContainer extends React.Component {
             consortiumList: undefined,
             pageSize: 10,
             activePage: 1,
-            isLoading: false
+            typeData:undefined,
+            isLoading: true,
+            actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/CreateConsortium/NEW", "children": [] }]
         };
         this.pageChanged = this.pageChanged.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
+        
+        if (nextProps.typeData.data && nextProps.typeData.data.BLCHN_TYPE) {
+            this.setState({
+                typeData: nextProps.typeData.data,
+                isLoading: false
+            });
+        }
         this.setState({
-            consortiumList: nextProps.consortiumList,
-            isLoading: nextProps.isLoading
+            consortiumList: nextProps.consortiumList
         });
     }
 
     componentDidMount() {
-        this.props.actions.generalProcess(constants.getConsortiumList, requestCreator.createConsortiumListRequest({
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['BLCHN_TYPE']));
+        this.props.actions.generalProcess(constants.getConsortiumConfigList, requestCreator.createConsortiumListRequest({
             currentPageNo: 1,
             pageSize: this.state.pageSize
 
         }));
-        this.setState({isLoading: true});
+        this.setState({ isLoading: true });
     }
 
     //
@@ -47,31 +56,31 @@ class ConsortiumSearchContainer extends React.Component {
 
     submit(data) {
         this.props.actions.generalProcess(constants.getConsortiumList, requestCreator.createConsortiumListRequest({
-                currentPageNo: 1,
-                pageSize: this.state.pageSize
-            },
+            currentPageNo: 1,
+            pageSize: this.state.pageSize
+        },
             data));
-        this.setState({filterCriteria: data, activePage: 1});
+        this.setState({ filterCriteria: data, activePage: 1 });
     }
 
     pageChanged(pageNo) {
         this.props.actions.generalProcess(constants.getConsortiumList, requestCreator.createConsortiumListRequest({
-                currentPageNo: pageNo,
-                pageSize: this.state.pageSize
-            },
+            currentPageNo: pageNo,
+            pageSize: this.state.pageSize
+        },
             this.state.filterCriteria));
-        this.setState({activePage: pageNo});
+        this.setState({ activePage: pageNo });
     }
 
     render() {
-        if (!this.state.isLoading && this.state.consortiumList){
+        if (!this.state.isLoading && this.state.consortiumList) {
             return (
                 <div>
-                    <Portlet title={"Consortium"}>
+                    <Portlet title={"Consortium"} actions={this.state.consortiumList.data.actions} >
                         <ConsortiumFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria}
-                                          state={this.state}/>
+                            state={this.state} />
                     </Portlet>
-                    <Portlet title={"Consortium List"} isPermissioned={true} actions={this.state.consortiumList.data.actions}>
+                    <Portlet title={"Consortium List"} isPermissioned={true} actions={this.state.actions} >
                         <Table
                             pagination={true}
                             export={true}
@@ -89,17 +98,17 @@ class ConsortiumSearchContainer extends React.Component {
                 </div>
             );
         }
-        else{
+        else {
             return (<div className="loader">Loading...</div>)
         }
     }
 }
 
 function mapStateToProps(state, ownProps) {
-    if (state.app.consortiumList) {
+    if (state.app.ConsortiumList) {
         return {
-            consortiumList: state.app.consortiumList,
-            isLoading: false
+            consortiumList: state.app.ConsortiumList,
+            typeData: state.app.typeData
         }
     }
     else {
@@ -108,6 +117,7 @@ function mapStateToProps(state, ownProps) {
             isLoading: true
         }
     }
+
 
 }
 

@@ -23,6 +23,18 @@ const stateParent = {
     currentPageNo: 1,
     APIPayloadID: undefined,
     selectedDatasource: [],
+    EventDispatcherTypeList: undefined,
+    EventDispatcherDetails: {
+        "dispatcherName": "",
+        "dispatchFunction": "",
+        "filePath": "",
+        "groupName": "",
+        "requestBody": "",
+        "requestHeader": "",
+        "requestURL": "",
+        "templateId": "",
+        "type": ""
+    },
     selectedDispatcher: [],
     selectedDatasourceObj: [],
     selectedDispatcherObj: [],
@@ -34,14 +46,15 @@ const stateParent = {
     selectedEventNameID: -1,
     isActive: false,
     eventName: "",
-    blockSubmit: true
+    blockSubmit: true,
+    isLoading: true
 }
 
 class AddUpdateEventList extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.state = cloneDeep(stateParent)
         this.ActionHandlers = this.ActionHandlers.bind(this);
 
@@ -87,11 +100,19 @@ class AddUpdateEventList extends React.Component {
             }
 
             if (nextProps.selectedDispatcher) {
+                let dispatchData = nextProps.AddUpdateEventListData.eventData ? nextProps.AddUpdateEventListData.eventData.dipatcher : [];
+                dispatchData.forEach((elem) => {
+                    elem.actions = [
+                        { label: "Edit", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
+                        { label: "Remove", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
+                    ]
+                });
                 this.setState({
                     selectedDispatcher: nextProps.selectedDispatcher,
-                    selectedDispatcherObj: nextProps.AddUpdateEventListData.eventData ? nextProps.AddUpdateEventListData.eventData.dipatcher : null
+                    selectedDispatcherObj: dispatchData
                 });
             }
+
 
             if (nextProps.AddUpdateEventListData.eventData) {
                 if (nextProps.AddUpdateEventListData.eventData.rule && nextProps.AddUpdateEventListData.eventData.rule.length && nextProps.AddUpdateEventListData.eventData.rule.length > 0) {
@@ -112,7 +133,27 @@ class AddUpdateEventList extends React.Component {
             //alert("test")
             this.setState(cloneDeep(stateParent))
         }
-        
+
+
+        if (nextProps.EventDispatcherTypeList.data) {
+            this.setState({
+                EventDispatcherTypeList: nextProps.EventDispatcherTypeList.data
+            }, () => {
+                if (this.state.typeData) {
+                    this.setState({ isLoading: false })
+                }
+            });
+        }
+        if (nextProps.typeData.data) {
+            this.setState({
+                typeData: nextProps.typeData.data
+            }, () => {
+                if (this.state.EventDispatcherTypeList) {
+                    this.setState({ isLoading: false })
+                }
+            });
+        }
+
         this.setState({ blockSubmit: false })
 
     }
@@ -130,6 +171,21 @@ class AddUpdateEventList extends React.Component {
                     let a = this.state.rules;
                     a.splice(index, 1);
                     this.setState({ rules: a });
+                }
+                break;
+            case "Edit":
+                if (index > -1) {
+                    let data = this.state.selectedDispatcherObj;
+                    let details = _.cloneDeep(data[index])
+                    data.splice(index, 1);
+                    this.setState({ EventDispatcherDetails: details, selectedDispatcherObj: data });
+                }
+                break;
+            case "Remove":
+                if (index > -1) {
+                    let data = this.state.selectedDispatcherObj;
+                    data.splice(index, 1);
+                    this.setState({ selectedDispatcherObj: data });
                 }
                 break;
         }
@@ -274,7 +330,8 @@ class AddUpdateEventList extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['EAU_OPERATOR']));
+        this.props.actions.generalProcess(constants.getDispatcherMeta);
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['EAU_OPERATOR', 'dispatchType']));
         this.props.actions.generalProcess(constants.getEventRegistryByID, this.getRequest());
 
     }
@@ -360,6 +417,67 @@ class AddUpdateEventList extends React.Component {
         return false;
     }
 
+    addDispatcher() {
+        let data = cloneDeep(this.state.EventDispatcherDetails);
+        if (data.dispatcherName.trim() == "") {
+            alert("Dispatcher Name must be defined");
+            return false;
+        }
+
+        if (data.type == "API" && data.requestURL.trim() == "") {
+            alert("Request URL must be defined");
+            return false;
+        }
+
+        if (data.type == "CUSTOM" && (data.filePath.trim() == "" || data.dispatchFunction.trim() == "")) {
+            alert("filePath & dispatchFunction must be defined");
+            return false;
+        }
+
+        if (data.type == "EMAIL" && (data.templateId.trim() == "" || data.groupName.trim() == "")) {
+            alert("template & groupName must be defined");
+            return false;
+        }
+
+        if (data.requestBody != "") {
+            try {
+                JSON.parse(data.requestBody)
+            } catch (ex) {
+                alert("Request Body must be a valid JSON!");
+                return false;
+            }
+        }
+        if (data.requestHeader != "") {
+            try {
+                JSON.parse(data.requestHeader)
+            } catch (ex) {
+                alert("Request Header must be a valid JSON!");
+                return false;
+            }
+        }
+        data.actions=[
+            { label: "Edit", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
+            { label: "Remove", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
+        ]
+        let newlist=this.state.selectedDispatcherObj;
+        newlist.push(data);
+        this.setState({selectedDispatcherObj:newlist,EventDispatcherDetails:_.cloneDeep(stateParent.EventDispatcherDetails)})
+        
+    }
+
+    onInputChange = (e) => {
+
+        let value;
+        if (e.target.name.indexOf('is') === 0) {
+            value = $("#" + e.target.name).is(":checked");
+        } else {
+            value = e.target.value;
+        }
+        this.state.EventDispatcherDetails[e.target.name] = value;
+        this.setState({
+            [e.target.name]: value
+        })
+    };
 
 
     clearFields() {
@@ -373,6 +491,9 @@ class AddUpdateEventList extends React.Component {
     render() {
 
         //alert(this.state.isActive)
+        if (this.state.isLoading) {
+            return (<div className="loader">isLoading...</div>)
+        }
         return (
             <div>
                 <div className="row">
@@ -403,9 +524,9 @@ class AddUpdateEventList extends React.Component {
                                                         <label className="control-label">{utils.getLabelByID("EAU_Datasource")}</label>
                                                     </div>
                                                     <div className="form-group col-md-8">
-                                                    
+
                                                         <select id="datasource" name="datasource" value={this.state.selectedDatasource} disabled={this.props.AddUpdateEventListData.eventData ? true : false} onChange={this.onChangeDatasource} className="form-control">
-                                                        <option value="">--select--</option>
+                                                            <option value="">--select--</option>
                                                             {this.props.AddUpdateEventListData.datasourceListAll.map((option, index) => {
                                                                 return (
                                                                     <option key={index} value={index}>{option.dataSourceName}</option>
@@ -416,21 +537,6 @@ class AddUpdateEventList extends React.Component {
                                                 </div>
                                             </div>
                                             <div className="row">
-                                                <div className="col-md-6">
-                                                    <div className="form-group col-md-4">
-                                                        <label className="control-label">{utils.getLabelByID("EAU_Dispatcher")}</label>
-                                                    </div>
-                                                    <div className="form-group col-md-8">
-                                                        <select id="dispatcher" name="dispatcher" value={this.state.selectedDispatcher} onChange={this.onChangeDispatcher} className="form-control" multiple>
-
-                                                            {this.props.AddUpdateEventListData.dispatcherListAll.map((option, index) => {
-                                                                return (
-                                                                    <option key={index} value={index}>{option.dispatcherName}</option>
-                                                                );
-                                                            })}
-                                                        </select>
-                                                    </div>
-                                                </div>
 
                                                 <div className="col-md-6">
                                                     <div className="form-group col-md-4">
@@ -447,6 +553,167 @@ class AddUpdateEventList extends React.Component {
                                                     </div>
                                                 </div>
 
+                                            </div>
+                                            <div className="row" >
+                                                <label className="form-group control-label col-md-7 bold" style={{
+                                                    textAlign: "left",
+                                                    marginLeft: "6px"
+                                                }}>{utils.getLabelByID("dispatcherDefination")}</label>
+
+                                            </div>
+
+                                            <div className="row"  >
+                                                <div className="col-md-6">
+                                                    <div className="form-group col-md-4">
+                                                        <label className="control-label">{utils.getLabelByID("DC_type")}</label>
+                                                    </div>
+                                                    <div className="form-group col-md-8">
+                                                        <select name="type" defaultValue={this.state.EventDispatcherDetails.type} onChange={this.onInputChange} className="form-control">
+                                                        <option value="">--select--</option>
+                                                            {
+                                                                this.state.typeData.dispatchType.map((option, index) => {
+                                                                    return (
+                                                                        <option key={index} value={option.value}>{option.label}</option>
+                                                                    );
+                                                                })
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="form-group">
+                                                        <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_dispatcherName")}</label>
+                                                        <div className="form-group col-md-8">
+                                                            {/* {console.log(initialValues)} */}
+                                                            <input type="text" className="form-control" name="dispatcherName" onChange={this.onInputChange} disabled={this.state.isEdit} value={this.state.EventDispatcherDetails.dispatcherName} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div className="row" style={{ display: this.state.EventDispatcherDetails.type !== "CUSTOM" ? 'none' : 'block' }}>
+
+                                                <div className="col-md-6">
+                                                    <div className="form-group">
+                                                        <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_filePath")}</label>
+                                                        <div className="form-group col-md-8">
+                                                            {/* {console.log(initialValues)} */}
+                                                            <input type="text" className="form-control" name="filePath" onChange={this.onInputChange} value={this.state.EventDispatcherDetails.filePath} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="form-group">
+                                                        <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_dispatchFunction")}</label>
+                                                        <div className="form-group col-md-8">
+                                                            <input type="text" className="form-control" name="dispatchFunction" onChange={this.onInputChange} value={this.state.EventDispatcherDetails.dispatchFunction} />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                            <div className="row" style={{ display: this.state.EventDispatcherDetails.type !== "EMAIL" ? 'none' : 'block' }}>
+
+                                                <div className="col-md-6">
+                                                    <div className="form-group">
+                                                        <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_groupName")}</label>
+                                                        <div className="form-group col-md-8">
+                                                            <select name="groupName" value={this.state.EventDispatcherDetails.groupName} onChange={this.onInputChange} className="form-control">
+                                                                <option value="">--Select--</option>
+                                                                {this.state.EventDispatcherTypeList.group &&
+                                                                    this.state.EventDispatcherTypeList.group.map((option, index) => {
+                                                                        return (
+                                                                            <option key={index} value={option.value}>{option.label}</option>
+                                                                        );
+                                                                    })
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="form-group">
+                                                        <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_emailTemplate")}</label>
+                                                        <div className="form-group col-md-8">
+                                                            <select name="templateId" value={this.state.EventDispatcherDetails.templateId} onChange={this.onInputChange} className="form-control">
+                                                                <option value="">--Select--</option>
+                                                                {this.state.EventDispatcherTypeList.emailTemplate &&
+                                                                    this.state.EventDispatcherTypeList.emailTemplate.map((option, index) => {
+                                                                        return (
+                                                                            <option key={index} value={option.value}>{option.label}</option>
+                                                                        );
+                                                                    })
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <div style={{ display: this.state.EventDispatcherDetails.type !== "API" ? 'none' : 'block' }}>
+                                                <div className="row">
+
+                                                    <div className="col-md-6">
+                                                        <div className="form-group">
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_requestURL")}</label>
+                                                            <div className="form-group col-md-8">
+                                                                <input type="text" className="form-control" name="requestURL" onChange={this.onInputChange} value={this.state.EventDispatcherDetails.requestURL} />
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div className="row">
+
+                                                    <div className="col-md-6">
+                                                        <div className="form-group">
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_requestHeader")}</label>
+                                                            <div className="form-group col-md-8">
+                                                                <textarea onChange={this.onInputChange} name="requestHeader" value={this.state.EventDispatcherDetails.requestHeader} className="form-control" rows="4" style={{ resize: "none", width: "100%" }} />
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="form-group">
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_requestBody")}</label>
+                                                            <div className="form-group col-md-8">
+                                                                <textarea onChange={this.onInputChange} name="requestBody" value={this.state.EventDispatcherDetails.requestBody} className="form-control" rows="4" style={{ resize: "none", width: "100%" }} />
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="form-actions right">
+                                                <div className="form-group col-md-12">
+                                                    <div className="btn-toolbar pull-right">
+                                                        <button type="submit" className="btn btn-default" onClick={this.addDispatcher.bind(this)}> <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Dispatcher")} </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="row">
+                                                <div className="col-md-12">
+
+                                                    <div className="col-md-12">
+                                                        <Table
+                                                            gridColumns={utils.getGridColumnByName("dispatchListData")}
+                                                            gridData={this.state.selectedDispatcherObj}
+                                                            export={false}
+                                                            componentFunction={this.ActionHandlers}
+                                                            pagination={false} />
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -585,6 +852,7 @@ AddUpdateEventList.propTypes = {
     AddUpdateEventListData: PropTypes.object,
     selectedDatasource: PropTypes.array,
     selectedDispatcher: PropTypes.array,
+    typeData: PropTypes.object,
     children: PropTypes.object,
 
 };
@@ -594,9 +862,10 @@ function mapStateToProps(state, ownProps) {
         AddUpdateEventListData: state.app.AddUpdateEventList.data,
         selectedDatasource: state.app.AddUpdateEventList.data.selectedDatasource,
         selectedDispatcher: state.app.AddUpdateEventList.data.selectedDispatcher,
-        typeDataPage: state.app.typeData.data ? (state.app.typeData.data.EAU_OPERATOR ? state.app.typeData.data.EAU_OPERATOR : []) : [],
-        typeData: state.app.typeData.data ? state.app.typeData.data : [],
+        typeData: state.app.typeData,
         eventName: ownProps.params.eventName,
+        typeDataPage: state.app.typeData.data ? (state.app.typeData.data.EAU_OPERATOR ? state.app.typeData.data.EAU_OPERATOR : []) : [],
+        EventDispatcherTypeList: state.app.EventDispatcherTypeList,
     };
 }
 function mapDispatchToProps(dispatch) {

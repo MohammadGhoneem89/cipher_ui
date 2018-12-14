@@ -4,7 +4,7 @@ import * as resEnglish from '../constants/resources_EN.js';
 import * as gridColumns from '../constants/GridColumns.js';
 import * as cresEnglish from '../constants/componentResources_EN.js';
 import * as cresArabic from '../constants/componentResources_AR.js';
-
+import moment from 'moment'
 
 let lang = sessionStorage.lang;
 
@@ -150,16 +150,10 @@ export function formatAmountField(val) {
   return retVal;
 }
 export function UNIXConvertToDate(UNIXTS) {
-  if (UNIXTS == 0)
+  if (!UNIXTS || UNIXTS == 0)
     return "";
-  let date = new Date(UNIXTS * 1000);
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
-  let hours = date.getHours();
-  let minutes = "0" + date.getMinutes();
-  let seconds = "0" + date.getSeconds();
-  return day + "/" + month + "/" + year + " " + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    return moment.unix(UNIXTS/1000).format('DD/MM/YYYY')
+
 }
 
 

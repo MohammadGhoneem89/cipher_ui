@@ -9,24 +9,20 @@ import configTag from '../../config.js';
 let tempGridData = {
     "message": "Successfully Uploaded",
     "status": "ok",
-    "contextData": [
-        {
-            "fileDetail": {}
-        }
-    ]
+    "contextData": []
 };
 
 class FileUploader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            gridData: tempGridData
+            gridData: _.cloneDeep(tempGridData)
         };
         let ReactDOMServer = require('react-dom/server');
         let contextID = utils.CreateGuid();
         this.djsConfig = {
             addRemoveLinks: true,
-            acceptedFiles: ".txt",
+            acceptedFiles: this.props.allowedFileType|| ".txt",
             createImageThumbnails: true,
             thumbnailWidth: 200,
             params: {
@@ -103,11 +99,11 @@ class FileUploader extends React.Component {
     getAttachementGrid(showAttachementGrid) {
         if (showAttachementGrid) {
             return (
-                <div className="col-centered col-md-12">
+                
                     <InnerGrid TableClass="portlet light bordered sdg_portlet bg-default bg-font-default" fontclass="font-dark" title="Attachments"
                         gridColumns={utils.getGridColumnByName("downloadFileList")}
                         gridData={this.state.gridData.contextData} />
-                </div>
+                
             );
         }
     }
@@ -123,7 +119,7 @@ class FileUploader extends React.Component {
 
             <div>
                 {this.getAttachementGrid(this.props.showAttachementGrid)}
-                {<pre id="FILE_CONTENT"/>}
+               
                 {this.props.showDropzone &&
                     <div>
 

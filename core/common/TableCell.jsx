@@ -1,7 +1,7 @@
 import React from 'react';
 import * as constants from '../constants/Communication.js';
-import {baseUrl} from '../constants/Communication.js';
-import {browserHistory} from 'react-router';
+import { baseUrl } from '../constants/Communication.js';
+import { browserHistory } from 'react-router';
 import * as utils from './utils.js';
 import * as dates from './dates.js';
 
@@ -64,26 +64,26 @@ class TableCell extends React.Component {
       case "Error":
         return (
           <span className={"label label-sm label-danger"}>
-                        <i className="fa fa-bell-o"/>
-                    </span>
+            <i className="fa fa-bell-o" />
+          </span>
         );
       case "Info":
         return (
           <span className={"label label-sm label-info"}>
-                        <i className="fa fa-bell-o"/>
-                    </span>
+            <i className="fa fa-bell-o" />
+          </span>
         );
       case "Warning":
         return (
           <span className={"label label-sm label-warning"}>
-                        <i className="fa fa-bell-o"/>
-                    </span>
+            <i className="fa fa-bell-o" />
+          </span>
         );
       default:
         return (
           <span className={"label label-sm label-success"}>
-                        <i className="fa fa-bell-o"/>
-                    </span>
+            <i className="fa fa-bell-o" />
+          </span>
         );
 
     }
@@ -98,26 +98,26 @@ class TableCell extends React.Component {
 
     if (cellData && cellData.actionType === "modal") {
       return (<a href="javascript:;" data-toggle="modal" data-target={cellData.URI[0]}
-                 data-id={this.props.rowData[this.props.recordID]}
-                 onClick={this.renderPopupBody.bind(this, this.props.rowData[this.props.recordID])}>
-        <i className={cellData.iconName}/> {cellData.label} </a>);
+        data-id={this.props.rowData[this.props.recordID]}
+        onClick={this.renderPopupBody.bind(this, this.props.rowData[this.props.recordID])}>
+        <i className={cellData.iconName} /> {cellData.label} </a>);
     }
     else if (cellData && cellData.actionType === "COMPONENT_FUNCTION") {
 
       return (<a href="javascript:;"
-                 onClick={this.props.componentFunction && this.props.componentFunction.bind(this, {
-                   index: this.props.rowIndex,
-                   actionName: cellData.label
-                 })}>
-        <i className={cellData.iconName}/> {cellData.label} </a>);
+        onClick={this.props.componentFunction && this.props.componentFunction.bind(this, {
+          index: this.props.rowIndex,
+          actionName: cellData.label
+        })}>
+        <i className={cellData.iconName} /> {cellData.label} </a>);
     }
     else {
-      let url = cellData.URI[0] +'/'+ this.props.rowData[this.props.recordID];
-      url = url.replace('//','/');//to avoid double slash
+      let url = cellData.URI[0] + '/' + this.props.rowData[this.props.recordID];
+      url = url.replace('//', '/');//to avoid double slash
       // return (<a href="javascript:;" onClick={this.getMenuitem.bind(this,  cellData.actionURI + this.props.rowData[this.props.recordID])}>
       return (<a href="javascript:"
-                 onClick={this.getMenuitem.bind(this, url)}>
-        <i className={cellData.iconName}/> {cellData.label} </a>);
+        onClick={this.getMenuitem.bind(this, url)}>
+        <i className={cellData.iconName} /> {cellData.label} </a>);
 
 
     }
@@ -167,6 +167,10 @@ class TableCell extends React.Component {
     browserHistory.push(index);
   }
 
+  onChangeEditColumn(index,e) {
+    alert(index)
+    alert(e.target.value)
+  }
   processRowData(columnElement, type) {
     console.log("columnElement:" + columnElement);
     console.log("type:" + type);
@@ -190,9 +194,9 @@ class TableCell extends React.Component {
           <div className="actions">
             <div className="btn-group">
               <a className="btn white btn-circle btn-sm" href="javascript:;" data-toggle="dropdown"
-                 data-hover="dropdown" data-close-others="true" aria-expanded="false">
+                data-hover="dropdown" data-close-others="true" aria-expanded="false">
                 <i className="fa fa-ellipsis-h"
-                   aria-hidden="true"/> </a>
+                  aria-hidden="true" /> </a>
 
               <ul className="dropdown-menu pull-right" role="menu">
 
@@ -252,31 +256,33 @@ class TableCell extends React.Component {
       case "statusLabel":
         return (<td><span
           className={this.getClassForStatus(this.props.cellData.type)}
-          style={{fontSize: "13px!important", height: "16x"}}>{this.props.cellData.value}</span></td>);
+          style={{ fontSize: "13px!important", height: "16x" }}>{this.props.cellData.value}</span></td>);
       case "overDueLabel":
         return (<td className={this.getClassForOverdue(this.props.cellData.type)}><span
-          style={{fontSize: "15px!important"}}>{this.props.cellData.value}</span></td>);
+          style={{ fontSize: "15px!important" }}>{this.props.cellData.value}</span></td>);
       case "image":
         if (this.props.url) {
-          return (<td className="ent_nme" style={{width: this.props.columnWidth}}><img
+          return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
             width="28px" height="28px"
-            src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")}/> &nbsp;&nbsp; <a
-            href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+            src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+              href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
           </td>);
         }
         else {
-          return (<td className="ent_nme" style={{width: this.props.columnWidth}}><img
+          return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
             width="28px" height="28px"
-            src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")}/> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+            src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
           </td>);
         }
       case "statusLabelBig":
         return (<td><h3><span className={this.getClassForStatusBig(this.props.cellData.type)}
-                              style={{height: "20px"}}>{this.props.cellData.value}</span></h3></td>);
+          style={{ height: "20px" }}>{this.props.cellData.value}</span></h3></td>);
+      case "editableColumn":
+        return (<td><input type="text" className="form-control" value={this.props.cellData.value} onChange={this.onChangeEditColumn.bind(this,this.props.searialNo)} /></td>);
       case "imageBig":
-        return (<td className="ent_nme" align="center" style={{width: this.props.columnWidth, paddingLeft: "50%"}}><img
-          width="50px" height="50px" style={{width: "50px", height: "50px"}}
-          src={baseUrl + this.props.cellData.imageURL}/> &nbsp;&nbsp; <b> {"   " + this.props.cellData.name} </b>
+        return (<td className="ent_nme" align="center" style={{ width: this.props.columnWidth, paddingLeft: "50%" }}><img
+          width="50px" height="50px" style={{ width: "50px", height: "50px" }}
+          src={baseUrl + this.props.cellData.imageURL} /> &nbsp;&nbsp; <b> {"   " + this.props.cellData.name} </b>
         </td>);
       case "stringBig":
         return (<td className="ent_nme caption-subject font-black bold ">
@@ -286,14 +292,14 @@ class TableCell extends React.Component {
       case "cb":
         return (<td><label
           className="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox"
-                                                                                className="checkboxes"
-                                                                                value={this.props.rowData[this.props.recordID]}/><span/></label>
+            className="checkboxes"
+            value={this.props.rowData[this.props.recordID]} /><span /></label>
         </td>);
       case "cbDisabled":
         return (<td><label
           className="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox" disabled
-                                                                                className="checkboxes"
-                                                                                checked={this.props.cellData}/><span/></label>
+            className="checkboxes"
+            checked={this.props.cellData} /><span /></label>
         </td>);
       case "downloadAttachement":
         cellData = this.props.cellData ? this.props.cellData : {};
@@ -316,9 +322,9 @@ class TableCell extends React.Component {
           fontWeight: fontWeightStyle
         }}> {utils.formatAmountField(this.props.cellData)}</td>);
       case "rightAlign":
-        return (<td style={{textAlign: "right"}}> {this.props.cellData}</td>);
+        return (<td style={{ textAlign: "right" }}> {this.props.cellData}</td>);
       case "leftAlign":
-        return (<td style={{textAlign: "left"}}> {this.props.cellData}</td>);
+        return (<td style={{ textAlign: "left" }}> {this.props.cellData}</td>);
       case "serialNo":
         return (<td> {parseInt(this.props.searialNo) + "."}</td>);
       case "epochDate":
@@ -335,21 +341,21 @@ class TableCell extends React.Component {
         return (<td> {this.props.cellData === "E" ? "Entity" : "Acquirer"} </td>);
       case "errors":
         let cellData = this.props.cellData.toString().replace(/ *, */g, '\n').split('\n').map((item, i) => {
-          return (<span key={i}>{item}<br/></span>);
+          return (<span key={i}>{item}<br /></span>);
         });
 
-        return (<td style={{fontWeight: fontWeightStyle}}> {cellData} </td>);
+        return (<td style={{ fontWeight: fontWeightStyle }}> {cellData} </td>);
       case "longString":
         // let a = this.props.cellData.replace(/(.{60})/g, "$1<br/>");
         let temp = text_truncate(this.props.cellData, 100);
         // return <td style={{fontWeight: fontWeightStyle}} dangerouslySetInnerHTML={{__html: a}}/>;
-        return <td style={{fontWeight: fontWeightStyle}}>
+        return <td style={{ fontWeight: fontWeightStyle }}>
           <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
         </td>;
 
 
       default:
-        return (<td style={{fontWeight: fontWeightStyle}}> {this.props.cellData} </td>);
+        return (<td style={{ fontWeight: fontWeightStyle }}> {this.props.cellData} </td>);
 
     }
 

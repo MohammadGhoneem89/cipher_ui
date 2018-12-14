@@ -62,9 +62,15 @@ import AddUpdateDispatcher from "./components/dispatchSource/dispatchContainer.j
 import NetworkDefination from "./components/BLAConfiguration/NetworkDefinitionScreen.jsx";
 import NetworkList from "./components/BLAConfiguration/networkList.jsx";
 import CreateChannel from './components/Channel/CreateChannel/CreateChannelContainer.jsx';
-import JoinChannel from './components/Channel/JoinChannel/JoinChannelContainer.jsx';
-import PlayGround from './components/Channel/Playground/PlaygroundContainer.jsx'
+import ChannelList from './components/Channel/CreateChannel/channelList.jsx';
+import SmartContractList from './components/Channel/CreateSmartContract/SmartContractList.jsx';
+import CreateConsortium from './components/Channel/CreateConsortium/CreateConsortiumContainer.jsx';
 
+
+import SmartPlayGround from './components/Channel/SmartPlayGround/SmartContractPlayground.jsx';
+
+
+import CreateSmartContract from './components/Channel/CreateSmartContract/CreateSmartContractContainer.jsx';
 export default (
   <Router history={browserHistory}>
     <Route path="/Documentation/:useCase/:route" component={GeneratePDF} />
@@ -89,7 +95,7 @@ export default (
       <Route path="/cipher/blockchain/hashSearch/:hash" component={HashSearchScreen}/>
       <Route path="/cipher/consortiumSearch" component={ConsortiumSearch}/>
       <Route path="/cipher/consortiumSetup" component={ConsortiumSetup}/>
-      <Route path="/cipher/consortiumSetup/:mode/:consortiumID" component={ConsortiumSetup}/>
+      <Route path="/cipher/consortiumSetup/:mode/:consortiumID/:garbage" component={ConsortiumSetup}/>
       <Route path="/cipher/consortiums/:consortiumID/smartContracts/:smartContactID" component={SmartContract}/>
       <Route path="/cipher/:consortiumID/smartContractFiles/:smartContractIndex" component={SmartContractFileViewer}/>
 
@@ -138,9 +144,14 @@ export default (
       <Route path="/DispatchList" component={dispatchList}/>
       <Route path="/editDispatcher/:dispatcherName" component={AddUpdateDispatcher}/>
       <Route path="/editNetwork(/:id)" component={NetworkDefination}/>
-      <Route path="/CreateChannel" component={CreateChannel}/>
-      <Route path="/JoinChannel" component={JoinChannel}/>
-      <Route path="/Playground" component={PlayGround}/>
+      <Route path="/CreateChannel/:id" component={CreateChannel}/>
+
+      <Route path="/ChannelList" component={ChannelList}/>
+      <Route path="/CreateSmartContract/:id" component={CreateSmartContract}/>
+      <Route path="/SmartContractList" component={SmartContractList}/>
+      <Route path="/SmartPlayGround" component={SmartPlayGround}/>
+      <Route path="/CreateConsortium/:id" component={CreateConsortium}/>
+      
       {ApplicationsRoute.routesIndex}
     </Route>
     <Route path="*" components={NotFound}/>

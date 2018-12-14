@@ -4,22 +4,22 @@ import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from '../../actions/generalAction';
+import * as actions from '../../../actions/generalAction';
 
-import Portlet from '../../common/Portlet.jsx';
+import Portlet from '../../../common/Portlet.jsx';
 /*container specific imports*/
-import TileUnit from '../../common/tileUnit.jsx';
-import Table from '../../common/Datatable.jsx';
-import BarChartExceptions from '../../common/barChart.jsx'
-import * as utils from '../../common/utils.js';
+import TileUnit from '../../../common/tileUnit.jsx';
+import Table from '../../../common/Datatable.jsx';
+import BarChartExceptions from '../../../common/barChart.jsx'
+import * as utils from '../../../common/utils.js';
 
 
-import * as constants from '../../constants/Communication.js';
-import * as requestCreator from '../../common/request.js';
-import DateControl from '../../common/DateControl.jsx'
+import * as constants from '../../../constants/Communication.js';
+import * as requestCreator from '../../../common/request.js';
+import DateControl from '../../../common/DateControl.jsx'
 
 
-class MappingList extends React.Component {
+class ChannelList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -28,25 +28,23 @@ class MappingList extends React.Component {
         this.formSubmit = this.formSubmit.bind(this);
         this.getRequest = this.getRequest.bind(this);
         this.renderPopupBody = this.renderPopupBody.bind(this);
-
-
     }
     renderPopupBody(dataID) {
         this.setState({ APIPayloadID: dataID })
     }
 
     getRequest() {
-       let mappingName = document.getElementById('mappingName') == null ? "" : document.getElementById('mappingName').value;
-        let mappingType = document.getElementById('mappingType') == null ? "" : document.getElementById('mappingType').value;
+       let networkName = document.getElementById('networkName') == null ? "" : document.getElementById('networkName').value;
+        let channelName = document.getElementById('channelName') == null ? "" : document.getElementById('channelName').value;
 
         var searchCriteria = {
         }
 
-        if (mappingName != "")
-            searchCriteria.mappingName = mappingName
+        if (networkName != "")
+            searchCriteria.networkName = networkName
 
-        if (mappingType != "")
-            searchCriteria.mappingType = mappingType
+        if (channelName != "")
+            searchCriteria.channelName = channelName
 
       
 
@@ -83,13 +81,12 @@ class MappingList extends React.Component {
     }
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.props.actions.generalProcess(constants.getMappingListData, this.getRequest());
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DFM_FROMATTYPE']));
-        this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/editMapping/NEWMAPPING", "children": [] }] })
+        this.props.actions.generalProcess(constants.getChannelListData, this.getRequest());
+        this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/CreateChannel/NEW", "children": [] }] })
     }
     formSubmit() {
 
-        this.props.actions.generalProcess(constants.getMappingListData, this.getRequest());
+        this.props.actions.generalProcess(constants.getChannelListData, this.getRequest());
     }
     pageChanged(pageNo) {
         if (pageNo != undefined) {
@@ -99,7 +96,7 @@ class MappingList extends React.Component {
             if (this.state.searchFilters == undefined) {
 
                 request = {
-                    "action": "MappingListData",
+                    "action": "ChannelList",
                     "searchCriteria": {
                     },
                     "page": {
@@ -110,7 +107,7 @@ class MappingList extends React.Component {
             } else {
                 var searchCriteria = this.state.searchFilters
                 request = {
-                    "action": "MappingListData",
+                    "action": "ChannelListData",
                     searchCriteria,
                     "page": {
                         "currentPageNo": pageNo,
@@ -121,13 +118,13 @@ class MappingList extends React.Component {
 
             this.setState({ currentPageNo: pageNo })
 
-            this.props.actions.generalProcess(constants.getMappingListData, request);
+            this.props.actions.generalProcess(constants.getChannelListData, request);
 
         }
     }
     clearFields() {
-        $('#MappingListData').find('input:text').val('');
-        $('#MappingListData').find('select').each(function () {
+        $('#ChannelListData').find('input:text').val('');
+        $('#ChannelListData').find('select').each(function () {
             $(this)[0].selectedIndex = 0;
         });
     }
@@ -135,7 +132,7 @@ class MappingList extends React.Component {
 
     render() {
 
-        if (this.props.MappingListData && this.props.MappingListData.data) {
+        if (this.props.ChannelListData && this.props.ChannelListData.data) {
             return (
                 <div>
                     <div className="row">
@@ -143,41 +140,34 @@ class MappingList extends React.Component {
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
                                     <div className="caption">
-                                        <span className="caption-subject">{utils.getLabelByID("MappingListDataFilters")}</span></div>
+                                        <span className="caption-subject">{utils.getLabelByID("ChannelListDataFilters")}</span></div>
                                     <div className="tools">
                                         <a href="javascript:;" className="collapse" data-original-title title> </a>
                                     </div>
                                 </div>
                                 <div className="portlet-body">
-                                    <div className="form-body" id="MappingListData">
+                                    <div className="form-body" id="ChannelListData">
                                         <div className="row">
                                             <div className="col-md-12">
 
                                                 <div className="row">
-
-                                                    <div className="col-md-6">
+                                                <div className="col-md-6">
                                                         <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("MAU_RequestName")}</label>
+                                                            <label className="control-label">{utils.getLabelByID("NAU_channelName")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="mappingName" id="mappingName" />
+                                                            <input type="text" className="form-control" name="channelName" id="channelName" /> 
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("MAU_RequestType")}</label>
+                                                            <label className="control-label">{utils.getLabelByID("NAU_networkName")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <select id="requestType" name="requestType" onChange={this.onMappingTypeChange} value={this.state.mappingType} className="form-control">
-                                                            <option key="ALL" value="ALL">ALL</option>
-                                                                {this.state.typeData && this.state.typeData.DFM_FROMATTYPE && this.state.typeData.DFM_FROMATTYPE.map((option, index) => {
-                                                                    return (
-                                                                        <option key={index} value={option.value}>{option.label}</option>
-                                                                    );
-                                                                })}
-                                                            </select>
+                                                            <input type="text" className="form-control" name="networkName" id="networkName" />
                                                         </div>
                                                     </div>
+                                                    
                                                 </div>
 
                                                 <div className="form-actions right">
@@ -198,10 +188,10 @@ class MappingList extends React.Component {
                         </div>
                     </div>
 
-                    <Portlet title={utils.getLabelByID("MappingList")} isPermissioned={true}
-                        actions={this.state.actions}>
-                        <Table fontclass="" gridColumns={utils.getGridColumnByName("MappingListData")} gridData={this.props.MappingListData.data.searchResult}
-                            totalRecords={this.props.MappingListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
+                    <Portlet title={utils.getLabelByID("ChannelList")} isPermissioned={true} 
+                    actions={this.state.actions}>
+                        <Table fontclass="" gridColumns={utils.getGridColumnByName("ChannelListData")} gridData={this.props.ChannelListData.data.searchResult}
+                            totalRecords={this.props.ChannelListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
                             pagination={true} pageChanged={this.pageChanged} export={false} search={true}
                             activePage={this.state.currentPageNo} />
                     </Portlet>
@@ -216,16 +206,15 @@ class MappingList extends React.Component {
     }
 }
 
-MappingList.propTypes = {
-    MappingListData: PropTypes.object,
+ChannelList.propTypes = {
+    ChannelListData: PropTypes.object,
     children: PropTypes.object,
 
 };
 
 function mapStateToProps(state, ownProps) {
     return {
-        MappingListData: state.app.MappingList,
-        typeData: state.app.typeData.data
+        ChannelListData: state.app.ChannelList
     };
 }
 function mapDispatchToProps(dispatch) {
@@ -233,5 +222,5 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-MappingList.displayName = "MappingList";
-export default connect(mapStateToProps, mapDispatchToProps)(MappingList);
+ChannelList.displayName = "ChannelList";
+export default connect(mapStateToProps, mapDispatchToProps)(ChannelList);

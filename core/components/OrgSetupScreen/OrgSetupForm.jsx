@@ -11,7 +11,6 @@ import EntityServicesForm from './OrgServicesForm.jsx';
 import EntityContactsForm from './OrgContactsForm.jsx';
 import * as utils from '../../common/utils.js';
 import ActionButton from '../../common/ActionButtonNew.jsx';
-import BLAConfig from './BLAConfigDefinationForm.jsx';
 import { CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput } from '../../common/FormControls.jsx';
 
 //https://github.com/erikras/redux-form/issues/369
@@ -444,9 +443,6 @@ class OrgSetupForm extends React.Component {
           <Portlet title={utils.getLabelByID("Documents")}>
             <FormSection6 initialValues={initialValues} updateState={this.updateState} state={this.state} />
           </Portlet>
-          <div id="netconfig">
-          <BLAConfig onInputChange={this.onInputChange} addPeer={this.addPeer} addUser={this.addUser} onInputChangeOrderer={this.onInputChangeOrderer} state={this.state.networkConfig} />
-          </div>
           {!this.state.readOnly &&
             <div className="clearfix">
               <ActionButton actionList={containerState.entityDetail.actions}

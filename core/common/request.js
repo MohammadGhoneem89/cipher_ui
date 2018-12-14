@@ -122,8 +122,8 @@ export function createViewSettlementBatchRequest(entityID, batchID) {
 export function createConsortiumListRequest(page, searchCriteria) {
     return {
         "action": "consortiumList",
-        searchCriteria,
-        page
+        searchCriteria:searchCriteria||{},
+        page:page||{}
     }
 }
 export function createConsortiumDetailRequest(consortiumID) {
