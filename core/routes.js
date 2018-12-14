@@ -65,6 +65,7 @@ import CreateChannel from './components/Channel/CreateChannel/CreateChannelConta
 import ChannelList from './components/Channel/CreateChannel/channelList.jsx';
 import SmartContractList from './components/Channel/CreateSmartContract/SmartContractList.jsx';
 import CreateConsortium from './components/Channel/CreateConsortium/CreateConsortiumContainer.jsx';
+import APIDocumentation from './components/APIDefScreen/APIDocumentation.js';
 
 
 import SmartPlayGround from './components/Channel/SmartPlayGround/SmartContractPlayground.jsx';
@@ -152,6 +153,9 @@ export default (
       <Route path="/SmartPlayGround" component={SmartPlayGround}/>
       <Route path="/CreateConsortium/:id" component={CreateConsortium}/>
       
+      <Route path="/CreateChannel" component={CreateChannel}/>
+      <Route path="/apiDocumentation" component={APIDocumentation}/>
+
       {ApplicationsRoute.routesIndex}
     </Route>
     <Route path="*" components={NotFound}/>
