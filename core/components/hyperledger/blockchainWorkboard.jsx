@@ -249,11 +249,9 @@ blockchainWorkboard.propTypes = {
 
 function mapStateToProps(state, ownProps) {
 
-
   return {
     blockchainWorkboardData: state.app.blockchainWorkboardData.data
   };
-
 
 }
 
