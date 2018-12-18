@@ -28,15 +28,51 @@ class ApiList extends React.Component {
         this.formSubmit = this.formSubmit.bind(this);
         this.getRequest = this.getRequest.bind(this);
         this.renderPopupBody = this.renderPopupBody.bind(this);
-
+        this.downloadChainCode = this.downloadChainCode.bind(this);
+        this.getChaincodeRequest = this.getChaincodeRequest.bind(this)
 
     }
     renderPopupBody(dataID) {
         this.setState({ APIPayloadID: dataID })
     }
+    getChaincodeRequest() {
+        let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value;
+        let route = document.getElementById('route') == null ? "" : document.getElementById('route').value;
+        var searchCriteria = {
+        }
 
+        if (useCase != "")
+            searchCriteria.useCase = useCase
+
+        if (route != "")
+            searchCriteria.route = route
+
+        this.setState({ searchFilters: searchCriteria })
+
+        // console.log(a)
+        var chaincodeRequest = {
+            "action": "mappingData",
+            searchCriteria,
+            "page": {
+                "currentPageNo": 1,
+                "pageSize": 10
+            }
+        }
+        this.setState({ currentPageNo: 1 })
+        console.log(JSON.stringify(chaincodeRequest))
+        return chaincodeRequest;
+    }
+
+    downloadChainCode() {
+        if ((document.getElementById('useCase').value) == "") {
+            alert("UseCase Required !")
+        }
+        else {
+            this.props.actions.generalProcess(constants.downloadChainCode, this.getChaincodeRequest());
+        }
+    }
     getRequest() {
-       let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value;
+        let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value;
         let route = document.getElementById('route') == null ? "" : document.getElementById('route').value;
 
         var searchCriteria = {
@@ -48,7 +84,7 @@ class ApiList extends React.Component {
         if (route != "")
             searchCriteria.route = route
 
-      
+
 
         this.setState({ searchFilters: searchCriteria })
 
@@ -67,7 +103,7 @@ class ApiList extends React.Component {
         return request;
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.typeData) {
+        if (nextProps.typeData && nextProps.downloadChainCode) {
             this.setState({
                 typeData: nextProps.typeData
             });
@@ -167,7 +203,7 @@ class ApiList extends React.Component {
                                                             <label className="control-label">{utils.getLabelByID("AAU_Route")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="route" id="route" /> 
+                                                            <input type="text" className="form-control" name="route" id="route" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -179,6 +215,7 @@ class ApiList extends React.Component {
                                                             <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
                                                             {"  "}
                                                             <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
+                                                            <button type="button" className="btn green" onClick={this.downloadChainCode}>{utils.getLabelByID("Generate_ChainCode")} </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -216,7 +253,8 @@ ApiList.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     return {
-        ApiListData: state.app.ApiListData
+        ApiListData: state.app.ApiListData,
+        downloadChainCode: state.app.downloadChainCode
     };
 }
 function mapDispatchToProps(dispatch) {

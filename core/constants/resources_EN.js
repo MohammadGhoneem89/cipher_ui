@@ -1058,5 +1058,6 @@ module.exports = {
   useCase:"Application",
   APIMetering:"API Metering",
   EnableBilling:"Enable Billing",
-  BillingDate:"Start Date"
+  BillingDate:"Start Date",
+  Generate_ChainCode :"Generate ChainCode"
 };
