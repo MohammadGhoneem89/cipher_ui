@@ -495,6 +495,7 @@ export default {
       }
     }
   },
+  downloadChainCode :{},
   EventDispatcherStatus: { "action": "", "dispatchList": { "pageData": { "totalRecords": 0 } } },
   DispatchList: { "action": "", "dispatchList": { "pageData": { "totalRecords": 0 } } },
   AddUpdateDispatcher: {
