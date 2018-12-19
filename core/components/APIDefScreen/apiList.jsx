@@ -60,6 +60,7 @@ class ApiList extends React.Component {
         }
         this.setState({ currentPageNo: 1 })
         console.log(JSON.stringify(chaincodeRequest))
+        
         return chaincodeRequest;
     }
 
@@ -215,7 +216,9 @@ class ApiList extends React.Component {
                                                             <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
                                                             {"  "}
                                                             <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
-                                                            <button type="button" className="btn green" onClick={this.downloadChainCode}>{utils.getLabelByID("Generate_ChainCode")} </button>
+                                                            <button type="button" className="btn green" onClick={this.downloadChainCode}>{utils.getLabelByID("Generate_ChainCode")} 
+                                                            <i className="fa fa-file-code-o"/>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -229,9 +232,14 @@ class ApiList extends React.Component {
 
                     <Portlet title={utils.getLabelByID("ApiList")} isPermissioned={true}
                         actions={this.state.actions}>
-                        <Table fontclass="" gridColumns={utils.getGridColumnByName("ApiListData")} gridData={this.props.ApiListData.data.searchResult}
-                            totalRecords={this.props.ApiListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
-                            pagination={true} pageChanged={this.pageChanged} export={false} search={true}
+                        <Table fontclass="" 
+                        gridColumns={utils.getGridColumnByName("ApiListData")} 
+                        gridData={this.props.ApiListData.data.searchResult}
+                            totalRecords={this.props.ApiListData.pageData.totalRecords} 
+                            searchCallBack={this.searchCallBack} pageSize={10}
+                            pagination={true} pageChanged={this.pageChanged} 
+                            export={false} 
+                            search={true}
                             activePage={this.state.currentPageNo} />
                     </Portlet>
 
