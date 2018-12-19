@@ -53,7 +53,6 @@ import AddUpdateMapping from './components/mappingConfig/addUpdateMapping.jsx';
 import MappingList from './components/mappingConfig/mappingList.jsx';
 
 import APIDefScreen from "./components/APIDefScreen/APIDefScreenContainer.jsx";
-import test from "./components/APIDefScreen/test.jsx";
 import ApiList from "./components/APIDefScreen/apiList.jsx";
 import ModuleList from "./components/ModuleScreen/moduleList.jsx";
 import GeneratePDF from "./components/generatePDF/generatePDF";
@@ -153,10 +152,9 @@ export default (
       <Route path="/SmartContractList" component={SmartContractList}/>
       <Route path="/SmartPlayGround" component={SmartPlayGround}/>
       <Route path="/CreateConsortium/:id" component={CreateConsortium}/>
-      
+
       <Route path="/CreateChannel" component={CreateChannel}/>
       <Route path="/apiDocumentation" component={APIDocumentation}/>
-      <Route path="/test" component={test}/>
 
 
       {ApplicationsRoute.routesIndex}
