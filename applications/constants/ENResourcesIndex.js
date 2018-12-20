@@ -1,9 +1,9 @@
 import SampleAppENResources from '../SampleApp/constants/appENResources';
-import PROJECTAppENResources from '../PROJECT/constants/appENResources';
+import WaslAppENResources from '../WASL/constants/appENResources';
 
 let langResources = {
   ...SampleAppENResources,
-  ...PROJECTAppENResources,
+  ...WaslAppENResources,
 };
 
 module.exports = langResources;

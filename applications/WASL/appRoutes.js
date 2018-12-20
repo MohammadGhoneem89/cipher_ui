@@ -10,8 +10,8 @@ let authRoutes = <div>
 </div>;
 
 let unAuthRoutes = <div>
-  <Route path="/sample/Locked" component={Locked}/>
-  <Route path="/sample/login" component={Login}/>
+  <Route path="/wasl/Locked" component={Locked}/>
+  <Route path="/wasl/login" component={Login}/>
 </div>;
 
 export default {authRoutes, unAuthRoutes};
