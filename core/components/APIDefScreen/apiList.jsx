@@ -19,7 +19,6 @@ import * as requestCreator from '../../common/request.js';
 import DateControl from '../../common/DateControl.jsx'
 
 let payload = ""
-let url = ""
 class ApiList extends React.Component {
 
     constructor(props) {
@@ -29,10 +28,8 @@ class ApiList extends React.Component {
         this.formSubmit = this.formSubmit.bind(this);
         this.getRequest = this.getRequest.bind(this);
         this.renderPopupBody = this.renderPopupBody.bind(this);
-       // this.downloadChainCode = this.downloadChainCode.bind(this);
         this.getChaincodeRequest = this.getChaincodeRequest.bind(this);
-        this.b64EncodeUnicode = this.b64EncodeUnicode.bind(this)
-        //  this.url = this.url.bind(this)
+        this.b64EncodeUnicode = this.b64EncodeUnicode.bind(this);
     }
     renderPopupBody(dataID) {
         this.setState({ APIPayloadID: dataID })
@@ -43,25 +40,15 @@ class ApiList extends React.Component {
                 return String.fromCharCode('0x' + p1);
             }));
     }
-
-       getChaincodeRequest() {
-        let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value;
-        // let route = document.getElementById('route') == null ? "" : document.getElementById('route').value;
-        var searchCriteria = {
-        }
-
-        if (useCase != "")
-            searchCriteria.useCase = useCase
-        console.log(searchCriteria)
-        
-        let searchCriteriaEncode = this.b64EncodeUnicode(JSON.stringify(searchCriteria))
+    getChaincodeRequest() {
+        let searchCriteriaEncode = this.b64EncodeUnicode(JSON.stringify(this.state.searchFilters));
         console.log(searchCriteriaEncode)
-        let link = constants.baseUrl + '/API/core/downloadChainCode?searchCriteriaEncode=' + searchCriteriaEncode + '&JWT=' + sessionStorage.token;
-        console.log(link,"$$$$$$$$$$$$$$$$$$$$$$444444444444444")
+        let link = constants.baseUrl + '/API/core/downloadChainCode?searchCriteria=' + searchCriteriaEncode + '&JWT=' + sessionStorage.token;
+        console.log(link, "$$$$$$$$$$$$$$$$$$$$$$")
         return link;
     }
-    
-    
+
+
     getRequest() {
         let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value;
         let route = document.getElementById('route') == null ? "" : document.getElementById('route').value;
@@ -157,10 +144,21 @@ class ApiList extends React.Component {
             $(this)[0].selectedIndex = 0;
         });
     }
-   
-   url = this.getChaincodeRequest();
 
     render() {
+        let _this = this;
+        let url = this.getChaincodeRequest();
+        console.log(url, "THIS IS MY URL");
+        function useCaseSelected(e) {
+            const useCase = e.target.value;
+            if(useCase){
+                _this.setState({ searchFilters: { useCase } });
+            }
+            else{
+                _this.setState({ searchFilters: "" });
+            }
+            
+        }
 
         if (this.props.ApiListData && this.props.ApiListData.data) {
             return (
@@ -189,7 +187,7 @@ class ApiList extends React.Component {
                                                             <label className="control-label">{utils.getLabelByID("AAU_UseCase")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="useCase" id="useCase" />
+                                                            <input type="text" className="form-control" name="useCase" id="useCase" onBlur={useCaseSelected} />
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6">
@@ -208,11 +206,10 @@ class ApiList extends React.Component {
 
                                                             <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
                                                             {"  "}
-                                                            <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
-                                                            <button type="button" className="btn green" onClick={this.getChaincodeRequest} >{utils.getLabelByID("Generate_ChaniCode")}</button>
-                                                            <button onClick={this.getChaincodeRequest}>
-                                                                <a href={url} download>Download it!</a>
-                                                            </button>
+                                                            <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>                                                    
+                                                            
+                                                            <a type="button" className="btn green" href={this.getChaincodeRequest()} download>{utils.getLabelByID("Generate_ChainCode")}</a>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
