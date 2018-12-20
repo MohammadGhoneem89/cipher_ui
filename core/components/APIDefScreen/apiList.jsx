@@ -1,24 +1,18 @@
 /*standard imports*/
 import React, { PropTypes } from 'react';
+
 import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
-
 import Portlet from '../../common/Portlet.jsx';
-/*container specific imports*/
-import TileUnit from '../../common/tileUnit.jsx';
+
 import Table from '../../common/Datatable.jsx';
 import BarChartExceptions from '../../common/barChart.jsx'
 import * as utils from '../../common/utils.js';
-
-
 import * as constants from '../../constants/Communication.js';
-import * as requestCreator from '../../common/request.js';
-import DateControl from '../../common/DateControl.jsx'
 
-let payload = ""
 class ApiList extends React.Component {
 
     constructor(props) {
@@ -88,13 +82,9 @@ class ApiList extends React.Component {
         }
     }
     componentWillMount() {
-
-
-
-    }
+}
     searchCallBack(keyWord) {
-
-    }
+}
     componentDidMount() {
         window.scrollTo(0, 0);
         this.props.actions.generalProcess(constants.getApiListData, this.getRequest());
@@ -147,24 +137,24 @@ class ApiList extends React.Component {
 
     render() {
         let _this = this;
+
         let url = this.getChaincodeRequest();
-        console.log(url, "THIS IS MY URL");
         function useCaseSelected(e) {
+
             const useCase = e.target.value;
-            if(useCase){
+            if (useCase) {
                 _this.setState({ searchFilters: { useCase } });
             }
-            else{
+            else {
                 _this.setState({ searchFilters: "" });
             }
-            
+
+
         }
 
         if (this.props.ApiListData && this.props.ApiListData.data) {
             return (
-
                 <div>
-
                     <div className="row">
                         <div className="col-md-12 ">
                             <div className="portlet light bordered sdg_portlet">
@@ -206,10 +196,8 @@ class ApiList extends React.Component {
 
                                                             <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
                                                             {"  "}
-                                                            <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>                                                    
-                                                            
+                                                            <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
                                                             <a type="button" className="btn green" href={this.getChaincodeRequest()} download>{utils.getLabelByID("Generate_ChainCode")}</a>
-                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -251,7 +239,6 @@ ApiList.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-    console.log(state.app.downloadChainCode, "#######################")
     return {
         ApiListData: state.app.ApiListData,
         downloadChainCode: state.app.downloadChainCode
