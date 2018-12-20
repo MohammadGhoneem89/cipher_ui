@@ -18,7 +18,8 @@ import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import DateControl from '../../common/DateControl.jsx'
 
-
+let payload = ""
+let url = ""
 class ApiList extends React.Component {
 
     constructor(props) {
@@ -28,50 +29,39 @@ class ApiList extends React.Component {
         this.formSubmit = this.formSubmit.bind(this);
         this.getRequest = this.getRequest.bind(this);
         this.renderPopupBody = this.renderPopupBody.bind(this);
-        this.downloadChainCode = this.downloadChainCode.bind(this);
-        this.getChaincodeRequest = this.getChaincodeRequest.bind(this)
-
+       // this.downloadChainCode = this.downloadChainCode.bind(this);
+        this.getChaincodeRequest = this.getChaincodeRequest.bind(this);
+        this.b64EncodeUnicode = this.b64EncodeUnicode.bind(this)
+        //  this.url = this.url.bind(this)
     }
     renderPopupBody(dataID) {
         this.setState({ APIPayloadID: dataID })
     }
-    getChaincodeRequest() {
+    b64EncodeUnicode(str) {
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+            function toSolidBytes(match, p1) {
+                return String.fromCharCode('0x' + p1);
+            }));
+    }
+
+       getChaincodeRequest() {
         let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value;
-        let route = document.getElementById('route') == null ? "" : document.getElementById('route').value;
+        // let route = document.getElementById('route') == null ? "" : document.getElementById('route').value;
         var searchCriteria = {
         }
 
         if (useCase != "")
             searchCriteria.useCase = useCase
-
-        if (route != "")
-            searchCriteria.route = route
-
-        this.setState({ searchFilters: searchCriteria })
-
-        // console.log(a)
-        var chaincodeRequest = {
-            "action": "mappingData",
-            searchCriteria,
-            "page": {
-                "currentPageNo": 1,
-                "pageSize": 10
-            }
-        }
-        this.setState({ currentPageNo: 1 })
-        console.log(JSON.stringify(chaincodeRequest))
+        console.log(searchCriteria)
         
-        return chaincodeRequest;
+        let searchCriteriaEncode = this.b64EncodeUnicode(JSON.stringify(searchCriteria))
+        console.log(searchCriteriaEncode)
+        let link = constants.baseUrl + '/API/core/downloadChainCode?searchCriteriaEncode=' + searchCriteriaEncode + '&JWT=' + sessionStorage.token;
+        console.log(link,"$$$$$$$$$$$$$$$$$$$$$$444444444444444")
+        return link;
     }
-
-    downloadChainCode() {
-        if ((document.getElementById('useCase').value) == "") {
-            alert("UseCase Required !")
-        }
-        else {
-            this.props.actions.generalProcess(constants.downloadChainCode, this.getChaincodeRequest());
-        }
-    }
+    
+    
     getRequest() {
         let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value;
         let route = document.getElementById('route') == null ? "" : document.getElementById('route').value;
@@ -167,13 +157,16 @@ class ApiList extends React.Component {
             $(this)[0].selectedIndex = 0;
         });
     }
-
+   
+   url = this.getChaincodeRequest();
 
     render() {
 
         if (this.props.ApiListData && this.props.ApiListData.data) {
             return (
+
                 <div>
+
                     <div className="row">
                         <div className="col-md-12 ">
                             <div className="portlet light bordered sdg_portlet">
@@ -216,8 +209,9 @@ class ApiList extends React.Component {
                                                             <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
                                                             {"  "}
                                                             <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
-                                                            <button type="button" className="btn green" onClick={this.downloadChainCode}>{utils.getLabelByID("Generate_ChainCode")} 
-                                                            <i className="fa fa-file-code-o"/>
+                                                            <button type="button" className="btn green" onClick={this.getChaincodeRequest} >{utils.getLabelByID("Generate_ChaniCode")}</button>
+                                                            <button onClick={this.getChaincodeRequest}>
+                                                                <a href={url} download>Download it!</a>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -232,13 +226,13 @@ class ApiList extends React.Component {
 
                     <Portlet title={utils.getLabelByID("ApiList")} isPermissioned={true}
                         actions={this.state.actions}>
-                        <Table fontclass="" 
-                        gridColumns={utils.getGridColumnByName("ApiListData")} 
-                        gridData={this.props.ApiListData.data.searchResult}
-                            totalRecords={this.props.ApiListData.pageData.totalRecords} 
+                        <Table fontclass=""
+                            gridColumns={utils.getGridColumnByName("ApiListData")}
+                            gridData={this.props.ApiListData.data.searchResult}
+                            totalRecords={this.props.ApiListData.pageData.totalRecords}
                             searchCallBack={this.searchCallBack} pageSize={10}
-                            pagination={true} pageChanged={this.pageChanged} 
-                            export={false} 
+                            pagination={true} pageChanged={this.pageChanged}
+                            export={false}
                             search={true}
                             activePage={this.state.currentPageNo} />
                     </Portlet>
@@ -260,7 +254,7 @@ ApiList.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-    console.log(state.app.downloadChainCode,"#######################")
+    console.log(state.app.downloadChainCode, "#######################")
     return {
         ApiListData: state.app.ApiListData,
         downloadChainCode: state.app.downloadChainCode
