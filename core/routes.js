@@ -67,11 +67,19 @@ import SmartContractList from './components/Channel/CreateSmartContract/SmartCon
 import CreateConsortium from './components/Channel/CreateConsortium/CreateConsortiumContainer.jsx';
 import APIDocumentation from './components/APIDefScreen/APIDocumentation.js';
 
-
 import SmartPlayGround from './components/Channel/SmartPlayGround/SmartContractPlayground.jsx';
 
 
 import CreateSmartContract from './components/Channel/CreateSmartContract/CreateSmartContractContainer.jsx';
+
+//Payment Screen Route
+
+import PaymentSearch from '../applications/SampleApp/components/payment/PaymentSearch.js';
+import PaymentAdd from '../applications/SampleApp/components/payment/PaymentAdd.js';
+
+//
+
+
 export default (
   <Router history={browserHistory}>
     <Route path="/Documentation/:useCase/:route" component={GeneratePDF} />
@@ -155,6 +163,14 @@ export default (
 
       <Route path="/CreateChannel" component={CreateChannel}/>
       <Route path="/apiDocumentation" component={APIDocumentation}/>
+
+      //Payment Screen Route
+
+      <Route path="/paymentSearch" component={PaymentSearch}/>
+      <Route path="/paymentAdd/:id" component={PaymentAdd}/>
+      <Route path="/paymentAdd" component={PaymentAdd}/>
+
+      //
 
 
       {ApplicationsRoute.routesIndex}

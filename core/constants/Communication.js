@@ -182,4 +182,5 @@ module.exports = {
   updateNetworkConfig:baseUrl+ "/API/core/updateNetworkConfig",
   getNetworkConfigByID:baseUrl+ "/API/core/getNetworkConfigByID",
   getNetworkListData:baseUrl+ "/API/core/getNetworkList"
+
 };

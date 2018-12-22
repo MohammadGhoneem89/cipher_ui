@@ -63,5 +63,18 @@ export default {
     data: {
     }
   },
-  blockchainAccountList: {}
+  blockchainAccountList: {},
+
+  paymentList : {
+      action: "",
+      pageData: {},
+      data: {
+          searchResult: []
+      }
+  },
+  getPaymentDetail : {
+    action : "",
+    data : {}
+  }
+
 }

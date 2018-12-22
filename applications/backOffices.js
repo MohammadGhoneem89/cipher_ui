@@ -8,13 +8,31 @@
 };
 */
 
+// const backOffices = {
+//   baseUrl: "http://localhost:10055",
+//   blockChainURL: "http://localhost:10055",
+//   webSocketURL: "http://localhost:10055",
+//   repostActionURL: "http://localhost:10055/API",
+//   blockChainViewerURL: "http://localhost:10055"
+// };
+
+
 const backOffices = {
+
   baseUrl: "http://localhost:10050",
   blockChainURL: "http://localhost:10050",
   webSocketURL: "http://localhost:10050",
   repostActionURL: "http://localhost:10050/API",
   blockChainViewerURL: "http://localhost:10050"
+
+    // baseUrl: "http://localhost:10059",
+    // blockChainURL: "http://localhost:10059",
+    // webSocketURL: "http://localhost:10059",
+    // repostActionURL: "http://localhost:10059/API",
+    // blockChainViewerURL: "http://localhost:10059"
+
 };
+
 /*
 
 const backOffices = {
