@@ -63,7 +63,7 @@ import NetworkDefination from "./components/BLAConfiguration/NetworkDefinitionSc
 import NetworkList from "./components/BLAConfiguration/networkList.jsx";
 import CreateChannel from './components/Channel/CreateChannel/CreateChannelContainer.jsx';
 import ChannelList from './components/Channel/CreateChannel/channelList.jsx';
-// import SmartContractList from './components/Channel/CreateSmartContract/SmartContractList.jsx';
+import SmartContractList from './components/Channel/CreateSmartContract/smartcontractList.jsx';
 import CreateConsortium from './components/Channel/CreateConsortium/CreateConsortiumContainer.jsx';
 import APIDocumentation from './components/APIDefScreen/APIDocumentation.js';
 
