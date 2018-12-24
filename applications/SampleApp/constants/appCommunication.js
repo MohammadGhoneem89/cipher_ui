@@ -11,15 +11,5 @@ module.exports = {
   getSampleRecordByID: baseUrl + "/SIMU/getSampleRecordByID",
   getBlockchainAccountList: baseUrl + "/API/SampleApp/getAccountList",
   updateBlockchainAccountList: baseUrl + "/API/SampleApp/updateAccountList",
-  getListingScreen : baseUrl + "/SIMU/APIListingScreen",
-
-
-    //WASL ROUTE
-
-    getPaymentList:baseUrl+ "/API/UI/getPaymentList",
-    getPaymentDetail:baseUrl+ "/API/UI/getPaymentDetail",
-    insertPayment:baseUrl+ "/API/UI/insertPayment",
-    updatePayment:baseUrl+ "/API/UI/updatePayment",
-
-    //
+  getListingScreen : baseUrl + "/SIMU/APIListingScreen"
 };

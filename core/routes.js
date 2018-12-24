@@ -63,7 +63,7 @@ import NetworkDefination from "./components/BLAConfiguration/NetworkDefinitionSc
 import NetworkList from "./components/BLAConfiguration/networkList.jsx";
 import CreateChannel from './components/Channel/CreateChannel/CreateChannelContainer.jsx';
 import ChannelList from './components/Channel/CreateChannel/channelList.jsx';
-import SmartContractList from './components/Channel/CreateSmartContract/SmartContractList.jsx';
+// import SmartContractList from './components/Channel/CreateSmartContract/SmartContractList.jsx';
 import CreateConsortium from './components/Channel/CreateConsortium/CreateConsortiumContainer.jsx';
 import APIDocumentation from './components/APIDefScreen/APIDocumentation.js';
 
@@ -71,13 +71,6 @@ import SmartPlayGround from './components/Channel/SmartPlayGround/SmartContractP
 
 
 import CreateSmartContract from './components/Channel/CreateSmartContract/CreateSmartContractContainer.jsx';
-
-//Payment Screen Route
-
-import PaymentSearch from '../applications/SampleApp/components/payment/PaymentSearch.js';
-import PaymentAdd from '../applications/SampleApp/components/payment/PaymentAdd.js';
-
-//
 
 
 export default (
@@ -157,21 +150,12 @@ export default (
 
       <Route path="/ChannelList" component={ChannelList}/>
       <Route path="/CreateSmartContract/:id" component={CreateSmartContract}/>
-      <Route path="/SmartContractList" component={SmartContractList}/>
+      {/*<Route path="/SmartContractList" component={SmartContractList}/>*/}
       <Route path="/SmartPlayGround" component={SmartPlayGround}/>
       <Route path="/CreateConsortium/:id" component={CreateConsortium}/>
 
       <Route path="/CreateChannel" component={CreateChannel}/>
       <Route path="/apiDocumentation" component={APIDocumentation}/>
-
-      //Payment Screen Route
-
-      <Route path="/paymentSearch" component={PaymentSearch}/>
-      <Route path="/paymentAdd/:id" component={PaymentAdd}/>
-      <Route path="/paymentAdd" component={PaymentAdd}/>
-
-      //
-
 
       {ApplicationsRoute.routesIndex}
     </Route>
