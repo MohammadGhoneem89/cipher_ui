@@ -5,10 +5,10 @@ let baseUrl = backOffices.baseUrl;
 module.exports = {
     //WASL ROUTE
 
-    getPaymentList:baseUrl+ "/API/UI/getPaymentList",
-    getPaymentDetail:baseUrl+ "/API/UI/getPaymentDetail",
-    insertPayment:baseUrl+ "/API/UI/insertPayment",
-    updatePayment:baseUrl+ "/API/UI/updatePayment",
+    getPaymentList:baseUrl+ "/API/Wasl/getPaymentList",
+    getPaymentDetail:baseUrl+ "/API/Wasl/getPaymentDetail",
+    insertPayment:baseUrl+ "/API/Wasl/insertPayment",
+    updatePayment:baseUrl+ "/API/Wasl/updatePayment",
 
     //
 };
