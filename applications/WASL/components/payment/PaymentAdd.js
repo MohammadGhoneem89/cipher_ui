@@ -19,7 +19,7 @@ class PaymentAdd extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false,
+            isLoading: true,
             modalIsOpen: false,
             gridData: [],
             beneficiaries: [],
@@ -37,7 +37,7 @@ class PaymentAdd extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.paymentDetail) {
+        if(nextProps.paymentDetail && (nextProps.paymentDetail._id === nextProps.id)) {
             this.setState({
                 isLoading: false,
                 paymentDetail: nextProps.paymentDetail,
