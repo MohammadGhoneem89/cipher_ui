@@ -33,19 +33,21 @@ class PaymentSearch extends React.Component {
             ],
             gridData : []
         };
+        this.name = '';
+        this.code = '';
     }
 
     getRequest = () => {
-        let name = $("#name").val() == null ? "" : $("#name").val();
-        let code = $("#code").val() == null ? "" : $("#code").val();
+        let Name = this.name.value;
+        let Code = this.code.value;
 
         let searchCriteria = {};
 
-        if(name != ""){
-            searchCriteria.name = name;
+        if(Name !== ""){
+            searchCriteria.name = Name;
         }
-        if(code != ""){
-            searchCriteria.code = code;
+        if(Code !== ""){
+            searchCriteria.code = Code;
         }
 
         let request = {
@@ -103,14 +105,14 @@ class PaymentSearch extends React.Component {
                             <div className="form-group col-md-6">
                                 <div className="col-md-8">
                                     <label className="label-bold">{utils.getLabelByID("Name")}</label>
-                                    <input type="text" className="form-control ekycinp" name="name" id="name" />
+                                    <input type="text" className="form-control ekycinp" name="name" ref={(value) => this.name = value} />
                                 </div>
                             </div>
 
                             <div className="form-group col-md-6">
                                 <div className="col-md-8">
                                     <label className="label-bold">{utils.getLabelByID("Code")}</label>
-                                    <input type="text" className="form-control ekycinp" name="code" id="code" />
+                                    <input type="text" className="form-control ekycinp" name="code"  ref={(value) => this.code = value} />
                                 </div>
                             </div>
 
