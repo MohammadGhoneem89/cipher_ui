@@ -139,7 +139,7 @@ class UserSearchContainer extends React.Component {
                     <Portlet title={"User List"} isPermissioned={true} actions={this.props.userList.data.actions}>
                         <Table
                             pagination={true}
-                            export={true}
+                            export={false} 
                             search={true}
                             gridColumns={utils.getGridColumnByName("userSearch")}
                             gridData={this.state.userList.data.searchResult}

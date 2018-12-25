@@ -162,7 +162,7 @@ class Datatable extends React.Component {
           {this.props.totalRecords > 0 &&
           <div className="pull-left" style={{paddingTop: "4px"}}>
             <div className="dataTables_info" id="sample_1_2_info" role="status"
-                 aria-live="polite">{utils.getLabelByID("Showing") + offSet + utils.getLabelByID("to") + ((offSet + this.props.pageSize - 1) > this.props.totalRecords ? this.props.totalRecords : (offSet + this.props.pageSize - 1)) + utils.getLabelByID("of") + (limitRecordCount ? config.transactionCount + "+ " : +this.props.totalRecords) + utils.getLabelByID("records")}</div>
+                 aria-live="polite">{utils.getLabelByID("Showing ") + offSet + utils.getLabelByID(" to ") + ((offSet + this.props.pageSize - 1) > this.props.totalRecords ? this.props.totalRecords : (offSet + this.props.pageSize - 1)) + utils.getLabelByID(" of ") + (limitRecordCount ? config.transactionCount + "+ " : +this.props.totalRecords) + utils.getLabelByID(" records")}</div>
           </div>
           }
 

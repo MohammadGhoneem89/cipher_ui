@@ -93,6 +93,7 @@ class UserSetupContainer extends React.Component {
     if (!updatedData.isActive)
       updatedData.isActive = false;
 
+	updatedData.passwordHashType  = 'sha512';
     updatedData.groups = groupsListUpdate;
     let dataSubmit = {
       "action": "userInsert",

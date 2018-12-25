@@ -128,6 +128,7 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
         </div>
         }
       </div>
+	  {false &&
       <div className="row">
 
         <div className="col-md-6 col-sm-6">
@@ -137,6 +138,7 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
         </div>
 
       </div>
+	  }
       {(initialValues.userType == "Human" || ["Human"].indexOf(state.selectedReconType) >= 0) &&
       <div className="row">
         <div className="col-md-6 col-sm-6">
@@ -184,11 +186,13 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
             type="text"
           />
         </div>
+		{false &&
 
         <div className="col-md-6 col-sm-6">
           <DropdownInput name="firstScreen" options={firstScreen}
                          label="First Screen"/>
         </div>
+		}
 
 
       </div>

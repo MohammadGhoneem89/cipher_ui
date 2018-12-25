@@ -41,6 +41,7 @@ const UserFilterForm = props => {
 
                     </div>
 
+					{false &&
                     <div className="row">
                         <div className="col-md-4 col-sm-4">
                             <TextInput
@@ -57,6 +58,7 @@ const UserFilterForm = props => {
                             }
                         </div>
                     </div>
+					}
                     <div className="row">
                         <div className="col-md-4 col-sm-4">
                     

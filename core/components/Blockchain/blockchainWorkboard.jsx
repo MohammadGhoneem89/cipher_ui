@@ -150,8 +150,7 @@ class blockchainWorkboard extends React.Component {
 
                     <div className="input-group input-large">
                       <select id="network" name="Network" className="form-control" onChange={this.projectChanged}>
-                        <option value="0">Avanza - Quorum</option>
-                        <option value="1">Avanza - Hyperledger</option>
+                        <option value="1">Hyperledger</option>
                         {/*<option value={""}>Stellar</option>*/}
                         {/*<option value={""}>Ripple</option>*/}
                         {/*<option value={""}>Corda R3</option>*/}
