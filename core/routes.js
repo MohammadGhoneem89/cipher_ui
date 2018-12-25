@@ -150,7 +150,7 @@ export default (
 
       <Route path="/ChannelList" component={ChannelList}/>
       <Route path="/CreateSmartContract/:id" component={CreateSmartContract}/>
-      {/*<Route path="/SmartContractList" component={SmartContractList}/>*/}
+      <Route path="/SmartContractList" component={SmartContractList}/>
       <Route path="/SmartPlayGround" component={SmartPlayGround}/>
       <Route path="/CreateConsortium/:id" component={CreateConsortium}/>
 
