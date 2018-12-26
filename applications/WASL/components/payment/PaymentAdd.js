@@ -19,7 +19,7 @@ class PaymentAdd extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: true,
+            isLoading: false,
             modalIsOpen: false,
             gridData: [],
             beneficiaries: [],
@@ -57,6 +57,7 @@ class PaymentAdd extends React.Component {
 
     getDataById = () => {
         if(this.props.id !== ''){
+            this.setState({isLoading : true});
             this.props.actions.generalProcess(constants.getPaymentDetail, {
                 "action": "getPaymentDetail",
                 "data" : {
@@ -125,67 +126,67 @@ class PaymentAdd extends React.Component {
         if(this.state.isLoading)
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
 
-            return (
-                <div>
-                    <Portlet title={utils.getLabelByID("Payment Type Detail")}>
+        return (
+            <div>
+                <Portlet title={utils.getLabelByID("Payment Type Detail")}>
 
-                        <div className="row">
+                    <div className="row">
 
-                            <div className="form-group col-md-12">
-                                <div className="col-md-4">
-                                    <label className="label-bold">{utils.getLabelByID("Name")}</label>
-                                    <input type="text" className="form-control ekycinp" name="name" id="name"
-                                           defaultValue={_.get(this.props.paymentDetail, 'name', '')}/>
-                                </div>
-                                <div className="col-md-4">
-                                    <label className="label-bold">{utils.getLabelByID("Code")}</label>
-                                    <input type="text" className="form-control ekycinp" name="code" id="code"
-                                           defaultValue={_.get(this.props.paymentDetail, 'code', '')}/>
-                                </div>
+                        <div className="form-group col-md-12">
+                            <div className="col-md-4">
+                                <label className="label-bold">{utils.getLabelByID("Name")}</label>
+                                <input type="text" className="form-control ekycinp" name="name" id="name"
+                                       defaultValue={_.get(this.state, 'paymentDetail.name', '')}/>
                             </div>
-
-                        </div>
-
-                        <Portlet title={"Beneficiary Info"} isPermissioned={false} actions={addAction}>
-                            {this.state.beneficiaries.map(item => {
-                                item.action = [{
-                                    label: "Delete",
-                                    iconName: "fa fa-trash",
-                                    actionType: "COMPONENT_FUNCTION"
-                                }];
-                            })}
-                            <Table
-                                gridColumns={utils.getGridColumnByName("paymentAdd")}
-                                gridData={this.state.beneficiaries}
-                                componentFunction={this.actionHandlers}
-                            />
-                        </Portlet>
-
-                        <div className="row">
-                            <div className="col-md-12">
-                                <div className="form-group col-md-12">
-                                    <div className="btn-toolbar pull-right">
-                                        <button type="submit" className="btn green" onClick={this.insertJson}>
-                                            {utils.getLabelByID("Save")}
-                                        </button>
-                                    </div>
-                                </div>
+                            <div className="col-md-4">
+                                <label className="label-bold">{utils.getLabelByID("Code")}</label>
+                                <input type="text" className="form-control ekycinp" name="code" id="code"
+                                       defaultValue={_.get(this.state, 'paymentDetail.code', '')}/>
                             </div>
                         </div>
 
+                    </div>
+
+                    <Portlet title={"Beneficiary Info"} isPermissioned={false} actions={addAction}>
+                        {this.state.beneficiaries.map(item => {
+                            item.action = [{
+                                label: "Delete",
+                                iconName: "fa fa-trash",
+                                actionType: "COMPONENT_FUNCTION"
+                            }];
+                        })}
+                        <Table
+                            gridColumns={utils.getGridColumnByName("paymentAdd")}
+                            gridData={this.state.beneficiaries}
+                            componentFunction={this.actionHandlers}
+                        />
                     </Portlet>
 
-                    <ModalBox isOpen={this.state.modalIsOpen}>
-                        <BeneficiaryInfo
-                            onSubmit={this.updateBeneficiaryInfo}
-                            initialValues={this.state}
-                            index={this.state.index}
-                            updateState={this.updateState}
-                        />
-                    </ModalBox>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="form-group col-md-12">
+                                <div className="btn-toolbar pull-right">
+                                    <button type="submit" className="btn green" onClick={this.insertJson}>
+                                        {utils.getLabelByID("Save")}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                </div>
-            );
+                </Portlet>
+
+                <ModalBox isOpen={this.state.modalIsOpen}>
+                    <BeneficiaryInfo
+                        onSubmit={this.updateBeneficiaryInfo}
+                        initialValues={this.state}
+                        index={this.state.index}
+                        updateState={this.updateState}
+                    />
+                </ModalBox>
+
+            </div>
+        );
 
     }
 }
