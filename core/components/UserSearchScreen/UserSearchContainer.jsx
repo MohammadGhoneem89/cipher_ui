@@ -29,6 +29,7 @@ class UserSearchContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps.userList.data.actions)
         this.setState({
             userList: nextProps.userList,
             isLoading: nextProps.isLoading

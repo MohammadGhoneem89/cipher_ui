@@ -1,16 +1,16 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import initialState from '../../reducers/initialState.js';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import Portlet from '../../common/Portlet.jsx';
 import UserSetupForm from './UserSetupForm.jsx'
-import {SubmissionError, initialize} from 'redux-form'
+import { SubmissionError, initialize } from 'redux-form'
 import config from '../../../config';
 
-
+let arr = []
 class UserSetupContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -60,7 +60,7 @@ class UserSetupContainer extends React.Component {
   resetPassword() {
 
     if (this.state.userID) {
-      let request = {"userID": this.state.userID};
+      let request = { "userID": this.state.userID };
       this.props.actions.generalProcess(constants.passwordReset, request);
     }
 
@@ -115,6 +115,7 @@ class UserSetupContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.userDetail.groups && nextProps.entityNames && nextProps.typeData) {
+       
       this.setState({
         userDetail: nextProps.userDetail,
         pageActions: nextProps.pageActions,
@@ -162,10 +163,15 @@ class UserSetupContainer extends React.Component {
       }
 
       return (
+
         <Portlet title={"User"}>
-          <UserSetupForm onSubmit={this.submit} initialValues={this.state.userDetail}
-                         pageActions={this.state.pageActions}
-                         containerState={this.state} containerProps={this.props} resetPassword={this.resetPassword}/>
+          < UserSetupForm
+            onSubmit={this.submit}
+            initialValues={this.state.userDetail}
+            pageActions={this.state.pageActions}
+            containerState={this.state}
+            containerProps={this.props}
+            resetPassword={this.resetPassword} />
         </Portlet>
       );
     }
@@ -178,6 +184,7 @@ class UserSetupContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   let userID = ownProps.params.userID;
   if (userID) {
+    // console.log(state.app.entityList.data.typeData.entityNames, "peeeerrrrrrmmmmmissssionsssss")
     return {
       userDetail: state.app.userDetails.data.searchResult,
       pageActions: state.app.userDetails.data.actions,
