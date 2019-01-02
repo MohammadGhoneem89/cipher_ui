@@ -10,5 +10,13 @@ module.exports = {
         {alias: "Key", key: "key", type: "string"},
         {alias: "Value", key: "value", type: "string"},
         {alias: "Action", key: "action", type: "action"}
-    ]
+    ],
+  requestParametersGrid: [
+    { alias: "DB Field", key: "dbField", type: "string" },
+    { alias: "Request Mapping Field", key: "requestMappingField", type: "string" }
+  ],
+  responseParametersGrid: [
+    { alias: "DB Field", key: "dbField", type: "string" },
+    { alias: "Response Mapping Field", key: "responseMappingField", type: "string" }
+  ],
 };

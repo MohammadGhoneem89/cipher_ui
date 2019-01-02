@@ -8,6 +8,8 @@ import _ from 'lodash';
 import * as requestCreator from '../../common/request.js';
 import APIDefScreenForm from './APIDefScreenForm.jsx';
 import cloneDeep from 'lodash/cloneDeep';
+import get from 'lodash/get';
+
 const initialState = {
   APIDefinitionAddUpdate: {
     "useCase": "",
@@ -16,6 +18,7 @@ const initialState = {
     "billingDate": (new Date().getTime()),
     "documentPath": "",
     "isActive": false,
+    "isBlockchainProcess": false,
     "isBlockchain": false,
     "isSimulated": false,
     "isRouteOveride": false,
@@ -38,6 +41,10 @@ const initialState = {
     "isValBypass": false,
     "isResValBypass": false,
     "isResponseMapDisable": false,
+    isBlockchainGet: false,
+    isOffchainGet: false,
+    responseParameters: [],
+    requestParameters: []
   },
   selectedRuleList: [],
   MappingOrgFieldData: [],
@@ -157,9 +164,6 @@ class APIDefinitionScreen extends React.Component {
 
         $(`[id^=fieldValue-]`).val('');
         rules.push(data);
-
-        console.log(JSON.stringify(data));
-
         this.setState({ rules: rules });
       } else {
         alert(`rule name or rule already exists, please update existing rule!!`);
@@ -278,13 +282,12 @@ class APIDefinitionScreen extends React.Component {
 
     this.props.actions.generalProcess(constants.getConsortiumTypeList);
     this.props.actions.generalProcess(constants.getMappingList);
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['API_Authtypes', 'API_ComMode', 'ORG_TYPES','bchain_rule_Type']));
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES','bchain_rule_Type']));
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE") {
       let req = {
         useCase: this.props.useCase,
         route: this.props.route
       }
-      console.log(req)
 
       this.setState({ isEdit: true, isStale: false }, () => {
         this.props.actions.generalProcess(constants.getAPIDefinitionID, req);
@@ -303,7 +306,7 @@ class APIDefinitionScreen extends React.Component {
 
   }
   componentWillReceiveProps(nextProps) {
-    if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE" && this.props.useCase === nextProps.APIDefinitionAddUpdate.data.useCase && this.props.route === nextProps.APIDefinitionAddUpdate.data.route) {
+    if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE" && this.props.useCase === get(nextProps, 'APIDefinitionAddUpdate.data.useCase') && this.props.route === get(nextProps, 'APIDefinitionAddUpdate.data.route')) {
 
       if (nextProps.APIDefinitionAddUpdate.data.simucases) {
         let simucases = nextProps.APIDefinitionAddUpdate.data.simucases;
@@ -337,7 +340,6 @@ class APIDefinitionScreen extends React.Component {
       });
     }
     if (nextProps.MappingConfigData && nextProps.MappingConfigData.REQUEST && nextProps.MappingConfigData.RESPONSE) {
-      console.log(JSON.stringify(nextProps.MappingConfigData));
 
       this.setState({
         MappingConfigList: nextProps.MappingConfigData,
@@ -433,7 +435,18 @@ class APIDefinitionScreen extends React.Component {
     this.setState({
       [e.target.name]: value
     })
-  }
+  };
+
+  onRequestTypeChange = (e) => {
+    this.setState({
+      isBlockchainGet: false,
+      isBlockchainProcess: false,
+      isOffchainGet: false
+    });
+    this.setState({
+      [e.target.name]: !this.state[e.target.name]
+    });
+  };
 
   onInputChangeRequest = (e) => {
 
@@ -461,7 +474,7 @@ class APIDefinitionScreen extends React.Component {
       return (<div className="loader">isLoading...</div>)
     }
     return (
-      <APIDefScreenForm addRowRule={this.addRowRule} onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine} onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} parentState={this.state} />)
+      <APIDefScreenForm onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule} onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine} onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} parentState={this.state} />)
   }
   ActionHandlers({ actionName, index }) {
 
