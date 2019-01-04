@@ -3,8 +3,10 @@ import React, { PropTypes } from 'react';
 import Portlet from '../../common/Portlet.jsx';
 import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
-import DateControl from '../../common/DateControl.jsx'
-const APIDefScreenForm = ({ onRequestTypeChange, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange }) => {
+import DateControl from '../../common/DateControl.jsx';
+import get from 'lodash/get';
+
+const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange }) => {
 
   return (
     <Portlet title={utils.getLabelByID("APIDefinitionScreen_Heading")}>
@@ -373,7 +375,7 @@ const APIDefScreenForm = ({ onRequestTypeChange, addRowRule, onInputRuleEngine, 
                                 <div className="form-group col-md-8">
                                   <select id="adaptor" name="adaptor" className="form-control" value={initialValues.adaptor} onChange={onInputChange}>
                                     {
-                                      typeData.database_adaptors.map((option, index) => {
+                                      get(parentState, `getAdaptorsList[${initialValues.databaseType || 'mongo'}]`, []).map((option, index) => {
                                         return (
                                           <option key={index} value={option.value}>{option.label}</option>
                                         );
@@ -411,7 +413,7 @@ const APIDefScreenForm = ({ onRequestTypeChange, addRowRule, onInputRuleEngine, 
                                 <div className="form-group col-md-8">
                                   <select id="availableObjects" name="availableObjects" className="form-control" value={initialValues.availableObjects} onChange={onInputChange}>
                                     {
-                                      typeData.database_available_objects.map((option, index) => {
+                                      get(parentState, `getAvailableObjectsList`, []).map((option, index) => {
                                         return (
                                           <option key={index} value={option.value}>{option.label}</option>
                                         );
@@ -467,7 +469,7 @@ const APIDefScreenForm = ({ onRequestTypeChange, addRowRule, onInputRuleEngine, 
                                           <div className="form-group col-md-8">
                                             <select id="requestDBField" name="requestDBField" className="form-control" value={initialValues.requestDBField} onChange={onInputChange}>
                                               {
-                                                typeData.bchain_rule_Type.map((option, index) => {
+                                                get(parentState, 'getDBFields', []).map((option, index) => {
                                                   return (
                                                     <option key={index} value={option.value}>{option.label}</option>
                                                   );
@@ -486,9 +488,9 @@ const APIDefScreenForm = ({ onRequestTypeChange, addRowRule, onInputRuleEngine, 
                                           <div className="form-group col-md-8">
                                             <select id="requestMappingField" name="requestMappingField" className="form-control" value={initialValues.requestMappingField} onChange={onInputChange}>
                                               {
-                                                typeData.bchain_rule_Type.map((option, index) => {
+                                                get(dropdownItems, 'REQUEST', []).map((option, index) => {
                                                   return (
-                                                    <option key={index} value={option.value}>{option.label}</option>
+                                                    <option key={index} value={option.label}>{option.label}</option>
                                                   );
                                                 })
                                               }
@@ -500,7 +502,7 @@ const APIDefScreenForm = ({ onRequestTypeChange, addRowRule, onInputRuleEngine, 
                                         <div className="form-actions right">
                                           <div className="form-group col-md-12">
                                             <div className="btn-toolbar pull-right">
-                                              <button type="submit" className="btn btn-default"> <i className="fa fa-plus"/> {"  "}{utils.getLabelByID("Add Param")} </button>
+                                              <button type="submit" className="btn btn-default" onClick={()=> addParams('request')}> <i className="fa fa-plus"/> {"  "}{utils.getLabelByID("Add Param")} </button>
                                             </div>
                                           </div>
                                         </div>
@@ -511,7 +513,7 @@ const APIDefScreenForm = ({ onRequestTypeChange, addRowRule, onInputRuleEngine, 
                                             <div className="col-md-12">
                                               <Table
                                                 gridColumns={utils.getGridColumnByName("requestParametersGrid")}
-                                                gridData={[]}
+                                                gridData={parentState.requestParams}
                                                 export={false}
                                                 componentFunction={ActionHandlers}
                                                 pagination={false} />
@@ -542,7 +544,7 @@ const APIDefScreenForm = ({ onRequestTypeChange, addRowRule, onInputRuleEngine, 
                                           <div className="form-group col-md-8">
                                             <select id="responseBDField" name="responseBDField" className="form-control" value={initialValues.responseBDField} onChange={onInputChange}>
                                               {
-                                                typeData.bchain_rule_Type.map((option, index) => {
+                                                get(parentState, 'getDBFields', []).map((option, index) => {
                                                   return (
                                                     <option key={index} value={option.value}>{option.label}</option>
                                                   );
@@ -561,9 +563,9 @@ const APIDefScreenForm = ({ onRequestTypeChange, addRowRule, onInputRuleEngine, 
                                           <div className="form-group col-md-8">
                                             <select id="responseMappingField" name="responseMappingField" className="form-control" value={initialValues.responseMappingField} onChange={onInputChange}>
                                               {
-                                                typeData.bchain_rule_Type.map((option, index) => {
+                                                get(dropdownItems, 'RESPONSE', []).map((option, index) => {
                                                   return (
-                                                    <option key={index} value={option.value}>{option.label}</option>
+                                                    <option key={index} value={option.label}>{option.label}</option>
                                                   );
                                                 })
                                               }
@@ -575,7 +577,7 @@ const APIDefScreenForm = ({ onRequestTypeChange, addRowRule, onInputRuleEngine, 
                                         <div className="form-actions right">
                                           <div className="form-group col-md-12">
                                             <div className="btn-toolbar pull-right">
-                                              <button type="submit" className="btn btn-default"> <i className="fa fa-plus"/> {"  "}{utils.getLabelByID("Add Param")} </button>
+                                              <button type="submit" className="btn btn-default" onClick={()=> addParams('response')}> <i className="fa fa-plus"/> {"  "}{utils.getLabelByID("Add Param")} </button>
                                             </div>
                                           </div>
                                         </div>
@@ -586,7 +588,7 @@ const APIDefScreenForm = ({ onRequestTypeChange, addRowRule, onInputRuleEngine, 
                                             <div className="col-md-12">
                                               <Table
                                                 gridColumns={utils.getGridColumnByName("responseParametersGrid")}
-                                                gridData={[]}
+                                                gridData={parentState.responseParams}
                                                 export={false}
                                                 componentFunction={ActionHandlers}
                                                 pagination={false} />

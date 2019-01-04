@@ -61,7 +61,9 @@ const initialState = {
   isEdit: false,
   isLoading: true,
   isCustom: true,
-  isStale: false
+  isStale: false,
+  requestParams: [],
+  responseParams: []
 };
 class APIDefinitionScreen extends React.Component {
 
@@ -282,6 +284,18 @@ class APIDefinitionScreen extends React.Component {
 
     this.props.actions.generalProcess(constants.getConsortiumTypeList);
     this.props.actions.generalProcess(constants.getMappingList);
+    this.props.actions.generalProcess(constants.getAdaptorsList);
+    this.props.actions.generalProcess(constants.getAvailableObjectsList, {
+      database: this.state.databaseType || 'mongo',
+      adaptor: this.state.adaptor || 'adaptor1'
+    });
+
+    this.props.actions.generalProcess(constants.getDBFields, {
+      database: this.state.databaseType || 'postgres',
+      adaptor: this.state.adaptor || 'adaptor4',
+      table: this.state.availableObjects || 'adaptor4',
+    });
+
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES','bchain_rule_Type']));
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE") {
       let req = {
@@ -366,8 +380,12 @@ class APIDefinitionScreen extends React.Component {
         isLoading: false
       });
     }
+    this.setState({
+      getAdaptorsList: nextProps.getAdaptorsList,
+      getDBFields: nextProps.getDBFields,
+      getAvailableObjectsList: nextProps.getAvailableObjectsList
+    });
   }
-
 
   formSubmit(e) {
     let data = cloneDeep(this.state.APIDefinitionAddUpdate);
@@ -434,7 +452,26 @@ class APIDefinitionScreen extends React.Component {
     this.state.APIDefinitionAddUpdate[e.target.name] = value;
     this.setState({
       [e.target.name]: value
-    })
+    });
+
+    if(e.target.name === 'databaseType' || e.target.name === 'adaptor' || e.target.name === 'availableObjects'){
+      let param = {
+        database: this.state.databaseType || 'mongo',
+        adaptor: this.state.adaptor || 'adaptor1',
+        table: this.state.availableObjects || '',
+      };
+      if(e.target.name === 'databaseType'){
+        param.database = value
+      }
+      if(e.target.name === 'adaptor'){
+        param.adaptor = value
+      }
+      if(e.target.name === 'availableObjects'){
+        param.table = value
+      }
+      this.props.actions.generalProcess(constants.getAvailableObjectsList, param);
+      this.props.actions.generalProcess(constants.getDBFields, param);
+    }
   };
 
   onRequestTypeChange = (e) => {
@@ -463,10 +500,37 @@ class APIDefinitionScreen extends React.Component {
       rules: [],
       [e.target.name]: value
     })
-  }
+  };
+
   submit = () => {
     this.setState({ formSubmitted: true });
-  }
+  };
+
+  addParams = (type) =>{
+    switch (type) {
+      case 'request':
+        let params = this.state.requestParams;
+        params.push({
+          dbField: this.state.requestBDField,
+          mappingField: this.state.requestMappingField
+        });
+        this.setState({
+          requestParams: params
+        });
+        break;
+      case 'response':
+        let params1 = this.state.responseParams;
+        params1.push({
+          dbField: this.state.responseBDField,
+          mappingField: this.state.responseMappingField
+        });
+        this.setState({
+          responseParams: params1
+        });
+        break;
+    }
+  };
+
   render() {
 
 
@@ -474,7 +538,7 @@ class APIDefinitionScreen extends React.Component {
       return (<div className="loader">isLoading...</div>)
     }
     return (
-      <APIDefScreenForm onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule} onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine} onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} parentState={this.state} />)
+      <APIDefScreenForm addParams={this.addParams} onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule} onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine} onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} parentState={this.state} />)
   }
   ActionHandlers({ actionName, index }) {
 
@@ -580,6 +644,9 @@ APIDefinitionScreen.propTypes = {
   APIDefinitionAddUpdate: PropTypes.object,
   MappingConfigData: PropTypes.object,
   MappingOrgFieldData: PropTypes.object,
+  getAdaptorsList: PropTypes.object,
+  getAvailableObjectsList: PropTypes.object,
+  getDBFields: PropTypes.object,
   ConsortiumTypeData: PropTypes.object
 };
 
@@ -591,7 +658,10 @@ function mapStateToProps(state, ownProps) {
     MappingConfigData: state.app.MappingConfigData.data,
     useCase: ownProps.params.useCase,
     route: ownProps.params.route,
-    ConsortiumTypeData: state.app.ConsortiumTypeData
+    ConsortiumTypeData: state.app.ConsortiumTypeData,
+    getAdaptorsList: get(state.app, 'getAdaptorsList.data', []),
+    getDBFields: get(state.app, 'getDBFields.data', []),
+    getAvailableObjectsList: get(state.app, 'getAvailableObjectsList.data', [])
   };
 }
 
