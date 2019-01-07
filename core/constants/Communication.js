@@ -181,6 +181,9 @@ module.exports = {
   updateEventDispatcherStatus:baseUrl+ "/API/UI/updateEventDispatcherStatus",
   updateNetworkConfig:baseUrl+ "/API/core/updateNetworkConfig",
   getNetworkConfigByID:baseUrl+ "/API/core/getNetworkConfigByID",
-  getNetworkListData:baseUrl+ "/API/core/getNetworkList"
+  getNetworkListData:baseUrl+ "/API/core/getNetworkList",
+  getAdaptorsList:baseUrl+ "/API/core/getAdaptorsList",
+  getAvailableObjectsList:baseUrl+ "/API/core/getAvailableObjectsList",
+  getDBFields:baseUrl+ "/API/core/getDBFields"
 
 };

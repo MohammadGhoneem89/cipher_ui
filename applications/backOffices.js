@@ -1,19 +1,20 @@
 //Azure
-/*const backOffices = {
-  baseUrl: "http://104.211.155.19:10055",
-  blockChainURL: "http://104.211.155.19:10055",
-  webSocketURL: "http://104.211.155.19:10055",
-  repostActionURL: "http://104.211.155.19:10055/API",
-  blockChainViewerURL: "http://104.211.155.19:10055"
+/*
+const backOffices = {
+  baseUrl: "http://104.211.155.19:9080",
+  blockChainURL: "http://104.211.155.19:9080",
+  webSocketURL: "http://104.211.155.19:9080",
+  repostActionURL: "http://104.211.155.19:9080/API",
+  blockChainViewerURL: "http://104.211.155.19:9080"
 };
 */
 
 const backOffices = {
-  baseUrl: "https://51.140.250.28",
-  blockChainURL: "https://51.140.250.28",
-  webSocketURL: "https://51.140.250.28",
-  repostActionURL: "https://51.140.250.28/API",
-  blockChainViewerURL: "https:///51.140.250.28"
+  baseUrl: "http://127.0.0.1:9080",
+  blockChainURL: "http://127.0.0.1:9080",
+  webSocketURL: "http://127.0.0.1:9080",
+  repostActionURL: "http://127.0.0.1:9080/API",
+  blockChainViewerURL: "http://127.0.0.1:9080"
 };
 /*
 
