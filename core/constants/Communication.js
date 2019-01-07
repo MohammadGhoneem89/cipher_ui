@@ -184,6 +184,7 @@ module.exports = {
   getNetworkListData:baseUrl+ "/API/core/getNetworkList",
   getAdaptorsList:baseUrl+ "/API/core/getAdaptorsList",
   getAvailableObjectsList:baseUrl+ "/API/core/getAvailableObjectsList",
-  getDBFields:baseUrl+ "/API/core/getDBFields"
+  getDBFields:baseUrl+ "/API/core/getDBFields",
+  generateMappingFile:baseUrl+ "/API/core/generateMappingFile"
 
 };

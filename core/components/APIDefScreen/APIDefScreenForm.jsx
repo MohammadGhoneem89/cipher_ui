@@ -6,7 +6,7 @@ import Table from '../../common/Datatable.jsx';
 import DateControl from '../../common/DateControl.jsx';
 import get from 'lodash/get';
 
-const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange }) => {
+const APIDefScreenForm = ({ generateCustomFile, addParams, onRequestTypeChange, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange }) => {
 
   return (
     <Portlet title={utils.getLabelByID("APIDefinitionScreen_Heading")}>
@@ -392,7 +392,7 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                 <div className="form-group col-md-8">
                                   <select id="adaptor" name="adaptor" className="form-control" value={initialValues.adaptor} onChange={onInputChange}>
                                     {
-                                      get(parentState, `getAdaptorsList[${initialValues.databaseType || 'mongo'}]`, []).map((option, index) => {
+                                      get(parentState, `getAdaptorsList[${parentState.databaseType || 'mongo'}]`, []).map((option, index) => {
                                         return (
                                           <option key={index} value={option.value}>{option.label}</option>
                                         );
@@ -488,7 +488,7 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                               {
                                                 get(parentState, 'getDBFields', []).map((option, index) => {
                                                   return (
-                                                    <option key={index} value={option.value}>{option.label}</option>
+                                                    <option key={index} value={option.name}>{option.label}</option>
                                                   );
                                                 })
                                               }
@@ -563,7 +563,7 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                               {
                                                 get(parentState, 'getDBFields', []).map((option, index) => {
                                                   return (
-                                                    <option key={index} value={option.value}>{option.label}</option>
+                                                    <option key={index} value={option.name}>{option.label}</option>
                                                   );
                                                 })
                                               }
@@ -618,7 +618,15 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                 </div>
                               </div>
                             </div>
-
+                            <div className="col-md-12">
+                              <div className="col-md-12">
+                                <div className="btn-toolbar pull-right">
+                                  <button type="submit" onClick={generateCustomFile} className="btn green"><i
+                                    className="fa fa-paper-plane" />{' '}{utils.getLabelByID("Generate")}
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
