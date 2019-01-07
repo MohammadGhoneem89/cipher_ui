@@ -37,7 +37,7 @@ class MappingList extends React.Component {
 
     getRequest() {
        let mappingName = document.getElementById('mappingName') == null ? "" : document.getElementById('mappingName').value;
-        let mappingType = document.getElementById('mappingType') == null ? "" : document.getElementById('mappingType').value;
+       let mappingType = document.getElementById('requestType') == null ? "" : document.getElementById('requestType').value;
 
         var searchCriteria = {
         }
@@ -61,9 +61,6 @@ class MappingList extends React.Component {
             }
         }
         this.setState({ currentPageNo: 1 })
-        console.log(JSON.stringify(request))
-
-
         return request;
     }
     componentWillReceiveProps(nextProps) {
