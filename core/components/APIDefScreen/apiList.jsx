@@ -32,6 +32,7 @@ class ApiList extends React.Component {
         this.getChaincodeRequest = this.getChaincodeRequest.bind(this)
 
     }
+
     renderPopupBody(dataID) {
         this.setState({ APIPayloadID: dataID })
     }
@@ -49,7 +50,6 @@ class ApiList extends React.Component {
 
         this.setState({ searchFilters: searchCriteria })
 
-        // console.log(a)
         var chaincodeRequest = {
             "action": "mappingData",
             searchCriteria,
@@ -59,8 +59,7 @@ class ApiList extends React.Component {
             }
         }
         this.setState({ currentPageNo: 1 })
-        console.log(JSON.stringify(chaincodeRequest))
-        
+
         return chaincodeRequest;
     }
 
@@ -72,12 +71,12 @@ class ApiList extends React.Component {
             this.props.actions.generalProcess(constants.downloadChainCode, this.getChaincodeRequest());
         }
     }
+
     getRequest() {
         let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value;
         let route = document.getElementById('route') == null ? "" : document.getElementById('route').value;
 
-        var searchCriteria = {
-        }
+        var searchCriteria = {}
 
         if (useCase != "")
             searchCriteria.useCase = useCase
@@ -98,11 +97,10 @@ class ApiList extends React.Component {
             }
         }
         this.setState({ currentPageNo: 1 })
-        console.log(JSON.stringify(request))
-
 
         return request;
     }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.typeData && nextProps.downloadChainCode) {
             this.setState({
@@ -110,16 +108,18 @@ class ApiList extends React.Component {
             });
         }
     }
+
     componentWillMount() {
 
-
-
     }
+
     searchCallBack(keyWord) {
 
     }
+
     componentDidMount() {
         window.scrollTo(0, 0);
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['USE_CASE']));
         this.props.actions.generalProcess(constants.getApiListData, this.getRequest());
         this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/APIDefScreen/NEWCASE/NEWROUTE", "children": [] }] })
     }
@@ -193,10 +193,17 @@ class ApiList extends React.Component {
 
                                                     <div className="col-md-6">
                                                         <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("AAU_UseCase")}</label>
+                                                            <label className="control-label">{utils.getLabelByID("MAU_useCase")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="useCase" id="useCase" />
+                                                            <select name="useCase" id="useCase" className="form-control">
+                                                                <option key="-1" value="">{utils.getLabelByID("RA_Select")} </option>
+                                                                {this.state.typeData && this.state.typeData.USE_CASE && this.state.typeData.USE_CASE.map((option, index) => {
+                                                                    return (
+                                                                        <option key={index} value={option.value}>{option.label}</option>
+                                                                    );
+                                                                })}
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6">
@@ -216,8 +223,8 @@ class ApiList extends React.Component {
                                                             <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
                                                             {"  "}
                                                             <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
-                                                            <button type="button" className="btn green" onClick={this.downloadChainCode}>{utils.getLabelByID("Generate_ChainCode")} 
-                                                            <i className="fa fa-file-code-o"/>
+                                                            <button type="button" className="btn green" onClick={this.downloadChainCode}>{utils.getLabelByID("Generate_ChainCode")}
+                                                                <i className="fa fa-file-code-o"/>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -231,16 +238,16 @@ class ApiList extends React.Component {
                     </div>
 
                     <Portlet title={utils.getLabelByID("ApiList")} isPermissioned={true}
-                        actions={this.state.actions}>
-                        <Table fontclass="" 
-                        gridColumns={utils.getGridColumnByName("ApiListData")} 
-                        gridData={this.props.ApiListData.data.searchResult}
-                            totalRecords={this.props.ApiListData.pageData.totalRecords} 
-                            searchCallBack={this.searchCallBack} pageSize={10}
-                            pagination={true} pageChanged={this.pageChanged} 
-                            export={false} 
-                            search={true}
-                            activePage={this.state.currentPageNo} />
+                             actions={this.state.actions}>
+                        <Table fontclass=""
+                               gridColumns={utils.getGridColumnByName("ApiListData")}
+                               gridData={this.props.ApiListData.data.searchResult}
+                               totalRecords={this.props.ApiListData.pageData.totalRecords}
+                               searchCallBack={this.searchCallBack} pageSize={10}
+                               pagination={true} pageChanged={this.pageChanged}
+                               export={false}
+                               search={true}
+                               activePage={this.state.currentPageNo} />
                     </Portlet>
 
 
@@ -260,10 +267,10 @@ ApiList.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-    console.log(state.app.downloadChainCode,"#######################")
     return {
         ApiListData: state.app.ApiListData,
-        downloadChainCode: state.app.downloadChainCode
+        downloadChainCode: state.app.downloadChainCode,
+        typeData: state.app.typeData.data
     };
 }
 function mapDispatchToProps(dispatch) {
