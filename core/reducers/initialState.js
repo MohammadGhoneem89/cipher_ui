@@ -505,6 +505,11 @@ export default {
       }
     }
   },
+    getTypeDataDetailByID : {
+      action : "",
+      data : {}
+    },
+    typeDataList : {},
   ...ApplicationsInitialSate
 }
 

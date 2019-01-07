@@ -344,14 +344,12 @@ class TableCell extends React.Component {
           return (<span key={i}>{item}<br /></span>);
         });
 
-        return (<td style={{ fontWeight: fontWeightStyle }}> {cellData} </td>);
-      case "longString":
-        // let a = this.props.cellData.replace(/(.{60})/g, "$1<br/>");
-        let temp = text_truncate(this.props.cellData, 100);
-        // return <td style={{fontWeight: fontWeightStyle}} dangerouslySetInnerHTML={{__html: a}}/>;
-        return <td style={{ fontWeight: fontWeightStyle }}>
-          <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
-        </td>;
+        return (<td style={{fontWeight: fontWeightStyle}}> {cellData} </td>);
+        case "longString":
+            let temp = text_truncate(this.props.cellData, 100);
+            return <td style={{fontWeight: fontWeightStyle}}>
+              <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
+            </td>;
 
 
       default:

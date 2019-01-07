@@ -20,7 +20,8 @@ class UserSetupContainer extends React.Component {
       userID: undefined,
       typeData: undefined,
       isLoading: true,
-      entityNames: undefined
+      entityNames: undefined,
+      permissionTypeData : []
     };
 
     this.submit = this.submit.bind(this);
@@ -94,11 +95,12 @@ class UserSetupContainer extends React.Component {
       updatedData.isActive = false;
 
     updatedData.groups = groupsListUpdate;
+    updatedData.passwordHashType = "SHA512";
+
     let dataSubmit = {
       "action": "userInsert",
       "data": updatedData
     };
-
 
     if (this.state.userID)
       return this.props.actions.reduxFormProcess(constants.userUpdate, dataSubmit)
@@ -114,14 +116,16 @@ class UserSetupContainer extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
+      let perTypeData = this.getPermissionTypeData(nextProps.permission)
     if (nextProps.userDetail.groups && nextProps.entityNames && nextProps.typeData) {
-       
+
       this.setState({
         userDetail: nextProps.userDetail,
         pageActions: nextProps.pageActions,
         typeData: nextProps.typeData,
         isLoading: false,
-        entityNames: nextProps.entityNames
+        entityNames: nextProps.entityNames,
+        permissionTypeData : perTypeData
       });
     }
     else if (!nextProps.userID && nextProps.entityNames && nextProps.typeData) {
@@ -129,10 +133,27 @@ class UserSetupContainer extends React.Component {
         userDetail: initialState.userDetails.data,
         pageActions: nextProps.pageActions,
         typeData: nextProps.typeData,
-        entityNames: nextProps.entityNames
+        entityNames: nextProps.entityNames,
+        permissionTypeData : perTypeData
       });
     }
   }
+
+  getPermissionTypeData = (permission) => {
+
+    let arr = [];
+    for(let obj of permission){
+      if(obj.label == "Dashboard"){
+        for(let a of obj.children){
+          let json = {};
+          json.label = a.label;
+          json.value = a.pageURI;
+          arr.push(json);
+        }
+      }
+    }
+    return arr;
+  };
 
   render() {
 
@@ -190,7 +211,8 @@ function mapStateToProps(state, ownProps) {
       pageActions: state.app.userDetails.data.actions,
       userID: ownProps.params.userID,
       entityNames: state.app.entityList.data.typeData.entityNames,
-      typeData: state.app.typeData.data
+      typeData: state.app.typeData.data,
+      permission : state.app.permissionData.data.menuPermissions
     };
   }
   else {
@@ -200,7 +222,8 @@ function mapStateToProps(state, ownProps) {
       pageActions: state.app.userDetails.data.actions,
       userID: undefined,
       entityNames: state.app.entityList.data.typeData.entityNames,
-      typeData: state.app.typeData.data
+      typeData: state.app.typeData.data,
+      permission : state.app.permissionData.data.menuPermissions
     };
   }
 }

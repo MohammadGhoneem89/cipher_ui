@@ -160,10 +160,10 @@ class AuditLogList extends React.Component {
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("RA_FromDate")}</label>
+                                                    <label className="control-label">{utils.getLabelByID("APL_ToDate")}</label>
                                                 </div>
                                                 <div className="form-group col-md-8">
-                                                    <DateControl id="fromDate" />
+                                                    <DateControl id="toDate" />
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
@@ -246,7 +246,7 @@ class AuditLogList extends React.Component {
                         <div className="col-md-12">
                             <Table title={utils.getLabelByID("AuditLogList")}  fontclass="" TableClass="portlet light bordered sdg_portlet" gridColumns={utils.getGridColumnByName("auditLogListData")} gridData={this.props.AuditLogListData.data.searchResult}
                                 totalRecords={this.props.AuditLogListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
-                                pagination={true} pageChanged={this.pageChanged} export={false} search={true}
+                                pagination={true} pageChanged={this.pageChanged} search={true}
                                 renderPopupBody={this.renderPopupBody} activePage={this.state.currentPageNo}
                                 searchCriteria={this.state.searchFilters} gridType={"auditLogList"} export={true} />
                         </div>
@@ -264,7 +264,7 @@ class AuditLogList extends React.Component {
 
                             </div>
                             }
-                            
+
                         </div>
                         </div>
                     </div>
