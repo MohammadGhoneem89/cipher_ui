@@ -30,10 +30,10 @@ class DateControl extends React.Component {
         const defaultText = this.props.defaultValue || "";
         const className = this.props.className || "form-group";
         const dateControlID = this.props.id || "datePicker"
-
+        
         return (
             <div id={dateControlID}>
-                <DatePicker inputFormat={format} dateTime={defaultText}
+                <DatePicker inputFormat={format} dateTime={defaultText||moment.now()}
                     mode={mode} showToday={showToday} readOnly = {true} onChange={this.dateChange} />
             </div>
         );

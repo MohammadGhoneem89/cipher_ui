@@ -259,7 +259,7 @@ export default {
     "action": "MappingConfigData",
     "data": {}
   },
-  ApiListData: { "action": "", "datasourceList": { "pageData": { "totalRecords": 0 } } },
+  ApiListData: {},
   getActiveAPIs : {"action": "", "data": []},
   APIDefinitionAddUpdate: {},
   AddUpdateModule: {},
