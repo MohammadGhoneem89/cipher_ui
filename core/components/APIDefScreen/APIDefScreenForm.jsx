@@ -431,7 +431,7 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                 <div className="icheck-list">
                                   <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
                                     <label/>
-                                    <input type="checkbox" className="form-control" onChange={onInputChange} name="isEnablePagine" id="isEnablePagine" checked={initialValues.isEnablePagine} />
+                                    <input type="checkbox" className="form-control" onChange={onInputChange} name="isEnablePagination" id="isEnablePagination" checked={initialValues.isEnablePagination} />
                                     <span/>
                                   </label>
                                 </div>
