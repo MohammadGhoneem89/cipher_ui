@@ -452,10 +452,8 @@ class APIDefinitionScreen extends React.Component {
     data.RequestMapping = (data.RequestMapping === "" ? this.state.MappingConfigList.REQUEST[0].value : data.RequestMapping);
     data.ResponseMapping = (data.ResponseMapping === "" ? this.state.MappingConfigList.RESPONSE[0].value : data.ResponseMapping);
     data.simucases = this.state.simucases;
-    console.log('------- test', this.state.generateMappingFile)
-    data = Object.assign(data, this.state.generateMappingFile);
-    console.log('------------------------');
-    console.log(data);
+    data.CustomMappingFile = this.state.generateMappingFile.functionName;
+    data.MappingfunctionName = this.state.generateMappingFile.path;
     this.props.actions.generalProcess(constants.upsertAPIDefinition, data);
   }
 
