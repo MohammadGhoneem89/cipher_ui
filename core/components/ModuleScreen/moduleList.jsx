@@ -37,7 +37,7 @@ class ModuleList extends React.Component {
 
     getRequest() {
        let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value;
-        let label = document.getElementById('label') == null ? "" : document.getElementById('label').value;
+       let label = document.getElementById('label') == null ? "" : document.getElementById('label').value;
 
         var searchCriteria = {
         }
@@ -48,8 +48,7 @@ class ModuleList extends React.Component {
         if (label != "")
             searchCriteria.label = label
 
-      
-
+        console.log(": : : :>>>>>>>>>>>>  ", searchCriteria)
         this.setState({ searchFilters: searchCriteria })
 
         var request = {
@@ -61,8 +60,6 @@ class ModuleList extends React.Component {
             }
         }
         this.setState({ currentPageNo: 1 })
-        console.log(JSON.stringify(request))
-
 
         return request;
     }
@@ -73,23 +70,26 @@ class ModuleList extends React.Component {
             });
         }
     }
+
     componentWillMount() {
 
-
-
     }
+
     searchCallBack(keyWord) {
 
     }
+
     componentDidMount() {
         window.scrollTo(0, 0);
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['USE_CASE']));
         this.props.actions.generalProcess(constants.getModuleListData, this.getRequest());
         this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/APIDefScreen/NEWCASE/NEWROUTE", "children": [] }] })
     }
-    formSubmit() {
 
+    formSubmit() {
         this.props.actions.generalProcess(constants.getModuleListData, this.getRequest());
     }
+
     pageChanged(pageNo) {
         if (pageNo != undefined) {
 
@@ -156,10 +156,17 @@ class ModuleList extends React.Component {
 
                                                     <div className="col-md-6">
                                                         <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("AAU_UseCase")}</label>
+                                                            <label className="control-label">{utils.getLabelByID("MAU_useCase")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="useCase" id="useCase" />
+                                                            <select name="useCase" id="useCase" className="form-control">
+                                                                <option key="-1" value="">{utils.getLabelByID("RA_Select")} </option>
+                                                                {this.state.typeData && this.state.typeData.USE_CASE && this.state.typeData.USE_CASE.map((option, index) => {
+                                                                    return (
+                                                                        <option key={index} value={option.value}>{option.label}</option>
+                                                                    );
+                                                                })}
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6">
@@ -216,7 +223,8 @@ ModuleList.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     return {
-        ModuleListData: state.app.ModuleList
+        ModuleListData: state.app.ModuleList,
+        typeData: state.app.typeData.data
     };
 }
 function mapDispatchToProps(dispatch) {

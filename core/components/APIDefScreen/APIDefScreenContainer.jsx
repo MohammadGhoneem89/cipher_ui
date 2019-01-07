@@ -432,8 +432,14 @@ class APIDefinitionScreen extends React.Component {
       }
     }
     //alert(data.billingDate);
-
-
+    data.adaptor = this.state.adaptor;
+    data.database = this.state.databaseType;
+    data.objectType = this.state.objectType;
+    data.object = this.state.availableObjects;
+    data.conditions = this.state.requestParams;
+    data.fields = this.state.responseParams;
+    data.enablePaging = this.state.isEnablePagination;
+    data.enableActions = this.state.isEnablComponentAction;
     data.rules = this.state.rules;
     data.RequestMapping = (data.RequestMapping === "" ? this.state.MappingConfigList.REQUEST[0].value : data.RequestMapping);
     data.ResponseMapping = (data.ResponseMapping === "" ? this.state.MappingConfigList.RESPONSE[0].value : data.ResponseMapping);
@@ -511,8 +517,8 @@ class APIDefinitionScreen extends React.Component {
       case 'request':
         let params = this.state.requestParams;
         params.push({
-          dbField: this.state.requestBDField,
-          mappingField: this.state.requestMappingField
+          name: this.state.requestDBField,
+          value: this.state.requestMappingField
         });
         this.setState({
           requestParams: params
@@ -521,8 +527,8 @@ class APIDefinitionScreen extends React.Component {
       case 'response':
         let params1 = this.state.responseParams;
         params1.push({
-          dbField: this.state.responseBDField,
-          mappingField: this.state.responseMappingField
+          name: this.state.responseBDField,
+          as: this.state.responseMappingField
         });
         this.setState({
           responseParams: params1

@@ -12,11 +12,11 @@ module.exports = {
         {alias: "Action", key: "action", type: "action"}
     ],
   requestParametersGrid: [
-    { alias: "DB Field", key: "dbField", type: "string" },
-    { alias: "Request Mapping Field", key: "mappingField", type: "string" }
+    { alias: "DB Field", key: "name", type: "string" },
+    { alias: "Request Mapping Field", key: "value", type: "string" }
   ],
   responseParametersGrid: [
-    { alias: "DB Field", key: "dbField", type: "string" },
-    { alias: "Response Mapping Field", key: "mappingField", type: "string" }
+    { alias: "DB Field", key: "name", type: "string" },
+    { alias: "Response Mapping Field", key: "as", type: "string" }
   ],
 };

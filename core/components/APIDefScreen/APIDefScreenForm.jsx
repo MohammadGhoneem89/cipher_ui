@@ -92,6 +92,23 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                     </div>
                   </div>
                 </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label className="form-group control-label col-md-4" style={{
+                      textAlign: "left",
+                      fontWeight: "normal"
+                    }}>{utils.getLabelByID("APIDefScreen_isBlchn")}</label>
+                    <div className="form-group col-md-8">
+                      <div className="icheck-list">
+                        <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                          <label/>
+                          <input type="checkbox" className="form-control" onChange={onInputChange} checked={initialValues.isBlockchain} name="isBlockchain" id="isBlockchain" />
+                          <span/>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -431,7 +448,7 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                 <div className="icheck-list">
                                   <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
                                     <label/>
-                                    <input type="checkbox" className="form-control" onChange={onInputChange} name="isEnablePagine" id="isEnablePagine" checked={initialValues.isEnablePagine} />
+                                    <input type="checkbox" className="form-control" onChange={onInputChange} name="isEnablePagination" id="isEnablePagination" checked={initialValues.isEnablePagination} />
                                     <span/>
                                   </label>
                                 </div>
