@@ -512,7 +512,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                             <select id="requestMappingField" name="requestMappingField" className="form-control" value={initialValues.requestMappingField} onChange={onInputChange}>
                                               <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
-                                                get(parameters, `${initialValues.RequestMapping}`, []).map((option, index) => {
+                                                get(parameters, `${parentState.RequestMapping}`, []).map((option, index) => {
                                                   return (
                                                     <option key={index} value={option.IN_FIELD}>{option.IN_FIELD}</option>
                                                   );
@@ -896,7 +896,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                         fontWeight: "normal"
                       }}>{utils.getLabelByID("APIDefScreen_RequestMapping")}</label>
                       <div className="form-group col-md-8">
-                        <select name="RequestMapping" value={initialValues.RequestMapping} disabled={initialValues.isValBypass} onChange={onInputChangeRequest} className="form-control">
+                        <select name="RequestMapping" value={parentState.RequestMapping} disabled={initialValues.isValBypass} onChange={onInputChangeRequest} className="form-control">
                           {dropdownItems.REQUEST &&
                             dropdownItems.REQUEST.map((option, index) => {
                               return (

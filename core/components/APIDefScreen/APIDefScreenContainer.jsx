@@ -283,8 +283,13 @@ class APIDefinitionScreen extends React.Component {
   }
 
   getRequestResponseMapping = (val, type, MappingConfigList) => {
+    console.log(MappingConfigList);
+    console.log(this.state.MappingConfigList);
+
     MappingConfigList = MappingConfigList || this.state.MappingConfigList;
+    console.log('valueee', val);
     let let1 = find(get(MappingConfigList, `${type}`, []), {value: val});
+    let1 = let1 || {};
     this.props.actions.generalProcess(constants.getMappingConfigByID, {mappingName: let1.label});
   };
 
@@ -721,6 +726,7 @@ APIDefinitionScreen.propTypes = {
 function mapStateToProps(state, ownProps) {
   let parameters  = {};
   let params = get(state.app, 'AddUpdateMapping.data.MappingConfig', {});
+  params = params || {};
   if(params._id){
     parameters[params._id] = params.fields;
   }
