@@ -589,7 +589,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                             <select id="responseMappingField" name="responseMappingField" className="form-control" value={initialValues.responseMappingField} onChange={onInputChange}>
                                               <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
-                                                get(parameters, `${initialValues.ResponseMapping}`, []).map((option, index) => {
+                                                get(parameters, `${parentState.ResponseMapping}`, []).map((option, index) => {
                                                   return (
                                                     <option key={index} value={option.IN_FIELD}>{option.IN_FIELD}</option>
                                                   );

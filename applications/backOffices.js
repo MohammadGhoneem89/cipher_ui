@@ -10,7 +10,9 @@ const backOffices = {
 */
 
 const backOffices = {
-  baseUrl: "http://51.140.250.28:9080",
+  baseUrl1: "http://51.140.250.28:9080",
+  baseUrl: "http://localhost:9080",
+
   blockChainURL: "http://51.140.250.28:9080",
   webSocketURL: "http://51.140.250.28:9080",
   repostActionURL: "http://51.140.250.28:9080/API",
