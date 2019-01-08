@@ -9,6 +9,7 @@ import * as requestCreator from '../../common/request.js';
 import APIDefScreenForm from './APIDefScreenForm.jsx';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
+import find from 'lodash/find';
 
 const initialState = {
   APIDefinitionAddUpdate: {
@@ -280,9 +281,14 @@ class APIDefinitionScreen extends React.Component {
     data.push(newtupple);
     this.setState({ simucases: data });
   }
+
+  getRequestResponseMapping = (val, type, MappingConfigList) => {
+    MappingConfigList = MappingConfigList || this.state.MappingConfigList;
+    let let1 = find(get(MappingConfigList, `${type}`, []), {value: val});
+    this.props.actions.generalProcess(constants.getMappingConfigByID, {mappingName: let1.label});
+  };
+
   componentDidMount() {
-
-
     this.props.actions.generalProcess(constants.getConsortiumTypeList);
     this.props.actions.generalProcess(constants.getMappingList);
     this.props.actions.generalProcess(constants.getAdaptorsList);
@@ -322,7 +328,14 @@ class APIDefinitionScreen extends React.Component {
 
   }
   componentWillReceiveProps(nextProps) {
+    if(nextProps.parameters){
 
+      let params = this.state.parameters || {};
+
+      this.setState({
+        parameters: Object.assign(params, nextProps.parameters)
+      })
+    }
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE" && this.props.useCase === get(nextProps, 'APIDefinitionAddUpdate.data.useCase') && this.props.route === get(nextProps, 'APIDefinitionAddUpdate.data.route')) {
 
       if (nextProps.APIDefinitionAddUpdate.data.simucases) {
@@ -339,6 +352,7 @@ class APIDefinitionScreen extends React.Component {
         });
       }
       if (this.state.isStale === false) {
+
         this.setState({
           APIDefinitionAddUpdate: cloneDeep(nextProps.APIDefinitionAddUpdate.data),
           rules: nextProps.APIDefinitionAddUpdate.data.rules || []
@@ -357,11 +371,21 @@ class APIDefinitionScreen extends React.Component {
       });
     }
     if (nextProps.MappingConfigData && nextProps.MappingConfigData.REQUEST && nextProps.MappingConfigData.RESPONSE) {
-
       this.setState({
         MappingConfigList: nextProps.MappingConfigData,
-
       });
+      if(get(nextProps, 'APIDefinitionAddUpdate.data.RequestMapping', false) && !this.state.requestDone){
+        this.getRequestResponseMapping(nextProps.APIDefinitionAddUpdate.data.RequestMapping, 'REQUEST', nextProps.MappingConfigData);
+        this.setState({
+          requestDone: true
+        })
+      }
+      if(get(nextProps, 'APIDefinitionAddUpdate.data.ResponseMapping', false) && !this.state.responseDone){
+        this.getRequestResponseMapping(nextProps.APIDefinitionAddUpdate.data.ResponseMapping, 'RESPONSE', nextProps.MappingConfigData);
+        this.setState({
+          responseDone: true
+        })
+      }
     }
 
     if (nextProps.ConsortiumTypeData.data && nextProps.ConsortiumTypeData.data.consortium) {
@@ -470,6 +494,9 @@ class APIDefinitionScreen extends React.Component {
       [e.target.name]: value
     });
 
+    if(e.target.name === 'ResponseMapping'){
+      this.getRequestResponseMapping(value, 'response');
+    }
     if(e.target.name === 'databaseType' || e.target.name === 'adaptor' || e.target.name === 'availableObjects' || e.target.name === 'objectType'){
       let param = {
         database: this.state.databaseType || 'mongo',
@@ -517,6 +544,11 @@ class APIDefinitionScreen extends React.Component {
     } else {
       value = e.target.value;
     }
+
+    if(e.target.name === 'RequestMapping'){
+      this.getRequestResponseMapping(value, 'REQUEST');
+    }
+
     let req = { _id: value }
     this.props.actions.generalProcess(constants.getMappingConfigOrgFieldData, req);
     this.state.APIDefinitionAddUpdate[e.target.name] = value;
@@ -569,13 +601,11 @@ class APIDefinitionScreen extends React.Component {
   };
 
   render() {
-
-
     if (this.state.isLoading) {
       return (<div className="loader">isLoading...</div>)
     }
     return (
-      <APIDefScreenForm generateCustomFile={this.generateCustomFile} addParams={this.addParams} onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule} onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine} onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} parentState={this.state} />)
+      <APIDefScreenForm parameters={this.state.parameters} generateCustomFile={this.generateCustomFile} addParams={this.addParams} onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule} onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine} onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} parentState={this.state} />)
   }
   ActionHandlers({ actionName, index }) {
 
@@ -684,10 +714,16 @@ APIDefinitionScreen.propTypes = {
   getAdaptorsList: PropTypes.object,
   getAvailableObjectsList: PropTypes.object,
   getDBFields: PropTypes.object,
-  ConsortiumTypeData: PropTypes.object
+  ConsortiumTypeData: PropTypes.object,
+  parameters: PropTypes.object
 };
 
 function mapStateToProps(state, ownProps) {
+  let parameters  = {};
+  let params = get(state.app, 'AddUpdateMapping.data.MappingConfig', {});
+  if(params._id){
+    parameters[params._id] = params.fields;
+  }
   return {
     MappingOrgFieldData: state.app.MappingOrgFieldData,
     APIDefinitionAddUpdate: state.app.APIDefinitionAddUpdate,
@@ -699,7 +735,8 @@ function mapStateToProps(state, ownProps) {
     getAdaptorsList: get(state.app, 'getAdaptorsList.data', []),
     getDBFields: get(state.app, 'getDBFields.data', []),
     getAvailableObjectsList: get(state.app, 'getAvailableObjectsList.data', []),
-    generateMappingFile: get(state.app, 'generateMappingFile', {})
+    generateMappingFile: get(state.app, 'generateMappingFile', {}),
+    parameters: parameters
   };
 }
 

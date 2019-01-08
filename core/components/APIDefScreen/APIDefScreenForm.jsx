@@ -6,8 +6,7 @@ import Table from '../../common/Datatable.jsx';
 import DateControl from '../../common/DateControl.jsx';
 import get from 'lodash/get';
 
-const APIDefScreenForm = ({ generateCustomFile, addParams, onRequestTypeChange, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange }) => {
-
+const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequestTypeChange, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange }) => {
   return (
     <Portlet title={utils.getLabelByID("APIDefinitionScreen_Heading")}>
       <div className="row">
@@ -86,7 +85,9 @@ const APIDefScreenForm = ({ generateCustomFile, addParams, onRequestTypeChange, 
                     <div className="form-group col-md-8">
                       <div className="icheck-list">
                         <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                        <label/>
                           <input type="checkbox" className="form-control" onChange={onInputChange} checked={initialValues.isActive} name="isActive" id="isActive" />
+                        <span/>
                         </label>
                       </div>
                     </div>
@@ -372,6 +373,7 @@ const APIDefScreenForm = ({ generateCustomFile, addParams, onRequestTypeChange, 
                                 }}>{utils.getLabelByID("Database Type")}</label>
                                 <div className="form-group col-md-8">
                                   <select id="databaseType" name="databaseType" className="form-control" value={initialValues.databaseType} onChange={onInputChange}>
+                                    <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                     {
                                       typeData.database_types.map((option, index) => {
                                         return (
@@ -391,6 +393,7 @@ const APIDefScreenForm = ({ generateCustomFile, addParams, onRequestTypeChange, 
                                 }}>{utils.getLabelByID("Adaptors")}</label>
                                 <div className="form-group col-md-8">
                                   <select id="adaptor" name="adaptor" className="form-control" value={initialValues.adaptor} onChange={onInputChange}>
+                                    <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                     {
                                       get(parentState, `getAdaptorsList[${parentState.databaseType || 'mongo'}]`, []).map((option, index) => {
                                         return (
@@ -410,6 +413,7 @@ const APIDefScreenForm = ({ generateCustomFile, addParams, onRequestTypeChange, 
                                 }}>{utils.getLabelByID("Object Type")}</label>
                                 <div className="form-group col-md-8">
                                   <select id="objectType" name="objectType" className="form-control" value={initialValues.objectType} onChange={onInputChange}>
+                                    <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                     {
                                       typeData.database_object_types.map((option, index) => {
                                         return (
@@ -429,6 +433,7 @@ const APIDefScreenForm = ({ generateCustomFile, addParams, onRequestTypeChange, 
                                 }}>{utils.getLabelByID("Available Objects")}</label>
                                 <div className="form-group col-md-8">
                                   <select id="availableObjects" name="availableObjects" className="form-control" value={initialValues.availableObjects} onChange={onInputChange}>
+                                    <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                     {
                                       get(parentState, `getAvailableObjectsList`, []).map((option, index) => {
                                         return (
@@ -485,6 +490,7 @@ const APIDefScreenForm = ({ generateCustomFile, addParams, onRequestTypeChange, 
                                           }}>{utils.getLabelByID("DB Field")}</label>
                                           <div className="form-group col-md-8">
                                             <select id="requestDBField" name="requestDBField" className="form-control" value={initialValues.requestDBField} onChange={onInputChange}>
+                                              <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
                                                 get(parentState, 'getDBFields', []).map((option, index) => {
                                                   return (
@@ -504,10 +510,11 @@ const APIDefScreenForm = ({ generateCustomFile, addParams, onRequestTypeChange, 
                                           }}>{utils.getLabelByID("Request Mapping Field")}</label>
                                           <div className="form-group col-md-8">
                                             <select id="requestMappingField" name="requestMappingField" className="form-control" value={initialValues.requestMappingField} onChange={onInputChange}>
+                                              <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
-                                                get(dropdownItems, 'REQUEST', []).map((option, index) => {
+                                                get(parameters, `${initialValues.RequestMapping}`, []).map((option, index) => {
                                                   return (
-                                                    <option key={index} value={option.label}>{option.label}</option>
+                                                    <option key={index} value={option.IN_FIELD}>{option.IN_FIELD}</option>
                                                   );
                                                 })
                                               }
@@ -560,6 +567,7 @@ const APIDefScreenForm = ({ generateCustomFile, addParams, onRequestTypeChange, 
                                           }}>{utils.getLabelByID("DB Field")}</label>
                                           <div className="form-group col-md-8">
                                             <select id="responseBDField" name="responseBDField" className="form-control" value={initialValues.responseBDField} onChange={onInputChange}>
+                                              <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
                                                 get(parentState, 'getDBFields', []).map((option, index) => {
                                                   return (
@@ -579,10 +587,11 @@ const APIDefScreenForm = ({ generateCustomFile, addParams, onRequestTypeChange, 
                                           }}>{utils.getLabelByID("Response Mapping Field")}</label>
                                           <div className="form-group col-md-8">
                                             <select id="responseMappingField" name="responseMappingField" className="form-control" value={initialValues.responseMappingField} onChange={onInputChange}>
+                                              <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
-                                                get(dropdownItems, 'RESPONSE', []).map((option, index) => {
+                                                get(parameters, `${initialValues.ResponseMapping}`, []).map((option, index) => {
                                                   return (
-                                                    <option key={index} value={option.label}>{option.label}</option>
+                                                    <option key={index} value={option.IN_FIELD}>{option.IN_FIELD}</option>
                                                   );
                                                 })
                                               }
@@ -927,7 +936,9 @@ const APIDefScreenForm = ({ generateCustomFile, addParams, onRequestTypeChange, 
                       <div className="form-group col-md-8">
                         <div className="icheck-list">
                           <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                            <label/>
                             <input type="checkbox" className="form-control" onChange={onInputChange} name="isValBypass" id="isValBypass" checked={initialValues.isValBypass} />
+                            <span/>
                           </label>
                         </div>
                       </div>
