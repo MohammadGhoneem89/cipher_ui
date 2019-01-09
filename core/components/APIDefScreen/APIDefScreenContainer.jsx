@@ -599,6 +599,8 @@ class APIDefinitionScreen extends React.Component {
   };
   generateCustomFile = (e) =>{
     let data = {};
+    data.useCase = this.state.useCase;
+    data.route = this.state.route;
     data.adaptor = this.state.adaptor;
     data.database = this.state.databaseType;
     data.objectType = this.state.objectType;
