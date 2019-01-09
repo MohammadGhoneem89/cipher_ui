@@ -897,6 +897,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                       }}>{utils.getLabelByID("APIDefScreen_RequestMapping")}</label>
                       <div className="form-group col-md-8">
                         <select name="RequestMapping" value={parentState.RequestMapping} disabled={initialValues.isValBypass} onChange={onInputChangeRequest} className="form-control">
+                          <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                           {dropdownItems.REQUEST &&
                             dropdownItems.REQUEST.map((option, index) => {
                               return (
@@ -916,6 +917,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                       }}>{utils.getLabelByID("APIDefScreen_ResponseMapping")}</label>
                       <div className="form-group col-md-8">
                         <select name="ResponseMapping" value={initialValues.ResponseMapping} disabled={initialValues.isResValBypass || initialValues.isSimulated} onChange={onInputChange} className="form-control">
+                          <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                           {dropdownItems.RESPONSE &&
                             dropdownItems.RESPONSE.map((option, index) => {
                               return (
