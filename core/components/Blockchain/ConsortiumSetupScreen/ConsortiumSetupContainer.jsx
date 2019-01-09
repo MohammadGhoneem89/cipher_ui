@@ -62,6 +62,7 @@ class BlockchainSetupContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps.consortiumDetail.actions,"$$$$$$$$$$$$$4")
         if (nextProps.consortiumDetail && nextProps.typeData) {
             let consortiumDetail = this.props.consortiumID ? nextProps.consortiumDetail : {
                 ...this.state.consortiumDetail,
@@ -345,6 +346,7 @@ BlockchainSetupContainer.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     let consortiumID = ownProps.params.consortiumID;
+     console.log(state.app.consortiumDetail)
     return {
         consortiumDetail: state.app.consortiumDetail.data,
         consortiumID: consortiumID,

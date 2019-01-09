@@ -10,6 +10,7 @@ import Table from '../common/Datatable.jsx';
 import * as constants from '../constants/Communication.js';
 import * as requestCreator from '../common/request.js';
 import * as utils from '../common/utils';
+import ModalBox from '../../core/common/ModalBox.jsx';
 
 class Notifications extends React.Component {
 
@@ -22,6 +23,7 @@ class Notifications extends React.Component {
             totalRecords: undefined,
             pageRangeDisplayed: 5,
             isLoading: true,
+            modelBoxData: false,
         };
 
         this.pageChange = this.pageChange.bind(this);
@@ -166,14 +168,35 @@ class Notifications extends React.Component {
         }
     }
 
+    updateState = (data) => {
+        this.setState(data);
+    }
+
     render() {
 
+        let modalAction = [
+            {
+                type: "modal",
+                className: "btn btn-default",
+                label: utils.getLabelByID("Close"),
+                icon: "close",
+                actionHandler: this.updateState.bind(this, {
+                    modelBoxData: false
+                })
+            }
+        ]
         if (this.state.notificationDetailData) {
             return (
-
-
                 <div>
-
+                    <ModalBox isOpen={this.state.modelBoxData ? true : false}>
+                        <Portlet title={utils.getLabelByID("Details")} actions={modalAction}>
+                            {(()=>{
+                                if(this.state.modelBoxData){
+                                    return this.state.modelBoxData.replace(/(.{60})/g, "$1\n");
+                                }
+                            })()}
+                        </Portlet>
+                    </ModalBox>
                     <div className="row">
 
                         <div className="col-sm-12">
@@ -218,6 +241,9 @@ class Notifications extends React.Component {
                                     pageSize={this.state.itemsCountPerPage}
                                     searchCriteria={this.state.filterCriteria}
                                     headerClick={this.sortList}
+                                    renderPopupBody={(data) => {
+                                        this.updateState({modelBoxData: data});
+                                    }}
                                 />
                             </Portlet>
                         </div>

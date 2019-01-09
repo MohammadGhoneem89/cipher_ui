@@ -40,7 +40,6 @@ class APIPayloadDetail extends React.Component {
 
     componentWillReceiveProps(nextProps) {
 
-        //console.log(nextProps);
         if (nextProps.APIPayloadID != this.state.APIPayloadID) {
             var request = {
                 "id": nextProps.APIPayloadID,
@@ -96,6 +95,9 @@ class APIPayloadDetail extends React.Component {
     performAction(actionID) {
         $('#modelWindows').modal('hide');
         toaster.showToast("Request submitted successfully", "SUCCESS");
+        if(this.props.APIPayloadDetailData.payload.header){
+            delete this.props.APIPayloadDetailData.payload.header.password;
+        }
         return this.props.APIPayloadDetailData.payload;
 
     }
@@ -103,6 +105,10 @@ class APIPayloadDetail extends React.Component {
     render() {
 
         if (this.props.APIPayloadDetailData.payload) {
+            if(this.props.APIPayloadDetailData.payload.header){
+                delete this.props.APIPayloadDetailData.payload.header.password;
+            }
+
             let action = [
                 {
                     "type": "pageAction",
