@@ -5,6 +5,7 @@ import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
 import DateControl from '../../common/DateControl.jsx';
 import get from 'lodash/get';
+import filter from 'lodash/filter';
 
 const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequestTypeChange, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange }) => {
   return (
@@ -415,7 +416,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                   <select id="objectType" name="objectType" className="form-control" value={initialValues.objectType} onChange={onInputChange}>
                                     <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                     {
-                                      typeData.database_object_types.map((option, index) => {
+                                      filter(typeData.database_object_types, {type: parentState.databaseType || 'mongo'}).map((option, index) => {
                                         return (
                                           <option key={index} value={option.value}>{option.label}</option>
                                         );
@@ -916,7 +917,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                         fontWeight: "normal"
                       }}>{utils.getLabelByID("APIDefScreen_ResponseMapping")}</label>
                       <div className="form-group col-md-8">
-                        <select name="ResponseMapping" value={initialValues.ResponseMapping} disabled={initialValues.isResValBypass || initialValues.isSimulated} onChange={onInputChange} className="form-control">
+                        <select name="ResponseMapping" value={parentState.ResponseMapping} disabled={initialValues.isResValBypass || initialValues.isSimulated} onChange={onInputChange} className="form-control">
                           <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                           {dropdownItems.RESPONSE &&
                             dropdownItems.RESPONSE.map((option, index) => {

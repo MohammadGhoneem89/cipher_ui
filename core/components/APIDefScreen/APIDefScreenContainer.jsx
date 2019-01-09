@@ -283,11 +283,8 @@ class APIDefinitionScreen extends React.Component {
   }
 
   getRequestResponseMapping = (val, type, MappingConfigList) => {
-    console.log(MappingConfigList);
-    console.log(this.state.MappingConfigList);
 
     MappingConfigList = MappingConfigList || this.state.MappingConfigList;
-    console.log('valueee', val);
     let let1 = find(get(MappingConfigList, type, []), {value: val});
     let1 = let1 || {};
     this.props.actions.generalProcess(constants.getMappingConfigByID, {mappingName: let1.label});
@@ -536,9 +533,18 @@ class APIDefinitionScreen extends React.Component {
       isBlockchainProcess: false,
       isOffchainGet: false
     });
+
+    if(e.target.name === 'isOffchainGet'){
+      this.state.APIDefinitionAddUpdate['isCustomMapping'] = true;
+      this.setState({
+        isCustomMapping: true
+      });
+    }
+
     this.setState({
       [e.target.name]: !this.state[e.target.name]
     });
+
   };
 
   onInputChangeRequest = (e) => {
