@@ -827,6 +827,12 @@ module.exports = {
     { alias: "ParticipantName", key: "organizationName", type: "string" },
     { alias: "ParticapantType", key: "particapantType", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
+  ],
+  EndPointList: [
+    { alias: "Endpoint Address", key: "address", type: "string" },
+    { alias: "Active", key: "status", type: "string" },
+    { alias: "Protocol", key: "protocol", type: "string" },
+    { alias: "Authorization", key: "auth", type: "string" }
   ]
 };
 

@@ -354,3 +354,7 @@ a:hover {
 	background: url(AI_Emblm.png) no-repeat; 
 	margin-left: 0.8% !important;
 }
+.margin-zero {
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
