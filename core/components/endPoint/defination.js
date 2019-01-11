@@ -6,13 +6,16 @@ import * as utils from '../../common/utils.js';
 import FileUploader from '../../common/FileUploader.jsx';
 import Portlet from '../../common/Portlet.jsx';
 import { browserHistory } from 'react-router';
+import * as constants from '../../constants/Communication.js';
+import {get, isEmpty} from 'lodash';
 
 class EndPointDefination extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
+      editMode: false,
+      loading: true,
       readOnly: false,
       address: '',
       status: false,
@@ -24,6 +27,7 @@ class EndPointDefination extends React.Component {
       attachCert: false,
       certPhrase: '',
       authType: '',
+      requestType: '',
       auth: {
         endpoint: '',
         field: '',
@@ -37,17 +41,32 @@ class EndPointDefination extends React.Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+    if (this.props.routeParams.id === 'create') {
+      this.setState({loading: false});
+    }
+    else {
+      this.props.actions.generalProcess(constants.findEndpointDefinationById, this.props.routeParams);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
+    if(!isEmpty(nextProps.detail)){
+      this.setState(Object.assign(nextProps.detail, {loading: false, editMode: true}));
+    }
   }
 
   onChange = (e) => {
+    let value = e.target.value;
+
+    if(value === 'on'){
+      value = !this.state[e.target.name];
+    }
+
     if(e.target.name === 'authType')
       this.setState({auth: {}});
 
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: value
     });
 
   };
@@ -81,7 +100,24 @@ class EndPointDefination extends React.Component {
     this.file = data.contextData[0];
   };
 
-  getRemoveResponse = () => {
+  getRemoveResponse = () => {};
+
+  submit = () => {
+    let payload = {
+      address: this.state.address,
+      status: this.state.status,
+      protocol: this.state.protocol,
+      attachCert: this.state.attachCert,
+      certPhrase: this.state.certPhrase,
+      authType: this.state.authType,
+      requestType: this.state.requestType,
+      auth: this.state.auth
+    };
+    if(this.state.editMode){
+      payload._id = this.props.routeParams.id
+    }
+    this.props.actions.generalProcess(constants.upsertEndpointDefination, payload);
+    browserHistory.push('/endpoint');
   };
 
   render() {
@@ -107,7 +143,7 @@ class EndPointDefination extends React.Component {
                     <label className="control-label">{utils.getLabelByID("Type")}</label>
                   </div>
                   <div className="form-group col-md-8">
-                    <select name="databaseType" className="form-control" >
+                    <select name="requestType" className="form-control" onChange={this.onChange} value={this.state.requestType}>
                       <option disabled selected value="">{utils.getLabelByID("Select ...")}</option>
                       {this.requestTypes.map((option, index) => ( <option key={index} value={option.value}>{option.label}</option> ))}
                     </select>
@@ -150,7 +186,7 @@ class EndPointDefination extends React.Component {
                   <div className="form-group col-md-8">
                     <div className="icheck-list">
                       <label className="mt-checkbox mt-checkbox-outline margin-zero">
-                        <input type="checkbox" className="form-control" name="status" onChange={this.onChange} value={this.state.status}/>
+                        <input type="checkbox" className="form-control" name="status" onChange={this.onChange} checked={this.state.status}/>
                         <span/>
                       </label>
                     </div>
@@ -163,41 +199,44 @@ class EndPointDefination extends React.Component {
                   <div className="form-group col-md-8">
                     <div className="icheck-list">
                       <label className="mt-checkbox mt-checkbox-outline margin-zero">
-                        <input type="checkbox" className="form-control" name="attachCert" onChange={this.onChange} value={this.state.attachCert} />
+                        <input type="checkbox" className="form-control" name="attachCert" onChange={this.onChange} checked={this.state.attachCert} />
                         <span/>
                       </label>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="row">
-                <div className="form-group">
-                  <div className="portlet-title" style={{paddingBottom : "20px"}}>
-                    <div>
-                      <h4 style={{fontWeight: "bold"}}>{utils.getLabelByID("Certificate Passphrase")}</h4>
+              {!this.state.editMode && (<div>
+                <div className="row">
+                  <div className="form-group">
+                    <div className="portlet-title" style={{paddingBottom : "20px"}}>
+                      <div>
+                        <h4 style={{fontWeight: "bold"}}>{utils.getLabelByID("Certificate Passphrase")}</h4>
+                      </div>
                     </div>
+                    <textarea type="text" className="form-control" rows="4" name="certPhrase" onChange={this.onChange} value={this.state.certPhrase}> </textarea>
                   </div>
-                  <textarea type="text" className="form-control" rows="4" name="certPhrase" onChange={this.onChange} value={this.state.certPhrase}> </textarea>
                 </div>
-              </div>
-              <div className="row">
-                <div className="form-group">
-                  <div className="portlet-title" style={{paddingBottom : "20px"}}>
-                    <div>
-                      <h4 style={{fontWeight: "bold"}}>{utils.getLabelByID("Certificate")}</h4>
+
+                <div className="row">
+                  <div className="form-group">
+                    <div className="portlet-title" style={{paddingBottom : "20px"}}>
+                      <div>
+                        <h4 style={{fontWeight: "bold"}}>{utils.getLabelByID("Certificate")}</h4>
+                      </div>
                     </div>
+                    <FileUploader type="Document"
+                                  source=""
+                                  title = {"Upload Certificate"}
+                                  maxFiles="10"
+                                  showDropzone={!this.state.readOnly}
+                                  initialValues = {[]}
+                                  getUploadResponse={this.getImgResponse}
+                                  getRemoveResponse={this.getRemoveResponse}
+                                  showAttachementGrid={false}/>
                   </div>
-                  <FileUploader type="Document"
-                                source=""
-                                title = {"Upload Certificate"}
-                                maxFiles="10"
-                                showDropzone={!this.state.readOnly}
-                                initialValues = {[]}
-                                getUploadResponse={this.getImgResponse}
-                                getRemoveResponse={this.getRemoveResponse}
-                                showAttachementGrid={false}/>
                 </div>
-              </div>
+              </div>)}
               <div className="row">
                 <div className="form-group">
                   <div className="portlet-title" style={{paddingBottom : "20px"}}>
@@ -277,10 +316,13 @@ class EndPointDefination extends React.Component {
 }
 
 EndPointDefination.propTypes = {
+  detail: PropTypes.object
 };
 
 function mapStateToProps(state, ownProps) {
-  return {};
+  return {
+    detail: get(state.app, 'findEndpointDefinationById.data', {})
+  };
 }
 
 function mapDispatchToProps(dispatch) {
