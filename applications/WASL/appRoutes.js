@@ -3,22 +3,29 @@ import {Route} from 'react-router';
 
 import Locked from "../../core/components/AuthenticationScreens/Locked.jsx";
 import Login from "../../core/components/AuthenticationScreens/Login.jsx";
-//Payment Screen Route
 
+//Payment Screen Route
 import PaymentSearch from '../../applications/WASL/components/payment/PaymentSearch.js';
 import PaymentAdd from '../../applications/WASL/components/payment/PaymentAdd.js';
 
-//
+//Report Routes
+import ContractDetailReport from '../../applications/WASL/components/reports/contractDetailReport';
+import PaymentInstrumentReport from '../../applications/WASL/components/reports/paymentInstrumentReport';
+import EjariReport from '../../applications/WASL/components/reports/ejariReport';
+
 
 let authRoutes = <div>
   {/*<Route path="/sampleDashboard" component={sampleDashboard}/>*/}
-  //Payment Screen Route
 
   <Route path="/paymentSearch" component={PaymentSearch}/>
   <Route path="/paymentAdd/:id" component={PaymentAdd}/>
   <Route path="/paymentAdd" component={PaymentAdd}/>
+  <Route path="/paymentAdd" component={PaymentAdd}/>
 
-  //
+  <Route path="/contractDetailReport" component={ContractDetailReport}/>
+  <Route path="/paymentInstrumentReport" component={PaymentInstrumentReport}/>
+  <Route path="/ejariReport" component={EjariReport}/>
+
 
 </div>;
 

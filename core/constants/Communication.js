@@ -79,7 +79,7 @@ module.exports = {
   getTxByHash: baseUrl + "/API/Quorum/getTxByHash",
   getHealthData: baseUrl + "/API/Cipher/health",
 
-  getReportFilters: baseUrl + "/getFilter", //"/SIMU/reportFilters",
+  // getReportFilters: baseUrl + "/API/UI/getFilter",
 
   passwordChange: baseUrl + "/API/UI/passwordChange",
   passwordReset: baseUrl + "/API/UI/passwordReset",
