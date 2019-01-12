@@ -35,7 +35,6 @@ class AuditLogDetail extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
         if (nextProps.auditLogID != this.state.auditLogID) {
             var request = {
                 "id": nextProps.auditLogID,
@@ -45,7 +44,7 @@ class AuditLogDetail extends React.Component {
             this.props.actions.generalProcess(constants.getAuditLogDetail, request);
         }
         if (document.getElementById('diffoutput') != null) {
-            
+
             document.getElementById('diffoutput').innerHTML = "";
             this.diffUsingJS.bind(this, 0)
         }
@@ -55,7 +54,7 @@ class AuditLogDetail extends React.Component {
 
         if (viewType != 1) {
             try {
-                document.getElementById("diffoutput").innerHTML = ""                
+                document.getElementById("diffoutput").innerHTML = ""
             }
             catch (val) {
 
@@ -85,26 +84,17 @@ class AuditLogDetail extends React.Component {
     }
 
     convertJSONToString(value) {
-
-        //var sortdArray = this.sortJSON(value)
         let key = '_id'
         for (key in value) {
             if (value.hasOwnProperty(key) && key =="_id") {
-                
+
                 delete value[key];
             }
         }
-        
-        //stringify(obj)
         if(value)
-            //return JSON.stringify(value, Object.keys(value).sort(),2)
             return JSON.stringify(value, Object.keys(value).sort(),2)
-        else 
+        else
             return '';
-        //return stringify(value);
-        //return JSON.stringify(sortdArray, null, 2);
-
-
     }
     sortJSON(o) {
         try {
@@ -137,51 +127,17 @@ class AuditLogDetail extends React.Component {
     }
 
     render() {
-
-        let input1 = {
-            "loginResponse": {
-                "action": "login",
-                "data": {
-                    "message": {
-                        "status": "OK",
-                        "errorDescription": "Successfully Logged In",
-                        "routeTo": "routeToUser",
-                        "displayToUser": true
-                    },
-                    "success": true,
-                    "token": "uaiskdjhjkshdnmasjdknm"
-                }
-            }
-
-        }
-        let input2 = {
-            "loginResponse": {
-                "action": "login",
-                "data": {
-                    "message": {
-                        "status": "ERROR",
-                        "errorDescription": "Successfully Logged In",
-                        "routeTo": "routeToUser",
-                        "displayToUser": true
-                    },
-                    "success": true,
-                    "token": "uaiskdjhjkshdnmasjdknm"
-                }
-            }
-        }
         if (this.props.auditLogDetailData.current) {
             return (
-
-
                 <div>
                     <div className="form-body" id="auditTrailSection">
                         <div className="row">
-                            <textarea id="newText" style={{ display: "none" }} value={this.convertJSONToString(this.props.auditLogDetailData.current)}/>
-                            <textarea id="baseText" style={{ display: "none" }} value={this.convertJSONToString(this.props.auditLogDetailData.previous)}/>
+                            <textarea id="newText" style={{ display: "none"}} value={this.convertJSONToString(this.props.auditLogDetailData.current)}/>
+                            <textarea id="baseText" style={{ display: "none"}} value={this.convertJSONToString(this.props.auditLogDetailData.previous)}/>
 
                             <div class="viewType">
                                 <button type="submit" className="btn green" onClick={this.diffUsingJS.bind(this, 0)}>{"View JSON comparison"} </button>
-                                <div id="diffoutput" style={{width:3000}}>
+                                <div id="diffoutput">
                                 </div>
 
 
@@ -189,13 +145,10 @@ class AuditLogDetail extends React.Component {
                         </div>
                     </div>
                 </div >
-
             );
         }
         else
             return (<div></div>)
-
-
     }
 }
 AuditLogDetail.propTypes = {

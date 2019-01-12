@@ -8,6 +8,7 @@ import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import PickupListSetupForm from './PickupListSetupForm.jsx';
+import _ from 'lodash';
 
 class PickupListSetupContainer extends React.Component {
   constructor(props, context) {
@@ -17,7 +18,7 @@ class PickupListSetupContainer extends React.Component {
       pickupListID: undefined,
       consortiumNames: undefined,
       index: undefined,
-      isLoading: true
+      isLoading: false
     };
 
     this.submit = this.submit.bind(this);
@@ -30,24 +31,21 @@ class PickupListSetupContainer extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     if (this.props.pickupListID) {
+      this.setState({isLoading: true});
       this.props.actions.generalProcess(constants.getPickupListDetail, requestCreator.createPickupListDetailRequest(this.props.pickupListID));
     }
   }
 
-  componentWillUnmount() {
-
-  }
+  componentWillUnmount() {}
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.pickupListDetail !== this.state.pickupListDetail) {
-
+    if (this.props.pickupListID && (nextProps.pickupListDetail !== this.state.pickupListDetail)) {
       this.setState({
         pickupListID: nextProps.pickupListID,
         pickupListDetail: nextProps.pickupListDetail,
         isLoading: false
       });
     }
-
   }
 
   updateState(data) {
@@ -92,9 +90,9 @@ function mapStateToProps(state, ownProps) {
   let getTypeDataDetailByID;
   let typeName;
   let pickupListDetail;
-  if(state.app.getTypeDataDetailByID.data){
-    getTypeDataDetailByID = state.app.getTypeDataDetailByID.data;
-    typeName = state.app.getTypeDataDetailByID.data.typeName;
+  if(_.get(state.app.getTypeDataDetailByID,'data',{})){
+    getTypeDataDetailByID =_.get(state.app.getTypeDataDetailByID,'data',{});
+    typeName = _.get(getTypeDataDetailByID,'typeName',[]);
     pickupListDetail = getTypeDataDetailByID.data?  getTypeDataDetailByID :  (getTypeDataDetailByID.data=getTypeDataDetailByID[typeName]);
   }
 

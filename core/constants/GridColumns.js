@@ -206,14 +206,13 @@ module.exports = {
   ],
 
   entitySearch: [
-    { alias: "", key: "_id", type: "hiddenID" },
-    { alias: "ESEARCH_entityName", key: "entityName", type: "image" },
-    { alias: "ESEARCH_arabicName", key: "arabicName", type: "string" },
-    { alias: "ESEARCH_spCode", key: "spCode", type: "string" },
-    { alias: "ESEARCH_orgType", key: "orgType", type: "string" },
-    { alias: "ESEARCH_isActive", key: "isActive", type: "cbDisabled" },
-    { alias: "ESEARCH_status", key: "status", type: "statusLabel" },
-    { alias: "ESEARCH_action", key: "actions", type: "action" }
+    {alias: "", key: "_id", type: "hiddenID"},
+    {alias: "ESEARCH_entityName", key: "entityName", type: "image"},
+    {alias: "ESEARCH_arabicName", key: "arabicName", type: "string"},
+    {alias: "ESEARCH_spCode", key: "spCode", type: "string"},
+    {alias: "ESEARCH_orgType", key: "orgType", type: "string"},
+    {alias: "ESEARCH_isActive", key: "isActive", type: "cbDisabled"},
+    {alias: "ESEARCH_action", key: "actions", type: "action"}
   ],
 
   acquirerSearch: [
@@ -480,11 +479,11 @@ module.exports = {
 
   ],
   notifications: [
-    { alias: "COM_SerialNo", key: "", type: "serialNo" },
-    { alias: "NOTI_Level", key: "type", type: "icon" },
-    { alias: "NOTI_Message", key: "text", type: "string" },
-    { alias: "NOTI_Message", key: "createdAt", type: "epochDate1" },
-    { alias: "NOTI_Actions", key: "actions", type: "action" }
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "NOTI_Level", key: "type", type: "icon"},
+    {alias: "NOTI_Message", key: "text", type: "longString"},
+    {alias: "NOTI_Message", key: "createdAt", type: "epochDate1"},
+    {alias: "NOTI_Actions", key: "actions", type: "action"}
   ],
   SLAWorkboardData: [
     { alias: "SLA_img", key: "img", type: "imageBig" },
@@ -705,9 +704,9 @@ module.exports = {
     { alias: "APIDefScreen_SimuValue", key: "consortiumText", type: "string" },
     { alias: "APIDefScreen_SimuField", key: "channelText", type: "string" },
     { alias: "APIDefScreen_SimuField", key: "smartcontract", type: "string" },
-    
+
     { alias: "APIDefScreen_SimuValue", key: "displayText", type: "string" },
-    
+
     { alias: "EL_actions", key: "actions", type: "action" }
   ]
 

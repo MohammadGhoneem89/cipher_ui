@@ -96,6 +96,9 @@ class RoleSetupContainer extends React.Component {
             else
                 UINodes.push(child)
         }
+
+        APINodes[0].label = "API Permissions Core"; //" " +  APINodes[0].useCase
+        APINodes[1].label = "API Permissions" + " " + APINodes[1].useCase;
         this.props.groupDetail.UINodes = UINodes;
         this.props.groupDetail.APINodes = APINodes;
 

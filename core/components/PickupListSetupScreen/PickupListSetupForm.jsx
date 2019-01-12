@@ -3,6 +3,7 @@ import {reduxForm} from 'redux-form';
 import validate from './validate';
 import {TextInput} from '../../common/FormControls.jsx';
 import * as utils from '../../common/utils.js';
+import _ from 'lodash';
 
 
 const PickupListSetupForm = ({handleSubmit, updateState, pristine, reset, submitting, initialValues}) => {
@@ -18,7 +19,7 @@ const PickupListSetupForm = ({handleSubmit, updateState, pristine, reset, submit
           />
         </div>
       </div>
-      {initialValues.data[initialValues.typeName].map((item, index) => {
+      {_.get(initialValues,`data[${_.get(initialValues,'typeName','')}]`,[]).map((item, index) => {
         return <div className="row" key={index}>
           <div className="col-md-4 col-sm-4">
             <TextInput

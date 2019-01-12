@@ -1,6 +1,6 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import initialState from '../../../reducers/initialState.js';
 import * as actions from '../../../actions/generalAction';
 import * as constants from '../../../constants/Communication.js';
@@ -14,8 +14,8 @@ class HashSearchContainer extends React.Component {
         this.submit = this.submit.bind(this);
 
         this.state = {
-            filterCriteria: {hash: props.hash},
-            getTransactionByHash: {...initialState.getTransactionByHash},
+            filterCriteria: { hash: props.hash },
+            getTransactionByHash: { ...initialState.getTransactionByHash },
             searchResult: undefined,
             pageSize: 10,
             activePage: 1,
@@ -23,10 +23,55 @@ class HashSearchContainer extends React.Component {
         };
         this.pageChanged = this.pageChanged.bind(this);
     }
-    renderTranLogs(data){
-    if(data.transaction.scactions){
-    return( <div>
-          { data.transaction.scactions.map((td, index) => (
+    renderTranLogs(data) {
+        if (data.transaction.scactions) {
+            let decoded = []
+            let opous = JSON.parse(JSON.stringify(data.transaction.scactions), (k, v) => {
+                let key = "";
+                for (key in v) {
+                    if (key == 'type') {
+                        let buf = Buffer.from(v);
+                        return buf.toString();
+                    }
+                }
+
+                if (v instanceof Array) {
+                    console.log(JSON.stringify(v));
+                   
+                    v.forEach((elem) => {
+                        for (key in elem) {
+                            if (key == 'nonce') {
+                                let buf = Buffer.from(elem.payload);
+                               
+                                let payload=JSON.parse(buf.toString())
+                                let value=_.get(payload,'input.chaincode_spec.input.args',null)
+                                let decodedArgs=[]
+                                if(value){
+                                   
+                                    value.forEach((elem)=>{
+                                        let buf = Buffer.from(elem);
+                                        
+                                        decodedArgs.push(buf.toString())
+                                        
+                                    });
+                                }
+                              
+                                _.set(payload,'input.chaincode_spec.input.args',decodedArgs)
+                                decoded.push(payload);
+                                //return payload
+                                //elem.payload = JSON.parse(buf.toString());
+                            }
+                        }
+                    })
+                    return v;
+                   
+                } 
+                    return v;
+                
+            })
+
+            return (<div>
+                {opous.map((td, index) => (
                     <div>
                         <div className="row">
                             <div className="col-md-6">
@@ -40,14 +85,14 @@ class HashSearchContainer extends React.Component {
                         </div>
                         <div className="row">
                             <div className="col-md-12">
-                                <div className="col-md-12" style={{height: "auto"}}>
+                                <div className="col-md-12" style={{ height: "auto" }}>
                                     <textarea
-                                        style={{height:"30%",width:"100%"}}
-                                        disabled>{td.payload}</textarea>
+                                        style={{ height: "30%", width: "100%" }}
+                                        disabled>{JSON.stringify(decoded)}</textarea>
                                 </div>
                             </div>
                         </div>
-                    
+
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
@@ -60,17 +105,17 @@ class HashSearchContainer extends React.Component {
                         </div>
                         <div className="row">
                             <div className="col-md-12">
-                                <div className="col-md-12" style={{height: "auto"}}>
+                                <div className="col-md-12" style={{ height: "auto" }}>
                                     <textarea
-                                        style={{height:"30%",width:"100%"}}
+                                        style={{ height: "30%", width: "100%" }}
                                         disabled>{JSON.stringify(td.dataLogs)}</textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                 ))}
-                 </div>
+            </div>
             )
         }
 
@@ -78,7 +123,7 @@ class HashSearchContainer extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.getTransactionByHash.data) {
             this.setState({
-                filterCriteria: {hash: nextProps.hash},
+                filterCriteria: { hash: nextProps.hash },
                 getTransactionByHash: nextProps.getTransactionByHash,
                 searchResult: nextProps.getTransactionByHash.data.searchResult,
                 isLoading: false
@@ -95,8 +140,8 @@ class HashSearchContainer extends React.Component {
                 hash: this.state.filterCriteria.hash,
                 currentPageNo: 1,
                 pageSize: this.state.pageSize,
-                "function":"TRNXHASH",
-                "arguments":[this.state.filterCriteria.hash]
+                "function": "TRNXHASH",
+                "arguments": [this.state.filterCriteria.hash]
             });
         }
     }
@@ -113,10 +158,10 @@ class HashSearchContainer extends React.Component {
             hash: data.hash,
             currentPageNo: 1,
             pageSize: this.state.pageSize,
-            "function":"TRNXHASH",
-            "arguments":[data.hash]
+            "function": "TRNXHASH",
+            "arguments": [data.hash]
         });
-        this.setState({filterCriteria: data, activePage: 1});
+        this.setState({ filterCriteria: data, activePage: 1 });
     }
 
     pageChanged(pageNo) {
@@ -125,10 +170,10 @@ class HashSearchContainer extends React.Component {
             hash: this.state.filterCriteria.hash,
             currentPageNo: pageNo,
             pageSize: this.state.pageSize,
-            "function":"TRNXHASH",
-            "arguments":[this.state.filterCriteria.hash]
+            "function": "TRNXHASH",
+            "arguments": [this.state.filterCriteria.hash]
         });
-        this.setState({activePage: pageNo});
+        this.setState({ activePage: pageNo });
     }
 
     render() {
@@ -136,7 +181,7 @@ class HashSearchContainer extends React.Component {
             <div>
                 <Portlet title={"Criteria"}>
                     <BlockSearchForm onSubmit={this.submit} initialValues={this.state.filterCriteria}
-                                     state={this.state}/>
+                        state={this.state} />
                 </Portlet>
                 {this.state.searchResult && <Portlet title={"Transaction Detail"}>
                     <div className="row">
@@ -196,7 +241,7 @@ class HashSearchContainer extends React.Component {
                                     fontWeight: "bold"
                                 }}>{utils.getLabelByID("BTL_Version")}:</label>
                                 <div className="col-md-7">
-                                   <span>{this.state.searchResult.transaction.header.version}</span>
+                                    <span>{this.state.searchResult.transaction.header.version}</span>
                                 </div>
                             </div>
                         </div>

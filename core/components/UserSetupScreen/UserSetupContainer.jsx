@@ -1,16 +1,16 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import initialState from '../../reducers/initialState.js';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import Portlet from '../../common/Portlet.jsx';
 import UserSetupForm from './UserSetupForm.jsx'
-import {SubmissionError, initialize} from 'redux-form'
+import { SubmissionError, initialize } from 'redux-form'
 import config from '../../../config';
 
-
+let arr = []
 class UserSetupContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -20,7 +20,8 @@ class UserSetupContainer extends React.Component {
       userID: undefined,
       typeData: undefined,
       isLoading: true,
-      entityNames: undefined
+      entityNames: undefined,
+      permissionTypeData : []
     };
 
     this.submit = this.submit.bind(this);
@@ -60,7 +61,7 @@ class UserSetupContainer extends React.Component {
   resetPassword() {
 
     if (this.state.userID) {
-      let request = {"userID": this.state.userID};
+      let request = { "userID": this.state.userID };
       this.props.actions.generalProcess(constants.passwordReset, request);
     }
 
@@ -95,11 +96,12 @@ class UserSetupContainer extends React.Component {
 
 	updatedData.passwordHashType  = 'sha512';
     updatedData.groups = groupsListUpdate;
+    updatedData.passwordHashType = "SHA512";
+
     let dataSubmit = {
       "action": "userInsert",
       "data": updatedData
     };
-
 
     if (this.state.userID)
       return this.props.actions.reduxFormProcess(constants.userUpdate, dataSubmit)
@@ -115,13 +117,16 @@ class UserSetupContainer extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
+      let perTypeData = this.getPermissionTypeData(nextProps.permission)
     if (nextProps.userDetail.groups && nextProps.entityNames && nextProps.typeData) {
+
       this.setState({
         userDetail: nextProps.userDetail,
         pageActions: nextProps.pageActions,
         typeData: nextProps.typeData,
         isLoading: false,
-        entityNames: nextProps.entityNames
+        entityNames: nextProps.entityNames,
+        permissionTypeData : perTypeData
       });
     }
     else if (!nextProps.userID && nextProps.entityNames && nextProps.typeData) {
@@ -129,10 +134,27 @@ class UserSetupContainer extends React.Component {
         userDetail: initialState.userDetails.data,
         pageActions: nextProps.pageActions,
         typeData: nextProps.typeData,
-        entityNames: nextProps.entityNames
+        entityNames: nextProps.entityNames,
+        permissionTypeData : perTypeData
       });
     }
   }
+
+  getPermissionTypeData = (permission) => {
+
+    let arr = [];
+    for(let obj of permission){
+      if(obj.label == "Dashboard"){
+        for(let a of obj.children){
+          let json = {};
+          json.label = a.label;
+          json.value = a.pageURI;
+          arr.push(json);
+        }
+      }
+    }
+    return arr;
+  };
 
   render() {
 
@@ -163,10 +185,15 @@ class UserSetupContainer extends React.Component {
       }
 
       return (
+
         <Portlet title={"User"}>
-          <UserSetupForm onSubmit={this.submit} initialValues={this.state.userDetail}
-                         pageActions={this.state.pageActions}
-                         containerState={this.state} containerProps={this.props} resetPassword={this.resetPassword}/>
+          < UserSetupForm
+            onSubmit={this.submit}
+            initialValues={this.state.userDetail}
+            pageActions={this.state.pageActions}
+            containerState={this.state}
+            containerProps={this.props}
+            resetPassword={this.resetPassword} />
         </Portlet>
       );
     }
@@ -179,12 +206,14 @@ class UserSetupContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   let userID = ownProps.params.userID;
   if (userID) {
+    // console.log(state.app.entityList.data.typeData.entityNames, "peeeerrrrrrmmmmmissssionsssss")
     return {
       userDetail: state.app.userDetails.data.searchResult,
       pageActions: state.app.userDetails.data.actions,
       userID: ownProps.params.userID,
       entityNames: state.app.entityList.data.typeData.entityNames,
-      typeData: state.app.typeData.data
+      typeData: state.app.typeData.data,
+      permission : state.app.permissionData.data.menuPermissions
     };
   }
   else {
@@ -194,7 +223,8 @@ function mapStateToProps(state, ownProps) {
       pageActions: state.app.userDetails.data.actions,
       userID: undefined,
       entityNames: state.app.entityList.data.typeData.entityNames,
-      typeData: state.app.typeData.data
+      typeData: state.app.typeData.data,
+      permission : state.app.permissionData.data.menuPermissions
     };
   }
 }

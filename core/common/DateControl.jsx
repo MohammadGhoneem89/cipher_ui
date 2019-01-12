@@ -41,6 +41,7 @@ class DateControl extends React.Component {
         const showToday = this.props.showToday || false;
         const defaultText = this.props.defaultValue || "";
         const className = this.props.className || "form-group";
+
         const dateControlID = this.props.id || "datePicker";
         return (
             <div id={dateControlID}>

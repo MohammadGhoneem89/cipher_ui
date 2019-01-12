@@ -2,6 +2,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import _ from 'lodash';
 import * as actions from '../../../actions/generalAction';
 /*container specific imports*/
 import Table from '../../../common/Datatable.jsx';
@@ -10,6 +11,8 @@ import * as constants from '../../../constants/Communication.js';
 import cloneDeep from 'lodash/cloneDeep';
 import * as requestCreator from '../../../common/request.js';
 import CreateSmartContractForm from './CreateSmartContractForm.jsx'
+
+
 const initialState = {
   smartContractData: {
     "type":"",

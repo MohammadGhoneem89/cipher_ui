@@ -106,6 +106,7 @@ class ConsortiumSearchContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     if (state.app.ConsortiumList) {
+        console.log(state.app.ConsortiumList,"COOONSSSSSORTIUUUUUUMMMMMMMMMM")
         return {
             consortiumList: state.app.ConsortiumList,
             typeData: state.app.typeData

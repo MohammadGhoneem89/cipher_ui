@@ -59,9 +59,6 @@ class SmartContractList extends React.Component {
             }
         }
         this.setState({ currentPageNo: 1 })
-        console.log(JSON.stringify(request))
-
-
         return request;
     }
     componentWillReceiveProps(nextProps) {
@@ -118,7 +115,7 @@ class SmartContractList extends React.Component {
 
             this.setState({ currentPageNo: pageNo })
 
-            this.props.actions.generalProcess(constants.getSmartContractListData, request);
+            this.props.actions.generalProcess(constants.getSmartContractList, request);
 
         }
     }
@@ -187,13 +184,19 @@ class SmartContractList extends React.Component {
                             </div>
                         </div>
                     </div>
-
                     <Portlet title={utils.getLabelByID("SmartContractList")} isPermissioned={true} 
                     actions={this.state.actions}>
-                        <Table fontclass="" gridColumns={utils.getGridColumnByName("SmartContractListData")} gridData={this.props.SmartContractListData.data.searchResult}
-                            totalRecords={this.props.SmartContractListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
-                            pagination={true} pageChanged={this.pageChanged} export={false} search={true}
-                            activePage={this.state.currentPageNo} />
+                        <Table fontclass=""
+                               gridColumns={utils.getGridColumnByName("SmartContractListData")}
+                               gridData={this.props.SmartContractListData.data.searchResult}
+                               totalRecords={this.props.SmartContractListData.pageData.totalRecords}
+                               searchCallBack={this.searchCallBack}
+                               pageSize={10}
+                               pagination={true}
+                               pageChanged={this.pageChanged}
+                               export={false}
+                               search={true}
+                               activePage={this.state.currentPageNo} />
                     </Portlet>
 
 

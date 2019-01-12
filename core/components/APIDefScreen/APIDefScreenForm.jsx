@@ -5,9 +5,9 @@ import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
 import DateControl from '../../common/DateControl.jsx';
 import get from 'lodash/get';
+import filter from 'lodash/filter';
 
-const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange }) => {
-
+const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequestTypeChange, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange }) => {
   return (
     <Portlet title={utils.getLabelByID("APIDefinitionScreen_Heading")}>
       <div className="row">
@@ -86,7 +86,26 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                     <div className="form-group col-md-8">
                       <div className="icheck-list">
                         <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                        <label/>
                           <input type="checkbox" className="form-control" onChange={onInputChange} checked={initialValues.isActive} name="isActive" id="isActive" />
+                        <span/>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label className="form-group control-label col-md-4" style={{
+                      textAlign: "left",
+                      fontWeight: "normal"
+                    }}>{utils.getLabelByID("APIDefScreen_isBlchn")}</label>
+                    <div className="form-group col-md-8">
+                      <div className="icheck-list">
+                        <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                          <label/>
+                          <input type="checkbox" className="form-control" onChange={onInputChange} checked={initialValues.isBlockchain} name="isBlockchain" id="isBlockchain" />
+                          <span/>
                         </label>
                       </div>
                     </div>
@@ -355,6 +374,7 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                 }}>{utils.getLabelByID("Database Type")}</label>
                                 <div className="form-group col-md-8">
                                   <select id="databaseType" name="databaseType" className="form-control" value={initialValues.databaseType} onChange={onInputChange}>
+                                    <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                     {
                                       typeData.database_types.map((option, index) => {
                                         return (
@@ -374,8 +394,9 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                 }}>{utils.getLabelByID("Adaptors")}</label>
                                 <div className="form-group col-md-8">
                                   <select id="adaptor" name="adaptor" className="form-control" value={initialValues.adaptor} onChange={onInputChange}>
+                                    <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                     {
-                                      get(parentState, `getAdaptorsList[${initialValues.databaseType || 'mongo'}]`, []).map((option, index) => {
+                                      get(parentState, `getAdaptorsList[${parentState.databaseType || 'mongo'}]`, []).map((option, index) => {
                                         return (
                                           <option key={index} value={option.value}>{option.label}</option>
                                         );
@@ -393,8 +414,9 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                 }}>{utils.getLabelByID("Object Type")}</label>
                                 <div className="form-group col-md-8">
                                   <select id="objectType" name="objectType" className="form-control" value={initialValues.objectType} onChange={onInputChange}>
+                                    <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                     {
-                                      typeData.database_object_types.map((option, index) => {
+                                      filter(typeData.database_object_types, {type: parentState.databaseType || 'mongo'}).map((option, index) => {
                                         return (
                                           <option key={index} value={option.value}>{option.label}</option>
                                         );
@@ -412,6 +434,7 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                 }}>{utils.getLabelByID("Available Objects")}</label>
                                 <div className="form-group col-md-8">
                                   <select id="availableObjects" name="availableObjects" className="form-control" value={initialValues.availableObjects} onChange={onInputChange}>
+                                    <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                     {
                                       get(parentState, `getAvailableObjectsList`, []).map((option, index) => {
                                         return (
@@ -431,7 +454,7 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                 <div className="icheck-list">
                                   <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
                                     <label/>
-                                    <input type="checkbox" className="form-control" onChange={onInputChange} name="isEnablePagine" id="isEnablePagine" checked={initialValues.isEnablePagine} />
+                                    <input type="checkbox" className="form-control" onChange={onInputChange} name="isEnablePagination" id="isEnablePagination" checked={initialValues.isEnablePagination} />
                                     <span/>
                                   </label>
                                 </div>
@@ -468,10 +491,11 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                           }}>{utils.getLabelByID("DB Field")}</label>
                                           <div className="form-group col-md-8">
                                             <select id="requestDBField" name="requestDBField" className="form-control" value={initialValues.requestDBField} onChange={onInputChange}>
+                                              <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
                                                 get(parentState, 'getDBFields', []).map((option, index) => {
                                                   return (
-                                                    <option key={index} value={option.value}>{option.label}</option>
+                                                    <option key={index} value={option.name}>{option.label}</option>
                                                   );
                                                 })
                                               }
@@ -487,10 +511,11 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                           }}>{utils.getLabelByID("Request Mapping Field")}</label>
                                           <div className="form-group col-md-8">
                                             <select id="requestMappingField" name="requestMappingField" className="form-control" value={initialValues.requestMappingField} onChange={onInputChange}>
+                                              <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
-                                                get(dropdownItems, 'REQUEST', []).map((option, index) => {
+                                                get(parameters, `${parentState.RequestMapping}`, []).map((option, index) => {
                                                   return (
-                                                    <option key={index} value={option.label}>{option.label}</option>
+                                                    <option key={index} value={option.IN_FIELD}>{option.IN_FIELD}</option>
                                                   );
                                                 })
                                               }
@@ -543,10 +568,11 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                           }}>{utils.getLabelByID("DB Field")}</label>
                                           <div className="form-group col-md-8">
                                             <select id="responseBDField" name="responseBDField" className="form-control" value={initialValues.responseBDField} onChange={onInputChange}>
+                                              <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
                                                 get(parentState, 'getDBFields', []).map((option, index) => {
                                                   return (
-                                                    <option key={index} value={option.value}>{option.label}</option>
+                                                    <option key={index} value={option.name}>{option.label}</option>
                                                   );
                                                 })
                                               }
@@ -562,10 +588,11 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                           }}>{utils.getLabelByID("Response Mapping Field")}</label>
                                           <div className="form-group col-md-8">
                                             <select id="responseMappingField" name="responseMappingField" className="form-control" value={initialValues.responseMappingField} onChange={onInputChange}>
+                                              <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
-                                                get(dropdownItems, 'RESPONSE', []).map((option, index) => {
+                                                get(parameters, `${parentState.ResponseMapping}`, []).map((option, index) => {
                                                   return (
-                                                    <option key={index} value={option.label}>{option.label}</option>
+                                                    <option key={index} value={option.IN_FIELD}>{option.IN_FIELD}</option>
                                                   );
                                                 })
                                               }
@@ -601,7 +628,15 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                                 </div>
                               </div>
                             </div>
-
+                            <div className="col-md-12">
+                              <div className="col-md-12">
+                                <div className="btn-toolbar pull-right">
+                                  <button type="submit" onClick={generateCustomFile} className="btn green"><i
+                                    className="fa fa-paper-plane" />{' '}{utils.getLabelByID("Generate")}
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -862,7 +897,8 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                         fontWeight: "normal"
                       }}>{utils.getLabelByID("APIDefScreen_RequestMapping")}</label>
                       <div className="form-group col-md-8">
-                        <select name="RequestMapping" value={initialValues.RequestMapping} disabled={initialValues.isValBypass} onChange={onInputChangeRequest} className="form-control">
+                        <select name="RequestMapping" value={parentState.RequestMapping} disabled={initialValues.isValBypass} onChange={onInputChangeRequest} className="form-control">
+                          <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                           {dropdownItems.REQUEST &&
                             dropdownItems.REQUEST.map((option, index) => {
                               return (
@@ -881,7 +917,8 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                         fontWeight: "normal"
                       }}>{utils.getLabelByID("APIDefScreen_ResponseMapping")}</label>
                       <div className="form-group col-md-8">
-                        <select name="ResponseMapping" value={initialValues.ResponseMapping} disabled={initialValues.isResValBypass || initialValues.isSimulated} onChange={onInputChange} className="form-control">
+                        <select name="ResponseMapping" value={parentState.ResponseMapping} disabled={initialValues.isResValBypass || initialValues.isSimulated} onChange={onInputChange} className="form-control">
+                          <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                           {dropdownItems.RESPONSE &&
                             dropdownItems.RESPONSE.map((option, index) => {
                               return (
@@ -902,7 +939,9 @@ const APIDefScreenForm = ({ addParams, onRequestTypeChange, addRowRule, onInputR
                       <div className="form-group col-md-8">
                         <div className="icheck-list">
                           <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                            <label/>
                             <input type="checkbox" className="form-control" onChange={onInputChange} name="isValBypass" id="isValBypass" checked={initialValues.isValBypass} />
+                            <span/>
                           </label>
                         </div>
                       </div>

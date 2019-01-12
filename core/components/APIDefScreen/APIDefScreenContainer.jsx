@@ -9,6 +9,7 @@ import * as requestCreator from '../../common/request.js';
 import APIDefScreenForm from './APIDefScreenForm.jsx';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
+import find from 'lodash/find';
 
 const initialState = {
   APIDefinitionAddUpdate: {
@@ -63,7 +64,8 @@ const initialState = {
   isCustom: true,
   isStale: false,
   requestParams: [],
-  responseParams: []
+  responseParams: [],
+  generateMappingFile: {}
 };
 class APIDefinitionScreen extends React.Component {
 
@@ -279,9 +281,16 @@ class APIDefinitionScreen extends React.Component {
     data.push(newtupple);
     this.setState({ simucases: data });
   }
+
+  getRequestResponseMapping = (val, type, MappingConfigList) => {
+
+    MappingConfigList = MappingConfigList || this.state.MappingConfigList;
+    let let1 = find(get(MappingConfigList, type, []), {value: val});
+    let1 = let1 || {};
+    this.props.actions.generalProcess(constants.getMappingConfigByID, {mappingName: let1.label});
+  };
+
   componentDidMount() {
-
-
     this.props.actions.generalProcess(constants.getConsortiumTypeList);
     this.props.actions.generalProcess(constants.getMappingList);
     this.props.actions.generalProcess(constants.getAdaptorsList);
@@ -293,7 +302,8 @@ class APIDefinitionScreen extends React.Component {
     this.props.actions.generalProcess(constants.getDBFields, {
       database: this.state.databaseType || 'postgres',
       adaptor: this.state.adaptor || 'adaptor4',
-      table: this.state.availableObjects || 'adaptor4',
+      object: this.state.availableObjects || '',
+      objectType: this.state.objectType || '',
     });
 
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES','bchain_rule_Type']));
@@ -320,6 +330,14 @@ class APIDefinitionScreen extends React.Component {
 
   }
   componentWillReceiveProps(nextProps) {
+    if(nextProps.parameters){
+
+      let params = this.state.parameters || {};
+
+      this.setState({
+        parameters: Object.assign(params, nextProps.parameters)
+      })
+    }
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE" && this.props.useCase === get(nextProps, 'APIDefinitionAddUpdate.data.useCase') && this.props.route === get(nextProps, 'APIDefinitionAddUpdate.data.route')) {
 
       if (nextProps.APIDefinitionAddUpdate.data.simucases) {
@@ -336,6 +354,7 @@ class APIDefinitionScreen extends React.Component {
         });
       }
       if (this.state.isStale === false) {
+
         this.setState({
           APIDefinitionAddUpdate: cloneDeep(nextProps.APIDefinitionAddUpdate.data),
           rules: nextProps.APIDefinitionAddUpdate.data.rules || []
@@ -354,11 +373,21 @@ class APIDefinitionScreen extends React.Component {
       });
     }
     if (nextProps.MappingConfigData && nextProps.MappingConfigData.REQUEST && nextProps.MappingConfigData.RESPONSE) {
-
       this.setState({
         MappingConfigList: nextProps.MappingConfigData,
-
       });
+      if(get(nextProps, 'APIDefinitionAddUpdate.data.RequestMapping', false) && !this.state.requestDone){
+        this.getRequestResponseMapping(nextProps.APIDefinitionAddUpdate.data.RequestMapping, 'REQUEST', nextProps.MappingConfigData);
+        this.setState({
+          requestDone: true
+        })
+      }
+      if(get(nextProps, 'APIDefinitionAddUpdate.data.ResponseMapping', false) && !this.state.responseDone){
+        this.getRequestResponseMapping(nextProps.APIDefinitionAddUpdate.data.ResponseMapping, 'RESPONSE', nextProps.MappingConfigData);
+        this.setState({
+          responseDone: true
+        })
+      }
     }
 
     if (nextProps.ConsortiumTypeData.data && nextProps.ConsortiumTypeData.data.consortium) {
@@ -385,9 +414,14 @@ class APIDefinitionScreen extends React.Component {
       getDBFields: nextProps.getDBFields,
       getAvailableObjectsList: nextProps.getAvailableObjectsList
     });
+    if(nextProps.generateMappingFile.data){
+      this.setState({
+        generateMappingFile: nextProps.generateMappingFile.data
+      })
+    }
   }
 
-  formSubmit(e) {
+  formSubmit(e, generate) {
     let data = cloneDeep(this.state.APIDefinitionAddUpdate);
     if (data.route.trim() == "") {
       alert("route must be defined");
@@ -408,10 +442,10 @@ class APIDefinitionScreen extends React.Component {
         alert("ServiceURL must be defined!");
         return false;
       }
-      if (data.communicationMode === "QUEUE" && (data.requestServiceQueue.trim() == "" || data.responseQueue.trim() == "")) {
-        alert("Request and Response Queue must be defined!");
-        return false;
-      }
+      // if (data.communicationMode === "QUEUE" && (data.requestServiceQueue.trim() == "" || data.responseQueue.trim() == "")) {
+      //   alert("Request and Response Queue must be defined!");
+      //   return false;
+      // }
     }
     if (data.isBlockchain === true && this.state.rules.length === 0) {
       alert("at least 1 blockchain routing rule must be defined must be defined!");
@@ -432,12 +466,20 @@ class APIDefinitionScreen extends React.Component {
       }
     }
     //alert(data.billingDate);
-
-
+    data.adaptor = this.state.adaptor;
+    data.database = this.state.databaseType;
+    data.objectType = this.state.objectType;
+    data.object = this.state.availableObjects;
+    data.conditions = this.state.requestParams;
+    data.fields = this.state.responseParams;
+    data.enablePaging = this.state.isEnablePagination;
+    data.enableActions = this.state.isEnablComponentAction;
     data.rules = this.state.rules;
     data.RequestMapping = (data.RequestMapping === "" ? this.state.MappingConfigList.REQUEST[0].value : data.RequestMapping);
     data.ResponseMapping = (data.ResponseMapping === "" ? this.state.MappingConfigList.RESPONSE[0].value : data.ResponseMapping);
     data.simucases = this.state.simucases;
+    data.CustomMappingFile = this.state.generateMappingFile.path;
+    data.MappingfunctionName = this.state.generateMappingFile.functionName;
     this.props.actions.generalProcess(constants.upsertAPIDefinition, data);
   }
 
@@ -454,11 +496,16 @@ class APIDefinitionScreen extends React.Component {
       [e.target.name]: value
     });
 
-    if(e.target.name === 'databaseType' || e.target.name === 'adaptor' || e.target.name === 'availableObjects'){
+    if(e.target.name === 'ResponseMapping'){
+      this.getRequestResponseMapping(value, 'RESPONSE');
+    }
+    if(e.target.name === 'databaseType' || e.target.name === 'adaptor' || e.target.name === 'availableObjects' || e.target.name === 'objectType'){
       let param = {
         database: this.state.databaseType || 'mongo',
         adaptor: this.state.adaptor || 'adaptor1',
         table: this.state.availableObjects || '',
+        object: this.state.availableObjects || '',
+        objectType: this.state.objectType|| '',
       };
       if(e.target.name === 'databaseType'){
         param.database = value
@@ -468,6 +515,12 @@ class APIDefinitionScreen extends React.Component {
       }
       if(e.target.name === 'availableObjects'){
         param.table = value
+      }
+      if(e.target.name === 'availableObjects'){
+        param.object = value
+      }
+      if(e.target.name === 'objectType'){
+        param.objectType = value
       }
       this.props.actions.generalProcess(constants.getAvailableObjectsList, param);
       this.props.actions.generalProcess(constants.getDBFields, param);
@@ -480,9 +533,18 @@ class APIDefinitionScreen extends React.Component {
       isBlockchainProcess: false,
       isOffchainGet: false
     });
+
+    if(e.target.name === 'isOffchainGet'){
+      this.state.APIDefinitionAddUpdate['isCustomMapping'] = true;
+      this.setState({
+        isCustomMapping: true
+      });
+    }
+
     this.setState({
       [e.target.name]: !this.state[e.target.name]
     });
+
   };
 
   onInputChangeRequest = (e) => {
@@ -493,6 +555,11 @@ class APIDefinitionScreen extends React.Component {
     } else {
       value = e.target.value;
     }
+
+    if(e.target.name === 'RequestMapping'){
+      this.getRequestResponseMapping(value, 'REQUEST');
+    }
+
     let req = { _id: value }
     this.props.actions.generalProcess(constants.getMappingConfigOrgFieldData, req);
     this.state.APIDefinitionAddUpdate[e.target.name] = value;
@@ -511,8 +578,8 @@ class APIDefinitionScreen extends React.Component {
       case 'request':
         let params = this.state.requestParams;
         params.push({
-          dbField: this.state.requestBDField,
-          mappingField: this.state.requestMappingField
+          name: this.state.requestDBField,
+          value: this.state.requestMappingField
         });
         this.setState({
           requestParams: params
@@ -521,8 +588,8 @@ class APIDefinitionScreen extends React.Component {
       case 'response':
         let params1 = this.state.responseParams;
         params1.push({
-          dbField: this.state.responseBDField,
-          mappingField: this.state.responseMappingField
+          name: this.state.responseBDField,
+          as: this.state.responseMappingField
         });
         this.setState({
           responseParams: params1
@@ -530,15 +597,28 @@ class APIDefinitionScreen extends React.Component {
         break;
     }
   };
+  generateCustomFile = (e) =>{
+    let data = {};
+    data.useCase = this.state.useCase;
+    data.route = this.state.route;
+    data.adaptor = this.state.adaptor;
+    data.database = this.state.databaseType;
+    data.objectType = this.state.objectType;
+    data.object = this.state.availableObjects;
+    data.conditions = this.state.requestParams;
+    data.fields = this.state.responseParams;
+    data.enablePaging = this.state.isEnablePagination;
+    data.enableActions = this.state.isEnablComponentAction;
+
+    this.props.actions.generalProcess(constants.generateMappingFile, data);
+  };
 
   render() {
-
-
     if (this.state.isLoading) {
       return (<div className="loader">isLoading...</div>)
     }
     return (
-      <APIDefScreenForm addParams={this.addParams} onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule} onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine} onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} parentState={this.state} />)
+      <APIDefScreenForm parameters={this.state.parameters} generateCustomFile={this.generateCustomFile} addParams={this.addParams} onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule} onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine} onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} parentState={this.state} />)
   }
   ActionHandlers({ actionName, index }) {
 
@@ -647,10 +727,17 @@ APIDefinitionScreen.propTypes = {
   getAdaptorsList: PropTypes.object,
   getAvailableObjectsList: PropTypes.object,
   getDBFields: PropTypes.object,
-  ConsortiumTypeData: PropTypes.object
+  ConsortiumTypeData: PropTypes.object,
+  parameters: PropTypes.object
 };
 
 function mapStateToProps(state, ownProps) {
+  let parameters  = {};
+  let params = get(state.app, 'AddUpdateMapping.data.MappingConfig', {});
+  params = params || {};
+  if(params._id){
+    parameters[params._id] = params.fields;
+  }
   return {
     MappingOrgFieldData: state.app.MappingOrgFieldData,
     APIDefinitionAddUpdate: state.app.APIDefinitionAddUpdate,
@@ -661,7 +748,9 @@ function mapStateToProps(state, ownProps) {
     ConsortiumTypeData: state.app.ConsortiumTypeData,
     getAdaptorsList: get(state.app, 'getAdaptorsList.data', []),
     getDBFields: get(state.app, 'getDBFields.data', []),
-    getAvailableObjectsList: get(state.app, 'getAvailableObjectsList.data', [])
+    getAvailableObjectsList: get(state.app, 'getAvailableObjectsList.data', []),
+    generateMappingFile: get(state.app, 'generateMappingFile', {}),
+    parameters: parameters
   };
 }
 
