@@ -17,7 +17,7 @@ class EndPointList extends React.Component {
       loading: true,
       address: '',
       page: {
-        pageSize: 2,
+        pageSize: 10,
         currentPageNo: 1
       }
     };
