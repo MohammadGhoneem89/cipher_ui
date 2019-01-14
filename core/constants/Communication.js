@@ -184,4 +184,5 @@ module.exports = {
   getNetworkListData:baseUrl+ "/API/core/getNetworkList",
   findEndpointDefinationById:baseUrl+ "/API/core/findEndpointDefinationById",
   upsertEndpointDefination:baseUrl+ "/API/core/upsertEndpointDefination",
+  findEndpointDefination:baseUrl+ "/API/core/findEndpointDefination",
 };

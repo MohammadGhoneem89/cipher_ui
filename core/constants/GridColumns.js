@@ -830,9 +830,11 @@ module.exports = {
   ],
   EndPointList: [
     { alias: "Endpoint Address", key: "address", type: "string" },
-    { alias: "Active", key: "status", type: "string" },
-    { alias: "Protocol", key: "protocol", type: "string" },
-    { alias: "Authorization", key: "auth", type: "string" }
+    { alias: "Authorization Type", key: "authType", type: "string" },
+    { alias: "Request Type", key: "requestType", type: "string" },
+    { alias: "Status Active", key: "status", type: "cbDisabled" },
+    { alias: "Certificate Attached", key: "attachCert", type: "cbDisabled" },
+    { alias: "Actions", key: "actions", type: "action" }
   ]
 };
 
