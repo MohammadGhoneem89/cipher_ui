@@ -15,6 +15,9 @@ class ReportFilters extends React.Component {
         this.state = {
             entityNames: props.entityNames,
             acquirerNames: props.acquirerNames,
+            contractStatus : props.contractStatus,
+            instrumentStatus : props.instrumentStatus,
+            paymentMethod : props.paymentMethod,
             error: undefined,
             downloading: false
         };
@@ -106,10 +109,17 @@ class ReportFilters extends React.Component {
             "lang": language
         };
 
+        console.log(": : : : : ", fitlerCriteria)
         if (sessionStorage.orgType === "Entity")
             fitlerCriteria.entity = [];
         if (sessionStorage.orgType === "Acquirer")
             fitlerCriteria.acquirer = [];
+        if(fitlerCriteria.contractStatus && fitlerCriteria.contractStatus.length > 1)
+            fitlerCriteria.contractStatus = [];
+        if(fitlerCriteria.instrumentStatus && fitlerCriteria.instrumentStatus.length > 1)
+            fitlerCriteria.instrumentStatus = [];
+        if(fitlerCriteria.paymentMethod && fitlerCriteria.paymentMethod.length > 1)
+            fitlerCriteria.paymentMethod = [];
         console.log(JSON.stringify(fitlerCriteria));
         fitlerCriteria = this.b64EncodeUnicode(JSON.stringify(fitlerCriteria));
         nationalization = this.b64EncodeUnicode(JSON.stringify(nationalization))
@@ -117,7 +127,6 @@ class ReportFilters extends React.Component {
 
         let link = document.createElement('a');
         link.href = constants.report + "/Report/" + this.props.reportID + '?id=' + this.props.reportID + '&searchCriteria=' + fitlerCriteria + '&JWT=' + sessionStorage.token + "&language=" + nationalization + "&reportFormat=" + reportFormat;
-        console.log(" - - - - ", link);
         link.download = "download";
         link.click();
 
@@ -128,7 +137,7 @@ class ReportFilters extends React.Component {
     }
 
     getTextBox(filter) {
-        return (<div className="row">
+        return (
             <div className="col-md-6">
                 <div className="form-group col-md-4">
                     <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
@@ -137,41 +146,31 @@ class ReportFilters extends React.Component {
                     <input type="text" className="form-control " id={filter["id"]} />
                 </div>
             </div>
-        </div>
+
         )
 
     }
 
     getDropDown(filter) {
         let list = [];
-        if (filter["id"] === "Entity" || filter["id"] === "entity") {
-
-            if (!(sessionStorage.orgType === "Entity"))
-                list = this.props.entityNames;
-            else
-                return ("");
+        if (filter["id"] === "contractStatus") {
+            list = this.props.contractStatus
         }
 
-        else if (filter["id"] == "Acquirer" || filter["id"] == "bank" || filter["id"] == "acquirer") {
-            if (!(sessionStorage.orgType === "Acquirer"))
-                list = this.props.acquirerNames;
-            else
-                return ("");
+        else if (filter["id"] === "instrumentStatus") {
+            list = this.props.instrumentStatus
         }
-        else if (filter["id"] == "entityService") {
-            if (sessionStorage.orgType === "Entity")
-                list = this.props.entityService[0].services
-            else
-                return ("");
+
+        else if (filter["id"] === "paymentMethod") {
+            list = this.props.paymentMethod
         }
 
         else {
             let listTypeData = filter["typeDataDetails"].data;
             list = listTypeData[filter["typeData"]];
-
         }
 
-        if (filter["id"] == "entityService") {
+        if (filter["id"] === "contractStatus") {
             return (
                 <div className="col-md-6">
                     <div className="form-group col-md-4">
@@ -179,17 +178,55 @@ class ReportFilters extends React.Component {
                     </div>
                     <div className="form-group col-md-8">
                         <select name={filter["id"]} id={filter["id"]} className="form-control">
+                            <option value="">Select</option>
                             {list.map((option, index) => {
                                 return (
-                                    <option key={index} value={option.serviceCode}>{option.serviceName}</option>
+                                    <option key={index} value={option.value}>{option.label}</option>
                                 );
                             })}
                         </select>
                     </div>
                 </div>)
-
-
         }
+
+        else if (filter["id"] === "instrumentStatus") {
+            return (
+                <div className="col-md-6">
+                    <div className="form-group col-md-4">
+                        <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
+                    </div>
+                    <div className="form-group col-md-8">
+                        <select name={filter["id"]} id={filter["id"]} className="form-control">
+                            <option>Select</option>
+                            {list.map((option, index) => {
+                                return (
+                                    <option key={index} value={option.value}>{option.label}</option>
+                                );
+                            })}
+                        </select>
+                    </div>
+                </div>)
+        }
+
+        else if (filter["id"] === "paymentMethod") {
+            return (
+                <div className="col-md-6">
+                    <div className="form-group col-md-4">
+                        <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
+                    </div>
+                    <div className="form-group col-md-8">
+                        <select name={filter["id"]} id={filter["id"]} className="form-control">
+                            <option>Select</option>
+                            {list.map((option, index) => {
+                                return (
+                                    <option key={index} value={option.value}>{option.label}</option>
+                                );
+                            })}
+                        </select>
+                    </div>
+                </div>)
+        }
+
         else {
 
             return (

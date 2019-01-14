@@ -6,16 +6,18 @@ import { bindActionCreators } from 'redux';
 import * as utils from '../../../../core/common/utils.js';
 import * as actions from '../../../../core/actions/generalAction';
 import * as constants from '../../constants/appCommunication.js';
+import * as comm from '../../../../core/constants/Communication.js';
 import * as requestCreator from '../../../../core/common/request.js';
 import ReportFilters from './ReportFilters.jsx';
-
+import _ from 'lodash';
 
 class Report extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { reportID: undefined }
+        this.state = { reportID: undefined, isLoading: true, instrumentStatus : [], paymentMethod : []}
     }
     componentWillMount() {
+        this.props.actions.generalProcess(comm.getTypeData, requestCreator.createTypeDataRequest(['Instrument_Status','InstrumentType']));
     }
 
     componentDidMount() {
@@ -27,9 +29,21 @@ class Report extends React.Component {
         };
         this.props.actions.generalProcess(constants.getReportFilters, request);
     }
+
+    componentWillReceiveProps(nextProps) {
+        if ((!_.isEmpty(nextProps.typeData.data.Instrument_Status) && !_.isEmpty(nextProps.typeData.data.InstrumentType)) && !_.isEmpty(this.props,'reportFilters',[])) {
+            this.setState({
+                instrumentStatus: _.get(nextProps.typeData,'data.Instrument_Status',[]),
+                paymentMethod: _.get(nextProps.typeData,'data.InstrumentType',[]),
+                isLoading: false
+            });
+        }
+    }
+
+
     render() {
 
-        if (this.props.reportFilters.data) {
+        if (!this.state.isLoading) {
             return (
                 <div>
                     <div className="row">
@@ -44,7 +58,11 @@ class Report extends React.Component {
                                 </div>
                                 <div className="portlet-body">
                                     <div className="form-body" id="filterForm" key="filterForm">
-                                        <ReportFilters reportFilters={this.props.reportFilters} reportID={this.props.reportID} />
+                                        <ReportFilters reportFilters={this.props.reportFilters}
+                                                       reportID={this.props.reportID}
+                                                       instrumentStatus={this.state.instrumentStatus}
+                                                       paymentMethod={this.state.paymentMethod}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +79,8 @@ class Report extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         reportFilters: state.app.reportFilters,
-        reportID: ownProps.params.reportID || '5c35a4e86146c28e4621a90d'
+        reportID: ownProps.params.reportID || '5c35a4e86146c28e4621a90d',
+        typeData: state.app.typeData
 
     };
 }
