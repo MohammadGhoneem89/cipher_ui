@@ -310,6 +310,7 @@ class Datatable extends React.Component {
                     this.props.gridData.map((rowData, index) => {
                       let recordID = this.props.gridColumns.filter(column => column.type === "hiddenID")[0];
                       recordID = recordID ? recordID.key : undefined;
+                      recordID = recordID || this.props.recordID;
 
                       let footerRow = (this.props.footerRow && this.props.footerRow == true && this.props.gridData.length - 1 == index) ? true : false;
 

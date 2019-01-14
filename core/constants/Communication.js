@@ -185,6 +185,10 @@ module.exports = {
   getAdaptorsList:baseUrl+ "/API/core/getAdaptorsList",
   getAvailableObjectsList:baseUrl+ "/API/core/getAvailableObjectsList",
   getDBFields:baseUrl+ "/API/core/getDBFields",
-  generateMappingFile:baseUrl+ "/API/core/generateMappingFile"
+  generateMappingFile:baseUrl+ "/API/core/generateMappingFile",
 
+  getNetworkListData:baseUrl+ "/API/core/getNetworkList",
+  findEndpointDefinationById:baseUrl+ "/API/core/findEndpointDefinationById",
+  upsertEndpointDefination:baseUrl+ "/API/core/upsertEndpointDefination",
+  findEndpointDefination:baseUrl+ "/API/core/findEndpointDefination",
 };

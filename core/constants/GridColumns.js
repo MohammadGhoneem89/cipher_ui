@@ -827,6 +827,14 @@ module.exports = {
     { alias: "ParticipantName", key: "organizationName", type: "string" },
     { alias: "ParticapantType", key: "particapantType", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
+  ],
+  EndPointList: [
+    { alias: "Endpoint Address", key: "address", type: "string" },
+    { alias: "Authorization Type", key: "authType", type: "string" },
+    { alias: "Request Type", key: "requestType", type: "string" },
+    { alias: "Status Active", key: "status", type: "cbDisabled" },
+    { alias: "Certificate Attached", key: "attachCert", type: "cbDisabled" },
+    { alias: "Actions", key: "actions", type: "action" }
   ]
 };
 
