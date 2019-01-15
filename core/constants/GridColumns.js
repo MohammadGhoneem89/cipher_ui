@@ -829,6 +829,7 @@ module.exports = {
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
   EndPointList: [
+    { alias: "Endpoint Name", key: "name", type: "string" },
     { alias: "Endpoint Address", key: "address", type: "string" },
     { alias: "Authorization Type", key: "authType", type: "string" },
     { alias: "Request Type", key: "requestType", type: "string" },

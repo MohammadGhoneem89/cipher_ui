@@ -110,8 +110,9 @@ class GroupSearchContainer extends React.Component {
                             totalRecords={this.state.groupList.pageData.totalRecords}
                             pageChanged={this.pageChanged}
                             pageSize={10}
+                            activePage ={this.state.pageNo}
                             searchCriteria={this.state.filterCriteria}
-                            activePage ={this.state.pageNo} searchCriteria={this.state.filterCriteria} gridType={"groupList"}
+                            gridType={"groupList"}
                         />
                     </Portlet>
                 </Portlet>

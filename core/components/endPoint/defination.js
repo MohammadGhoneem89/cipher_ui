@@ -18,6 +18,7 @@ class EndPointDefination extends React.Component {
       loading: true,
       readOnly: false,
       address: '',
+        name : '',
       status: false,
       protocol: {
         nonSecure: false,
@@ -47,6 +48,8 @@ class EndPointDefination extends React.Component {
     else {
       this.props.actions.generalProcess(constants.findEndpointDefinationById, this.props.routeParams);
     }
+      let payload = {page: {pageSize: 100000,currentPageNo: 1}};
+      this.props.actions.generalProcess(constants.findEndpointDefination, payload);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -95,8 +98,6 @@ class EndPointDefination extends React.Component {
   };
 
   getImgResponse = (data) => {
-    console.log('-------');
-    console.log(data);
     this.file = data.contextData[0];
   };
 
@@ -111,13 +112,15 @@ class EndPointDefination extends React.Component {
       certPhrase: this.state.certPhrase,
       authType: this.state.authType,
       requestType: this.state.requestType,
-      auth: this.state.auth
+      auth: this.state.auth,
+      name : this.state.name
     };
     if(this.state.editMode){
       payload._id = this.props.routeParams.id
     }
-    this.props.actions.generalProcess(constants.upsertEndpointDefination, payload);
-    browserHistory.push('/endpoint');
+    this.setState({loading : true});
+      window.scrollTo(0, 0);
+      this.props.actions.generalProcess(constants.upsertEndpointDefination, payload);
   };
 
   render() {
@@ -132,12 +135,22 @@ class EndPointDefination extends React.Component {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group col-md-4">
+                    <label className="control-label">{utils.getLabelByID("Endpoint Name")}</label>
+                  </div>
+                  <div className="form-group col-md-8">
+                    <input type="text" className="form-control" name="name" onChange={this.onChange} value={this.state.name}/>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group col-md-4">
                     <label className="control-label">{utils.getLabelByID("Endpoint Address")}</label>
                   </div>
                   <div className="form-group col-md-8">
                     <input type="text" className="form-control" name="address" onChange={this.onChange} value={this.state.address}/>
                   </div>
                 </div>
+              </div>
+              <div className="row">
                 <div className="col-md-6">
                   <div className="form-group col-md-4">
                     <label className="control-label">{utils.getLabelByID("Type")}</label>
@@ -264,7 +277,10 @@ class EndPointDefination extends React.Component {
                       <label className="control-label">{utils.getLabelByID("Token Endpoint")}</label>
                     </div>
                     <div className="form-group col-md-8">
-                      <input type="text" className="form-control" name="endpoint" onChange={this.onAuthChange} value={this.state.auth.endpoint}/>
+                      <select className="form-control" name="endpoint" onChange={this.onAuthChange} value={this.state.auth.endpoint}>
+                        <option disabled selected value="">{utils.getLabelByID("Select ...")}</option>
+                          {this.props.list.map((option, index) => ( <option key={index} value={option._id}>{option.name}</option> ))}
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -321,7 +337,8 @@ EndPointDefination.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    detail: get(state.app, 'findEndpointDefinationById.data', {})
+    detail: get(state.app, 'findEndpointDefinationById.data', {}),
+     list :  get(state.app, 'findEndpointDefination.data', {})
   };
 }
 

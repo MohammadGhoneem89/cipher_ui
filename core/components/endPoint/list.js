@@ -16,6 +16,7 @@ class EndPointList extends React.Component {
     this.state = {
       loading: true,
       address: '',
+      name: '',
       page: {
         pageSize: 10,
         currentPageNo: 1
@@ -43,7 +44,8 @@ class EndPointList extends React.Component {
     let payload = {
       page: this.state.page,
       searchCriteria: {
-        address: this.state.address
+        address: this.state.address,
+        name: this.state.name
       }
     };
     this.props.actions.generalProcess(constants.findEndpointDefination, payload);
@@ -56,7 +58,8 @@ class EndPointList extends React.Component {
     let payload = {
       page: page,
       searchCriteria: {
-        address: this.state.address
+        address: this.state.address,
+        name: this.state.name
       }
     };
     this.props.actions.generalProcess(constants.findEndpointDefination, payload);
@@ -78,6 +81,14 @@ class EndPointList extends React.Component {
           <div className="row">
             <div className="col-md-12">
               <div className="row">
+                <div className="col-md-6">
+                  <div className="form-group col-md-4">
+                    <label className="control-label">{utils.getLabelByID("Endpoint Name")}</label>
+                  </div>
+                  <div className="form-group col-md-8">
+                    <input type="text" className="form-control" name="name" onChange={this.onChange} value={this.state.name}/>
+                  </div>
+                </div>
                 <div className="col-md-6">
                   <div className="form-group col-md-4">
                     <label className="control-label">{utils.getLabelByID("Endpoint Address")}</label>
