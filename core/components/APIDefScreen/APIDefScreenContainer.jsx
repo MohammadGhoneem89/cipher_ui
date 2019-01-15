@@ -306,7 +306,7 @@ class APIDefinitionScreen extends React.Component {
       objectType: this.state.objectType || '',
     });
 
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES','bchain_rule_Type']));
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['request_operator', 'database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES','bchain_rule_Type']));
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE") {
       let req = {
         useCase: this.props.useCase,
@@ -536,8 +536,13 @@ class APIDefinitionScreen extends React.Component {
 
     if(e.target.name === 'isOffchainGet'){
       this.state.APIDefinitionAddUpdate['isCustomMapping'] = true;
+      this.getRequestResponseMapping(this.state.APIDefinitionAddUpdate.ResponseMapping, 'RESPONSE');
+      this.getRequestResponseMapping(this.state.APIDefinitionAddUpdate.RequestMapping, 'REQUEST');
+
       this.setState({
-        isCustomMapping: true
+        isCustomMapping: true,
+        ResponseMapping: this.state.APIDefinitionAddUpdate.ResponseMapping,
+        RequestMapping: this.state.APIDefinitionAddUpdate.RequestMapping
       });
     }
 
@@ -579,7 +584,8 @@ class APIDefinitionScreen extends React.Component {
         let params = this.state.requestParams;
         params.push({
           name: this.state.requestDBField,
-          value: this.state.requestMappingField
+          value: this.state.requestMappingField,
+          operator: this.state.requestOperator
         });
         this.setState({
           requestParams: params
