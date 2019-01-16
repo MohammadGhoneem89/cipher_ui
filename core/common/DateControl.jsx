@@ -17,7 +17,7 @@ class DateControl extends React.Component {
 
     }
     dateChange(value) {
-        
+        //alert(this.UNIXConvertToDate(value))
         if(this.props.dateChange)
             this.props.dateChange(value);
     }
@@ -39,10 +39,8 @@ class DateControl extends React.Component {
         const format = this.props.format || "DD/MM/YYYY";
         const mode = this.props.mode || "date";
         const showToday = this.props.showToday || false;
-        const defaultText = this.props.defaultValue ? moment(this.props.defaultValue).format('DD/MM/YYYY'): "";
-
+        const defaultText = this.props.defaultValue || "";
         const className = this.props.className || "form-group";
-        //alert(defaultText)
         const dateControlID = this.props.id || "datePicker";
         return (
             <div id={dateControlID}>
