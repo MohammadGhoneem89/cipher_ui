@@ -95,7 +95,8 @@ class AddUpdateMapping extends React.Component {
                     ];
                     return item;
                 });
-                transformationConfig.map(function (item) {
+
+                transformationConfig && transformationConfig.map(function (item) {
                     item.actions = [
                         { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
                         { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
@@ -103,7 +104,7 @@ class AddUpdateMapping extends React.Component {
                     return item;
                 });
                 this.setState({
-                    transformationConfig:transformationConfig,
+                    transformationConfig:transformationConfig ||[],
                     mappingConfig: mappingList,
                     useCase: nextProps.AddUpdateMappingData.MappingConfig.useCase,
                     mappingName: nextProps.AddUpdateMappingData.MappingConfig.mappingName,
@@ -251,7 +252,7 @@ class AddUpdateMapping extends React.Component {
             return item;
         });
 
-        let transformationList = cloneDeep(this.state.transformationList);
+        let transformationList = cloneDeep(this.state.transformationConfig);
         transformationList.map(function (item) {
             delete item.actions;
             return item;
@@ -813,7 +814,7 @@ class AddUpdateMapping extends React.Component {
                                                                 </div>
                                                                 <div className="form-group col-md-8">
                                                                     <select id="TRAN_FIELDTYPE" name="TRAN_FIELDTYPE" onChange={this.onChangeEventName} className="form-control" >
-                                                                        {this.state.typeData && this.state.typeData.TRAN_REQFIELDTYPE && this.state.typeData.TRAN_REQFIELDTYPE.map((option, index) => {
+                                                                        {this.state.typeData && this.state.typeData.TRAN_RESFIELDTYPE && this.state.typeData.TRAN_RESFIELDTYPE.map((option, index) => {
                                                                             return (
                                                                                 <option key={index} value={option.value}>{option.label}</option>
                                                                             );
