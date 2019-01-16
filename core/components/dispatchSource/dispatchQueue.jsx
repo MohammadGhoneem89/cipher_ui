@@ -9,25 +9,28 @@ import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
 import * as constants from '../../constants/Communication.js';
 import DateControl from '../../common/DateControl.jsx'
-
-
+import ModalBox from '../../common/ModalBox.jsx';
+import ReactJson from 'react-json-view';
 class DispatchQueue extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [] };
+        this.state = { searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [], isOpen: false, showdata: {} };
         this.pageChanged = this.pageChanged.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
         this.getRequest = this.getRequest.bind(this);
         this.renderPopupBody = this.renderPopupBody.bind(this);
         this.ActionHandlers = this.ActionHandlers.bind(this);
-
+        this.closePopUP = this.closePopUP.bind(this);
+        
 
     }
     renderPopupBody(dataID) {
         this.setState({ APIPayloadID: dataID, isReQueued: false })
     }
-
+    closePopUP(){
+        this.setState({ isOpen: false })
+    }
     getRequest() {
         let toDate = $("#toDate").find("input").val()
         let fromDate = $("#fromDate").find("input").val()
@@ -83,6 +86,12 @@ class DispatchQueue extends React.Component {
     }
     ActionHandlers({ actionName, index }) {
         switch (actionName) {
+            case "viewData":
+                let data = this.props.DispatchQueueData.data.searchResult[index];
+
+                this.setState({ showdata: data.eventdata || {}, isOpen: true })
+                this.props.DispatchQueueData.data.searchResult
+                break;
             case "ReQueue":
                 if (index > -1) {
                     let a = this.props.DispatchQueueData.data.searchResult;
@@ -91,7 +100,7 @@ class DispatchQueue extends React.Component {
                         eventID: id
                     }
                     this.setState({ isReQueued: true }, () => {
-                         this.props.actions.generalProcess(constants.updateEventDispatcherStatus, request);
+                        this.props.actions.generalProcess(constants.updateEventDispatcherStatus, request);
                     })
 
                     //this.props.actions.generalProcess(constants.getEventDispatcherStatus, this.getRequest());
@@ -112,7 +121,7 @@ class DispatchQueue extends React.Component {
                 this.props.actions.generalProcess(constants.getEventDispatcherStatus, this.getRequest());
             });
     }
-    
+
     componentDidMount() {
         window.scrollTo(0, 0);
         this.props.actions.generalProcess(constants.getEventDispatcherStatus, this.getRequest());
@@ -168,6 +177,28 @@ class DispatchQueue extends React.Component {
         if (this.props.DispatchQueueData.data) {
             return (
                 <div>
+
+                    <ModalBox isOpen={this.state.isOpen}>
+                        <Portlet title={utils.getLabelByID("DispatchQueue")} isPermissioned={true}>
+                            <div className="row" >
+                                <div className="col-md-12">
+
+                                    <div className="form-group col-md-12">
+                                        <pre> <ReactJson src={this.state.showdata} /></pre>
+                                    </div>
+                                </div>
+                                <div className="form-actions right">
+                                    <div className="form-group col-md-12">
+                                        <div className="btn-toolbar pull-right">
+
+                                          
+                                            <button type="button" className="btn btn-default" onClick={this.closePopUP} >{utils.getLabelByID("Close")}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Portlet>
+                    </ModalBox>
                     <div className="row">
                         <div className="col-md-12 ">
                             <div className="portlet light bordered sdg_portlet">

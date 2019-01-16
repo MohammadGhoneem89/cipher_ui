@@ -26,6 +26,7 @@ const stateParent = {
     blockSubmit: true,
     mappingConfig: [],
     functionData: undefined,
+    transformationConfig: [],
     typeData: undefined
 }
 
@@ -35,6 +36,8 @@ class AddUpdateMapping extends React.Component {
         super(props);
         this.state = cloneDeep(stateParent)
         this.ActionHandlers = this.ActionHandlers.bind(this);
+        this.ActionHandlersTransformation = this.ActionHandlersTransformation.bind(this);
+
         this.onMappingNameChange = this.onMappingNameChange.bind(this);
         this.onChangeDesc = this.onChangeDesc.bind(this);
         this.onMappingTypeChange = this.onMappingTypeChange.bind(this);
@@ -81,6 +84,7 @@ class AddUpdateMapping extends React.Component {
             if (nextProps.AddUpdateMappingData && nextProps.AddUpdateMappingData.MappingConfig) {
 
                 let mappingList = cloneDeep(nextProps.AddUpdateMappingData.MappingConfig.fields);
+                let transformationConfig = cloneDeep(nextProps.AddUpdateMappingData.MappingConfig.transformations);
                 console.log(mappingList)
                 mappingList.map(function (item) {
                     item.actions = [
@@ -91,7 +95,15 @@ class AddUpdateMapping extends React.Component {
                     ];
                     return item;
                 });
+                transformationConfig.map(function (item) {
+                    item.actions = [
+                        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
+                        { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
+                    ];
+                    return item;
+                });
                 this.setState({
+                    transformationConfig:transformationConfig,
                     mappingConfig: mappingList,
                     useCase: nextProps.AddUpdateMappingData.MappingConfig.useCase,
                     mappingName: nextProps.AddUpdateMappingData.MappingConfig.mappingName,
@@ -106,7 +118,8 @@ class AddUpdateMapping extends React.Component {
                 mappingName: "",
                 mappingType: undefined,
                 description: "",
-                mappingConfig: []
+                mappingConfig: [],
+                transformationConfig:[]
             })
         }
 
@@ -182,13 +195,43 @@ class AddUpdateMapping extends React.Component {
         }
     }
 
+    ActionHandlersTransformation({ actionName, index }) {
+        switch (actionName) {
+            case "Edit":
+                if (index > -1) {
+                    let a = this.state.transformationConfig[index];
+                    document.getElementById('TRAN_FIELDFUNCTION').value = a.TRAN_FIELDFUNCTION;
+                    document.getElementById('TRAN_FIELDTYPEDATA').value = a.TRAN_FIELDTYPEDATA;
+                    document.getElementById('TRAN_FIELDTYPE').value = a.TRAN_FIELDTYPE;
+                    document.getElementById('TRAN_FIELD').value = a.TRAN_FIELD;
+                    document.getElementById('TRG_FIELD').value = a.TRG_FIELD;
+                    document.getElementById('TRG_FIELDVALUE').value = a.TRG_FIELDVALUE;
+                    let tempState = this.state.transformationConfig;
+                    tempState.splice(index, 1);
+                    this.setState({ transformationConfig: tempState });
+                }
+                break;
+            case "Delete":
+                let result = confirm("Are you you want to delete?");
+                if (result) {
+                    if (index > -1) {
+                        let a = this.state.transformationConfig;
+                        a.splice(index, 1);
+                        this.setState({ transformationConfig: a });
+                    }
+                }
+                break;
 
+            default:
+                break;
+        }
+    }
 
 
     componentDidMount() {
         window.scrollTo(0, 0);
         this.setState(cloneDeep(stateParent))
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DFM_FROMATTYPE', 'DFM_DATATYPE', 'DFM_REQFIELDTYPE', 'DFM_RESFIELDTYPE', 'USE_CASE']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DFM_FROMATTYPE', 'DFM_DATATYPE', 'DFM_REQFIELDTYPE', 'DFM_RESFIELDTYPE', 'USE_CASE','TRAN_RESFIELDTYPE']));
         this.props.actions.generalProcess(constants.getFunctionData, {});
         this.props.actions.generalProcess(constants.getMappingConfigByID, this.getRequest());
 
@@ -208,6 +251,13 @@ class AddUpdateMapping extends React.Component {
             return item;
         });
 
+        let transformationList = cloneDeep(this.state.transformationList);
+        transformationList.map(function (item) {
+            delete item.actions;
+            return item;
+        });
+
+
         let mappingName = document.getElementById('mappingName') == null ? "" : document.getElementById('mappingName').value;
         let requestType = document.getElementById('requestType') == null ? "" : document.getElementById('requestType').value;
         let description = document.getElementById('description') == null ? "" : document.getElementById('description').value;
@@ -222,13 +272,49 @@ class AddUpdateMapping extends React.Component {
             "mappingType": requestType,
             "description": description,
             "operation": this.props.mappingName == "NEWMAPPING" ? "insert" : "update",
-            "fields": mappingList
+            "fields": mappingList,
+            "transformations": transformationList
         }
         console.log(JSON.stringify(requestBody));
         this.setState({ blockSubmit: true });
         this.props.actions.generalProcess(constants.upsertMappingConfig, requestBody);
     }
+    addRowTransformation() {
+        let TRAN_FIELDFUNCTION = document.getElementById('TRAN_FIELDFUNCTION') == null ? "" : document.getElementById('TRAN_FIELDFUNCTION').value;
+        let TRAN_FIELDTYPEDATA = document.getElementById('TRAN_FIELDTYPEDATA') == null ? "" : document.getElementById('TRAN_FIELDTYPEDATA').value;
+        let TRAN_FIELDTYPE = document.getElementById('TRAN_FIELDTYPE') == null ? "" : document.getElementById('TRAN_FIELDTYPE').value;
+        let TRAN_FIELD = document.getElementById('TRAN_FIELD') == null ? "" : document.getElementById('TRAN_FIELD').value;
 
+        let TRG_FIELD = document.getElementById('TRG_FIELD') == null ? "" : document.getElementById('TRG_FIELD').value;
+        let TRG_FIELDVALUE = document.getElementById('TRG_FIELDVALUE') == null ? "" : document.getElementById('TRG_FIELDVALUE').value;
+        if (TRAN_FIELD.trim() == "") {
+            alert("Transformed Field must be defined!");
+            return false;
+        }
+        let rows = this.state.transformationConfig;
+        let tupple = {
+            "TRAN_FIELD": TRAN_FIELD,
+            "TRAN_FIELDTYPE": TRAN_FIELDTYPE,
+            "TRAN_FIELDTYPEDATA": TRAN_FIELDTYPEDATA,
+            "TRAN_FIELDFUNCTION": TRAN_FIELDFUNCTION,
+            "TRG_FIELD": TRG_FIELD,
+            "TRG_FIELDVALUE": TRG_FIELDVALUE,
+            "actions": [
+                { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
+                { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
+            ]
+        }
+
+        let litmus = this.containsObjectTrans(tupple, rows)
+
+        if (litmus == false) {
+            rows.push(tupple);
+            this.setState({ transformationConfig: rows });
+            this.clearFieldsTransformation();
+        } else {
+            alert("Transformation for this field already exist!!")
+        }
+    }
     addRow() {
         let IN_FIELD = document.getElementById('IN_FIELD') == null ? "" : document.getElementById('IN_FIELD').value;
         let IN_FIELDVALUE = document.getElementById('IN_FIELDVALUE') == null ? "" : document.getElementById('IN_FIELDVALUE').value;
@@ -285,6 +371,19 @@ class AddUpdateMapping extends React.Component {
 
     }
 
+    containsObjectTrans(refObj, list) {
+
+        for (let i = 0; i < list.length; i++) {
+            let obj = list[i];
+            if (
+                obj.TRAN_FIELD == refObj.TRAN_FIELD
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     containsObject(refObj, list) {
 
@@ -302,6 +401,13 @@ class AddUpdateMapping extends React.Component {
 
 
 
+    clearFieldsTransformation() {
+        $('#MessageCustomizations').find('input:text').val('');
+        $('#MessageCustomizations').find('select').each(function () {
+            $(this)[0].selectedIndex = 0;
+        });
+        document.getElementById('Sequence').value = this.state.mappingConfig.length + 1;
+    }
     clearFields() {
         $('#customMappingDefination').find('input:text').val('');
         $('#customMappingDefination').find('select').each(function () {
@@ -312,7 +418,6 @@ class AddUpdateMapping extends React.Component {
 
 
     render() {
-
         //alert(JSON.stringify(this.state.mappingConfig))
         return (
             <div>
@@ -392,7 +497,6 @@ class AddUpdateMapping extends React.Component {
                         </div>
                     </div>
                 </div>
-
                 <div className="row">
                     <div className="col-md-12 ">
                         <div className="portlet light bordered sdg_portlet">
@@ -627,11 +731,170 @@ class AddUpdateMapping extends React.Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="form-actions right">
-                                            <div className="form-group col-md-12">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div className="row">
+                    <div className="col-md-12 ">
+                        <div className="portlet light bordered sdg_portlet">
+                            <div className="portlet-title">
+                                <div className="caption">
+                                    <span className="caption-subject">{utils.getLabelByID("MessageCustomizations")}</span></div>
+                                <div className="tools">
+                                    <a href="javascript:;" className="collapse" data-original-title title> </a>
+                                </div>
+                            </div>
+                            <div className="portlet-body">
+                                <div className="form-body" id="MessageCustomizations">
+                                    <div className="row">
+                                        <div className="col-md-12 ">
+                                            <div className="row">
+
+                                                <div className="col-md-6"
+                                                    style={{
+                                                        borderRight: "1px solid #80808026"
+                                                    }}
+                                                >
+                                                    <div className="row">
+                                                        <h4 className="text-center"
+                                                            style={{ textDecoration: "underline" }}
+                                                        >{utils.getLabelByID("TargetField")}</h4>
+                                                        <div className="row">
+                                                            <div className="col-md-12">
+                                                                <div className="form-group col-md-4">
+                                                                    <label className="control-label">{utils.getLabelByID("MAU_Field")}</label>
+                                                                </div>
+                                                                <div className="form-group col-md-8">
+                                                                    <input type="text" className="form-control" id="TRG_FIELD" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="row">
+                                                            <div className="col-md-12">
+                                                                <div className="form-group col-md-4">
+                                                                    <label className="control-label">{utils.getLabelByID("MAU_Value")}</label>
+                                                                </div>
+                                                                <div className="form-group col-md-8">
+                                                                    <input type="text" className="form-control" id="TRG_FIELDVALUE" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <div className="row">
+                                                        <h4 className="text-center"
+                                                            style={{ textDecoration: "underline" }}
+                                                        >{utils.getLabelByID("TransformationSettings")}</h4>
+                                                        <div className="row">
+                                                            <div className="col-md-12">
+                                                                <div className="form-group col-md-4">
+                                                                    <label className="control-label">{utils.getLabelByID("TRAN_Field")}</label>
+                                                                </div>
+                                                                <div className="form-group col-md-8">
+                                                                    <input type="text" className="form-control" id="TRAN_FIELD" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="row">
+                                                            <div className="col-md-12">
+                                                                <div className="form-group col-md-4">
+                                                                    <label className="control-label">{utils.getLabelByID("Transformation_Type")}</label>
+                                                                </div>
+                                                                <div className="form-group col-md-8">
+                                                                    <select id="TRAN_FIELDTYPE" name="TRAN_FIELDTYPE" onChange={this.onChangeEventName} className="form-control" >
+                                                                        {this.state.typeData && this.state.typeData.TRAN_REQFIELDTYPE && this.state.typeData.TRAN_REQFIELDTYPE.map((option, index) => {
+                                                                            return (
+                                                                                <option key={index} value={option.value}>{option.label}</option>
+                                                                            );
+                                                                        })}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="row">
+                                                            <div className="col-md-12">
+                                                                <div className="form-group col-md-4">
+                                                                    <label className="control-label">{utils.getLabelByID("TRAN_TypeData")}</label>
+                                                                </div>
+                                                                <div className="form-group col-md-8">
+                                                                    <select id="TRAN_FIELDTYPEDATA" name="TRAN_FIELDTYPEDATA" className="form-control" >
+                                                                        <option value="">--Select--</option>
+                                                                        {this.state.functionData && this.state.functionData.typeDataList && this.state.functionData.typeDataList.map((option, index) => {
+                                                                            return (
+                                                                                <option key={index} value={option.value}>{option.label}</option>
+                                                                            );
+                                                                        })}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="row">
+                                                            <div className="col-md-12">
+                                                                <div className="form-group col-md-4">
+                                                                    <label className="control-label">{utils.getLabelByID("TRAN_Function")}</label>
+                                                                </div>
+                                                                <div className="form-group col-md-8">
+                                                                    <select id="TRAN_FIELDFUNCTION" name="TRAN_FIELDFUNCTION" onChange={this.onChangeEventName} className="form-control" >
+                                                                        {this.state.functionData && this.state.functionData.custom && this.state.functionData.custom.map((option, index) => {
+                                                                            return (
+                                                                                <option key={index} value={option.value}>{option.label}</option>
+                                                                            );
+                                                                        })}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+
+                                                </div>
+                                                
+                                                    <div className="form-actions right">
+                                                        <div className="form-group col-md-12">
+                                                            <div className="btn-toolbar pull-right">
+                                                                <button type="submit" className="btn btn-default" onClick={this.addRowTransformation.bind(this)}> <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Transformations")} </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                            </div>
+                                            <div className="row">
                                                 <div className="col-md-12">
-                                                    <div className="btn-toolbar pull-right">
-                                                        <button type="submit" className="btn green" disabled={this.state.blockSubmit} onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Save / Update")} </button>
+                                                    <div className="row">
+
+                                                        <div className="col-md-12">
+                                                            <Table
+                                                                gridColumns={utils.getGridColumnByName("TransformationConfig")}
+                                                                gridData={this.state.transformationConfig}
+                                                                export={false}
+                                                                componentFunction={this.ActionHandlersTransformation}
+                                                                pagination={false} />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div className="form-actions right">
+                                                    <div className="form-group">
+                                                        <div className="col-md-12">
+                                                            <div className="btn-toolbar pull-right">
+                                                                <button type="submit" className="btn green" disabled={this.state.blockSubmit} onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Save / Update")} </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -642,6 +905,7 @@ class AddUpdateMapping extends React.Component {
                         </div>
                     </div>
                 </div>
+
             </div>
 
         );
