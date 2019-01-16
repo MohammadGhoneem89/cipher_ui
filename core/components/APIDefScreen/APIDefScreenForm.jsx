@@ -438,7 +438,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                     {
                                       get(parentState, `getAvailableObjectsList`, []).map((option, index) => {
                                         return (
-                                          <option key={index} value={option.value}>{option.label}</option>
+                                          <option key={index} value={option.name}>{option.name}</option>
                                         );
                                       })
                                     }
@@ -493,7 +493,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                             <select id="requestDBField" name="requestDBField" className="form-control" value={initialValues.requestDBField} onChange={onInputChange}>
                                               <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
-                                                get(parentState, 'getDBFields', []).map((option, index) => {
+                                                get(parentState, 'getDBFields.data', []).map((option, index) => {
                                                   return (
                                                     <option key={index} value={option.name}>{option.label}</option>
                                                   );
@@ -590,7 +590,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                             <select id="responseBDField" name="responseBDField" className="form-control" value={initialValues.responseBDField} onChange={onInputChange}>
                                               <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
-                                                get(parentState, 'getDBFields', []).map((option, index) => {
+                                                get(parentState, 'getDBFields.outputFields', []).map((option, index) => {
                                                   return (
                                                     <option key={index} value={option.name}>{option.label}</option>
                                                   );

@@ -756,7 +756,7 @@ function mapStateToProps(state, ownProps) {
     route: ownProps.params.route,
     ConsortiumTypeData: state.app.ConsortiumTypeData,
     getAdaptorsList: get(state.app, 'getAdaptorsList.data', []),
-    getDBFields: get(state.app, 'getDBFields.data', []),
+    getDBFields: get(state.app, 'getDBFields', {}),
     getAvailableObjectsList: get(state.app, 'getAvailableObjectsList.data', []),
     generateMappingFile: get(state.app, 'generateMappingFile', {}),
     parameters: parameters
