@@ -495,7 +495,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                               {
                                                 get(parentState, 'getDBFields.data', []).map((option, index) => {
                                                   return (
-                                                    <option key={index} value={option.name}>{option.label}</option>
+                                                    <option key={index} value={JSON.stringify(option)}>{option.label}</option>
                                                   );
                                                 })
                                               }

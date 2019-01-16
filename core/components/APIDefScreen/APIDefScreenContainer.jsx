@@ -585,8 +585,15 @@ class APIDefinitionScreen extends React.Component {
     switch (type) {
       case 'request':
         let params = this.state.requestParams;
+        let requestP = {};
+        try{
+          requestP = JSON.parse(this.state.requestDBField);
+        }catch(err){
+          console.log(err);
+        }
         params.push({
-          name: this.state.requestDBField,
+          name: requestP.name,
+          type: requestP.type,
           value: this.state.requestMappingField,
           operator: this.state.requestOperator
         });
