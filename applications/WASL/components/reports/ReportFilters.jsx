@@ -109,7 +109,6 @@ class ReportFilters extends React.Component {
             "lang": language
         };
 
-        console.log(": : : : : ", fitlerCriteria)
         if (sessionStorage.orgType === "Entity")
             fitlerCriteria.entity = [];
         if (sessionStorage.orgType === "Acquirer")
@@ -120,7 +119,6 @@ class ReportFilters extends React.Component {
             fitlerCriteria.instrumentStatus = [];
         if(fitlerCriteria.paymentMethod && fitlerCriteria.paymentMethod.length > 1)
             fitlerCriteria.paymentMethod = [];
-        console.log(JSON.stringify(fitlerCriteria));
         fitlerCriteria = this.b64EncodeUnicode(JSON.stringify(fitlerCriteria));
         nationalization = this.b64EncodeUnicode(JSON.stringify(nationalization))
 
@@ -219,7 +217,7 @@ class ReportFilters extends React.Component {
                             <option>Select</option>
                             {list.map((option, index) => {
                                 return (
-                                    <option key={index} value={option.value}>{option.label}</option>
+                                    <option key={index} value={option.code}>{option.name}</option>
                                 );
                             })}
                         </select>
@@ -364,7 +362,6 @@ class ReportFilters extends React.Component {
                     selectedValues.push(element.options[item].value);
                 }
             });
-            console.log(selectedValues);
         }
     }
 

@@ -18,6 +18,7 @@ class Report extends React.Component {
     }
     componentWillMount() {
         this.props.actions.generalProcess(comm.getTypeData, requestCreator.createTypeDataRequest(['Instrument_Status','InstrumentType']));
+        this.props.actions.generalProcess(constants.getPaymentList, { page :{pageSize:100000, currentPageNo: 1}, searchCriteria:{}});
     }
 
     componentDidMount() {
@@ -31,10 +32,10 @@ class Report extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if ((!_.isEmpty(nextProps.typeData.data.Instrument_Status) && !_.isEmpty(nextProps.typeData.data.InstrumentType)) && !_.isEmpty(this.props,'reportFilters',[])) {
+        if ((!_.isEmpty(nextProps.typeData.data.Instrument_Status) && !_.isEmpty(nextProps.payment)) && !_.isEmpty(this.props,'reportFilters',[])) {
             this.setState({
                 instrumentStatus: _.get(nextProps.typeData,'data.Instrument_Status',[]),
-                paymentMethod: _.get(nextProps.typeData,'data.InstrumentType',[]),
+                paymentMethod: _.get(nextProps,'payment',[]),
                 isLoading: false
             });
         }
@@ -80,8 +81,8 @@ function mapStateToProps(state, ownProps) {
     return {
         reportFilters: state.app.reportFilters,
         reportID: ownProps.params.reportID || '5c35a4e86146c28e4621a90d',
-        typeData: state.app.typeData
-
+        typeData: state.app.typeData,
+        payment: _.get(state.app.paymentList,'data.searchResult',[])
     };
 }
 function mapDispatchToProps(dispatch) {
