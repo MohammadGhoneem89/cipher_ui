@@ -10,6 +10,7 @@ import APIDefScreenForm from './APIDefScreenForm.jsx';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import find from 'lodash/find';
+import isEmpty from 'lodash/isEmpty';
 
 const initialState = {
   APIDefinitionAddUpdate: {
@@ -368,9 +369,11 @@ class APIDefinitionScreen extends React.Component {
         });
       }
     } else {
-      this.setState({
-        APIDefinitionAddUpdate: cloneDeep(initialState.APIDefinitionAddUpdate)
-      });
+      if(isEmpty(this.state.APIDefinitionAddUpdate)){
+        this.setState({
+          APIDefinitionAddUpdate: cloneDeep(initialState.APIDefinitionAddUpdate)
+        });
+      }
     }
     if (nextProps.MappingConfigData && nextProps.MappingConfigData.REQUEST && nextProps.MappingConfigData.RESPONSE) {
       this.setState({
