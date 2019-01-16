@@ -828,6 +828,14 @@ module.exports = {
     { alias: "ParticapantType", key: "particapantType", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
+
+  TransformationConfig: [
+    { alias: "Target Field", key: "TRG_FIELD", type: "string" },
+    { alias: "Transformed Field", key: "TRAN_FIELD", type: "string" },
+    { alias: "Action Type", key: "TRAN_FIELDTYPE", type: "string" },
+    { alias: "Custom Function", key: "TRAN_FIELDFUNCTION", type: "string" },
+    { alias: "Actions", key: "actions", type: "action" }
+  ],
   EndPointList: [
     { alias: "Endpoint Name", key: "name", type: "string" },
     { alias: "Endpoint Address", key: "address", type: "string" },

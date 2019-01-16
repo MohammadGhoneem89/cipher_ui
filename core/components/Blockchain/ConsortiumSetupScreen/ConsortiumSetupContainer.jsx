@@ -7,7 +7,7 @@ import Table from '../../../common/Datatable.jsx';
 import {SubmissionError} from 'redux-form'
 import initialState from '../../../reducers/initialState.js';
 import * as actions from '../../../actions/generalAction';
-import ModalBox from '../../../common/ModalBox.jsx';
+import ModalBox from '../../../common/ModalBox.jsx'; 
 import * as utils from '../../../common/utils.js';
 import * as constants from '../../../constants/Communication.js';
 import * as requestCreator from '../../../common/request.js';
