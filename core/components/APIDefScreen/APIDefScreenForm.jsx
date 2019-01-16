@@ -134,7 +134,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
               </div>
               <div className="col-md-6">
                 <div className="form-group col-md-4">
-                  <label className="control-label">{utils.getLabelByID("BillingDate")}</label>
+                  <label className="control-label">{utils.getLabelByID("Start Date")}</label>
                 </div>
                 <div className="form-group col-md-8">
                   <DateControl id="billingDate" dateChange={onDateChange} defaultValue={initialValues.billingDate} />
@@ -438,7 +438,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                     {
                                       get(parentState, `getAvailableObjectsList`, []).map((option, index) => {
                                         return (
-                                          <option key={index} value={option.value}>{option.label}</option>
+                                          <option key={index} value={option.name}>{option.name}</option>
                                         );
                                       })
                                     }
@@ -493,7 +493,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                             <select id="requestDBField" name="requestDBField" className="form-control" value={initialValues.requestDBField} onChange={onInputChange}>
                                               <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
-                                                get(parentState, 'getDBFields', []).map((option, index) => {
+                                                get(parentState, 'getDBFields.data', []).map((option, index) => {
                                                   return (
                                                     <option key={index} value={option.name}>{option.label}</option>
                                                   );
@@ -509,13 +509,33 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                             textAlign: "left",
                                             fontWeight: "normal"
                                           }}>{utils.getLabelByID("Request Mapping Field")}</label>
+                                            <div className="form-group col-md-8">
+                                              <select id="requestMappingField" name="requestMappingField" className="form-control" value={initialValues.requestMappingField} onChange={onInputChange}>
+                                                <option disabled selected>{utils.getLabelByID("Select ...")}</option>
+                                                {
+                                                  get(parameters, `${parentState.RequestMapping}`, []).map((option, index) => {
+                                                    return (
+                                                      <option key={index} value={option.IN_FIELD}>{option.IN_FIELD}</option>
+                                                    );
+                                                  })
+                                                }
+                                              </select>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      <div className="col-md-6">
+                                        <div className="form-group">
+                                          <label className="form-group control-label col-md-4" style={{
+                                            textAlign: "left",
+                                            fontWeight: "normal"
+                                          }}>{utils.getLabelByID("Operator")}</label>
                                           <div className="form-group col-md-8">
-                                            <select id="requestMappingField" name="requestMappingField" className="form-control" value={initialValues.requestMappingField} onChange={onInputChange}>
+                                            <select id="requestOperator" name="requestOperator" className="form-control" value={initialValues.requestOperator} onChange={onInputChange}>
                                               <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
-                                                get(parameters, `${parentState.RequestMapping}`, []).map((option, index) => {
+                                                typeData.request_operator.map((option, index) => {
                                                   return (
-                                                    <option key={index} value={option.IN_FIELD}>{option.IN_FIELD}</option>
+                                                    <option key={index} value={option.value}>{option.label}</option>
                                                   );
                                                 })
                                               }
@@ -570,7 +590,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                             <select id="responseBDField" name="responseBDField" className="form-control" value={initialValues.responseBDField} onChange={onInputChange}>
                                               <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                               {
-                                                get(parentState, 'getDBFields', []).map((option, index) => {
+                                                get(parentState, 'getDBFields.outputFields', []).map((option, index) => {
                                                   return (
                                                     <option key={index} value={option.name}>{option.label}</option>
                                                   );

@@ -10,6 +10,7 @@ const ModalBox = ({isOpen, children}) => {
             left: 0,
             right: 0,
             bottom: 0,
+            zIndex: 100,
             backgroundColor: 'rgba(0, 0, 0, 0.75)'
         },
         content: {
@@ -20,12 +21,14 @@ const ModalBox = ({isOpen, children}) => {
             marginRight: '-50%',
             transform: 'translate(-25%, -44%)',
             width: '80%',
+            padding:'0px',
             maxHeight: '80%',
+            // overflow:"hidden",
             background: 'transparent',
             border: 'none'
         }
     };
-
+  
     return (<Modal
         isOpen={(() => {
             if (isOpen) {

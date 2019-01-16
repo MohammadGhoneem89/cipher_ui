@@ -1059,5 +1059,12 @@ module.exports = {
   APIMetering:"API Metering",
   EnableBilling:"Enable Billing",
   BillingDate:"Start Date",
-  Generate_ChainCode :"Generate ChainCode"
+  Generate_ChainCode :"Generate ChainCode",
+  TargetField:"Target Field",
+  TransformationSettings:"Transformation Settings",
+  TRAN_Field:"Field Name",
+  Transformation_Type:"Action Type",
+  TRAN_TypeData:"Type Data",
+  TRAN_Function:"Transformation Function",
+  MessageCustomizations:"Message Customizations"
 };
