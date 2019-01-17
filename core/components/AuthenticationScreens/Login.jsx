@@ -1,16 +1,16 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import brandConfig from '../../../assets/skins/default/brandConfig.json';
 import ReactDOM from 'react-dom';
-import {Link, browserHistory} from 'react-router';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import { Link, browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
 
 
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import * as toaster from '../../common/toaster.js';
-
+let isLocked=false;
 
 class Login extends React.Component {
 
@@ -18,6 +18,7 @@ class Login extends React.Component {
   constructor() {
 
     super();
+   
     this.handleKeyPress = this.handleKeyPress.bind(this);
     sessionStorage.lang = "EN";
 
@@ -25,19 +26,22 @@ class Login extends React.Component {
   }
 
   check(form) {
-    sessionStorage.setItem('lastRequestTime', new Date());
-    var Userid = $('#username').val();
-    var password = $('#password').val();
-    console.log(sessionStorage.lang)
 
-    var lang = sessionStorage.lang;
+    if (isLocked === false) {
 
-    if (Userid === "" && password === "") {
-      toaster.showToast("Username, Password fields must not be empty please enter username or password.", "INFO");
-      //alert("Username, Password are required.");
-    } else {
-      this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(Userid, password, lang));
-          
+      sessionStorage.setItem('lastRequestTime', new Date());
+      var Userid = $('#username').val();
+      var password = $('#password').val();
+      console.log(sessionStorage.lang)
+      var lang = sessionStorage.lang;
+      if (Userid === "" && password === "") {
+        toaster.showToast("Username, Password fields must not be empty please enter username or password.", "INFO");
+        //alert("Username, Password are required.");
+      } else {
+        isLocked = true
+        this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(Userid, password, lang));
+
+      }
     }
   }
 
@@ -68,6 +72,7 @@ class Login extends React.Component {
   }
 
   componentDidUpdate() {
+    isLocked = false
     if (this.props.LoginResult) {
 
 
@@ -114,20 +119,20 @@ class Login extends React.Component {
     }
     else if (this.imageExists(imgURLOtherOrg)) {
       return (<div>
-          <div style={{marginTop: "60px", paddingTop: "80px"}}>
-            <div className="row" style={{marginLeft: "-20"}}>
-              <div className="col-md-6 pull-left">
-                <img src={imgSDG} alt=""/>
-              </div>
-              <div className="col-md-6 pull-right">
-                <img src={imgURLOtherOrg} alt="" style={{width: "152px"}}/>
-              </div>
+        <div style={{ marginTop: "60px", paddingTop: "80px" }}>
+          <div className="row" style={{ marginLeft: "-20" }}>
+            <div className="col-md-6 pull-left">
+              <img src={imgSDG} alt="" />
             </div>
-
+            <div className="col-md-6 pull-right">
+              <img src={imgURLOtherOrg} alt="" style={{ width: "152px" }} />
+            </div>
           </div>
-          <br/>
-          <br/>
+
         </div>
+        <br />
+        <br />
+      </div>
       )
     }
     else {
@@ -148,7 +153,7 @@ class Login extends React.Component {
   }
 
   getLogosForSDGUser() {
-    return (<div className="logo"/>);
+    return (<div className="logo" />);
   }
 
   render() {
@@ -159,7 +164,7 @@ class Login extends React.Component {
       <div>
         <div className="login">
           {/*<div id="particles-js"></div>*/}
-          <div className="content" style={{marginTop: "0px"}}>
+          <div className="content" style={{ marginTop: "0px" }}>
 
             {this.getLogosbyUserType()}
 
@@ -167,7 +172,7 @@ class Login extends React.Component {
               {this.getLogosForSDGUser()}
               <h3 className="form-title">{brandConfig.projectName}</h3>
               <div className="alert alert-danger display-hide">
-                <button className="close" data-close="alert"/>
+                <button className="close" data-close="alert" />
                 <span> Enter any username and password. </span>
               </div>
               <div className="form-group">
@@ -175,7 +180,7 @@ class Login extends React.Component {
                 <div className="input-icon">
                   <i className="fa fa-user"></i>
                   <input className="form-control placeholder-no-fix" type="text" id="username" autoComplete="off"
-                         placeholder="Username" name="username"/></div>
+                    placeholder="Username" name="username" /></div>
               </div>
               <div className="form-group">
                 <label className="control-label visible-ie8 visible-ie9">Password</label>
@@ -183,18 +188,18 @@ class Login extends React.Component {
 
                   <i className="fa fa-eye" aria-hidden="true"></i>
                   <input type="password" className="form-control placeholder-no-fix" id="password" autoComplete="off"
-                         placeholder="Password" name="password"/>
+                    placeholder="Password" name="password" />
                 </div>
               </div>
 
 
               <div className="form-actions"><a href="javascript:;" onClick={this.check.bind(this)}
-                                               className="btn green btn-block uppercase"> Login </a></div>
+                className="btn green btn-block uppercase" disabled={isLocked} > Login </a></div>
 
               <div className="forget-password">
                 <ul className="lng">
                   <li id="engAnchor" className="actv"><a href="javascript:;"
-                                                         onClick={this.changLangButton.bind(this, "EN")}>En</a></li>
+                    onClick={this.changLangButton.bind(this, "EN")}>En</a></li>
                   <li id="arbAnchor"><a href="javascript:;" onClick={this.changLangButton.bind(this, "AR")}>عربى</a>
                   </li>
                 </ul>
@@ -209,7 +214,7 @@ class Login extends React.Component {
                 <div className="input-icon">
                   <i className="fa fa-envelope"></i>
                   <input className="form-control placeholder-no-fix" type="text" autoComplete="off" placeholder="Email"
-                         name="email"/></div>
+                    name="email" /></div>
               </div>
               <div className="form-actions">
                 <button type="button" id="back-btn" className="btn grey-salsa btn-outline"> Back</button>
@@ -244,7 +249,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
 
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 
 }
 
