@@ -107,7 +107,7 @@ const ModuleDefinationForm = ({ onSubmit, initialValues, typeData, addRowApi, on
                         <div className="icheck-list">
                           <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
                             <label></label>
-                            <input type="checkbox" className="form-control" onChange={onInputChange} checked={initialValues.displayMenu} name="displayMenu" id="displayMenu" />
+                            <input type="checkbox" checked={initialValues.displayMenu} className="form-control" onChange={onInputChange}  name="displayMenu" id="displayMenu" />
                             <span></span>
                           </label>
                         </div>

@@ -385,11 +385,13 @@ class ModuleDefinitionScreen extends React.Component {
           document.getElementById('pageValue').value = _.get(b, 'value', '');
           document.getElementById('labelName').value = _.get(b, 'labelName', '');
           document.getElementById('pageActionType').value = _.get(b, 'actionType', '');
-          document.getElementById('pageDisplayMenu').value = _.get(b, 'displayMenu', false);
+          document.getElementById('pageDisplayMenu').checked = _.get(b, 'displayMenu', false);
           document.getElementById('parentVal').value = _.get(b, 'parent', false);
           document.getElementById('pageValue').disabled = true;
           document.getElementById('pageType').disabled = true;
           document.getElementById('parentVal').disabled = true;
+          
+          //$("#pageDisplayMenu").checked( _.get(b, 'displayMenu', false))
           let URI = _.get(b, 'URI', false);
           let apiList = [];
           URI && URI.forEach((elem) => {
