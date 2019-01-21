@@ -15,20 +15,20 @@ class DispatchQueue extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [], isOpen: false, showdata: {} };
+        this.state = { searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [], isOpen: false, showdata: {}, response: {} };
         this.pageChanged = this.pageChanged.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
         this.getRequest = this.getRequest.bind(this);
         this.renderPopupBody = this.renderPopupBody.bind(this);
         this.ActionHandlers = this.ActionHandlers.bind(this);
         this.closePopUP = this.closePopUP.bind(this);
-        
+
 
     }
     renderPopupBody(dataID) {
         this.setState({ APIPayloadID: dataID, isReQueued: false })
     }
-    closePopUP(){
+    closePopUP() {
         this.setState({ isOpen: false })
     }
     getRequest() {
@@ -89,7 +89,7 @@ class DispatchQueue extends React.Component {
             case "viewData":
                 let data = this.props.DispatchQueueData.data.searchResult[index];
 
-                this.setState({ showdata: data.eventdata || {}, isOpen: true })
+                this.setState({ showdata: data.eventdata || {}, response: data.response || {}, isOpen: true })
                 this.props.DispatchQueueData.data.searchResult
                 break;
             case "ReQueue":
@@ -179,19 +179,27 @@ class DispatchQueue extends React.Component {
                 <div>
 
                     <ModalBox isOpen={this.state.isOpen}>
-                        <Portlet title={utils.getLabelByID("DispatchQueue")} isPermissioned={true}>
+                        <Portlet title={utils.getLabelByID("Event Details")} isPermissioned={true}>
                             <div className="row" >
                                 <div className="col-md-12">
-
+                                    <div className="form-group col-md-12">
+                                        <label className="control-label">{utils.getLabelByID("Event Data")}</label>
+                                    </div>
                                     <div className="form-group col-md-12">
                                         <pre> <ReactJson src={this.state.showdata} /></pre>
+                                    </div>
+                                    <div className="form-group col-md-12">
+                                        <label className="control-label">{utils.getLabelByID("Reponse")}</label>
+                                    </div>
+                                    <div className="form-group col-md-12">
+                                        <pre> <ReactJson src={this.state.response} /></pre>
                                     </div>
                                 </div>
                                 <div className="form-actions right">
                                     <div className="form-group col-md-12">
                                         <div className="btn-toolbar pull-right">
 
-                                          
+
                                             <button type="button" className="btn btn-default" onClick={this.closePopUP} >{utils.getLabelByID("Close")}</button>
                                         </div>
                                     </div>
