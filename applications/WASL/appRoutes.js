@@ -13,6 +13,13 @@ import ContractDetailReport from '../../applications/WASL/components/reports/con
 import PaymentInstrumentReport from '../../applications/WASL/components/reports/paymentInstrumentReport';
 import EjariReport from '../../applications/WASL/components/reports/ejariReport';
 
+//API Template Routes
+import APITemplateList from '../../applications/WASL/components/APITemplate/APITemplateList';
+import APITemplateEdit from '../../applications/WASL/components/APITemplate/APITemplateEdit';
+import APITemplateView from '../../applications/WASL/components/APITemplate/APITemplateEdit';
+
+
+
 
 let authRoutes = <div>
   {/*<Route path="/sampleDashboard" component={sampleDashboard}/>*/}
@@ -25,6 +32,10 @@ let authRoutes = <div>
   <Route path="/contractDetailReport" component={ContractDetailReport}/>
   <Route path="/paymentInstrumentReport" component={PaymentInstrumentReport}/>
   <Route path="/ejariReport" component={EjariReport}/>
+
+  <Route path="/apiTemplateList" component={APITemplateList}/>
+  <Route path="/apiTemplateEdit/:id" component={APITemplateEdit}/>
+  <Route path="/apiTemplateView" component={APITemplateView}/>
 
 
 </div>;

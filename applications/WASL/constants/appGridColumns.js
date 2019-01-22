@@ -21,4 +21,9 @@ module.exports = {
     { alias: "DB Field", key: "name", type: "string" },
     { alias: "Response Mapping Field", key: "as", type: "string" }
   ],
+    APITemplateList: [
+        {alias: "", key: "_id", type: "hiddenID"},
+        {alias: "Template Name", key: "name", type: 'string'},
+        {alias: "Action", key: "action", type: "action"}
+    ]
 };
