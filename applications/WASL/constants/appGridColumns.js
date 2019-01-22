@@ -22,7 +22,8 @@ module.exports = {
     { alias: "Response Mapping Field", key: "as", type: "string" }
   ],
     APITemplateList: [
-        {alias: "", key: "_id", type: "hiddenID"},
+        { alias: "COM_SerialNo", key: "", type: "serialNo" },
+        {alias: "S No.", key: "_id", type: "hiddenID"},
         {alias: "Template Name", key: "name", type: 'string'},
         {alias: "Action", key: "action", type: "action"}
     ]

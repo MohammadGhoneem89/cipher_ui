@@ -191,4 +191,5 @@ module.exports = {
   findEndpointDefinationById:baseUrl+ "/API/core/findEndpointDefinationById",
   upsertEndpointDefination:baseUrl+ "/API/core/upsertEndpointDefination",
   findEndpointDefination:baseUrl+ "/API/core/findEndpointDefination",
+  findAPITemplate:baseUrl+ "/API/core/findAPITemplate",
 };

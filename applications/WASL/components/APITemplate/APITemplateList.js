@@ -35,7 +35,7 @@ class APITemplateList extends React.Component {
         }
 
         let request = {
-            "action": "getPaymentList",
+            "action": "findAPITemplate",
             "searchCriteria": searchCriteria,
             "page": {
                 "pageSize": 10,
@@ -43,11 +43,11 @@ class APITemplateList extends React.Component {
                 "totalRecords": this.state.totalRecords || 0
             }
         };
-        this.props.actions.generalProcess(constants.getPaymentList, request);
+        this.props.actions.generalProcess(constants.findAPITemplate, request);
     }
 
     add = () => {
-        browserHistory.push('/add')
+        browserHistory.push('/apiTemplate/create')
     }
 
     componentWillMount() {
@@ -86,7 +86,7 @@ class APITemplateList extends React.Component {
 
         return (
             <div>
-                <Portlet title={utils.getLabelByID("API Template")}>
+                <Portlet title={utils.getLabelByID("API Payload Template")}>
 
                     <div className="row">
 
@@ -122,19 +122,19 @@ class APITemplateList extends React.Component {
                                 obj.action = [
                                     {
                                         "label": "View",
-                                        "URI": ["/view"],
-                                        "params": "",
+                                        "URI": ["/apiTemplate/:id"],
+                                        "params": "_id",
                                         "iconName": "icon-docs"
                                     },
                                     {
                                         "label": "Edit",
-                                        "URI": ["/edit/:id"],
+                                        "URI": ["/apiTemplate/:id"],
                                         "params": "_id",
                                         "iconName": "icon-docs"
                                     },
                                     {
                                         "label": "Test",
-                                        "URI": ["/test"],
+                                        "URI": ["/apiTemplate/test/:id"],
                                         "params": "_id",
                                         "iconName": "icon-docs"
                                     }
@@ -160,8 +160,8 @@ class APITemplateList extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        gridData : _.get(state.app,'paymentList.data.searchResult',[]),
-        pageData : _.get(state.app,'paymentList.pageData',{})
+        gridData : _.get(state.app,'findAPITemplate.data',[]),
+        pageData : _.get(state.app,'findAPITemplate.pageData',{})
     };
 }
 
@@ -169,5 +169,5 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-APITemplateList.displayName = "API Template List";
+APITemplateList.displayName = "API Payload Template";
 export default connect(mapStateToProps, mapDispatchToProps)(APITemplateList);

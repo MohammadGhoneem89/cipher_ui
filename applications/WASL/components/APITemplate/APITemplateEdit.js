@@ -48,7 +48,7 @@ class APITemplateEdit extends React.Component {
     }
 
     getDataById = () => {
-        if (this.props.id !== '') {
+        if (this.props.id !== 'create') {
             this.setState({isLoading: true});
             this.props.actions.generalProcess(constants.getPaymentDetail, {
                 "action": "getPaymentDetail",
