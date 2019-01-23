@@ -16,6 +16,8 @@ import EjariReport from '../../applications/WASL/components/reports/ejariReport'
 //API Template Routes
 import APITemplateList from '../../applications/WASL/components/APITemplate/APITemplateList';
 import APITemplateEdit from '../../applications/WASL/components/APITemplate/APITemplateEdit';
+import APITemplateTest from '../../applications/WASL/components/APITemplate/APITemplateTest';
+
 
 
 
@@ -34,6 +36,7 @@ let authRoutes = <div>
 
   <Route path="/apiTemplate" component={APITemplateList}/>
   <Route path="/apiTemplate/:id" component={APITemplateEdit}/>
+  <Route path="/apiTemplate/test/:id" component={APITemplateTest}/>
 
 
 </div>;
