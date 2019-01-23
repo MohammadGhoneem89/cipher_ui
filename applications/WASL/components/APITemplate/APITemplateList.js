@@ -7,8 +7,10 @@ import Table from '../../../../core/common/Datatable.jsx';
 import * as actions from '../../../../core/actions/generalAction';
 import * as constants from '../../../../core/constants/Communication.js';
 import Portlet from '../../../../core/common/Portlet.jsx';
+import ModalBox from '../../../../core/common/ModalBox.jsx';
 import _ from 'lodash';
 import { browserHistory } from 'react-router';
+import APITemplateTest from './APITemplateTest'
 
 class APITemplateList extends React.Component {
 
@@ -69,6 +71,17 @@ class APITemplateList extends React.Component {
         window.scrollTo(0, 0);
     }
 
+    updateState(data) {
+        this.setState(data);
+    }
+
+    updateBeneficiaryInfo = (data) => {
+        this.setState({
+            modalIsOpen: false,
+            beneficiaries: data.beneficiaries
+        });
+    }
+
     pageChanged = (pageNo) => {
         if (pageNo) {
             let pageData = this.state.pageData;
@@ -83,6 +96,19 @@ class APITemplateList extends React.Component {
         if (this.state.isLoading) {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         }
+
+        let _this = this;
+        let addAction = [
+            {
+                type: "link",
+                className: "btn btn-default",
+                label: utils.getLabelByID("Add"),
+                icon: "plus",
+                actionHandler: _this.updateState.bind(_this, {
+                    modalIsOpen: true,
+                    index: 1
+                })
+            }];
 
         return (
             <div>
@@ -116,7 +142,7 @@ class APITemplateList extends React.Component {
                         </div>
                     </div>
 
-                    <Portlet title={""} isPermissioned={true} actions={this.state.addAction}>
+                    <Portlet title={""} isPermissioned={true} actions={addAction}>
                         {
                             this.state.gridData.map((obj)=>{
                                 obj.action = [
@@ -153,6 +179,14 @@ class APITemplateList extends React.Component {
                         />
                     </Portlet>
                 </Portlet>
+                <ModalBox isOpen={this.state.modalIsOpen}>
+                    <APITemplateTest
+                        onSubmit={this.updateBeneficiaryInfo}
+                        initialValues={this.state}
+                        index={this.state.index}
+                        updateState={this.updateState}
+                    />
+                </ModalBox>
             </div>
         );
     }

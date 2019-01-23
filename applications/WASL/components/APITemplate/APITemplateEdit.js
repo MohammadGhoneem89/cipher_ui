@@ -43,10 +43,6 @@ class APITemplateEdit extends React.Component {
         // }
     }
 
-    updateState(data) {
-        this.setState(data);
-    }
-
     getDataById = () => {
         if (this.props.id !== 'create') {
             this.setState({isLoading: true});
