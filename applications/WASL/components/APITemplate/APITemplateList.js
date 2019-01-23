@@ -30,6 +30,7 @@ class APITemplateList extends React.Component {
     }
 
     getRequest = (page) => {
+        this.setState({isLoading: true});
         let Name = this.name.value;
 
         let searchCriteria = {};
@@ -45,7 +46,7 @@ class APITemplateList extends React.Component {
         };
         this.props.actions.generalProcess(constants.findAPITemplate, request);
     }
-
+    
     add = () => {
         browserHistory.push('/apiTemplate/create')
     }
@@ -109,7 +110,7 @@ class APITemplateList extends React.Component {
                             <div className="form-group col-md-12">
                                 <div className="btn-toolbar pull-right">
 
-                                    <button type="submit" className="btn green" onClick={this.getRequest}>
+                                    <button type="submit" className="btn green" onClick={() => this.getRequest(this.state.page.currentPageNo)}>
                                         {utils.getLabelByID("Search")}
                                     </button>
                                     <button type="button" className="btn default" onClick={this.add} >
