@@ -89,19 +89,6 @@ class APITemplateList extends React.Component {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         }
 
-        let _this = this;
-        let addAction = [
-            {
-                type: "link",
-                className: "btn btn-default",
-                label: utils.getLabelByID("Add"),
-                icon: "plus",
-                actionHandler: _this.updateState.bind(_this, {
-                    modalIsOpen: true,
-                    index: 1
-                })
-            }];
-
         return (
             <div>
                 <Portlet title={utils.getLabelByID("API Payload Template")}>
@@ -134,7 +121,7 @@ class APITemplateList extends React.Component {
                         </div>
                     </div>
 
-                    <Portlet title={""} isPermissioned={true} actions={addAction}>
+                    <Portlet title={""}>
                         {
                             this.state.gridData.map((obj)=>{
                                 obj.action = [

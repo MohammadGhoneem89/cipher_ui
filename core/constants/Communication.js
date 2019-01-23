@@ -194,5 +194,6 @@ module.exports = {
   findAPITemplate:baseUrl+ "/API/core/findAPITemplate",
   findAPITemplateById:baseUrl+ "/API/core/findAPITemplateById",
   upsertAPITemplate:baseUrl+ "/API/core/upsertAPITemplate",
+  testAPITemplate:baseUrl+ "/API/core/testAPITemplate",
 
 };
