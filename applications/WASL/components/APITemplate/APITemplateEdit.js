@@ -3,6 +3,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import _ from 'lodash';
+import { browserHistory } from 'react-router';
 
 import * as utils from '../../../../core/common/utils.js';
 import * as actions from '../../../../core/actions/generalAction';
@@ -16,11 +17,10 @@ class APITemplateEdit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false,
+            isLoading: true,
             modalIsOpen: false,
             gridData: [],
         };
-        this.updateState = this.updateState.bind(this);
     }
 
     componentWillMount() {
@@ -31,62 +31,57 @@ class APITemplateEdit extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // if (nextProps && (nextProps.paymentDetail._id === nextProps.id)) {
-        //     this.setState({
-        //         isLoading: false
-        //     });
-        // }
-        // else {
-            this.setState({
-                isLoading: false
+        if(!_.isEmpty(nextProps.findAPITemplateById)){
+            this.setState({ 
+                isLoading: false,
+                name: _.get(nextProps, 'findAPITemplateById.name'),
+                data:  JSON.stringify(_.get(nextProps, 'findAPITemplateById.data'))
             });
-        // }
-    }
-
-    updateState(data) {
-        this.setState(data);
+        }
     }
 
     getDataById = () => {
-        if (this.props.id !== 'create') {
+        if (this.props.routeParams.id !== 'create') {
             this.setState({isLoading: true});
-            this.props.actions.generalProcess(constants.getPaymentDetail, {
-                "action": "getPaymentDetail",
-                "data": {
-                    "id": this.props.id
-                }
-            });
+            this.props.actions.generalProcess(constants.findAPITemplateById,  this.props.routeParams);
+        }
+        else{
+            this.setState({isLoading: false});
         }
     };
 
     insertJson = () => {
-        let name = $("#name").val() == null ? "" : $("#name").val();
-        let apiPayload = $("#apiPayload").val() == null ? "" : $("#apiPayload").val();
-
-        if(apiPayload != ''){
+        let valid  = true;
             try{
-                apiPayload = JSON.parse(apiPayload)
+                let data = JSON.parse(this.state.data)
             }
             catch (err){
+                valid = false;
                 toaster.showToast("JSON is not correct", "ERROR");
             }
-        }
-
+       if(valid){
         let json = {
-            data: {
-                name: name,
-                apiPayload: apiPayload
-            }
+            data: this.state.data,
+            name: this.state.name
         };
-
-        if (this.props.id) {
-            json.data._id = this.props.id;
-            this.props.actions.generalProcess(constants.updatePayment, json);
+        if (this.props.routeParams.id !== 'create') {
+            json.id = this.props.routeParams.id;
         }
-        else {
-            this.props.actions.generalProcess(constants.insertPayment, json);
-        }
+        this.props.actions.generalProcess(constants.upsertAPITemplate, json);
+       }        
+        
     };
+    onChange = (e) => {
+        let value = e.target.value;
+    
+        this.setState({
+          [e.target.name]: value
+        });
+    
+      };
+      back = () => {
+        browserHistory.push('/apiTemplate');
+      };
 
     render() {
         if (this.state.isLoading)
@@ -98,31 +93,32 @@ class APITemplateEdit extends React.Component {
 
                     <div className="row">
                         <div className="form-group col-md-12">
-                            <div className="col-md-4">
+                            <div className="col-md-6">
                                 <label className="label-bold">{utils.getLabelByID("Name")}</label>
-                                <input type="text" className="form-control ekycinp" name="name" id="name"
-                                       defaultValue={_.get(this.state, 'name', '')}/>
+                                <input type="text" className="form-control ekycinp" name="name" 
+                                value={_.get(this.state, 'name', '')} 
+                                onChange={this.onChange}/>
                             </div>
                         </div>
                     </div>
 
                     <div className="row">
                         <div className="col-md-12">
-                            <div className="col-md-4">
+                            <div className="col-md-6">
                                 <label className="label-bold">{utils.getLabelByID("API Payload")}</label>
-                                <textarea placeholder="JSON Goes here ..." type="text" className="form-control ekycinp" name="apiPayload" id="apiPayload"
-                                          defaultValue={_.get(this.state, 'apiPayload', '')} />
+                                <textarea placeholder="JSON Goes here ..." type="text" className="form-control ekycinp" rows="18" name="data" 
+                                value={_.get(this.state, 'data', '')} 
+                                onChange={this.onChange}/>
                             </div>
                         </div>
                     </div>
-
+                    <br/>
                     <div className="row">
                         <div className="col-md-12">
-                            <div className="form-group col-md-12">
+                            <div className="form-group col-md-6">
                                 <div className="btn-toolbar pull-right">
-                                    <button type="submit" className="btn green" onClick={this.insertJson}>
-                                        {utils.getLabelByID("Save")}
-                                    </button>
+                                    <button type="submit" className="btn green" onClick={this.insertJson}>{utils.getLabelByID("Save")}</button>{"  "}
+                                    <button type="button" className="btn default" onClick={this.back}>{utils.getLabelByID("Back")} </button>
                                 </div>
                             </div>
                         </div>
@@ -138,8 +134,7 @@ class APITemplateEdit extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        id: _.get(ownProps.params, 'id', ''),
-        paymentDetail: _.get(state.app, 'getPaymentDetail.data', {}),
+        findAPITemplateById: _.get(state.app, 'findAPITemplateById.data', {}),
     };
 }
 

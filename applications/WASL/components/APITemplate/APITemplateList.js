@@ -16,8 +16,10 @@ class APITemplateList extends React.Component {
         super(props);
         this.state = {
             searchCriteria: {},
-            currentPageNo : "",
-            totalRecords : "",
+            page: {
+                pageSize: 10,
+                currentPageNo: 1
+              },
             isLoading: true,
             gridData : []
         };
@@ -25,7 +27,7 @@ class APITemplateList extends React.Component {
         this.code = '';
     }
 
-    getRequest = () => {
+    getRequest = (page) => {
         let Name = this.name.value;
 
         let searchCriteria = {};
@@ -37,21 +39,13 @@ class APITemplateList extends React.Component {
         let request = {
             "action": "findAPITemplate",
             "searchCriteria": searchCriteria,
-            "page": {
-                "pageSize": 10,
-                "currentPageNo": this.state.currentPageNo || 1,
-                "totalRecords": this.state.totalRecords || 0
-            }
+            "page": _.isEmpty(page) ? this.state.page : page
         };
         this.props.actions.generalProcess(constants.findAPITemplate, request);
     }
 
     add = () => {
         browserHistory.push('/apiTemplate/create')
-    }
-
-    componentWillMount() {
-        this.getRequest();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -66,18 +60,16 @@ class APITemplateList extends React.Component {
     }
 
     componentDidMount() {
+        this.getRequest();
         window.scrollTo(0, 0);
     }
 
     pageChanged = (pageNo) => {
-        if (pageNo) {
-            let pageData = this.state.pageData;
-            pageData.currentPageNo = pageNo;
-            this.setState({ pageData });
-            this.getRequest({ pageNo });
-        }
+        let page = this.state.page;
+        page.currentPageNo = pageNo;
+        this.setState({page: page});
+        this.getRequest(page);
     }
-
 
     render() {
         if (this.state.isLoading) {
@@ -122,19 +114,19 @@ class APITemplateList extends React.Component {
                                 obj.action = [
                                     {
                                         "label": "View",
-                                        "URI": ["/apiTemplate/:id"],
+                                        "URI": ["/apiTemplate/"],
                                         "params": "_id",
                                         "iconName": "icon-docs"
                                     },
                                     {
                                         "label": "Edit",
-                                        "URI": ["/apiTemplate/:id"],
+                                        "URI": ["/apiTemplate/"],
                                         "params": "_id",
                                         "iconName": "icon-docs"
                                     },
                                     {
                                         "label": "Test",
-                                        "URI": ["/apiTemplate/test/:id"],
+                                        "URI": ["/apiTemplate/test/"],
                                         "params": "_id",
                                         "iconName": "icon-docs"
                                     }
@@ -145,11 +137,11 @@ class APITemplateList extends React.Component {
                             gridColumns={utils.getGridColumnByName("APITemplateList")}
                             gridData={this.state.gridData}
                             fontclass=""
-                            totalRecords={this.state.totalRecords}
+                            totalRecords={_.get(this.props, 'pageData.totalRecords', 0)}
                             pageSize={10}
                             pageChanged={this.pageChanged}
                             pagination={true}
-                            activePage={this.state.currentPageNo}
+                            activePage={this.state.page.currentPageNo}
                         />
                     </Portlet>
                 </Portlet>
