@@ -33,7 +33,7 @@ class APITemplateEdit extends React.Component {
             this.setState({ 
                 isLoading: false,
                 name: _.get(nextProps, 'findAPITemplateById.name'),
-                data:  JSON.stringify(_.get(nextProps, 'findAPITemplateById.data'))
+                data:  JSON.stringify(_.get(nextProps, 'findAPITemplateById.data'), 0, 2)
             });
         }
     }

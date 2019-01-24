@@ -10,7 +10,7 @@ import * as actions from '../../../../core/actions/generalAction';
 import * as constants from '../../../../core/constants/Communication.js';
 import Portlet from '../../../../core/common/Portlet.jsx';
 import * as toaster from '../../../../core/common/toaster.js';
-
+import ReactJson from 'react-json-view';
 
 class APITemplateTest extends React.Component {
 
@@ -19,7 +19,7 @@ class APITemplateTest extends React.Component {
         this.state = {
             isLoading: true,
             payload: '',
-            data: ''
+            data: {}
         };
     }
 
@@ -32,14 +32,13 @@ class APITemplateTest extends React.Component {
         if(!_.isEmpty(nextProps.findAPITemplateById)){
             this.setState({ 
                 isLoading: false,
-                name: _.get(nextProps, 'findAPITemplateById.name'),
-                data:  JSON.stringify(_.get(nextProps, 'findAPITemplateById.data'), 0, 2)
+                name: _.get(nextProps, 'findAPITemplateById.name')
             });
         }
         if(!_.isEmpty(nextProps.testAPITemplate)){
             this.setState({ 
                 isLoading: false,
-                data:  JSON.stringify(_.get(nextProps, 'testAPITemplate.data'), 0, 2)
+                data: _.get(nextProps, 'testAPITemplate.data')
             });
         }
     }
@@ -104,9 +103,7 @@ class APITemplateTest extends React.Component {
                                 name="payload" onChange={this.onChange} value={this.state.payload}/>
                             </div>
                             <div className="col-md-6">
-                                <label className="label-bold">{utils.getLabelByID("Output JSON")}</label>
-                                <textarea placeholder="JSON Goes here ..." type="text" className="form-control ekycinp" rows="18"
-                                readOnly value={this.state.data} />
+                                <ReactJson name={utils.getLabelByID("Output JSON")} src={this.state.data} />
                             </div>
                         </div>
                     </div>
