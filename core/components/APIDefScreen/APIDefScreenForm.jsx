@@ -86,9 +86,9 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                     <div className="form-group col-md-8">
                       <div className="icheck-list">
                         <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                        <label/>
+                          <label />
                           <input type="checkbox" className="form-control" onChange={onInputChange} checked={initialValues.isActive} name="isActive" id="isActive" />
-                        <span/>
+                          <span />
                         </label>
                       </div>
                     </div>
@@ -103,9 +103,9 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                     <div className="form-group col-md-8">
                       <div className="icheck-list">
                         <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                          <label/>
+                          <label />
                           <input type="checkbox" className="form-control" onChange={onInputChange} checked={initialValues.isBlockchain} name="isBlockchain" id="isBlockchain" />
-                          <span/>
+                          <span />
                         </label>
                       </div>
                     </div>
@@ -152,9 +152,9 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                 <div className="form-group col-md-3">
                   <div className="icheck-list">
                     <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                      <label/>
+                      <label />
                       <input type="checkbox" className="form-control" onChange={onRequestTypeChange} checked={parentState.isBlockchainProcess} name="isBlockchainProcess" />
-                      <span/>
+                      <span />
                     </label>
                   </div>
                 </div>
@@ -166,9 +166,9 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                 <div className="form-group col-md-3">
                   <div className="icheck-list">
                     <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                      <label/>
+                      <label />
                       <input type="checkbox" className="form-control" onChange={onRequestTypeChange} checked={parentState.isBlockchainGet} name="isBlockchainGet" />
-                      <span/>
+                      <span />
                     </label>
                   </div>
                 </div>
@@ -180,9 +180,9 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                 <div className="form-group col-md-3">
                   <div className="icheck-list">
                     <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                      <label/>
+                      <label />
                       <input type="checkbox" className="form-control" onChange={onRequestTypeChange} checked={parentState.isOffchainGet} name="isOffchainGet" />
-                      <span/>
+                      <span />
                     </label>
                   </div>
                 </div>
@@ -194,44 +194,44 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
           </div>
           <div className="row" style={{ marginTop: "10px" }}>
             <div className="col-md-12">
-              <span style={{ display: parentState.isOffchainGet ? 'none' : 'block'}}>
-              <label className="form-group control-label col-md-7 uppercase" style={{
-                textAlign: "left",
-                fontWeight: "bold"
-              }}>{utils.getLabelByID("APIDefScreen_Label1")}</label>
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="col-md-6">
-                    <div className="form-group col-md-4">
-                      <label className="control-label">{utils.getLabelByID("APIDefScreen_RouteOveride")}</label>
-                    </div>
-                    <div className="form-group col-md-8">
-                      <div className="icheck-list">
-                        <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                          <label/>
-                          <input type="checkbox" className="form-control" onChange={onInputChange} name="isRouteOveride" id="isRouteOveride" checked={initialValues.isRouteOveride} />
-                          <span/>
-                        </label>
+              <span style={{ display: parentState.isOffchainGet ? 'none' : 'block' }}>
+                <label className="form-group control-label col-md-7 uppercase" style={{
+                  textAlign: "left",
+                  fontWeight: "bold"
+                }}>{utils.getLabelByID("APIDefScreen_Label1")}</label>
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="col-md-6">
+                      <div className="form-group col-md-4">
+                        <label className="control-label">{utils.getLabelByID("APIDefScreen_RouteOveride")}</label>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-12">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="form-group control-label col-md-4" style={{
-                        textAlign: "left",
-                        fontWeight: "normal"
-                      }}>{utils.getLabelByID("APIDefScreen_fieldName")}</label>
                       <div className="form-group col-md-8">
-                        <input type="text" className="form-control" onChange={onInputChange} disabled={!initialValues.isRouteOveride} name="fieldName" value={initialValues.fieldName} />
+                        <div className="icheck-list">
+                          <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                            <label />
+                            <input type="checkbox" className="form-control" onChange={onInputChange} name="isRouteOveride" id="isRouteOveride" checked={initialValues.isRouteOveride} />
+                            <span />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-12">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label className="form-group control-label col-md-4" style={{
+                          textAlign: "left",
+                          fontWeight: "normal"
+                        }}>{utils.getLabelByID("APIDefScreen_fieldName")}</label>
+                        <div className="form-group col-md-8">
+                          <input type="text" className="form-control" onChange={onInputChange} disabled={!initialValues.isRouteOveride} name="fieldName" value={initialValues.fieldName} />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
               </span>
-              <div className="row" style={{ display: parentState.isOffchainGet ? 'none' : 'block'}}>
+              <div className="row" style={{ display: parentState.isOffchainGet ? 'none' : 'block' }}>
                 <div className="col-md-12">
                   <label className="form-group control-label col-md-7 uppercase" style={{
                     textAlign: "left",
@@ -242,13 +242,13 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                       <div className="col-md-6">
                         <label className="form-group control-label col-md-4">
                           {utils.getLabelByID("APIDefScreen_CustomMapping")}
-                          </label>
+                        </label>
                         <div className="form-group col-md-8">
                           <div className="icheck-list">
                             <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                              <label/>
+                              <label />
                               <input type="checkbox" className="form-control" onChange={onInputChange} disabled={initialValues.isRouteOveride} name="isCustomMapping" id="isCustomMapping" checked={initialValues.isCustomMapping} />
-                              <span/>
+                              <span />
                             </label>
                           </div>
                         </div>
@@ -259,7 +259,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                         <div className="form-group">
                           <label className="form-group control-label col-md-4">
                             {utils.getLabelByID("APIDefScreen_MFunctionName")}
-                            </label>
+                          </label>
                           <div className="form-group col-md-8">
                             <input type="text" className="form-control" onChange={onInputChange} disabled={!initialValues.isCustomMapping || initialValues.isRouteOveride} name="MappingfunctionName" value={initialValues.MappingfunctionName} />
                           </div>
@@ -271,7 +271,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                         <div className="form-group">
                           <label className="form-group control-label col-md-4">
                             {utils.getLabelByID("APIDefScreen_CFileName")}
-                            </label>
+                          </label>
                           <div className="form-group col-md-8">
                             <input type="text" className="form-control" onChange={onInputChange} disabled={!initialValues.isCustomMapping || initialValues.isRouteOveride} name="CustomMappingFile" value={initialValues.CustomMappingFile} />
                           </div>
@@ -288,74 +288,81 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
               }}>{utils.getLabelByID("APIDefScreen_Label3")}</label>
               <div className="row">
                 <div className="col-md-12">
-                  <span style={{ display: parentState.isOffchainGet ? 'none' : 'block'}}>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="form-group control-label col-md-4" style={{
-                        textAlign: "left",
-                        fontWeight: "normal"
-                      }}>{utils.getLabelByID("Communication Mode")}</label>
-                      <div className="form-group col-md-8">
-                        <select name="communicationMode" value={initialValues.communicationMode} onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping} className="form-control">
-                          {
-                            typeData.API_ComMode.map((option, index) => {
-                              return (
-                                <option key={index} value={option.value}>{option.label}</option>
-                              );
-                            })
-                          }
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label className="form-group control-label col-md-4" style={{
-                            textAlign: "left",
-                            fontWeight: "normal"
-                          }}>{utils.getLabelByID("APIDefScreen_RSQueue")}</label>
-                          <div className="form-group col-md-8">
-                            <input type="text" className="form-control" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "REST"} name="requestServiceQueue" value={initialValues.requestServiceQueue} />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label className="form-group control-label col-md-4" style={{
-                            textAlign: "left",
-                            fontWeight: "normal"
-                          }}>{utils.getLabelByID("APIDefScreen_ServiceURL")}</label>
-                          <div className="form-group col-md-8">
-                            <input type="text" className="form-control" name="ServiceURL" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} value={initialValues.ServiceURL} />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label className="form-group control-label col-md-4" style={{
-                            textAlign: "left",
-                            fontWeight: "normal"
-                          }}>{utils.getLabelByID("APIDefScreen_ResponseQueue")}</label>
-                          <div className="form-group col-md-8">
-                            <input type="text" className="form-control" name="responseQueue" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "REST"} value={initialValues.responseQueue} />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label className="form-group control-label col-md-4" style={{
-                            textAlign: "left",
-                            fontWeight: "normal"
-                          }}>{utils.getLabelByID("APIDefScreen_ServiceHeader")}</label>
-                          <div className="form-group col-md-8">
-                            <input type="text" className="form-control" name="ServiceHeader" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} value={initialValues.ServiceHeader} />
-                          </div>
+                  <span style={{ display: parentState.isOffchainGet ? 'none' : 'block' }}>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label className="form-group control-label col-md-4" style={{
+                          textAlign: "left",
+                          fontWeight: "normal"
+                        }}>{utils.getLabelByID("Communication Mode")}</label>
+                        <div className="form-group col-md-8">
+                          <select name="communicationMode" value={initialValues.communicationMode} onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping} className="form-control">
+                            {
+                              typeData.API_ComMode.map((option, index) => {
+                                return (
+                                  <option key={index} value={option.value}>{option.label}</option>
+                                );
+                              })
+                            }
+                          </select>
                         </div>
                       </div>
                     </div>
-                  </div>
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label className="form-group control-label col-md-4" style={{
+                              textAlign: "left",
+                              fontWeight: "normal"
+                            }}>{utils.getLabelByID("APIDefScreen_RSQueue")}</label>
+                            <div className="form-group col-md-8">
+                              <input type="text" className="form-control" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "REST"} name="requestServiceQueue" value={initialValues.requestServiceQueue} />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label className="form-group control-label col-md-4" style={{
+                              textAlign: "left",
+                              fontWeight: "normal"
+                            }}>{utils.getLabelByID("APIDefScreen_ServiceURI")}</label>
+                            <div className="form-group col-md-8">
+                              <input type="text" className="form-control" name="ServiceURL" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} value={initialValues.ServiceURL} />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label className="form-group control-label col-md-4" style={{
+                              textAlign: "left",
+                              fontWeight: "normal"
+                            }}>{utils.getLabelByID("APIDefScreen_ResponseQueue")}</label>
+                            <div className="form-group col-md-8">
+                              <input type="text" className="form-control" name="responseQueue" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "REST"} value={initialValues.responseQueue} />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label className="form-group control-label col-md-4" style={{
+                              textAlign: "left",
+                              fontWeight: "normal"
+                            }}>{utils.getLabelByID("APIDefScreen_ServiceEndPoint")}</label>
+                            <div className="form-group col-md-8">
+                              <select id="endpointName" name="endpointName"  value={initialValues.endpointName} onChange={onInputChange} className="form-control" disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} >
+                              <option value="">--select--</option>
+                                { parentState.getEndpointListView.map((option, index) => {
+                                  return (
+                                    <option key={index} value={option.value}>{option.text}</option>
+                                  );
+                                })}
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </span>
                   <div className="col-md-12 offchain-get" style={{ display: parentState.isOffchainGet ? "block" : "none", marginBottom: "20px" }}>
                     <div className="col-md-12">
@@ -416,7 +423,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                   <select id="objectType" name="objectType" className="form-control" value={initialValues.objectType} onChange={onInputChange}>
                                     <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                                     {
-                                      filter(typeData.database_object_types, {type: parentState.databaseType || 'mongo'}).map((option, index) => {
+                                      filter(typeData.database_object_types, { type: parentState.databaseType || 'mongo' }).map((option, index) => {
                                         return (
                                           <option key={index} value={option.value}>{option.label}</option>
                                         );
@@ -453,9 +460,9 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                               <div className="form-group col-md-8">
                                 <div className="icheck-list">
                                   <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                                    <label/>
+                                    <label />
                                     <input type="checkbox" className="form-control" onChange={onInputChange} name="isEnablePagination" id="isEnablePagination" checked={initialValues.isEnablePagination} />
-                                    <span/>
+                                    <span />
                                   </label>
                                 </div>
                               </div>
@@ -467,9 +474,9 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                               <div className="form-group col-md-8">
                                 <div className="icheck-list">
                                   <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                                    <label/>
+                                    <label />
                                     <input type="checkbox" className="form-control" onChange={onInputChange} name="isEnablComponentAction" id="isEnablComponentAction" checked={initialValues.isEnablComponentAction} />
-                                    <span/>
+                                    <span />
                                   </label>
                                 </div>
                               </div>
@@ -509,20 +516,20 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                             textAlign: "left",
                                             fontWeight: "normal"
                                           }}>{utils.getLabelByID("Request Mapping Field")}</label>
-                                            <div className="form-group col-md-8">
-                                              <select id="requestMappingField" name="requestMappingField" className="form-control" value={initialValues.requestMappingField} onChange={onInputChange}>
-                                                <option disabled selected>{utils.getLabelByID("Select ...")}</option>
-                                                {
-                                                  get(parameters, `${parentState.RequestMapping}`, []).map((option, index) => {
-                                                    return (
-                                                      <option key={index} value={option.IN_FIELD}>{option.IN_FIELD}</option>
-                                                    );
-                                                  })
-                                                }
-                                              </select>
-                                            </div>
+                                          <div className="form-group col-md-8">
+                                            <select id="requestMappingField" name="requestMappingField" className="form-control" value={initialValues.requestMappingField} onChange={onInputChange}>
+                                              <option disabled selected>{utils.getLabelByID("Select ...")}</option>
+                                              {
+                                                get(parameters, `${parentState.RequestMapping}`, []).map((option, index) => {
+                                                  return (
+                                                    <option key={index} value={option.IN_FIELD}>{option.IN_FIELD}</option>
+                                                  );
+                                                })
+                                              }
+                                            </select>
                                           </div>
                                         </div>
+                                      </div>
                                       <div className="col-md-6">
                                         <div className="form-group">
                                           <label className="form-group control-label col-md-4" style={{
@@ -547,7 +554,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                         <div className="form-actions right">
                                           <div className="form-group col-md-12">
                                             <div className="btn-toolbar pull-right">
-                                              <button type="submit" className="btn btn-default" onClick={()=> addParams('request')}> <i className="fa fa-plus"/> {"  "}{utils.getLabelByID("Add Param")} </button>
+                                              <button type="submit" className="btn btn-default" onClick={() => addParams('request')}> <i className="fa fa-plus" /> {"  "}{utils.getLabelByID("Add Param")} </button>
                                             </div>
                                           </div>
                                         </div>
@@ -624,7 +631,7 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                                         <div className="form-actions right">
                                           <div className="form-group col-md-12">
                                             <div className="btn-toolbar pull-right">
-                                              <button type="submit" className="btn btn-default" onClick={()=> addParams('response')}> <i className="fa fa-plus"/> {"  "}{utils.getLabelByID("Add Param")} </button>
+                                              <button type="submit" className="btn btn-default" onClick={() => addParams('response')}> <i className="fa fa-plus" /> {"  "}{utils.getLabelByID("Add Param")} </button>
                                             </div>
                                           </div>
                                         </div>
@@ -959,9 +966,9 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                       <div className="form-group col-md-8">
                         <div className="icheck-list">
                           <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                            <label/>
+                            <label />
                             <input type="checkbox" className="form-control" onChange={onInputChange} name="isValBypass" id="isValBypass" checked={initialValues.isValBypass} />
-                            <span/>
+                            <span />
                           </label>
                         </div>
                       </div>
@@ -976,9 +983,9 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                       <div className="form-group col-md-8">
                         <div className="icheck-list">
                           <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                            <label/>
+                            <label />
                             <input type="checkbox" className="form-control" onChange={onInputChange} name="isResValBypass" id="isResValBypass" checked={initialValues.isResValBypass} />
-                            <span/>
+                            <span />
                           </label>
                         </div>
                       </div>
@@ -993,9 +1000,9 @@ const APIDefScreenForm = ({ parameters, generateCustomFile, addParams, onRequest
                       <div className="form-group col-md-8">
                         <div className="icheck-list">
                           <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                            <label/>
+                            <label />
                             <input type="checkbox" className="form-control" onChange={onInputChange} name="isSimulated" checked={initialValues.isSimulated} id="isSimulated" />
-                            <span/>
+                            <span />
                           </label>
                         </div>
                       </div>

@@ -32,12 +32,16 @@ const stateParent = {
         "requestBody": "",
         "requestHeader": "",
         "requestURL": "",
+        "endpointName":"",
+        "templateName":"",
         "templateId": "",
         "type": ""
     },
     selectedDispatcher: [],
     selectedDatasourceObj: [],
     selectedDispatcherObj: [],
+    getEndpointListView: [],
+    getTemplatesListView: [],
     eventNames: [],
     fields: [],
     rules: [],
@@ -94,10 +98,11 @@ class AddUpdateEventList extends React.Component {
                     } else {
                         this.getEventNameList(0);
                     }
-
                 });
-
             }
+
+
+           
 
             if (nextProps.selectedDispatcher) {
                 let dispatchData = nextProps.AddUpdateEventListData.eventData ? nextProps.AddUpdateEventListData.eventData.dipatcher : [];
@@ -129,6 +134,8 @@ class AddUpdateEventList extends React.Component {
                 });
 
             }
+
+          
         } else {
             //alert("test")
             this.setState(cloneDeep(stateParent))
@@ -153,7 +160,17 @@ class AddUpdateEventList extends React.Component {
                 }
             });
         }
+        if (nextProps.getEndpointListView.data) {
+            this.setState({
+                getEndpointListView: nextProps.getEndpointListView.data
+            });
 
+        }
+        if (nextProps.getTemplatesListView.data) {
+            this.setState({
+                getTemplatesListView: nextProps.getTemplatesListView.data
+            });
+        }
         this.setState({ blockSubmit: false })
 
     }
@@ -333,6 +350,8 @@ class AddUpdateEventList extends React.Component {
         this.props.actions.generalProcess(constants.getDispatcherMeta);
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['EAU_OPERATOR', 'dispatchType']));
         this.props.actions.generalProcess(constants.getEventRegistryByID, this.getRequest());
+        this.props.actions.generalProcess(constants.getEndpointListView);
+        this.props.actions.generalProcess(constants.getTemplatesListView);
 
     }
     formSubmit() {
@@ -424,13 +443,24 @@ class AddUpdateEventList extends React.Component {
             return false;
         }
 
-        if (data.type == "API" && data.requestURL.trim() == "") {
-            alert("Request URL must be defined");
+        if (data.type.indexOf("API")>-1 && data.requestURL.trim() == "") {
+            alert("Request URI must be defined");
+            return false;
+        }
+
+        if (data.type.indexOf("API")>-1 && data.endpointName.trim() == "") {
+            alert("Endpoint Name must be defined");
+            return false;
+        }
+
+
+        if (data.type.indexOf("API Direct")>-1 && data.templateName.trim() == "") {
+            alert("Template Name must be defined");
             return false;
         }
 
         if (data.type == "CUSTOM" && (data.filePath.trim() == "" || data.dispatchFunction.trim() == "")) {
-            alert("filePath & dispatchFunction must be defined");
+            alert("FilePath & dispatchFunction must be defined");
             return false;
         }
 
@@ -438,31 +468,15 @@ class AddUpdateEventList extends React.Component {
             alert("template & groupName must be defined");
             return false;
         }
-
-        if (data.requestBody != "") {
-            try {
-                JSON.parse(data.requestBody)
-            } catch (ex) {
-                alert("Request Body must be a valid JSON!");
-                return false;
-            }
-        }
-        if (data.requestHeader != "") {
-            try {
-                JSON.parse(data.requestHeader)
-            } catch (ex) {
-                alert("Request Header must be a valid JSON!");
-                return false;
-            }
-        }
-        data.actions=[
+     
+        data.actions = [
             { label: "Edit", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
             { label: "Remove", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
         ]
-        let newlist=this.state.selectedDispatcherObj;
+        let newlist = this.state.selectedDispatcherObj;
         newlist.push(data);
-        this.setState({selectedDispatcherObj:newlist,EventDispatcherDetails:_.cloneDeep(stateParent.EventDispatcherDetails)})
-        
+        this.setState({ selectedDispatcherObj: newlist, EventDispatcherDetails: _.cloneDeep(stateParent.EventDispatcherDetails) })
+
     }
 
     onInputChange = (e) => {
@@ -568,8 +582,8 @@ class AddUpdateEventList extends React.Component {
                                                         <label className="control-label">{utils.getLabelByID("DC_type")}</label>
                                                     </div>
                                                     <div className="form-group col-md-8">
-                                                        <select name="type" defaultValue={this.state.EventDispatcherDetails.type} onChange={this.onInputChange} className="form-control">
-                                                        <option value="">--select--</option>
+                                                        <select name="type" value={this.state.EventDispatcherDetails.type} onChange={this.onInputChange} className="form-control">
+                                                            <option value="">--select--</option>
                                                             {
                                                                 this.state.typeData.dispatchType.map((option, index) => {
                                                                     return (
@@ -589,8 +603,6 @@ class AddUpdateEventList extends React.Component {
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                             </div>
                                             <div className="row" style={{ display: this.state.EventDispatcherDetails.type !== "CUSTOM" ? 'none' : 'block' }}>
 
@@ -655,43 +667,56 @@ class AddUpdateEventList extends React.Component {
                                                 </div>
 
                                             </div>
-                                            <div style={{ display: this.state.EventDispatcherDetails.type !== "API" ? 'none' : 'block' }}>
+                                         
+                                            <div style={{ display: this.state.EventDispatcherDetails.type !== "API Direct" && this.state.EventDispatcherDetails.type !== "API In-Direct" ? 'none' : 'block' }}>
                                                 <div className="row">
 
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_requestURL")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_requestURI")}</label>
                                                             <div className="form-group col-md-8">
                                                                 <input type="text" className="form-control" name="requestURL" onChange={this.onInputChange} value={this.state.EventDispatcherDetails.requestURL} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="form-group">
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("EndPointName")}</label>
+                                                            <div className="form-group col-md-8">
+                                                                <select id="endpointName" name="endpointName" value={this.state.EventDispatcherDetails.endpointName} onChange={this.onInputChange} className="form-control" >
+                                                                <option  value="">--select--</option>
+                                                                    {this.state.getEndpointListView.map((option, index) => {
+                                                                        return (
+                                                                            <option key={index} value={option.value}>{option.text}</option>
+                                                                        );
+                                                                    })}
 
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                 </div>
                                                 <div className="row">
-
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_requestHeader")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_requestTemplate")}</label>
                                                             <div className="form-group col-md-8">
-                                                                <textarea onChange={this.onInputChange} name="requestHeader" value={this.state.EventDispatcherDetails.requestHeader} className="form-control" rows="4" style={{ resize: "none", width: "100%" }} />
-
+                                                                <select id="templateName" name="templateName" value={this.state.EventDispatcherDetails.templateName} onChange={this.onInputChange} className="form-control" >
+                                                                <option  value="">--select--</option>
+                                                                    {this.state.getTemplatesListView.map((option, index) => {
+                                                                        return (
+                                                                            <option key={index} value={option.value}>{option.text}</option>
+                                                                        );
+                                                                    })}
+                                                                </select>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_requestBody")}</label>
-                                                            <div className="form-group col-md-8">
-                                                                <textarea onChange={this.onInputChange} name="requestBody" value={this.state.EventDispatcherDetails.requestBody} className="form-control" rows="4" style={{ resize: "none", width: "100%" }} />
-
-                                                            </div>
-                                                        </div>
-
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                             <div className="form-actions right">
                                                 <div className="form-group col-md-12">
                                                     <div className="btn-toolbar pull-right">
@@ -866,6 +891,8 @@ function mapStateToProps(state, ownProps) {
         eventName: ownProps.params.eventName,
         typeDataPage: state.app.typeData.data ? (state.app.typeData.data.EAU_OPERATOR ? state.app.typeData.data.EAU_OPERATOR : []) : [],
         EventDispatcherTypeList: state.app.EventDispatcherTypeList,
+        getEndpointListView: state.app.getEndpointListView,
+        getTemplatesListView: state.app.getTemplatesListView
     };
 }
 function mapDispatchToProps(dispatch) {

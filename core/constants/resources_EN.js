@@ -979,7 +979,7 @@ module.exports = {
   DC_dispatchFunction:"Custom Function Name",
   DC_groupName:"Email Group Name",
   DC_emailTemplate:"Email Template",
-  DC_requestURL:"Request URL",
+  DC_requestURL:"Request URI",
   DC_requestHeader:"Request Header",
   DC_requestBody:"Request Body",
   DL_SourceType:"Data Source Type",
@@ -1066,5 +1066,11 @@ module.exports = {
   Transformation_Type:"Action Type",
   TRAN_TypeData:"Type Data",
   TRAN_Function:"Transformation Function",
-  MessageCustomizations:"Message Customizations"
+  MessageCustomizations:"Message Customizations",
+  DC_requestURI:"Request URI",
+  DC_requestTemplate:"Request Template",
+  EndPointName:"EndPointName",
+  EVNTL_RetryCount:"Retry",
+  APIDefScreen_ServiceURI:"Service URI",
+  APIDefScreen_ServiceEndPoint:"Service End Point"
 };
