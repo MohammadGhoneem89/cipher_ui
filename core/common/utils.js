@@ -5,6 +5,7 @@ import * as gridColumns from '../constants/GridColumns.js';
 import * as cresEnglish from '../constants/componentResources_EN.js';
 import * as cresArabic from '../constants/componentResources_AR.js';
 import moment from 'moment'
+import _ from 'lodash';
 
 let lang = sessionStorage.lang;
 
@@ -78,9 +79,9 @@ export function getButtonLabelByID (labelId)
 {
   let retValue;
   switch(lang){
-    case "EN": retValue=cresEnglish.buttons[labelId].displayText;
+    case "EN": retValue= _.get(cresEnglish, `buttons[${labelId}].displayText`, labelId);
       break;
-    case "AR":  retValue=cresArabic.buttons[labelId].displayText;
+    case "AR":  retValue= _.get(cresArabic, `buttons[${labelId}].displayText`, labelId);
       break;
     default: retValue=labelId;
       break;

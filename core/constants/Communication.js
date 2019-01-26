@@ -193,4 +193,9 @@ module.exports = {
   findEndpointDefination:baseUrl+ "/API/core/findEndpointDefination",
   getEndpointListView:baseUrl+ "/API/core/getEndpointListView",
   getTemplatesListView:baseUrl+ "/API/core/getTemplatesListView",
+  findAPITemplate:baseUrl+ "/API/core/findAPITemplate",
+  findAPITemplateById:baseUrl+ "/API/core/findAPITemplateById",
+  upsertAPITemplate:baseUrl+ "/API/core/upsertAPITemplate",
+  testAPITemplate:baseUrl+ "/API/core/testAPITemplate",
+
 };
