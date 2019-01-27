@@ -1,22 +1,27 @@
-FROM centos:6.6
+#FROM registry.access.redhat.com/rhscl/nodejs-8-rhel7
+FROM risingstack/alpine:3.7-v8.10.0-4.8.0
 MAINTAINER Avanza Innovations <bilal.mahroof@avanzainnovations.com>
+#RUN subscription-manager attach --auto
+#RUN yum repolist
+#RUN yum repolist enabled
+#RUN yum -y groupinstall `Development Tools`
+#RUN yum -y module install nodejs:8/development
 
 
-RUN rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
-RUN yum groupinstall -y "Development Tools" && yum clean all && yum install -y tar
+RUN  useradd -ms /bin/bash 1001
 
-RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh | bash
-
-RUN ["/bin/bash", "-login", "-c", "nvm install 8.9.0"]
-RUN ["/bin/bash", "-login", "-c", "nvm use 8.9.0"]
-
-WORKDIR /home/avanza/app
-
+#WORKDIR /home/avanza
+RUN bash -c "npm --version"
+#RUN node -v
+#RUN npm -v
+#RUN bash -c "mkdir -p /home/1001/app/logs"
+#RUN bash -c "mkdir -p /home/1001/app/dist"
+WORKDIR /opt/app-root
 COPY package.json .
 COPY . .
-RUN npm install
+RUN bash -c "npm install"
 
-
-EXPOSE 9080
+USER 1001
+EXPOSE 3000
 
 CMD [ "npm", "start"]
