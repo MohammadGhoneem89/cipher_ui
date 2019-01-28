@@ -5,13 +5,23 @@ import { bindActionCreators } from 'redux';
 import * as utils from '../../../../core/common/utils.js';
 import * as actions from '../../../../core/actions/generalAction';
 import Portlet from '../../../../core/common/Portlet.jsx';
+import TileUnit from '../../../../core/common/tileUnit.jsx';
+import Table from '../../../../core/common/Datatable.jsx';
 
 class ViewDocument extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       hash: '',
-      key: ''
+      tiles: [{
+        "actionURI": "",
+        "fontClass": "green-steel",
+        "id": 1,
+        "overDue": "",
+        "percentageTag": false,
+        "title": "Documents",
+        "value": 10
+      }]
     }
   }
 
@@ -38,7 +48,11 @@ class ViewDocument extends React.Component {
       return (<div className="loader">{utils.getLabelByID("Loading")}</div>);
 
     return (
-      <Portlet title="IPFS Document">
+    <div className="document-view-ipfs">
+      <div className="row">
+        <TileUnit data={this.state.tiles}/>
+      </div>
+      <Portlet title="IPFS Documents">
         <div className="row">
           <div className="col-md-6">
             <div className="form-group col-md-4">
@@ -48,35 +62,26 @@ class ViewDocument extends React.Component {
               <input type="text" className="form-control" name="hash" onChange={this.onChange} value={this.state.hash}/>
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="form-group col-md-4">
-              <label className="control-label">{utils.getLabelByID("Key")}</label>
-            </div>
-            <div className="form-group col-md-8">
-              <input type="text" className="form-control" name="key" onChange={this.onChange} value={this.state.key}/>
-            </div>
-          </div>
         </div>
         <div className="row">
           <div className="form-group col-md-12">
             <div className="btn-toolbar pull-right">
-              <button type="submit" className="btn green" onClick={this.fetch}> {utils.getLabelByID("Fetch")} </button>
+              <button type="submit" className="btn green" onClick={this.fetch}> {utils.getLabelByID("Search")} </button>
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-12" style={{textAlign: "center"}}>
-            <img src="https://www.w3schools.com/css/img_5terre.jpg"/>
-          </div>
-        </div>
-        <div className="row">
-          <div className="form-group col-md-12">
-            <div className="btn-toolbar pull-right">
-              <button type="submit" className="btn green" onClick={this.fetch}> {utils.getLabelByID("Download")} </button>
-            </div>
-          </div>
-        </div>
+        <Table gridColumns={utils.getGridColumnByName("IPFSDocumentsList")}
+               gridData={[]}
+               totalRecords={0}
+               searchCallBack={this.searchCallBack}
+               pageSize={5}
+               pageChanged={this.pageChanged}
+               export={false}
+               search={true}
+               pagination={false}
+               activePage={1}/>
       </Portlet>
+    </div>
     );
   }
 }
