@@ -5,14 +5,17 @@ import { bindActionCreators } from 'redux';
 import * as utils from '../../../../core/common/utils.js';
 import * as actions from '../../../../core/actions/generalAction';
 import Portlet from '../../../../core/common/Portlet.jsx';
-import axios from 'axios';
+import generalAPI from '../../../../core/api/generalAPI';
+import * as constants from '../../../../core/constants/Communication.js';
+import  _ from 'lodash';
 
 class ViewDocument extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       hash: '',
-      key: ''
+      key: '',
+      infoData: {}
     }
   }
 
@@ -28,18 +31,19 @@ class ViewDocument extends React.Component {
     });
   };
 
-  fetch = () => {};
+  search = () => {
+    this.setState({isLoading: true});
+    generalAPI.getData(constants.ipfsInfo, {hash: this.state.hash})
+      .then((res)=>{
+        this.setState({
+          isLoading: false,
+          infoData: _.get(res, 'info.data', {})
+        });
+      });
+  };
 
   download = () =>{
-    axios.get("http://51.140.253.55:1000",{
-      params: {
-        hash: "QmfK5JrhxL4Nyc153WM6UF971gWVt92mDukgkR72eXbVio",
-        key: "A1f69341aECe9CD4D119d6C5159f4ebf6F7bf2a8A1f69341aECe9CD4D119d6C5"
-      }
-    })
-      .then((res)=>{
-      console.log(res);
-      })
+
   };
 
   render() {
@@ -62,27 +66,27 @@ class ViewDocument extends React.Component {
         <div className="row">
           <div className="form-group col-md-12">
             <div className="btn-toolbar pull-right">
-              <button type="submit" className="btn green" onClick={this.fetch}> {utils.getLabelByID("Search")} </button>
+              <button type="submit" className="btn green" onClick={this.search}> {utils.getLabelByID("Search")} </button>
             </div>
           </div>
         </div>
         <Portlet title="Information">
           <div className="row">
               <div className="col-md-12">
-                <label className="col-md-2">{utils.getLabelByID("Size")} :</label>
-                <label className="col-md-6">{utils.getLabelByID("Hash")}</label>
+                <label className="col-md-2" style={{fontWeight: "bolder"}}>{utils.getLabelByID("Size")} :</label>
+                <label className="col-md-6">{_.get(this.state, 'infoData.CumulativeSize', '-')}</label>
               </div>
               <div className="col-md-12">
-                <label className="col-md-2">{utils.getLabelByID("Block Size")} :</label>
-                <label className="col-md-6">{utils.getLabelByID("Hash")}</label>
+                <label className="col-md-2" style={{fontWeight: "bolder"}}>{utils.getLabelByID("Block Size")} :</label>
+                <label className="col-md-6">{_.get(this.state, 'infoData.BlockSize', '-')}</label>
               </div>
               <div className="col-md-12">
-                <label className="col-md-2">{utils.getLabelByID("Link Size")} :</label>
-                <label className="col-md-6">{utils.getLabelByID("Hash")}</label>
+                <label className="col-md-2" style={{fontWeight: "bolder"}}>{utils.getLabelByID("Link Size")} :</label>
+                <label className="col-md-6">{_.get(this.state, 'infoData.LinksSize', '-')}</label>
               </div>
               <div className="col-md-12">
-                <label className="col-md-2">{utils.getLabelByID("Data Size")} :</label>
-                <label className="col-md-6">{utils.getLabelByID("Hash")}</label>
+                <label className="col-md-2" style={{fontWeight: "bolder"}}>{utils.getLabelByID("Data Size")} :</label>
+                <label className="col-md-6">{_.get(this.state, 'infoData.DataSize', '-')}</label>
               </div>
           </div>
           <div className="row">
