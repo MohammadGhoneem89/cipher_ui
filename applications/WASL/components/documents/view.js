@@ -43,7 +43,10 @@ class ViewDocument extends React.Component {
   };
 
   download = () =>{
-
+    generalAPI.getData(constants.ipfsView, {hash: this.state.hash, key: this.state.key})
+      .then((res)=>{
+        console.log(res)
+      });
   };
 
   render() {

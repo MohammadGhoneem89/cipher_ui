@@ -198,5 +198,6 @@ module.exports = {
   upsertAPITemplate:baseUrl+ "/API/core/upsertAPITemplate",
   testAPITemplate:baseUrl+ "/API/core/testAPITemplate",
   ipfsInfo :baseUrl+ "/API/IPFS/info",
+  ipfsView :baseUrl+ "/API/IPFS/view",
 
 };
