@@ -15,6 +15,7 @@ class ViewDocument extends React.Component {
     this.state = {
       hash: '',
       key: '',
+      docName: '',
       infoData: {}
     }
   }
@@ -43,9 +44,17 @@ class ViewDocument extends React.Component {
   };
 
   download = () =>{
+    this.setState({isLoading: true});
     generalAPI.getData(constants.ipfsView, {hash: this.state.hash, key: this.state.key})
       .then((res)=>{
-        console.log(res)
+      this.setState({isLoading: false});
+        if(res.type && res.data){
+          this.setState({docName: `${this.state.hash}.${res.type}`}, () => {
+            const dlnk = document.getElementById('dwnldLnk');
+            dlnk.href = `data:image/${res.type};base64,${res.data}`;
+            dlnk.click();
+          });
+        }
       });
   };
 
@@ -127,6 +136,7 @@ class ViewDocument extends React.Component {
             <div className="modal-footer">
               <button type="button" className="btn green" onClick={this.download} data-dismiss="modal">{utils.getLabelByID("Download")}</button>
             </div>
+            <a id='dwnldLnk' download={this.state.docName} style={{display:"none"}}/>
           </div>
         </div>
       </div>
