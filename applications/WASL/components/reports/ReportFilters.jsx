@@ -18,6 +18,7 @@ class ReportFilters extends React.Component {
             contractStatus : props.contractStatus,
             instrumentStatus : props.instrumentStatus,
             paymentMethod : props.paymentMethod,
+            useCase : props.useCase,
             error: undefined,
             downloading: false
         };
@@ -161,6 +162,10 @@ class ReportFilters extends React.Component {
 
         else if (filter["id"] === "paymentMethod") {
             list = this.props.paymentMethod
+        }
+
+        else if (filter["id"] === "useCase") {
+            list = this.props.useCase
         }
 
         else {

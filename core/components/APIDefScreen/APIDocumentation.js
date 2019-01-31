@@ -140,9 +140,7 @@ class APIDocumentation extends React.Component {
                             <div className="col-md-12">
                                 <div className="col-md-12">
                                     <div className="btn-toolbar pull-right">
-                                        <button onClick={() => this.openDownloadWindow('pdf')}>
-                                            <i className="fa fa-file-code-o"/>XML
-                                        </button>
+                                        <button type="submit" className="btn green" onClick={() => this.openDownloadWindow('pdf')}>Generate</button>
                                     </div>
                                 </div>
                             </div>

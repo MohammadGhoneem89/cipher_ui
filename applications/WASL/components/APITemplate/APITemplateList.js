@@ -90,17 +90,7 @@ class APITemplateList extends React.Component {
         }
 
         let _this = this;
-        let addAction = [
-            {
-                type: "link",
-                className: "btn btn-default",
-                label: utils.getLabelByID("Add"),
-                icon: "plus",
-                actionHandler: _this.updateState.bind(_this, {
-                    modalIsOpen: true,
-                    index: 1
-                })
-            }];
+
 
         return (
             <div>
@@ -134,7 +124,7 @@ class APITemplateList extends React.Component {
                         </div>
                     </div>
 
-                    <Portlet title={""} isPermissioned={true} actions={addAction}>
+                    <Portlet title={""}>
                         {
                             this.state.gridData.map((obj)=>{
                                 obj.action = [
@@ -171,14 +161,14 @@ class APITemplateList extends React.Component {
                         />
                     </Portlet>
                 </Portlet>
-                <ModalBox isOpen={this.state.modalIsOpen}>
+                {/*<ModalBox isOpen={this.state.modalIsOpen}>
                     <APITemplateTest
                         onSubmit={this.updateBeneficiaryInfo}
                         initialValues={this.state}
                         index={this.state.index}
                         updateState={this.updateState}
                     />
-                </ModalBox>
+                </ModalBox>*/}
             </div>
         );
     }
