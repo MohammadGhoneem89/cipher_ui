@@ -4,6 +4,8 @@ export default {
   enumList: { action: "", data: {} },
   entityList: { action: "", data: { searchResult: [], typeData: { entityNames: [] } } },
   acquirerList: { action: "", data: { searchResult: [], typeData: { acquirerNames: [] } } },
+  getEndpointListView: {},
+  getTemplatesListView:{},
   entityDetail: {
     action: "", data: {
       "entityName": "",
@@ -260,27 +262,27 @@ export default {
     "data": {}
   },
   ApiListData: {},
-  getActiveAPIs : {"action": "", "data": []},
+  getActiveAPIs: { "action": "", "data": [] },
   APIDefinitionAddUpdate: {},
   AddUpdateModule: {},
-  AddUpdateNetwork:{},
-  AddUpdateChannel:{},
-  ChannelListData:{},
-  AddUpdateSmartContract:{},
-  ChannelTypeData:{},
-  SmartContractList:{},
-  AddUpdateConsortium:{},
-  ConsortiumList:{},
-  SmartContractTypeData:{},
-  NetworkTypeData:{},
-  NetworkPeerList:{},
-  HyperledgerConnect:{},
+  AddUpdateNetwork: {},
+  AddUpdateChannel: {},
+  ChannelListData: {},
+  AddUpdateSmartContract: {},
+  ChannelTypeData: {},
+  SmartContractList: {},
+  AddUpdateConsortium: {},
+  ConsortiumList: {},
+  SmartContractTypeData: {},
+  NetworkTypeData: {},
+  NetworkPeerList: {},
+  HyperledgerConnect: {},
   ApiListCombo: {},
   EventDispatcherList: {},
-  MappingOrgFieldData:{},
+  MappingOrgFieldData: {},
   EventDispatcherDetails: {},
   EventDispatcherTypeList: {},
-  ConsortiumTypeData:{},
+  ConsortiumTypeData: {},
   RouteList: {},
   workingCalendarDetail: {
     action: "workingCalendarDetail",
@@ -495,7 +497,7 @@ export default {
       }
     }
   },
-  downloadChainCode :{},
+  downloadChainCode: {},
   EventDispatcherStatus: { "action": "", "dispatchList": { "pageData": { "totalRecords": 0 } } },
   DispatchList: { "action": "", "dispatchList": { "pageData": { "totalRecords": 0 } } },
   AddUpdateDispatcher: {
@@ -505,11 +507,11 @@ export default {
       }
     }
   },
-    getTypeDataDetailByID : {
-      action : "",
-      data : {}
-    },
-    typeDataList : {},
+  getTypeDataDetailByID: {
+    action: "",
+    data: {}
+  },
+  typeDataList: {},
   ...ApplicationsInitialSate
 }
 

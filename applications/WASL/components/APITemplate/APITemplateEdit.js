@@ -23,11 +23,9 @@ class APITemplateEdit extends React.Component {
         };
     }
 
-    componentWillMount() {
-        this.getDataById()
-    }
-
     componentDidMount() {
+        this.getDataById();
+        window.scrollTo(0, 0);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -35,7 +33,7 @@ class APITemplateEdit extends React.Component {
             this.setState({ 
                 isLoading: false,
                 name: _.get(nextProps, 'findAPITemplateById.name'),
-                data:  JSON.stringify(_.get(nextProps, 'findAPITemplateById.data'))
+                data:  JSON.stringify(_.get(nextProps, 'findAPITemplateById.data'), 0, 2)
             });
         }
     }
@@ -52,8 +50,9 @@ class APITemplateEdit extends React.Component {
 
     insertJson = () => {
         let valid  = true;
+        let data;
             try{
-                let data = JSON.parse(this.state.data)
+                data = JSON.parse(this.state.data)
             }
             catch (err){
                 valid = false;
@@ -61,7 +60,7 @@ class APITemplateEdit extends React.Component {
             }
        if(valid){
         let json = {
-            data: this.state.data,
+            data: data,
             name: this.state.name
         };
         if (this.props.routeParams.id !== 'create') {

@@ -658,6 +658,8 @@ module.exports = {
     { alias: "EVNTL_DIPATCHER", key: "dispatcher", type: "string" },
     { alias: "EVNTL_Date", key: "createdon", type: "string" },
     { alias: "EVNTL_DispatchDate", key: "updatedon", type: "string" },
+    { alias: "EVNTL_RetryCount", key: "retrycount", type: "string" },
+    
     { alias: "EL_Error", key: "error", type: "string" },
     { alias: "EL_Status", key: "status", type: "statusLabel" },
     { alias: "EL_actions", key: "actions", type: "action" }

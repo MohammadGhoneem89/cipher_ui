@@ -19,9 +19,8 @@ import APITemplateList from '../../applications/WASL/components/APITemplate/APIT
 import APITemplateEdit from '../../applications/WASL/components/APITemplate/APITemplateEdit';
 import APITemplateTest from '../../applications/WASL/components/APITemplate/APITemplateTest';
 
-
-
-
+//Document Routes
+import ViewDocument from '../../applications/WASL/components/documents/view';
 
 let authRoutes = <div>
   {/*<Route path="/sampleDashboard" component={sampleDashboard}/>*/}
@@ -39,7 +38,7 @@ let authRoutes = <div>
   <Route path="/apiTemplate" component={APITemplateList}/>
   <Route path="/apiTemplate/:id" component={APITemplateEdit}/>
   <Route path="/apiTemplate/test/:id" component={APITemplateTest}/>
-
+  <Route path="/document/view" component={ViewDocument}/>
 
 </div>;
 

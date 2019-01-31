@@ -26,5 +26,12 @@ module.exports = {
         {alias: "S No.", key: "_id", type: "hiddenID"},
         {alias: "Template Name", key: "name", type: 'string'},
         {alias: "Action", key: "action", type: "action"}
-    ]
+    ],
+  IPFSDocumentsList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    {alias: "S No.", key: "_id", type: "hiddenID"},
+    {alias: "IPFS Hash", key: "name", type: 'string'},
+    {alias: "Encryption Key", key: "name", type: 'string'},
+    {alias: "Action", key: "action", type: "action"}
+  ]
 };
