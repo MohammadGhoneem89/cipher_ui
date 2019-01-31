@@ -9,12 +9,12 @@ const backOffices = {
 };
 */
 
-const backOffices = {
-  baseUrl: "http://51.140.250.28:9080",
-  webSocketURL: "http://51.140.250.28:9080",
-  repostActionURL: "http://51.140.250.28:9080/API",
-  blockChainViewerURL: "http://51.140.250.28:9080"
-};
+// const backOffices = {
+//   baseUrl: "http://51.140.250.28:9080",
+//   webSocketURL: "http://51.140.250.28:9080",
+//   repostActionURL: "http://51.140.250.28:9080/API",
+//   blockChainViewerURL: "http://51.140.250.28:9080"
+// };
 
 /*
 const backOffices = {
@@ -27,13 +27,13 @@ const backOffices = {
 */
 
 
-// const backOffices = {
-//     baseUrl: "http://localhost:9080",
-//     blockChainURL: "http://localhost:9080",
-//     webSocketURL: "http://localhost:9080",
-//     repostActionURL: "http://localhost:9080/API",
-//     blockChainViewerURL: "http://localhost:9080"
-// };
+const backOffices = {
+    baseUrl: "http://localhost:9080",
+    blockChainURL: "http://localhost:9080",
+    webSocketURL: "http://localhost:9080",
+    repostActionURL: "http://localhost:9080/API",
+    blockChainViewerURL: "http://localhost:9080"
+};
 
 
 export default backOffices;

@@ -1072,5 +1072,6 @@ module.exports = {
   EndPointName:"EndPointName",
   EVNTL_RetryCount:"Retry",
   APIDefScreen_ServiceURI:"Service URI",
-  APIDefScreen_ServiceEndPoint:"Service End Point"
+  APIDefScreen_ServiceEndPoint:"Service End Point",
+  GetStruct : "GetStruct"
 };

@@ -43,12 +43,12 @@ class ApiList extends React.Component {
         }
 
         if (useCase != "")
-            searchCriteria.useCase = useCase
+            searchCriteria.useCase = useCase;
 
         if (route != "")
-            searchCriteria.route = route
-
-        this.setState({ searchFilters: searchCriteria })
+            searchCriteria.route = route;
+console.log(route,"++++++++====route\n\n",searchCriteria);
+        this.setState({ searchFilters: searchCriteria });
 
         var chaincodeRequest = {
             "action": "mappingData",
@@ -68,7 +68,8 @@ class ApiList extends React.Component {
             alert("UseCase Required !")
         }
         else {
-            this.props.actions.generalProcess(constants.downloadChainCode, this.getChaincodeRequest());
+            this.props.actions.generalProcess(constants.downloadChainCode,
+                 this.getChaincodeRequest());
         }
     }
 

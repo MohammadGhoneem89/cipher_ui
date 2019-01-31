@@ -199,5 +199,5 @@ module.exports = {
   testAPITemplate:baseUrl+ "/API/core/testAPITemplate",
   ipfsInfo :baseUrl+ "/API/IPFS/info",
   ipfsView :baseUrl+ "/API/IPFS/view",
-
+  createDynamicStruct:baseUrl+"/API/core/createDynamicStruct",
 };

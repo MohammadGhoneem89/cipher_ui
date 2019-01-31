@@ -28,7 +28,8 @@ class MappingList extends React.Component {
         this.formSubmit = this.formSubmit.bind(this);
         this.getRequest = this.getRequest.bind(this);
         this.renderPopupBody = this.renderPopupBody.bind(this);
-
+        this.downloadStruct = this.downloadStruct.bind(this);
+        this.getStructRequest = this.getStructRequest.bind(this)
 
     }
     renderPopupBody(dataID) {
@@ -63,8 +64,40 @@ class MappingList extends React.Component {
         this.setState({ currentPageNo: 1 })
         return request;
     }
+    getStructRequest(){
+        console.log("downloadStruct---------------------------------")
+        let searchCriteria = {};
+        let mappingName = document.getElementById('mappingName') == null ? "" : document.getElementById('mappingName').value;
+       
+                searchCriteria.mappingName = mappingName;
+
+            this.setState({ searchFilters: searchCriteria })
+
+            let  request = {
+                "action": "mappingData",
+                searchCriteria,
+                "page": {
+                    "currentPageNo": 1,
+                    "pageSize": 10
+                }
+            }
+            console.log("sending request downloadStruct---------------------------------")
+            return request;
+        
+    }
+    downloadStruct() {
+        if (document.getElementById('mappingName').value == "") {
+            alert("mappingName Required !")
+        }
+        else {
+            this.props.actions.generalProcess(constants.createDynamicStruct,
+                 this.getStructRequest());
+        }
+    }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.typeData) {
+        
+        if (nextProps.typeData && nextProps.createDynamicStruct) {
+            console.log(nextProps.createDynamicStruct,"++++++++++++++++++++++++++++")
             this.setState({
                 typeData: nextProps.typeData
             });
@@ -129,7 +162,7 @@ class MappingList extends React.Component {
         });
     }
 
-
+    
     render() {
 
         if (this.props.MappingListData && this.props.MappingListData.data) {
@@ -142,7 +175,7 @@ class MappingList extends React.Component {
                                     <div className="caption">
                                         <span className="caption-subject">{utils.getLabelByID("MappingListDataFilters")}</span></div>
                                     <div className="tools">
-                                        <a href="javascript:;" className="collapse" data-original-title title> </a>
+                                        <a href="javascript:;" className="collapse" data-original-title title />
                                     </div>
                                 </div>
                                 <div className="portlet-body">
@@ -184,6 +217,8 @@ class MappingList extends React.Component {
                                                             <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
                                                             {"  "}
                                                             <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
+                                                            <button type="button" className="btn green" onClick={this.downloadStruct} >{utils.getLabelByID("GetStruct")} </button>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -197,9 +232,13 @@ class MappingList extends React.Component {
 
                     <Portlet title={utils.getLabelByID("MappingList")} isPermissioned={true}
                         actions={this.state.actions}>
-                        <Table fontclass="" gridColumns={utils.getGridColumnByName("MappingListData")} gridData={this.props.MappingListData.data.searchResult}
-                            totalRecords={this.props.MappingListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
-                            pagination={true} pageChanged={this.pageChanged} export={false} search={true}
+                        <Table fontclass="" 
+                        gridColumns={utils.getGridColumnByName("MappingListData")} 
+                        gridData={this.props.MappingListData.data.searchResult}
+                            totalRecords={this.props.MappingListData.pageData.totalRecords} 
+                            searchCallBack={this.searchCallBack} pageSize={10}
+                            pagination={true} pageChanged={this.pageChanged} 
+                            export={false} search={true}
                             activePage={this.state.currentPageNo} />
                     </Portlet>
 
@@ -221,6 +260,7 @@ MappingList.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     return {
+        createDynamicStruct :state.app.createDynamicStruct,
         MappingListData: state.app.MappingList,
         typeData: state.app.typeData.data
     };
