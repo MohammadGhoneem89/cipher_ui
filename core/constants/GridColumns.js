@@ -838,6 +838,12 @@ module.exports = {
     { alias: "Custom Function", key: "TRAN_FIELDFUNCTION", type: "string" },
     { alias: "Actions", key: "actions", type: "action" }
   ],
+  HeaderConfig: [
+    { alias: "Key", key: "headerKey", type: "string" },
+    { alias: "Header Type", key: "headerType", type: "string" },
+    { alias: "Value Prefix", key: "headerPrefix", type: "string" },
+    { alias: "Actions", key: "actions", type: "action" }
+  ],
   EndPointList: [
     { alias: "Endpoint Name", key: "name", type: "string" },
     { alias: "Endpoint Address", key: "address", type: "string" },
