@@ -1,16 +1,16 @@
 module.exports = {
-    paymentSearch: [
-        {alias: "", key: "_id", type: "hiddenID"},
-        {alias: "Name", key: "name", type: 'string'},
-        {alias: "Code", key: "code", type: "string"},
-        {alias: "Action", key: "action", type: "action"}
-    ],
-    paymentAdd: [
-        {alias: "Column No", key: "", type: "serialNo"},
-        {alias: "Key", key: "key", type: "string"},
-        {alias: "Value", key: "value", type: "string"},
-        {alias: "Action", key: "action", type: "action"}
-    ],
+  paymentSearch: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "Name", key: "name", type: 'string' },
+    { alias: "Code", key: "code", type: "string" },
+    { alias: "Action", key: "action", type: "action" }
+  ],
+  paymentAdd: [
+    { alias: "Column No", key: "", type: "serialNo" },
+    { alias: "Key", key: "key", type: "string" },
+    { alias: "Value", key: "value", type: "string" },
+    { alias: "Action", key: "action", type: "action" }
+  ],
   requestParametersGrid: [
     { alias: "DB Field", key: "name", type: "string" },
     { alias: "DB Field Type", key: "type", type: "string" },
@@ -21,17 +21,18 @@ module.exports = {
     { alias: "DB Field", key: "name", type: "string" },
     { alias: "Response Mapping Field", key: "as", type: "string" }
   ],
-    APITemplateList: [
-        { alias: "COM_SerialNo", key: "", type: "serialNo" },
-        {alias: "S No.", key: "_id", type: "hiddenID"},
-        {alias: "Template Name", key: "name", type: 'string'},
-        {alias: "Action", key: "action", type: "action"}
-    ],
+  APITemplateList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "S No.", key: "_id", type: "hiddenID" },
+    { alias: "Template Name", key: "name", type: 'string' },
+    { alias: "Template Type", key: "type", type: 'string' },
+    { alias: "Action", key: "action", type: "action" }
+  ],
   IPFSDocumentsList: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
-    {alias: "S No.", key: "_id", type: "hiddenID"},
-    {alias: "IPFS Hash", key: "name", type: 'string'},
-    {alias: "Encryption Key", key: "name", type: 'string'},
-    {alias: "Action", key: "action", type: "action"}
+    { alias: "S No.", key: "_id", type: "hiddenID" },
+    { alias: "IPFS Hash", key: "name", type: 'string' },
+    { alias: "Encryption Key", key: "name", type: 'string' },
+    { alias: "Action", key: "action", type: "action" }
   ]
 };

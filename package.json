@@ -38,6 +38,8 @@
     "draft-js": "^0.10.3",
     "fs": "0.0.1-security",
     "json-loader": "^0.5.7",
+    "json-to-pretty-yaml": "^1.2.2",
+    "json2yaml": "^1.1.0",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
     "rc-progress": "^2.1.2",

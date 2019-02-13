@@ -68,8 +68,8 @@ import CreateConsortium from './components/Channel/CreateConsortium/CreateConsor
 import APIDocumentation from './components/APIDefScreen/APIDocumentation.js';
 import SmartPlayGround from './components/Channel/SmartPlayGround/SmartContractPlayground.jsx';
 import CreateSmartContract from './components/Channel/CreateSmartContract/CreateSmartContractContainer.jsx';
-
-
+import vault from './components/vaultGenerator/generator.jsx';
+import vaultYaml from './components/vaultGenerator/generatorYAML.jsx';
 import EndPointList from './components/endPoint/list';
 import EndPointDefination from './components/endPoint/defination';
 
@@ -154,7 +154,8 @@ export default (
       <Route path="/SmartContractList" component={SmartContractList}/>
       <Route path="/SmartPlayGround" component={SmartPlayGround}/>
       <Route path="/CreateConsortium/:id" component={CreateConsortium}/>
-
+      <Route path="/configJs" component={vault}/>
+      <Route path="/configYaml" component={vaultYaml}/>
       <Route path="/CreateChannel" component={CreateChannel}/>
       <Route path="/apiDocumentation" component={APIDocumentation}/>
 
