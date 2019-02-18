@@ -199,7 +199,18 @@ module.exports = {
   testAPITemplate:baseUrl+ "/API/core/testAPITemplate",
   ipfsInfo :baseUrl+ "/API/IPFS/info",
   ipfsView :baseUrl+ "/API/IPFS/view",
+
   getFieldsVault:baseUrl+ "/API/core/getElementList",
   generateConfig:baseUrl+ "/API/core/generateConfig",
   createDynamicStruct:baseUrl+"/API/core/createDynamicStruct",
+
+
+
+  getOnBoardingList: baseUrl + '/API/UI/getOnBoardingList',
+  getOnBoardingProStructList: baseUrl + '/API/UI/getOnBoardingProStructList',
+  insertOnBoarding: baseUrl + '/API/UI/insertOnBoarding',
+  updateOnBoarding: baseUrl + '/API/UI/updateOnBoarding',
+  getOnBoardingDetail: baseUrl + '/API/UI/getOnBoardingDetail'
+
+
 };

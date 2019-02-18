@@ -9,5 +9,23 @@ export default {
     getPaymentDetail : {
         action : "",
         data : {}
+    },
+    getOnBoardingList:{
+        action : "",
+        pageData : {},
+        data:{
+            searchResult:[]
+        }
+    },
+    getOnBoardingProStructList:{
+        action : "",
+        pageData : {},
+        data:{
+            searchResult:[]
+        }
+    },
+    getOnBoardingProfileDetail : {
+        action : "",
+        data:{}
     }
 }

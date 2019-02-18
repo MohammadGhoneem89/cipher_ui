@@ -22,6 +22,11 @@ import APITemplateTest from '../../applications/WASL/components/APITemplate/APIT
 //Document Routes
 import ViewDocument from '../../applications/WASL/components/documents/view';
 
+//onBoarding Routes
+import onBoardingProfileSetup from '../../applications/WASL/components/onBoarding/onBoardingProfileSetup';
+import onBoardingProfileList from '../../applications/WASL/components/onBoarding/onBoardingProfileList';
+
+
 let authRoutes = <div>
   {/*<Route path="/sampleDashboard" component={sampleDashboard}/>*/}
 
@@ -39,6 +44,10 @@ let authRoutes = <div>
   <Route path="/apiTemplate/:id" component={APITemplateEdit}/>
   <Route path="/apiTemplate/test/:id" component={APITemplateTest}/>
   <Route path="/document/view" component={ViewDocument}/>
+
+  <Route path="/onBoardingProfile/setup" component={onBoardingProfileSetup}/>
+  <Route path="/onBoardingProfile/setup/:id" component={onBoardingProfileSetup}/>
+  <Route path="/onBoardingProfile" component={onBoardingProfileList}/>
 
 </div>;
 

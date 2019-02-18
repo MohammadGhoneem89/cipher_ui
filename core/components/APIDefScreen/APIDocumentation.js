@@ -27,37 +27,31 @@ class APIDocumentation extends React.Component {
     }
 
     componentWillMount() {
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['UseCase']));
-        this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({
-            currentPageNo: 1,
-            pageSize: 1000
-        }));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['UseCase','ORG_TYPES']));
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
     }
 
-    getTypeData = (UCtypeData,entityTypeData) => {
-        if(UCtypeData && entityTypeData){
+    getTypeData = (UCtypeData) => {
+        if(UCtypeData){
             this.setState({
                 useCases : _.get(UCtypeData,'data.UseCase',[]),
-                orgTypes : entityTypeData
+                orgTypes : _.get(UCtypeData,'data.ORG_TYPES',[])
             })
         }
     };
 
     componentWillReceiveProps(nextProps){
         if(nextProps.typeData){
-            this.getTypeData(nextProps.typeData,nextProps.entityList);
+            this.getTypeData(nextProps.typeData);
         }
     }
 
     openDownloadWindow(type) {
         let useCase = $("#useCase").val() == null ? "" : $("#useCase").val();
         let orgTypes = $("#orgTypes").val() == null ? "" : $("#orgTypes").val();
-        console.log(useCase);
-        console.log(orgTypes);
         let searchCriteria = {};
         let url;
         if (_.isEmpty(useCase) || _.isEmpty(orgTypes)){
@@ -156,13 +150,11 @@ class APIDocumentation extends React.Component {
 function mapStateToProps(state, ownProps) {
 
     let apiListData = _.get(state.app, 'getActiveAPIs.data.WASL', []);
-    let entityList = _.get(state.app, 'entityList.data.typeData.entityNames', []);
 
     return {
         typeData : state.app.typeData,
         ApiListData : apiListData,
-        route : ownProps.params.route,
-        entityList: entityList,
+        route : ownProps.params.route
     };
 }
 

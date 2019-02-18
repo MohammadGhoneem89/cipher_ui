@@ -30,9 +30,16 @@ module.exports = {
   ],
   IPFSDocumentsList: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
-    { alias: "S No.", key: "_id", type: "hiddenID" },
-    { alias: "IPFS Hash", key: "name", type: 'string' },
-    { alias: "Encryption Key", key: "name", type: 'string' },
-    { alias: "Action", key: "action", type: "action" }
-  ]
+    {alias: "S No.", key: "_id", type: "hiddenID"},
+    {alias: "IPFS Hash", key: "name", type: 'string'},
+    {alias: "Encryption Key", key: "name", type: 'string'},
+    {alias: "Action", key: "action", type: "action"}
+  ],
+    onBoardingProfile: [
+        {alias: "", key: "_id", type: "hiddenID"},
+        {alias: "Name", key: "name", type: 'string'},
+        {alias: "Status", key: "status", type: "string"},
+        {alias: "useCase", key: "useCase", type: "string"},
+        {alias: "Action", key: "action", type: "action"}
+    ]
 };
