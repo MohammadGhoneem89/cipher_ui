@@ -1076,5 +1076,6 @@ module.exports = {
   GetStruct : "GetStruct",
   MAU_route:"API Route",
   MAU_ExistingMapping:"Existing Mapping",
-  ApiImport:"API Import"
+  ApiImport:"API Import",
+  AddUpdateAPIImp:"Add / Update API import"
 };

@@ -321,7 +321,7 @@ class ApiImport extends React.Component {
                         <div className="portlet light bordered sdg_portlet">
                             <div className="portlet-title">
                                 <div className="caption">
-                                    <span className="caption-subject">{utils.getLabelByID("AddUpdateMapping")}</span></div>
+                                    <span className="caption-subject">{utils.getLabelByID("AddUpdateAPIImp")}</span></div>
                                 <div className="tools">
                                     <a href="javascript:;" className="collapse" data-original-title title> </a>
                                 </div>
