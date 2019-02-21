@@ -72,7 +72,7 @@ import vault from './components/vaultGenerator/generator.jsx';
 import vaultYaml from './components/vaultGenerator/generatorYAML.jsx';
 import EndPointList from './components/endPoint/list';
 import EndPointDefination from './components/endPoint/defination';
-import ApiImport from './components/ApiImport/apiImport.jsx';
+import ApiImport from './components/apiImport/apiImport.jsx';
 
 export default (
   <Router history={browserHistory}>
