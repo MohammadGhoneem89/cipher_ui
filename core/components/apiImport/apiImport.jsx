@@ -125,7 +125,7 @@ class ApiImport extends React.Component {
 
 
         if (this.state.documents.length > 0) {
-            alert(this.state.documents.length)
+            // alert(this.state.documents.length)
             let doc = this.state.documents[0];
             let path = doc.retreivalPath;
             this.setState({ importCalled: true }, () => {
@@ -196,7 +196,7 @@ class ApiImport extends React.Component {
             });
         }
         if (nextProps.ApiImportData && this.state.importCalled === true) {
-            alert(JSON.stringify(nextProps.ApiImportData))
+            // alert(JSON.stringify(nextProps.ApiImportData))
 
             if (this.state.mappingType == "REQUEST") {
                 this.setState({ RequestMapping: nextProps.ApiImportData.mapping, sampleReqJSON: nextProps.ApiImportData.sampleJSON });
@@ -266,7 +266,7 @@ class ApiImport extends React.Component {
             "description": this.state.description,
             "typedata": this.state.typeList,
             "sampleReqJSON": this.state.sampleReqJSON,
-            "sampleResJSON": this.state.sampleResJSON
+            "sampleResJSON": this.state.sampleResJSON == {} ? undefined : this.state.sampleResJSON;
         };
         console.log(JSON.stringify(requestBody));
         this.setState({ blockSubmit: true });
