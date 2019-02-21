@@ -1,5 +1,5 @@
 import React from 'react';
-import {baseUrl} from '../constants/Communication.js';
+import { baseUrl } from '../constants/Communication.js';
 import * as utils from './utils.js';
 import * as Loaders from './loaders.jsx';
 //import Pagination from '../components/paginator.jsx';
@@ -16,17 +16,15 @@ class Datatable extends React.Component {
 
   constructor(props) {
     super(props);
-
-
     this.state = {
       exampleItems: [],
       pageOfItems: [],
       isLoading: false,
       downloading: false,
       activePage:
-      this.props.activePage || 1
+        this.props.activePage || 1
     }
-    ;
+      ;
 
     this.handlePageChange = this.handlePageChange.bind(this);
 
@@ -34,15 +32,15 @@ class Datatable extends React.Component {
 
   componentWillMount() {
     let exampleItems = _.range(1, this.props.totalRecords);
-    this.setState({exampleItems: exampleItems});
+    this.setState({ exampleItems: exampleItems });
 
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.gridData !== nextProps.gridData) {
-      this.setState({isLoading: false});
+      this.setState({ isLoading: false });
     }
-    this.setState({activePage: this.props.activePage});
+    this.setState({ activePage: this.props.activePage });
   }
 
   getExportOptions(exportForDetail, enableXMLExport) {
@@ -53,19 +51,19 @@ class Datatable extends React.Component {
           <li>
             <a href={this.openDownloadWindow("xlsx")} onClick={() => {
 
-              _this.setState({downloading: true});
+              _this.setState({ downloading: true });
               setTimeout(() => {
-                _this.setState({downloading: false});
+                _this.setState({ downloading: false });
               }, 4000);
 
             }} download>
-              <i className="fa fa-file-excel-o"/>{"Excel"} </a>
+              <i className="fa fa-file-excel-o" />{"Excel"} </a>
           </li>
           {enableXMLExport && enableXMLExport === true &&
-          < li>
-            <a href={this.openDownloadWindow("XML")} download>
-              <i className="fa fa-file-code-o"/>XML </a>
-          </li>
+            < li>
+              <a href={this.openDownloadWindow("XML")} download>
+                <i className="fa fa-file-code-o" />XML </a>
+            </li>
           }
         </ul>
       )
@@ -76,30 +74,30 @@ class Datatable extends React.Component {
           <li>
             <a href={this.openDownloadWindow("pdf")} onClick={() => {
 
-              _this.setState({downloading: true});
+              _this.setState({ downloading: true });
               setTimeout(() => {
-                _this.setState({downloading: false});
+                _this.setState({ downloading: false });
               }, 4000);
 
             }} download>
-              <i className="fa fa-file-pdf-o"/> {"PDF"} </a>
+              <i className="fa fa-file-pdf-o" /> {"PDF"} </a>
           </li>
           <li>
             <a href={this.openDownloadWindow("excel")} onClick={() => {
 
-              _this.setState({downloading: true});
+              _this.setState({ downloading: true });
               setTimeout(() => {
-                _this.setState({downloading: false});
+                _this.setState({ downloading: false });
               }, 4000);
 
             }} download>
-              <i className="fa fa-file-excel-o"/>Excel </a>
+              <i className="fa fa-file-excel-o" />Excel </a>
           </li>
           {this.props.enableXMLExport && this.props.enableXMLExport === true &&
-          < li>
-            <a href={this.openDownloadWindow("XML")} download>
-              <i className="fa fa-file-code-o"/>XML </a>
-          </li>
+            < li>
+              <a href={this.openDownloadWindow("XML")} download>
+                <i className="fa fa-file-code-o" />XML </a>
+            </li>
           }
         </ul>
       )
@@ -114,13 +112,13 @@ class Datatable extends React.Component {
       return (
         <div className="btn-group pull-right">
           <a disabled={this.state.downloading} className="btn red btn-outline btn-circle" href="javascript:"
-             data-toggle="dropdown" aria-expanded="false"
-             style={{marginTop: "3px"}}> <i className="fa fa-share"/> <span
-            className="hidden-xs">{this.state.downloading ? utils.getLabelByID("Downloading") : utils.getLabelByID("export")} </span>
-            <i className="fa fa-angle-down"/> </a>
+            data-toggle="dropdown" aria-expanded="false"
+            style={{ marginTop: "3px" }}> <i className="fa fa-share" /> <span
+              className="hidden-xs">{this.state.downloading ? utils.getLabelByID("Downloading") : utils.getLabelByID("export")} </span>
+            <i className="fa fa-angle-down" /> </a>
           {!this.state.downloading &&
 
-          this.getExportOptions(this.props.exportForDetail, this.props.enableXMLExport)
+            this.getExportOptions(this.props.exportForDetail, this.props.enableXMLExport)
 
           }
         </div>
@@ -160,10 +158,10 @@ class Datatable extends React.Component {
       return (
         <div>
           {this.props.totalRecords > 0 &&
-          <div className="pull-left" style={{paddingTop: "4px"}}>
-            <div className="dataTables_info" id="sample_1_2_info" role="status"
-                 aria-live="polite">{utils.getLabelByID("Showing ") + offSet + utils.getLabelByID(" to ") + ((offSet + this.props.pageSize - 1) > this.props.totalRecords ? this.props.totalRecords : (offSet + this.props.pageSize - 1)) + utils.getLabelByID(" of ") + (limitRecordCount ? config.transactionCount + "+ " : +this.props.totalRecords) + utils.getLabelByID(" records ")}</div>
-          </div>
+            <div className="pull-left" style={{ paddingTop: "4px" }}>
+              <div className="dataTables_info" id="sample_1_2_info" role="status"
+                aria-live="polite">{utils.getLabelByID("Showing ") + offSet + utils.getLabelByID(" to ") + ((offSet + this.props.pageSize - 1) > this.props.totalRecords ? this.props.totalRecords : (offSet + this.props.pageSize - 1)) + utils.getLabelByID(" of ") + (limitRecordCount ? config.transactionCount + "+ " : +this.props.totalRecords) + utils.getLabelByID(" records ")}</div>
+            </div>
           }
 
           <div className="pull-right">
@@ -188,7 +186,7 @@ class Datatable extends React.Component {
   handleHeaderClick(sortData) {
     if (this.props.headerClick) {
       this.props.headerClick(sortData);
-      this.setState({isLoading: true});
+      this.setState({ isLoading: true });
     }
   }
 
@@ -234,9 +232,9 @@ class Datatable extends React.Component {
                 this.handleHeaderClick(sortData);
               }
             }}
-            style={{verticalAlign: "middle", padding: "3px 9px"}}
+            style={{ verticalAlign: "middle", padding: "3px 9px" }}
             className="text-center">{utils.getLabelByID(colData.alias)}
-            {isSortedColumn && <i className={className} style={{marginLeft: "10px"}}/>}
+            {isSortedColumn && <i className={className} style={{ marginLeft: "10px" }} />}
           </th>);
     }
   }
@@ -274,7 +272,7 @@ class Datatable extends React.Component {
     return (<div className="row">
       <div className="col-md-12">
         {this.state.isLoading && Loaders.dotted()}
-        <div className={this.props.TableClass || ""}>
+        <div className={this.props.TableClass || ""} style={{ opacity: this.state.isLoading == true ? 0.6 : 1 }}>
           <div className="portlet-title">
             <div className={"caption " + this.props.fontclass}>
 
@@ -295,60 +293,58 @@ class Datatable extends React.Component {
           <div className="portlet-body flip-scroll">
             <div className="row">
               <div className="col-md-12 ">
-                <table id={this.props.id ? this.props.id : ""} style={{marginTop: "10px"}}
-                       className="table table-bordered table-striped table-condensed flip-content gridTable sdg_tbl">
+                <table id={this.props.id ? this.props.id : ""} style={{ marginTop: "10px" }}
+                  className="table table-bordered table-striped table-condensed flip-content gridTable sdg_tbl">
                   <thead className="flip-content">
-                  <tr>
-                    {this.props.gridColumns.map((sd, index) => (
-                      this.getHeader(sd, index, this.props.gridData)
-                    ))}
-                  </tr>
+                    <tr>
+                      {this.props.gridColumns.map((sd, index) => (
+                        this.getHeader(sd, index, this.props.gridData)
+                      ))}
+                    </tr>
                   </thead>
                   <tbody>
-                  {
-                    this.props.gridData.length > 0 &&
-                    this.props.gridData.map((rowData, index) => {
-                      let recordID = this.props.gridColumns.filter(column => column.type === "hiddenID")[0];
-                      recordID = recordID ? recordID.key : undefined;
-                      recordID = recordID || this.props.recordID;
+                    {
+                      this.props.gridData.length > 0 &&
+                      this.props.gridData.map((rowData, index) => {
+                        let recordID = this.props.gridColumns.filter(column => column.type === "hiddenID")[0];
+                        recordID = recordID ? recordID.key : undefined;
+                        recordID = recordID || this.props.recordID;
 
-                      let footerRow = (this.props.footerRow && this.props.footerRow == true && this.props.gridData.length - 1 == index) ? true : false;
+                        let footerRow = (this.props.footerRow && this.props.footerRow == true && this.props.gridData.length - 1 == index) ? true : false;
 
-                      return (
-                        <tr key={index.toString()}>
-                          {
-
-                            this.props.gridColumns.map((colData, index2) => (
-                              <TableCell key={index2.toString()}
-                                         recordID={recordID}
-                                         rowData={rowData}
-                                         cellData={colData.type === "object" ? (rowData[colData.key] !== null ? rowData[colData.key][colData.property] : "") : rowData[colData.key]}
-                                         type={colData.type}
-                                         rowIndex={index}
-                                         componentFunction={this.props.componentFunction}
-                                         renderPopupBody={this.renderPopupBody.bind(this)}
-                                         getCheckedItems={this.getCheckedItems.bind(this)}
-                                         columnWidth={colData.width ? colData.width : ""}
-                                         searialNo={(offSet||1) + parseInt(index)}
-                                         url={colData.url || ''} footerRow={footerRow}
-                              />
-                            ))
-                          }
-                        </tr>
-                      );
-                    })
-                  }
-                  {
-                    this.props.gridData.length <= 0 &&
-                    <tr>
-                      <td className="text-center" colSpan={this.props.gridColumns.length}
-                          style={{verticalAlign: "middle", padding: "3px 9px"}}><span
-                        style={{
-                          fontSize: "13px!important",
-                          color: "#777777"
-                        }}>{utils.getLabelByID("NoRecordsFound")}</span></td>
-                    </tr>
-                  }
+                        return (
+                          <tr key={index.toString()}>
+                            {
+                              this.props.gridColumns.map((colData, index2) => (
+                                <TableCell key={index2.toString()}
+                                  recordID={recordID}
+                                  rowData={rowData}
+                                  cellData={colData.type === "object" ? (rowData[colData.key] !== null ? rowData[colData.key][colData.property] : "") : rowData[colData.key]}
+                                  type={colData.type}
+                                  rowIndex={index}
+                                  componentFunction={this.props.componentFunction}
+                                  renderPopupBody={this.renderPopupBody.bind(this)}
+                                  getCheckedItems={this.getCheckedItems.bind(this)}
+                                  columnWidth={colData.width ? colData.width : ""}
+                                  searialNo={(offSet || 1) + parseInt(index)}
+                                  url={colData.url || ''} footerRow={footerRow} />
+                              ))
+                            }
+                          </tr>
+                        );
+                      })
+                    }
+                    {
+                      this.props.gridData.length <= 0 &&
+                      <tr>
+                        <td className="text-center" colSpan={this.props.gridColumns.length}
+                          style={{ verticalAlign: "middle", padding: "3px 9px" }}><span
+                            style={{
+                              fontSize: "13px!important",
+                              color: "#777777"
+                            }}>{utils.getLabelByID("NoRecordsFound")}</span></td>
+                      </tr>
+                    }
 
                   </tbody>
                 </table>
