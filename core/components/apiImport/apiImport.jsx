@@ -266,7 +266,7 @@ class ApiImport extends React.Component {
             "description": this.state.description,
             "typedata": this.state.typeList,
             "sampleReqJSON": this.state.sampleReqJSON,
-            "sampleResJSON": this.state.sampleResJSON == {} ? undefined : this.state.sampleResJSON;
+            "sampleResJSON": this.state.sampleResJSON == {} ? undefined : this.state.sampleResJSON
         };
         console.log(JSON.stringify(requestBody));
         this.setState({ blockSubmit: true });
