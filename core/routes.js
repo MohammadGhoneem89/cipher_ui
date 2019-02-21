@@ -72,7 +72,7 @@ import vault from './components/vaultGenerator/generator.jsx';
 import vaultYaml from './components/vaultGenerator/generatorYAML.jsx';
 import EndPointList from './components/endPoint/list';
 import EndPointDefination from './components/endPoint/defination';
-
+import ApiImport from './components/ApiImport/apiImport.jsx';
 
 export default (
   <Router history={browserHistory}>
@@ -158,7 +158,8 @@ export default (
       <Route path="/configYaml" component={vaultYaml}/>
       <Route path="/CreateChannel" component={CreateChannel}/>
       <Route path="/apiDocumentation" component={APIDocumentation}/>
-
+      <Route path="/apiImport" component={ApiImport}/>
+      
 <Route path="/endpoint" component={EndPointList} />
       <Route path="/endpoint/:id" component={EndPointDefination} />
       {ApplicationsRoute.routesIndex}

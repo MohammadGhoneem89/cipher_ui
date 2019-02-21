@@ -844,6 +844,10 @@ module.exports = {
     { alias: "Value Prefix", key: "headerPrefix", type: "string" },
     { alias: "Actions", key: "actions", type: "action" }
   ],
+  typedataConfig: [
+    { alias: "Label", key: "label", type: "string" },
+    { alias: "Value", key: "value", type: "string" }
+  ],
   EndPointList: [
     { alias: "Endpoint Name", key: "name", type: "string" },
     { alias: "Endpoint Address", key: "address", type: "string" },

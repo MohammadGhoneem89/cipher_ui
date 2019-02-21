@@ -6,6 +6,7 @@ export default {
   acquirerList: { action: "", data: { searchResult: [], typeData: { acquirerNames: [] } } },
   getEndpointListView: {},
   getTemplatesListView:{},
+  ApiImport:{},
   ElementList:{},
   entityDetail: {
     action: "", data: {
