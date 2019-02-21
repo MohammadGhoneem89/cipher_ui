@@ -74,7 +74,7 @@ class CommissionPreview extends React.Component {
                 <Portlet title={"CTEMP_Preview"} actions={contactsActions} noCollapse={true}>
                     <div className="row">
                         <div className="col-md-12 col-sm-12">
-                            {this.state.isLoading && Loaders.dotted()}
+                         {/* {this.state.isLoading && Loaders.dotted()} */}
                         </div>
                     </div>
                 </Portlet>
