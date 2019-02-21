@@ -1075,5 +1075,6 @@ module.exports = {
   APIDefScreen_ServiceEndPoint:"Service End Point",
   GetStruct : "GetStruct",
   MAU_route:"API Route",
-  MAU_ExistingMapping:"Existing Mapping"
+  MAU_ExistingMapping:"Existing Mapping",
+  ApiImport:"API Import"
 };
