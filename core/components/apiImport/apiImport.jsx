@@ -507,7 +507,7 @@ class ApiImport extends React.Component {
                                             <div className="row">
                                                 <div className="col-md-12">
                                                     <div className="form-group col-md-12">
-                                                        <label className="control-label bold uppercase">{utils.getLabelByID("RequestMapping")}</label>
+                                                        <label className="control-label bold uppercase">{utils.getLabelByID("Request Mapping")}</label>
                                                     </div>
                                                     <div className="col-md-12">
                                                         <Table
@@ -524,7 +524,7 @@ class ApiImport extends React.Component {
                                             <div className="row">
                                                 <div className="col-md-12">
                                                     <div className="form-group col-md-12">
-                                                        <label className="control-label bold uppercase">{utils.getLabelByID("ResponseMapping")}</label>
+                                                        <label className="control-label bold uppercase">{utils.getLabelByID("Response Mapping")}</label>
                                                     </div>
 
                                                     <div className="col-md-12">
