@@ -199,7 +199,8 @@ class Header extends React.Component {
             );
         }
         else {
-            return Loaders.dotted()
+            return (<div></div>)
+            // return Loaders.dotted()
         }
     }
 }
