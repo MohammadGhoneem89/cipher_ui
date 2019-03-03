@@ -13,7 +13,7 @@ import * as toaster from '../../common/toaster.js';
 import * as requestCreator from '../../common/request.js';
 import ReactJson from 'react-json-view';
 import YAML from 'json-to-pretty-yaml'
-
+import unescapejs from 'unescape-js';
 class vault extends React.Component {
 
     constructor(props) {
@@ -26,7 +26,7 @@ class vault extends React.Component {
             typeData: [],
             getTemplatesListView: [],
             ElementList: [],
-            data: {}
+            data: ""
         };
     }
 
@@ -182,7 +182,9 @@ class vault extends React.Component {
 
                             <div className="col-md-12">
                                 <label className="label-bold">{utils.getLabelByID("Final Config Yaml")}</label>
-                                <pre>{YAML.stringify(this.state.data)}</pre>
+                                <pre>{this.state.data}</pre>
+
+                               
                             </div>
 
                         </div>

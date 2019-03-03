@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash';
 import { browserHistory } from 'react-router';
+import unescapejs from 'unescape-js';
 
 import * as utils from '../../../../core/common/utils.js';
 import * as actions from '../../../../core/actions/generalAction';
@@ -32,12 +33,21 @@ class APITemplateEdit extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (!_.isEmpty(nextProps.findAPITemplateById)) {
-            this.setState({
-                id: _.get(nextProps, 'findAPITemplateById._id',undefined),
-                type: _.get(nextProps, 'findAPITemplateById.type'),
-                name: _.get(nextProps, 'findAPITemplateById.name'),
-                data: JSON.stringify(_.get(nextProps, 'findAPITemplateById.data'), 0, 2)
-            });
+            if (_.get(nextProps, 'findAPITemplateById.type') == "ConfigYaml") {
+                this.setState({
+                    id: _.get(nextProps, 'findAPITemplateById._id', undefined),
+                    type: _.get(nextProps, 'findAPITemplateById.type'),
+                    name: _.get(nextProps, 'findAPITemplateById.name'),
+                    data: _.get(nextProps, 'findAPITemplateById.data')
+                });
+            } else {
+                this.setState({
+                    id: _.get(nextProps, 'findAPITemplateById._id', undefined),
+                    type: _.get(nextProps, 'findAPITemplateById.type'),
+                    name: _.get(nextProps, 'findAPITemplateById.name'),
+                    data: JSON.stringify(_.get(nextProps, 'findAPITemplateById.data'), 0, 2)
+                });
+            }
         }
         if (nextProps.typeData) {
             this.setState({
@@ -61,7 +71,11 @@ class APITemplateEdit extends React.Component {
         let valid = true;
         let data;
         try {
-            data = JSON.parse(this.state.data)
+            if (this.state.type == "ConfigYaml") {
+                data = unescapejs(this.state.data)
+            } else {
+                data = JSON.parse(this.state.data)
+            }
         }
         catch (err) {
             valid = false;
@@ -69,7 +83,7 @@ class APITemplateEdit extends React.Component {
         }
         if (valid) {
             let json = {
-                _id:_.get(this.state,'id',undefined),
+                _id: _.get(this.state, 'id', undefined),
                 data: data,
                 name: this.state.name,
                 type: this.state.type
@@ -96,7 +110,7 @@ class APITemplateEdit extends React.Component {
     render() {
         if (this.state.isLoading)
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
-
+        let data = _.get(this.state, 'data', '');
         return (
             <div>
                 <Portlet title={''}>
@@ -111,8 +125,8 @@ class APITemplateEdit extends React.Component {
                             </div>
                             <div className="col-md-6">
                                 <label className="label-bold">{utils.getLabelByID("Type")}</label>
-                                <select id="type" name="type" value={_.get(this.state, 'type', '')}  onChange={this.onChange} className="form-control">
-                                   <option value="">--Select--</option>
+                                <select id="type" name="type" value={_.get(this.state, 'type', '')} onChange={this.onChange} className="form-control">
+                                    <option value="">--Select--</option>
                                     {
                                         this.state.typeData.Template_Type && this.state.typeData.Template_Type.map((option, index) => {
                                             return (
@@ -129,8 +143,8 @@ class APITemplateEdit extends React.Component {
                         <div className="col-md-12">
                             <div className="col-md-12">
                                 <label className="label-bold">{utils.getLabelByID("API Payload")}</label>
-                                <textarea placeholder="JSON Goes here ..." type="text" className="form-control ekycinp" rows="18" name="data"
-                                    value={_.get(this.state, 'data', '')}
+                                <textarea type="text" className="form-control textareacipher" rows="18" name="data"
+                                    value={unescapejs(this.state.data)}
                                     onChange={this.onChange} />
                             </div>
                         </div>
