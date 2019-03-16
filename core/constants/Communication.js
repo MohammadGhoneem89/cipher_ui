@@ -205,12 +205,14 @@ module.exports = {
   createDynamicStruct:baseUrl+"/API/core/createDynamicStruct",
 
 
-
   getOnBoardingList: baseUrl + '/API/UI/getOnBoardingList',
   getOnBoardingProStructList: baseUrl + '/API/UI/getOnBoardingProStructList',
   insertOnBoarding: baseUrl + '/API/UI/insertOnBoarding',
   updateOnBoarding: baseUrl + '/API/UI/updateOnBoarding',
   getOnBoardingDetail: baseUrl + '/API/UI/getOnBoardingDetail',
+
+
+
   getParseFile: baseUrl + '/API/core/getImport',
   upsertAPIImport: baseUrl + '/API/core/upsertAPIImport'
 

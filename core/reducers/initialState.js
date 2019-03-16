@@ -5,9 +5,9 @@ export default {
   entityList: { action: "", data: { searchResult: [], typeData: { entityNames: [] } } },
   acquirerList: { action: "", data: { searchResult: [], typeData: { acquirerNames: [] } } },
   getEndpointListView: {},
-  getTemplatesListView:{},
-  ApiImport:{},
-  ElementList:{},
+  getTemplatesListView: {},
+  ApiImport: {},
+  ElementList: {},
   entityDetail: {
     action: "", data: {
       "entityName": "",
@@ -500,7 +500,7 @@ export default {
     }
   },
   downloadChainCode: {},
-  createDynamicStruct :{},
+  createDynamicStruct: {},
   EventDispatcherStatus: { "action": "", "dispatchList": { "pageData": { "totalRecords": 0 } } },
   DispatchList: { "action": "", "dispatchList": { "pageData": { "totalRecords": 0 } } },
   AddUpdateDispatcher: {
@@ -511,6 +511,25 @@ export default {
     }
   },
   getTypeDataDetailByID: {
+    action: "",
+    data: {}
+  },
+
+  getOnBoardingList: {
+    action: "",
+    pageData: {},
+    data: {
+      searchResult: []
+    }
+  },
+  getOnBoardingProStructList: {
+    action: "",
+    pageData: {},
+    data: {
+      searchResult: []
+    }
+  },
+  getOnBoardingProfileDetail: {
     action: "",
     data: {}
   },
