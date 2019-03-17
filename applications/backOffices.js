@@ -10,14 +10,13 @@ const backOffices = {
 */
 
 const backOffices = {
-  baseUrl: "http://127.0.0.1:9080",
-  webSocketURL: "http://127.0.0.1:9080",
-  repostActionURL: "http://127.0.0.1:9080/API",
-  blockChainViewerURL: "http://127.0.0.1:9080"
+  baseUrl: "https://avanza.ukwest.cloudapp.azure.com",
+  webSocketURL: "https://avanza.ukwest.cloudapp.azure.com",
+  repostActionURL: "https://avanza.ukwest.cloudapp.azure.com/API",
+  blockChainViewerURL: "https://avanza.ukwest.cloudapp.azure.com"
 };
-
 /*
-const backOffices = {
+ backOffices = {
   baseUrl: "http://blockchain.avanza.com:10055",
   blockChainURL: "http://blockchain.avanza.com:10055",
   webSocketURL: "http://blockchain.avanza.com:10055",
