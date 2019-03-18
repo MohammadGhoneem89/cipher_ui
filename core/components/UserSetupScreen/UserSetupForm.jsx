@@ -200,7 +200,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
              />
         </div>
         <div className="col-md-6 col-sm-6">
-          <DropdownInput name="qrmUser" options={containerState.networkUserTypeData.quorrum}
+          <DropdownInput name="quorrumUser" options={containerState.networkUserTypeData.quorrum}
             label="User Association Quorrum" onChange={updateQuorrumUser}
              />
         </div>

@@ -139,6 +139,8 @@ class HashSearchContainer extends React.Component {
                 action: "getTxByHash",
                 hash: this.state.filterCriteria.hash,
                 currentPageNo: 1,
+                "channelName": sessionStorage.selectedChannel,
+                "network": sessionStorage.selectedNetwork,
                 pageSize: this.state.pageSize,
                 "function": "TRNXHASH",
                 "arguments": [this.state.filterCriteria.hash]
@@ -173,6 +175,8 @@ class HashSearchContainer extends React.Component {
             currentPageNo: pageNo,
             pageSize: this.state.pageSize,
             "function": "TRNXHASH",
+            "channelName": sessionStorage.selectedChannel,
+            "network": sessionStorage.selectedNetwork,
             "arguments": [this.state.filterCriteria.hash]
         });
         this.setState({ activePage: pageNo });

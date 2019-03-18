@@ -8,7 +8,7 @@ import Table from '../../../common/Datatable.jsx';
 
 
 
-const PlaygroundForm = ({ updateState, initState, onInputChange, formSubmit, formSubmitQuery, onInputChannel, ActionHandlers, isReady }) => {
+const PlaygroundForm = ({ updateState, initState, onInputChange, formSubmit, formSubmitQuery, onInputChannel, ActionHandlers, isReady,parentProperties }) => {
 
     return (
         <div className="form-body" >
@@ -32,7 +32,7 @@ const PlaygroundForm = ({ updateState, initState, onInputChange, formSubmit, for
                                                 <label className="control-label">{utils.getLabelByID("SmartContractInput")}</label>
                                             </div>
                                             <div className="form-group col-md-10">
-                                                <select id="contractID" name="contractID" onChange={onInputChannel} value={initState.smartContractData.contractID} className="form-control">
+                                                <select id="contractID" name="contractID" onChange={onInputChannel} value={initState.smartContractData.contractID||parentProperties.id} className="form-control">
                                                     <option key="" value="">--select--</option>
                                                     {
                                                         initState.contractTypeList.map((option, index) => {

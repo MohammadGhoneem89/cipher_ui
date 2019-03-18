@@ -59,6 +59,7 @@ class BlockSearchContainer extends React.Component {
             blockNumber: data.blockNumber,
             currentPageNo: 1,
             pageSize: this.state.pageSize,
+            "network": sessionStorage.selectedNetwork,
             "function":"BLKNO",
             "arguments":[String(data.blockNumber)]
         });
@@ -78,6 +79,7 @@ class BlockSearchContainer extends React.Component {
             currentPageNo: pageNo,
             pageSize: this.state.pageSize,
             "function":"BLKNO",
+            "network": sessionStorage.selectedNetwork,
             "arguments":[String(this.state.filterCriteria.blockNumber)]
         });
         this.setState({activePage: pageNo});

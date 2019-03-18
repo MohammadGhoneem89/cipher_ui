@@ -80,10 +80,14 @@ class SmartContractPlayground extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.props.actions.generalProcess(constants.getSmartContractTypeList);
-    if (this.props.id !== "NEW") {
-      this.props.actions.generalProcess(constants.getSmartContractConfigByID, {
-        "_id": this.props.id //"5bf9c9df4cb0c690e4461b89"
-      });
+    if (this.props.id && this.props.id != "") {
+      let data = {
+        "_id": this.props.id
+      }
+      this.props.actions.generalProcess(constants.getSmartContractConfigDetailedByID, data);
+      this.setState({
+        isReady: false
+      })
     }
   }
 
@@ -209,12 +213,12 @@ class SmartContractPlayground extends React.Component {
     this.setState(data);
   }
   render() {
-    // if (this.state.isLoading) {
+
     //   return (<div className="loader">isLoading...</div>)
     // }
     return (
 
-      <PlaygroundForm initState={this.state} ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange} updateState={this.updateState} onInputChannel={this.onInputChannel} formSubmit={this.formSubmit} formSubmitQuery={this.formSubmitQuery} />
+      <PlaygroundForm parentProperties={this.props} initState={this.state} ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange} updateState={this.updateState} onInputChannel={this.onInputChannel} formSubmit={this.formSubmit} formSubmitQuery={this.formSubmitQuery} />
     );
   }
   // else

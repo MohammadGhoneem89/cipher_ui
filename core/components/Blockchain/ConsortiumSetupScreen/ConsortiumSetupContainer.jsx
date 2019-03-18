@@ -274,7 +274,18 @@ class BlockchainSetupContainer extends React.Component {
                         "URI": [
                             "/CreateSmartContract/"
                         ]
-                    }];
+                    },
+                    {
+                        "value": "1004",
+                        "type": "componentAction",
+                        "label": "Playground",
+                        "params": "",
+                        "iconName": "icon-docs",
+                        "URI": [
+                            "/SmartPlayGround/"
+                        ]
+                    }
+                ];
                 element.actions = actions;
                 element.createdBy = element.createdBy.userID
             });

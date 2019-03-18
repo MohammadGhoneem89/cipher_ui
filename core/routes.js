@@ -153,7 +153,7 @@ export default (
       <Route path="/ChannelList" component={ChannelList} />
       <Route path="/CreateSmartContract/:id" component={CreateSmartContract} />
       <Route path="/SmartContractList" component={SmartContractList} />
-      <Route path="/SmartPlayGround" component={SmartPlayGround} />
+      <Route path="/SmartPlayGround(/:id)" component={SmartPlayGround} />
       <Route path="/CreateConsortium/:id" component={CreateConsortium} />
       <Route path="/configJs" component={vault} />
       <Route path="/configYaml" component={vaultYaml} />

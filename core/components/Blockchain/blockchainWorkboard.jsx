@@ -31,7 +31,11 @@ class blockchainWorkboard extends React.Component {
       entityNames: undefined,
       settlementDate: '',
       selectedProject: undefined,
-      xAxis: []
+      xAxis: [],
+      channelTypeList: [],
+      isLoading: true,
+      selectedChannel: "",
+      selectedNetwork: ""
     };
     for (let i = 59; i >= 0; i--) {
       this.state.xAxis.push(i);
@@ -44,9 +48,11 @@ class blockchainWorkboard extends React.Component {
     this.changeEntityVal = this.changeEntityVal.bind(this);
     this.fetchDashboard = this.fetchDashboard.bind(this);
     this.projectChanged = this.projectChanged.bind(this);
-
+    this.navigateEthr = this.navigateEthr.bind(this);
+    this.navigateHyper = this.navigateHyper.bind(this);
   }
-
+  navigateEthr() { }
+  navigateHyper() { browserHistory.push('/hyperledger/workboard'); }
   componentWillMount() {
     let _this = this;
     _this.fetchDashboard(_this.state.entitySelectedVal, _this.state.pageNumner);
@@ -57,7 +63,24 @@ class blockchainWorkboard extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.ChannelTypeData.data.channels.length && nextProps.ChannelTypeData.data.channels.length > 0 && this.state.isLoading == true) {
+      console.log(JSON.stringify(nextProps.ChannelTypeData.data.channels[0]))
 
+      let list = nextProps.ChannelTypeData.data.channels[0].label.split('-')
+      if (list && list.length && list.length == 2) {
+        sessionStorage.selectedChannel = list[0]
+        sessionStorage.selectedNetwork = list[1]
+        this.setState({
+          channelTypeList: nextProps.ChannelTypeData.data.channels,
+          selectedChannel: list[0],
+          selectedNetwork: list[1],
+          isLoading: false
+        }, () => {
+          let _this = this;
+          _this.fetchDashboard(_this.state.entitySelectedVal, _this.state.pageNumner);
+        });
+      }
+    }
   }
 
   searchCallBack(keyWord) {
@@ -72,7 +95,7 @@ class blockchainWorkboard extends React.Component {
       browserHistory.push('hyperledger/workboard');
     } else {
       browserHistory.push('blockchain');
-     
+
 
     }
 
@@ -98,13 +121,20 @@ class blockchainWorkboard extends React.Component {
       "toDateWrkBrd": this.state.toDateWrkBrd,
       "fromDate": this.state.fromDate,
       "toDate": this.state.toDate,
+      "channelName": this.state.selectedChannel,
+      "network": this.state.selectedNetwork,
       "filter": entityValue === "" ? "" : (entityValue || this.state.entitySelectedVal)
     };
 
     this.props.actions.generalProcess(constants.getblockchainWorkboardData, data);
 
   }
+  componentDidMount() {
+    window.scrollTo(0, 0);
+    this.props.actions.generalProcess(constants.getChannelTypeList, { type: "Quorum" });
 
+    // this.refreshScreen();
+  }
   componentWillUnmount() {
     clearInterval(this.state.timerID);
   }
@@ -138,7 +168,7 @@ class blockchainWorkboard extends React.Component {
     let enableControl = (sessionStorage.orgType == "Settlement" || sessionStorage.orgType == "SDG" || sessionStorage.orgType == "DSG") ? true : false;
     let entityUserType = sessionStorage.orgType == "Entity" ? true : false;
     let acquirerUserType = sessionStorage.orgType == "Acquirer" ? true : false;
-    if (this.props.blockchainWorkboardData.workboardData.rows) {
+    if (this.props.blockchainWorkboardData.workboardData.rows && this.state.isLoading == false) {
 
       return (
         <div className="coreDiv">
@@ -147,24 +177,34 @@ class blockchainWorkboard extends React.Component {
             <div className="col-md-12 ">
               <div className="daterange_con">
                 <div className="center-block dashdate">
-                  <DateRangePicker onChangeRange={this.dateChangeWorkboard} />
-                  <div className="input-group input-large">
-
-                    <div className="input-group input-large">
-                      <select id="network" name="Network" className="form-control" onChange={this.projectChanged}>
-
-                        <option value="1">quorum-general</option>
-                        <option value="2">hyperledger</option>
-                        {/*<option value={""}>Stellar</option>*/}
-                        {/*<option value={""}>Ripple</option>*/}
-                        {/*<option value={""}>Corda R3</option>*/}
-                        {/*<option value={""}>Iroha</option>*/}
-                        {/*<option value={""}>Sawtooth Lake</option>*/}
-                      </select>
+                  <div className="row">
+                    <div className="col-md-12 ">
+                      <div className="col-md-2">
+                        <img src="/assets/Resources/quorum.png" style={{ height: "42px" }} />
+                      </div>
+                      <div className="col-md-1">
+                        <a href="javascript:" onClick={this.navigateHyper}><img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png" style={{ height: "40px" }} /></a>
+                      </div>
+                      <div className="col-md-1">
+                        <a href="javascript:" onClick={this.navigateEthr}><img src="/assets/Resources/ether_white.png" style={{ height: "40px", marginLeft:"5px" }} /></a>
+                      </div>
+                      <div className="col-md-8">
+                        <div className="input-group input-large">
+                          <div className="input-group input-large" >
+                            <select id="network" name="Network" className="form-control" onChange={this.projectChanged}>
+                              {
+                                this.state.channelTypeList.map((option, index) => {
+                                  return (
+                                    <option key={index} value={option.label}>{`quorum-${option.label}`}</option>
+                                  );
+                                })
+                              }
+                            </select>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-
                   </div>
-
                 </div>
               </div>
               <div className="row">
@@ -251,6 +291,7 @@ function mapStateToProps(state, ownProps) {
 
 
   return {
+    ChannelTypeData: state.app.ChannelTypeData,
     blockchainWorkboardData: state.app.blockchainWorkboardData.data
   };
 

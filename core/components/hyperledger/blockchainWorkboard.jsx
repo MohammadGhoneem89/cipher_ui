@@ -48,9 +48,11 @@ class blockchainWorkboard extends React.Component {
     this.dateChangeExceptions = this.dateChangeExceptions.bind(this);
     this.fetchDashboard = this.fetchDashboard.bind(this);
     this.projectChanged = this.projectChanged.bind(this);
-
+    this.navigateEthr = this.navigateEthr.bind(this);
+    this.navigateQuor = this.navigateQuor.bind(this);
   }
-
+  navigateEthr() { }
+  navigateQuor() { browserHistory.push('/blockchain'); }
   componentWillMount() {
 
   }
@@ -69,8 +71,8 @@ class blockchainWorkboard extends React.Component {
 
       let list = nextProps.ChannelTypeData.data.channels[0].label.split('-')
       if (list && list.length && list.length == 2) {
-        sessionStorage.selectedChannel=list[0]
-        sessionStorage.selectedNetwork=list[1]
+        sessionStorage.selectedChannel = list[0]
+        sessionStorage.selectedNetwork = list[1]
         this.setState({
           channelTypeList: nextProps.ChannelTypeData.data.channels,
           selectedChannel: list[0],
@@ -145,8 +147,8 @@ class blockchainWorkboard extends React.Component {
 
       let list = e.target.value.split('-')
       if (list && list.length && list.length == 2) {
-        sessionStorage.selectedChannel=list[0]
-        sessionStorage.selectedNetwork=list[1]
+        sessionStorage.selectedChannel = list[0]
+        sessionStorage.selectedNetwork = list[1]
         this.setState({
           selectedChannel: list[0],
           selectedNetwork: list[1]
@@ -178,28 +180,43 @@ class blockchainWorkboard extends React.Component {
             <div className="col-md-12 ">
               <div className="daterange_con" >
                 <div className="center-block dashdate" style={{ padding: "12px 20px" }}>
-                  <DateRangePicker onChangeRange={this.dateChangeWorkboard} />
-                  <div className="input-group input-large">
+                  
+                  <div className="row">
+                    <div className="col-md-12 ">
+                      <div className="col-md-2">
+                        <img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png" style={{ height: "40px" }} />
+                      </div>
+                      <div className="col-md-1">
+                        <a href="javascript:" onClick={this.navigateQuor}><img src="/assets/Resources/quorum.png" style={{ height: "42px" }} /></a>
+                      </div>
+                      <div className="col-md-1">
+                        <a href="javascript:" onClick={this.navigateEthr}><img src="/assets/Resources/ether_white.png" style={{ height: "40px" }} /></a>
 
-                    <div className="input-group input-large" >
-                      <select id="network" name="Network" className="form-control" onChange={this.projectChanged}>
-                        {
-                          this.state.channelTypeList.map((option, index) => {
-                            return (
-                              <option key={index} value={option.label}>{`hyperLedger-${option.label}`}</option>
-                            );
-                          })
-                        }
-                        <option value="1">quorum-general</option>
-                        {/*<option value={""}>Stellar</option>*/}
-                        {/*<option value={""}>Ripple</option>*/}
-                        {/*<option value={""}>Corda R3</option>*/}
-                        {/*<option value={""}>Iroha</option>*/}
-                        {/*<option value={""}>Sawtooth Lake</option>*/}
-                      </select>
+                      </div>
+                      <div className="col-md-8">
+                        <div className="input-group input-large">
+                          <div className="input-group input-large" >
+                            <select id="network" name="Network" className="form-control" onChange={this.projectChanged}>
+                              {
+                                this.state.channelTypeList.map((option, index) => {
+                                  return (
+                                    <option key={index} value={option.label}>{`hyperLedger-${option.label}`}</option>
+                                  );
+                                })
+                              }
+                              {/* <option value="1">quorum-general</option> */}
+                              {/*<option value={""}>Stellar</option>*/}
+                              {/*<option value={""}>Ripple</option>*/}
+                              {/*<option value={""}>Corda R3</option>*/}
+                              {/*<option value={""}>Iroha</option>*/}
+                              {/*<option value={""}>Sawtooth Lake</option>*/}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-
                   </div>
+
 
                 </div>
               </div>
@@ -263,7 +280,7 @@ class blockchainWorkboard extends React.Component {
               </div>
             </div>
           </div>
-        </div>
+        </div >
 
 
       );

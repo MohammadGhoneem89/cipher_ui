@@ -389,7 +389,12 @@ class NetworkDefinitionScreen extends React.Component {
           document.getElementById('ServerName').value = _.get(b, 'server_hostname', '');
           document.getElementById('requestURL').value = _.get(b, 'requests', '');
           document.getElementById('eventURL').value = _.get(b, 'events', '');
-          document.getElementById('peercertificate').value = _.get(b, 'tls_cacerts', '');
+          try{
+            document.getElementById('peercertificate').value = _.get(b, 'tls_cacerts', '');
+          } catch(ex){
+
+          }
+         
           document.getElementById('nlbType').value = _.get(b, 'loadBalancingLevel', '');
           let tempState = this.state.networkConfig;
           tempState.peerList.splice(index, 1);
@@ -410,7 +415,12 @@ class NetworkDefinitionScreen extends React.Component {
         if (index > -1) {
           let b = this.state.networkConfig.peerUser[index];
           document.getElementById('username').value = _.get(b, 'userName', '');
-          document.getElementById('usercertificate').value = _.get(b, 'cert', '');
+          try{
+            document.getElementById('usercertificate').value = _.get(b, 'cert', '');
+          } catch(ex){
+            
+          }
+         
           document.getElementById('userkey').value = _.get(b, 'key', '');
           let tempState = this.state.networkConfig;
           tempState.peerUser.splice(index, 1);

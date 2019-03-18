@@ -29,6 +29,8 @@ class HashSearchContainer extends React.Component {
       this.setState({
         filterCriteria: {hash: nextProps.hash},
         getTransactionByHash: nextProps.getTransactionByHash,
+        "channelName": sessionStorage.selectedChannel,
+        "network": sessionStorage.selectedNetwork,
         searchResult: nextProps.getTransactionByHash.data.searchResult,
         isLoading: false
       });
@@ -42,6 +44,8 @@ class HashSearchContainer extends React.Component {
       this.props.actions.generalProcess(constants.getTxByHash, {
         action: "getTxByHash",
         hash: this.state.filterCriteria.hash,
+        "channelName": sessionStorage.selectedChannel,
+        "network": sessionStorage.selectedNetwork,
         currentPageNo: 1,
         pageSize: this.state.pageSize
       });
@@ -59,6 +63,8 @@ class HashSearchContainer extends React.Component {
       action: "getTxByHash",
       hash: data.hash,
       currentPageNo: 1,
+      "channelName": sessionStorage.selectedChannel,
+      "network": sessionStorage.selectedNetwork,
       pageSize: this.state.pageSize
     });
     this.setState({filterCriteria: data, activePage: 1});
@@ -69,6 +75,8 @@ class HashSearchContainer extends React.Component {
       action: "getTxByHash",
       hash: this.state.filterCriteria.hash,
       currentPageNo: pageNo,
+      "channelName": sessionStorage.selectedChannel,
+      "network": sessionStorage.selectedNetwork,
       pageSize: this.state.pageSize
     });
     this.setState({activePage: pageNo});
