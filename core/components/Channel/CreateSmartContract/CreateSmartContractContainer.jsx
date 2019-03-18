@@ -2,6 +2,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router';
 import _ from 'lodash';
 import * as actions from '../../../actions/generalAction';
 /*container specific imports*/
@@ -11,11 +12,12 @@ import * as constants from '../../../constants/Communication.js';
 import cloneDeep from 'lodash/cloneDeep';
 import * as requestCreator from '../../../common/request.js';
 import CreateSmartContractForm from './CreateSmartContractForm.jsx'
+import CreateSmartContractFormQuorum from './CreateSmartContractFormQuorum.jsx'
 
 
 const initialState = {
   smartContractData: {
-    "type":"",
+    "type": "",
     "smartContract": "",
     "smartContractVersion": "",
     "smartContractMethod": "",
@@ -44,10 +46,14 @@ class CreateSmartContract extends React.Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.onInputChannel = this.onInputChannel.bind(this);
     this.ActionHandlers = this.ActionHandlers.bind(this);
+    this.back = this.back.bind(this);
+
     this.state = cloneDeep(initialState)
   }
   componentWillMount() { }
-
+  back = () => {
+    browserHistory.push('/SmartContractList');
+  };
   componentWillReceiveProps(nextProps) {
     if (nextProps.ChannelTypeData.data) {
       this.setState({
@@ -61,27 +67,38 @@ class CreateSmartContract extends React.Component {
       });
     }
 
-    if (nextProps.AddUpdateChannel.data && nextProps.AddUpdateChannel.data.ChannelConfig.channelName && this.state.smartContractData.channelID!="") {
+    if (nextProps.AddUpdateChannel.data && nextProps.AddUpdateChannel.data.ChannelConfig.channelName && this.state.smartContractData.channelID != "") {
       let peerList = nextProps.AddUpdateChannel.data.ChannelConfig.network.peerList
       peerList.forEach(element => {
         //element.status=""
-        element.actions = [
-          {
-            "label": "Install",
-            "iconName": "fa fa-save",
-            "actionType": "COMPONENT_FUNCTION"
-          },
-          {
-            "label": "Instanciate",
-            "iconName": "fa fa-chain",
-            "actionType": "COMPONENT_FUNCTION"
-          },
-          {
-            "label": "Upgrade",
-            "iconName": "fa fa-arrow-up",
-            "actionType": "COMPONENT_FUNCTION"
-          }
-        ]
+        if (this.state.smartContractData.type == "Quorum") {
+          element.actions = [
+            {
+              "label": "Deploy",
+              "iconName": "fa fa-arrow-up",
+              "actionType": "COMPONENT_FUNCTION"
+            }
+          ]
+        } else {
+          element.actions = [
+            {
+              "label": "Install",
+              "iconName": "fa fa-save",
+              "actionType": "COMPONENT_FUNCTION"
+            },
+            {
+              "label": "Instanciate",
+              "iconName": "fa fa-chain",
+              "actionType": "COMPONENT_FUNCTION"
+            },
+            {
+              "label": "Upgrade",
+              "iconName": "fa fa-arrow-up",
+              "actionType": "COMPONENT_FUNCTION"
+            }
+          ]
+
+        }
       });
       this.setState({
         channelData: nextProps.AddUpdateChannel.data.ChannelConfig,
@@ -104,6 +121,7 @@ class CreateSmartContract extends React.Component {
         let request = {
           "_id": data.channelID
         }
+        this.props.actions.generalProcess(constants.getChannelTypeList, { type: nextProps.AddUpdateSmartContract.data.SmartContractConfig.type });
         this.props.actions.generalProcess(constants.getChannelConfigByID, request);
       }
 
@@ -129,7 +147,7 @@ class CreateSmartContract extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['BLCHN_TYPE']));
-    this.props.actions.generalProcess(constants.getChannelTypeList);
+
     if (this.props.id !== "NEW") {
       this.props.actions.generalProcess(constants.getSmartContractConfigByID, {
         "_id": this.props.id //"5bf9c9df4cb0c690e4461b89"
@@ -297,7 +315,72 @@ class CreateSmartContract extends React.Component {
           }
           this.props.actions.generalProcess(constants.hyperledgerConnect, data);
         }
+      case "Deploy":
+        if (index > -1) {
+          if (this.state.smartContractData.channelName.trim() == '') {
+            alert("channelName is required");
+            return;
+          }
+          if (this.state.smartContractData.smartContract == '') {
+            alert("smartContractName is required");
+            return;
+          }
 
+          if (this.state.smartContractData.smartContractVersion == '') {
+            alert("smartContractVersion is required");
+            return;
+          }
+
+          let args;
+          if (this.state.smartContractData.smartContractArgs == '') {
+            alert("smartContractArgs is required");
+            return;
+          } else {
+            try {
+              args = JSON.parse(this.state.smartContractData.smartContractArgs);
+            } catch (error) {
+
+              alert("smartContractArgs must be a valid array");
+              return false;
+            }
+          }
+
+          if (this.state.smartContractData.endorsementPolicy == '') {
+            let result = confirm("Are you sure you want to deploy without privateFor?");
+            if (!result) {
+              return;
+            }
+          }
+
+          this.setState({ status: this.state.smartContractData });
+          if (this.state.documents.length && this.state.documents.length != 0) {
+            this.state.smartContractData.status = "========================Deploy REQUEST SENT=============================="
+            this.setState({ status: this.state.smartContractData });
+            let dataToSave = _.cloneDeep(this.state.smartContractData);
+            dataToSave.documents = this.state.documents;
+            dataToSave.endorsementPolicy = JSON.parse(this.state.smartContractData.endorsementPolicy);;
+            dataToSave.smartContractArgs = args;
+            let data = {
+              "function": "1007",
+              "network": this.state.channelData.network.networkName,
+              "channelName": this.state.channelData.channelName.trim(),
+              "peerList": [this.state.networkPeerList[index].requests.replace("grpcs://", '')],
+              "smartContractName": this.state.smartContractData.smartContract,
+              "smartContractVersion": this.state.smartContractData.smartContractVersion,
+              "smartContractArgs": args,
+              "privateFor": this.state.smartContractData.endorsementPolicy,
+              "actionType": "Deploy",
+              "smartContractPackPath": this.state.documents[0].retreivalPath,
+              "savePayload": dataToSave
+            }
+
+
+            this.props.actions.generalProcess(constants.quorumConnect, data);
+          } else {
+            alert("SmartContract is required");
+            return;
+          }
+        }
         break;
       default:
         break;
@@ -377,6 +460,9 @@ class CreateSmartContract extends React.Component {
     } else {
       value = e.target.value;
     }
+    if (e.target.name == 'type') {
+      this.props.actions.generalProcess(constants.getChannelTypeList, { type: value });
+    }
     this.state.smartContractData[e.target.name] = value;
     //alert(value)
     this.setState({
@@ -390,12 +476,16 @@ class CreateSmartContract extends React.Component {
     } else {
       value = e.target.value;
     }
+
+
+
     let text = $("#" + e.target.name + " option:selected").text()
     this.state.smartContractData[e.target.name] = value;
     this.state.smartContractData['channelName'] = text;
     let data = {
       "_id": value
     }
+   
     this.props.actions.generalProcess(constants.getChannelConfigByID, data);
     this.setState({
       [e.target.name]: value
@@ -405,13 +495,14 @@ class CreateSmartContract extends React.Component {
     this.setState(data);
   }
   render() {
-     if (this.state.isLoading) {
-       return (<div className="loader">isLoading...</div>)
-     }
-    return (
+    if (this.state.isLoading) {
+      return (<div className="loader">isLoading...</div>)
+    }
+    if (this.state.smartContractData.type == "Quorum")
+      return (<CreateSmartContractFormQuorum back={this.back} initState={this.state} flag={this.props.id != "NEW"} ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange} updateState={this.updateState} onInputChannel={this.onInputChannel} formSubmit={this.formSubmit} createChannel={this.createChannel} />);
+    else
+      return (<CreateSmartContractForm initState={this.state} flag={this.props.id != "NEW"} ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange} updateState={this.updateState} onInputChannel={this.onInputChannel} formSubmit={this.formSubmit} createChannel={this.createChannel} />);
 
-      <CreateSmartContractForm initState={this.state} ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange} updateState={this.updateState} onInputChannel={this.onInputChannel} formSubmit={this.formSubmit} createChannel={this.createChannel} />
-    );
   }
   // else
   //   return (<div className="loader">{utils.getLabelByID("Loading")}</div>)

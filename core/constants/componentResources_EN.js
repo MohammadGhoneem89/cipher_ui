@@ -52,6 +52,7 @@ module.exports = {
             "displayText": "Process",
             "displayClass": "btn green"
         },
+        
         COM_AB_Add: {
             "displayText": "Add",
             "displayClass": "btn btn-default"
@@ -79,6 +80,10 @@ module.exports = {
         COM_Back: {
             "displayText": "Back",
             "displayClass": "btn green"
+        },
+        COM_AB_EditNet:{
+            "displayText": "Edit Network",
+            "displayClass": "btn dark"
         },
         COM_AB_Update: {
             "displayText": "Save",

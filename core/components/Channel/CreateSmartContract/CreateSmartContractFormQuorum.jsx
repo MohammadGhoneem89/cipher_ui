@@ -4,7 +4,6 @@ import React from 'react';
 import * as utils from '../../../common/utils.js';
 import FileUploader from '../../../common/FileUploader.jsx';
 import Table from '../../../common/Datatable.jsx';
-import { CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput } from '../../../common/FormControls.jsx';
 
 const Document = ({ updateState, initState }) => {
     function getUploadResponse(data) {
@@ -35,8 +34,8 @@ const Document = ({ updateState, initState }) => {
                 <div className="form-group">
                     <FileUploader type="Document" source="Channel"
                         initialValues={initState.documents}
-                        allowedFileType=".tx"
-                        acceptedFiles="channel configuration files to be uploaded with extention *.tx"
+                        allowedFileType=".zip"
+                        acceptedFiles="smartContract package to be uploaded with extention *.zip"
                         getUploadResponse={getUploadResponse}
                         getRemoveResponse={getRemoveResponse}
                         maxFiles="1"
@@ -50,8 +49,7 @@ const Document = ({ updateState, initState }) => {
 
 
 
-const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSubmit, createChannel, onInputNetwork, ActionHandlers, onInputChangeCbl }) => {
-
+const CreateSmartContractFormQuorum = ({ updateState, initState, onInputChange, formSubmit, createChannel, onInputChannel, ActionHandlers, flag, back }) => {
     return (
         <div className="form-body" >
             <div>
@@ -60,10 +58,9 @@ const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSu
                         <div className="portlet light bordered sdg_portlet">
                             <div className="portlet-title">
                                 <div className="caption">
-                                    <span className="caption-subject">{utils.getLabelByID("Channel")}</span></div>
+                                    <span className="caption-subject">{utils.getLabelByID("SmartContract")}</span></div>
                                 <div className="tools">
                                     <a href="javascript:;" className="collapse" data-original-title title> </a>
-
                                 </div>
                             </div>
                             <div className="portlet-body" id="Channel">
@@ -74,7 +71,7 @@ const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSu
                                                 <label className="control-label">{utils.getLabelByID("Blockchain Type")}</label>
                                             </div>
                                             <div className="form-group col-md-8">
-                                                <select id="type" disabled={flag} name="type" onChange={onInputChange} value={initState.channelData.type} className="form-control">
+                                                <select id="type" name="type" disabled={flag} onChange={onInputChange} value={initState.smartContractData.type} className="form-control">
                                                     <option key="" value="">--select--</option>
                                                     {
                                                         initState.typeData.BLCHN_TYPE.map((option, index) => {
@@ -90,21 +87,13 @@ const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSu
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="form-group col-md-4">
-                                                <label className="control-label">{utils.getLabelByID("Channel_Name")}</label>
+                                                <label className="control-label">{utils.getLabelByID("Channel Name")}</label>
                                             </div>
                                             <div className="form-group col-md-8">
-                                                <input className="form-control" disabled={flag} name="channelName" value={initState.channelData.channelName} onChange={onInputChange} type="text"></input>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="form-group col-md-4">
-                                                <label className="control-label">{utils.getLabelByID("Network")}</label>
-                                            </div>
-                                            <div className="form-group col-md-8">
-                                                <select id="network" name="network" disabled={flag} onChange={onInputNetwork} value={initState.channelData.network} className="form-control">
+                                                <select id="channelID" name="channelID"  disabled={flag} onChange={onInputChannel} value={initState.smartContractData.channelID} className="form-control">
                                                     <option key="" value="">--select--</option>
                                                     {
-                                                        initState.networkTypeList.map((option, index) => {
+                                                        initState.channelTypeList.map((option, index) => {
                                                             return (
                                                                 <option key={index} value={option.value}>{option.label}</option>
                                                             );
@@ -114,14 +103,53 @@ const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSu
                                             </div>
                                         </div>
                                     </div>
-
                                     <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="form-group col-md-4">
+                                                <label className="control-label">{utils.getLabelByID("smartContract_Name")}</label>
+                                            </div>
+                                            <div className="form-group col-md-8">
+                                                <input className="form-control" name="smartContract"  disabled={flag} value={initState.smartContractData.smartContract} onChange={onInputChange} type="text"></input>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group col-md-4">
+                                                <label className="control-label">{utils.getLabelByID("smartContract_Version")}</label>
+                                            </div>
+                                            <div className="form-group col-md-8">
+                                                <input className="form-control" name="smartContractVersion" value={initState.smartContractData.smartContractVersion} onChange={onInputChange} type="text"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="form-group col-md-4">
+                                                <label className="control-label bold">{utils.getLabelByID("smartContractArgs")}</label>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="col-md-12">
+                                                <textarea type="text" className="form-control" name="smartContractArgs" value={initState.smartContractData.smartContractArgs} onChange={onInputChange} rows="4" style={{ resize: "none", width: "100%" }} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row" style={{ marginTop: "20px" }}>
+                                        <div className="col-md-6">
+                                            <div className="form-group col-md-4">
+                                                <label className="control-label bold">{utils.getLabelByID("Private For")}</label>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="col-md-12">
+                                                <textarea type="text" className="form-control" name="endorsementPolicy" value={initState.smartContractData.endorsementPolicy} onChange={onInputChange} rows="4" style={{ resize: "none", width: "100%" }} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row" style={{ marginTop: "20px" }}>
                                         <div className="col-md-12">
                                             <Document initState={initState} updateState={updateState} />
                                         </div>
                                     </div>
-
-
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="form-group col-md-12">
@@ -143,38 +171,13 @@ const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSu
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="form-group col-md-12">
-                                                <label className="control-label bold">{utils.getLabelByID("Create_Status")}</label>
+                                                <label className="control-label bold">{utils.getLabelByID("SmartContractCreate_Status")}</label>
                                             </div>
                                         </div>
                                         <div className="col-md-12">
                                             <div className="form-group col-md-12">
-                                                <textarea disabled className="form-control" id="createstatus" value={initState.channelData.status} rows="8" cols="150" type="text">
-
+                                                <textarea disabled className="form-control" id="createstatus" value={initState.smartContractData.status} rows="8" cols="150" type="text">
                                                 </textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <div className="form-group col-md-12">
-                                                <label className="control-label bold">{utils.getLabelByID("Participating Organizations")}</label>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                            <div className="col-md-12">
-                                                <div className="col-md-12">
-                                                    <div className="icheck-list">
-                                                        {initState.orgTypeList.map((sd, index) => (
-                                                            <label key={index} className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
-                                                                <label>{sd.label}</label>
-                                                                <input type="checkbox" className="form-control" onChange={onInputChangeCbl} name={"iscbList-" + index} id={"iscbList-" + index} checked={sd.isChecked && sd.isChecked === true ? true : false} />
-                                                                <span></span>
-                                                            </label>
-                                                        ))
-                                                        }
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -184,8 +187,7 @@ const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSu
                                         <div className="form-actions right">
                                             <div className="form-group col-md-12">
                                                 <div className="btn-toolbar pull-right ">
-                                                    <button type="submit" onClick={createChannel} className="btn btn-green" > Create Channel </button>
-                                                    <button type="submit" onClick={formSubmit} className="btn btn-info" > Save </button>
+                                                    <button type="submit" onClick={back} className="btn btn-default" > back </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -200,4 +202,4 @@ const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSu
 
     )
 }
-export default CreateChannelForm
+export default CreateSmartContractFormQuorum

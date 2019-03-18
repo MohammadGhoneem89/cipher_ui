@@ -1,8 +1,8 @@
 /*standard imports*/
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import DateRangePicker from '../../common/DateRangePicker.jsx';
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
 /*container specific imports*/
 import TileUnit from '../../common/customTileUnit.jsx';
@@ -11,7 +11,7 @@ import BarChartLine from '../../common/barChartLine.jsx'
 import * as utils from '../../common/utils.js';
 import * as constants from '../../constants/Communication.js';
 import moment from 'moment';
-import {Link, browserHistory} from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 class blockchainWorkboard extends React.Component {
 
@@ -66,25 +66,27 @@ class blockchainWorkboard extends React.Component {
   }
 
   changeEntityVal(form) {
-    this.setState({entitySelectedVal: form.target.value});
+    this.setState({ entitySelectedVal: form.target.value });
     if (form.target.value !== "") {
-      this.setState({pageNumner: 1})
+      this.setState({ pageNumner: 1 })
       browserHistory.push('hyperledger/workboard');
     } else {
       browserHistory.push('blockchain');
+     
+
     }
 
   }
 
   dateChangeWorkboard(toDate, fromDate) {
-    this.setState({fromDateWrkBrd: fromDate});
-    this.setState({toDateWrkBrd: toDate});
+    this.setState({ fromDateWrkBrd: fromDate });
+    this.setState({ toDateWrkBrd: toDate });
     this.fetchDashboard(this.state.entitySelectedVal, this.state.pageNumner);
   }
 
   dateChangeExceptions(toDate, fromDate) {
-    this.setState({fromDate: fromDate});
-    this.setState({toDate: toDate});
+    this.setState({ fromDate: fromDate });
+    this.setState({ toDate: toDate });
     this.fetchDashboard(this.state.entitySelectedVal, this.state.pageNumner, 2);
   }
 
@@ -99,8 +101,8 @@ class blockchainWorkboard extends React.Component {
       "filter": entityValue === "" ? "" : (entityValue || this.state.entitySelectedVal)
     };
 
-      this.props.actions.generalProcess(constants.getblockchainWorkboardData, data);
-    
+    this.props.actions.generalProcess(constants.getblockchainWorkboardData, data);
+
   }
 
   componentWillUnmount() {
@@ -109,16 +111,16 @@ class blockchainWorkboard extends React.Component {
 
   pageChanged(pageNo) {
 
-    this.setState({pageNumner: pageNo});
+    this.setState({ pageNumner: pageNo });
     this.fetchDashboard(this.state.entitySelectedVal, pageNo)
     //<!-- <DateControl id="dateToView" dateChange={this.dateChange} /> -->
 
   }
 
-  projectChanged(e){
-    this.setState({selectedProject: e.target.value});
-    if (e.target.value == 1) {
-      this.setState({pageNumner: 1})
+  projectChanged(e) {
+    this.setState({ selectedProject: e.target.value });
+    if (e.target.value == 2) {
+      this.setState({ pageNumner: 1 })
       browserHistory.push('/hyperledger/workboard');
     } else {
       browserHistory.push('/blockchain');
@@ -128,7 +130,7 @@ class blockchainWorkboard extends React.Component {
   renderPopupBody(dataID) {
 
     let ID = dataID.split('/');
-    this.setState({settlementEntityID: ID[1], settlementDate: ID[2] + '/' + ID[3] + '/' + ID[4]})
+    this.setState({ settlementEntityID: ID[1], settlementDate: ID[2] + '/' + ID[3] + '/' + ID[4] })
   }
 
   render() {
@@ -145,12 +147,14 @@ class blockchainWorkboard extends React.Component {
             <div className="col-md-12 ">
               <div className="daterange_con">
                 <div className="center-block dashdate">
-                  <DateRangePicker onChangeRange={this.dateChangeWorkboard}/>
+                  <DateRangePicker onChangeRange={this.dateChangeWorkboard} />
                   <div className="input-group input-large">
 
                     <div className="input-group input-large">
                       <select id="network" name="Network" className="form-control" onChange={this.projectChanged}>
-                        <option value="1">Hyperledger</option>
+
+                        <option value="1">quorum-general</option>
+                        <option value="2">hyperledger</option>
                         {/*<option value={""}>Stellar</option>*/}
                         {/*<option value={""}>Ripple</option>*/}
                         {/*<option value={""}>Corda R3</option>*/}
@@ -165,7 +169,7 @@ class blockchainWorkboard extends React.Component {
               </div>
               <div className="row">
 
-                <TileUnit data={this.props.blockchainWorkboardData.dashboardTiles}/>
+                <TileUnit data={this.props.blockchainWorkboardData.dashboardTiles} />
               </div>
 
               <div className="row">
@@ -176,14 +180,14 @@ class blockchainWorkboard extends React.Component {
                     <div className="portlet-title">
                       <div className="caption "><span className="caption-subject ">Blockchain (10 Records) </span></div>
                       <div className="pull-right">
-                        <div className="input-group" id="defaultrange" style={{display: "inline", marginRight: "10px"}}>
+                        <div className="input-group" id="defaultrange" style={{ display: "inline", marginRight: "10px" }}>
 
                           <div className="inputs srch">
                             <div className="portlet-input input-inline input-small ">
-                              <div className="input-icon right"><i className="icon-magnifier"/>
+                              <div className="input-icon right"><i className="icon-magnifier" />
                                 <input type="text" id="searchINP"
-                                       className="form-control form-control-solid input-circle"
-                                       placeholder="Block Number"/>
+                                  className="form-control form-control-solid input-circle"
+                                  placeholder="Block Number" />
                               </div>
                             </div>
                           </div>
@@ -191,13 +195,13 @@ class blockchainWorkboard extends React.Component {
 
                       </div>
                       <Table gridColumns={utils.getGridColumnByName("blockchainWorkBoard")}
-                             gridData={this.props.blockchainWorkboardData.workboardData.rows}
+                        gridData={this.props.blockchainWorkboardData.workboardData.rows}
 
-                             totalRecords={this.props.blockchainWorkboardData.workboardData.pageData.totalRecords}
-                             searchCallBack={this.searchCallBack} pageSize={5}
-                             pageChanged={this.pageChanged} export={false} search={true}
-                             pagination={false} renderPopupBody={this.renderPopupBody}
-                             activePage={this.state.pageNumner}/>
+                        totalRecords={this.props.blockchainWorkboardData.workboardData.pageData.totalRecords}
+                        searchCallBack={this.searchCallBack} pageSize={5}
+                        pageChanged={this.pageChanged} export={false} search={true}
+                        pagination={false} renderPopupBody={this.renderPopupBody}
+                        activePage={this.state.pageNumner} />
 
                     </div>
                   </div>
@@ -255,7 +259,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
 
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 
 }
 

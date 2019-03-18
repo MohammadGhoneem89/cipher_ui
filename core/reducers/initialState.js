@@ -8,6 +8,7 @@ export default {
   getTemplatesListView:{},
   ApiImport:{},
   ElementList:{},
+  viewConsortium:{},
   entityDetail: {
     action: "", data: {
       "entityName": "",

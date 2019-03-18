@@ -44,6 +44,8 @@ class BlockSearchContainer extends React.Component {
             action: "getTxByBlock",
             blockNumber: this.state.filterCriteria.blockNumber,
             currentPageNo: 1,
+            "channelName": sessionStorage.selectedChannel,
+            "network": sessionStorage.selectedNetwork,
             pageSize: this.state.pageSize,
             "function":"BLKNO",
             "arguments":[String(this.state.filterCriteria.blockNumber)]

@@ -232,7 +232,7 @@ class AddUpdateMapping extends React.Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         this.setState(cloneDeep(stateParent))
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DFM_FROMATTYPE', 'DFM_DATATYPE', 'DFM_REQFIELDTYPE', 'DFM_RESFIELDTYPE', 'USE_CASE','TRAN_RESFIELDTYPE']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DFM_FROMATTYPE', 'DFM_DATATYPE', 'DFM_REQFIELDTYPE', 'DFM_RESFIELDTYPE', 'USE_CASE','TRAN_RESFIELDTYPE','UseCase']));
         this.props.actions.generalProcess(constants.getFunctionData, {});
         this.props.actions.generalProcess(constants.getMappingConfigByID, this.getRequest());
 
@@ -443,7 +443,7 @@ class AddUpdateMapping extends React.Component {
                                                     </div>
                                                     <div className="form-group col-md-8">
                                                         <select name="useCase" id="useCase" value={this.state.useCase} onChange={this.onUseCaseChange} className="form-control">
-                                                            {this.state.typeData && this.state.typeData.USE_CASE && this.state.typeData.USE_CASE.map((option, index) => {
+                                                            {this.state.typeData && this.state.typeData.UseCase && this.state.typeData.UseCase.map((option, index) => {
                                                                 return (
                                                                     <option key={index} value={option.value}>{option.label}</option>
                                                                 );

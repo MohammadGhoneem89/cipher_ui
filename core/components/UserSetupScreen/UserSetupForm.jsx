@@ -14,7 +14,7 @@ import ActionButton from '../../common/ActionButtonNew.jsx';
 
 import { CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput } from '../../common/FormControls.jsx';
 
-const FormSection1 = ({error, initialValues, updateState, state, containerProps, containerState, firstScreen}) => {
+const FormSection1 = ({ error, initialValues, updateState, state, containerProps, containerState, firstScreen }) => {
 
   let userType = sessionStorage.orgType;
   let orgType = [];
@@ -44,7 +44,12 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
     updateState({ selectedReconType: e.target.value });
 
   }
-
+  function updateQuorrumUser(e) {
+    updateState({ quorrumUser: e.target.value });
+  }
+  function updateHypUser(e) {
+    updateState({ hypUser: e.target.value });
+  }
   function assignedGroup() {
     let arr = []
     for (let i = 0; i < initialValues.groups.length - 1; i++) {
@@ -54,7 +59,7 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
 
       }
     }
-    return arr ;
+    return arr;
   }
 
   { console.log(containerState.typeData.ORG_TYPES, "oooooorrrrrrrrggggggggggg") }
@@ -64,13 +69,13 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
 
         <div className="col-md-6 col-sm-6">
           <DropdownInput name="userType" options={callerType}
-                         label="User Type" onChange={updateActiveReconType}
-                         disabled={!!containerProps.userID}/>
+            label="User Type" onChange={updateActiveReconType}
+            disabled={!!containerProps.userID} />
           <DropdownInput name="orgType" options={containerState.typeData.ORG_TYPES}
-                         label={utils.getLabelByID("ESEARCH_orgType")} onChange={(e) => {
-            updateState({selectedOrgType: e.target.value});
-          }} disabled={!!containerProps.userID}/>
-          <DropdownInput name="orgCode" label="Organization Name"  options={(() => {
+            label={utils.getLabelByID("ESEARCH_orgType")} onChange={(e) => {
+              updateState({ selectedOrgType: e.target.value });
+            }} disabled={!!containerProps.userID} />
+          <DropdownInput name="orgCode" label="Organization Name" options={(() => {
             if (state.selectedOrgType) {
               return containerState.entityNames.filter((item) => {
                 return item.orgType === state.selectedOrgType;
@@ -177,17 +182,29 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
               type="text"
             />
           </div>
-		{false &&
+          {false &&
 
-          <div className="col-md-6 col-sm-6">
-            <DropdownInput name="firstScreen" options={firstScreen}
-              label="First Screen" />
-          </div>
-		}
+            <div className="col-md-6 col-sm-6">
+              <DropdownInput name="firstScreen" options={firstScreen}
+                label="First Screen" />
+            </div>
+          }
 
 
         </div>
       }
+      <div className="row">
+        <div className="col-md-6 col-sm-6">
+          <DropdownInput name="hypUser" options={containerState.networkUserTypeData.hyperledger}
+            label="User Association Hyperledger" onChange={updateHypUser}
+             />
+        </div>
+        <div className="col-md-6 col-sm-6">
+          <DropdownInput name="qrmUser" options={containerState.networkUserTypeData.quorrum}
+            label="User Association Quorrum" onChange={updateQuorrumUser}
+             />
+        </div>
+      </div>
 
       <div className="row">
 
@@ -237,7 +254,7 @@ class UserSetupForm extends React.Component {
       orgType: undefined,
       profilePic: undefined,
       selectedOrgType: undefined,
-      typeData : props.typeData
+      typeData: props.typeData
     };
     this.updateState = this.updateState.bind(this);
     this.submit = this.submit.bind(this);
@@ -292,6 +309,8 @@ class UserSetupForm extends React.Component {
 
   submit(data) {
     data.profilePic = this.state.profilePic ? this.state.profilePic : data.profilePic;
+    data.hypUser = this.state.hypUser ;
+    data.quorrumUser = this.state.quorrumUser ;
     return this.props.onSubmit(data);
   }
 
@@ -316,7 +335,7 @@ class UserSetupForm extends React.Component {
         </form>
         <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)}>
           <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state}
-                        containerProps={containerProps} containerState={containerState} firstScreen = {this.state.typeData}/>
+            containerProps={containerProps} containerState={containerState} firstScreen={this.state.typeData} />
           <div className="clearfix">
             <ActionButton actionList={pageActions}
               performAction={this.performAction}

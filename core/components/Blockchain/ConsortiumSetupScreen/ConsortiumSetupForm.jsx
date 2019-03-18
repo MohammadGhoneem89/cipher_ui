@@ -44,18 +44,18 @@ class ConsortiumSetupForm extends React.Component {
         return (
             <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)} ref={this._form = this}>
                 <div className="row">
-                    <div className="col-md-6 col-sm-6">
+                    <div className="col-md-6">
                         <TextInput
                             name="consortiumName"
                             label={utils.getLabelByID("Cipher_consortiumName")}
                             type="text"
-                            disabled={containerState.readOnly}
+                            disabled={true}
                         />
                     </div>
-                    <div className="col-md-4 col-sm-4">
-                        <DropdownInput name="consortiumType" options={containerState.typeData.Cipher_blockchainType}
+                    <div className="col-md-6">
+                        <DropdownInput name="consortiumType" options={containerState.typeData.BLCHN_TYPE}
                                        label={utils.getLabelByID("Cipher_consortiumType")}
-                                       disabled={containerState.readOnly}
+                                       disabled={true}
                         />
                     </div>
                 </div>

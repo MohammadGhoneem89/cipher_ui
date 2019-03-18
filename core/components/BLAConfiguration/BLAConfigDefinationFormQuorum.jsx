@@ -4,7 +4,7 @@ import Portlet from '../../common/Portlet.jsx';
 import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
 
-const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer, addUser, state, ActionHandlers, typeData, onSubmit, flag }) => {
+const BLAConfigDefinationFormQuorum = ({ onInputChange, onInputChangeOrderer, addPeer, addUser, state, ActionHandlers, typeData, onSubmit, flag }) => {
 
   return (
     <Portlet title={utils.getLabelByID("NetworkConfiguration")}>
@@ -76,7 +76,7 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
               <label className="form-group control-label col-md-4" style={{
                 textAlign: "left",
                 fontWeight: "normal"
-              }}>{utils.getLabelByID("MSPID")}</label>
+              }}>{utils.getLabelByID("ConstellationId")}</label>
               <div className="form-group col-md-8">
                 <input type="text" className="form-control" name="mspid" onChange={onInputChange} value={state.mspid} />
               </div>
@@ -96,116 +96,6 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
           </div>*/}
         </div>
       </div>
-
-
-      <div className="row">
-        <div className="col-md-12">
-          <div className="row">
-            <div className="col-md-12">
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "bold"
-              }}>{utils.getLabelByID("CertificateAuth")}</label>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("CAURL")}</label>
-              <div className="form-group col-md-8">
-                <input type="text" className="form-control" name="ca" onChange={onInputChange} value={state.ca} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-md-12">
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("CAUserName")}</label>
-              <div className="form-group col-md-8">
-
-                <input type="text" className="form-control" onChange={onInputChange} name="username" value={state.username} />
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("CASecret")}</label>
-              <div className="form-group col-md-8">
-                <input type="text" className="form-control" name="secret" onChange={onInputChange} value={state.secret} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col-md-12">
-          <div className="row">
-            <div className="col-md-12">
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "bold"
-              }}>{utils.getLabelByID("ordererDefinition")}</label>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("OrdererURL")}</label>
-              <div className="form-group col-md-8">
-                <input type="text" className="form-control" name="url" onChange={onInputChangeOrderer} value={state.orderer.url} />
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("ServerName")}</label>
-              <div className="form-group col-md-8">
-                <input type="text" className="form-control" name="serverHostname" onChange={onInputChangeOrderer} value={state.orderer.serverHostname} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col-md-12">
-
-          <div className="col-md-6">
-            <div className="form-group">
-
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("cacertificate")}</label>
-              <div className="form-group col-md-8">
-                <textarea type="text" className="form-control" name="tlsCacerts" onChange={onInputChangeOrderer} value={state.orderer.tlsCacerts} rows="6" style={{ fontSize: "12px", resize: "none", width: "100%" }} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
 
       <div className=" col-md-12" >
         <div className=" col-md-12"
@@ -303,37 +193,19 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
                   </div>
                 </div>
               </div>
-              <div className="col-md-6">
-                <div className="form-group">
-
-                  <label className="form-group control-label col-md-4" style={{
-                    textAlign: "left",
-                    fontWeight: "normal"
-                  }}>{utils.getLabelByID("certificate")}</label>
-                  <div className="form-group col-md-8">
-                    <textarea type="text" className="form-control" id="peercertificate" rows="4" style={{ resize: "none", width: "100%" }} />
-
-                  </div>
-                </div>
-              </div>
-
             </div>
           </div>
           <div className="row">
             <div className="col-md-12">
-
               <div className="col-md-12">
                 <div className="form-actions right">
                   <div className="form-group col-md-12">
                     <div className="btn-toolbar pull-right">
                       <button type="submit" className="btn btn-default" onClick={addPeer} > <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Peer")} </button>
                     </div>
-
                   </div>
                 </div>
                 <div className="col-md-12">
-
-
                   <Table
                     gridColumns={utils.getGridColumnByName("peerListOrg")}
                     gridData={state.peerList}
@@ -389,35 +261,21 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="col-md-12">
               <div className="col-md-6">
                 <div className="form-group">
 
                   <label className="form-group control-label col-md-4" style={{
                     textAlign: "left",
                     fontWeight: "normal"
-                  }}>{utils.getLabelByID("certificate")}</label>
+                  }}>{utils.getLabelByID("Secret")}</label>
                   <div className="form-group col-md-8">
-                    <textarea type="text" className="form-control" id="usercertificate" rows="4" style={{ resize: "none", width: "100%" }} />
-
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="form-group">
-
-                  <label className="form-group control-label col-md-4" style={{
-                    textAlign: "left",
-                    fontWeight: "normal"
-                  }}>{utils.getLabelByID("key")}</label>
-                  <div className="form-group col-md-8">
-                    <textarea type="text" className="form-control" id="userkey" rows="4" style={{ resize: "none", width: "100%" }} />
+                    <input type="text" className="form-control" id="userkey" rows="4" style={{ resize: "none", width: "100%" }} />
 
                   </div>
                 </div>
               </div>
             </div>
+
           </div>
           <div className="row">
             <div className="col-md-12">
@@ -464,7 +322,7 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
     </Portlet>
   );
 }
-export default BLAConfigDefinationForm;
+export default BLAConfigDefinationFormQuorum;
 
 
 // "APIDef_RequestMapping" : [

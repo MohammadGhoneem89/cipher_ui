@@ -157,6 +157,8 @@ class HashSearchContainer extends React.Component {
             action: "getTxByHash",
             hash: data.hash,
             currentPageNo: 1,
+            "channelName": sessionStorage.selectedChannel,
+            "network": sessionStorage.selectedNetwork,
             pageSize: this.state.pageSize,
             "function": "TRNXHASH",
             "arguments": [data.hash]

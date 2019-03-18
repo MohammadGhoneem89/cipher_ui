@@ -66,11 +66,11 @@ class CommissionTemplateContainer extends React.Component {
     render() {
         if (!this.state.isLoading && this.props.commissionTemplateID === this.state.commissionTemplateDetail._id)
             return (
-                <Portlet title={utils.getLabelByID("CommissionTemplateSetup")}>
+                
                     <CommissionTemplateForm onSubmit={this.submit} initialValues={this.state.commissionTemplateDetail}
                                             containerState={this.state}
                                             containerProps={this.props}/>
-                </Portlet>
+               
             );
         else
             return (<div className="loader">{utils.getLabelByID("Loading")}</div>)

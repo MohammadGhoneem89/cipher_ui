@@ -49,7 +49,7 @@ const Document = ({ updateState, initState }) => {
 
 
 
-const CreateSmartContractForm = ({ updateState, initState, onInputChange, formSubmit, createChannel, onInputChannel, ActionHandlers }) => {
+const CreateSmartContractForm = ({ updateState, initState, onInputChange, formSubmit, createChannel, onInputChannel, ActionHandlers,flag }) => {
 
     return (
         <div className="form-body" >
@@ -73,7 +73,7 @@ const CreateSmartContractForm = ({ updateState, initState, onInputChange, formSu
                                                 <label className="control-label">{utils.getLabelByID("Blockchain Type")}</label>
                                             </div>
                                             <div className="form-group col-md-8">
-                                                <select id="type" name="type" onChange={onInputChange} value={initState.smartContractData.type} className="form-control">
+                                                <select id="type" name="type" disabled={flag} onChange={onInputChange} value={initState.smartContractData.type} className="form-control">
                                                     <option key="" value="">--select--</option>
                                                     {
                                                         initState.typeData.BLCHN_TYPE.map((option, index) => {
@@ -89,10 +89,10 @@ const CreateSmartContractForm = ({ updateState, initState, onInputChange, formSu
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="form-group col-md-4">
-                                                <label className="control-label">{utils.getLabelByID("Channel")}</label>
+                                                <label className="control-label">{utils.getLabelByID("Channel Name")}</label>
                                             </div>
                                             <div className="form-group col-md-8">
-                                                <select id="channelID" name="channelID" onChange={onInputChannel} value={initState.smartContractData.channelID} className="form-control">
+                                                <select id="channelID" name="channelID"  disabled={flag} onChange={onInputChannel} value={initState.smartContractData.channelID} className="form-control">
                                                     <option key="" value="">--select--</option>
                                                     {
                                                         initState.channelTypeList.map((option, index) => {
@@ -111,7 +111,7 @@ const CreateSmartContractForm = ({ updateState, initState, onInputChange, formSu
                                                 <label className="control-label">{utils.getLabelByID("smartContract_Name")}</label>
                                             </div>
                                             <div className="form-group col-md-8">
-                                                <input className="form-control" name="smartContract" value={initState.smartContractData.smartContract} onChange={onInputChange} type="text"></input>
+                                                <input className="form-control" name="smartContract"  disabled={flag} value={initState.smartContractData.smartContract} onChange={onInputChange} type="text"></input>
                                             </div>
                                         </div>
                                         <div className="col-md-6">

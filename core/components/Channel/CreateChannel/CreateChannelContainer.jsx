@@ -10,6 +10,8 @@ import * as utils from '../../../common/utils.js';
 import * as constants from '../../../constants/Communication.js';
 import cloneDeep from 'lodash/cloneDeep';
 import CreateChannelForm from './CreateChannelForm.jsx'
+import CreateChannelFormQuorum from './CreateChannelFormQuorum.jsx'
+
 const initialState = {
   channelData: {
     "type": "",
@@ -80,7 +82,9 @@ class CreateChannel extends React.Component {
       this.state.channelData.networkName = nextProps.AddUpdateChannel.data.ChannelConfig.networkName
       this.state.channelData.orgList = nextProps.AddUpdateChannel.data.ChannelConfig.orgList
       this.state.channelData.network = nextProps.AddUpdateChannel.data.ChannelConfig.network._id
+      
       if (this.state.isPeerLoaded === false) {
+        this.props.actions.generalProcess(constants.getNetworkTypeList, { type: nextProps.AddUpdateChannel.data.ChannelConfig.type });
         let data = {
           "_id": this.state.channelData.network
         }
@@ -107,8 +111,9 @@ class CreateChannel extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['BLCHN_TYPE']));
-    this.props.actions.generalProcess(constants.getNetworkTypeList);
+
     if (this.props.id !== "NEW") {
+
       this.props.actions.generalProcess(constants.getChannelConfigByID, {
         "_id": this.props.id //"5bf9c9df4cb0c690e4461b89"
       });
@@ -221,9 +226,13 @@ class CreateChannel extends React.Component {
     } else {
       value = e.target.value;
     }
+    if (e.target.name == 'type') {
+      this.props.actions.generalProcess(constants.getNetworkTypeList, { type: value });
+    }
     this.state.channelData[e.target.name] = value;
+
     this.setState({
-      [e.target.name]: value
+      channelData: this.state.channelData
     })
   }
   onInputNetwork = (e) => {
@@ -240,7 +249,9 @@ class CreateChannel extends React.Component {
     let data = {
       "_id": value
     }
-    this.props.actions.generalProcess(constants.getPeerList, data);
+    if (this.state.channelData.type != "Quorum") {
+      this.props.actions.generalProcess(constants.getPeerList, data);
+    }
     this.setState({
       [e.target.name]: value
     })
@@ -252,10 +263,14 @@ class CreateChannel extends React.Component {
     if (this.state.isLoading) {
       return (<div className="loader">isLoading...</div>)
     }
-    return (
-
-      <CreateChannelForm initState={this.state} onInputChangeCbl={this.onInputChangeCbl} ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange} updateState={this.updateState} onInputNetwork={this.onInputNetwork} formSubmit={this.formSubmit} createChannel={this.createChannel} />
-    );
+    if (this.state.channelData.type == "Quorum")
+      return (
+        <CreateChannelFormQuorum initState={this.state} flag={this.props.id != "NEW"} onInputChangeCbl={this.onInputChangeCbl} ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange} updateState={this.updateState} onInputNetwork={this.onInputNetwork} formSubmit={this.formSubmit} createChannel={this.createChannel} />
+      );
+    else
+      return (
+        <CreateChannelForm initState={this.state} flag={this.props.id != "NEW"} onInputChangeCbl={this.onInputChangeCbl} ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange} updateState={this.updateState} onInputNetwork={this.onInputNetwork} formSubmit={this.formSubmit} createChannel={this.createChannel} />
+      );
   }
   // else
   //   return (<div className="loader">{utils.getLabelByID("Loading")}</div>)

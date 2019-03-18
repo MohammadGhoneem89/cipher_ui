@@ -367,8 +367,7 @@ module.exports = {
   consortiumParticipants: [
     { alias: "Cipher_participantsType", key: "orgType", type: "string" },
     { alias: "Cipher_participantsCode", key: "orgCode", type: "string" },
-    { alias: "Cipher_participantsStatus", key: "status", type: "statusLabel" },
-    { alias: "Cipher_participantsAccount", key: "account", type: "string" }
+    { alias: "Cipher_participantsStatus", key: "status", type: "statusLabel" }
   ],
 
   cipherChannels: [
@@ -664,6 +663,14 @@ module.exports = {
     { alias: "EL_Status", key: "status", type: "statusLabel" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
+  peerListOrgWOA: [
+    
+    { alias: "peerName", key: "peerName", type: "string" },
+    { alias: "loadBalancingLevel", key: "loadBalancingLevel", type: "string" }
+  ],
+  userListOrgWOA: [
+    { alias: "CAUserName", key: "userName", type: "string" }
+  ],
   peerListOrg: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "peerName", key: "peerName", type: "string" },
@@ -738,6 +745,7 @@ module.exports = {
     { alias: "", key: "_id", type: "hiddenID" },
     { alias: "NAU_networkName", key: "networkName", type: "string" },
     { alias: "NAU_MSPID", key: "mspid", type: "string" },
+    { alias: "type", key: "type", type: "string" },
     { alias: "NAU_orginizationAlias", key: "orginizationAlias", type: "string" },
     { alias: "NAU_createdBy", key: "createdBy", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }

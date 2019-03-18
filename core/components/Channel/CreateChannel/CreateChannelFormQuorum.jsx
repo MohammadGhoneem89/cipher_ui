@@ -50,7 +50,7 @@ const Document = ({ updateState, initState }) => {
 
 
 
-const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSubmit, createChannel, onInputNetwork, ActionHandlers, onInputChangeCbl }) => {
+const CreateChannelFormQuorum = ({ flag, updateState, initState, onInputChange, formSubmit, createChannel, onInputNetwork, ActionHandlers, onInputChangeCbl }) => {
 
     return (
         <div className="form-body" >
@@ -74,7 +74,7 @@ const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSu
                                                 <label className="control-label">{utils.getLabelByID("Blockchain Type")}</label>
                                             </div>
                                             <div className="form-group col-md-8">
-                                                <select id="type" disabled={flag} name="type" onChange={onInputChange} value={initState.channelData.type} className="form-control">
+                                                <select id="type" name="type" disabled={flag} onChange={onInputChange} value={initState.channelData.type} className="form-control">
                                                     <option key="" value="">--select--</option>
                                                     {
                                                         initState.typeData.BLCHN_TYPE.map((option, index) => {
@@ -93,7 +93,7 @@ const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSu
                                                 <label className="control-label">{utils.getLabelByID("Channel_Name")}</label>
                                             </div>
                                             <div className="form-group col-md-8">
-                                                <input className="form-control" disabled={flag} name="channelName" value={initState.channelData.channelName} onChange={onInputChange} type="text"></input>
+                                                <input className="form-control" name="channelName" disabled={flag} value={initState.channelData.channelName} onChange={onInputChange} type="text"></input>
                                             </div>
                                         </div>
                                         <div className="col-md-6">
@@ -111,46 +111,6 @@ const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSu
                                                         })
                                                     }
                                                 </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <Document initState={initState} updateState={updateState} />
-                                        </div>
-                                    </div>
-
-
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <div className="form-group col-md-12">
-                                                <label className="control-label bold">{utils.getLabelByID("Network_Peers")}</label>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                            <div className="form-group col-md-12">
-                                                <Table gridColumns={utils.getGridColumnByName("PeerList")}
-                                                    gridData={initState.networkPeerList}
-                                                    fontclass=""
-                                                    componentFunction={ActionHandlers}
-                                                    pagination={false}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <div className="form-group col-md-12">
-                                                <label className="control-label bold">{utils.getLabelByID("Create_Status")}</label>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                            <div className="form-group col-md-12">
-                                                <textarea disabled className="form-control" id="createstatus" value={initState.channelData.status} rows="8" cols="150" type="text">
-
-                                                </textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -184,7 +144,6 @@ const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSu
                                         <div className="form-actions right">
                                             <div className="form-group col-md-12">
                                                 <div className="btn-toolbar pull-right ">
-                                                    <button type="submit" onClick={createChannel} className="btn btn-green" > Create Channel </button>
                                                     <button type="submit" onClick={formSubmit} className="btn btn-info" > Save </button>
                                                 </div>
                                             </div>
@@ -200,4 +159,4 @@ const CreateChannelForm = ({ flag, updateState, initState, onInputChange, formSu
 
     )
 }
-export default CreateChannelForm
+export default CreateChannelFormQuorum

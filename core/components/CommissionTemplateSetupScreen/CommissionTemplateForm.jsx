@@ -173,23 +173,7 @@ class CommissionTemplateForm extends React.Component {
 
           />
         </ModalBox>
-        <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)}>
-
-
-          <div className="row">
-            <div className="col-md-6 col-sm-6">
-              <TextInput name="templateName"
-                         label={utils.getLabelByID("CTEMP_templateName")}
-                         type="text"
-              />
-            </div>
-            <div className="col-md-3 col-sm-3">
-              <TextInput name="discount"
-                         label={utils.getLabelByID("CTEMP_discount")}
-                         type="number"
-              />
-            </div>
-          </div>
+        
           <Portlet title={utils.getLabelByID("Details")} actions={this.commissionTemplateActions()}>
             <Table
               pagination={false}
@@ -206,7 +190,7 @@ class CommissionTemplateForm extends React.Component {
                           performAction={this.performAction}
                           submitting={submitting} pristine={pristine}/>
           </div>
-        </form>
+    
       </div>
     );
   }

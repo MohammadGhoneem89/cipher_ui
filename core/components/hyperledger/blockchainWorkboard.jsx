@@ -1,8 +1,8 @@
 /*standard imports*/
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import DateRangePicker from '../../common/DateRangePicker.jsx';
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
 /*container specific imports*/
 import TileUnit from '../../common/tileUnit.jsx';
@@ -11,7 +11,7 @@ import BarChartLine from '../../common/barChartLine.jsx'
 import * as utils from '../../common/utils.js';
 import * as constants from '../../constants/Communication.js';
 import moment from 'moment';
-import {Link, browserHistory} from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 
 class blockchainWorkboard extends React.Component {
@@ -32,7 +32,11 @@ class blockchainWorkboard extends React.Component {
       entityNames: undefined,
       settlementDate: '',
       selectedProject: undefined,
-      xAxis: []
+      xAxis: [],
+      channelTypeList: [],
+      isLoading: true,
+      selectedChannel: "",
+      selectedNetwork: ""
     };
     for (let i = 59; i >= 0; i--) {
       this.state.xAxis.push(i);
@@ -42,52 +46,61 @@ class blockchainWorkboard extends React.Component {
     this.renderPopupBody = this.renderPopupBody.bind(this);
     this.dateChangeWorkboard = this.dateChangeWorkboard.bind(this);
     this.dateChangeExceptions = this.dateChangeExceptions.bind(this);
-    this.changeEntityVal = this.changeEntityVal.bind(this);
     this.fetchDashboard = this.fetchDashboard.bind(this);
     this.projectChanged = this.projectChanged.bind(this);
 
   }
 
   componentWillMount() {
-    let _this = this;
-    _this.fetchDashboard(_this.state.entitySelectedVal, _this.state.pageNumner);
+
   }
 
   refreshScreen() {
-        let _this = this;
-        this.timeoutHandler = setTimeout(() => {
-                console.log("SCREEN REFRESHED");
-                _this.fetchDashboard(_this.state.entitySelectedVal, _this.state.pageNumner);
-                _this.refreshScreen();
-        }, 10000);
+    let _this = this;
+    this.timeoutHandler = setTimeout(() => {
+      console.log("SCREEN REFRESHED");
+      _this.fetchDashboard(_this.state.entitySelectedVal, _this.state.pageNumner);
+      _this.refreshScreen();
+    }, 10000);
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.ChannelTypeData.data.channels.length && nextProps.ChannelTypeData.data.channels.length > 0 && this.state.isLoading == true) {
+      console.log(JSON.stringify(nextProps.ChannelTypeData.data.channels[0]))
+
+      let list = nextProps.ChannelTypeData.data.channels[0].label.split('-')
+      if (list && list.length && list.length == 2) {
+        sessionStorage.selectedChannel=list[0]
+        sessionStorage.selectedNetwork=list[1]
+        this.setState({
+          channelTypeList: nextProps.ChannelTypeData.data.channels,
+          selectedChannel: list[0],
+          selectedNetwork: list[1],
+          isLoading: false
+        }, () => {
+          let _this = this;
+          _this.fetchDashboard(_this.state.entitySelectedVal, _this.state.pageNumner);
+        });
+      }
+    }
   }
 
- 
   componentWillUnmount() {
     clearInterval(this.timeoutHandler);
   }
-  
-  changeEntityVal(form) {
-    this.setState({entitySelectedVal: form.target.value});
-    if (form.target.value !== "") {
-      this.setState({pageNumner: 1})
-      browserHistory.push('blockchain');
-    } else {
-      browserHistory.push('hyperledger/workboard');
-     
-    }
 
-  }
+
+
+
 
   dateChangeWorkboard(toDate, fromDate) {
-    this.setState({fromDateWrkBrd: fromDate});
-    this.setState({toDateWrkBrd: toDate});
+    this.setState({ fromDateWrkBrd: fromDate });
+    this.setState({ toDateWrkBrd: toDate });
     this.fetchDashboard(this.state.entitySelectedVal, this.state.pageNumner);
   }
 
   dateChangeExceptions(toDate, fromDate) {
-    this.setState({fromDate: fromDate});
-    this.setState({toDate: toDate});
+    this.setState({ fromDate: fromDate });
+    this.setState({ toDate: toDate });
     this.fetchDashboard(this.state.entitySelectedVal, this.state.pageNumner, 2);
   }
 
@@ -99,39 +112,56 @@ class blockchainWorkboard extends React.Component {
       "toDateWrkBrd": this.state.toDateWrkBrd,
       "fromDate": this.state.fromDate,
       "toDate": this.state.toDate,
+      "channelName": this.state.selectedChannel,
+      "network": this.state.selectedNetwork,
       "filter": entityValue === "" ? "" : (entityValue || this.state.entitySelectedVal),
-      "function":"STATS",
-      "arguments":["STUB"]
+      "function": "STATS",
+      "arguments": ["STUB"]
     };
-    
+
     this.props.actions.generalProcess(constants.getblockchainWorkboardDataHF, data);
+
   }
 
 
   componentDidMount() {
-        window.scrollTo(0, 0);
-        //this.refreshScreen();
+    window.scrollTo(0, 0);
+    this.props.actions.generalProcess(constants.getChannelTypeList, { type: "Hyperledger" });
+
+    // this.refreshScreen();
   }
   pageChanged(pageNo) {
-    this.setState({pageNumner: pageNo});
+    this.setState({ pageNumner: pageNo });
     this.fetchDashboard(this.state.entitySelectedVal, pageNo);
   }
 
-  projectChanged(e){
-    this.setState({selectedProject: e.target.value});
+  projectChanged(e) {
+    this.setState({ selectedProject: e.target.value });
     if (e.target.value == 1) {
-      this.setState({pageNumner: 1})
+      this.setState({ pageNumner: 1 })
       browserHistory.push('/blockchain');
     } else {
       browserHistory.push('/hyperledger/workboard');
-      
+
+      let list = e.target.value.split('-')
+      if (list && list.length && list.length == 2) {
+        sessionStorage.selectedChannel=list[0]
+        sessionStorage.selectedNetwork=list[1]
+        this.setState({
+          selectedChannel: list[0],
+          selectedNetwork: list[1]
+        }, () => {
+          let _this = this;
+          _this.fetchDashboard(_this.state.entitySelectedVal, _this.state.pageNumner);
+        });
+      }
     }
   }
 
 
   renderPopupBody(dataID) {
     let ID = dataID.split('/');
-    this.setState({settlementEntityID: ID[1], settlementDate: ID[2] + '/' + ID[3] + '/' + ID[4]})
+    this.setState({ settlementEntityID: ID[1], settlementDate: ID[2] + '/' + ID[3] + '/' + ID[4] })
   }
 
   render() {
@@ -139,7 +169,7 @@ class blockchainWorkboard extends React.Component {
     let enableControl = (sessionStorage.orgType == "Settlement" || sessionStorage.orgType == "SDG" || sessionStorage.orgType == "DSG") ? true : false;
     let entityUserType = sessionStorage.orgType == "Entity" ? true : false;
     let acquirerUserType = sessionStorage.orgType == "Acquirer" ? true : false;
-    if (this.props.blockchainWorkboardData.workboardData.rows) {
+    if (this.props.blockchainWorkboardData.workboardData.rows && this.state.isLoading == false) {
 
       return (
         <div className="coreDiv">
@@ -147,14 +177,20 @@ class blockchainWorkboard extends React.Component {
           <div className="row">
             <div className="col-md-12 ">
               <div className="daterange_con" >
-                <div className="center-block dashdate" style={{padding:"12px 20px"}}>
-                  <DateRangePicker onChangeRange={this.dateChangeWorkboard}/>
+                <div className="center-block dashdate" style={{ padding: "12px 20px" }}>
+                  <DateRangePicker onChangeRange={this.dateChangeWorkboard} />
                   <div className="input-group input-large">
 
                     <div className="input-group input-large" >
                       <select id="network" name="Network" className="form-control" onChange={this.projectChanged}>
-                        <option value="0">Avanza - Hyperledger</option>
-                        {/* <option value="1">Avanza - Quorum</option> */}
+                        {
+                          this.state.channelTypeList.map((option, index) => {
+                            return (
+                              <option key={index} value={option.label}>{`hyperLedger-${option.label}`}</option>
+                            );
+                          })
+                        }
+                        <option value="1">quorum-general</option>
                         {/*<option value={""}>Stellar</option>*/}
                         {/*<option value={""}>Ripple</option>*/}
                         {/*<option value={""}>Corda R3</option>*/}
@@ -169,7 +205,7 @@ class blockchainWorkboard extends React.Component {
               </div>
               <div className="row">
 
-                <TileUnit data={this.props.blockchainWorkboardData.dashboardTiles}/>
+                <TileUnit data={this.props.blockchainWorkboardData.dashboardTiles} />
               </div>
 
               <div className="row">
@@ -180,14 +216,14 @@ class blockchainWorkboard extends React.Component {
                     <div className="portlet-title">
                       <div className="caption "><span className="caption-subject ">Blockchain (10 Records) </span></div>
                       <div className="pull-right">
-                        <div className="input-group" id="defaultrange" style={{display: "inline", marginRight: "10px"}}>
+                        <div className="input-group" id="defaultrange" style={{ display: "inline", marginRight: "10px" }}>
 
                           <div className="inputs srch">
                             <div className="portlet-input input-inline input-small ">
-                              <div className="input-icon right"><i className="icon-magnifier"/>
+                              <div className="input-icon right"><i className="icon-magnifier" />
                                 <input type="text" id="searchINP"
-                                       className="form-control form-control-solid input-circle"
-                                       placeholder="Block Number"/>
+                                  className="form-control form-control-solid input-circle"
+                                  placeholder="Block Number" />
                               </div>
                             </div>
                           </div>
@@ -195,13 +231,12 @@ class blockchainWorkboard extends React.Component {
 
                       </div>
                       <Table gridColumns={utils.getGridColumnByName("blockchainWorkBoardHyperledger")}
-                             gridData={this.props.blockchainWorkboardData.workboardData.rows}
-
-                             totalRecords={this.props.blockchainWorkboardData.workboardData.pageData.totalRecords}
-                             searchCallBack={this.searchCallBack} pageSize={5}
-                             pageChanged={this.pageChanged} export={false} search={true}
-                             pagination={false} renderPopupBody={this.renderPopupBody}
-                             activePage={this.state.pageNumner}/>
+                        gridData={this.props.blockchainWorkboardData.workboardData.rows}
+                        totalRecords={this.props.blockchainWorkboardData.workboardData.pageData.totalRecords}
+                        searchCallBack={this.searchCallBack} pageSize={5}
+                        pageChanged={this.pageChanged} export={false} search={true}
+                        pagination={false} renderPopupBody={this.renderPopupBody}
+                        activePage={this.state.pageNumner} />
 
                     </div>
                   </div>
@@ -250,6 +285,7 @@ blockchainWorkboard.propTypes = {
 function mapStateToProps(state, ownProps) {
 
   return {
+    ChannelTypeData: state.app.ChannelTypeData,
     blockchainWorkboardData: state.app.blockchainWorkboardData.data
   };
 
@@ -257,7 +293,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
 
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 
 }
 

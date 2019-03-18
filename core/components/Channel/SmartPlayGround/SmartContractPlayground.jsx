@@ -20,8 +20,13 @@ const initialState = {
   },
   channelName: "",
   networkName: "",
+  type: "",
   documents: [],
   channelData: {},
+  privateFor: [],
+  abi: {},
+  contractAddress: "",
+
   typeData: {},
   isPeerLoaded: false,
   contractTypeList: [],
@@ -52,8 +57,12 @@ class SmartContractPlayground extends React.Component {
       });
     }
     if (nextProps.AddUpdateSmartContract.data) {
-
+      console.log(JSON.stringify(nextProps.AddUpdateSmartContract.data.SmartContractConfig, null, 2))
       this.setState({
+        type: nextProps.AddUpdateSmartContract.data.SmartContractConfig.type,
+        privateFor: nextProps.AddUpdateSmartContract.data.SmartContractConfig.endorsementPolicy || [],
+        abi: nextProps.AddUpdateSmartContract.data.SmartContractConfig.abi || {},
+        contractAddress: nextProps.AddUpdateSmartContract.data.SmartContractConfig.contractAddress || "",
         channelName: nextProps.AddUpdateSmartContract.data.SmartContractConfig.channelID.channelName,
         networkName: nextProps.AddUpdateSmartContract.data.SmartContractConfig.channelID.networkName,
         smartContract: nextProps.AddUpdateSmartContract.data.SmartContractConfig.smartContract,
@@ -106,17 +115,19 @@ class SmartContractPlayground extends React.Component {
       "network": this.state.networkName,
       "channelName": this.state.channelName,
       "smartContractName": this.state.smartContract,
+      "privateFor": this.state.privateFor,
+      "abi": this.state.abi,
+      "contractAddress": this.state.contractAddress,
       "smartContractMethod": this.state.smartContractData.smartContractMethod,
       "smartContractArgs": args,
     }
 
     this.state.smartContractData.status = "========================INVOKE REQUEST SENT=============================="
     this.setState({ status: this.state.smartContractData });
-
-
-
-    this.props.actions.generalProcess(constants.hyperledgerConnect, data);
-
+    if (this.state.type == "Quorum")
+      this.props.actions.generalProcess(constants.quorumConnect, data);
+    else
+      this.props.actions.generalProcess(constants.hyperledgerConnect, data);
   }
   formSubmitQuery(e) {
 
@@ -148,13 +159,20 @@ class SmartContractPlayground extends React.Component {
       "function": "0001",
       "network": this.state.networkName,
       "channelName": this.state.channelName,
+      "privateFor": this.state.privateFor,
+      "abi": this.state.abi,
+      "contractAddress": this.state.contractAddress,
       "smartContractName": this.state.smartContract,
       "smartContractMethod": this.state.smartContractData.smartContractMethod,
       "smartContractArgs": args,
     }
     this.state.smartContractData.status = "========================QUERY REQUEST SENT=============================="
+    // alert(this.state.contractAddress);
     this.setState({ status: this.state.smartContractData });
-    this.props.actions.generalProcess(constants.hyperledgerConnect, data);
+    if (this.state.type == "Quorum")
+      this.props.actions.generalProcess(constants.quorumConnect, data);
+    else
+      this.props.actions.generalProcess(constants.hyperledgerConnect, data);
 
   }
   onInputChange = (e) => {

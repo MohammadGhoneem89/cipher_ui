@@ -98,7 +98,7 @@ export default (
       <Route path="/cipher/blockchain/hashSearch/:hash" component={HashSearchScreen}/>
       <Route path="/cipher/consortiumSearch" component={ConsortiumSearch}/>
       <Route path="/cipher/consortiumSetup" component={ConsortiumSetup}/>
-      <Route path="/cipher/consortiumSetup/:mode/:consortiumID/:garbage" component={ConsortiumSetup}/>
+      <Route path="/cipher/consortiumSetup/:mode/:consortiumID" component={ConsortiumSetup}/>
       <Route path="/cipher/consortiums/:consortiumID/smartContracts/:smartContactID" component={SmartContract}/>
       <Route path="/cipher/:consortiumID/smartContractFiles/:smartContractIndex" component={SmartContractFileViewer}/>
 

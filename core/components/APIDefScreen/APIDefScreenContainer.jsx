@@ -2,6 +2,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import _ from 'lodash';
@@ -11,6 +12,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
+import isDirty from 'deep-diff';
 
 const initialState = {
   APIDefinitionAddUpdate: {
@@ -40,7 +42,7 @@ const initialState = {
     "simulatorResponse": "",
     "ResponseMapping": "",
     "RequestMapping": "",
-    "endpointName":"",
+    "endpointName": "",
     "isValBypass": false,
     "isResValBypass": false,
     "isResponseMapDisable": false,
@@ -67,7 +69,7 @@ const initialState = {
   isStale: false,
   requestParams: [],
   responseParams: [],
-  getEndpointListView:[],
+  getEndpointListView: [],
   generateMappingFile: {}
 };
 class APIDefinitionScreen extends React.Component {
@@ -81,6 +83,8 @@ class APIDefinitionScreen extends React.Component {
     this.addRowRule = this.addRowRule.bind(this);
     this.onInputRuleEngine = this.onInputRuleEngine.bind(this);
     this.onInputChangeRequest = this.onInputChangeRequest.bind(this);
+    this.navigateReq = this.navigateReq.bind(this);
+    this.navigateRes = this.navigateRes.bind(this);
     this.onDateChange = this.onDateChange.bind(this);
     this.state = cloneDeep(initialState)
 
@@ -89,11 +93,38 @@ class APIDefinitionScreen extends React.Component {
   componentWillMount() {
 
   }
+  navigateReq() {
+    let data = cloneDeep(this.state.APIDefinitionAddUpdate);
+    let RequestMapping = (data.RequestMapping === "" ? this.state.MappingConfigList.REQUEST[0].value : data.RequestMapping);
+    let uri = ""
+    this.state.MappingConfigList.REQUEST.forEach((elem) => {
+      if (elem.value == RequestMapping) {
+        uri = elem
+      }
+    })
+    if (uri.label)
+      browserHistory.push(`/editMapping/${uri.label}`)
+  }
+  navigateRes() {
+    let data = cloneDeep(this.state.APIDefinitionAddUpdate);
+    let ResponseMapping = (data.ResponseMapping === "" ? this.state.MappingConfigList.RESPONSE[0].value : data.ResponseMapping);
+    let uri = ""
+    this.state.MappingConfigList.RESPONSE.forEach((elem) => {
+      if (elem.value == ResponseMapping) {
+        uri = elem
+      }
+    })
+    if (uri.label)
+      browserHistory.push(`/editMapping/${uri.label}`)
+
+  }
   addRowRule() {
     let BlockRuleName = document.getElementById('BlockRuleName') == null ? "" : document.getElementById('BlockRuleName').value;
     let channel = document.getElementById('channel') == null ? "" : document.getElementById('channel').value;
     let consortium = document.getElementById('consortium') == null ? "" : document.getElementById('consortium').value;
-    let smartcontract = document.getElementById('smartcontract') == null ? "" : document.getElementById('smartcontract').value;
+    let smartcontractid = document.getElementById('smartcontract') == null ? "" : document.getElementById('smartcontract').value;
+    let smartcontract = $("#smartcontract").find("option[value='" + $("#smartcontract").val() + "']").text();
+   
     let smartcontractFunc = document.getElementById('smartcontractFunc') == null ? "" : document.getElementById('smartcontractFunc').value;
     let type = document.getElementById('type') == null ? "" : document.getElementById('type').value;
     let channelText = $("#channel option:selected").text();
@@ -145,6 +176,7 @@ class APIDefinitionScreen extends React.Component {
       channel,
       consortium,
       smartcontract,
+      smartcontractid,
       ruleList,
       channelText,
       consortiumText,
@@ -298,7 +330,7 @@ class APIDefinitionScreen extends React.Component {
     this.props.actions.generalProcess(constants.getEndpointListView);
 
 
-    
+
     this.props.actions.generalProcess(constants.getAvailableObjectsList, {
       database: this.state.databaseType || 'mongo',
       adaptor: this.state.adaptor || 'adaptor1'
@@ -311,7 +343,7 @@ class APIDefinitionScreen extends React.Component {
       objectType: this.state.objectType || '',
     });
 
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['request_operator', 'database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES', 'bchain_rule_Type']));
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['request_operator', 'database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES', 'bchain_rule_Type','UseCase']));
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE") {
       let req = {
         useCase: this.props.useCase,
@@ -343,18 +375,18 @@ class APIDefinitionScreen extends React.Component {
         parameters: Object.assign(params, nextProps.parameters)
       })
     }
-    
 
-   
+
+
 
     if (nextProps.getEndpointListView.data) {
+
       this.setState({
         getEndpointListView: nextProps.getEndpointListView.data
       });
     }
 
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE" && this.props.useCase === get(nextProps, 'APIDefinitionAddUpdate.data.useCase') && this.props.route === get(nextProps, 'APIDefinitionAddUpdate.data.route')) {
-
       if (nextProps.APIDefinitionAddUpdate.data.simucases) {
         let simucases = nextProps.APIDefinitionAddUpdate.data.simucases;
         simucases.map(function (item) {
@@ -368,21 +400,36 @@ class APIDefinitionScreen extends React.Component {
           simucases: simucases
         });
       }
-      if (this.state.isStale === false) {
+      // diff()
+      // if (changes) {
+      //   // do something with the changes.
+      // }
+      let isChanged = false;
+      let changes = isDirty(this.props.APIDefinitionAddUpdate.data, nextProps.APIDefinitionAddUpdate.data)
+      let changeLocal = this.state.APIDefinitionAddUpdate.route === "" ? true : false;
+      if (this.props.APIDefinitionAddUpdate.data && changes) {
+        isChanged = true
+      } if (!this.props.APIDefinitionAddUpdate.data) {
+        isChanged = true
+      } if(changeLocal===true){
+        isChanged = true
+      }
 
+      if (isChanged) {
         this.setState({
           APIDefinitionAddUpdate: cloneDeep(nextProps.APIDefinitionAddUpdate.data),
-          rules: nextProps.APIDefinitionAddUpdate.data.rules || []
+          rules: nextProps.APIDefinitionAddUpdate.data.rules || [],
+          isStale: isChanged
         });
         this.setState({
-          MappingOrgFieldData: [],
-          isStale: true
+          MappingOrgFieldData: []
         }, () => {
           let req = { _id: nextProps.APIDefinitionAddUpdate.data.RequestMapping }
           this.props.actions.generalProcess(constants.getMappingConfigOrgFieldData, req);
         });
       }
     } else {
+      //  alert("not updating!!")
       if (isEmpty(this.state.APIDefinitionAddUpdate)) {
         this.setState({
           APIDefinitionAddUpdate: cloneDeep(initialState.APIDefinitionAddUpdate)
@@ -648,7 +695,7 @@ class APIDefinitionScreen extends React.Component {
       return (<div className="loader">isLoading...</div>)
     }
     return (
-      <APIDefScreenForm parameters={this.state.parameters} generateCustomFile={this.generateCustomFile} addParams={this.addParams} onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule} onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine} onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} parentState={this.state} />)
+      <APIDefScreenForm navigateRes={this.navigateRes} navigateReq={this.navigateReq} parameters={this.state.parameters} generateCustomFile={this.generateCustomFile} addParams={this.addParams} onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule} onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine} onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} parentState={this.state} />)
   }
   ActionHandlers({ actionName, index }) {
 

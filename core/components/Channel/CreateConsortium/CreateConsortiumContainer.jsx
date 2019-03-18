@@ -86,7 +86,8 @@ class CreateConsortium extends React.Component {
       });
       this.setState({
         networkTypeList: nextProps.NetworkTypeData.data.networks,
-        orgTypeList: orgTypeList
+        orgTypeList: orgTypeList,
+        type:this.state.ConsortiumData.type
       });
     }
 

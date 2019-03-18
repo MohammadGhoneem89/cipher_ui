@@ -56,7 +56,7 @@ class DateRangePicker extends React.Component {
 
        
 
-         <a className="btn green btn-outline" href="#daterangepicker_modal" data-toggle="modal"> 
+         <a className="btn white btn-outline" href="#daterangepicker_modal" data-toggle="modal"> 
           <span>{label}&nbsp;</span>
           
           <i className="fa fa-calendar sp"></i>

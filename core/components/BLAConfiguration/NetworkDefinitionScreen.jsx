@@ -7,12 +7,14 @@ import * as constants from '../../constants/Communication.js';
 import _ from 'lodash';
 import * as requestCreator from '../../common/request.js';
 import BLAConfig from './BLAConfigDefinationForm.jsx';
+import BLAConfigQuorum from './BLAConfigDefinationFormQuorum.jsx';
 import cloneDeep from 'lodash/cloneDeep';
 const initialState = {
   networkConfig: {
     "networkName": "",
     "orginizationAlias": "",
     "ca": "",
+    "type": "",
     "username": "",
     "secret": "",
     "name": "",
@@ -40,7 +42,9 @@ class NetworkDefinitionScreen extends React.Component {
     this.onInputChangeOrderer = this.onInputChangeOrderer.bind(this);
     this.ActionHandlers = this.ActionHandlers.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
+    this.onSubmitQuorum = this.onSubmitQuorum.bind(this);
     this.state = cloneDeep(initialState)
+    
 
   }
 
@@ -66,7 +70,8 @@ class NetworkDefinitionScreen extends React.Component {
       _.isEmpty(data.ca) ||
       _.isEmpty(data.username) ||
       _.isEmpty(data.secret) ||
-      _.isEmpty(data.mspid)
+      _.isEmpty(data.mspid) ||
+      _.isEmpty(data.type)
     ) {
       alert("All fields are required");
       return false;
@@ -84,7 +89,104 @@ class NetworkDefinitionScreen extends React.Component {
     this.props.actions.generalProcess(constants.updateNetworkConfig, data);
 
   }
+  onSubmitQuorum = (e) => {
+    let data = cloneDeep(this.state.networkConfig);
+    if (
+      _.isEmpty(data.networkName) ||
+      _.isEmpty(data.orginizationAlias) ||
+      _.isEmpty(data.mspid) ||
+      _.isEmpty(data.type)
+    ) {
+      alert("All fields are required");
+      return false;
+    }
 
+    if (data.peerList && data.peerList.length == 0) {
+      alert("atlest 1 peer is required");
+      return false;
+    }
+    if (data.peerUser && data.peerUser.length == 0) {
+      alert("atlest 1 user is required");
+      return false;
+    }
+    this.props.actions.generalProcess(constants.updateNetworkConfig, data);
+  }
+  addPeerQuorum = (e) => {
+
+    let peerName = document.getElementById('peerName') == null ? "" : document.getElementById('peerName').value;
+    let ServerName = document.getElementById('ServerName') == null ? "" : document.getElementById('ServerName').value;
+    let requestURL = document.getElementById('requestURL') == null ? "" : document.getElementById('requestURL').value;
+    let eventURL = document.getElementById('eventURL') == null ? "" : document.getElementById('eventURL').value;
+    let nlbType = document.getElementById('nlbType') == null ? "" : document.getElementById('nlbType').value;
+
+    if (
+      _.isEmpty(peerName) ||
+      _.isEmpty(ServerName) ||
+      _.isEmpty(requestURL) ||
+      _.isEmpty(eventURL) 
+     
+    ) {
+      alert("All fields are required");
+      return false;
+    }
+
+    let netConf = _.cloneDeep(this.state.networkConfig);
+    let tupple = {
+      "peerName": peerName,
+      "requests": requestURL,
+      "events": eventURL,
+      "server_hostname": ServerName,
+      "loadBalancingLevel": nlbType,
+      "actions": [
+        { "label": "Delete Peer", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION" },
+        { "label": "Edit Peer", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" }
+      ]
+    }
+    if (this.containsObjectPeer(tupple, netConf.peerList) === false) {
+      this.clearFieldsPeer()
+      netConf.peerList.push(tupple);
+
+      this.setState({
+        networkConfig: netConf
+      })
+    } else {
+      alert("Peer Already Exists!!")
+    }
+  }
+
+
+  addUserQuorum = (e) => {
+    let username = document.getElementById('username') == null ? "" : document.getElementById('username').value;
+    let userkey = document.getElementById('userkey') == null ? "" : document.getElementById('userkey').value;
+
+    let netConf = _.cloneDeep(this.state.networkConfig);
+    if (
+      _.isEmpty(username) ||
+      _.isEmpty(userkey)
+    ) {
+      alert("All fields are required");
+      return false;
+    }
+    let tupple = {
+      "userName": username,
+      "key": userkey,
+      "actions": [
+        { "label": "Delete User", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION" },
+        { "label": "Edit User", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" }
+      ]
+    }
+
+    if (this.containsObject(tupple, netConf.peerUser) === false) {
+      this.clearFieldsUser()
+      netConf.peerUser.push(tupple);
+
+      this.setState({
+        networkConfig: netConf
+      })
+    } else {
+      alert("User Already Exists!!")
+    }
+  }
 
   addPeer = (e) => {
 
@@ -232,8 +334,8 @@ class NetworkDefinitionScreen extends React.Component {
   }
   componentDidMount() {
     //this.props.actions.generalProcess(constants.getAPIList);
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['NLB_Type']));
-    if (this.props.id!=="NEW") {
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['NLB_Type', 'BLCHN_TYPE']));
+    if (this.props.id !== "NEW") {
       this.props.actions.generalProcess(constants.getNetworkConfigByID, {
         "_id": this.props.id //"5bf9c9df4cb0c690e4461b89"
       });
@@ -245,12 +347,12 @@ class NetworkDefinitionScreen extends React.Component {
 
   componentWillReceiveProps(nextProps) {
 
-    if (this.props.id==="NEW"){
+    if (this.props.id === "NEW") {
       this.setState({
         networkConfig: _.cloneDeep(initialState.networkConfig)
       });
-    } 
-    if (this.props.id!=="NEW"&&nextProps.AddUpdateNetwork.data) {
+    }
+    if (this.props.id !== "NEW" && nextProps.AddUpdateNetwork.data) {
       console.log(JSON.stringify(nextProps.AddUpdateNetwork.data.NetworkConfig))
       this.setState({
         networkConfig: nextProps.AddUpdateNetwork.data.NetworkConfig
@@ -272,7 +374,11 @@ class NetworkDefinitionScreen extends React.Component {
     if (this.state.isLoading) {
       return (<div className="loader">isLoading...</div>)
     }
-    return (<BLAConfig onSubmit={this.onSubmit} ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange} addPeer={this.addPeer} addUser={this.addUser} onInputChangeOrderer={this.onInputChangeOrderer} typeData={this.state.typeData} state={this.state.networkConfig} />)
+    if (this.state.networkConfig.type == "Quorum")
+      return (<BLAConfigQuorum flag={this.props.id !== "NEW"} onSubmit={this.onSubmitQuorum} ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange} addPeer={this.addPeerQuorum} addUser={this.addUserQuorum} onInputChangeOrderer={this.onInputChangeOrderer} typeData={this.state.typeData} state={this.state.networkConfig} />)
+    else
+      return (<BLAConfig flag={this.props.id !== "NEW"} onSubmit={this.onSubmit} ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange} addPeer={this.addPeer} addUser={this.addUser} onInputChangeOrderer={this.onInputChangeOrderer} typeData={this.state.typeData} state={this.state.networkConfig} />)
+
   }
   ActionHandlers({ actionName, index }) {
     switch (actionName) {

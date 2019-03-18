@@ -1034,7 +1034,7 @@ module.exports = {
   smartContractMethod:"Initialization Function",
   SmartContract:"SmartContract Configuration",
   SmartContractCreate_Status:"Response From Blockchain",
-  CreateSmartContract_Heading:"Hyperledger SmartContract",
+  CreateSmartContract_Heading:"SmartContract",
   NAU_smartContract:"Smart Contract Name",
   SmartContractListDataFilters:"Smart Contract Search",
   SmartContractList:"Smart Contracts",
@@ -1077,5 +1077,6 @@ module.exports = {
   MAU_route:"API Route",
   MAU_ExistingMapping:"Existing Mapping",
   ApiImport:"API Import",
-  AddUpdateAPIImp:"Add / Update API import"
+  AddUpdateAPIImp:"Add / Update API import",
+  ConstellationId:"Constellation ID"
 };

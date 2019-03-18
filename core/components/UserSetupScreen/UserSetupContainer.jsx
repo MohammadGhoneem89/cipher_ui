@@ -21,7 +21,10 @@ class UserSetupContainer extends React.Component {
       typeData: undefined,
       isLoading: true,
       entityNames: undefined,
-      permissionTypeData : []
+      permissionTypeData: [],
+      networkUserTypeData: {},
+      quorrumUser:undefined,
+      hypUser:undefined
     };
 
     this.submit = this.submit.bind(this);
@@ -43,6 +46,8 @@ class UserSetupContainer extends React.Component {
       "action": "userDetails",
       "id": this.props.userID
     };
+
+    this.props.actions.generalProcess(constants.getBlkUserList);
     this.props.actions.generalProcess(constants.getUserDetail, request);
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES']));
 
@@ -94,10 +99,12 @@ class UserSetupContainer extends React.Component {
     if (!updatedData.isActive)
       updatedData.isActive = false;
 
-	updatedData.passwordHashType  = 'sha512';
+    updatedData.passwordHashType = 'sha512';
     updatedData.groups = groupsListUpdate;
     updatedData.passwordHashType = "SHA512";
-
+   
+    updatedData.hypUser=updatedData.hypUser;
+    updatedData.quorrumUser=updatedData.quorrumUser;
     let dataSubmit = {
       "action": "userInsert",
       "data": updatedData
@@ -117,8 +124,8 @@ class UserSetupContainer extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
-      let perTypeData = this.getPermissionTypeData(nextProps.permission)
-    if (nextProps.userDetail.groups && nextProps.entityNames && nextProps.typeData) {
+    let perTypeData = this.getPermissionTypeData(nextProps.permission)
+    if (nextProps.userDetail.groups && nextProps.entityNames && nextProps.typeData && nextProps.NetworkUserTypeData.data) {
 
       this.setState({
         userDetail: nextProps.userDetail,
@@ -126,16 +133,18 @@ class UserSetupContainer extends React.Component {
         typeData: nextProps.typeData,
         isLoading: false,
         entityNames: nextProps.entityNames,
-        permissionTypeData : perTypeData
+        permissionTypeData: perTypeData,
+        networkUserTypeData: nextProps.NetworkUserTypeData.data
       });
     }
-    else if (!nextProps.userID && nextProps.entityNames && nextProps.typeData) {
+    else if (!nextProps.userID && nextProps.entityNames && nextProps.typeData && nextProps.NetworkUserTypeData.data) {
       this.setState({
         userDetail: initialState.userDetails.data,
         pageActions: nextProps.pageActions,
         typeData: nextProps.typeData,
         entityNames: nextProps.entityNames,
-        permissionTypeData : perTypeData
+        permissionTypeData: perTypeData,
+        networkUserTypeData: nextProps.NetworkUserTypeData.data
       });
     }
   }
@@ -143,9 +152,9 @@ class UserSetupContainer extends React.Component {
   getPermissionTypeData = (permission) => {
 
     let arr = [];
-    for(let obj of permission){
-      if(obj.label == "Dashboard"){
-        for(let a of obj.children){
+    for (let obj of permission) {
+      if (obj.label == "Dashboard") {
+        for (let a of obj.children) {
           let json = {};
           json.label = a.label;
           json.value = a.pageURI;
@@ -213,7 +222,8 @@ function mapStateToProps(state, ownProps) {
       userID: ownProps.params.userID,
       entityNames: state.app.entityList.data.typeData.entityNames,
       typeData: state.app.typeData.data,
-      permission : state.app.permissionData.data.menuPermissions
+      permission: state.app.permissionData.data.menuPermissions,
+      NetworkUserTypeData: state.app.NetworkUserTypeData,
     };
   }
   else {
@@ -224,7 +234,8 @@ function mapStateToProps(state, ownProps) {
       userID: undefined,
       entityNames: state.app.entityList.data.typeData.entityNames,
       typeData: state.app.typeData.data,
-      permission : state.app.permissionData.data.menuPermissions
+      permission: state.app.permissionData.data.menuPermissions,
+      NetworkUserTypeData: state.app.NetworkUserTypeData,
     };
   }
 }

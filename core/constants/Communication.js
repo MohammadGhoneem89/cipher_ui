@@ -74,7 +74,7 @@ module.exports = {
   smartContractUpdate: baseUrl + "/SIMU/cipherSmartContractInsert",
   getConsortiumList: baseUrl + "/API/UI/consortiumSearch",
   // getConsortiumDetails: baseUrl +"/SIMU/getConsortiumById",
-  getConsortiumDetails: baseUrl + "/API/UI/consortiumDetail",
+  getConsortiumDetails: baseUrl + "/API/core/getConsortiumConfigByDetailID",
   getTxByBlock: baseUrl + "/API/Quorum/getTxByBlock",
   getTxByHash: baseUrl + "/API/Quorum/getTxByHash",
   getHealthData: baseUrl + "/API/Cipher/health",
@@ -145,6 +145,7 @@ module.exports = {
   getNetworkTypeList: baseUrl + "/API/core/getNetworkTypeList",
   getPeerList: baseUrl + "/API/core/getPeerList",
   hyperledgerConnect: baseUrl + "/API/Cipher/hyperledgerConnect",
+  quorumConnect: baseUrl + "/API/Cipher/quorumConnect",
   updateChannelConfig: baseUrl + "/API/core/updateChannelConfig",
   getChannelConfigByID: baseUrl + "/API/core/getChannelConfigByID",
   getChannelListData: baseUrl + "/API/core/getChannelList",
@@ -203,9 +204,7 @@ module.exports = {
   getFieldsVault:baseUrl+ "/API/core/getElementList",
   generateConfig:baseUrl+ "/API/core/generateConfig",
   createDynamicStruct:baseUrl+"/API/core/createDynamicStruct",
-
-
-
+  getBlkUserList:baseUrl+"/API/core/getUserList", 
   getOnBoardingList: baseUrl + '/API/UI/getOnBoardingList',
   getOnBoardingProStructList: baseUrl + '/API/UI/getOnBoardingProStructList',
   insertOnBoarding: baseUrl + '/API/UI/insertOnBoarding',
