@@ -864,7 +864,14 @@ module.exports = {
     { alias: "Status Active", key: "status", type: "cbDisabled" },
     { alias: "Certificate Attached", key: "attachCert", type: "cbDisabled" },
     { alias: "Actions", key: "actions", type: "action" }
-  ]
+  ],
+  onBoardingProfile: [
+    {alias: "", key: "_id", type: "hiddenID"},
+    {alias: "Name", key: "name", type: 'string'},
+    {alias: "Status", key: "status", type: "string"},
+    {alias: "useCase", key: "useCase", type: "string"},
+    {alias: "Action", key: "action", type: "action"}
+]
 };
 
 
