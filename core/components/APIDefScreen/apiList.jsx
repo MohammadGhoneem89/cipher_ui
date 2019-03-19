@@ -124,6 +124,7 @@ console.log(route,"++++++++====route\n\n",searchCriteria);
         this.props.actions.generalProcess(constants.getApiListData, this.getRequest());
         this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/APIDefScreen/NEWCASE/NEWROUTE", "children": [] }] })
     }
+    
     formSubmit() {
 
         this.props.actions.generalProcess(constants.getApiListData, this.getRequest());
@@ -244,7 +245,8 @@ console.log(route,"++++++++====route\n\n",searchCriteria);
                                gridColumns={utils.getGridColumnByName("ApiListData")}
                                gridData={this.props.ApiListData.data.searchResult}
                                totalRecords={this.props.ApiListData.pageData.totalRecords}
-                               searchCallBack={this.searchCallBack} pageSize={10}
+                               searchCallBack={this.searchCallBack}
+                                pageSize={10}
                                pagination={true} pageChanged={this.pageChanged}
                                export={false}
                                search={true}

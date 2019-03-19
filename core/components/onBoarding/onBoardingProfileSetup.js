@@ -17,7 +17,7 @@ class onBoardingProfileSetup extends React.Component {
             UseCase: [], isLoading: true,
             OnBoardingDBType: [], status: [],
             profileTypeData: [], params: [],
-            tables: [], details: {}
+            tables: [], details: {}, isEnabled: true
         };
     }
     componentWillMount() {
@@ -32,16 +32,17 @@ class onBoardingProfileSetup extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!_.isEmpty(nextProps.list) && (nextProps.detail._id === nextProps.id) && !_.isEmpty(nextProps.detail)) {
+        if (!_.isEmpty(nextProps.list) && (nextProps.typeData) && (nextProps.detail._id === nextProps.id) && !_.isEmpty(nextProps.detail)) {
             console.log(nextProps.detail, "++++++++++++")
             this.setState({
-
+                isEnabled: false,
                 details: nextProps.detail,
                 UseCase: nextProps.typeData.USE_CASE,
                 OnBoardingDBType: nextProps.typeData.OnBoardingDBType,
                 profileTypeData: nextProps.list,
                 status: nextProps.typeData.onBoardingStatus,
                 isLoading: false,
+                params: nextProps.detail.params
             });
 
         }
@@ -112,7 +113,7 @@ class onBoardingProfileSetup extends React.Component {
 
 
     onParamChange = (e) => {
-        console.log(e.target.value)
+        console.log(e.target.value,"target valueeee")
         this.setState({
             [e.target.id]: e.target.value
         });
@@ -120,6 +121,7 @@ class onBoardingProfileSetup extends React.Component {
 
     getParamVal = (state, param) => {
         let arr = [];
+        console.log("PARAM",param)
         if (state && param) {
             //console.log(param,"I AM PARAM --------------------------------")
             for (let val of param) {
@@ -186,7 +188,7 @@ class onBoardingProfileSetup extends React.Component {
                                 <label className="control-label">{utils.getLabelByID("Name")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="name" id="name"
+                                <input type="text" className="form-control" name="name" id="name" disabled={this.state.isEnabled == false}
                                     value={this.state.details.name} onChange={this.onChangeVal}
                                 />
                             </div>
@@ -197,10 +199,12 @@ class onBoardingProfileSetup extends React.Component {
                                 <label className="control-label">{utils.getLabelByID("MAU_useCase")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <select name="useCases" id="useCases" value={this.state.details.useCase} className="form-control" onChange={this.onChangeVal}>
+                                <select name="useCases" id="useCases" disabled={this.state.isEnabled == false}
+                                    value={this.state.details.useCase}
+                                    className="form-control" onChange={this.onChangeVal}>
                                     <option key="-1" value=''>{utils.getLabelByID("RA_Select")} </option>
                                     {console.log(this.state.UseCase)}
-                                    {this.state.UseCase.map((option, index) => {
+                                    {this.state.UseCase && this.state.UseCase.map((option, index) => {
                                         return (
                                             <option key={index} value={option.value}>{option.label}</option>
                                         );
@@ -219,10 +223,11 @@ class onBoardingProfileSetup extends React.Component {
                             </div>
                             <div className="form-group col-md-8">
                                 <select name="status" id="status" className="form-control" disabled>
-
+                                    {/* {console.log("|||||||", this.state.details.status)} */}
                                     {this.state.status.map((option, index) => {
                                         return (
-                                            <option key={0} value={option.value} selected={this.state.details.status == option.value}>{option.label}</option>
+                                            <option key={index}
+                                                value={option.value} selected={this.state.details.status == option.value}>{option.label}</option>
                                         );
                                     })}
                                 </select>
@@ -234,9 +239,9 @@ class onBoardingProfileSetup extends React.Component {
                             </div>
                             <div className="form-group col-md-8">
                                 <select name="profile" id="profile" value={this.state.details.profile} className="form-control"
-                                    onChange={this.getProfileVal}>
+                                    onChange={this.getProfileVal} disabled={this.state.isEnabled == false}>
                                     <option key="-1" value="">{utils.getLabelByID("RA_Select")} </option>
-                                    {this.state.profileTypeData.map((option, index) => {
+                                    {this.state.profileTypeData && this.state.profileTypeData.map((option, index) => {
                                         return (
 
                                             <option key={index} value={option._id}>{option.name}</option>
@@ -255,7 +260,9 @@ class onBoardingProfileSetup extends React.Component {
                             </div>
                             <div className="form-group col-md-8">
                                 <input type="text" className="form-control" name="destinationDB" id="destinationDB"
-                                    value={this.state.details.destinationDB} onChange={this.onChangeVal}
+                                    value={this.state.details.destinationDB} 
+                                    disabled={this.state.isEnabled == false}
+                                    onChange={this.onChangeVal}
                                 />
                             </div>
                         </div>
@@ -265,9 +272,11 @@ class onBoardingProfileSetup extends React.Component {
                                 <label className="control-label">{utils.getLabelByID("DB Type")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <select name="dbType" id="dbType" className="form-control" value={this.state.details.DBType} onChange={this.onChangeVal}>
+                                <select name="dbType" id="dbType" className="form-control" 
+                                disabled={this.state.isEnabled == false}
+                                    value={this.state.details.DBType} onChange={this.onChangeVal}>
                                     <option key="-1" value="">{utils.getLabelByID("RA_Select")} </option>
-                                    {this.state.OnBoardingDBType.map((option, index) => {
+                                    {this.state.OnBoardingDBType && this.state.OnBoardingDBType.map((option, index) => {
                                         return (
                                             <option key={index} value={option.value}>{option.label}</option>
                                         );
@@ -277,7 +286,8 @@ class onBoardingProfileSetup extends React.Component {
                         </div>
                     </div>
                 </div>
-                {!_.isEmpty(this.state.params) && <div className="portlet light bordered sdg_portlet">
+                {!_.isEmpty(this.state.params) && 
+                <div className="portlet light bordered sdg_portlet">
                     <div className="portlet-title">
                         <div className="caption">
                             <span className="caption-subject">{utils.getLabelByID("Setup Params")}</span>
@@ -287,12 +297,13 @@ class onBoardingProfileSetup extends React.Component {
                         </div>
                     </div>
                     <div className="row">
-                        <ParamFilter params={this.state.params} onParamChange={this.onParamChange} />
+                        <ParamFilter params={this.state.params}  isEnabled = {this.state.isEnabled} onParamChange={this.onParamChange} />
 
                     </div>
                 </div>}
-                {!_.isEmpty(this.state.details.params) 
-                    && <div className="portlet light bordered sdg_portlet">
+                {/* {this.state.details.params 
+                    && 
+                    <div className="portlet light bordered sdg_portlet">
                         <div className="portlet-title">
                             <div className="caption">
                                 <span className="caption-subject">{utils.getLabelByID("Setup Params")}</span>
@@ -302,18 +313,22 @@ class onBoardingProfileSetup extends React.Component {
                             </div>
                         </div>
                         <div className="row">
-                            <ParamFilter params={this.state.details.params} onParamChange={this.onParamChange} />
+                            <ParamFilter isEnabled = {this.state.isEnabled} params={this.state.details.params} />
 
                         </div>
-                    </div>}
+                    </div>
+                } */}
 
 
                 <div className="row">
                     <div className="col-md-12">
                         <div className="col-md-12">
+
                             <div className="btn-toolbar pull-right">
-                                <button type="submit" className="btn green" onClick={this.save}>Save</button>
+                                <button type="submit" className="btn green"
+                                    onClick={this.save} disabled={this.state.isEnabled == false}>Save</button>
                             </div>
+
                         </div>
                     </div>
                 </div>

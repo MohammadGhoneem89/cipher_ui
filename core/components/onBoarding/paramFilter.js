@@ -3,67 +3,57 @@ import * as utils from '../../common/utils.js';
 import * as constants from '../../constants/Communication.js';
 import DateControl from '../../common/DateControl.jsx'
 import * as dates from '../../common/dates.js';
-let count=0;
+let count = -1;
+
 class paramFilter extends React.Component {
 
     constructor(props, context) {
+
         super(props, context);
-        console.log("//////",props.params,"///////")
-        this.state = {
-            filter: props.params
-        };
-        
+        console.log(props, "###############")
+        if (props.params) {
+            console.log(props.params, "000000")
+            this.state = {
+                filter: props.params
+            };
+        }
+        // this.getValue = [];
+        // this.state.filter = props.params;
         this.generateFilters = this.generateFilters.bind(this);
     }
 
     componentDidMount() {
-
+        window.scrollTo(0, 0);
     }
 
     componentWillMount() {
 
     }
-    
-
-    getTextBoxOnEdit(filter) {
-        console.log("getTextbox",this.state.filter[count].value)
-        let getValue = this.state.filter[count].value;
-        count++;
-        return (
-           
-            <div className="row">
-             {this.state.filter &&
-                <div className="form-group col-md-12">
-                    <div className="col-md-4">
-                        <label className="control-label" style={{ textAlign: 'center', padding: '15px' }}>{utils.getLabelByID(filter["name"])}</label>
-                    </div>
-                    <div className="col-md-4">
-                        <input type="text" className="form-control " id={filter["name"]} 
-                        onChange={this.props.onParamChange} 
-                        defaultValue={getValue} />
-                    </div>
-                </div>}
-            </div>
-        )
-
-    }
-
 
     getTextBox(filter) {
+        let getValue = []
+         
+        for (let i in this.state.filter) {
+            // console.log("%%%%%%%%", this.state.filter[i].value)
+            getValue.push(this.state.filter[i].value)
+        }
+        count++;
+    //    console.log(getValue[0],"^^^^^^^^^^^")
         return (
-           
             <div className="row">
-             {this.state.filter &&
-                <div className="form-group col-md-12">
-                    <div className="col-md-4">
-                        <label className="control-label" style={{ textAlign: 'center', padding: '15px' }}>{utils.getLabelByID(filter["name"])}</label>
-                    </div>
-                    <div className="col-md-4">
-                        <input type="text" className="form-control " id={filter["name"]} 
-                        onChange={this.props.onParamChange} 
-                        />
-                    </div>
-                </div>}
+                {this.state.filter &&  
+                    <div className="form-group col-md-12">
+                        <div className="col-md-4">
+                            <label className="control-label" style={{ textAlign: 'center', padding: '15px' }}>{utils.getLabelByID(filter["name"])}</label>
+                        </div>
+                        <div className="col-md-4">
+                            <input type="text" className="form-control"
+                                id={filter["name"]}
+                                onChange={this.props.onParamChange}
+                                defaultValue={getValue[count]}
+                                disabled={this.props.isEnabled == false} />
+                        </div>
+                    </div>}
             </div>
         )
 
@@ -124,8 +114,12 @@ class paramFilter extends React.Component {
     generateFilters(filter) {
         if (filter === undefined)
             return "";
+        if (!this.props.isEnabled) {
+            // console.log("trueee")
+            return this.getTextBox(filter);
+        }
 
-        if (filter["type"] === "textbox")
+        else if (filter["type"] === "textbox")
             return this.getTextBox(filter);
 
         else if (filter["type"] === "multipleSelectionList")
@@ -137,7 +131,8 @@ class paramFilter extends React.Component {
         else if (filter["type"] === "datetime")
             return this.getDateFilter(filter)
 
-        return this.getTextBoxOnEdit(filter);
+        else
+            return (<div></div>)
 
     }
 
@@ -161,9 +156,9 @@ class paramFilter extends React.Component {
     }
 
     render() {
-        {console.log("{{{{{{{{{}",this.state.filter[6],"{{{{{",this.state.filter[7])}
+        // {console.log("{{{{{{{{{}",this.state.filter[6],"{{{{{",this.state.filter[7])}
         return (
-            
+
             <div className="form-body" id="filterForm" key="filterForm">
                 {this.state.error &&
                     <div className="alert alert-danger" style={{ textAlign: "center" }}>
