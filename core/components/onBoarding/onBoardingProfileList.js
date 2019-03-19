@@ -105,13 +105,13 @@ class onBoardingProfileList extends React.Component {
 
         return (
             <div>
-                <Portlet title={utils.getLabelByID("OnBoarding Search")}>
+                {/* <Portlet title={utils.getLabelByID("OnBoarding Search")}> */}
                     <div className="row">
                         <div className="col-md-12 ">
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
                                     <div className="caption">
-                                        <span className="caption-subject">{utils.getLabelByID("ApiListDataFilters")}</span></div>
+                                        <span className="caption-subject">{utils.getLabelByID("OnBoarding Search")}</span></div>
                                     <div className="tools">
                                         <a href="javascript:;" className="collapse" data-original-title title> </a>
                                     </div>
@@ -167,7 +167,8 @@ class onBoardingProfileList extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <Portlet title={""} isPermissioned={true}
+                    <Portlet title={""} isPermissioned={true} 
+                    title={utils.getLabelByID("OnBoarding List")}
                         // actions={this.state.addAction}
                         >
                         {
@@ -196,7 +197,7 @@ class onBoardingProfileList extends React.Component {
                             activePage={this.state.currentPageNo}
                         />
                     </Portlet>
-                </Portlet>
+                {/* </Portlet> */}
             </div>
         );
     }
