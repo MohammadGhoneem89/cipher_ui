@@ -4,21 +4,21 @@ import * as constants from '../../constants/Communication.js';
 import DateControl from '../../common/DateControl.jsx'
 import * as dates from '../../common/dates.js';
 let count = -1;
-
+let getValue = ""
 class paramFilter extends React.Component {
 
     constructor(props, context) {
 
         super(props, context);
-        console.log(props, "###############")
+        // console.log(props, "###############")
         if (props.params) {
-            console.log(props.params, "000000")
+            // console.log(props.params, "000000")
             this.state = {
-                filter: props.params
+                filter: props.params,
+               
             };
         }
-        // this.getValue = [];
-        // this.state.filter = props.params;
+ 
         this.generateFilters = this.generateFilters.bind(this);
     }
 
@@ -27,21 +27,14 @@ class paramFilter extends React.Component {
     }
 
     componentWillMount() {
-
     }
 
     getTextBox(filter) {
-        let getValue = []
-         
-        for (let i in this.state.filter) {
-            // console.log("%%%%%%%%", this.state.filter[i].value)
-            getValue.push(this.state.filter[i].value)
-        }
-        count++;
-    //    console.log(getValue[0],"^^^^^^^^^^^")
+    
         return (
             <div className="row">
-                {this.state.filter &&  
+                {this.state.filter &&
+                    // this.state.filter.map((filter,index)=>
                     <div className="form-group col-md-12">
                         <div className="col-md-4">
                             <label className="control-label" style={{ textAlign: 'center', padding: '15px' }}>{utils.getLabelByID(filter["name"])}</label>
@@ -50,10 +43,12 @@ class paramFilter extends React.Component {
                             <input type="text" className="form-control"
                                 id={filter["name"]}
                                 onChange={this.props.onParamChange}
-                                defaultValue={getValue[count]}
+                                defaultValue={filter.value}
                                 disabled={this.props.isEnabled == false} />
                         </div>
-                    </div>}
+                    </div>
+                    // )
+                }
             </div>
         )
 
@@ -114,12 +109,7 @@ class paramFilter extends React.Component {
     generateFilters(filter) {
         if (filter === undefined)
             return "";
-        if (!this.props.isEnabled) {
-            // console.log("trueee")
-            return this.getTextBox(filter);
-        }
-
-        else if (filter["type"] === "textbox")
+        else if (filter["type"] === "textbox" || !this.props.isEnabled)
             return this.getTextBox(filter);
 
         else if (filter["type"] === "multipleSelectionList")
@@ -156,7 +146,6 @@ class paramFilter extends React.Component {
     }
 
     render() {
-        // {console.log("{{{{{{{{{}",this.state.filter[6],"{{{{{",this.state.filter[7])}
         return (
 
             <div className="form-body" id="filterForm" key="filterForm">
@@ -164,6 +153,7 @@ class paramFilter extends React.Component {
                     <div className="alert alert-danger" style={{ textAlign: "center" }}>
                         <strong>Error!</strong> {this.state.error} </div>}
                 <div className="row">
+                {/* {console.log(this.state.filter[0],"-----------------------------------------")} */}
                     {this.generateFilters(this.state.filter[0])}
                     {this.generateFilters(this.state.filter[1])}
                 </div>

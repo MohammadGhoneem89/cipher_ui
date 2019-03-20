@@ -21,6 +21,8 @@ class onBoardingProfileSetup extends React.Component {
         };
     }
     componentWillMount() {
+        console.log(this.props.id,"@@@@@@@@@@@@222")
+        console.log(!_.isEmpty(this.props.id),"~~~~~~")
         if (!_.isEmpty(this.props.id)) {
             this.getDetailData();
         }
