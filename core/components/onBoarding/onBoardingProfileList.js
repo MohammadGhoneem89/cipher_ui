@@ -20,27 +20,27 @@ class onBoardingProfileList extends React.Component {
             currentPageNo: "",
             totalRecords: "",
             isLoading: true,
-            addAction: [
-                {
-                    "type": "pageAction",
-                    "label": "ADD",
-                    "labelName": "COM_AB_Add",
-                    "actionType": "PORTLET_LINK",
-                    "iconName": "fa fa-plus",
-                    "URI":
-                        "/onBoardingProfile/setup"
-                }
-            ],
+            // addAction: [
+            //     {
+            //         "type": "pageAction",
+            //         "label": "ADD",
+            //         "labelName": "COM_AB_Add",
+            //         "actionType": "PORTLET_LINK",
+            //         "iconName": "fa fa-plus",
+            //         "URI":
+            //             "/onBoardingProfile/setup"
+            //     }
+            // ],
             gridData: []
         };
-        this.name = '';
-        this.status = '';
+        this.getRequest = this.getRequest.bind(this);
+        this.formSubmit = this.formSubmit.bind(this);
     }
 
-    getRequest = () => {
-        let Name = this.name.value;
-        let Status = this.status.value;
-
+    getRequest(){
+        let Name = document.getElementById('name') == null ? "" : document.getElementById('name').value;
+        let Status = document.getElementById('Status') == null ? "" : document.getElementById('Status').value;
+        // console.log("<<<<<<<<getrequest", this.state.name, "   ", this.state.statusValue)
         let searchCriteria = {};
 
         if (Name !== "") {
@@ -59,17 +59,17 @@ class onBoardingProfileList extends React.Component {
                 "totalRecords": this.state.totalRecords || 0
             }
         };
-        this.props.actions.generalProcess(constants.getOnBoardingList, request);
+        return request;
     }
 
     componentWillMount() {
-        this.getRequest();
+        // this.getRequest();
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.list && nextProps.pageData && nextProps.typeData) {
 
-            console.log("*******", nextProps.list, "*********")
+            //console.log("*******", nextProps.list, "*********")
             this.setState({
                 status: nextProps.typeData.onBoardingStatus,
                 gridData: nextProps.list,
@@ -81,6 +81,7 @@ class onBoardingProfileList extends React.Component {
     }
 
     componentDidMount() {
+        this.props.actions.generalProcess(constants.getOnBoardingList,this.getRequest());
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['onBoardingStatus']));
         window.scrollTo(0, 0);
     }
@@ -94,7 +95,9 @@ class onBoardingProfileList extends React.Component {
         }
     }
 
-
+    formSubmit() {
+        this.props.actions.generalProcess(constants.getOnBoardingList,this.getRequest());
+    }
     render() {
         if (this.state.isLoading) {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
@@ -102,13 +105,13 @@ class onBoardingProfileList extends React.Component {
 
         return (
             <div>
-                <Portlet title={utils.getLabelByID("OnBoarding Search")}>
+                {/* <Portlet title={utils.getLabelByID("OnBoarding Search")}> */}
                     <div className="row">
                         <div className="col-md-12 ">
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
                                     <div className="caption">
-                                        <span className="caption-subject">{utils.getLabelByID("ApiListDataFilters")}</span></div>
+                                        <span className="caption-subject">{utils.getLabelByID("OnBoarding Search")}</span></div>
                                     <div className="tools">
                                         <a href="javascript:;" className="collapse" data-original-title title> </a>
                                     </div>
@@ -124,7 +127,8 @@ class onBoardingProfileList extends React.Component {
                                                             <label className="control-label">{utils.getLabelByID("Name")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="name" id="name" />
+                                                            <input type="text" className="form-control" name="name" id="name"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6">
@@ -133,10 +137,10 @@ class onBoardingProfileList extends React.Component {
                                                         </div>
                                                         <div className="form-group col-md-8">
                                                             <select name="Status" id="Status" className="form-control">
-                                                                <option key="-1" value=''>{utils.getLabelByID("RA_Select")} </option>
+                                                                <option key="-1" value='' >{utils.getLabelByID("RA_Select")} </option>
                                                                 {this.state.status.map((option, index) => {
                                                                     return (
-                                                                        <option key={index} value={option.value}>{option.label}</option>
+                                                                        <option key={index} value={option.value} >{option.label}</option>
                                                                     );
                                                                 })}
                                                             </select>
@@ -149,7 +153,7 @@ class onBoardingProfileList extends React.Component {
                                                     <div className="form-group col-md-12">
                                                         <div className="btn-toolbar pull-right">
 
-                                                            <button type="submit" className="btn green" >{utils.getLabelByID("Search")} </button>
+                                                            <button type="submit" className="btn green" onClick={this.formSubmit} >{utils.getLabelByID("Search")} </button>
                                                             {"  "}
                                                             <button type="button" className="btn default" >{utils.getLabelByID("Clear")}</button>
 
@@ -163,12 +167,15 @@ class onBoardingProfileList extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <Portlet title={""} isPermissioned={true} actions={this.state.addAction}>
+                    <Portlet title={""} isPermissioned={true} 
+                    title={utils.getLabelByID("OnBoarding List")}
+                        // actions={this.state.addAction}
+                        >
                         {
                             this.state.gridData.map((obj) => {
                                 obj.action = [
                                     {
-                                        "label": "Edit",
+                                        "label": "View",
                                         "URI": [
                                             "/onBoardingProfile/setup/"
                                         ],
@@ -186,17 +193,18 @@ class onBoardingProfileList extends React.Component {
                             pageSize={10}
                             pageChanged={this.pageChanged}
                             pagination={true}
+                            search={true}
                             activePage={this.state.currentPageNo}
                         />
                     </Portlet>
-                </Portlet>
+                {/* </Portlet> */}
             </div>
         );
     }
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log("$$$$$", state.app.getOnBoardingList.data.searchResult, "$$$$$")
+    //console.log("$$$$$", state.app.getOnBoardingList.data.searchResult, "$$$$$")
     return {
         list: state.app.getOnBoardingList.data.searchResult,
         pageData: state.app.getOnBoardingList.pageData,
@@ -208,5 +216,5 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-onBoardingProfileList.displayName = "OnBoarding Profile List";
+onBoardingProfileList.displayName = "OnBoarding Generator List";
 export default connect(mapStateToProps, mapDispatchToProps)(onBoardingProfileList);
