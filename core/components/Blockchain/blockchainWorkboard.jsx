@@ -175,23 +175,58 @@ class blockchainWorkboard extends React.Component {
 
           <div className="row">
             <div className="col-md-12 ">
-              <div className="daterange_con">
-                <div className="center-block dashdate">
+                   
+              
+              
+              
+              
+              
+              
+              <div className="daterange_con" >
+                <div className="center-block dashdate" style={{ padding: "12px 20px" }}>
+
                   <div className="row">
                     <div className="col-md-12 ">
-                      <div className="col-md-2">
-                        <img src="/assets/Resources/quorum.png" style={{ height: "42px" }} />
+                      <div className="col-md-6">
+                        <ul className="daterange_con_tabs">
+                        <li className="tab_active">
+                            <a href="javascript:" onClick={this.navigateQuor}>
+                              <img src="/assets/Resources/quorum.png"  alt="quorum" border="0" className="tablogo" />
+                            </a>
+                          </li>
+                        <li className="tab_notactive">
+                            <a href="javascript:">
+                              <img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png"  onClick={this.navigateHyper} className="tablogo" />
+                            </a>
+                          </li>
+                                                   
+                          <li className="tab_notactive"><a href="javascript:" onClick={this.navigateEthr}>
+                            <img src="/assets/Resources/ether-white.png" alt="ether-white" border="0" className="tablogo" />
+                          </a>
+                          </li>
+                          <li className="tab_dropdownnav"><div className="dropdown dropdown_tab">
+                            <i className="fa fa-bars" style={{ fontSize: "28px", color: "#fff" }}></i>
+                            <div className="dropdown-content">
+                              <a href="javascript:">Corda</a>
+                            </div>
+                          </div>
+                          </li>
+                        </ul>
+                      </div>
+                      {/* <div className="col-md-2">
+                        <img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png" style={{ height: "40px" }} />
                       </div>
                       <div className="col-md-1">
-                        <a href="javascript:" onClick={this.navigateHyper}><img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png" style={{ height: "40px" }} /></a>
+                        <a href="javascript:" onClick={this.navigateQuor}><img src="/assets/Resources/quorum.png" style={{ height: "42px" }} /></a>
                       </div>
                       <div className="col-md-1">
-                        <a href="javascript:" onClick={this.navigateEthr}><img src="/assets/Resources/ether_white.png" style={{ height: "40px", marginLeft:"5px" }} /></a>
-                      </div>
-                      <div className="col-md-8">
+                        <a href="javascript:" onClick={this.navigateEthr}><img src="/assets/Resources/ether_white.png" style={{ height: "40px" }} /></a>
+
+                      </div> */}
+                      <div className="col-md-6">
                         <div className="input-group input-large">
                           <div className="input-group input-large" >
-                            <select id="network" name="Network" className="form-control" onChange={this.projectChanged}>
+                            <select id="network" name="Network" className="form-control" onChange={this.projectChanged} style={{width: "350px", marginTop: "8px"}}>
                               {
                                 this.state.channelTypeList.map((option, index) => {
                                   return (
@@ -199,14 +234,26 @@ class blockchainWorkboard extends React.Component {
                                   );
                                 })
                               }
+                              {/* <option value="1">quorum-general</option> */}
+                              {/*<option value={""}>Stellar</option>*/}
+                              {/*<option value={""}>Ripple</option>*/}
+                              {/*<option value={""}>Corda R3</option>*/}
+                              {/*<option value={""}>Iroha</option>*/}
+                              {/*<option value={""}>Sawtooth Lake</option>*/}
                             </select>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
+
                 </div>
               </div>
+
+
+
+
               <div className="row">
 
                 <TileUnit data={this.props.blockchainWorkboardData.dashboardTiles} />
