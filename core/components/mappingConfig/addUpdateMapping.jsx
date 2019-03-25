@@ -27,7 +27,9 @@ const stateParent = {
     mappingConfig: [],
     functionData: undefined,
     transformationConfig: [],
-    typeData: undefined
+    typeData: undefined,
+    complexTypes: [],
+    localState: undefined
 }
 
 class AddUpdateMapping extends React.Component {
@@ -42,6 +44,8 @@ class AddUpdateMapping extends React.Component {
         this.onChangeDesc = this.onChangeDesc.bind(this);
         this.onMappingTypeChange = this.onMappingTypeChange.bind(this);
         this.addRow = this.addRow.bind(this);
+        this.onChangeEventName = this.onChangeEventName.bind(this);
+
     }
     renderPopupBody(dataID) {
         this.setState({ APIPayloadID: dataID })
@@ -51,6 +55,11 @@ class AddUpdateMapping extends React.Component {
     }
     onMappingTypeChange = e => {
         this.setState({ mappingType: e.target.value });
+    }
+    onChangeEventName = e => {
+        let ls = this.state.localState;
+        _.set(ls, e.target.name, e.target.value)
+        this.setState({ localState: ls });
     }
 
     onUseCaseChange = e => {
@@ -73,7 +82,11 @@ class AddUpdateMapping extends React.Component {
                 functionData: nextProps.FunctionData
             });
         }
-
+        if (nextProps.ComplexTypes) {
+            this.setState({
+                complexTypes: nextProps.ComplexTypes.ComplexList
+            });
+        }
 
         if (nextProps.typeData) {
             this.setState({
@@ -104,7 +117,7 @@ class AddUpdateMapping extends React.Component {
                     return item;
                 });
                 this.setState({
-                    transformationConfig:transformationConfig ||[],
+                    transformationConfig: transformationConfig || [],
                     mappingConfig: mappingList,
                     useCase: nextProps.AddUpdateMappingData.MappingConfig.useCase,
                     mappingName: nextProps.AddUpdateMappingData.MappingConfig.mappingName,
@@ -120,7 +133,7 @@ class AddUpdateMapping extends React.Component {
                 mappingType: undefined,
                 description: "",
                 mappingConfig: [],
-                transformationConfig:[]
+                transformationConfig: []
             })
         }
 
@@ -147,6 +160,9 @@ class AddUpdateMapping extends React.Component {
                     document.getElementById('IN_FIELDFUNCTION').value = a.IN_FIELDFUNCTION;
                     document.getElementById('IN_FIELDVALIDATION').value = a.IN_FIELDVALIDATION;
                     document.getElementById('IN_FIELDDESCRIPTION').value = a.IN_FIELDDESCRIPTION;
+                    document.getElementById('IN_FIELDCOMPLEXTYPEDATA').value = a.IN_FIELDCOMPLEXTYPEDATA;
+                    document.getElementById('MAP_FIELDCOMPLEXTYPEDATA').value = a.MAP_FIELDCOMPLEXTYPEDATA;
+
                     document.getElementById('MAP_FIELD').value = a.MAP_FIELD;
                     document.getElementById('MAP_FIELDDT').value = a.MAP_FIELDDT;
                     document.getElementById('Sequence').value = a.Sequence;
@@ -207,6 +223,8 @@ class AddUpdateMapping extends React.Component {
                     document.getElementById('TRAN_FIELD').value = a.TRAN_FIELD;
                     document.getElementById('TRG_FIELD').value = a.TRG_FIELD;
                     document.getElementById('TRG_FIELDVALUE').value = a.TRG_FIELDVALUE;
+                    document.getElementById('IN_FIELDCOMPLEXTYPEDATA').value = a.IN_FIELDCOMPLEXTYPEDATA;
+                    document.getElementById('MAP_FIELDCOMPLEXTYPEDATA').value = a.MAP_FIELDCOMPLEXTYPEDATA;
                     let tempState = this.state.transformationConfig;
                     tempState.splice(index, 1);
                     this.setState({ transformationConfig: tempState });
@@ -232,8 +250,10 @@ class AddUpdateMapping extends React.Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         this.setState(cloneDeep(stateParent))
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DFM_FROMATTYPE', 'DFM_DATATYPE', 'DFM_REQFIELDTYPE', 'DFM_RESFIELDTYPE', 'USE_CASE','TRAN_RESFIELDTYPE','UseCase']));
+
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['DFM_FROMATTYPE', 'DFM_DATATYPE', 'DFM_REQFIELDTYPE', 'DFM_RESFIELDTYPE', 'USE_CASE', 'TRAN_RESFIELDTYPE', 'UseCase']));
         this.props.actions.generalProcess(constants.getFunctionData, {});
+        this.props.actions.generalProcess(constants.getComplexServiceList, {});
         this.props.actions.generalProcess(constants.getMappingConfigByID, this.getRequest());
 
     }
@@ -285,7 +305,6 @@ class AddUpdateMapping extends React.Component {
         let TRAN_FIELDTYPEDATA = document.getElementById('TRAN_FIELDTYPEDATA') == null ? "" : document.getElementById('TRAN_FIELDTYPEDATA').value;
         let TRAN_FIELDTYPE = document.getElementById('TRAN_FIELDTYPE') == null ? "" : document.getElementById('TRAN_FIELDTYPE').value;
         let TRAN_FIELD = document.getElementById('TRAN_FIELD') == null ? "" : document.getElementById('TRAN_FIELD').value;
-
         let TRG_FIELD = document.getElementById('TRG_FIELD') == null ? "" : document.getElementById('TRG_FIELD').value;
         let TRG_FIELDVALUE = document.getElementById('TRG_FIELDVALUE') == null ? "" : document.getElementById('TRG_FIELDVALUE').value;
         if (TRAN_FIELD.trim() == "") {
@@ -326,7 +345,10 @@ class AddUpdateMapping extends React.Component {
         let IN_FIELDDESCRIPTION = document.getElementById('IN_FIELDDESCRIPTION') == null ? "" : document.getElementById('IN_FIELDDESCRIPTION').value;
         let MAP_FIELD = document.getElementById('MAP_FIELD') == null ? "" : document.getElementById('MAP_FIELD').value;
         let MAP_FIELDDT = document.getElementById('MAP_FIELDDT') == null ? "" : document.getElementById('MAP_FIELDDT').value;
-        let IN_FIELDTYPEDATA = document.getElementById('MAP_FIELDDT') == null ? "" : document.getElementById('IN_FIELDTYPEDATA').value;
+        let IN_FIELDTYPEDATA = document.getElementById('IN_FIELDTYPEDATA') == null ? "" : document.getElementById('IN_FIELDTYPEDATA').value;
+        let IN_FIELDCOMPLEXTYPEDATA = document.getElementById('IN_FIELDCOMPLEXTYPEDATA') == null ? "" : document.getElementById('IN_FIELDCOMPLEXTYPEDATA').value;
+        let MAP_FIELDCOMPLEXTYPEDATA = document.getElementById('MAP_FIELDCOMPLEXTYPEDATA') == null ? "" : document.getElementById('MAP_FIELDCOMPLEXTYPEDATA').value;
+
         let Sequence = document.getElementById('Sequence') == null ? 9999 : parseInt(document.getElementById('Sequence').value) || this.state.mappingConfig.length + 1;;
 
 
@@ -347,6 +369,8 @@ class AddUpdateMapping extends React.Component {
             "IN_FIELDFUNCTION": IN_FIELDFUNCTION,
             "IN_FIELDVALIDATION": IN_FIELDVALIDATION,
             "IN_FIELDDESCRIPTION": IN_FIELDDESCRIPTION,
+            "IN_FIELDCOMPLEXTYPEDATA": IN_FIELDCOMPLEXTYPEDATA,
+            "MAP_FIELDCOMPLEXTYPEDATA": MAP_FIELDCOMPLEXTYPEDATA,
             "IN_ISREQUIRED": IN_ISREQUIRED ? "Y" : "N",
             "MAP_FIELD": MAP_FIELD,
             "MAP_FIELDDT": MAP_FIELDDT,
@@ -577,7 +601,24 @@ class AddUpdateMapping extends React.Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="row">
+                                                <div className="row" style={{ display: $('#IN_FIELDDT').val() == 'object' || $('#IN_FIELDDT').val() == 'array' ? 'block' : 'none' }}>
+                                                    <div className="col-md-12">
+                                                        <div className="form-group col-md-4">
+                                                            <label className="control-label">{utils.getLabelByID("MAU_ComplexTypeData")}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-8">
+                                                            <select id="IN_FIELDCOMPLEXTYPEDATA" name="IN_FIELDCOMPLEXTYPEDATA" onChange={this.onChangeEventName} className="form-control" >
+                                                                <option value="">--Select--</option>
+                                                                {this.state.complexTypes && this.state.complexTypes.map((option, index) => {
+                                                                    return (
+                                                                        <option key={index} value={option.value}>{option.label}</option>
+                                                                    );
+                                                                })}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="row" style={{ display: $('#IN_FIELDDT').val() == 'object' || $('#IN_FIELDDT').val() == 'array' ? 'none' : 'block' }}>
                                                     <div className="col-md-12">
                                                         <div className="form-group col-md-4">
                                                             <label className="control-label">{utils.getLabelByID("MAU_TypeData")}</label>
@@ -698,7 +739,23 @@ class AddUpdateMapping extends React.Component {
                                                         </div>
                                                     </div>
                                                 </div>
-
+                                                <div className="row" style={{ display: $('#MAP_FIELDDT').val() == 'object' || $('#MAP_FIELDDT').val() == 'array' ? 'block' : 'none' }}>
+                                                    <div className="col-md-12">
+                                                        <div className="form-group col-md-4">
+                                                            <label className="control-label">{utils.getLabelByID("MAU_ComplexTypeData")}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-8">
+                                                            <select id="MAP_FIELDCOMPLEXTYPEDATA" name="MAP_FIELDCOMPLEXTYPEDATA" onChange={this.onChangeEventName} className="form-control" >
+                                                                <option value="">--Select--</option>
+                                                                {this.state.complexTypes && this.state.complexTypes.map((option, index) => {
+                                                                    return (
+                                                                        <option key={index} value={option.value}>{option.label}</option>
+                                                                    );
+                                                                })}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                             </div>
 
@@ -864,15 +921,15 @@ class AddUpdateMapping extends React.Component {
                                                     </div>
 
                                                 </div>
-                                                
-                                                    <div className="form-actions right">
-                                                        <div className="form-group col-md-12">
-                                                            <div className="btn-toolbar pull-right">
-                                                                <button type="submit" className="btn btn-default" onClick={this.addRowTransformation.bind(this)}> <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Transformations")} </button>
-                                                            </div>
+
+                                                <div className="form-actions right">
+                                                    <div className="form-group col-md-12">
+                                                        <div className="btn-toolbar pull-right">
+                                                            <button type="submit" className="btn btn-default" onClick={this.addRowTransformation.bind(this)}> <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Transformations")} </button>
                                                         </div>
                                                     </div>
-                                                
+                                                </div>
+
                                             </div>
                                             <div className="row">
                                                 <div className="col-md-12">
@@ -925,6 +982,7 @@ function mapStateToProps(state, ownProps) {
         AddUpdateMappingData: state.app.AddUpdateMapping.data,
         typeData: state.app.typeData.data,
         FunctionData: state.app.FunctionData.data,
+        ComplexTypes: state.app.ComplexListData.data,
         mappingName: ownProps.params.mappingName,
     };
 }

@@ -41,7 +41,7 @@ class EndPointDefination extends React.Component {
 
     this.requestTypes = [{ label: 'SOAP', value: 'soap' }, { label: 'REST', value: 'rest' }];
     this.authTypes = [{ label: 'Bearer Token', value: 'bearer' }, { label: 'No Auth', value: 'noAuth' }, { label: 'Basic Auth', value: 'basicAuth' }, { label: 'Pass Cred', value: 'passCredHeaderBody' }];
-    this.headerTypes = [{ label: 'Fixed Value', value: 'FixedValue' }, { label: 'Datetime', value: 'Datetime' }, { label: 'Datetime Epoch', value: 'DatetimeEpoch' }, { label: 'UUID', value: 'UUID' }, { label: 'Dynamic Field (Events)', value: 'dynamicField' }, { label: 'Unique Reference', value: 'UUIDN' }];
+    this.headerTypes = [{ label: 'Fixed Value', value: 'FixedValue' }, { label: 'Datetime', value: 'Datetime' }, { label: 'Datetime Epoch', value: 'DatetimeEpoch' }, { label: 'UUID', value: 'UUID' }, { label: 'Dynamic Field (Events)', value: 'dynamicField' },{ label: 'Body Params', value: 'bodyParams' },{ label: 'Form Params', value: 'formParams' }, { label: 'Unique Reference', value: 'UUIDN' }];
     this.ActionHandlers = this.ActionHandlers.bind(this);
   }
 

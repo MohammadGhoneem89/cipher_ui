@@ -210,9 +210,7 @@ module.exports = {
   insertOnBoarding: baseUrl + '/API/UI/insertOnBoarding',
   updateOnBoarding: baseUrl + '/API/UI/updateOnBoarding',
   getOnBoardingDetail: baseUrl + '/API/UI/getOnBoardingDetail',
-
-
-
+  getComplexServiceList: baseUrl + '/API/core/getComplexServiceList',
   getParseFile: baseUrl + '/API/core/getImport',
   upsertAPIImport: baseUrl + '/API/core/upsertAPIImport'
 

@@ -5,10 +5,10 @@ export default {
   entityList: { action: "", data: { searchResult: [], typeData: { entityNames: [] } } },
   acquirerList: { action: "", data: { searchResult: [], typeData: { acquirerNames: [] } } },
   getEndpointListView: {},
-  getTemplatesListView:{},
-  ApiImport:{},
-  ElementList:{},
-  viewConsortium:{},
+  getTemplatesListView: {},
+  ApiImport: {},
+  ElementList: {},
+  viewConsortium: {},
   entityDetail: {
     action: "", data: {
       "entityName": "",
@@ -534,6 +534,7 @@ export default {
     action: "",
     data: {}
   },
+  ComplexListData: {},
   typeDataList: {},
   ...ApplicationsInitialSate
 }

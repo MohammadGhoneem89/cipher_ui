@@ -1078,5 +1078,6 @@ module.exports = {
   MAU_ExistingMapping:"Existing Mapping",
   ApiImport:"API Import",
   AddUpdateAPIImp:"Add / Update API import",
-  ConstellationId:"Constellation ID"
+  ConstellationId:"Constellation ID",
+  MAU_ComplexTypeData:"Complex Types"
 };

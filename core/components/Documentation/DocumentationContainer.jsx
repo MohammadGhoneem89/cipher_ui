@@ -21,14 +21,14 @@ const initialState = {
   enumList: {},
   request: undefined,
   response: undefined,
-  requestSample:undefined
+  requestSample: undefined
 };
 class Documentation extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = cloneDeep(initialState)
-    
+
     this.onLoadSample = this.onLoadSample.bind(this);
     this.onEdit = this.onEdit.bind(this);
     this.onRunApi = this.onRunApi.bind(this);
@@ -44,21 +44,21 @@ class Documentation extends React.Component {
     this.setState({ request: data.updated_src })
   }
   onLoadSample(uri, request) {
-    if(this.state.requestSample)
+    if (this.state.requestSample)
       this.setState({ request: this.state.requestSample });
     else
       alert("No Request Sample Found!");
   }
   onRunApi(uri, request) {
     axios.post(uri, request)
-    .then(res => {
-     
-      //return res;
-      this.setState({ response: res.data });
-      $(window).scrollTop($('#responseData').offset().top-300);
-    }).catch((ex)=>{
-      alert (ex.message);
-    });
+      .then(res => {
+
+        //return res;
+        this.setState({ response: res.data });
+        $(window).scrollTop($('#responseData').offset().top - 300);
+      }).catch((ex) => {
+        alert(ex.message);
+      });
   }
   onAdd(data) {
     this.setState({ request: data.updated_src })
@@ -83,7 +83,7 @@ class Documentation extends React.Component {
     }
     if (nextProps.RouteListData) {
       let routemap = nextProps.RouteListData;
-      let reqSample=undefined;
+      let reqSample = undefined;
       for (let useCase in routemap) {
         for (let route in routemap[useCase]) {
           let request = {}
@@ -92,12 +92,29 @@ class Documentation extends React.Component {
 
           if (routemap[useCase][route].isValBypass === false) {
             routemap[useCase][route].RequestMapping.forEach(element => {
-              _.set(request, element.IN_FIELD, `${element.IN_FIELDDT}`);
-              _.set(requestPG, element.IN_FIELD, `${element.IN_FIELDDT}`);
-
+              let id = element.IN_FIELDCOMPLEXTYPEDATA
+              let dt = element.IN_FIELDDT
+              // alert(id)
+              if (id) {
+                routemap[useCase][route].complexList.forEach((data) => {
+                  if (data._id == id)
+                    dt = `${dt}-${data.typeName}`
+                })
+              }
+              element.IN_FIELDDT = dt;
+              _.set(request, element.IN_FIELD, `${dt}`);
             });
             routemap[useCase][route].ResponseMapping.forEach(element => {
-              _.set(response, element.MAP_FIELD, `${element.MAP_FIELDDT}`);
+              let id = element.MAP_FIELDCOMPLEXTYPEDATA
+              let dt = element.MAP_FIELDDT
+              if (id) {
+                routemap[useCase][route].complexList.forEach((data) => {
+                  if (data._id == id)
+                    dt = `${dt}-${data.typeName}`
+                })
+              }
+              element.MAP_FIELDDT = dt;
+              _.set(response, element.MAP_FIELD, `${dt}`);
             });
           } else {
             routemap[useCase][route].ResponseMapping = [];
@@ -113,7 +130,7 @@ class Documentation extends React.Component {
 
         }
       }
-      this.setState({ requestSample:reqSample, RouteList: routemap })
+      this.setState({ requestSample: reqSample, RouteList: routemap })
     }
   }
 

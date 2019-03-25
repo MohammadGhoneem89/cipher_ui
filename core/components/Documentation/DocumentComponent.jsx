@@ -20,7 +20,6 @@ const DocumentComponent = ({ initialValues, useCase, route, request, response, b
                 </div>
                 <div className="col-md-12">
                   <p> <a className="btn green uppercase" href="javascript:;"
-
                     style={{
                       padding: "1px 12px",
                       fontSize: "12px"
@@ -40,11 +39,7 @@ const DocumentComponent = ({ initialValues, useCase, route, request, response, b
             </div>
           </div>
           <div className="col-md-12">
-
-
-
             <div className="row">
-
               <div className="col-md-12">
                 <div style={{
                   background: "linen",
@@ -58,41 +53,29 @@ const DocumentComponent = ({ initialValues, useCase, route, request, response, b
                       padding: "20px"
                     }}
                   >
-
-
                     <div className="btn-toolbar pull-right">
                       <a className="btn dark uppercase " onClick={onLoadSample} href="javascript:;"> Load Sample Request </a>
                       <a className="btn dark uppercase" onClick={onRunApi.bind(this, `${baseurl}/API/${useCase}/${route}`, request)} href="javascript:;"> Execute API </a>
-
                     </div>
                   </div>
                   <div className="col-md-12">
                     <h4 className="title caption-subject bold uppercase pull-left bold">Request</h4>
                   </div>
-
                   <div className="col-md-12">
-
                     <ReactJson indentWidth={2} name={false} theme="eighties" onEdit={onEdit} onAdd={onAdd} onDelete={onDelete} src={request} />
                   </div>
-
                   <hr />
-
                   <div className="col-md-12" style={{}}>
                     <h4 className="title caption-subject bold uppercase pull-left bold">Response </h4>
                   </div>
-
                   <div className="col-md-12" id="responseData" style={{ padding: "20px" }}>
-
                     <ReactJson indentWidth={2} name={false} theme="eighties" src={response} />
-
                   </div>
-
                 </div>
               </div>
             </div>
             <h3 className="pull-left bold">Sample Responses</h3>
             {initialValues.simucases && initialValues.simucases.map((option, index) => {
-
               return (
                 <div className="row">
                   <div className="col-md-12">
@@ -100,13 +83,10 @@ const DocumentComponent = ({ initialValues, useCase, route, request, response, b
                   </div>
                   <div className="col-md-12">
                     <pre> <ReactJson src={JSON.parse(option.SimulatorResponse)} /></pre>
-
                   </div>
                 </div>
               )
             })}
-
-
           </div>
           <div className="col-md-12">
             <h4 className="pull-left bold">Request Field Info</h4>
@@ -115,7 +95,6 @@ const DocumentComponent = ({ initialValues, useCase, route, request, response, b
             <Table fontclass="" gridColumns={utils.getGridColumnByName("APIDoc")} gridData={initialValues.RequestMapping}
               pagination={false} />
           </div>
-
           <div className="col-md-12">
             <h4 className="pull-left bold">Response Field Info</h4>
           </div>
@@ -123,10 +102,27 @@ const DocumentComponent = ({ initialValues, useCase, route, request, response, b
             <Table fontclass="" gridColumns={utils.getGridColumnByName("APIDocRes")} gridData={initialValues.ResponseMapping}
               pagination={false} />
           </div>
+          <div className="col-md-12">
+            <h4 className="pull-left bold">Structure Information</h4>
+
+          </div>
+          {initialValues.complexList.map((val, index) => {
+            return (
+              <div key={index}>
+                <ul>
+                  <li><b>{val.typeName}</b></li>
+                </ul>
+                <div className="col-md-12">
+                  <Table fontclass="" gridColumns={utils.getGridColumnByName("APIDoc")} gridData={val.attributes}
+                    pagination={false} />
+                </div>
+              </div>
+            )
+          })}
+
         </div>
       </div>
     </div>
-
   );
 }
 export default DocumentComponent;
