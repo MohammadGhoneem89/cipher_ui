@@ -18,9 +18,9 @@ class onBoardingProfileList extends React.Component {
             status: [],
             searchCriteria: {},
             pageData: {
-                pageSize :10,
-                currentPageNo: "",
-                totalRecords: 0
+                pageSize: 10,
+                currentPageNo: 1,
+                totalRecords:0
             },
             isLoading: true,
 
@@ -49,8 +49,8 @@ class onBoardingProfileList extends React.Component {
             "searchCriteria": searchCriteria,
             "pageData": {
                 "pageSize": 10,
-                "currentPageNo": this.state.currentPageNo || 1,
-                "totalRecords": this.state.totalRecords || 0
+                "currentPageNo": this.state.pageData.currentPageNo || 1,
+                "totalRecords": this.state.pageData.totalRecords || 0
             }
         };
         return request;
@@ -85,8 +85,8 @@ class onBoardingProfileList extends React.Component {
             let pageData = this.state.pageData;
             pageData.currentPageNo = pageNo;
             this.setState({ pageData:pageData });
-            console.log(pageData,"<=========pageData")
-            // this.props.actions.generalProcess(constants.getOnBoardingList, this.getRequest());
+            console.log(pageNo,"<=========pageData")
+         this.props.actions.generalProcess(constants.getOnBoardingList, this.getRequest());
         }
     }
 
@@ -189,6 +189,7 @@ class onBoardingProfileList extends React.Component {
                         pageChanged={this.pageChanged}
                         pagination={true}
                         search={true}
+                        searchCallBack={this.searchCallBack}
                         activePage={this.state.pageData.currentPageNo}
                     />
                 </Portlet>
