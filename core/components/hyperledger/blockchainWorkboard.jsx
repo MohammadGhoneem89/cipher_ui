@@ -129,7 +129,6 @@ class blockchainWorkboard extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.props.actions.generalProcess(constants.getChannelTypeList, { type: "Hyperledger" });
-
     // this.refreshScreen();
   }
   pageChanged(pageNo) {
@@ -144,8 +143,7 @@ class blockchainWorkboard extends React.Component {
       browserHistory.push('/blockchain');
     } else {
       browserHistory.push('/hyperledger/workboard');
-
-      let list = e.target.value.split('-')
+      let list = e.target.value.split('~')
       if (list && list.length && list.length == 2) {
         sessionStorage.selectedChannel = list[0]
         sessionStorage.selectedNetwork = list[1]

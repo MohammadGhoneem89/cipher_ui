@@ -66,7 +66,7 @@ class blockchainWorkboard extends React.Component {
     if (nextProps.ChannelTypeData.data.channels.length && nextProps.ChannelTypeData.data.channels.length > 0 && this.state.isLoading == true) {
       console.log(JSON.stringify(nextProps.ChannelTypeData.data.channels[0]))
 
-      let list = nextProps.ChannelTypeData.data.channels[0].label.split('-')
+      let list = nextProps.ChannelTypeData.data.channels[0].label.split('~')
       if (list && list.length && list.length == 2) {
         sessionStorage.selectedChannel = list[0]
         sessionStorage.selectedNetwork = list[1]
