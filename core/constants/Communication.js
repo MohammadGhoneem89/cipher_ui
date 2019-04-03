@@ -2,6 +2,7 @@ import backOffices from '../../applications/backOffices';
 import CommunicationIndex from '../../applications/constants/CommunicationIndex';
 
 let baseUrl = backOffices.baseUrl;
+let reportUrl = backOffices.reportUrl;
 let blockChainURL = backOffices.blockChainURL;
 let webSocketURL = backOffices.webSocketURL;
 let repostActionURL = backOffices.repostActionURL;
@@ -10,6 +11,7 @@ let blockChainViewerURL = backOffices.blockChainViewerURL;
 module.exports = {
   ...CommunicationIndex,
   baseUrl,
+  reportUrl,
   getPermission: baseUrl + "/API/UI/permission",
   getUserData: baseUrl + "/API/UI/user",
   getNotificationData: baseUrl + "/API/UI/notificationList",
@@ -204,7 +206,7 @@ module.exports = {
   getFieldsVault:baseUrl+ "/API/core/getElementList",
   generateConfig:baseUrl+ "/API/core/generateConfig",
   createDynamicStruct:baseUrl+"/API/core/createDynamicStruct",
-  getBlkUserList:baseUrl+"/API/core/getUserList", 
+  getBlkUserList:baseUrl+"/API/core/getUserList",
   getOnBoardingList: baseUrl + '/API/UI/getOnBoardingList',
   getOnBoardingProStructList: baseUrl + '/API/UI/getOnBoardingProStructList',
   insertOnBoarding: baseUrl + '/API/UI/insertOnBoarding',
