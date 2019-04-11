@@ -291,7 +291,7 @@ class EndPointDefination extends React.Component {
                 </div>
               </div>
               {!this.state.editMode && (<div>
-                <div className="row">
+                <div className="col-md-12">
                   <div className="form-group">
                     <div className="portlet-title" style={{ paddingBottom: "20px" }}>
                       <div>
@@ -302,7 +302,7 @@ class EndPointDefination extends React.Component {
                   </div>
                 </div>
 
-                <div className="row">
+                <div className="col-md-12">
                   <div className="form-group">
                     <div className="portlet-title" style={{ paddingBottom: "20px" }}>
                       <div>

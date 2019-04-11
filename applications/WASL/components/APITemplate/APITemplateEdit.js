@@ -12,17 +12,19 @@ import * as constants from '../../../../core/constants/Communication.js';
 import Portlet from '../../../../core/common/Portlet.jsx';
 import * as toaster from '../../../../core/common/toaster.js';
 import * as requestCreator from '../../../../core/common/request.js';
-
+let initialState = {
+    type: "",
+    isLoading: true,
+    modalIsOpen: false,
+    gridData: [],
+    typeData: [],
+    data: ""
+};
 class APITemplateEdit extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            isLoading: true,
-            modalIsOpen: false,
-            gridData: [],
-            typeData: []
-        };
+        this.state = _.cloneDeep(initialState)
     }
 
     componentDidMount() {
@@ -32,8 +34,10 @@ class APITemplateEdit extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!_.isEmpty(nextProps.findAPITemplateById)) {
-            if (_.get(nextProps, 'findAPITemplateById.type') == "ConfigYaml") {
+
+        if (!_.isEmpty(nextProps.findAPITemplateById) && this.props.routeParams.id !== 'create') {
+            let ctype = _.get(nextProps, 'findAPITemplateById.type');
+            if (ctype == "ConfigYaml" || ctype == "text") {
                 this.setState({
                     id: _.get(nextProps, 'findAPITemplateById._id', undefined),
                     type: _.get(nextProps, 'findAPITemplateById.type'),
@@ -55,6 +59,7 @@ class APITemplateEdit extends React.Component {
                 isLoading: false
             });
         }
+
     }
 
     getDataById = () => {
@@ -63,7 +68,11 @@ class APITemplateEdit extends React.Component {
             this.props.actions.generalProcess(constants.findAPITemplateById, this.props.routeParams);
         }
         else {
-            this.setState({ isLoading: false });
+            this.setState({
+                isLoading: false,
+                name: "",
+                data: ""
+            });
         }
     };
 
@@ -71,7 +80,7 @@ class APITemplateEdit extends React.Component {
         let valid = true;
         let data;
         try {
-            if (this.state.type == "ConfigYaml") {
+            if (this.state.type == "ConfigYaml" || this.state.type == "text") {
                 data = unescapejs(this.state.data)
             } else {
                 data = JSON.parse(this.state.data)
@@ -114,7 +123,6 @@ class APITemplateEdit extends React.Component {
         return (
             <div>
                 <Portlet title={''}>
-
                     <div className="row">
                         <div className="form-group col-md-12">
                             <div className="col-md-6">

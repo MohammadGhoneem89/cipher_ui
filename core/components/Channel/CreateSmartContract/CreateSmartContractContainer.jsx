@@ -47,7 +47,6 @@ class CreateSmartContract extends React.Component {
     this.onInputChannel = this.onInputChannel.bind(this);
     this.ActionHandlers = this.ActionHandlers.bind(this);
     this.back = this.back.bind(this);
-
     this.state = cloneDeep(initialState)
   }
   componentWillMount() { }
