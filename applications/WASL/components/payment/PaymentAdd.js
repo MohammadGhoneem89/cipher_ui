@@ -68,11 +68,13 @@ class PaymentAdd extends React.Component {
   };
 
   insertJson = () => {
+    let bankCode = $("#bankCode").val() == null ? "" : $("#bankCode").val();
     let name = $("#name").val() == null ? "" : $("#name").val();
     let code = $("#code").val() == null ? "" : $("#code").val();
 
     let json = {
       data: {
+        bankCode: bankCode,
         name: name,
         code: code,
         beneficiaryInfo: this.state.beneficiaries
@@ -90,6 +92,7 @@ class PaymentAdd extends React.Component {
 
   sendToBlockchain = () => {
     let body = {
+      bankCode: $("#bankCode").val() == null ? "" : $("#bankCode").val(),
       name: $("#name").val() == null ? "" : $("#name").val(),
       code: $("#code").val() == null ? "" : $("#code").val(),
       beneficiaryData: {}
@@ -147,6 +150,11 @@ class PaymentAdd extends React.Component {
 
             <div className="form-group col-md-12">
               <div className="col-md-4">
+                <label className="label-bold">{utils.getLabelByID("BankCode")}</label>
+                <input type="text" className="form-control ekycinp" name="bankCode" id="bankCode"
+                       defaultValue={_.get(this.state, 'paymentDetail.bankCode', '')}/>
+              </div>
+              <div className="col-md-4">
                 <label className="label-bold">{utils.getLabelByID("Name")}</label>
                 <input type="text" className="form-control ekycinp" name="name" id="name"
                        defaultValue={_.get(this.state, 'paymentDetail.name', '')}/>
@@ -159,38 +167,37 @@ class PaymentAdd extends React.Component {
             </div>
 
           </div>
+        </Portlet>
+        <Portlet title={"Beneficiary Info"} isPermissioned={false} actions={addAction}>
+          {this.state.beneficiaries.map(item => {
+            item.action = [{
+              label: "Delete",
+              iconName: "fa fa-trash",
+              actionType: "COMPONENT_FUNCTION"
+            }];
+          })}
+          <Table
+            gridColumns={utils.getGridColumnByName("paymentAdd")}
+            gridData={this.state.beneficiaries}
+            componentFunction={this.actionHandlers}
+          />
+        </Portlet>
 
-          <Portlet title={"Beneficiary Info"} isPermissioned={false} actions={addAction}>
-            {this.state.beneficiaries.map(item => {
-              item.action = [{
-                label: "Delete",
-                iconName: "fa fa-trash",
-                actionType: "COMPONENT_FUNCTION"
-              }];
-            })}
-            <Table
-              gridColumns={utils.getGridColumnByName("paymentAdd")}
-              gridData={this.state.beneficiaries}
-              componentFunction={this.actionHandlers}
-            />
-          </Portlet>
-
-          <div className="row">
-            <div className="col-md-12">
-              <div className="form-group col-md-12">
-                <div className="btn-toolbar pull-right">
-                  <button type="submit" className="btn green" onClick={this.sendToBlockchain}>
-                    {utils.getLabelByID("WASL_SEND_TO_BC")}
-                  </button>
-                  <button type="submit" className="btn green" onClick={this.insertJson}>
-                    {utils.getLabelByID("Save")}
-                  </button>
-                </div>
+        <div className="row">
+          <div className="col-md-12">
+            <div className="form-group col-md-12">
+              <div className="btn-toolbar pull-right">
+                <button type="submit" className="btn green" onClick={this.sendToBlockchain}>
+                  {utils.getLabelByID("WASL_SEND_TO_BC")}
+                </button>
+                <button type="submit" className="btn green" onClick={this.insertJson}>
+                  {utils.getLabelByID("Save")}
+                </button>
               </div>
             </div>
           </div>
+        </div>
 
-        </Portlet>
 
         <ModalBox isOpen={this.state.modalIsOpen}>
           <BeneficiaryInfo
