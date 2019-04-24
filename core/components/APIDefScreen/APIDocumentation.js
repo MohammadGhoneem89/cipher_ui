@@ -13,7 +13,6 @@ import APIDocExport from './APIDocExport.js';
 import * as toaster from '../../common/toaster.js';
 
 
-
 class APIDocumentation extends React.Component {
 
     constructor(props) {
