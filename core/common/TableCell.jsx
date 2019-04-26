@@ -162,6 +162,10 @@ class TableCell extends React.Component {
 
   }
 
+  renderDownload(name, url){
+    return (<a href={url} download>{name || "Download"}</a>);
+  }
+
 
   getMenuitem(index) {
     browserHistory.push(index);
@@ -306,6 +310,13 @@ class TableCell extends React.Component {
         return (
           <td className="text-center">
             {this.renderDownloadAttachement(cellData.name, cellData.UUID)}
+          </td>
+        );
+      case  "download":
+        cellData = this.props.cellData ? this.props.cellData : {};
+        return (
+          <td>
+            {this.renderDownload(cellData.label, cellData.url)}
           </td>
         );
       case "array":

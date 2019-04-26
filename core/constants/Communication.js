@@ -2,14 +2,18 @@ import backOffices from '../../applications/backOffices';
 import CommunicationIndex from '../../applications/constants/CommunicationIndex';
 
 let baseUrl = backOffices.baseUrl;
+let reportUrl = backOffices.reportUrl;
 let blockChainURL = backOffices.blockChainURL;
 let webSocketURL = backOffices.webSocketURL;
 let repostActionURL = backOffices.repostActionURL;
 let blockChainViewerURL = backOffices.blockChainViewerURL;
+let IPFS = backOffices.IPFS;
 
 module.exports = {
   ...CommunicationIndex,
   baseUrl,
+  reportUrl,
+  IPFS,
   getPermission: baseUrl + "/API/UI/permission",
   getUserData: baseUrl + "/API/UI/user",
   getNotificationData: baseUrl + "/API/UI/notificationList",
