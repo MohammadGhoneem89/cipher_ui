@@ -34,7 +34,7 @@ const backOffices = {
     webSocketURL: "http://localhost:9080",
     repostActionURL: "http://localhost:9080/API",
     blockChainViewerURL: "http://localhost:9080",
- reportUrl: "http://localhost:9088"
+ reportUrl: "http://localhost:9087"
  };
  
  export default backOffices;
