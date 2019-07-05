@@ -557,7 +557,7 @@ a:hover {
 }
 
 .page-header.navbar .page-logo {
-	background: url("logo-default.png");
+	background: url("../imgs/logo.png");
 	background-repeat: no-repeat;
 	margin-left: 1.8%;
 	width: 179px !important;
