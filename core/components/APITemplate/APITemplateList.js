@@ -2,12 +2,12 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as utils from '../../../../core/common/utils.js';
-import Table from '../../../../core/common/Datatable.jsx';
-import * as actions from '../../../../core/actions/generalAction';
-import * as constants from '../../../../core/constants/Communication.js';
-import Portlet from '../../../../core/common/Portlet.jsx';
-import ModalBox from '../../../../core/common/ModalBox.jsx';
+import * as utils from '../../common/utils.js';
+import Table from '../../common/Datatable.jsx';
+import * as actions from '../../actions/generalAction';
+import * as constants from '../../constants/Communication.js';
+import Portlet from '../../common/Portlet.jsx';
+import ModalBox from '../../common/ModalBox.jsx';
 import _ from 'lodash';
 import { browserHistory } from 'react-router';
 import APITemplateTest from './APITemplateTest'

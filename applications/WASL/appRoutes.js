@@ -15,9 +15,9 @@ import EjariReport from '../../applications/WASL/components/reports/ejariReport'
 import APIDefReport from '../../applications/WASL/components/reports/APIDefFullReport';
 
 //API Template Routes
-import APITemplateList from '../../applications/WASL/components/APITemplate/APITemplateList';
-import APITemplateEdit from '../../applications/WASL/components/APITemplate/APITemplateEdit';
-import APITemplateTest from '../../applications/WASL/components/APITemplate/APITemplateTest';
+import APITemplateList from '../../core/components/APITemplate/APITemplateList';
+import APITemplateEdit from '../../core/components/APITemplate/APITemplateEdit';
+import APITemplateTest from '../../core/components/APITemplate/APITemplateTest';
 
 //Document Routes
 import ViewDocument from '../../applications/WASL/components/documents/view';

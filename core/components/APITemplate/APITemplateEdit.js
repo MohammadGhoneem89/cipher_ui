@@ -6,12 +6,12 @@ import _ from 'lodash';
 import { browserHistory } from 'react-router';
 import unescapejs from 'unescape-js';
 
-import * as utils from '../../../../core/common/utils.js';
-import * as actions from '../../../../core/actions/generalAction';
-import * as constants from '../../../../core/constants/Communication.js';
-import Portlet from '../../../../core/common/Portlet.jsx';
-import * as toaster from '../../../../core/common/toaster.js';
-import * as requestCreator from '../../../../core/common/request.js';
+import * as utils from '../../common/utils.js';
+import * as actions from '../../actions/generalAction';
+import * as constants from '../../constants/Communication.js';
+import Portlet from '../../common/Portlet.jsx';
+import * as toaster from '../../common/toaster.js';
+import * as requestCreator from '../../common/request.js';
 
 class APITemplateEdit extends React.Component {
 
