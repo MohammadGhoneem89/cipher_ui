@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import _ from 'lodash';
 import {browserHistory} from 'react-router';
 import unescapejs from 'unescape-js';
-
+// import Steps from '../../../../core/common/Steps.jsx';
 import * as utils from '../../../../core/common/utils.js';
 import * as actions from '../../../../core/actions/generalAction';
 import * as constants from '../../../../core/constants/Communication.js';
@@ -35,6 +35,7 @@ class OrderDetailsContainer extends React.Component {
   }
 
   render() {
+    let orderDetails = this.props.orderDetails;
     if (this.state.isLoading)
       return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
     return (
@@ -42,11 +43,12 @@ class OrderDetailsContainer extends React.Component {
         <div className="row">
           <div className="col-md-12">
             <ul id="progressbar">
-              <li>Created</li>
-              <li>HAWB Created</li>
-              <li>Cleared</li>
-              <li className="active">Delivered</li>
+              {orderDetails.StatusList.map((item) => {
+                return <li className={item.status ? "active" : ""}>{item.label}</li>
+              })}
             </ul>
+
+
           </div>
         </div>
 
@@ -54,7 +56,7 @@ class OrderDetailsContainer extends React.Component {
           <div className="col-md-12">
             <div className="orderno">
               <img src="/assets/Resources/ordericon.png" width="18px"/><label className="bold">Order
-              #: <span>35484319</span></label>
+              #: <span>{orderDetails.orderID}</span></label>
             </div>
             <div className="hashno">
               <label className="bold">354843191535137876132161</label>
@@ -71,11 +73,12 @@ class OrderDetailsContainer extends React.Component {
                   <div>
                     <h4 className="bold">E-commerce</h4>
                   </div>
-                  <h4 className="bold">ABC</h4>
+                  <div><img src={orderDetails.eCommerceCompanyLogo} width="10%"/></div>
+                  <span className="bold">{orderDetails.eCommerceCompanyName}</span>
                 </div>
                 <div className="col-md-6 text-center">
                   <div><h4 className="bold">Courier Company</h4></div>
-                  <div><img src="/assets/Resources/dhl.png" width="10%"/></div>
+                  <div><img src={orderDetails.courierCompanyLogo} width="10%"/></div>
                 </div>
               </div>
             </div>
@@ -667,8 +670,9 @@ class OrderDetailsContainer extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  return {
 
+  return {
+    orderDetails: state.app.orderDetails
   };
 }
 
