@@ -154,10 +154,6 @@ a:hover {
 	border: 1px solid #293174;
 }
 
-.sdg_tbl thead tr th {
-	color: #666;
-}
-
 .page-sidebar .page-sidebar-menu>li>a,
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li>a {
 	border-bottom: 1px solid #40423e;
@@ -399,7 +395,7 @@ a:hover {
 }
 
 .sdg_tbl thead tr th {
-	color: #666;
+	color: #fff;
 }
 
 .page-sidebar .page-sidebar-menu>li>a,

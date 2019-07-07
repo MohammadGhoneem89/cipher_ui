@@ -1,7 +1,7 @@
-import SampleAppGridColumns from '../SampleApp/constants/appGridColumns';
 import WaslGridColumns from '../WASL/constants/appGridColumns';
+import CourierGridColumns from '../Courier/constants/appGridColumns';
 
 module.exports= {
-  ...SampleAppGridColumns,
-  ...WaslGridColumns
+  ...WaslGridColumns,
+  ...CourierGridColumns
 };
