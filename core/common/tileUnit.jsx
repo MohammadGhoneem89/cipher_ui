@@ -66,7 +66,7 @@ class TileUnit extends React.Component {
                     <a href="javascript:;" className={"dsh_blued" + (index + 1).toString()} key={index.toString()}
                        onClick={this.navigateToNext.bind(this, td.actionURI)}
                        style={{cursor: td.actionURI ? "" : "context-menu"}}>
-                        <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div className={`col-md-${this.props.col||"3"}`}>
                             <div className="dashboard-stat2 ">
                                 <div className="display">
                                     <div className="number">
