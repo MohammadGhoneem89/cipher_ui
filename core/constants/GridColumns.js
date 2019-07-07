@@ -871,7 +871,15 @@ module.exports = {
     {alias: "Status", key: "status", type: "string"},
     {alias: "useCase", key: "useCase", type: "string"},
     {alias: "Action", key: "action", type: "action"}
-]
+  ],
+  FTEMP_FilterRules: [
+    {alias: "", key: "_id", type: "hiddenID"},
+    {alias: "FTEMP_ruleType", key: "type", type: 'string'},
+    {alias: "FTEMP_customFunc", key: "status", type: "string"},
+    {alias: "FTEMP_attributeName", key: "useCase", type: "string"},
+    {alias: "FTEMP_attributeValue", key: "useCase", type: "string"},
+    {alias: "Action", key: "action", type: "action"}
+  ]
 };
 
 

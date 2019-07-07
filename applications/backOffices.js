@@ -9,12 +9,12 @@ const backOffices = {
 };
 */
 
-// const backOffices = {
-//   baseUrl: "https://avanza.ukwest.cloudapp.azure.com",
-//   webSocketURL: "https://avanza.ukwest.cloudapp.azure.com",
-//   repostActionURL: "https://avanza.ukwest.cloudapp.azure.com/API",
-//   blockChainViewerURL: "https://avanza.ukwest.cloudapp.azure.com"
-// };
+const backOffices = {
+  baseUrl: "https://avanza.ukwest.cloudapp.azure.com",
+  webSocketURL: "https://avanza.ukwest.cloudapp.azure.com",
+  repostActionURL: "https://avanza.ukwest.cloudapp.azure.com/API",
+  blockChainViewerURL: "https://avanza.ukwest.cloudapp.azure.com"
+};
 /*
  backOffices = {
   baseUrl: "http://blockchain.avanza.com:10055",
@@ -25,7 +25,7 @@ const backOffices = {
 };
 */
 
-
+/*
 const backOffices = {
     baseUrl: "http://localhost:9080",
     blockChainURL: "http://localhost:9080",
@@ -33,6 +33,6 @@ const backOffices = {
     repostActionURL: "http://localhost:9080/API",
     blockChainViewerURL: "http://localhost:9080"
 };
-
+*/
 
 export default backOffices;
