@@ -302,6 +302,7 @@ a:hover {
 
 .sdg_tbl thead tr th {
 	color: #fff;
+	background-color: #293174;
 }
 
 .page-sidebar .page-sidebar-menu>li>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li>a {
