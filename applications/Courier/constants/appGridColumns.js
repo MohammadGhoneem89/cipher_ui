@@ -39,5 +39,17 @@ module.exports = {
     { alias: "Status Qty", key: "statQuantity", type: "string" },
     { alias: "Net Weight", key: "netWeight", type: "string" },
     { alias: "Returned Cnt", key: "returnQty", type: "string" }
-  ]
+  ],
+  orderList: [
+    { alias: "Order #", key: "orderID", type: "string" },
+    { alias: "HAWB #", key: "hawbNumber", type: "string" },
+    { alias: "Order Date", key: "orderDate", type: "string" },
+    { alias: "Courier", key: "courierCompanyName", type: "string" },
+    { alias: "Ecommerce", key: "eCommerceCompanyName", type: "string" },
+    { alias: "ShipTo", key: "soldTo", type: "string" },
+    { alias: "Status", key: "orderStatus", type: "string" },
+    { alias: "Action", key: "actions", type: "action" },
+
+  ],
+
 };
