@@ -37,7 +37,7 @@ module.exports = {
     { alias: "Stats UOM", key: "statUOM", type: "string" },
     { alias: "Returned Qty", key: "returnQty", type: "string" },
     { alias: "Returned Status Qty", key: "returnStatQuantity", type: "string" },
-    { alias: "Original HAWB", key: "oldHAWBNo", type: "string" },
+    { alias: "Original HAWB", key: "oldHAWBNumber", type: "string" },
     { alias: "Export Declaration", key: "exportDeclarationNo", type: "string" },
     { alias: "New AWB", key: "newAWB", type: "string" },
     { alias: "Import Declaration", key: "importDeclarationNo", type: "string" },
