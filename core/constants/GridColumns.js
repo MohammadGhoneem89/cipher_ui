@@ -881,5 +881,3 @@ module.exports = {
     {alias: "Action", key: "action", type: "action"}
   ]
 };
-
-

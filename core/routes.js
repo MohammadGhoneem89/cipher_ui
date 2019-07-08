@@ -77,6 +77,10 @@ import ApiImport from './components/apiImport/apiImport.jsx';
 //onBoarding Routes
 import onBoardingProfileSetup from './components/onBoarding/onBoardingProfileSetup';
 import onBoardingProfileList from './components/onBoarding/onBoardingProfileList';
+import APITemplateList from "./components/APITemplate/APITemplateList";
+import APITemplateTest from "./components/APITemplate/APITemplateTest";
+import APITemplateEdit from "./components/APITemplate/APITemplateEdit";
+import ViewDocument from "../applications/WASL/components/documents/view";
 
 export default (
   <Router history={browserHistory}>
@@ -165,6 +169,10 @@ export default (
       <Route path="/onBoardingProfile" component={onBoardingProfileList} />
       <Route path="/endpoint" component={EndPointList} />
       <Route path="/endpoint/:id" component={EndPointDefination} />
+      <Route path="/apiTemplate" component={APITemplateList}/>
+      <Route path="/apiTemplate/:id" component={APITemplateEdit}/>
+      <Route path="/apiTemplate/test/:id" component={APITemplateTest}/>
+      <Route path="/document/view" component={ViewDocument}/>
       {ApplicationsRoute.routesIndex}
     </Route>
     <Route path="*" components={NotFound} />
