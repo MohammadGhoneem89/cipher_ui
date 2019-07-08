@@ -128,14 +128,15 @@ export default {
         "shippingDetails": {
           "MAWBNumber": "123456789",
           "flightNo": "EK606",
-          "portOfLoad": "DP world",
+          "portOfLoad": "DXB",
           "exitPort": "Karachi Port",
-          "cargoHandlerCode": "",
-          "brokerCode": "",
-          "brokerName": "",
-          "agentCode": "",
-          "agentName": "",
-          "flightDate": ""
+          "cargoHandlerCode": "DH522",
+          "cargoHandlerName": "DHL",
+          "brokerCode": "KI25",
+          "brokerName": "TCS",
+          "agentCode": "AC552",
+          "agentName": "Abdullah",
+          "flightDate": "10/10/2019"
         }
       }
     ],
@@ -144,16 +145,18 @@ export default {
         "declarationNo": "123456",
         "declarationID": "7954651311",
         "version": "4616165",
+        "flightNo": "EK606",
+        "error":"There is an Error",
         "exporterMirsal2Code": "16494",
-        "regimeType": "5346468",
-        "declType": "4616468",
+        "regimeType": "Export",
+        "declType": "Courier Export",
         "noOfPages": "55",
         "transportMode": "Ship",
         "invoiceNo": "252495",
         "status": "Delivered",
         "batchReqNo": "55582",
-        "batchStatus": "Done",
-        "exceptionCode": "616541",
+        "clearanceStatus": "Cleared",
+        "exceptionCode": "DHL",
         "exceptionDetails": "466464",
         "originalPayloadHash": "413614846416897496489"
       }

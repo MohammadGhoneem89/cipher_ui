@@ -272,55 +272,179 @@ class OrderDetailsContainer extends React.Component {
 
                 </div>
                 <div id="Shipping" className="tab-pane">
-                  <div className="form-group">
-                    {orderDetails.HAWB.map(item => {
-                      let fields = [];
-                      let keys = Object.keys(item.shippingDetails);
-                      keys.map(key => {
-                        console.log(item.shippingDetails, key);
-                        fields.push(
-                          <div className="row">
-                            <span>
-                        <div className="col-md-2">
-                          <label className="bold">{key}</label>
+                  {orderDetails.HAWB.map(item => {
+                    return <div>
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <label className="bold">MAWB #</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.shippingDetails.MAWBNumber}</label>
+                          </div>
                         </div>
-                        <div className="col-md-2">
-                          <label>{item.shippingDetails[key]}</label>
+                      </div>
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <label className="bold">Flight No</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.shippingDetails.flightNo}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">FlighT Date</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.shippingDetails.flightDate}</label>
+                          </div>
                         </div>
-                      </span>
-                          </div>);
-                      });
-                      return fields;
-                    })}
-                  </div>
-
+                      </div>
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <label className="bold">Port of Load</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.shippingDetails.portOfLoad}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Port of Exit</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.shippingDetails.exitPort}</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <label className="bold">Cargo Handler</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{`${item.shippingDetails.cargoHandlerName}[${item.shippingDetails.cargoHandlerCode}]`}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Broker</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{`${item.shippingDetails.brokerName}[${item.shippingDetails.brokerCode}]`}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Agent </label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{`${item.shippingDetails.agentName}[${item.shippingDetails.agentCode}]`}</label>
+                          </div>
+                        </div>
+                      </div>
+                        {orderDetails.HAWB>0 && <hr/>}
+                    </div>
+                  })}
 
                 </div>
                 <div id="ExportDeclaration" className="tab-pane">
-                  <div className="form-group">
-                    {orderDetails.ExportDeclaration.map(item => {
-                      let fields = [];
-                      let keys = Object.keys(item);
-                      keys.map(key => {
-                        fields.push(
-                          <div className="row">
-                            <span>
-                        <div className="col-md-2">
-                          <label className="bold">{key}</label>
+                  {orderDetails.ExportDeclaration.map(item => {
+                    return <div>
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <label className="bold">Declaration No</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.declarationNo}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Declaration Id</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.declarationID}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Version</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.version}</label>
+                          </div>
                         </div>
-                        <div className="col-md-2">
-                          <label>{item[key]}</label>
+                      </div>
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <label className="bold">Flight No</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.flightNo}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Batch Id</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.batchReqNo}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Clearnce status </label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.clearanceStatus}</label>
+                          </div>
                         </div>
-                      </span>
-                          </div>);
-                      });
-                      return fields;
-
-
-                    })}
-
-                  </div>
-
+                      </div>
+                        {item.error && <div className="alertbox">
+                        <label className="errorcolr">Error</label>
+                        <div className="errorbox">
+                          {item.error}
+                        </div>
+                      </div>}
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <label className="bold">Region Type</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.regimeType}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Declaration Type</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.declType}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Export Code Misal 2</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.exceptionCode}</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <label className="bold">Transport Mode</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.transportMode}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Invoice No</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.invoiceNo}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">No of pages</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{item.noOfPages}</label>
+                          </div>
+                        </div>
+                      </div>
+                      {orderDetails.ExportDeclaration.length>0 && <hr/>}
+                    </div>;
+                  })}
+                  <div className="linetext"><label className="bold">See line items in the order of declaration line
+                    items</label></div>
                 </div>
                 <div id="Delivered" className="tab-pane">
                   <div className="row">
@@ -368,24 +492,22 @@ class OrderDetailsContainer extends React.Component {
 
         </div>
 
-        <
-        /div>
-        );
+      </div>);
 
-        }
-        }
+  }
+}
 
-        function mapStateToProps(state, ownProps) {
+function mapStateToProps(state, ownProps) {
 
-        return {
-        orderDetails: state.app.orderDetails
-      };
-      }
+  return {
+    orderDetails: state.app.orderDetails
+  };
+}
 
-        function mapDispatchToProps(dispatch) {
-        return {actions: bindActionCreators(actions, dispatch)}
+function mapDispatchToProps(dispatch) {
+  return {actions: bindActionCreators(actions, dispatch)}
 
-      }
+}
 
-        OrderDetailsContainer.displayName = "Order Details";
-        export default connect(mapStateToProps, mapDispatchToProps)(OrderDetailsContainer);
+OrderDetailsContainer.displayName = "Order Details";
+export default connect(mapStateToProps, mapDispatchToProps)(OrderDetailsContainer);
