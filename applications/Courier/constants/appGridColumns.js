@@ -41,12 +41,12 @@ module.exports = {
     { alias: "Returned Cnt", key: "returnQty", type: "string" }
   ],
   orderList: [
-    { alias: "Order #", key: "orderID", type: "string" },
+    { alias: "Order #", key: "orderNumber", type: "string" },
     { alias: "HAWB #", key: "hawbNumber", type: "string" },
     { alias: "Order Date", key: "orderDate", type: "string" },
     { alias: "Courier", key: "courierCompanyName", type: "string" },
-    { alias: "Ecommerce", key: "eCommerceCompanyName", type: "string" },
-    { alias: "ShipTo", key: "soldTo", type: "string" },
+    { alias: "Ecommerce", key: "ecommerceCompanyName", type: "string" },
+    { alias: "ShipTo", key: "shipTo", type: "string" },
     { alias: "Status", key: "orderStatus", type: "string" },
     { alias: "Action", key: "actions", type: "action" },
 

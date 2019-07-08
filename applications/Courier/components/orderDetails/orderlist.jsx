@@ -84,19 +84,7 @@ class OrderList extends React.Component {
     componentDidMount() {
 
         this.props.actions.generalProcess(constants.orderlist, this.getRequest());
-        this.setState({
-            actions: [
-                {
-                    "type": "pageAction",
-                    "label": "ADD",
-                    "labelName": "COM_AB_Add",
-                    "actionType": "PORTLET_LINK",
-                    "iconName": "fa fa-plus",
-                    "URI": "/etisalat/attributes",
-                    "children": []
-                }
-            ]
-        })
+       
         window.scrollTo(0, 0);
     }
 
@@ -201,7 +189,7 @@ class OrderList extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <Portlet title={"Order List"} /*actions={this.state.actions}*/ isPermissioned={true}>
+                    <Portlet title={"Order List"} actions={this.state.actions} isPermissioned={true}>
                         <Table
                             gridColumns={utils.getGridColumnByName("orderList")}
                             gridData={this.state.gridData}
