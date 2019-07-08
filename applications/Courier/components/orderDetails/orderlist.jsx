@@ -22,7 +22,7 @@ class OrderList extends React.Component {
             },
             isLoading: false,
             gridData: [],
-             actions: [ ],
+            actions: [],
             ecommerce: '',
             courierCompany: '',
             orderNumber: '',
@@ -48,7 +48,7 @@ class OrderList extends React.Component {
     handleSubmit(event) {
         this.props.actions.generalProcess(constants.orderlist, this.getRequest());
         // console.log(this.state.searchCriteria, " -----searchCriteria")
-         event.preventDefault();
+        event.preventDefault();
     }
     getRequest = () => {
 
@@ -61,7 +61,7 @@ class OrderList extends React.Component {
         let request = {
 
             "body": {
-                
+                searchCriteria
             }
 
         };
@@ -84,7 +84,7 @@ class OrderList extends React.Component {
     componentDidMount() {
 
         this.props.actions.generalProcess(constants.orderlist, this.getRequest());
-       
+
         window.scrollTo(0, 0);
     }
 
@@ -118,8 +118,10 @@ class OrderList extends React.Component {
                                                 <label className="control-label">{utils.getLabelByID("Ecommerce")}</label>
                                             </div>
                                             <div className="form-group col-md-8">
-                                                <input type="text" className="form-control" name="ecommerce"
-                                                    value={this.state.value} onChange={this.handleChange} />
+                                                <select name="useCase" id="useCase" className="form-control">
+                                                    <option key="-1" value="">SELECT</option>
+                                                    <option key="0" value="SOUQ">SOUQ </option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div className="col-md-6">
@@ -127,8 +129,15 @@ class OrderList extends React.Component {
                                                 <label className="control-label">{utils.getLabelByID("Courier Company Name")}</label>
                                             </div>
                                             <div className="form-group col-md-8">
-                                                <input type="text" className="form-control" name="courierCompany"
-                                                    value={this.state.value} onChange={this.handleChange} />
+                                                <select name="useCase" id="useCase" className="form-control">
+                                                    <option key="-1" value="">SELECT</option>
+                                                    <option key="0" value="DHL">DHL </option>
+                                                    {/* {this.state.typeData && this.state.typeData.USE_CASE && this.state.typeData.USE_CASE.map((option, index) => {
+                                                        return (
+                                                            <option key={index} value={option.value}>{option.label}</option>
+                                                        );
+                                                    })} */}
+                                                </select>
                                             </div>
                                         </div>
 
@@ -190,6 +199,28 @@ class OrderList extends React.Component {
                         </div>
                     </div>
                     <Portlet title={"Order List"} actions={this.state.actions} isPermissioned={true}>
+                        {
+                            this.state.gridData.map((obj) => {
+
+                                obj.actions = [
+
+                                    {
+                                        "label": "View",
+                                        "URI": ["/courier/orderDetails"],
+                                        "params": "_id",
+                                        "iconName": "icon-docs"
+                                    },
+                                    {
+                                        "label": "Edit",
+                                        "URI": ["/courier/orderDetails"],
+                                        "params": "_id",
+                                        "iconName": "icon-docs"
+                                    }
+                                ]
+                            })
+
+                        }
+
                         <Table
                             gridColumns={utils.getGridColumnByName("orderList")}
                             gridData={this.state.gridData}

@@ -11,6 +11,7 @@ import Dashboard from "./components/orderDetails/dashboard.jsx";
 
 let authRoutes = <div>
   <Route path="courier/orderDetails" component={OrderDetails}/>
+  <Route path="courier/orderDetails/:id" component={OrderDetails}/>
   <Route path="courier/dashboard" component={Dashboard}/>
   <Route path="courier/orderlist" component={orderlist}/>
 </div>;
