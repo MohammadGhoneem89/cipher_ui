@@ -22,17 +22,7 @@ class OrderList extends React.Component {
             },
             isLoading: false,
             gridData: [],
-            // actions: [
-            //     {
-            //         "type": "pageAction",
-            //         "label": "ADD",
-            //         "labelName": "COM_AB_Add",
-            //         "actionType": "PORTLET_LINK",
-            //         "iconName": "fa fa-plus",
-            //         "URI": "/etisalat/attributes",
-            //         "children": []
-            //     }
-            // ],
+             actions: [ ],
             ecommerce: '',
             courierCompany: '',
             orderNumber: '',
@@ -56,7 +46,7 @@ class OrderList extends React.Component {
         });
     }
     handleSubmit(event) {
-        this.props.actions.generalProcess(constants.getOrderList, this.getRequest());
+        this.props.actions.generalProcess(constants.orderlist, this.getRequest());
         // console.log(this.state.searchCriteria, " -----searchCriteria")
          event.preventDefault();
     }
@@ -66,31 +56,26 @@ class OrderList extends React.Component {
         if (this.state.orderNumber != "")
             searchCriteria.orderNumber = this.state.orderNumber
 
-        // this.setState({ searchCriteria: searchCriteria })
+        this.setState({ searchCriteria: searchCriteria })
         console.log("searchcriteria", searchCriteria)
         let request = {
 
-            "bypassSimu": true,
             "body": {
-                "page": {
-                    "currentPageNo": this.state.page.currentPageNo,
-                    "pageSize": this.state.page.pageSize
-                },
-                searchCriteria
+                
             }
 
         };
         return request;
     }
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.getOrderList, "---- get grid data")
+        console.log(nextProps.orderlist, "---- get grid data")
 
-        if (nextProps.getOrderList) {
+        if (nextProps.orderlist) {
             this.setState(
                 {
-                    gridData: nextProps.getOrderList.searchResult,
+                    gridData: nextProps.orderlist.searchResult,
                     isLoading: false,
-                    page: nextProps.getPage
+                    page: nextProps.orderlist.pageData
                 }
             )
         }
@@ -98,7 +83,7 @@ class OrderList extends React.Component {
 
     componentDidMount() {
 
-        // this.props.actions.generalProcess(constants.getOrderList, this.getRequest());
+        this.props.actions.generalProcess(constants.orderlist, this.getRequest());
         this.setState({
             actions: [
                 {
@@ -219,12 +204,12 @@ class OrderList extends React.Component {
                     <Portlet title={"Order List"} /*actions={this.state.actions}*/ isPermissioned={true}>
                         <Table
                             gridColumns={utils.getGridColumnByName("orderList")}
-                            gridData={this.props.getOrderList.searchResult}
+                            gridData={this.state.gridData}
                             fontclass=""
-                            totalRecords={this.props.getPage.totalRecords}
+                            totalRecords={1}
                             pageSize={10}
                             pagination={true}
-                            activePage={this.props.getPage.currentPageNo}
+                            activePage={1}
                         />
                     </Portlet>
                 </div>
@@ -233,10 +218,9 @@ class OrderList extends React.Component {
     }
 }
 function mapStateToProps(state, ownProps) {
-    console.log(state.app.orderList, "STATE.APP")
+    console.log(state.app.orderlist, "STATE.APP")
     return {
-        getOrderList: state.app.orderList,
-        getPage: state.app.orderList.pageData
+        orderlist: state.app.orderlist,
     };
 }
 

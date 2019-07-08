@@ -186,6 +186,5 @@ export default {
     "data" : {}
   },
   "orderlist": {
-    "data" : {}
   }
 }
