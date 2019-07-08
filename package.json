@@ -33,6 +33,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "bluebird": "^3.5.1",
     "chart.js": "^2.7.0",
+    "chartjs-plugin-datalabels": "^0.6.0",
     "clone-deep": "^4.0.0",
     "d3": "^4.10.2",
     "deep-diff": "^1.0.2",
