@@ -4,5 +4,6 @@ let baseUrl = backOffices.baseUrl;
 
 
 module.exports = {
-  getEndToEndTrackingData: "/API/courier/getEndToEndTrackingData",
+  getEndToEndTrackingData: baseUrl + "/API/courier/getEndToEndTrackingData",
+  getDashboardData: baseUrl + "/API/customs-courier/getDashboardData"
 };

@@ -177,5 +177,9 @@ export default {
         "originalPayloadHash": ""
       }
     ]
+  },
+  "getDashboardData": {
+    "action": "getDashboardData",
+    "data" : {}
   }
 }
