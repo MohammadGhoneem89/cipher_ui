@@ -44,6 +44,7 @@ module.exports = {
     { alias: "Return Proof", key: "actions", type: "action" }
   ],
   orderList: [
+    {alias: "", key: "orderNumber", type: "hiddenID"},
     { alias: "Order #", key: "orderNumber", type: "string" },
     { alias: "HAWB #", key: "hawbNumber", type: "string" },
     { alias: "Order Date", key: "orderDate", type: "string" },
