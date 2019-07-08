@@ -338,7 +338,7 @@ class OrderDetailsContainer extends React.Component {
                           </div>
                         </div>
                       </div>
-                        {orderDetails.HAWB>0 && <hr/>}
+                      {orderDetails.HAWB > 0 && <hr/>}
                     </div>
                   })}
 
@@ -390,7 +390,7 @@ class OrderDetailsContainer extends React.Component {
                           </div>
                         </div>
                       </div>
-                        {item.error && <div className="alertbox">
+                      {item.error && <div className="alertbox">
                         <label className="errorcolr">Error</label>
                         <div className="errorbox">
                           {item.error}
@@ -440,7 +440,7 @@ class OrderDetailsContainer extends React.Component {
                           </div>
                         </div>
                       </div>
-                      {orderDetails.ExportDeclaration.length>0 && <hr/>}
+                      {orderDetails.ExportDeclaration.length > 0 && <hr/>}
                     </div>;
                   })}
                   <div className="linetext"><label className="bold">See line items in the order of declaration line
@@ -455,7 +455,7 @@ class OrderDetailsContainer extends React.Component {
                         search={false}
                         gridColumns={utils.getGridColumnByName("delivery")}
                         gridData={orderDetails.lineItems.filter((item => {
-                          return !item.isReturned && item.isDelivered;
+                          return item.isDelivered;
                         })) || []}
                         totalRecords={5}
                         pageChanged={() => {
@@ -469,20 +469,43 @@ class OrderDetailsContainer extends React.Component {
                 <div id="ReturnDetails" className="tab-pane">
                   <div className="row">
                     <div className="col-md-12">
-                      <Table
-                        pagination={false}
-                        export={false}
-                        search={false}
-                        gridColumns={utils.getGridColumnByName("returnDelivery")}
-                        gridData={orderDetails.lineItems.filter((item => {
-                          return item.isReturned && item.isDelivered;
-                        })) || []}
-                        totalRecords={5}
-                        pageChanged={() => {
-                        }}
-                        activePage={1}
-                        pageSize={10}
-                      />
+                      {(() => {
+                        let returnLines = orderDetails.lineItems.filter((item => {
+                          return item.isReturned;
+                        }));
+                        let returnItems = [];
+                        returnLines.map(orderLine => {
+                          orderLine.importDeclarationReferences.map(item => {
+                            returnItems.push({
+                              description:orderLine.description,
+                              quantity: orderLine.quantity,
+                              statQuantity: item.statQuantity,
+                              statUOM: item.statUOM,
+                              returnQty: orderLine.returnQty,
+                              returnStatQuantity: item.returnStatQuantity,
+                              oldHAWBNo: orderLine.HAWBNumber,
+                              exportDeclarationNo: item.exportDeclarationNo,
+                              newAWB: item.newAWB,
+                              importDeclarationNo: item.importDeclarationNo,
+                              actions:[{label: "viewData", iconName: "fa fa-eye", actionType: "COMPONENT_FUNCTION"}]
+                            });
+                          });
+                        });
+
+
+                        return <Table
+                          pagination={false}
+                          export={false}
+                          search={false}
+                          gridColumns={utils.getGridColumnByName("returnDelivery")}
+                          gridData={returnItems || []}
+                          pageChanged={() => {
+                          }}
+                          activePage={1}
+                          pageSize={10}
+                        />
+
+                      })()}
                     </div>
                   </div>
                 </div>

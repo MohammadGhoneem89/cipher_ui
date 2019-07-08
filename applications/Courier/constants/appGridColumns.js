@@ -1,5 +1,6 @@
 module.exports = {
   orderLine: [
+    { alias: "Line No.", key: "", type: "serialNo" },
     { alias: "Quantity", key: "quantity", type: 'string' },
     { alias: "Description", key: "description", type: "string" },
     { alias: "HS Code", key: "hscode", type: "string" },
@@ -15,6 +16,7 @@ module.exports = {
     { alias: "Return Proof", key: "hscode", type: "string" }
   ],
   delivery: [
+    { alias: "Line No.", key: "", type: "serialNo" },
     { alias: "Quantity", key: "quantity", type: 'string' },
     { alias: "Description", key: "description", type: "string" },
     { alias: "HS Code", key: "hscode", type: "string" },
@@ -22,23 +24,24 @@ module.exports = {
     { alias: "COO", key: "countryOfOrigin", type: "string" },
     { alias: "Discount", key: "discount", type: "string" },
     { alias: "Total", key: "total", type: "string" },
-    { alias: "Status", key: "statUOM", type: "string" },
-    { alias: "Status Qty", key: "statQuantity", type: "string" },
+    { alias: "Stats", key: "statUOM", type: "string" },
+    { alias: "Stats Qty", key: "statQuantity", type: "string" },
     { alias: "Net Weight", key: "netWeight", type: "string" },
     { alias: "Returned Cnt", key: "returnQty", type: "string" }
   ],
   returnDelivery: [
-    { alias: "Quantity", key: "quantity", type: 'string' },
+    { alias: "Line No.", key: "", type: "serialNo" },
     { alias: "Description", key: "description", type: "string" },
-    { alias: "HS Code", key: "hscode", type: "string" },
-    { alias: "Unit Price", key: "unitPrice", type: "string" },
-    { alias: "COO", key: "countryOfOrigin", type: "string" },
-    { alias: "Discount", key: "discount", type: "string" },
-    { alias: "Total", key: "total", type: "string" },
-    { alias: "Status", key: "statUOM", type: "string" },
-    { alias: "Status Qty", key: "statQuantity", type: "string" },
-    { alias: "Net Weight", key: "netWeight", type: "string" },
-    { alias: "Returned Cnt", key: "returnQty", type: "string" }
+    { alias: "Quantity", key: "quantity", type: 'string' },
+    { alias: "Stats Qty", key: "statQuantity", type: "string" },
+    { alias: "Stats UOM", key: "statUOM", type: "string" },
+    { alias: "Returned Qty", key: "returnQty", type: "string" },
+    { alias: "Returned Status Qty", key: "returnStatQuantity", type: "string" },
+    { alias: "Original HAWB", key: "oldHAWBNo", type: "string" },
+    { alias: "Export Declaration", key: "exportDeclarationNo", type: "string" },
+    { alias: "New AWB", key: "newAWB", type: "string" },
+    { alias: "Import Declaration", key: "importDeclarationNo", type: "string" },
+    { alias: "Return Proof", key: "actions", type: "action" }
   ],
   orderList: [
     { alias: "Order #", key: "orderNumber", type: "string" },
@@ -50,6 +53,5 @@ module.exports = {
     { alias: "Status", key: "orderStatus", type: "string" },
     { alias: "Action", key: "actions", type: "action" },
 
-  ],
-
+  ]
 };
