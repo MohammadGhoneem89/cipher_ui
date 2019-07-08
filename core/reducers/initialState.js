@@ -101,7 +101,8 @@ export default {
       "fileType": "",
       "separator": "",
       "XMLMainTag": "",
-      "skipLines": "",
+      "skipTopLines": "0",
+      "skipBottomLines": "0",
       "fields": []
     }
   },

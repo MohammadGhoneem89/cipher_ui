@@ -40,14 +40,14 @@ let authRoutes = <div>
   <Route path="/ejariReport" component={EjariReport}/>
   <Route path="/APIDefReport" component={APIDefReport}/>
 
-  <Route path="/apiTemplate" component={APITemplateList}/>
-  <Route path="/apiTemplate/:id" component={APITemplateEdit}/>
-  <Route path="/apiTemplate/test/:id" component={APITemplateTest}/>
-  <Route path="/document/view" component={ViewDocument}/>
+  {/*<Route path="/apiTemplate" component={APITemplateList}/>*/}
+  {/*<Route path="/apiTemplate/:id" component={APITemplateEdit}/>*/}
+  {/*<Route path="/apiTemplate/test/:id" component={APITemplateTest}/>*/}
+  {/*<Route path="/document/view" component={ViewDocument}/>*/}
 
-  <Route path="/onBoardingProfile/setup" component={onBoardingProfileSetup}/>
-  <Route path="/onBoardingProfile/setup/:id" component={onBoardingProfileSetup}/>
-  <Route path="/onBoardingProfile" component={onBoardingProfileList}/>
+  {/*<Route path="/onBoardingProfile/setup" component={onBoardingProfileSetup}/>*/}
+  {/*<Route path="/onBoardingProfile/setup/:id" component={onBoardingProfileSetup}/>*/}
+  {/*<Route path="/onBoardingProfile" component={onBoardingProfileList}/>*/}
 
 </div>;
 
