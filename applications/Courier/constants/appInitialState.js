@@ -184,5 +184,8 @@ export default {
   "getDashboardData": {
     "action": "getDashboardData",
     "data" : {}
+  },
+  "orderlist": {
+    "data" : {}
   }
 }
