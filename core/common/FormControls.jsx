@@ -107,7 +107,6 @@ export const DateInput = ({name, label, type, disabled, isRequired, style}) => (
 );
 
 export const DropdownInput = (props) => (
-
     <Field
         {...props}
         component={renderDropdown}>

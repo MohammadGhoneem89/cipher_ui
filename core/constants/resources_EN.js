@@ -305,6 +305,7 @@ module.exports = {
   FTEMP_customFunc: "Custom Function",
   FTEMP_attributeName: "Attribute Name",
   FTEMP_attributeValue: "Attribute Value",
+  FTEMP_transformFuc: "Transformation Mapping Function",
   CTEMP_Preview: "Commission Template Preview",
   CTEMP_templateName: "Template Name",
   CTEMP_categoryType: "Category Type",
