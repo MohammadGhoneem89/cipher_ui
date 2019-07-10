@@ -60,13 +60,6 @@ const TemplateDetails = ({error, initialValues, containerState, updateState, sta
             type="number"
           />
         </div>
-        <div className="col-md-4 col-sm-4">
-          <DropdownInput name="apiMapping" options={containerState.apiList.map(item => {
-            return {key: item, label: item}
-          })}
-                         label={utils.getLabelByID("FTEMP_apiMapping")}
-          />
-        </div>
       </div>
     </Portlet>
   );
@@ -80,6 +73,8 @@ class FileTemplateForm extends React.Component {
       fieldsModalIsOpen: false,
       ruleModalIsOpen: false,
       fields: [],
+      rules:[],
+      ruleType: undefined,
       index: 0,
       internalFields: [],
       columnNos: []
@@ -87,6 +82,7 @@ class FileTemplateForm extends React.Component {
     this.submit = this.submit.bind(this);
     this.updateState = this.updateState.bind(this);
     this.addFields = this.addFields.bind(this);
+    this.addRule = this.addRule.bind(this);
     this.detailsActionHandlers = this.detailsActionHandlers.bind(this);
     this.performAction = this.performAction.bind(this);
   }
@@ -111,6 +107,7 @@ class FileTemplateForm extends React.Component {
 
   submit(data) {
     data.fields = this.state.fields;
+    data.rules = this.state.rules;
     return this.props.onSubmit(data);
   }
 
@@ -135,6 +132,26 @@ class FileTemplateForm extends React.Component {
     this.setState({
       fields: data.fields,
       fieldsModalIsOpen: false
+    });
+  }
+  addRule(data) {
+    console.log(data.rules);
+    data.rules[this.state.index].actions = [
+      {
+        label: utils.getLabelByID("Edit"),
+        iconName: "fa fa-edit",
+        actionType: "COMPONENT_FUNCTION"
+      },
+      {
+        label: utils.getLabelByID("Delete"),
+        iconName: "fa fa-trash",
+        actionType: "COMPONENT_FUNCTION"
+      }
+    ];
+
+    this.setState({
+      rules: data.rules,
+      ruleModalIsOpen: false
     });
   }
 
@@ -256,7 +273,7 @@ class FileTemplateForm extends React.Component {
                             containerState={containerState} updateState={this.updateState}
                             state={this.state}/></ModalBox>
         <ModalBox isOpen={this.state.ruleModalIsOpen}>
-          <RulesForm onSubmit={this.addFields} index={this.state.index} initialValues={this.state}
+          <RulesForm onSubmit={this.addRule} index={this.state.index} initialValues={this.state}
                      containerState={containerState} updateState={this.updateState}
                      state={this.state}/></ModalBox>
 
@@ -281,8 +298,8 @@ class FileTemplateForm extends React.Component {
               search={false}
               gridColumns={utils.getGridColumnByName("FTEMP_FilterRules")}
               componentFunction={this.detailsActionHandlers}
-              gridData={[]}
-              totalRecords={this.state.fields.length}
+              gridData={this.state.rules}
+              totalRecords={this.state.rules.length}
             />
           </Portlet>
           <div className="clearfix">

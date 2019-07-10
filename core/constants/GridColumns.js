@@ -875,9 +875,11 @@ module.exports = {
   FTEMP_FilterRules: [
     {alias: "", key: "_id", type: "hiddenID"},
     {alias: "FTEMP_ruleType", key: "type", type: 'string'},
-    {alias: "FTEMP_customFunc", key: "status", type: "string"},
-    {alias: "FTEMP_attributeName", key: "useCase", type: "string"},
-    {alias: "FTEMP_attributeValue", key: "useCase", type: "string"},
-    {alias: "Action", key: "action", type: "action"}
+    {alias: "FTEMP_attributeName", key: "attributeName", type: "string"},
+    {alias: "FTEMP_attributeValue", key: "attributeValue", type: "string"},
+    {alias: "FTEMP_customFunc", key: "customFunction", type: "string"},
+    {alias: "FTEMP_apiMapping", key: "api", type: "string"},
+    {alias: "FTEMP_transformFuc", key: "transformFunction", type: "string"},
+    {alias: "Action", key: "actions", type: "action"}
   ]
 };

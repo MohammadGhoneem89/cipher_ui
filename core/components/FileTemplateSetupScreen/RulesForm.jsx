@@ -6,7 +6,7 @@ import {CheckboxInput, CheckboxList, DropdownInput, TextInput} from '../../commo
 import validate from './validate.js';
 
 const RulesForm = props => {
-  const {handleSubmit, pristine, reset, submitting, containerState, updateState, state, index} = props;
+  const {handleSubmit, pristine, reset, submitting, containerState, updateState, state, index, initialValues} = props;
   let mapFieldActions = [
     {
       type: "icon",
@@ -16,32 +16,54 @@ const RulesForm = props => {
       actionHandler: updateState.bind(this, {ruleModalIsOpen: false})
     }
   ];
+  let ruleType = "";
   return (
     <Portlet title={utils.getLabelByID("MapField")} actions={mapFieldActions} noCollapse={true}>
       <form autoComplete="off" role="form" onSubmit={handleSubmit}>
         <div className="col-md-4 col-sm-4">
-
-          <DropdownInput name={"rules[" + index + "].type"} options={state.columnNos}
-                         label={utils.getLabelByID("FTEMP_ruleType")}
+          <DropdownInput name={"rules[" + index + "].type"} options={[{label:"Rule Based", value:"ruleBased"}, {label:"Custom Function", value:"customFunction"}]}
+                         label={utils.getLabelByID("FTEMP_ruleType")} onChange={(e)=>{ruleType = updateState({ruleType: e.target.value});}}
           />
         </div>
         <div className="col-md-4 col-sm-4">
-
-          <TextInput name={"rules[" + index + "].customFunction"}
-                     label={utils.getLabelByID("FTEMP_customFunc")}
-                     type="text"
-          />
-        </div>
-        <div className="col-md-4 col-sm-4">
-          <TextInput name={"rules[" + index + "].attributeName"}
-                     label={utils.getLabelByID("FTEMP_attributeName")}
-                     type="text"
+          <DropdownInput name={"rules[" + index + "].attributeName"} options={(() => {
+            let options = [];
+            initialValues.fields.map(item => {
+              options.push({label: item.internalField, value: item.internalField});
+            });
+            return options;
+          })()}
+                         label={utils.getLabelByID("FTEMP_attributeName")}
           />
         </div>
         <div className="col-md-4 col-sm-4">
           <TextInput name={"rules[" + index + "].attributeValue"}
                      label={utils.getLabelByID("FTEMP_attributeValue")}
                      type="text"
+          />
+        </div>
+        {state.ruleType==="customFunction" && <div className="row">
+          <div className="col-md-4 col-sm-4"/>
+          <div className="col-md-4 col-sm-4">
+            <TextInput name={"rules[" + index + "].customFunction"}
+                       label={utils.getLabelByID("FTEMP_customFunc")}
+                       type="text"
+            />
+          </div>
+        </div>}
+        <div className="col-md-4 col-sm-4">
+
+          <DropdownInput name={"rules[" + index + "].api"} options={containerState.apiList.map(item => {
+            return {key: item, label: item}
+          })}
+                         label={utils.getLabelByID("FTEMP_apiMapping")}
+          />
+        </div>
+        <div className="col-md-4 col-sm-4">
+          <TextInput name={"rules[" + index + "].transformFunction"} options={containerState.apiList.map(item => {
+            return {key: item, label: item}
+          })}
+                         label={utils.getLabelByID("FTEMP_transformFuc")}
           />
         </div>
         <div className="clearfix">
