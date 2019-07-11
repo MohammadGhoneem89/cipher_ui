@@ -32,10 +32,10 @@ const ModalBox = ({isOpen, children}) => {
     return (<Modal
         isOpen={(() => {
             if (isOpen) {
-                setTimeout(()=>{
-                    $("body").addClass('page-sidebar-closed');
-                    $("#SideMenuIcons").addClass('page-sidebar-menu-closed');
-                },1);
+                // setTimeout(()=>{
+                //     $("body").addClass('page-sidebar-closed');
+                //     $("#SideMenuIcons").addClass('page-sidebar-menu-closed');
+                // },1);
             }
             else {
                 $("body").removeClass('page-sidebar-closed');

@@ -18,7 +18,7 @@ const RulesForm = props => {
   ];
   let ruleType = "";
   return (
-    <Portlet title={utils.getLabelByID("MapField")} actions={mapFieldActions} noCollapse={true}>
+    <Portlet title={utils.getLabelByID("MAU_mapField")} actions={mapFieldActions} noCollapse={true}>
       <form autoComplete="off" role="form" onSubmit={handleSubmit}>
         <div className="col-md-4 col-sm-4">
           <DropdownInput name={"rules[" + index + "].type"} options={[{label:"Rule Based", value:"ruleBased"}, {label:"Custom Function", value:"customFunction"}]}

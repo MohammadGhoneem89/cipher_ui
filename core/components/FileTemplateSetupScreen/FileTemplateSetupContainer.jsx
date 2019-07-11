@@ -1,12 +1,14 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {SubmissionError} from 'redux-form';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { SubmissionError } from 'redux-form';
+import { connect } from 'react-redux';
 import initialState from '../../reducers/initialState.js';
 import * as actions from '../../actions/generalAction';
 import FileTemplateForm from './FileTemplateForm.jsx';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
+
+
 import * as utils from '../../common/utils.js';
 
 class FileTemplateContainer extends React.Component {
@@ -17,22 +19,25 @@ class FileTemplateContainer extends React.Component {
     this.state = {
       isLoading: false,
       fileTemplateID: undefined,
-      fileTemplateDetail: {...initialState.fileTemplateDetail.data},
+      fileTemplateDetail: { ...initialState.fileTemplateDetail.data },
       internalFields: [],
       fileTypes: [],
       special: [],
+      ApiList: [],
       columnNos: [],
-      apiList:["TerminateContract","SaveEjariHashData"]
+      fieldList: [],
+      apiList: ["TerminateContract", "SaveEjariHashData"]
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.fileTemplateDetail._id === nextProps.fileTemplateID && nextProps.typeData.internalFields) {
+    if (nextProps.fileTemplateDetail._id === nextProps.fileTemplateID && nextProps.typeData.internalFields && nextProps.ApiList && this.state.isLoading == true) {
       //Add permissions
       let fileTemplateDetail = this.props.fileTemplateID ? nextProps.fileTemplateDetail : {
         ...this.state.fileTemplateDetail,
         actions: nextProps.fileTemplateDetail.actions
       };
+      // alert(JSON.stringify(fileTemplateDetail.rulesList))
 
       this.setState({
         isLoading: false,
@@ -42,16 +47,24 @@ class FileTemplateContainer extends React.Component {
         fileTypes: nextProps.typeData.fileTypes,
         special: nextProps.typeData.special,
         reconDataTypes: nextProps.typeData.reconDataTypes,
-        columnNos: nextProps.typeData.columnNos
+        columnNos: nextProps.typeData.columnNos,
+        ApiList: nextProps.ApiList,
+        rulesList: fileTemplateDetail.rulesList || []
       });
     }
+  }
+  getAPIList(payload) {
+    this.props.actions.generalProcess(constants.getAPIRequestMapping, payload);
   }
 
   componentDidMount() {
     this.props.actions.generalProcess(constants.getFileTemplateDetail, requestCreator.createFileTemplateDetailRequest(this.props.fileTemplateID));
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['internalFields', 'fileTypes', 'special', 'columnNos', 'reconDataTypes']));
     this.props.actions.generalProcess(constants.getMappingListData, this.getRequest());
-    this.setState({isLoading: true});
+    this.props.actions.generalProcess(constants.getAPIList, {});
+
+
+    this.setState({ isLoading: true });
   }
 
   getRequest() {
@@ -77,7 +90,7 @@ class FileTemplateContainer extends React.Component {
         "pageSize": 10
       }
     }
-    this.setState({currentPageNo: 1})
+    this.setState({ currentPageNo: 1 })
     return request;
   }
 
@@ -96,12 +109,14 @@ class FileTemplateContainer extends React.Component {
   }
 
   render() {
-
     if (!this.state.isLoading)
       return (
         <FileTemplateForm onSubmit={this.submit} initialValues={this.state.fileTemplateDetail}
-                          containerState={this.state}
-                          containerProps={this.props}/>
+          containerState={this.state}
+          rulesList={this.state.rulesList}
+          fieldList={this.props.fieldList}
+          callinterface={this.getAPIList.bind(this)}
+          containerProps={this.props} generalHandler={this.generalHandler} />
       );
     else
       return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
@@ -113,7 +128,9 @@ function mapStateToProps(state, ownProps) {
   return {
     fileTemplateID: fileTemplateID,
     fileTemplateDetail: state.app.fileTemplateDetail.data,
-    typeData: state.app.typeData.data
+    typeData: state.app.typeData.data,
+    ApiList: _.get(state, 'app.ApiListCombo.data.ApiList', undefined),
+    fieldList: _.get(state, 'app.APIRequestMappingList.data.fieldList', undefined),
   };
 }
 

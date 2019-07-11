@@ -22,7 +22,8 @@ module.exports = {
   getLogin: baseUrl + "/login",
   getSocket: webSocketURL,
   performActionToBlockChain: blockChainURL,
-
+  
+  getAPIRequestMapping: baseUrl + '/API/core/getAPIRequestMapping',
   getFileTemplateList: baseUrl + '/API/UI/fileTemplateList',
   getFileTemplateDetail: baseUrl + '/API/UI/fileTemplateDetail',
   fileTemplateUpdate: baseUrl + '/API/UI/fileTemplateUpdate',

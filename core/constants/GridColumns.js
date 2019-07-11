@@ -206,13 +206,13 @@ module.exports = {
   ],
 
   entitySearch: [
-    {alias: "", key: "_id", type: "hiddenID"},
-    {alias: "ESEARCH_entityName", key: "entityName", type: "image"},
-    {alias: "ESEARCH_arabicName", key: "arabicName", type: "string"},
-    {alias: "ESEARCH_spCode", key: "spCode", type: "string"},
-    {alias: "ESEARCH_orgType", key: "orgType", type: "string"},
-    {alias: "ESEARCH_isActive", key: "isActive", type: "cbDisabled"},
-    {alias: "ESEARCH_action", key: "actions", type: "action"}
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "ESEARCH_entityName", key: "entityName", type: "image" },
+    { alias: "ESEARCH_arabicName", key: "arabicName", type: "string" },
+    { alias: "ESEARCH_spCode", key: "spCode", type: "string" },
+    { alias: "ESEARCH_orgType", key: "orgType", type: "string" },
+    { alias: "ESEARCH_isActive", key: "isActive", type: "cbDisabled" },
+    { alias: "ESEARCH_action", key: "actions", type: "action" }
   ],
 
   acquirerSearch: [
@@ -282,7 +282,6 @@ module.exports = {
     { alias: "FTEMP_columnNo", key: "columnNo", type: "string" },
     { alias: "FTEMP_fieldNameTag", key: "fieldNameTag", type: "string" },
     { alias: "FTEMP_fieldName", key: "fieldName", type: "string" },
-    { alias: "FTEMP_internalField", key: "internalField", type: "string" },
     { alias: "FTEMP_specialFunction", key: "specialFunction", type: "string" },
     { alias: "FTEMP_fields_action", key: "actions", type: "action" }
   ],
@@ -478,11 +477,11 @@ module.exports = {
 
   ],
   notifications: [
-    {alias: "COM_SerialNo", key: "", type: "serialNo"},
-    {alias: "NOTI_Level", key: "type", type: "icon"},
-    {alias: "NOTI_Message", key: "text", type: "longString"},
-    {alias: "NOTI_Message", key: "createdAt", type: "epochDate1"},
-    {alias: "NOTI_Actions", key: "actions", type: "action"}
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "NOTI_Level", key: "type", type: "icon" },
+    { alias: "NOTI_Message", key: "text", type: "longString" },
+    { alias: "NOTI_Message", key: "createdAt", type: "epochDate1" },
+    { alias: "NOTI_Actions", key: "actions", type: "action" }
   ],
   SLAWorkboardData: [
     { alias: "SLA_img", key: "img", type: "imageBig" },
@@ -658,13 +657,13 @@ module.exports = {
     { alias: "EVNTL_Date", key: "createdon", type: "string" },
     { alias: "EVNTL_DispatchDate", key: "updatedon", type: "string" },
     { alias: "EVNTL_RetryCount", key: "retrycount", type: "string" },
-    
+
     { alias: "EL_Error", key: "error", type: "string" },
     { alias: "EL_Status", key: "status", type: "statusLabel" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
   peerListOrgWOA: [
-    
+
     { alias: "peerName", key: "peerName", type: "string" },
     { alias: "loadBalancingLevel", key: "loadBalancingLevel", type: "string" }
   ],
@@ -866,20 +865,26 @@ module.exports = {
     { alias: "Actions", key: "actions", type: "action" }
   ],
   onBoardingProfile: [
-    {alias: "", key: "_id", type: "hiddenID"},
-    {alias: "Name", key: "name", type: 'string'},
-    {alias: "Status", key: "status", type: "string"},
-    {alias: "useCase", key: "useCase", type: "string"},
-    {alias: "Action", key: "action", type: "action"}
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "Name", key: "name", type: 'string' },
+    { alias: "Status", key: "status", type: "string" },
+    { alias: "useCase", key: "useCase", type: "string" },
+    { alias: "Action", key: "action", type: "action" }
   ],
   FTEMP_FilterRules: [
-    {alias: "", key: "_id", type: "hiddenID"},
-    {alias: "FTEMP_ruleType", key: "type", type: 'string'},
-    {alias: "FTEMP_attributeName", key: "attributeName", type: "string"},
-    {alias: "FTEMP_attributeValue", key: "attributeValue", type: "string"},
-    {alias: "FTEMP_customFunc", key: "customFunction", type: "string"},
-    {alias: "FTEMP_apiMapping", key: "api", type: "string"},
-    {alias: "FTEMP_transformFuc", key: "transformFunction", type: "string"},
-    {alias: "Action", key: "actions", type: "action"}
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "ruleName", key: "ruleName", type: 'string' },
+    { alias: "field", key: "field", type: 'string' },
+    { alias: "option", key: "option", type: "string" },
+    { alias: "value", key: "value", type: "string" },
+    { alias: "API", key: "API", type: "string" },
+    { alias: "FTEMP_transformFuc", key: "transformFunction", type: "string" },
+    { alias: "Action", key: "actions", type: "action" }
+  ],
+  FTEMP_MappRules: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "incomming", key: "incomming", type: 'string' },
+    { alias: "mapped", key: "mapped", type: 'string' },
+    { alias: "action", key: "actions", type: "action" }
   ]
 };

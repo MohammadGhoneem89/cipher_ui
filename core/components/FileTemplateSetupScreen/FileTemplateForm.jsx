@@ -1,59 +1,69 @@
 import React from 'react';
-import {reduxForm} from 'redux-form';
+import { reduxForm } from 'redux-form';
 import Portlet from '../../common/Portlet.jsx';
+import PortletCrad from '../../common/PortletCrad.jsx';
 import ModalBox from '../../common/ModalBox.jsx';
 import * as utils from '../../common/utils.js';
-import {CheckboxInput, CheckboxList, DropdownInput, TextInput} from '../../common/FormControls.jsx';
+import { CheckboxInput, CheckboxList, DropdownInput, TextInput } from '../../common/FormControls.jsx';
 import ActionButton from '../../common/ActionButtonNew.jsx';
 import Table from '../../common/Datatable.jsx';
 import FieldMappingForm from './FieldMappingForm.jsx';
 import RulesForm from './RulesForm.jsx';
 import validate from './validate.js';
 
+import Row from '../../common/Row.jsx';
+import Input from '../../common/Input.jsx';
+import Label from '../../common/Lable.jsx';;
+import Combobox from '../../common/Select.jsx';
+import Col from '../../common/Col.jsx';
+import * as gen from '../../common/generalActionHandler'
 
-const TemplateDetails = ({error, initialValues, containerState, updateState, state}) => {
+const TemplateDetails = ({ error, initialValues, containerState, updateState, state, generalHandler }) => {
   return (
     <Portlet title={utils.getLabelByID("TemplateDetails")} className={"portlet light"}>
       <div className="row">
-        <div className="col-md-3 col-sm-3">
+        <div className="col-md-6 col-sm-6">
           <TextInput name="templateName"
-                     label={utils.getLabelByID("FTEMP_templateName")}
-                     type="text"
+            label={utils.getLabelByID("FTEMP_templateName")}
+            type="text"
           />
         </div>
-        <div className="col-md-3 col-sm-3">
+
+        <div className="col-md-6 col-sm-6">
           <TextInput name="fileNameRegEx"
-                     label={utils.getLabelByID("FTEMP_fileName")}
-                     type="text"
-          />
-        </div>
-        <div className="col-md-3 col-sm-3">
-          <DropdownInput name="fileType" options={containerState.fileTypes}
-                         label={utils.getLabelByID("FTEMP_fileType")}
-          />
-        </div>
-        <div className="col-md-3 col-sm-3">
-          <TextInput name="separator"
-                     label={utils.getLabelByID("FTEMP_separator")}
-                     type="text"
+            label={utils.getLabelByID("FTEMP_fileName")}
+            type="text"
           />
         </div>
       </div>
       <div className="row">
-        <div className="col-md-3 col-sm-3">
-          <TextInput name="XMLMainTag"
-                     label={utils.getLabelByID("FTEMP_XMLMainTag")}
-                     type="text"
+        <div className="col-md-6 col-sm-6">
+          <DropdownInput name="fileType" options={containerState.fileTypes}
+            label={utils.getLabelByID("FTEMP_fileType")}
           />
         </div>
-        <div className="col-md-2 col-sm-2">
+
+        <div className="col-md-6 col-sm-6">
+          <TextInput name="separator"
+            label={utils.getLabelByID("FTEMP_separator")}
+            type="text"
+          />
+        </div>
+
+        <div className="col-md-6 col-sm-6">
+          <TextInput name="XMLMainTag"
+            label={utils.getLabelByID("Watch Path")}
+            type="text"
+          />
+        </div>
+        <div className="col-md-3 col-sm-3">
           <TextInput
             name="skipTopLines"
             label={utils.getLabelByID("FTEMP_skipTopLines")}
             type="number"
           />
         </div>
-        <div className="col-md-2 col-sm-2">
+        <div className="col-md-3 col-sm-3">
           <TextInput
             name="skipBottomLines"
             label={utils.getLabelByID("FTEMP_skipBottomLines")}
@@ -73,24 +83,32 @@ class FileTemplateForm extends React.Component {
       fieldsModalIsOpen: false,
       ruleModalIsOpen: false,
       fields: [],
-      rules:[],
+      rules: [],
       ruleType: undefined,
       index: 0,
       internalFields: [],
-      columnNos: []
+      columnNos: [],
+      rulesList: [],
+      selectedRuleMapp: [],
+      selectedIndex: -1,
     };
     this.submit = this.submit.bind(this);
     this.updateState = this.updateState.bind(this);
     this.addFields = this.addFields.bind(this);
     this.addRule = this.addRule.bind(this);
     this.detailsActionHandlers = this.detailsActionHandlers.bind(this);
+    this.ActionHandlersRules = this.ActionHandlersRules.bind(this);
+    this.mappActionHandlers = this.mappActionHandlers.bind(this);
     this.performAction = this.performAction.bind(this);
+    this.generalHandler = gen.generalHandler.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(">>>>>>>>>>>??? ", JSON.stringify(nextProps.rulesList));
     if (nextProps.initialValues.fields && this.state.fields.length === 0) {
-      this.setState({fields: nextProps.initialValues.fields});
+      this.setState({ fields: nextProps.initialValues.fields, ruleList: nextProps.rulesList });
     }
+    this.setState({ rulesList: nextProps.rulesList });
   }
 
   componentWillMount() {
@@ -108,6 +126,14 @@ class FileTemplateForm extends React.Component {
   submit(data) {
     data.fields = this.state.fields;
     data.rules = this.state.rules;
+    data.rulesList = this.state.rulesList;
+    this.state.rulesList.forEach((elem) => {
+      // console.log(elem.mappList.length)
+      if (!elem.mappList || elem.mappList.length == 0) {
+        alert("mapping must be defined for all rules!")
+        return;
+      }
+    })
     return this.props.onSubmit(data);
   }
 
@@ -136,7 +162,9 @@ class FileTemplateForm extends React.Component {
   }
   addRule(data) {
     console.log(data.rules);
+
     data.rules[this.state.index].actions = [
+
       {
         label: utils.getLabelByID("Edit"),
         iconName: "fa fa-edit",
@@ -155,7 +183,42 @@ class FileTemplateForm extends React.Component {
     });
   }
 
-  detailsActionHandlers({actionName, index}) {
+  ActionHandlersRules({ actionName, index }) {
+    switch (actionName) {
+      case "Define Mapping":
+        if (index > -1) {
+
+          this.props.callinterface({ "route": this.state.rulesList[index].API })
+          this.setState({
+            ruleModalIsOpen: true,
+            selectedRuleMapp: this.state.rulesList[index].mappList || [],
+            selectedIndex: index
+          });
+        }
+        break;
+      case "Edit":
+        if (index > -1) {
+          let b = this.state.rulesList;
+          let x = this.state.rulesList[index]
+          b.splice(index, 1);
+          this.setState({
+            rulesList: b, routing: x
+          });
+        }
+        break;
+      case "Delete":
+        if (index > -1) {
+          let a = this.state.rulesList;
+          a.splice(index, 1);
+          this.setState({
+            rulesList: a
+          });
+        }
+        break;
+    }
+  }
+
+  detailsActionHandlers({ actionName, index }) {
     switch (actionName) {
       case "Edit":
         let usedInternalField = [];
@@ -170,7 +233,6 @@ class FileTemplateForm extends React.Component {
         let columnNos = this.props.containerState.columnNos.filter(item => {
           return usedColumnNo.indexOf(item.value) === -1 || this.state.fields[index].columnNo === item.value;
         });
-
 
         this.setState({
           internalFields,
@@ -190,10 +252,22 @@ class FileTemplateForm extends React.Component {
         break;
     }
   }
-
+  mappActionHandlers({ actionName, index }) {
+    switch (actionName) {
+      case "Delete":
+        if (index > -1) {
+          let a = this.state.selectedRuleMapp;
+          a.splice(index, 1);
+          this.setState({
+            selectedRuleMapp: a
+          });
+        }
+        break;
+    }
+  }
   addBtnClicked(type) {
 
-    if(type==="mappedFieldsActions"){
+    if (type === "mappedFieldsActions") {
       let usedInternalField = [];
       let usedColumnNo = [];
       this.state.fields.map((item, index) => {
@@ -215,7 +289,7 @@ class FileTemplateForm extends React.Component {
         fieldsModalIsOpen: true
       });
     }
-    else if(type==="rulesActions") {
+    else if (type === "rulesActions") {
       let usedInternalField = [];
       let usedColumnNo = [];
       this.state.fields.map((item, index) => {
@@ -238,15 +312,75 @@ class FileTemplateForm extends React.Component {
       });
     }
   }
+  addRouting() {
+    if (!this.state.routing.ruleName || !this.state.routing.field || !this.state.routing.option || !this.state.routing.value || !this.state.routing.API) {
+      alert("All Fields Are Required!!");
+      return;
+    }
+
+    let interm = this.state.rulesList || [];
+    if (!this.state.routing || !this.state.routing.mappList) {
+      this.state.routing.mappList = [];
+    }
+    this.state.routing.actions = [
+      {
+        label: "Define Mapping",
+        iconName: "fa fa-map",
+        actionType: "COMPONENT_FUNCTION"
+      },
+      {
+        label: utils.getLabelByID("Edit"),
+        iconName: "fa fa-edit",
+        actionType: "COMPONENT_FUNCTION"
+      },
+      {
+        label: utils.getLabelByID("Delete"),
+        iconName: "fa fa-trash",
+        actionType: "COMPONENT_FUNCTION"
+      }
+    ];
+    interm.push(this.state.routing)
+    this.setState({ rulesList: interm, routing: {} })
+  }
+  addMapping() {
+
+    if (!this.state.mapping.mapped || !this.state.mapping.incomming) {
+      alert("All Fields Are Required!!");
+      return;
+    }
+    let interm = this.state.selectedRuleMapp;
+
+    this.state.mapping.actions = [
+      {
+        label: utils.getLabelByID("Delete"),
+        iconName: "fa fa-trash",
+        actionType: "COMPONENT_FUNCTION"
+      }
+    ];
+    interm.push(this.state.mapping)
+    this.setState({ selectedRuleMapp: interm, mapping: {} })
+  }
+  addMappingToList() {
+
+    if (this.state.selectedIndex > -1) {
+      let interm = this.state.selectedRuleMapp;
+      let ruleList = this.state.rulesList;
+      ruleList[this.state.selectedIndex].mappList = interm;
+      this.setState({ ruleList: ruleList, selectedIndex: -1, ruleModalIsOpen: false })
+    }
+  }
+
+
 
   performAction(actionObj) {
+    alert(actionObj)
     if (actionObj.label === "Reset") {
       this.props.reset();
     }
   }
 
   render() {
-    const {handleSubmit, pristine, reset, submitting, initialValues, containerState, containerProps} = this.props;
+    const { handleSubmit, pristine, reset, submitting, initialValues, containerState, containerProps } = this.props;
 
     let mappedFieldsActions = [
       {
@@ -257,30 +391,83 @@ class FileTemplateForm extends React.Component {
         actionHandler: this.addBtnClicked.bind(this, "mappedFieldsActions")
       }
     ];
-    let rulesActions = [
+    let mapFieldActions = [
       {
-        type: "modal",
+        type: "icon",
         className: "btn btn-default",
         label: utils.getLabelByID("Add"),
-        icon: "plus",
-        actionHandler: this.addBtnClicked.bind(this, "rulesActions")
+        icon: "close",
+        actionHandler: (() => { this.setState({ ruleModalIsOpen: false }) }).bind(this)
       }
     ];
     return (
       <div>
         <ModalBox isOpen={this.state.fieldsModalIsOpen}>
           <FieldMappingForm onSubmit={this.addFields} index={this.state.index} initialValues={this.state}
-                            containerState={containerState} updateState={this.updateState}
-                            state={this.state}/></ModalBox>
-        <ModalBox isOpen={this.state.ruleModalIsOpen}>
-          <RulesForm onSubmit={this.addRule} index={this.state.index} initialValues={this.state}
-                     containerState={containerState} updateState={this.updateState}
-                     state={this.state}/></ModalBox>
+            containerState={containerState} updateState={this.updateState}
+            state={this.state} /></ModalBox>
 
-        <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)}>
+        <ModalBox isOpen={this.state.ruleModalIsOpen}>
+          <Portlet title={utils.getLabelByID("Mapping")} actions={mapFieldActions}>
+            <Row>
+              <Col col="6">
+                <Label text="incomming" columns="3"></Label>
+                <Combobox fieldname='incomming' formname='mapping' columns='9' style={{}}
+                  state={this.state} typeName="options"
+                  dataSource={(() => {
+                    let options = [];
+                    this.state.fields.map(item => {
+                      options.push({ label: item.fieldName, value: item.fieldName });
+                    });
+                    return { options };
+                  })()} multiple={false} actionHandler={this.generalHandler} />
+              </Col>
+              <Col col="6">
+                <Label text="mapped" columns="3"></Label>
+                <Combobox fieldname='mapped' formname='mapping' columns='9' style={{}}
+                  state={this.state} typeName="options"
+                  dataSource={(() => {
+                    return { options: this.props.fieldList };
+                  })()} multiple={false} actionHandler={this.generalHandler} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div className="col-md-12">
+                  <div className="btn-toolbar pull-right">
+                    <a className="btn btn-default" href="javascript:;" onClick={this.addMapping.bind(this)}>{utils.getLabelByID("Add Mapping")} </a>
+                  </div>
+                </div>
+                <Col col="12">
+                  <Table
+                    pagination={false}
+                    export={false}
+                    search={false}
+                    gridColumns={utils.getGridColumnByName("FTEMP_MappRules")}
+                    componentFunction={this.mappActionHandlers}
+                    gridData={this.state.selectedRuleMapp}
+                    totalRecords={this.state.rules.length}
+                  />
+                </Col>
+              </Col>
+            </Row>
+            <Row>
+              <div className="col-md-12">
+                <div className="col-md-12">
+                  <div className="btn-toolbar pull-right">
+                    <a className="btn green" href="javascript:;" onClick={this.addMappingToList.bind(this)}>{utils.getLabelByID("Save")} </a>
+                  </div>
+                </div>
+              </div>
+            </Row>
+          </Portlet>
+
+        </ModalBox>
+
+        <form autoComplete="off" role="form" id="oldForm" onSubmit={handleSubmit(this.submit)}>
           <TemplateDetails initialValues={initialValues} containerState={containerState}
-                           updateState={this.updateState}/>
-          <Portlet title={utils.getLabelByID("MappedFields")} actions={mappedFieldsActions}>
+            updateState={this.updateState} />
+          <Portlet title={utils.getLabelByID("MAU_mapField")} actions={mappedFieldsActions}>
             <Table
               pagination={false}
               export={false}
@@ -291,21 +478,82 @@ class FileTemplateForm extends React.Component {
               totalRecords={this.state.fields.length}
             />
           </Portlet>
-          <Portlet title={utils.getLabelByID("FTEMP_filterRules")} actions={rulesActions}>
-            <Table
-              pagination={false}
-              export={false}
-              search={false}
-              gridColumns={utils.getGridColumnByName("FTEMP_FilterRules")}
-              componentFunction={this.detailsActionHandlers}
-              gridData={this.state.rules}
-              totalRecords={this.state.rules.length}
-            />
+
+          <Portlet title={utils.getLabelByID("FTEMP_filterRules")} >
+            <Row>
+              <Col col="3">
+                <Label text="field" columns="3"></Label>
+                <Combobox fieldname='field' formname='routing' columns='9' style={{}}
+                  state={this.state} typeName="options"
+                  dataSource={(() => {
+                    let options = [];
+                    this.state.fields.map(item => {
+                      options.push({ label: item.fieldName, value: item.fieldName });
+                    });
+                    return { options };
+                  })()} multiple={false} actionHandler={this.generalHandler} />
+              </Col>
+              <Col col="3">
+                <Label text="op." columns="3"></Label>
+                <Combobox fieldname='option' formname='routing' columns='9' style={{}}
+                  state={this.state} typeName="options"
+                  dataSource={(() => {
+                    let options = [];
+                    options.push({ label: '==', value: '==' });
+                    options.push({ label: 'Regexp', value: 'Regexp' });
+                    return { options };
+                  })()} multiple={false} actionHandler={this.generalHandler} />
+              </Col>
+              <Col col="3">
+                <Label text="value" columns="3"></Label>
+                <Input fieldname='value' formname='routing' state={this.state}
+                  columns='9' style={{}} actionHandler={this.generalHandler} />
+              </Col>
+              <Col col="3">
+                <Label text="Then" columns="3"></Label>
+                <Combobox fieldname='API' formname='routing' columns='9' style={{}}
+                  state={this.state} typeName="ApiList"
+                  dataSource={this.props.containerState} multiple={false} actionHandler={this.generalHandler} />
+              </Col>
+              <Col col="3">
+                <Label text="Name" columns="3"></Label>
+                <Input fieldname='ruleName' formname='routing' state={this.state}
+                  columns='9' style={{}} actionHandler={this.generalHandler} />
+              </Col>
+              <Col col="3">
+                <Label text="Custom" columns="3"></Label>
+                <Input fieldname='transformFunction' formname='routing' state={this.state}
+                  columns='9' style={{}} actionHandler={this.generalHandler} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div className="col-md-12">
+                  <div className="btn-toolbar pull-right">
+                    <a className="btn btn-default" href="javascript:;" onClick={this.addRouting.bind(this)}>{utils.getLabelByID("Add Routing")} </a>
+                  </div>
+                </div>
+                <Col col="12">
+                  <Table
+                    pagination={false}
+                    export={false}
+                    search={false}
+                    gridColumns={utils.getGridColumnByName("FTEMP_FilterRules")}
+                    componentFunction={this.ActionHandlersRules}
+                    gridData={this.state.rulesList}
+                    totalRecords={this.state.rules.length}
+                  />
+                </Col>
+              </Col>
+            </Row>
           </Portlet>
+
+
+
           <div className="clearfix">
             <ActionButton actionList={containerState.fileTemplateDetail.actions}
-                          performAction={this.performAction}
-                          submitting={submitting} pristine={pristine}/>
+              performAction={this.performAction}
+              submitting={submitting} pristine={pristine} />
             {/*<button type="submit" className="pull-right btn green" disabled={submitting}>*/}
             {/*Submit*/}
             {/*</button>*/}

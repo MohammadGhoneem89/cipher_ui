@@ -187,8 +187,9 @@ export const Input = (props) => (
 
 
 export const CheckboxInput = ({name, label, disabled, type, style}) => {
-    return (<label className="mt-checkbox mt-checkbox-outline" style={{marginBottom: "0", marginTop: "20px"}}>
-        <label>{label}</label>
+    return (
+    <span className="mt-checkbox mt-checkbox-single mt-checkbox-outline" style={{ marginTop: "38px"}}>
+        <label style={{ paddingTop: "0px"}}>{label}</label>
         <Field
             name={name}
             type={type}
@@ -197,12 +198,12 @@ export const CheckboxInput = ({name, label, disabled, type, style}) => {
             disabled={disabled}
         />
         <span/>
-    </label>);
+    </span>);
 };
 
 export const CheckboxList = ({children}) => {
     return (<div className="form-group">
-        <div className="icheck-list">
+        <div className="">
             {children}
         </div>
     </div>)
