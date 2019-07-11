@@ -276,7 +276,7 @@ class DispatchQueue extends React.Component {
                             </div>
                         </div>
                     </div>
-
+                    {console.log(this.props.DispatchQueueData.data.searchResult)}
                     <Portlet title={utils.getLabelByID("DispatchQueue")} isPermissioned={true}>
                         <Table componentFunction={this.ActionHandlers} fontclass="" gridColumns={utils.getGridColumnByName("DispatchQueueData")} gridData={this.props.DispatchQueueData.data.searchResult}
                             totalRecords={this.props.DispatchQueueData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}

@@ -44,7 +44,7 @@ module.exports = {
     { alias: "Return Proof", key: "actions", type: "action" }
   ],
   orderList: [
-    {alias: "", key: "orderNumber", type: "hiddenID"},
+    { alias: "", key: "orderNumber", type: "hiddenID" },
     { alias: "Order #", key: "orderNumber", type: "string" },
     { alias: "HAWB #", key: "hawbNumber", type: "string" },
     { alias: "Order Date", key: "orderDate", type: "string" },
@@ -54,5 +54,22 @@ module.exports = {
     { alias: "Status", key: "orderStatus", type: "string" },
     { alias: "Action", key: "actions", type: "action" },
 
-  ]
+  ],
+  fileList: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "", key: "id", type: "hiddenID" },
+    { alias: "File Name", key: "name", type: "string" },
+    { alias: "Path", key: "path", type: "string" },
+    { alias: "Action", key: "action", type: "action" },
+  ],
+  fileData: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "", key: "id", type: "hiddenID" },
+    { alias: "Column 1", key: "column1", type: "string" },
+    { alias: "Column 2", key: "column2", type: "string" },
+    { alias: "Column 3", key: "column3", type: "string" },
+    { alias: "Status", key: "status", type: "statusBox" },
+    { alias: "Error", key: "error", type: "string" },
+    { alias: "Action", key: "action", type: "action" },
+  ],
 };

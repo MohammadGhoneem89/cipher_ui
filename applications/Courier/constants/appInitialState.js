@@ -184,23 +184,27 @@ export default {
     "returnItems": [{
       "description": "Perfume",
       "quantity": "5",
-      "statQuantity":"1000ml",
-      "statUOM":"Box",
-      "returnQty":"2",
-      "returnStatQuantity":"250ml",
-      "oldHAWBNumber":"1546468494",
-      "exportDeclarationNo":"4654949",
-      "newAWB":"9992",
-      "importDeclarationNo":"59876516",
+      "statQuantity": "1000ml",
+      "statUOM": "Box",
+      "returnQty": "2",
+      "returnStatQuantity": "250ml",
+      "oldHAWBNumber": "1546468494",
+      "exportDeclarationNo": "4654949",
+      "newAWB": "9992",
+      "importDeclarationNo": "59876516",
       "proofOfDeliveryHash": "",
       "deliveryImagePath": "data:image/png;base64,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",
       "deliveryToPersonName": "Arham",
-      "date":"10/10/2019"
+      "date": "10/10/2019"
     }]
   },
   "getDashboardData": {
     "action": "getDashboardData",
     "data": {}
   },
-  "orderlist": {}
+  "orderlist": {},
+  "getFileList": {
+    "action": "getFileList",
+    "data": {}
+  }
 }

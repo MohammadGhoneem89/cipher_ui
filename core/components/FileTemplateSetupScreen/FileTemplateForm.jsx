@@ -20,7 +20,7 @@ import * as gen from '../../common/generalActionHandler'
 
 const TemplateDetails = ({ error, initialValues, containerState, updateState, state, generalHandler }) => {
   return (
-    <Portlet title={utils.getLabelByID("TemplateDetails")} className={"portlet light"}>
+    <Portlet title={utils.getLabelByID("Template Details")} className={"portlet light"}>
       <div className="row">
         <div className="col-md-6 col-sm-6">
           <TextInput name="templateName"
