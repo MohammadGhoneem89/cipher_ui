@@ -60,6 +60,7 @@ module.exports = {
     { alias: "", key: "id", type: "hiddenID" },
     { alias: "Path", key: "path", type: "string" },
     { alias: "File Name", key: "name", type: "string" },
+    { alias: "Date", key: "dateEpoch", type: "epochDate" },
     { alias: "Action", key: "action", type: "action" },
   ],
   fileData: [
