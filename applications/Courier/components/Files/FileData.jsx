@@ -101,33 +101,42 @@ class FileData extends React.Component {
 
             fileData.forEach((element, index) => {
 
-                let elmt = {}
-
-                if(element.body) {
-                    elmt = _.clone(element.body)
+                if (element.filerow.body) {
+                    if( Object.entries(element.filerow.body)[0]) {
+                        let entry = Object.entries(element.filerow.body)[0]
+                        fileData[index].column1 = entry[0] + " : " + entry[1]
+                    }
                 }
-                else {
-                    elmt = _.clone(element)
-                }
-
-                if (Object.entries(elmt.filerow)[0]) {
-                    let entry = Object.entries(elmt.filerow)[0]
+                else if (Object.entries(element.filerow)[0]) {
+                    let entry = Object.entries(element.filerow)[0]
                     fileData[index].column1 = entry[0] + " : " + entry[1]
                 }
                 else {
                     fileData[index].column1 = ""
                 }
 
-                if (Object.entries(elmt.filerow)[1]) {
-                    let entry = Object.entries(elmt.filerow)[1]
+                if (element.filerow.body) {
+                    if( Object.entries(element.filerow.body)[1]) {
+                        let entry = Object.entries(element.filerow.body)[1]
+                        fileData[index].column2 = entry[0] + " : " + entry[1]
+                    }
+                }
+                else if (Object.entries(element.filerow)[1]) {
+                    let entry = Object.entries(element.filerow)[1]
                     fileData[index].column2 = entry[0] + " : " + entry[1]
                 }
                 else {
                     fileData[index].column2 = ""
                 }
 
-                if (Object.entries(elmt.filerow)[2]) {
-                    let entry = Object.entries(elmt.filerow)[2]
+                if (element.filerow.body) {
+                    if( Object.entries(element.filerow.body)[2]) {
+                        let entry = Object.entries(element.filerow.body)[2]
+                        fileData[index].column3 = entry[0] + " : " + entry[1]
+                    }
+                }
+                else if (Object.entries(element.filerow)[2]) {
+                    let entry = Object.entries(element.filerow)[2]
                     fileData[index].column3 = entry[0] + " : " + entry[1]
                 }
                 else {
