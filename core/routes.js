@@ -32,7 +32,7 @@ import HealthMonitor from './components/HealthMonitor.jsx';
 import ApplicationsRoute from '../applications/routesIndex';
 import Locked from './components/AuthenticationScreens/Locked.jsx';
 import FileTemplateSearch from './components/FileTemplateSearchScreen/FileTemplateSearchContainer.jsx';
-import FileTemplateSetup from './components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx';
+// import FileTemplateSetup from './components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx';
 import CommissionTemplateSearch from './components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
 import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
 import AuditLogList from './components/AuditLogScreen/auditLogList.jsx';
@@ -126,8 +126,8 @@ export default (
       <Route path="/auditLogList" component={AuditLogList} />
       <Route path="/healthMonitor" component={HealthMonitor} />
       <Route path="/fileTemplateSearch" component={FileTemplateSearch} />
-      <Route path="/fileTemplateSetup" component={FileTemplateSetup} />
-      <Route path="/fileTemplateSetup/edit/:fileTemplateID" component={FileTemplateSetup} />
+      {/* <Route path="/fileTemplateSetup" component={FileTemplateSetup} /> */}
+      {/* <Route path="/fileTemplateSetup/edit/:fileTemplateID" component={FileTemplateSetup} /> */}
       <Route path="/commissionTemplateSearch" component={CommissionTemplateSearch} />
       <Route path="/commissionTemplateSetup" component={CommissionTemplateSetup} />
       <Route path="/commissionTemplateSetup/edit/:commissionTemplateID" component={CommissionTemplateSetup} />

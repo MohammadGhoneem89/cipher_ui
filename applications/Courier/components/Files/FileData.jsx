@@ -32,7 +32,10 @@ class FileData extends React.Component {
             isLoading: true,
             fileDetails: undefined,
             fileData: undefined,
-            searchCriteria: undefined,
+            searchCriteria: {
+                status: undefined,
+                rulename: undefined
+            },
             pageData: undefined,
             isOpen: false,
             modalData: undefined,
@@ -175,7 +178,7 @@ class FileData extends React.Component {
             case "Processed":
                 return [3]
             default:
-                return [0]
+                return undefined
         }
     }
 
@@ -186,7 +189,8 @@ class FileData extends React.Component {
                 this.setState({
                     isOpen: true,
                     modalData: this.state.fileDataUnchanged[index].filerow,
-                    modalRawData: this.state.fileDataUnchanged[index].row
+                    modalRawData: this.state.fileDataUnchanged[index].row,
+                    modalError: this.state.fileDataUnchanged[index].error
                 })
                 break;
                 // case "ReQueue":
@@ -213,16 +217,25 @@ class FileData extends React.Component {
     }
 
     search = () => {
+
         this.props.actions.generalProcess(constants.fileData, {
             "id": this.props.params.id,
             "searchCriteria": {
-                status: this.getStatusCode(this.state.searchCriteria.status)
+                status: this.getStatusCode(this.state.searchCriteria.status ? this.state.searchCriteria.status : undefined),
+                rulename: this.state.searchCriteria.rulename ? this.state.searchCriteria.rulename : undefined
             },
             "page": {
                 "pageSize": 10,
                 "currentPageNo": 1
             }
         });
+
+        this.setState({
+            searchCriteria: {
+                status: undefined,
+                rulename: undefined
+            },
+        })
     }
 
 
@@ -241,12 +254,18 @@ class FileData extends React.Component {
                                 <pre style={{ textAlign: "left" }}> <ReactJson src={this.state.modalRawData} /></pre>
                             </Row>
                             <Row>
-                                <Label text="After Transformation" />
+                                <Label text="After Transformation" style={{ textAlign: "left" }} />
                             </Row>
                             <Row>
                                 <pre style={{ textAlign: "left" }}> <ReactJson src={this.state.modalData} /></pre>
                             </Row>
                             <Row>
+                                <Label text="Error" style={{ textAlign: "left" }} />
+                            </Row>
+                            <Row>
+                                <pre style={{ textAlign: "left" }}> <p>{this.state.modalError}</p></pre>
+                            </Row>
+                            <Row>
                                 <div className="form-actions right">
                                     <div className="form-group col-md-12">
                                         <div className="btn-toolbar pull-right">
@@ -255,31 +274,6 @@ class FileData extends React.Component {
                                     </div>
                                 </div>
                             </Row>
-                            {/* <div className="row" >
-                                <div className="col-md-12">
-                                    <div className="form-group col-md-12">
-                                        <label className="control-label">{utils.getLabelByID("Event Data")}</label>
-                                    </div>
-                                    <div className="form-group col-md-12">
-                                        <pre> <ReactJson src={this.state.showdata} /></pre>
-                                    </div>
-                                    <div className="form-group col-md-12">
-                                        <label className="control-label">{utils.getLabelByID("Reponse")}</label>
-                                    </div>
-                                    <div className="form-group col-md-12">
-                                        <pre> <ReactJson src={this.state.response} /></pre>
-                                    </div>
-                                </div>
-                                <div className="form-actions right">
-                                    <div className="form-group col-md-12">
-                                        <div className="btn-toolbar pull-right">
-
-
-                                            <button type="button" className="btn btn-default" onClick={this.closePopUP} >{utils.getLabelByID("Close")}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
                         </Portlet>
                     </ModalBox>
                     <Wrapper title="File Details" identity={this.state.fileDetails[0].name}>
@@ -295,8 +289,16 @@ class FileData extends React.Component {
                                         dataSource={this.state.typeData} multiple={false} actionHandler={this.generalHandler} />
                                 </Col>
                                 <Col col="6">
-                                    <div className="form-group col-md-12">
-                                        <div className="btn-toolbar pull-left">
+                                    <Label text="Rule Name:" columns='3' />
+                                    <Input fieldname='rulename' formname='searchCriteria' columns='8' style={{}}
+                                        state={this.state} actionHandler={this.generalActionHandler} />
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col col="6"></Col>
+                                <Col col="6">
+                                    <div className="form-group col-md-11">
+                                        <div className="btn-toolbar pull-right">
                                             <button type="button" className="btn default" onClick={this.search}>{'Search'}</button>
                                         </div>
                                     </div>

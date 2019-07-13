@@ -19,6 +19,7 @@ import * as utils from '../../common/utils.js';
 import DateControl from '../../../../core/common/DateControl.jsx';
 import * as constants from '../../constants/appCommunication.js';
 import * as gen from '../../common/generalActionHandler'
+import Document from '../../common/Document.jsx'
 
 class FileList extends React.Component {
     constructor(props) {
@@ -27,10 +28,13 @@ class FileList extends React.Component {
             isLoading: true,
             fileList: undefined,
             searchCriteria: undefined,
-            pageData: undefined
+            pageData: undefined,
+            documents: [],
         }
         this.generalActionHandler = gen.generalHandler.bind(this);
         this.pageChanged = this.pageChanged.bind(this);
+        this.fromDate = this.fromDate.bind(this);
+        this.toDate = this.toDate.bind(this);
     }
 
     componentDidMount() {
@@ -46,7 +50,7 @@ class FileList extends React.Component {
         console.log("pageNo", pageNo)
         if (pageNo != undefined) {
             var request = "";
-            if (this.state.searchFilters == undefined) {
+            if (this.state.searchCriteria == undefined) {
                 request = {
                     "page": {
                         "currentPageNo": pageNo,
@@ -55,7 +59,7 @@ class FileList extends React.Component {
                 }
             }
             else {
-                var searchCriteria = this.state.searchCriteria
+                var searchCriteria = _.clone(this.state.searchCriteria)
                 request = {
                     searchCriteria,
                     "page": {
@@ -97,10 +101,9 @@ class FileList extends React.Component {
     }
 
     search = () => {
+        let searchCriteria = _.clone(this.state.searchCriteria)
         this.props.actions.generalProcess(constants.fileList, {
-            "searchCriteria": {
-                filename: this.state.searchCriteria.filename
-            },
+            searchCriteria,
             "page": {
                 "pageSize": 10,
                 "currentPageNo": 1
@@ -108,8 +111,28 @@ class FileList extends React.Component {
         });
     }
 
-    addStream = () => {
-        this.props.history.push('/etisalat/addStream')
+    getParentState = () => {
+        return this.state
+    }
+
+    updateState = (data) => {
+        this.setState(data);
+    }
+
+    fromDate(date) {
+        let searchCriteria = _.clone(this.state.searchCriteria)
+        searchCriteria.fromDate = date
+        this.setState({
+            searchCriteria
+        })
+    }
+
+    toDate(date) {
+        let searchCriteria = _.clone(this.state.searchCriteria)
+        searchCriteria.toDate = date
+        this.setState({
+            searchCriteria
+        })
     }
 
     render() {
@@ -119,13 +142,27 @@ class FileList extends React.Component {
                 <Wrapper title="Files">
                     <Row>
                         <Col col="6">
+                            <Label text="From Date:" columns='3' />
+                            <Col col="8">
+                                <DateControl id="fromECD" dateChange={this.fromDate} />
+                            </Col>
+                        </Col>
+                        <Col col="6">
+                            <Label text="To Date:" columns='3' />
+                            <Col col="8">
+                                <DateControl id="toECD" dateChange={this.toDate} />
+                            </Col>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col col="6">
                             <Label text="File Name:" columns='3' />
                             <Input fieldname='filename' formname='searchCriteria' columns='8' style={{}}
                                 state={this.state} actionHandler={this.generalActionHandler} />
                         </Col>
                         <Col col="6">
-                            <div className="form-group col-md-12">
-                                <div className="btn-toolbar pull-left">
+                            <div className="form-group col-md-11">
+                                <div className="btn-toolbar pull-right">
                                     <button type="button" className="btn default" onClick={this.search}>{'Search'}</button>
                                 </div>
                             </div>
@@ -145,6 +182,12 @@ class FileList extends React.Component {
                             pageChanged={this.pageChanged}
                             activePage={this.state.pageData.currentPageNo}
                         />
+                    </Row>
+                    <Row>
+                        <h3><Label text="Upload Files" style={{ textAlign: "left" }} /></h3>
+                    </Row>
+                    <Row>
+                        <Document initState={this.state} updateState={this.updateState} getParentState={this.getParentState} allowedFileType=".xml , .csv , .xls" acceptedFiles="Files to be uploaded with extention *.xml, *.xls or *.csv" />
                     </Row>
                 </Wrapper>
             )
