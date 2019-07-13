@@ -17,7 +17,7 @@ const FieldMappingForm = props => {
         }
     ];
     return (
-        <Portlet title={utils.getLabelByID("MAU_mapField")} actions={mapFieldActions} noCollapse={true}>
+        <Portlet title={utils.getLabelByID("MapField")} actions={mapFieldActions} noCollapse={true}>
             <form autoComplete="off" role="form" onSubmit={handleSubmit}>
                 <div className="col-md-4 col-sm-4">
 

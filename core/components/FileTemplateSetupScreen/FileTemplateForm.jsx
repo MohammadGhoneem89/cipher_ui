@@ -437,7 +437,7 @@ class FileTemplateForm extends React.Component {
                   <div className="btn-toolbar pull-right">
                     <a className="btn btn-default" href="javascript:;" onClick={this.addMapping.bind(this)}>{utils.getLabelByID("Add Mapping")} </a>
                   </div>
-                </div>
+                </div>E
                 <Col col="12">
                   <Table
                     pagination={false}
