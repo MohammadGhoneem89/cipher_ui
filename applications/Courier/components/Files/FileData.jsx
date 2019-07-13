@@ -101,24 +101,33 @@ class FileData extends React.Component {
 
             fileData.forEach((element, index) => {
 
-                if (Object.entries(element.filerow)[0]) {
-                    let entry = Object.entries(element.filerow)[0]
+                let elmt = {}
+
+                if(element.body) {
+                    elmt = _.clone(element.body)
+                }
+                else {
+                    elmt = _.clone(element)
+                }
+
+                if (Object.entries(elmt.filerow)[0]) {
+                    let entry = Object.entries(elmt.filerow)[0]
                     fileData[index].column1 = entry[0] + " : " + entry[1]
                 }
                 else {
                     fileData[index].column1 = ""
                 }
 
-                if (Object.entries(element.filerow)[1]) {
-                    let entry = Object.entries(element.filerow)[1]
+                if (Object.entries(elmt.filerow)[1]) {
+                    let entry = Object.entries(elmt.filerow)[1]
                     fileData[index].column2 = entry[0] + " : " + entry[1]
                 }
                 else {
                     fileData[index].column2 = ""
                 }
 
-                if (Object.entries(element.filerow)[2]) {
-                    let entry = Object.entries(element.filerow)[2]
+                if (Object.entries(elmt.filerow)[2]) {
+                    let entry = Object.entries(elmt.filerow)[2]
                     fileData[index].column3 = entry[0] + " : " + entry[1]
                 }
                 else {
