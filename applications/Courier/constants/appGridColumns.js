@@ -70,9 +70,7 @@ module.exports = {
     { alias: "Column 1", key: "column1", type: "string" },
     { alias: "Column 2", key: "column2", type: "string" },
     { alias: "Column 3", key: "column3", type: "string" },
-    { alias: "Rule Name", key: "rulename", type: "string" },
     { alias: "Status", key: "status", type: "statusBox" },
-    // { alias: "Error", key: "error", type: "string" },
     { alias: "Action", key: "action", type: "action" },
   ],
 };
