@@ -136,15 +136,15 @@ class OrderDetailsContainer extends React.Component {
       ]
     };
 
-    this.ActionHandlers = this.ActionHandlers.bind(this);
     this.DeliveryProofHandler = this.DeliveryProofHandler.bind(this);
+    this.ReturnProofHandler = this.ReturnProofHandler.bind(this);
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
 
     let request = {
-      "internalid": 138
+      "internalid": this.props.params.id
     }
 
     this.props.actions.generalProcess(constants.orderDetails, request);
@@ -159,8 +159,9 @@ class OrderDetailsContainer extends React.Component {
 
     if (nextProps.orderDetails) {
       let lineItems = nextProps.orderDetails.tranxData.lineItems;
-      let exportHAWB = nextProps.orderDetails.tranxData.ExportHAWBList
-
+      let returnItems = nextProps.orderDetails.tranxData.returnItems;
+      let exportHAWB = nextProps.orderDetails.tranxData.ExportHAWBList;
+      let importHAWB = nextProps.orderDetails.tranxData.ImportHAWBList;
 
       lineItems.map((item, index) => {
 
@@ -177,9 +178,34 @@ class OrderDetailsContainer extends React.Component {
         })
       })
 
+      returnItems.map((item, index) => {
+
+        importHAWB.forEach((hawb) => {
+          if (hawb.isDelivered && hawb.HAWBNumber == item.newAWB) {
+            returnItems[index].actions = [{ "actionType": "COMPONENT_FUNCTION", iconName: "fa fa-eye", label: "View" }]
+            returnItems[index].returnProof = {
+              HAWBImagePath: hawb.HAWBImagePath,
+              deliveryToPersonName: hawb.deliveryToPersonName,
+              deliveryDate: hawb.deliveryDate
+            }
+            return;
+          }
+        })
+      })
+
       stateCopy.isLoading = false;
-      stateCopy.orderDetails = nextProps.orderDetails
+      stateCopy.orderDetails = nextProps.orderDetails;
       stateCopy.lineItems = lineItems;
+      stateCopy.returnItems = returnItems;
+
+      if (stateCopy.orderDetails.tranxData.orderStatus == 'HAWBCREATED' && _.get(stateCopy.orderDetails.tranxData, "exportDeclaration[0]", undefined) != undefined) {
+        stateCopy.orderDetails.tranxData.orderStatus = 'EXPORTCLEARED'
+        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][3].label = stateCopy.orderDetails.tranxData.exportDeclaration[0].status
+      }
+      else if ((stateCopy.orderDetails.tranxData.orderStatus == 'UNDELIVERED' || stateCopy.orderDetails.tranxData.orderStatus == 'RETURNBYCUSTOMER') && _.get(stateCopy.orderDetails.tranxData, "importDeclaration[0]", undefined) != undefined) {
+        stateCopy.orderDetails.tranxData.orderStatus = 'IMPORTCLEARED'
+        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][3].label = stateCopy.orderDetails.tranxData.exportDeclaration[0].status
+      }
 
       if (stateCopy.orgDetailByCode == undefined) {
         this.props.actions.generalProcess(constants.orgDetailByCode, { "orgCode": [stateCopy.orderDetails.tranxData.eCommerceOrgCode, stateCopy.orderDetails.tranxData.courierOrgCode] });
@@ -189,25 +215,24 @@ class OrderDetailsContainer extends React.Component {
     this.setState(stateCopy)
   }
 
-  ActionHandlers({ actionName, index }) {
+  ReturnProofHandler({ actionName, index }) {
     switch (actionName) {
-      case "viewData":
-        let data = this.props.orderDetails.returnItems[index];
-        let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.HAWBImagePath, date: data.deliveryDate };
+      case "View":
+        let data = this.state.returnItems[index].returnProof;
+        let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.deliveryImagePath, date: data.deliveryDate };
         this.setState({ showData, modalIsOpen: true });
-
         break;
       default:
         break;
     }
   }
+
   DeliveryProofHandler({ actionName, index }) {
     switch (actionName) {
       case "View":
         let data = this.state.lineItems[index].deliveryProof;
         let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.deliveryImagePath, date: data.deliveryDate };
         this.setState({ showData, modalIsOpen: true });
-
         break;
       default:
         break;
@@ -295,12 +320,12 @@ class OrderDetailsContainer extends React.Component {
                       <h4 className="bold">E-commerce</h4>
                     </div>
                     {console.log(this.state.orgDetailByCode)}
-                    <div><img src={_.get(this.state.orgDetailByCode,`${this.state.orderDetails.tranxData.eCommerceOrgCode}.sizeMedium`,"")} width="10%" /></div>
+                    <div><img src={_.get(this.state.orgDetailByCode, `${this.state.orderDetails.tranxData.eCommerceOrgCode}.sizeMedium`, "")} width="10%" /></div>
                     <span className="bold">{this.state.orderDetails.tranxData.eCommerceOrgCode}</span>
                   </div>
                   <div className="col-md-6 text-center">
                     <div><h4 className="bold">Courier Company</h4></div>
-                    <div><img src={_.get(this.state.orgDetailByCode,`${this.state.orderDetails.tranxData.courierOrgCode}.sizeMedium`,"")} width="10%" /></div>
+                    <div><img src={_.get(this.state.orgDetailByCode, `${this.state.orderDetails.tranxData.courierOrgCode}.sizeMedium`, "")} width="10%" /></div>
                     <span className="bold">{this.state.orderDetails.tranxData.courierOrgCode}</span>
                   </div>
                 </div>
@@ -325,19 +350,30 @@ class OrderDetailsContainer extends React.Component {
                   </div>
                   <div className="col-md-5">
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine1}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine1}</label>
+                      </div>
+
                     </div>
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine2}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine2}</label>
+                      </div>
                     </div>
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.soldToAddress.POBox}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.soldToAddress.POBox}</label>
+                      </div>
                     </div>
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.soldToAddress.city}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.soldToAddress.city}</label>
+                      </div>
                     </div>
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -360,19 +396,29 @@ class OrderDetailsContainer extends React.Component {
                   </div>
                   <div className="col-md-5">
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.billToAddress.addressLine1}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.billToAddress.addressLine1}</label>
+                      </div>
                     </div>
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.billToAddress.addressLine2}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.billToAddress.addressLine2}</label>
+                      </div>
                     </div>
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.billToAddress.POBox}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.billToAddress.POBox}</label>
+                      </div>
                     </div>
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.billToAddress.city}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.billToAddress.city}</label>
+                      </div>
                     </div>
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.billToAddress.country}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.billToAddress.country}</label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -395,19 +441,29 @@ class OrderDetailsContainer extends React.Component {
                   </div>
                   <div className="col-md-5">
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine1}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine1}</label>
+                      </div>
                     </div>
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine2}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine2}</label>
+                      </div>
                     </div>
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.shipToAddress.POBox}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.shipToAddress.POBox}</label>
+                      </div>
                     </div>
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.shipToAddress.city}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.shipToAddress.city}</label>
+                      </div>
                     </div>
                     <div className="row">
-                      <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                      <div className="col-md-12">
+                        <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -658,7 +714,7 @@ class OrderDetailsContainer extends React.Component {
                               <label className="bold">Clearnce status </label>
                             </div>
                             <div className="col-md-2">
-                              <label>{item.clearanceStatus}</label>
+                              <label>{item.status}</label>
                             </div>
                           </div>
                         </div>
@@ -683,10 +739,10 @@ class OrderDetailsContainer extends React.Component {
                               <label>{item.declType}</label>
                             </div>
                             <div className="col-md-2">
-                              <label className="bold">Export Code Misal 2</label>
+                              <label className="bold">Export Code Mirsal 2</label>
                             </div>
                             <div className="col-md-2">
-                              <label>{item.exceptionCode}</label>
+                              <label>{item.exporterMirsal2Code}</label>
                             </div>
                           </div>
                         </div>
@@ -741,17 +797,8 @@ class OrderDetailsContainer extends React.Component {
                   <div id="ReturnDetails" className="tab-pane">
                     <div className="row">
                       <div className="col-md-12">
-                        {(() => {
-                          this.state.orderDetails.tranxData.returnItems.map((item) => {
-                            item.actions = [{
-                              label: "viewData",
-                              iconName: "fa fa-eye",
-                              actionType: "COMPONENT_FUNCTION"
-                            }];
-                          });
-                        })()}
                         <Table
-                          componentFunction={this.ActionHandlers}
+                          componentFunction={this.ReturnProofHandler}
                           pagination={false}
                           export={false}
                           search={false}

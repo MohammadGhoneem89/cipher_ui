@@ -6,9 +6,9 @@ let baseUrl = backOffices.baseUrl;
 module.exports = {
   getEndToEndTrackingData: baseUrl + "/API/courier/getEndToEndTrackingData",
   getDashboardData: baseUrl + "/API/customs-courier/getDashboardData",
-  orderlist: baseUrl + "/API/customs_courier/orderlist",
+  orderlist: baseUrl + "/API/customs-courier/getOrderList",
   fileList: baseUrl + "/API/customs-courier/getFileList",
   fileData: baseUrl + "/API/customs-courier/getFileData",
-  orderDetails: baseUrl + "/API/customs-courier/getOrderDetails",
+  orderDetails: baseUrl + "/API/customs-courier/getEndToEndTrackingData",
   orgDetailByCode: baseUrl + "/API/UI/orgDetailByCode"
 };
