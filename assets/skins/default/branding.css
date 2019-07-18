@@ -2887,7 +2887,7 @@ label.errorcolr {
 	color: rgb(51, 51, 51);
 	text-transform: uppercase;
 	font-size: 12px;
-	width: 25%;
+	/* width: 25%; */
 	float: left;
 	position: relative;
 	font-weight: 800;
@@ -2926,6 +2926,11 @@ label.errorcolr {
 
 #progressbar li.active:before {
 	background: #00ae4f;
+	color: white;
+}
+
+#progressbar li.warning:before {
+	background: #e80202;
 	color: white;
 }
 

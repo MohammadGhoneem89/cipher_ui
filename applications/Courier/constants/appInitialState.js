@@ -206,5 +206,10 @@ export default {
   "getFileList": {
     "action": "getFileList",
     "data": {}
-  }
+  },
+  "getOrderDetails": {
+    "action": "getOrderDetails",
+    "data": {}
+  },
+  "orgDetailByCode": undefined
 }

@@ -1,9 +1,9 @@
 /*standard imports*/
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import _ from 'lodash';
-import {browserHistory} from 'react-router';
+import { browserHistory } from 'react-router';
 import unescapejs from 'unescape-js';
 import ShadowBox from '../../common/ShadowBox.jsx'
 // import Steps from '../../../../core/common/Steps.jsx';
@@ -15,62 +15,222 @@ import Portlet from '../../../../core/common/Portlet.jsx';
 import * as toaster from '../../../../core/common/toaster.js';
 import * as requestCreator from '../../../../core/common/request.js';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
+import moment from 'moment'
 
 class OrderDetailsContainer extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,
+      isLoading: true,
       modalIsOpen: false,
       gridData: [],
       typeData: [],
-      showData: {}
+      showData: {},
+      orderDetails: undefined,
+      lineItems: undefined,
+      orgDetailByCode: {},
+      statusList: [
+        [
+          {
+            "label": "Finalized",
+            "status": false,
+            "type": "SUCCESS",
+            "legend": "Finalized"
+          },
+          {
+            "label": "HAWB Created",
+            "status": true,
+            "type": "SUCCESS",
+            "legend": "HAWB Created"
+          },
+          {
+            "label": "Cleared",
+            "status": false,
+            "type": "SUCCESS",
+            "legend": "ExportCleared"
+          },
+          {
+            "label": "Delivered",
+            "status": true,
+            "type": "SUCCESS",
+            "legend": "Delivered"
+          }
+        ],
+        [
+          {
+            "label": "Finalized",
+            "status": false,
+            "type": "SUCCESS",
+            "legend": "Finalized"
+          },
+          {
+            "label": "HAWB Created",
+            "status": true,
+            "type": "SUCCESS",
+            "legend": "HAWB Created"
+          },
+          {
+            "label": "Cleared",
+            "status": false,
+            "type": "SUCCESS",
+            "legend": "ExportCleared"
+          },
+          {
+            "label": "Undelivered",
+            "status": true,
+            "type": "SUCCESS",
+            "legend": "Undelivered"
+          },
+          {
+            "label": "Cleared",
+            "status": false,
+            "type": "SUCCESS",
+            "legend": "ImportCleared"
+          },
+          {
+            "label": "Full Return",
+            "status": true,
+            "type": "SUCCESS",
+            "legend": "FullReturn"
+          }
+        ],
+        [
+          {
+            "label": "Finalized",
+            "status": false,
+            "type": "SUCCESS",
+            "legend": "Finalized"
+          },
+          {
+            "label": "HAWB Created",
+            "status": true,
+            "type": "SUCCESS",
+            "legend": "HAWB Created"
+          },
+          {
+            "label": "Cleared",
+            "status": false,
+            "type": "SUCCESS",
+            "legend": "ExportCleared"
+          },
+          {
+            "label": "Return By Customer",
+            "status": true,
+            "type": "SUCCESS",
+            "legend": "ReturnByCustomer"
+          },
+          {
+            "label": "Cleared",
+            "status": false,
+            "type": "SUCCESS",
+            "legend": "ImportCleared"
+          },
+          {
+            "label": "Partial Return",
+            "status": true,
+            "type": "SUCCESS",
+            "legend": "PartialReturn"
+          }
+        ]
+      ]
     };
 
     this.ActionHandlers = this.ActionHandlers.bind(this);
+    this.DeliveryProofHandler = this.DeliveryProofHandler.bind(this);
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
 
+    let request = {
+      "internalid": 138
+    }
+
+    this.props.actions.generalProcess(constants.orderDetails, request);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.orderDetails) {
-      this.setState({isLoading: false});
+    let stateCopy = _.clone(this.state)
+
+    if (nextProps.orgDetailByCode) {
+      stateCopy.orgDetailByCode = nextProps.orgDetailByCode
     }
+
+    if (nextProps.orderDetails) {
+      let lineItems = nextProps.orderDetails.tranxData.lineItems;
+      let exportHAWB = nextProps.orderDetails.tranxData.ExportHAWBList
+
+
+      lineItems.map((item, index) => {
+
+        exportHAWB.forEach((hawb) => {
+          if (hawb.isDelivered && hawb.HAWBNumber == item.HAWBNumber) {
+            lineItems[index].actions = [{ "actionType": "COMPONENT_FUNCTION", iconName: "fa fa-eye", label: "View" }]
+            lineItems[index].deliveryProof = {
+              HAWBImagePath: hawb.HAWBImagePath,
+              deliveryToPersonName: hawb.deliveryToPersonName,
+              deliveryDate: hawb.deliveryDate
+            }
+            return;
+          }
+        })
+      })
+
+      stateCopy.isLoading = false;
+      stateCopy.orderDetails = nextProps.orderDetails
+      stateCopy.lineItems = lineItems;
+
+      if (stateCopy.orgDetailByCode == undefined) {
+        this.props.actions.generalProcess(constants.orgDetailByCode, { "orgCode": [stateCopy.orderDetails.tranxData.eCommerceOrgCode, stateCopy.orderDetails.tranxData.courierOrgCode] });
+      }
+    }
+
+    this.setState(stateCopy)
   }
 
-  ActionHandlers({actionName, index}) {
+  ActionHandlers({ actionName, index }) {
     switch (actionName) {
       case "viewData":
         let data = this.props.orderDetails.returnItems[index];
-        let showData = {deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.deliveryImagePath, date: data.date};
-        this.setState({showData, modalIsOpen: true});
+        let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.HAWBImagePath, date: data.deliveryDate };
+        this.setState({ showData, modalIsOpen: true });
 
         break;
       default:
         break;
     }
   }
-  updateState(data){
+  DeliveryProofHandler({ actionName, index }) {
+    switch (actionName) {
+      case "View":
+        let data = this.state.lineItems[index].deliveryProof;
+        let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.deliveryImagePath, date: data.deliveryDate };
+        this.setState({ showData, modalIsOpen: true });
+
+        break;
+      default:
+        break;
+    }
+  }
+  updateState(data) {
     this.setState(data);
   }
 
   render() {
-    let orderDetails = this.props.orderDetails;
+    console.log("state", this.state)
     let modalActions = [
       {
         type: "icon",
         className: "btn btn-default",
         label: "ADD",
         icon: "close",
-        actionHandler: this.updateState.bind(this, {modalIsOpen: false})
+        actionHandler: this.updateState.bind(this, { modalIsOpen: false })
       }
     ];
     if (this.state.isLoading)
       return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
+
     return (
       <div>
         <ModalBox isOpen={this.state.modalIsOpen}>
@@ -89,37 +249,35 @@ class OrderDetailsContainer extends React.Component {
                       <label className="bold">Date Time Stamp:</label>
                     </div>
                     <div className="col-md-3">
-                      <label>{this.state.showData.date}</label>
+                      <label>{moment.unix(this.state.showData.date).format('DD/MM/YYYY')}</label>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="col-md-12">
-                <hr/>
-                <img src={this.state.showData.deliveryImagePath} height="50%"/>
+                <hr />
+                <img style={{ border: "1px solid black", display: "block", marginLeft: "auto", marginRight: "auto" }} src={"/assets/imgs/sign.png"} height="50%" />
               </div>
             </div>
           </Portlet>
         </ModalBox>
-        <div className="portlet light" style={{"min-height": "854px"}}>
+        <div className="portlet light" style={{ "min-height": "854px" }}>
 
           <div className="row">
             <div className="col-md-12">
               <ul id="progressbar">
-                {orderDetails.StatusList.map((item, key) => {
-                  return <li key={key} className={item.status ? "active" : ""}>{item.label}</li>
+                {this.state.statusList[this.state.orderDetails.tranxData.deliveryStatus].map((item, key) => {
+                  return <li key={key} style={{ width: (100 / this.state.statusList[this.state.orderDetails.tranxData.deliveryStatus].length).toString() + "%" }} className={item.legend.toUpperCase() == this.state.orderDetails.tranxData.orderStatus ? this.state.orderDetails.tranxData.deliveryStatus == 0 ? "active" : "warning" : ""}>{item.label}</li>
                 })}
               </ul>
-
-
             </div>
           </div>
 
           <div className="row">
             <div className="col-md-12">
               <div className="orderno">
-                <img src="/assets/Resources/ordericon.png" width="18px"/><label className="bold">Order
-                #: <span>{orderDetails.orderID}</span></label>
+                <img src="/assets/Resources/ordericon.png" width="18px" /><label className="bold">Order
+                #: <span>{this.state.orderDetails.tranxData.orderID}</span></label>
               </div>
               <div className="hashno">
                 <label className="bold">354843191535137876132161</label>
@@ -136,12 +294,14 @@ class OrderDetailsContainer extends React.Component {
                     <div>
                       <h4 className="bold">E-commerce</h4>
                     </div>
-                    <div><img src={orderDetails.eCommerceCompanyLogo} width="10%"/></div>
-                    <span className="bold">{orderDetails.eCommerceCompanyName}</span>
+                    {console.log(this.state.orgDetailByCode)}
+                    <div><img src={_.get(this.state.orgDetailByCode,`${this.state.orderDetails.tranxData.eCommerceOrgCode}.sizeMedium`,"")} width="10%" /></div>
+                    <span className="bold">{this.state.orderDetails.tranxData.eCommerceOrgCode}</span>
                   </div>
                   <div className="col-md-6 text-center">
                     <div><h4 className="bold">Courier Company</h4></div>
-                    <div><img src={orderDetails.courierCompanyLogo} width="10%"/></div>
+                    <div><img src={_.get(this.state.orgDetailByCode,`${this.state.orderDetails.tranxData.courierOrgCode}.sizeMedium`,"")} width="10%" /></div>
+                    <span className="bold">{this.state.orderDetails.tranxData.courierOrgCode}</span>
                   </div>
                 </div>
               </div>
@@ -150,13 +310,13 @@ class OrderDetailsContainer extends React.Component {
 
           <div className="row">
             <div className="col-md-4">
-              <ShadowBox title="Bill To" icon="/assets/Resources/soldTo.png">
+              <ShadowBox title="Sold To" icon="/assets/Resources/soldTo.png">
                 <div className="row">
                   <div className="col-md-3">
                     <label className="bold">Name:</label>
                   </div>
                   <div className="col-md-5">
-                    <label>{orderDetails.soldTo}</label>
+                    <label>{this.state.orderDetails.tranxData.soldTo}</label>
                   </div>
                 </div>
                 <div className="row">
@@ -164,7 +324,21 @@ class OrderDetailsContainer extends React.Component {
                     <label className="bold">Address:</label>
                   </div>
                   <div className="col-md-5">
-                    <label>{orderDetails.soldAddress}</label>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine1}</label>
+                    </div>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine2}</label>
+                    </div>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.soldToAddress.POBox}</label>
+                    </div>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.soldToAddress.city}</label>
+                    </div>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                    </div>
                   </div>
                 </div>
               </ShadowBox>
@@ -177,7 +351,7 @@ class OrderDetailsContainer extends React.Component {
                     <label className="bold">Name:</label>
                   </div>
                   <div className="col-md-5">
-                    <label>{orderDetails.billTo}</label>
+                    <label>{this.state.orderDetails.tranxData.billTo}</label>
                   </div>
                 </div>
                 <div className="row">
@@ -185,7 +359,21 @@ class OrderDetailsContainer extends React.Component {
                     <label className="bold">Address:</label>
                   </div>
                   <div className="col-md-5">
-                    <label>{orderDetails.billToAddress}</label>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.billToAddress.addressLine1}</label>
+                    </div>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.billToAddress.addressLine2}</label>
+                    </div>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.billToAddress.POBox}</label>
+                    </div>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.billToAddress.city}</label>
+                    </div>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.billToAddress.country}</label>
+                    </div>
                   </div>
                 </div>
               </ShadowBox>
@@ -195,10 +383,32 @@ class OrderDetailsContainer extends React.Component {
               <ShadowBox title="Ship To" icon="/assets/Resources/shipto.png">
                 <div className="row">
                   <div className="col-md-3">
+                    <label className="bold">Name:</label>
+                  </div>
+                  <div className="col-md-5">
+                    <label>{this.state.orderDetails.tranxData.shipTo}</label>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-3">
                     <label className="bold">Address:</label>
                   </div>
                   <div className="col-md-5">
-                    <label>{orderDetails.shipAddress}</label>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine1}</label>
+                    </div>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine2}</label>
+                    </div>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.shipToAddress.POBox}</label>
+                    </div>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.shipToAddress.city}</label>
+                    </div>
+                    <div className="row">
+                      <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                    </div>
                   </div>
                 </div>
               </ShadowBox>
@@ -216,7 +426,7 @@ class OrderDetailsContainer extends React.Component {
                       <label className="bold">Total Value:</label>
                     </div>
                     <div className="col-md-4">
-                      <label>{orderDetails.totalValue}</label>
+                      <label>{this.state.orderDetails.tranxData.totalValue}</label>
                     </div>
                   </div>
                 </div>
@@ -242,7 +452,7 @@ class OrderDetailsContainer extends React.Component {
                       <label className="bold">No of Items:</label>
                     </div>
                     <div className="col-md-4">
-                      <label>{orderDetails.noOfItems}</label>
+                      <label>{this.state.orderDetails.tranxData.noOfItems}</label>
                     </div>
                   </div>
                 </div>
@@ -252,7 +462,7 @@ class OrderDetailsContainer extends React.Component {
                       <label className="bold">Return Policy:</label>
                     </div>
                     <div className="col-md-4">
-                      <label>{orderDetails.returnPolicy}</label>
+                      <label>{this.state.orderDetails.tranxData.returnPolicy}</label>
                     </div>
                   </div>
                 </div>
@@ -268,7 +478,7 @@ class OrderDetailsContainer extends React.Component {
                       <label className="bold">Currency:</label>
                     </div>
                     <div className="col-md-4">
-                      <label>{orderDetails.currency}</label>
+                      <label>{this.state.orderDetails.tranxData.currency}</label>
                     </div>
                   </div>
                 </div>
@@ -300,11 +510,12 @@ class OrderDetailsContainer extends React.Component {
                 <div className="tab-content ui-innertab ui-tabcontentbody">
                   <div id="OrderLine" className="tab-pane in active ui-fieldtable">
                     <Table
+                      componentFunction={this.DeliveryProofHandler}
                       pagination={false}
                       export={false}
                       search={false}
                       gridColumns={utils.getGridColumnByName("orderLine")}
-                      gridData={orderDetails.lineItems || []}
+                      gridData={this.state.orderDetails.tranxData.lineItems || []}
                       totalRecords={5}
                       pageChanged={() => {
                       }}
@@ -313,7 +524,7 @@ class OrderDetailsContainer extends React.Component {
                     />
                   </div>
                   <div id="HAWB" className="tab-pane">
-                    {orderDetails.HAWB.map(item => {
+                    {this.state.orderDetails.tranxData.ExportHAWBList.map(item => {
                       return <div className="row">
                         <div className="col-md-6">
                           <label className="bold">AWB #:</label>
@@ -325,7 +536,7 @@ class OrderDetailsContainer extends React.Component {
                         </div>
                         <div className="col-md-12 text-center">
                           <div className="shadowBox recipt">
-                            <img src={item.HAWBImagePath} height="50%"/>
+                            <img src={item.HAWBImagePath} height="50%" />
                           </div>
                         </div>
                       </div>;
@@ -333,7 +544,7 @@ class OrderDetailsContainer extends React.Component {
 
                   </div>
                   <div id="Shipping" className="tab-pane">
-                    {orderDetails.HAWB.map(item => {
+                    {this.state.orderDetails.tranxData.ExportHAWBList.map(item => {
                       return <div>
                         <div className="form-group">
                           <div className="row">
@@ -354,7 +565,7 @@ class OrderDetailsContainer extends React.Component {
                               <label>{item.shippingDetails.flightNo}</label>
                             </div>
                             <div className="col-md-2">
-                              <label className="bold">FlighT Date</label>
+                              <label className="bold">Flight Date</label>
                             </div>
                             <div className="col-md-2">
                               <label>{item.shippingDetails.flightDate}</label>
@@ -399,13 +610,13 @@ class OrderDetailsContainer extends React.Component {
                             </div>
                           </div>
                         </div>
-                        {orderDetails.HAWB > 0 && <hr/>}
+                        {this.state.orderDetails.tranxData.ImportHAWBList > 0 && <hr />}
                       </div>
                     })}
 
                   </div>
                   <div id="ExportDeclaration" className="tab-pane">
-                    {orderDetails.ExportDeclaration.map(item => {
+                    {this.state.orderDetails.tranxData.exportDeclaration.map(item => {
                       return <div>
                         <div className="form-group">
                           <div className="row">
@@ -419,7 +630,7 @@ class OrderDetailsContainer extends React.Component {
                               <label className="bold">Declaration Id</label>
                             </div>
                             <div className="col-md-2">
-                              <label>{item.declarationID}</label>
+                              <label>{item.Id}</label>
                             </div>
                             <div className="col-md-2">
                               <label className="bold">Version</label>
@@ -501,7 +712,7 @@ class OrderDetailsContainer extends React.Component {
                             </div>
                           </div>
                         </div>
-                        {orderDetails.ExportDeclaration.length > 0 && <hr/>}
+                        {this.state.orderDetails.tranxData.exportDeclaration.length > 0 && <hr />}
                       </div>;
                     })}
                     <div className="linetext"><label className="bold">See line items in the order of declaration line
@@ -515,7 +726,7 @@ class OrderDetailsContainer extends React.Component {
                           export={false}
                           search={false}
                           gridColumns={utils.getGridColumnByName("delivery")}
-                          gridData={orderDetails.lineItems.filter((item => {
+                          gridData={this.state.orderDetails.tranxData.lineItems.filter((item => {
                             return item.isDelivered;
                           })) || []}
                           totalRecords={5}
@@ -531,7 +742,7 @@ class OrderDetailsContainer extends React.Component {
                     <div className="row">
                       <div className="col-md-12">
                         {(() => {
-                          orderDetails.returnItems.map((item) => {
+                          this.state.orderDetails.tranxData.returnItems.map((item) => {
                             item.actions = [{
                               label: "viewData",
                               iconName: "fa fa-eye",
@@ -545,7 +756,7 @@ class OrderDetailsContainer extends React.Component {
                           export={false}
                           search={false}
                           gridColumns={utils.getGridColumnByName("returnDelivery")}
-                          gridData={orderDetails.returnItems || []}
+                          gridData={this.state.orderDetails.tranxData.returnItems || []}
                           pageChanged={() => {
                           }}
                           activePage={1}
@@ -569,12 +780,13 @@ class OrderDetailsContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
 
   return {
-    orderDetails: state.app.orderDetails
+    orgDetailByCode: state.app.orgDetailByCode,
+    orderDetails: state.app.getOrderDetails.data.searchResult
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 
 }
 

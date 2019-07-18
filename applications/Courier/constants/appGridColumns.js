@@ -11,9 +11,9 @@ module.exports = {
     { alias: "Status", key: "statUOM", type: "string" },
     { alias: "Status Qty", key: "statQuantity", type: "string" },
     { alias: "Net Weight", key: "netWeight", type: "string" },
-    { alias: "Returned Cnt", key: "returnQty", type: "string" },
-    { alias: "Delivery Proof", key: "importDeclarationReferences", type: "array" },
-    { alias: "Return Proof", key: "hscode", type: "string" }
+    { alias: "Returned Cnt", key: "returnedQty", type: "string" },
+    { alias: "Return Proof", key: "hscode", type: "string" },
+    { alias: "Delivery Proof", key: "actions", type: "action" }
   ],
   delivery: [
     { alias: "Line No.", key: "", type: "serialNo" },

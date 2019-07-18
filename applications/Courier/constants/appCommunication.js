@@ -8,5 +8,7 @@ module.exports = {
   getDashboardData: baseUrl + "/API/customs-courier/getDashboardData",
   orderlist: baseUrl + "/API/customs_courier/orderlist",
   fileList: baseUrl + "/API/customs-courier/getFileList",
-  fileData: baseUrl + "/API/customs-courier/getFileData"
+  fileData: baseUrl + "/API/customs-courier/getFileData",
+  orderDetails: baseUrl + "/API/customs-courier/getOrderDetails",
+  orgDetailByCode: baseUrl + "/API/UI/orgDetailByCode"
 };
