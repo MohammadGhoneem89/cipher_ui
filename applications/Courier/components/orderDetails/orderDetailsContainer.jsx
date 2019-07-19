@@ -200,7 +200,7 @@ class OrderDetailsContainer extends React.Component {
 
       if (stateCopy.orderDetails.tranxData.orderStatus == 'HAWBCREATED' && _.get(stateCopy.orderDetails.tranxData, "exportDeclaration[0]", undefined) != undefined) {
         stateCopy.orderDetails.tranxData.orderStatus = 'EXPORTCLEARED'
-        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][3].label = stateCopy.orderDetails.tranxData.exportDeclaration[0].status
+        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][2].label = stateCopy.orderDetails.tranxData.exportDeclaration[0].status
       }
       else if ((stateCopy.orderDetails.tranxData.orderStatus == 'UNDELIVERED' || stateCopy.orderDetails.tranxData.orderStatus == 'RETURNBYCUSTOMER') && _.get(stateCopy.orderDetails.tranxData, "importDeclaration[0]", undefined) != undefined) {
         stateCopy.orderDetails.tranxData.orderStatus = 'IMPORTCLEARED'
