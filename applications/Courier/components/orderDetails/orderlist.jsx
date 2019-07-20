@@ -8,14 +8,21 @@ import * as actions from '../../../../core/actions/generalAction';
 import * as constants from '../../constants/appCommunication.js';
 import Portlet from '../../../../core/common/Portlet.jsx';
 import _ from 'lodash';
+import * as gen from '../../common/generalActionHandler'
+import Input from '../../common/Input.jsx';
+import Lable from '../../common/Lable.jsx';
+import Row from '../../common/Row.jsx';
+import Col from '../../common/Col.jsx';
+import Combobox from '../../common/Select.jsx';
+import * as coreConstants from '../../../../core/constants/Communication';
+import * as requestCreator from '../../../../core/common/request.js';
 
 class OrderList extends React.Component {
 
     constructor(props) {
-        // console.log("constructor")
         super(props);
         this.state = {
-            searchCriteria: {},
+            searchCriteria: undefined,
             page: {
                 pageSize: 10,
                 currentPageNo: 1
@@ -23,15 +30,13 @@ class OrderList extends React.Component {
             isLoading: false,
             gridData: [],
             actions: [],
-            ecommerce: '',
-            courierCompany: '',
-            orderNumber: '',
-            hawbNumber: '',
-            mawbNumber: '',
-            decNumber: ''
+            typedata: undefined
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.pageChanged = this.pageChanged.bind(this);
+        this.generalActionHandler = gen.generalHandler.bind(this);
+        this.clearFields = this.clearFields.bind(this);
         this.data = [];
         // this.pageChanged = this.pageChanged.bind(this);
     }
@@ -59,21 +64,24 @@ class OrderList extends React.Component {
         this.setState({ searchCriteria: searchCriteria })
         console.log("searchcriteria", searchCriteria)
         let request = {
-
             "body": {
                 searchCriteria
+            },
+            "page": {
+                "pageSize": 10,
+                "currentPageNo": 1
             }
-
         };
         return request;
     }
     componentWillReceiveProps(nextProps) {
         console.log(nextProps.orderlist, "---- get grid data")
 
-        if (nextProps.orderlist) {
+        if (nextProps.orderlist && nextProps.typeData) {
             this.setState(
                 {
-                    gridData: nextProps.orderlist.searchResult,
+                    gridData: nextProps.orderlist.data.searchResult.orderList,
+                    typeData: nextProps.typeData,
                     isLoading: false,
                     page: nextProps.orderlist.pageData
                 }
@@ -82,26 +90,69 @@ class OrderList extends React.Component {
     }
 
     componentDidMount() {
+        this.props.actions.generalProcess(coreConstants.getTypeData,
+            requestCreator.createTypeDataRequest([
+                'dc-ecommerce',
+                'dc-courier'
+            ]));
 
         this.props.actions.generalProcess(constants.orderlist, this.getRequest());
 
         window.scrollTo(0, 0);
     }
 
-    pageChanged = (pageNo) => {
-        let page = this.props.getPage;
-        page.currentPageNo = pageNo;
-        this.setState({ page: page });
+    pageChanged(pageNo) {
+        console.log("pageNo", pageNo)
+        if (pageNo != undefined) {
+            var request = "";
+            if (this.state.searchCriteria == undefined) {
+                request = {
+                    "page": {
+                        "currentPageNo": pageNo,
+                        "pageSize": 10
+                    }
+                }
+            }
+            else {
+                var searchCriteria = _.clone(this.state.searchCriteria)
+                request = {
+                    searchCriteria,
+                    "page": {
+                        "currentPageNo": pageNo,
+                        "pageSize": 10
+                    }
+                }
+            }
+            this.setState({ currentPageNo: pageNo });
+            this.props.actions.generalProcess(constants.orderlist, request);
+        }
+    }
+
+    search = () => {
+        let searchCriteria = _.clone(this.state.searchCriteria)
+        this.props.actions.generalProcess(constants.orderlist, {
+            searchCriteria,
+            "page": {
+                "pageSize": 10,
+                "currentPageNo": 1
+            }
+        });
+    }
+
+    clearFields = () => {
+        this.setState({searchCriteria : undefined})
     }
 
     render() {
         if (this.state.isLoading) {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         }
+        console.log("state-->", this.state)
         return (
             <form onSubmit={this.handleSubmit}>
                 <div>
                     <div className="row">
+
                         <div className="col-md-12 ">
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
@@ -111,90 +162,57 @@ class OrderList extends React.Component {
                                         <a href="javascript:;" className="collapse" data-original-title title />
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <div className="form-group col-md-4">
-                                                <label className="control-label">{utils.getLabelByID("Ecommerce")}</label>
+                                <Row>
+                                    <Row>
+                                        <Col col="6">
+                                            <Lable text={utils.getLabelByID("Ecommerce")} columns="3"></Lable>
+                                            <Combobox fieldname='ecommerce' formname='searchCriteria' columns='8' style={{}}
+                                                state={this.state} typeName="dc-ecommerce" dataSource={this.state.typeData}
+                                                multiple={false} actionHandler={this.generalActionHandler} selected={_.get(this.state.searchCriteria, "ecommerce", "")} />
+                                        </Col>
+                                        <Col col="6">
+                                            <Lable text={utils.getLabelByID("Courier Company Name")} columns="3"></Lable>
+                                            <Combobox fieldname='courier' formname='searchCriteria' columns='8' style={{}}
+                                                state={this.state} typeName="dc-courier" dataSource={this.state.typeData}
+                                                multiple={false} actionHandler={this.generalActionHandler} selected={_.get(this.state.searchCriteria, "courier", "")} />
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col col="6">
+                                            <Lable text={utils.getLabelByID("Order #")} columns="3"></Lable>
+                                            <Input fieldname='orderNumber' formname='searchCriteria' columns='8' style={{}}
+                                                state={this.state} actionHandler={this.generalActionHandler} />
+                                        </Col>
+                                        <Col col="6">
+                                            <Lable text={utils.getLabelByID("Declaration No")} columns="3"></Lable>
+                                            <Input fieldname='declaration' formname='searchCriteria' columns='8' style={{}}
+                                                state={this.state} actionHandler={this.generalActionHandler} />
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col col="6">
+                                            <Lable text={utils.getLabelByID("HAWB #")} columns="3"></Lable>
+                                            <Input fieldname='hawbNumber' formname='searchCriteria' columns='8' style={{}}
+                                                state={this.state} actionHandler={this.generalActionHandler} />
+                                        </Col>
+                                        <Col col="6">
+                                            <Lable text={utils.getLabelByID("MAWB #")} columns="3"></Lable>
+                                            <Input fieldname='mawbNumber' formname='searchCriteria' columns='8' style={{}}
+                                                state={this.state} actionHandler={this.generalActionHandler} />
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col col="6"></Col>
+                                        <Col col="6">
+                                            <div className="form-group col-md-11">
+                                                <div className="btn-toolbar pull-right">
+                                                    <button type="button" className="btn grey" onClick={this.clearFields}>{'Clear'}</button>
+                                                    <button type="button" className="btn default" onClick={this.search}>{'Search'}</button>
+                                                </div>
                                             </div>
-                                            <div className="form-group col-md-8">
-                                                <select name="useCase" id="useCase" className="form-control">
-                                                    <option key="-1" value="">SELECT</option>
-                                                    <option key="0" value="SOUQ">SOUQ </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="form-group col-md-4">
-                                                <label className="control-label">{utils.getLabelByID("Courier Company Name")}</label>
-                                            </div>
-                                            <div className="form-group col-md-8">
-                                                <select name="useCase" id="useCase" className="form-control">
-                                                    <option key="-1" value="">SELECT</option>
-                                                    <option key="0" value="DHL">DHL </option>
-                                                    {/* {this.state.typeData && this.state.typeData.USE_CASE && this.state.typeData.USE_CASE.map((option, index) => {
-                                                        return (
-                                                            <option key={index} value={option.value}>{option.label}</option>
-                                                        );
-                                                    })} */}
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <div className="form-group col-md-4">
-                                                <label className="control-label">{utils.getLabelByID("Order #")}</label>
-                                            </div>
-                                            <div className="form-group col-md-8">
-                                                <input type="text" className="form-control" name="orderNumber"
-                                                    value={this.state.value} onChange={this.handleChange} />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <div className="form-group col-md-4">
-                                                <label className="control-label">{utils.getLabelByID("HAWB #")}</label>
-                                            </div>
-                                            <div className="form-group col-md-8">
-                                                <input type="text" className="form-control" name="hawbNumber"
-                                                    value={this.state.value} onChange={this.handleChange} />
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="form-group col-md-4">
-                                                <label className="control-label">{utils.getLabelByID("MAWB #")}</label>
-                                            </div>
-                                            <div className="form-group col-md-8">
-                                                <input type="text" className="form-control" name="mawbNumber"
-                                                    value={this.state.value} onChange={this.handleChange} />
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <div className="form-group col-md-4">
-                                                <label className="control-label">{utils.getLabelByID("Declaration No")}</label>
-                                            </div>
-                                            <div className="form-group col-md-8">
-                                                <input type="text" className="form-control" name="declaration"
-                                                    value={this.state.value} onChange={this.handleChange} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="form-actions right">
-                                        <div className="form-group col-md-12">
-                                            <div className="btn-toolbar pull-right"> <button type="text" className="btn green">{utils.getLabelByID("Search")}</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                        </Col>
+                                    </Row>
+                                </Row>
                             </div>
                         </div>
                     </div>
@@ -209,26 +227,21 @@ class OrderList extends React.Component {
                                         "URI": ["/courier/orderDetails"],
                                         "params": "_id",
                                         "iconName": "icon-docs"
-                                    },
-                                    {
-                                        "label": "Edit",
-                                        "URI": ["/courier/orderDetails"],
-                                        "params": "_id",
-                                        "iconName": "icon-docs"
                                     }
                                 ]
                             })
 
                         }
-
+                        
                         <Table
                             gridColumns={utils.getGridColumnByName("orderList")}
                             gridData={this.state.gridData}
                             fontclass=""
-                            totalRecords={1}
+                            totalRecords={this.state.page.totalRecords}
                             pageSize={10}
                             pagination={true}
-                            activePage={1}
+                            activePage={this.state.page.currentPageNo}
+                            pageChanged={this.pageChanged}
                         />
                     </Portlet>
                 </div>
@@ -239,6 +252,7 @@ class OrderList extends React.Component {
 function mapStateToProps(state, ownProps) {
     console.log(state.app.orderlist, "STATE.APP")
     return {
+        typeData: _.get(state.app.typeData, 'data', undefined),
         orderlist: state.app.orderlist,
     };
 }
