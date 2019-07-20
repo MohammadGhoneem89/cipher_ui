@@ -23,9 +23,9 @@ class HorizontalBarChartTechnician extends React.Component {
         let labels = []
         let reported = []
 
-        for (let i = 0; i < data.length; i++) {
-            labels.push(data[i].label);
-            reported.push(data[i].expAuth)
+        for (let i of data) {
+            labels.push(i.label);
+            reported.push(i.expAuth);
         }
 
         this.state = {

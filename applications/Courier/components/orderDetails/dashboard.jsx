@@ -22,6 +22,7 @@ import PieChart from '../../common/charts/PieChart.jsx';
 import { Bar, Line } from 'react-chartjs-2';
 import TileUnit from '../../../../core/common/tileUnit.jsx';
 import HorizontalbarChartTechnician from '../../common/charts/HorizontalbarChartTechnician.jsx';
+import moment from 'moment'
 
 class Dashboard extends React.Component {
 
@@ -31,14 +32,18 @@ class Dashboard extends React.Component {
             regions: [],
             typeData: undefined,
             getDashboardData: undefined,
-            fromDateWrkBrd: '01/01/1970',
-            toDateWrkBrd: '01/01/2020',
+            fromDateWrkBrd: moment().subtract(29, 'days').format('YYYY-MM-DD'),
+            toDateWrkBrd: moment().format('YYYY-MM-DD'),
             CBVLabels: undefined,
             CBVData: undefined,
+            hsTitile: 'HS Code',
+            topHS:{option: 'HS Code'},
             isLoading: true
         };
         this.generalHandler = gen.generalHandler.bind(this);
+        this.customActionHandler = customActionHandler.bind(this);
         this.dateChangeWorkboard = this.dateChangeWorkboard.bind(this)
+        this.sendCall = this.sendCall.bind(this)
     }
 
     componentDidMount() {
@@ -47,15 +52,22 @@ class Dashboard extends React.Component {
             requestCreator.createTypeDataRequest([
                 'dc-hsCodeFilter'
             ]));
-        this.props.actions.generalProcess(constants.getDashboardData, {})
+        this.props.actions.generalProcess(constants.getDashboardData, {
+            action: 'getDashboardData',
+            searchCriteria: {
+                startDate: this.state.fromDateWrkBrd,
+                endDate: this.state.toDateWrkBrd,
+                ecommerce: '002'
+            }
+        })
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.typeData && nextProps.getDashboardData) {
             let CBVLabels = []
             let CBVData = []
-
-            nextProps.getDashboardData.data.courierByValue.forEach(element => {
+            let courierByValue = _.get(nextProps, 'getDashboardData.data.courierByValue', []);
+            courierByValue.forEach(element => {
                 CBVLabels.push(element.name)
                 CBVData.push(element.value)
             })
@@ -89,13 +101,8 @@ class Dashboard extends React.Component {
     }
 
     getRuleHitData() {
-        // let labels = []
-        // let chartData = []
-        // let searchResult = _.clone(this.state.getRuleHitSummary.ruleHit) 
-        // searchResult.forEach(element => {
-        //     labels.push(element.ruleId)
-        //     chartData.push(parseInt(element.count))
-        // });
+
+        let orderTracking = _.get(this.state, 'getDashboardData.orderTracking', undefined);
 
         let data = {
             labels: ["Finalized", "HAWB Created", "Export Cleared", "Deliverd", "Return By Customer", "Undelivered", "Import Cleared", "Partial Return", "Full Return"],
@@ -108,7 +115,7 @@ class Dashboard extends React.Component {
                     borderWidth: 1,
                     hoverBackgroundColor: ['#8DC63F', '#1DB2F5', '#97C95C', '#FFC720', '#EB3573', '#A63DB8', '#BD1550', '#1DB2F5', '#FFC720'],
                     hoverBorderColor: ['#8DC63F', '#1DB2F5', '#97C95C', '#FFC720', '#EB3573', '#A63DB8', '#BD1550', '#1DB2F5', '#FFC720'],
-                    data: [this.state.getDashboardData.orderTracking.finalized, this.state.getDashboardData.orderTracking.hawbCreated, this.state.getDashboardData.orderTracking.exportCleared, this.state.getDashboardData.orderTracking.delivered, this.state.getDashboardData.orderTracking.returnByCustomer, this.state.getDashboardData.orderTracking.undelivered, this.state.getDashboardData.orderTracking.importCleared, this.state.getDashboardData.orderTracking.partialReturn, this.state.getDashboardData.orderTracking.fullReturn]
+                    data: orderTracking ? [orderTracking.finalized, orderTracking.hawbCreated, orderTracking.exportCleared, orderTracking.delivered, orderTracking.returnByCustomer, orderTracking.undelivered, orderTracking.importCleared, orderTracking.partialReturn, orderTracking.fullReturn] : []
                 }
             ]
         };
@@ -121,13 +128,50 @@ class Dashboard extends React.Component {
             toDateWrkBrd: toDate
         });
 
-        let request = {
+        console.log('to check the case', fromDate, toDate)
+        this.props.actions.generalProcess(constants.getDashboardData, {
+            action: 'getDashboardData',
             searchCriteria: {
-                fromDate: fromDate,
-                toDate: toDate
+                startDate: moment(fromDate, 'YYYY-MM-DD').startOf('day'),
+                endDate: moment(toDate, 'YYYY-MM-DD').startOf('day')
             }
-        };
-        //this.props.actions.generalProcess(constants.getRuleHitSummary, request);
+        })
+    }
+
+    sendCall = (topHS) => {
+        this.setState({
+            topHS:{option: topHS},
+            hsTitile: topHS
+        });
+        if (topHS && topHS === 'E-Commerce Company') {
+            this.props.actions.generalProcess(constants.getDashboardData, {
+                action: 'getDashboardData',
+                searchCriteria: {
+                    startDate: moment(this.state.fromDateWrkBrd, 'YYYY-MM-DD').startOf('day'),
+                    endDate: moment(this.state.toDateWrkBrd, 'YYYY-MM-DD').startOf('day'),
+                    ecommerce: '001'
+                }
+            })
+        }
+        else if (topHS && topHS === 'E-Commerce Company') {
+            this.props.actions.generalProcess(constants.getDashboardData, {
+                action: 'getDashboardData',
+                searchCriteria: {
+                    startDate: moment(this.state.fromDateWrkBrd, 'YYYY-MM-DD').startOf('day'),
+                    endDate: moment(this.state.toDateWrkBrd, 'YYYY-MM-DD').startOf('day'),
+                    ecommerce: '002'
+                }
+            })
+        } else {
+            this.props.actions.generalProcess(constants.getDashboardData, {
+                action: 'getDashboardData',
+                searchCriteria: {
+                    startDate: moment(this.state.fromDateWrkBrd, 'YYYY-MM-DD').startOf('day'),
+                    endDate: moment(this.state.toDateWrkBrd, 'YYYY-MM-DD').startOf('day'),
+                    ecommerce: '003'
+                }
+            })
+        }
     }
 
     render() {
@@ -137,7 +181,17 @@ class Dashboard extends React.Component {
                 <Wrapper daterange={true} onDateChange={this.dateChangeWorkboard} title="Workboard">
 
                     <div className="row">
-                        <TileUnit col="4" data={[{ "id": 1, "title": "Couriers", "value": this.state.getDashboardData.summary.couriers, "actionURI": "", "overDue": "", "fontClass": "green-steel", "percentageTag": false }, { "id": 2, "title": "Orders", "value": this.state.getDashboardData.summary.orders, "actionURI": "", "overDue": "", "fontClass": "green-turquoise", "percentageTag": false }, { "id": 3, "title": "Returns", "value": this.state.getDashboardData.summary.returns, "actionURI": "", "overDue": "", "fontClass": "green-meadow", "percentageTag": false }]} />
+                        <TileUnit col="4" data={[{
+                            "id": 1, "title": "Couriers", "value": _.get(this.state, 'getDashboardData.summary.couriers', 0),
+                            "actionURI": "", "overDue": "", "fontClass": "green-steel", "percentageTag": false
+                        }, {
+                            "id": 2, "title": "Orders",
+                            "value": _.get(this.state, 'getDashboardData.summary.orders', 0), "actionURI": "", "overDue": "", "fontClass": "green-turquoise",
+                            "percentageTag": false
+                        }, {
+                            "id": 3, "title": "Returns", "value": _.get(this.state, 'getDashboardData.summary.returns', 0),
+                            "actionURI": "", "overDue": "", "fontClass": "green-meadow", "percentageTag": false
+                        }]} />
                     </div>
                     <Portlet title="Order Tracking">
                         <Row>
@@ -188,21 +242,21 @@ class Dashboard extends React.Component {
                             </Col>
                         </Row>
                     </Portlet>
-                    <Portlet>
+                    <Portlet title={'Top ' + this.state.hsTitile}>
                         <Row>
                             <Col col="6">
                                 <Label text="Option" columns="3"></Label>
                                 <Combobox fieldname='option' formname='topHS' columns='8' style={{}}
                                     state={this.state} typeName="dc-hsCodeFilter"
-                                    dataSource={this.state.typeData} multiple={false} actionHandler={this.generalHandler} />
+                                    dataSource={this.state.typeData} multiple={false} actionHandler={this.customActionHandler} />
                             </Col>
                         </Row>
-                        <Row>
-                            <h2><Label text={'Top '+this.state.getDashboardData.filterCriteria}></Label></h2>
-                        </Row>
+                        {/* <Row>
+                            <h2><Label text={}></Label></h2>
+                        </Row> */}
                         <Row>
                             <Col>
-                                <HorizontalbarChartTechnician key={Math.random()} data={this.state.getDashboardData.topStats} labels={["Export Declarations"]} stack="single" dataLabelsAttribute="hsCode" dataValuesAttributes={["expDec"]} backgroundColors={['#337ab7']} />
+                                <HorizontalbarChartTechnician key={Math.random()} data={_.get(this.state, 'getDashboardData.topStats', [])} labels={["Export Declarations"]} stack="single" dataLabelsAttribute="hsCode" dataValuesAttributes={["expDec"]} backgroundColors={['#337ab7']} />
                             </Col>
                         </Row>
                     </Portlet>
@@ -210,12 +264,12 @@ class Dashboard extends React.Component {
                     <div className="row">
                         <Col col="6">
                             <Portlet title="Analysis By Value">
-                                <PieChart labels={['Return', 'Delivered']} data={[this.state.getDashboardData.analysisByValue.return, this.state.getDashboardData.analysisByValue.delivered]} height={200} backgroundColor={['#4472C4', '#ED7D31']} />
+                                <PieChart key={Math.random()} labels={['Return', 'Delivered']} data={[_.get(this.state, 'getDashboardData.analysisByValue.return', 0), _.get(this.state, 'getDashboardData.analysisByValue.delivered', 0)]} height={200} backgroundColor={['#4472C4', '#ED7D31']} />
                             </Portlet>
                         </Col>
                         <Col col="6">
                             <Portlet title="Courier By Value">
-                                <PieChart labels={this.state.CBVLabels} data={this.state.CBVData} height={200} backgroundColor={['#F8CA00', '#BD1550', '#70C92F']} />
+                                <PieChart key={Math.random()} labels={this.state.CBVLabels} data={this.state.CBVData} height={200} backgroundColor={['#F8CA00', '#BD1550', '#70C92F']} />
                             </Portlet>
                         </Col>
                     </div>
@@ -231,13 +285,17 @@ function mapStateToProps(state, ownProps) {
     return {
         // listNotificationRules: _.get(state.app, 'listNotificationRules.data.searchResult', []),
         typeData: _.get(state.app.typeData, 'data', undefined),
-        getDashboardData: state.app.getDashboardData
+        getDashboardData: _.get(state.app, 'getDashboardData', undefined)
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
+}
+function customActionHandler(formname, fieldname, type, e) {
+    let value = e.target.value;
+    this.sendCall(value)
 }
 Dashboard.displayName = "__HIDE";
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
