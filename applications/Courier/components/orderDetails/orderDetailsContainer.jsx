@@ -16,6 +16,9 @@ import * as toaster from '../../../../core/common/toaster.js';
 import * as requestCreator from '../../../../core/common/request.js';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 import moment from 'moment'
+import backOffices from '../../../backOffices';
+
+let baseUrl = backOffices.baseUrl;
 
 class OrderDetailsContainer extends React.Component {
 
@@ -29,7 +32,7 @@ class OrderDetailsContainer extends React.Component {
       showData: {},
       orderDetails: undefined,
       lineItems: undefined,
-      orgDetailByCode: {},
+      orgDetailByCode: undefined,
       statusList: [
         [
           {
@@ -268,6 +271,22 @@ class OrderDetailsContainer extends React.Component {
     this.setState(data);
   }
 
+  addDefaultCourierSrc (ev) {
+    ev.target.src = '/assets/imgs/courier.jpg'
+  }
+
+  addDefaultECommerceSrc (ev) {
+    ev.target.src = '/assets/imgs/ecommerce.png'
+  }
+  
+  addDefaultHAWBSrc (ev) {
+    ev.target.src = '/assets/imgs/hawb.jpg'
+  }
+
+  addDefaultSignSrc (ev) {
+    ev.target.src = '/assets/imgs/sign.png'
+  }
+
   render() {
     console.log("state", this.state)
     let modalActions = [
@@ -307,7 +326,7 @@ class OrderDetailsContainer extends React.Component {
               </div>
               <div className="col-md-12">
                 <hr />
-                <img style={{ border: "1px solid black", display: "block", marginLeft: "auto", marginRight: "auto" }} src={this.state.showData.deliveryImagePath || "/assets/imgs/sign.png"} height="50%" />
+                <img style={{ border: "1px solid black", display: "block", marginLeft: "auto", marginRight: "auto" }} src={baseUrl + this.state.showData.deliveryImagePath} onError={this.addDefaultSignSrc} height="50%" />
               </div>
             </div>
           </Portlet>
@@ -346,12 +365,12 @@ class OrderDetailsContainer extends React.Component {
                       <h4 className="bold">E-commerce</h4>
                     </div>
                     {console.log(this.state.orgDetailByCode)}
-                    <div><img src={_.get(this.state.orgDetailByCode, `${this.state.orderDetails.tranxData.eCommerceOrgCode}.sizeMedium`, "") || "/assets/imgs/courier.jpg"} width="100px" height="100px" /></div>
+                    <div><img src={baseUrl+(_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.eCommerceOrgCode}.sizeMedium`, ""))} onError={this.addDefaultCourierSrc} width="100px" height="100px" /></div>
                     <span className="bold">{this.state.orderDetails.tranxData.eCommerceOrgCode}</span>
                   </div>
                   <div className="col-md-6 text-center">
                     <div><h4 className="bold">Courier Company</h4></div>
-                    <div><img src={_.get(this.state.orgDetailByCode, `${this.state.orderDetails.tranxData.courierOrgCode}.sizeMedium`, "") || "/assets/imgs/ecommerce.png"}  width="100px" height="100px" /></div>
+                    <div><img src={baseUrl+(_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.courierOrgCode}.sizeMedium`, ""))} onError={this.addDefaultECommerceSrc} width="100px" height="100px" /></div>
                     <span className="bold">{this.state.orderDetails.tranxData.courierOrgCode}</span>
                   </div>
                 </div>
@@ -618,7 +637,7 @@ class OrderDetailsContainer extends React.Component {
                       </div>
                       <div className="col-md-12 text-center">
                         <div className="shadowBox recipt">
-                          <img src={this.state.orderDetails.tranxData.ExportHAWB.HAWBImagePath || "/assets/imgs/hawb.jpg"} height="50%" />
+                          <img src={baseUrl + this.state.orderDetails.tranxData.ExportHAWB.HAWBImagePath} onError={this.addDefaultHAWBSrc} height="50%" />
                         </div>
                       </div>
                     </div>

@@ -77,16 +77,42 @@ class OrderList extends React.Component {
     componentWillReceiveProps(nextProps) {
         console.log(nextProps.orderlist, "---- get grid data")
 
+        let gridData = nextProps.orderlist.data.searchResult.orderList || [];
+
+        gridData.forEach((data, index) => {
+            gridData[index].orderStatus = this.getStatus(data.orderStatus);
+        })
+
         if (nextProps.orderlist && nextProps.typeData) {
             this.setState(
                 {
-                    gridData: nextProps.orderlist.data.searchResult.orderList,
+                    gridData: gridData,
                     typeData: nextProps.typeData,
                     isLoading: false,
                     page: nextProps.orderlist.pageData
                 }
             )
         }
+    }
+
+    getStatus(status) {
+        switch (status) {
+            case 'HAWBCREATED':
+                return 'HAWB CREATED'
+            case 'EXPORTCLEARED':
+                return 'EXPORT CLEARED'
+            case 'RETURNBYCUSTOMER':
+                return 'RETURN BY CUSTOMER'
+            case 'IMPORTCLEARED':
+                return 'IMPORT CLEARED'
+            case 'PARTIALRETURN':
+                return 'PARTIAL RETURN'
+            case 'FULLRETURN':
+                return 'FULL RETURN'
+            default:
+                return status
+        }
+
     }
 
     componentDidMount() {
@@ -140,7 +166,7 @@ class OrderList extends React.Component {
     }
 
     clearFields = () => {
-        this.setState({searchCriteria : undefined})
+        this.setState({ searchCriteria: undefined })
     }
 
     render() {
@@ -232,7 +258,7 @@ class OrderList extends React.Component {
                             })
 
                         }
-                        
+
                         <Table
                             gridColumns={utils.getGridColumnByName("orderList")}
                             gridData={this.state.gridData}
