@@ -42,7 +42,7 @@ class OrderDetailsContainer extends React.Component {
             "label": "HAWB Created",
             "status": true,
             "type": "SUCCESS",
-            "legend": "HAWB Created"
+            "legend": "HAWBCreated"
           },
           {
             "label": "Cleared",
@@ -68,7 +68,7 @@ class OrderDetailsContainer extends React.Component {
             "label": "HAWB Created",
             "status": true,
             "type": "SUCCESS",
-            "legend": "HAWB Created"
+            "legend": "HAWBCreated"
           },
           {
             "label": "Cleared",
@@ -106,7 +106,7 @@ class OrderDetailsContainer extends React.Component {
             "label": "HAWB Created",
             "status": true,
             "type": "SUCCESS",
-            "legend": "HAWB Created"
+            "legend": "HAWBCreated"
           },
           {
             "label": "Cleared",
@@ -331,7 +331,7 @@ class OrderDetailsContainer extends React.Component {
                 #: <span>{this.state.orderDetails.tranxData.orderID}</span></label>
               </div>
               <div className="hashno">
-                <label className="bold">354843191535137876132161</label>
+                <label className="bold">{this.state.orderDetails.txnid}</label>
               </div>
             </div>
           </div>
