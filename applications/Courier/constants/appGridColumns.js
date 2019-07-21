@@ -47,7 +47,7 @@ module.exports = {
     { alias: "Courier", key: "courierCompanyName", type: "string" },
     { alias: "Ecommerce", key: "ecommerceCompanyName", type: "string" },
     { alias: "Ship To", key: "shipTo", type: "string" },
-    { alias: "Status", key: "orderStatus", type: "string" },
+    { alias: "Status", key: "orderStatus", type: "statusBox" },
     { alias: "Action", key: "actions", type: "action" },
 
   ],

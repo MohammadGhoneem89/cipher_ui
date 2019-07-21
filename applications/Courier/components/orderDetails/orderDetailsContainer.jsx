@@ -158,14 +158,13 @@ class OrderDetailsContainer extends React.Component {
     }
 
     if (nextProps.orderDetails) {
-      let lineItems = nextProps.orderDetails.tranxData.lineItems;
+      let lineItems = nextProps.orderDetails.tranxData.lineItems ? nextProps.orderDetails.tranxData.lineItems : [];
       let returnItems = nextProps.orderDetails.tranxData.returnItems ? nextProps.orderDetails.tranxData.returnItems : []
-      let exportHAWB = nextProps.orderDetails.tranxData.ExportHAWB;
-      let importHAWB = nextProps.orderDetails.tranxData.ImportHAWBList;
+      let exportHAWB = nextProps.orderDetails.tranxData.ExportHAWB ? nextProps.orderDetails.tranxData.ExportHAWB : {};
+      let importHAWB = nextProps.orderDetails.tranxData.ImportHAWB ? nextProps.orderDetails.tranxData.ImportHAWB : [];
 
       lineItems.map((item, index) => {
 
-        //exportHAWB.forEach((hawb) => {
         if (exportHAWB.isDelivered && exportHAWB.HAWBNumber == item.HAWBNumber) {
           lineItems[index].actions = [{ "actionType": "COMPONENT_FUNCTION", iconName: "fa fa-eye", label: "View" }]
           lineItems[index].deliveryProof = {
@@ -175,7 +174,6 @@ class OrderDetailsContainer extends React.Component {
           }
           return;
         }
-        //})
       })
 
       returnItems.map((item, index) => {
