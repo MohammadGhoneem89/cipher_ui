@@ -2713,7 +2713,7 @@ input[type='checkbox']:checked+label::after {
 .boxBody {
 	padding: 15px 20px;
 	;
-	height: 20%;
+	/* height: 20%; */
 }
 
 .boxBody .form-group {

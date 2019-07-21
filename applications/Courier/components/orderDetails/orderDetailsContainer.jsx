@@ -309,7 +309,7 @@ class OrderDetailsContainer extends React.Component {
               </div>
               <div className="col-md-12">
                 <hr />
-                <img style={{ border: "1px solid black", display: "block", marginLeft: "auto", marginRight: "auto" }} src={"/assets/imgs/sign.png"} height="50%" />
+                <img style={{ border: "1px solid black", display: "block", marginLeft: "auto", marginRight: "auto" }} src={this.state.showData.deliveryImagePath || "/assets/imgs/sign.png"} height="50%" />
               </div>
             </div>
           </Portlet>
@@ -348,12 +348,12 @@ class OrderDetailsContainer extends React.Component {
                       <h4 className="bold">E-commerce</h4>
                     </div>
                     {console.log(this.state.orgDetailByCode)}
-                    <div><img src={_.get(this.state.orgDetailByCode, `${this.state.orderDetails.tranxData.eCommerceOrgCode}.sizeMedium`, "")} width="10%" /></div>
+                    <div><img src={_.get(this.state.orgDetailByCode, `${this.state.orderDetails.tranxData.eCommerceOrgCode}.sizeMedium`, "") || "/assets/imgs/courier.jpg"} width="100px" height="100px" /></div>
                     <span className="bold">{this.state.orderDetails.tranxData.eCommerceOrgCode}</span>
                   </div>
                   <div className="col-md-6 text-center">
                     <div><h4 className="bold">Courier Company</h4></div>
-                    <div><img src={_.get(this.state.orgDetailByCode, `${this.state.orderDetails.tranxData.courierOrgCode}.sizeMedium`, "")} width="10%" /></div>
+                    <div><img src={_.get(this.state.orgDetailByCode, `${this.state.orderDetails.tranxData.courierOrgCode}.sizeMedium`, "") || "/assets/imgs/ecommerce.png"}  width="100px" height="100px" /></div>
                     <span className="bold">{this.state.orderDetails.tranxData.courierOrgCode}</span>
                   </div>
                 </div>
@@ -620,7 +620,7 @@ class OrderDetailsContainer extends React.Component {
                       </div>
                       <div className="col-md-12 text-center">
                         <div className="shadowBox recipt">
-                          <img src={this.state.orderDetails.tranxData.ExportHAWB.HAWBImagePath} height="50%" />
+                          <img src={this.state.orderDetails.tranxData.ExportHAWB.HAWBImagePath || "/assets/imgs/hawb.jpg"} height="50%" />
                         </div>
                       </div>
                     </div>
