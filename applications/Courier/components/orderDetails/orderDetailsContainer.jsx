@@ -662,7 +662,7 @@ class OrderDetailsContainer extends React.Component {
                       </div>
                       <div className="col-md-12 text-center">
                         <div className="shadowBox recipt">
-                          <img src={baseUrl + this.state.orderDetails.tranxData.ExportHAWB.HAWBImagePath} onError={this.addDefaultHAWBSrc} height="30%" />
+                          <img src={baseUrl + '/API/core/download?type=IMAGE&path=' + this.state.orderDetails.tranxData.ExportHAWB.HAWBHash} onError={this.addDefaultHAWBSrc} height="30%" />
                         </div>
                       </div>
                     </div>
