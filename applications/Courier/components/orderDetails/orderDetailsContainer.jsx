@@ -184,8 +184,9 @@ class OrderDetailsContainer extends React.Component {
 
         if (exportHAWB.isDelivered && exportHAWB.HAWBNumber == item.HAWBNumber) {
           lineItems[index].actions = [{ "actionType": "COMPONENT_FUNCTION", iconName: "fa fa-eye", label: "View" }]
+          console.log("--==>", exportHAWB)
           lineItems[index].deliveryProof = {
-            HAWBImagePath: exportHAWB.HAWBImagePath,
+            proofOfDeliveryHash: exportHAWB.proofOfDeliveryHash,
             deliveryToPersonName: exportHAWB.deliveryToPersonName,
             deliveryDate: exportHAWB.deliveryDate
           }
@@ -199,7 +200,7 @@ class OrderDetailsContainer extends React.Component {
           if (hawb.isDelivered && hawb.HAWBNumber == item.newAWB) {
             returnItems[index].actions = [{ "actionType": "COMPONENT_FUNCTION", iconName: "fa fa-eye", label: "View" }]
             returnItems[index].returnProof = {
-              HAWBImagePath: hawb.HAWBImagePath,
+              proofOfDeliveryHash: hawb.proofOfDeliveryHash,
               deliveryToPersonName: hawb.deliveryToPersonName,
               deliveryDate: hawb.deliveryDate
             }
@@ -216,6 +217,9 @@ class OrderDetailsContainer extends React.Component {
       switch (label) {
         case "2":
           label = "SUBMITTED"
+          break;
+        case "4":
+          label = "FAIL DISPATCH"
           break;
         case "6":
           label = "CLEARED"
@@ -262,7 +266,7 @@ class OrderDetailsContainer extends React.Component {
     switch (actionName) {
       case "View":
         let data = this.state.returnItems[index].returnProof;
-        let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.deliveryImagePath, date: data.deliveryDate };
+        let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.proofOfDeliveryHash, date: data.deliveryDate };
         this.setState({ showData, modalIsOpen: true });
         break;
       default:
@@ -274,7 +278,7 @@ class OrderDetailsContainer extends React.Component {
     switch (actionName) {
       case "View":
         let data = this.state.lineItems[index].deliveryProof;
-        let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.deliveryImagePath, date: data.deliveryDate };
+        let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.proofOfDeliveryHash, date: data.deliveryDate };
         this.setState({ showData, modalIsOpen: true });
         break;
       default:
@@ -342,7 +346,7 @@ class OrderDetailsContainer extends React.Component {
               </div>
               <div className="col-md-12">
                 <hr />
-                <img style={{ border: "1px solid black", display: "block", marginLeft: "auto", marginRight: "auto" }} src={baseUrl + this.state.showData.deliveryImagePath} onError={this.addDefaultSignSrc} height="50%" />
+                <img style={{ border: "1px solid black", display: "block", marginLeft: "auto", marginRight: "auto" }} src={baseUrl + '/API/core/download?type=IMAGE&path=' + this.state.showData.deliveryImagePath} onError={this.addDefaultSignSrc} height="50%" />
               </div>
             </div>
           </Portlet>
@@ -659,7 +663,7 @@ class OrderDetailsContainer extends React.Component {
                       </div>
                       <div className="col-md-12 text-center">
                         <div className="shadowBox recipt">
-                          <img src={baseUrl + this.state.orderDetails.tranxData.ExportHAWB.HAWBImagePath} onError={this.addDefaultHAWBSrc} height="30%" />
+                          <img src={baseUrl + '/API/core/download?type=IMAGE&path=' + this.state.orderDetails.tranxData.ExportHAWB.HAWBHash} onError={this.addDefaultHAWBSrc} height="30%" />
                         </div>
                       </div>
                     </div>
