@@ -115,7 +115,7 @@ class Dashboard extends React.Component {
                     borderWidth: 1,
                     hoverBackgroundColor: ['#8DC63F', '#1DB2F5', '#97C95C', '#FFC720', '#EB3573', '#A63DB8', '#BD1550', '#1DB2F5', '#FFC720'],
                     hoverBorderColor: ['#8DC63F', '#1DB2F5', '#97C95C', '#FFC720', '#EB3573', '#A63DB8', '#BD1550', '#1DB2F5', '#FFC720'],
-                    data: orderTracking ? [orderTracking.finalized, orderTracking.hawbCreated, orderTracking.exportCleared, orderTracking.delivered, orderTracking.returnByCustomer, orderTracking.undelivered, orderTracking.importCleared, orderTracking.partialReturn, orderTracking.fullReturn] : []
+                    data: orderTracking ? [orderTracking.FINALIZED, orderTracking.HAWBCREATED, orderTracking.EXPORTCLEARED, orderTracking.DELIVERED, orderTracking.RETURNBYCUSTOMER, orderTracking.UNDELIVERED, orderTracking.IMPORTCLEARED, orderTracking.PARTIALRETURN, orderTracking.FULLRETURN] : []
                 }
             ]
         };
