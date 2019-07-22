@@ -18,7 +18,7 @@ class HorizontalBarChartTechnician extends React.Component {
 
         let data = this.props.data
 
-        let label = ['Problems Reported With Correction']
+        // let label = label
 
         let labels = []
         let reported = []
@@ -33,7 +33,7 @@ class HorizontalBarChartTechnician extends React.Component {
             datasets: [
                 {
                     stack: 'stack1',
-                    label: label[0],
+                    // label: label[0],
                     backgroundColor: ['#FEC23F', '#FEB141', '#FF9D3F', '#FF9D3F', '#FF6941'],
                     borderColor: ['#FEC23F', '#FEB141', '#FF9D3F', '#FF9D3F', '#FF6941'],
                     borderWidth: 1,

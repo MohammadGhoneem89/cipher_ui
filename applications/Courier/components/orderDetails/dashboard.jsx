@@ -23,7 +23,7 @@ import { Bar, Line } from 'react-chartjs-2';
 import TileUnit from '../../../../core/common/tileUnit.jsx';
 import HorizontalbarChartTechnician from '../../common/charts/HorizontalbarChartTechnician.jsx';
 import moment from 'moment'
-
+let interval;
 class Dashboard extends React.Component {
 
     constructor(props) {
@@ -36,9 +36,10 @@ class Dashboard extends React.Component {
             toDateWrkBrd: moment().format('YYYY-MM-DD'),
             CBVLabels: undefined,
             CBVData: undefined,
-            hsTitile: 'HS Code',
-            topHS:{option: 'HS Code'},
-            isLoading: true
+            hsTitile: 'E-Commerce Company',
+            topHS:{option: 'E-Commerce Company'},
+            isLoading: true,
+            ecommerce: '001'
         };
         this.generalHandler = gen.generalHandler.bind(this);
         this.customActionHandler = customActionHandler.bind(this);
@@ -52,14 +53,24 @@ class Dashboard extends React.Component {
             requestCreator.createTypeDataRequest([
                 'dc-hsCodeFilter'
             ]));
-        this.props.actions.generalProcess(constants.getDashboardData, {
-            action: 'getDashboardData',
-            searchCriteria: {
-                startDate: this.state.fromDateWrkBrd,
-                endDate: this.state.toDateWrkBrd,
-                ecommerce: '002'
-            }
-        })
+            this.props.actions.generalProcess(constants.getDashboardData, {
+                action: 'getDashboardData',
+                searchCriteria: {
+                    startDate: this.state.fromDateWrkBrd,
+                    endDate: this.state.toDateWrkBrd,
+                    ecommerce: this.state.ecommerce
+                }
+            })
+            interval = setInterval(() => {
+                this.props.actions.generalProcess(constants.getDashboardData, {
+                    action: 'getDashboardData',
+                    searchCriteria: {
+                        startDate: this.state.fromDateWrkBrd,
+                        endDate: this.state.toDateWrkBrd,
+                        ecommerce: this.state.ecommerce
+                    }
+                })
+            }, 10000);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -152,8 +163,11 @@ class Dashboard extends React.Component {
                     ecommerce: '001'
                 }
             })
+            this.setState({
+                ecommerce: '001'
+            })
         }
-        else if (topHS && topHS === 'E-Commerce Company') {
+        else if (topHS && topHS === 'Destination Country') {
             this.props.actions.generalProcess(constants.getDashboardData, {
                 action: 'getDashboardData',
                 searchCriteria: {
@@ -162,7 +176,10 @@ class Dashboard extends React.Component {
                     ecommerce: '002'
                 }
             })
-        } else {
+            this.setState({
+                ecommerce: '002'
+            })
+        } else if (topHS && topHS === 'HS Code') {
             this.props.actions.generalProcess(constants.getDashboardData, {
                 action: 'getDashboardData',
                 searchCriteria: {
@@ -171,7 +188,17 @@ class Dashboard extends React.Component {
                     ecommerce: '003'
                 }
             })
+            this.setState({
+                ecommerce: '003'
+            })
         }
+    }
+
+    componentWillUnmount() {
+        console.log('interval', interval);
+        clearInterval(interval)
+        console.log('interval', interval);
+
     }
 
     render() {
