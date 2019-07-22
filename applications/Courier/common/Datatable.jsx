@@ -40,7 +40,7 @@ class Datatable extends React.Component {
     if (this.props.gridData !== nextProps.gridData) {
       this.setState({ isLoading: false });
     }
-    this.setState({ activePage: this.props.activePage });
+    this.setState({ activePage: nextProps.activePage });
   }
 
   getExportOptions(exportForDetail, enableXMLExport) {
@@ -166,7 +166,6 @@ class Datatable extends React.Component {
 
           <div className="pull-right">
 
-
             <Pagination
               activePage={this.state.activePage}
               itemsCountPerPage={this.props.pageSize}
@@ -191,7 +190,7 @@ class Datatable extends React.Component {
   }
 
   handlePageChange(pageNumber) {
-    //alert(`active page is ${pageNumber}`);
+    // alert(`active page is ${pageNumber}`);
     this.setState({
       activePage: pageNumber,
       isLoading: true
