@@ -116,7 +116,7 @@ class Dashboard extends React.Component {
         let orderTracking = _.get(this.state, 'getDashboardData.orderTracking', undefined);
 
         let data = {
-            labels: ["Finalized", "HAWB Created", "Export Cleared", "Deliverd", "Return By Customer", "Undelivered", "Import Cleared", "Partial Return", "Full Return"],
+            labels: ["Finalized", "HAWB Created", "Export Cleared", "Delivered", "Return By Customer", "Undelivered", "Import Cleared", "Partial Return", "Full Return"],
             datasets: [
                 {
                     label: '',
