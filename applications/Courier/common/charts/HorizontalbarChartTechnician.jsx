@@ -28,6 +28,8 @@ class HorizontalBarChartTechnician extends React.Component {
             reported.push(i.expAuth);
         }
 
+        console.log(Number(1000).toLocaleString('en'))
+
         this.state = {
             labels: labels,
             datasets: [
@@ -65,7 +67,9 @@ class HorizontalBarChartTechnician extends React.Component {
                         scales: {
                             xAxes: [{
                                 ticks: {
-                                    stepSize: 2
+                                    min: 0,
+                                    stepSize: 100,
+                                    stepWidth: 100
                                 },
                                 categorySpacing: 0
                             }],
