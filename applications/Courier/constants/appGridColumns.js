@@ -43,11 +43,11 @@ module.exports = {
     { alias: "", key: "key", type: "hiddenID" },
     { alias: "Order #", key: "orderNumber", type: "string" },
     { alias: "HAWB #", key: "hawbNumber", type: "string" },
-    { alias: "Order Date", key: "orderDate", type: "string" },
+    { alias: "Order Date", key: "orderDate", type: "epochDate" },
     { alias: "Courier", key: "courierCompanyName", type: "string" },
     { alias: "Ecommerce", key: "ecommerceCompanyName", type: "string" },
     { alias: "Ship To", key: "shipTo", type: "string" },
-    { alias: "Status", key: "orderStatus", type: "string" },
+    { alias: "Status", key: "orderStatus", type: "statusBox" },
     { alias: "Action", key: "actions", type: "action" },
 
   ],

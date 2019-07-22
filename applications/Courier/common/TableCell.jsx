@@ -52,11 +52,29 @@ class TableCell extends React.Component {
       case "Inactive":
         return "badge badge-danger badge-roundless";
       default:
-        return "badge badge-primary badge-roundless";
+        return "badge badge-secondary badge-roundless";
       case "Reconciled":
         return " badge badge-success badge-roundless";
       case "Not Reconciled":
         return " badge badge-danger badge-roundless";
+      case "FINALIZED":
+        return " badge badge-info badge-roundless";
+      case "HAWB CREATED":
+        return " badge badge-warning badge-roundless";
+      case "EXPORT CLEARED":
+        return " badge badge-warning badge-roundless";
+      case "DELIVERED":
+        return " badge badge-success badge-roundless";
+      case "RETURN BY CUSTOMER":
+        return " badge badge-warning badge-roundless";
+      case "UNDELIVERED":
+        return " badge badge-danger badge-roundless";
+      case "IMPORT CLEARED":
+        return " badge badge-warning badge-roundless";
+      case "PARTIAL RETURN":
+        return " badge badge-success badge-roundless";
+      case "FULLRETURN":
+        return " badge badge-success badge-roundless";
     }
   }
   // Reconciled

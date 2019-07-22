@@ -211,5 +211,8 @@ export default {
     "action": "getOrderDetails",
     "data": {}
   },
-  "orgDetailByCode": undefined
+  "orgDetailByCode": undefined,
+  "entityList": {
+    action: "entityList"
+  }
 }

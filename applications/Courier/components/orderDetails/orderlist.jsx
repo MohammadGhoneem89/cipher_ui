@@ -77,26 +77,106 @@ class OrderList extends React.Component {
     componentWillReceiveProps(nextProps) {
         console.log(nextProps.orderlist, "---- get grid data")
 
-        if (nextProps.orderlist && nextProps.typeData) {
+        let gridData = nextProps.orderlist.data.searchResult.orderList || [];
+
+        gridData.forEach((data, index) => {
+            gridData[index].orderStatus = this.getStatus(data.orderStatus, data.exportDeclarationStatus);
+        })
+
+        if (nextProps.orderlist && nextProps.entityList.data) {
+            let entityList = nextProps.entityList.data.searchResult;
+
+            let ecommerceList = []
+            let courierList = []
+            entityList.forEach((entity) => {
+                if (entity.orgType == 'Ecommerce') {
+                    let ecommerce = {
+                        label: entity.entityName.name,
+                        value: entity.spCode
+                    }
+                    ecommerceList.push(ecommerce);
+                }
+                else if (entity.orgType == 'Courier') {
+                    let courier = {
+                        label: entity.entityName.name,
+                        value: entity.spCode
+                    }
+                    courierList.push(courier);
+                }
+            })
+
             this.setState(
                 {
-                    gridData: nextProps.orderlist.data.searchResult.orderList,
+                    gridData: gridData,
                     typeData: nextProps.typeData,
                     isLoading: false,
-                    page: nextProps.orderlist.pageData
+                    page: nextProps.orderlist.pageData,
+                    ecommerceList: ecommerceList,
+                    courierList: courierList
                 }
             )
         }
     }
 
-    componentDidMount() {
-        this.props.actions.generalProcess(coreConstants.getTypeData,
-            requestCreator.createTypeDataRequest([
-                'dc-ecommerce',
-                'dc-courier'
-            ]));
+    getStatus(status, expDecStatus) {
+        switch (status) {
+            case 'HAWBCREATED':
+                if (expDecStatus == "") {
+                    return 'HAWB CREATED'
+                }
+                else {
+                    return this.getCustomsStatus(expDecStatus)
+                }
+            case 'EXPORTCLEARED':
+                return 'EXPORT CLEARED'
+            case 'RETURNBYCUSTOMER':
+                return 'RETURN BY CUSTOMER'
+            case 'IMPORTCLEARED':
+                return 'IMPORT CLEARED'
+            case 'PARTIALRETURN':
+                return 'PARTIAL RETURN'
+            case 'FULLRETURN':
+                return 'FULL RETURN'
+            default:
+                return status
+        }
+    }
 
+    getCustomsStatus(label) {
+        switch (label) {
+            case "2":
+                label = "SUBMITTED"
+                break;
+            case "6":
+                label = "CLEARED"
+                break;
+            case "7":
+                label = "CLEARANCE SUBJECT TO INSPECTION"
+                break;
+            case "8":
+                label = "RELEASE FOR INSPECTION"
+                break;
+            case "9":
+                label = "DETAINED"
+            case "10":
+                label = "SUSPEND"
+            case "14":
+                label = "CANCELLED"
+            case "15":
+                label = "DECLINED"
+            case "16":
+                label = "REJECTED"
+                break;
+            default:
+
+                break;
+        }
+        return label
+    }
+
+    componentDidMount() {
         this.props.actions.generalProcess(constants.orderlist, this.getRequest());
+        this.props.actions.generalProcess(constants.orgList, { action: "entityList", page: { currentPageNo: 1, pageSize: 100 } });
 
         window.scrollTo(0, 0);
     }
@@ -140,7 +220,7 @@ class OrderList extends React.Component {
     }
 
     clearFields = () => {
-        this.setState({searchCriteria : undefined})
+        this.setState({ searchCriteria: undefined })
     }
 
     render() {
@@ -166,15 +246,15 @@ class OrderList extends React.Component {
                                     <Row>
                                         <Col col="6">
                                             <Lable text={utils.getLabelByID("Ecommerce")} columns="3"></Lable>
-                                            <Combobox fieldname='ecommerce' formname='searchCriteria' columns='8' style={{}}
-                                                state={this.state} typeName="dc-ecommerce" dataSource={this.state.typeData}
-                                                multiple={false} actionHandler={this.generalActionHandler} selected={_.get(this.state.searchCriteria, "ecommerce", "")} />
+                                            <Combobox fieldname='ecommerce' formname='searchCriteria' columns='8' style={{}} disabled={sessionStorage.orgType == 'ECOMMERCE'}
+                                                state={this.state} typeName="ecommerceList" dataSource={this.state}
+                                                multiple={false} actionHandler={this.generalActionHandler} selected={sessionStorage.orgType == 'ECOMMERCE' ? sessionStorage.orgCode : _.get(this.state.searchCriteria, "ecommerce", "")} />
                                         </Col>
                                         <Col col="6">
                                             <Lable text={utils.getLabelByID("Courier Company Name")} columns="3"></Lable>
-                                            <Combobox fieldname='courier' formname='searchCriteria' columns='8' style={{}}
-                                                state={this.state} typeName="dc-courier" dataSource={this.state.typeData}
-                                                multiple={false} actionHandler={this.generalActionHandler} selected={_.get(this.state.searchCriteria, "courier", "")} />
+                                            <Combobox fieldname='courier' formname='searchCriteria' columns='8' style={{}} disabled={sessionStorage.orgType == 'COURIER'}
+                                                state={this.state} typeName="courierList" dataSource={this.state}
+                                                multiple={false} actionHandler={this.generalActionHandler} selected={sessionStorage.orgType == 'COURIER' ? sessionStorage.orgCode : _.get(this.state.searchCriteria, "courier", "")} />
                                         </Col>
                                     </Row>
                                     <Row>
@@ -232,7 +312,7 @@ class OrderList extends React.Component {
                             })
 
                         }
-                        
+
                         <Table
                             gridColumns={utils.getGridColumnByName("orderList")}
                             gridData={this.state.gridData}
@@ -254,6 +334,7 @@ function mapStateToProps(state, ownProps) {
     return {
         typeData: _.get(state.app.typeData, 'data', undefined),
         orderlist: state.app.orderlist,
+        entityList: state.app.entityList
     };
 }
 

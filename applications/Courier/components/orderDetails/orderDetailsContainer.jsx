@@ -16,6 +16,9 @@ import * as toaster from '../../../../core/common/toaster.js';
 import * as requestCreator from '../../../../core/common/request.js';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 import moment from 'moment'
+import backOffices from '../../../backOffices';
+
+let baseUrl = backOffices.baseUrl;
 
 class OrderDetailsContainer extends React.Component {
 
@@ -29,7 +32,7 @@ class OrderDetailsContainer extends React.Component {
       showData: {},
       orderDetails: undefined,
       lineItems: undefined,
-      orgDetailByCode: {},
+      orgDetailByCode: undefined,
       statusList: [
         [
           {
@@ -42,7 +45,7 @@ class OrderDetailsContainer extends React.Component {
             "label": "HAWB Created",
             "status": true,
             "type": "SUCCESS",
-            "legend": "HAWB Created"
+            "legend": "HAWBCreated"
           },
           {
             "label": "Cleared",
@@ -68,7 +71,7 @@ class OrderDetailsContainer extends React.Component {
             "label": "HAWB Created",
             "status": true,
             "type": "SUCCESS",
-            "legend": "HAWB Created"
+            "legend": "HAWBCreated"
           },
           {
             "label": "Cleared",
@@ -106,7 +109,7 @@ class OrderDetailsContainer extends React.Component {
             "label": "HAWB Created",
             "status": true,
             "type": "SUCCESS",
-            "legend": "HAWB Created"
+            "legend": "HAWBCreated"
           },
           {
             "label": "Cleared",
@@ -158,24 +161,22 @@ class OrderDetailsContainer extends React.Component {
     }
 
     if (nextProps.orderDetails) {
-      let lineItems = nextProps.orderDetails.tranxData.lineItems;
-      let returnItems = nextProps.orderDetails.tranxData.returnItems;
-      let exportHAWB = nextProps.orderDetails.tranxData.ExportHAWBList;
-      let importHAWB = nextProps.orderDetails.tranxData.ImportHAWBList;
+      let lineItems = nextProps.orderDetails.tranxData.lineItems ? nextProps.orderDetails.tranxData.lineItems : [];
+      let returnItems = nextProps.orderDetails.tranxData.returnItems ? nextProps.orderDetails.tranxData.returnItems : []
+      let exportHAWB = nextProps.orderDetails.tranxData.ExportHAWB ? nextProps.orderDetails.tranxData.ExportHAWB : {};
+      let importHAWB = nextProps.orderDetails.tranxData.ImportHAWB ? nextProps.orderDetails.tranxData.ImportHAWB : [];
 
       lineItems.map((item, index) => {
 
-        exportHAWB.forEach((hawb) => {
-          if (hawb.isDelivered && hawb.HAWBNumber == item.HAWBNumber) {
-            lineItems[index].actions = [{ "actionType": "COMPONENT_FUNCTION", iconName: "fa fa-eye", label: "View" }]
-            lineItems[index].deliveryProof = {
-              HAWBImagePath: hawb.HAWBImagePath,
-              deliveryToPersonName: hawb.deliveryToPersonName,
-              deliveryDate: hawb.deliveryDate
-            }
-            return;
+        if (exportHAWB.isDelivered && exportHAWB.HAWBNumber == item.HAWBNumber) {
+          lineItems[index].actions = [{ "actionType": "COMPONENT_FUNCTION", iconName: "fa fa-eye", label: "View" }]
+          lineItems[index].deliveryProof = {
+            HAWBImagePath: exportHAWB.HAWBImagePath,
+            deliveryToPersonName: exportHAWB.deliveryToPersonName,
+            deliveryDate: exportHAWB.deliveryDate
           }
-        })
+          return;
+        }
       })
 
       returnItems.map((item, index) => {
@@ -197,14 +198,42 @@ class OrderDetailsContainer extends React.Component {
       stateCopy.orderDetails = nextProps.orderDetails;
       stateCopy.lineItems = lineItems;
       stateCopy.returnItems = returnItems;
-
+      let label = _.get(stateCopy, 'orderDetails.tranxData.exportDeclaration[0].status', '')
+      switch (label) {
+        case "2":
+          label = "SUBMITTED"
+          break;
+        case "6":
+          label = "CLEARED"
+          break;
+        case "7":
+          label = "CLEARANCE SUBJECT TO INSPECTION"
+          break;
+        case "8":
+          label = "RELEASE FOR INSPECTION"
+          break;
+        case "9":
+          label = "DETAINED"
+        case "10":
+          label = "SUSPEND"
+        case "14":
+          label = "CANCELLED"
+        case "15":
+          label = "DECLINED"
+        case "16":
+          label = "REJECTED"
+          break;
+        default:
+          label = "CREATED"
+          break;
+      }
       if (stateCopy.orderDetails.tranxData.orderStatus == 'HAWBCREATED' && _.get(stateCopy.orderDetails.tranxData, "exportDeclaration[0]", undefined) != undefined) {
         stateCopy.orderDetails.tranxData.orderStatus = 'EXPORTCLEARED'
-        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][2].label = stateCopy.orderDetails.tranxData.exportDeclaration[0].status
+        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][2].label = label
       }
       else if ((stateCopy.orderDetails.tranxData.orderStatus == 'UNDELIVERED' || stateCopy.orderDetails.tranxData.orderStatus == 'RETURNBYCUSTOMER') && _.get(stateCopy.orderDetails.tranxData, "importDeclaration[0]", undefined) != undefined) {
         stateCopy.orderDetails.tranxData.orderStatus = 'IMPORTCLEARED'
-        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][3].label = stateCopy.orderDetails.tranxData.exportDeclaration[0].status
+        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][3].label = label
       }
 
       if (stateCopy.orgDetailByCode == undefined) {
@@ -240,6 +269,22 @@ class OrderDetailsContainer extends React.Component {
   }
   updateState(data) {
     this.setState(data);
+  }
+
+  addDefaultCourierSrc (ev) {
+    ev.target.src = '/assets/imgs/courier.jpg'
+  }
+
+  addDefaultECommerceSrc (ev) {
+    ev.target.src = '/assets/imgs/ecommerce.png'
+  }
+  
+  addDefaultHAWBSrc (ev) {
+    ev.target.src = '/assets/imgs/hawb.jpg'
+  }
+
+  addDefaultSignSrc (ev) {
+    ev.target.src = '/assets/imgs/sign.png'
   }
 
   render() {
@@ -281,7 +326,7 @@ class OrderDetailsContainer extends React.Component {
               </div>
               <div className="col-md-12">
                 <hr />
-                <img style={{ border: "1px solid black", display: "block", marginLeft: "auto", marginRight: "auto" }} src={"/assets/imgs/sign.png"} height="50%" />
+                <img style={{ border: "1px solid black", display: "block", marginLeft: "auto", marginRight: "auto" }} src={baseUrl + this.state.showData.deliveryImagePath} onError={this.addDefaultSignSrc} height="50%" />
               </div>
             </div>
           </Portlet>
@@ -305,7 +350,7 @@ class OrderDetailsContainer extends React.Component {
                 #: <span>{this.state.orderDetails.tranxData.orderID}</span></label>
               </div>
               <div className="hashno">
-                <label className="bold">354843191535137876132161</label>
+                <label className="bold">{this.state.orderDetails.txnid}</label>
               </div>
             </div>
           </div>
@@ -320,12 +365,12 @@ class OrderDetailsContainer extends React.Component {
                       <h4 className="bold">E-commerce</h4>
                     </div>
                     {console.log(this.state.orgDetailByCode)}
-                    <div><img src={_.get(this.state.orgDetailByCode, `${this.state.orderDetails.tranxData.eCommerceOrgCode}.sizeMedium`, "")} width="10%" /></div>
+                    <div><img src={baseUrl+(_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.eCommerceOrgCode}.sizeMedium`, ""))} onError={this.addDefaultCourierSrc} width="100px" height="100px" /></div>
                     <span className="bold">{this.state.orderDetails.tranxData.eCommerceOrgCode}</span>
                   </div>
                   <div className="col-md-6 text-center">
                     <div><h4 className="bold">Courier Company</h4></div>
-                    <div><img src={_.get(this.state.orgDetailByCode, `${this.state.orderDetails.tranxData.courierOrgCode}.sizeMedium`, "")} width="10%" /></div>
+                    <div><img src={baseUrl+(_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.courierOrgCode}.sizeMedium`, ""))} onError={this.addDefaultECommerceSrc} width="100px" height="100px" /></div>
                     <span className="bold">{this.state.orderDetails.tranxData.courierOrgCode}</span>
                   </div>
                 </div>
@@ -580,99 +625,97 @@ class OrderDetailsContainer extends React.Component {
                     />
                   </div>
                   <div id="HAWB" className="tab-pane">
-                    {this.state.orderDetails.tranxData.ExportHAWBList.map(item => {
-                      return <div className="row">
-                        <div className="col-md-6">
-                          <label className="bold">AWB #:</label>
-                          <label><span className="awbNO">{item.HAWBNumber}</span></label>
+
+                    <div className="row">
+                      <div className="col-md-6">
+                        <label className="bold">AWB #:</label>
+                        <label><span className="awbNO">{this.state.orderDetails.tranxData.ExportHAWB.HAWBNumber}</span></label>
+                      </div>
+                      <div className="col-md-6 text-right">
+                        <label className="bold">No Of Box:</label>
+                        <label><span className="noofbox">{this.state.orderDetails.tranxData.ExportHAWB.noOfBoxes}</span></label>
+                      </div>
+                      <div className="col-md-12 text-center">
+                        <div className="shadowBox recipt">
+                          <img src={baseUrl + this.state.orderDetails.tranxData.ExportHAWB.HAWBImagePath} onError={this.addDefaultHAWBSrc} height="50%" />
                         </div>
-                        <div className="col-md-6 text-right">
-                          <label className="bold">No Of Box:</label>
-                          <label><span className="noofbox">{item.noOfBoxes}</span></label>
-                        </div>
-                        <div className="col-md-12 text-center">
-                          <div className="shadowBox recipt">
-                            <img src={item.HAWBImagePath} height="50%" />
-                          </div>
-                        </div>
-                      </div>;
-                    })}
+                      </div>
+                    </div>
+
 
                   </div>
                   <div id="Shipping" className="tab-pane">
-                    {this.state.orderDetails.tranxData.ExportHAWBList.map(item => {
-                      return <div>
-                        <div className="form-group">
-                          <div className="row">
-                            <div className="col-md-2">
-                              <label className="bold">MAWB #</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.shippingDetails.MAWBNumber}</label>
-                            </div>
+                    <div>
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <label className="bold">MAWB #</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.MAWBNumber}</label>
                           </div>
                         </div>
-                        <div className="form-group">
-                          <div className="row">
-                            <div className="col-md-2">
-                              <label className="bold">Flight No</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.shippingDetails.flightNo}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Flight Date</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.shippingDetails.flightDate}</label>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="form-group">
-                          <div className="row">
-                            <div className="col-md-2">
-                              <label className="bold">Port of Load</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.shippingDetails.portOfLoad}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Port of Exit</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.shippingDetails.exitPort}</label>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="form-group">
-                          <div className="row">
-                            <div className="col-md-2">
-                              <label className="bold">Cargo Handler</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{`${item.shippingDetails.cargoHandlerName}[${item.shippingDetails.cargoHandlerCode}]`}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Broker</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{`${item.shippingDetails.brokerName}[${item.shippingDetails.brokerCode}]`}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Agent </label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{`${item.shippingDetails.agentName}[${item.shippingDetails.agentCode}]`}</label>
-                            </div>
-                          </div>
-                        </div>
-                        {this.state.orderDetails.tranxData.ImportHAWBList > 0 && <hr />}
                       </div>
-                    })}
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <label className="bold">Flight No</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.flightNo}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Flight Date</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.flightDate}</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <label className="bold">Port of Load</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.portOfLoad}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Port of Exit</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.exitPort}</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-2">
+                            <label className="bold">Cargo Handler</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{`${this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.cargoHandlerName}[${this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.cargoHandlerCode}]`}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Broker</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{`${this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.brokerName}[${this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.brokerCode}]`}</label>
+                          </div>
+                          <div className="col-md-2">
+                            <label className="bold">Agent </label>
+                          </div>
+                          <div className="col-md-2">
+                            <label>{`${this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.agentName}[${this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.agentCode}]`}</label>
+                          </div>
+                        </div>
+                      </div>
+                      {this.state.orderDetails.tranxData.ImportHAWBList > 0 && <hr />}
+                    </div>
 
                   </div>
                   <div id="ExportDeclaration" className="tab-pane">
-                    {this.state.orderDetails.tranxData.exportDeclaration.map(item => {
+                    {this.state.orderDetails.tranxData.exportDeclaration && this.state.orderDetails.tranxData.exportDeclaration.map(item => {
                       return <div>
                         <div className="form-group">
                           <div className="row">

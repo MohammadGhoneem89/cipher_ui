@@ -10,5 +10,6 @@ module.exports = {
   fileList: baseUrl + "/API/customs-courier/getFileList",
   fileData: baseUrl + "/API/customs-courier/getFileData",
   orderDetails: baseUrl + "/API/customs-courier/getEndToEndTrackingData",
-  orgDetailByCode: baseUrl + "/API/UI/orgDetailByCode"
+  orgDetailByCode: baseUrl + "/API/UI/orgDetailByCode",
+  orgList: baseUrl + "/API/UI/orgList"
 };
