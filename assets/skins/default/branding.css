@@ -2924,6 +2924,11 @@ label.errorcolr {
 	content: none;
 }
 
+#progressbar li.notPassed:before {
+	background: #a5a6af;
+	color: white;
+}
+
 #progressbar li.active:before {
 	background: #00ae4f;
 	color: white;

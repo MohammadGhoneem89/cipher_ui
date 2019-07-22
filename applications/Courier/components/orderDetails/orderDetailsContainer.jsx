@@ -135,6 +135,20 @@ class OrderDetailsContainer extends React.Component {
             "type": "SUCCESS",
             "legend": "PartialReturn"
           }
+        ],
+        [
+          {
+            "label": "Finalized",
+            "status": false,
+            "type": "SUCCESS",
+            "legend": "Finalized"
+          },
+          {
+            "label": "Cancelled",
+            "status": true,
+            "type": "SUCCESS",
+            "legend": "Canceled"
+          }
         ]
       ]
     };
@@ -271,24 +285,26 @@ class OrderDetailsContainer extends React.Component {
     this.setState(data);
   }
 
-  addDefaultCourierSrc (ev) {
+  addDefaultCourierSrc(ev) {
     ev.target.src = '/assets/imgs/courier.jpg'
   }
 
-  addDefaultECommerceSrc (ev) {
+  addDefaultECommerceSrc(ev) {
     ev.target.src = '/assets/imgs/ecommerce.png'
   }
-  
-  addDefaultHAWBSrc (ev) {
-    ev.target.src = '/assets/imgs/hawb.jpg'
+
+  addDefaultHAWBSrc(ev) {
+    ev.target.src = '/assets/imgs/hawb.png'
   }
 
-  addDefaultSignSrc (ev) {
+  addDefaultSignSrc(ev) {
     ev.target.src = '/assets/imgs/sign.png'
   }
 
   render() {
     console.log("state", this.state)
+    let statusBarClass = "";
+
     let modalActions = [
       {
         type: "icon",
@@ -337,7 +353,11 @@ class OrderDetailsContainer extends React.Component {
             <div className="col-md-12">
               <ul id="progressbar">
                 {this.state.statusList[this.state.orderDetails.tranxData.deliveryStatus].map((item, key) => {
-                  return <li key={key} style={{ width: (100 / this.state.statusList[this.state.orderDetails.tranxData.deliveryStatus].length).toString() + "%" }} className={item.legend.toUpperCase() == this.state.orderDetails.tranxData.orderStatus ? this.state.orderDetails.tranxData.deliveryStatus == 0 ? "active" : "warning" : ""}>{item.label}</li>
+                  let width = (100 / this.state.statusList[this.state.orderDetails.tranxData.deliveryStatus].length).toString() + "%"
+                  if (item.legend.toUpperCase() == this.state.orderDetails.tranxData.orderStatus) {
+                    statusBarClass = "notPassed"
+                  }
+                  return <li key={key} style={{ width: width }} className={item.legend.toUpperCase() == this.state.orderDetails.tranxData.orderStatus ? this.state.orderDetails.tranxData.deliveryStatus == 0 ? "active" : "warning" : statusBarClass}>{item.label}</li>
                 })}
               </ul>
             </div>
@@ -365,13 +385,13 @@ class OrderDetailsContainer extends React.Component {
                       <h4 className="bold">E-commerce</h4>
                     </div>
                     {console.log(this.state.orgDetailByCode)}
-                    <div><img src={baseUrl+(_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.eCommerceOrgCode}.sizeMedium`, ""))} onError={this.addDefaultCourierSrc} width="100px" height="100px" /></div>
-                    <span className="bold">{this.state.orderDetails.tranxData.eCommerceOrgCode}</span>
+                    <div><img src={baseUrl + (_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.eCommerceOrgCode}.logo.sizeMedium`, ""))} onError={this.addDefaultCourierSrc} width="100px" height="100px" /></div>
+                    <span className="bold">{_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.eCommerceOrgCode}.name`, "")}</span>
                   </div>
                   <div className="col-md-6 text-center">
                     <div><h4 className="bold">Courier Company</h4></div>
-                    <div><img src={baseUrl+(_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.courierOrgCode}.sizeMedium`, ""))} onError={this.addDefaultECommerceSrc} width="100px" height="100px" /></div>
-                    <span className="bold">{this.state.orderDetails.tranxData.courierOrgCode}</span>
+                    <div><img src={baseUrl + (_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.courierOrgCode}.logo.sizeMedium`, ""))} onError={this.addDefaultECommerceSrc} width="100px" height="100px" /></div>
+                    <span className="bold">{_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.courierOrgCode}.name`, "")}</span>
                   </div>
                 </div>
               </div>
@@ -625,7 +645,9 @@ class OrderDetailsContainer extends React.Component {
                     />
                   </div>
                   <div id="HAWB" className="tab-pane">
-
+                    {this.state.orderDetails.tranxData.ExportHAWB.HAWBNumber == "" && <div className="row">
+                      <text className="col-md-12" style={{ textAlign: "center", color: "red", fontWeight: "bold", fontSize: "18px" }}>HAWB Not Found</text>
+                    </div>}
                     <div className="row">
                       <div className="col-md-6">
                         <label className="bold">AWB #:</label>
@@ -637,7 +659,7 @@ class OrderDetailsContainer extends React.Component {
                       </div>
                       <div className="col-md-12 text-center">
                         <div className="shadowBox recipt">
-                          <img src={baseUrl + this.state.orderDetails.tranxData.ExportHAWB.HAWBImagePath} onError={this.addDefaultHAWBSrc} height="50%" />
+                          <img src={baseUrl + this.state.orderDetails.tranxData.ExportHAWB.HAWBImagePath} onError={this.addDefaultHAWBSrc} height="30%" />
                         </div>
                       </div>
                     </div>
@@ -647,6 +669,9 @@ class OrderDetailsContainer extends React.Component {
                   <div id="Shipping" className="tab-pane">
                     <div>
                       <div className="form-group">
+                        {this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.MAWBNumber == "" && <div className="row">
+                          <text className="col-md-12" style={{ textAlign: "center", color: "red", fontWeight: "bold", fontSize: "18px" }}>Shipping Details Not Found</text>
+                        </div>}
                         <div className="row">
                           <div className="col-md-2">
                             <label className="bold">MAWB #</label>
@@ -715,6 +740,9 @@ class OrderDetailsContainer extends React.Component {
 
                   </div>
                   <div id="ExportDeclaration" className="tab-pane">
+                    {this.state.orderDetails.tranxData.exportDeclaration == null && <div className="row">
+                      <text className="col-md-12" style={{ textAlign: "center", color: "red", fontWeight: "bold", fontSize: "18px" }}>Export Declaration Not Found</text>
+                    </div>}
                     {this.state.orderDetails.tranxData.exportDeclaration && this.state.orderDetails.tranxData.exportDeclaration.map(item => {
                       return <div>
                         <div className="form-group">
