@@ -217,6 +217,9 @@ class OrderDetailsContainer extends React.Component {
         case "2":
           label = "SUBMITTED"
           break;
+        case "4":
+          label = "FAIL DISPATCH"
+          break;
         case "6":
           label = "CLEARED"
           break;
