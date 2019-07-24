@@ -2041,7 +2041,7 @@ ul.stats-overview li:last-child {
 }
 
 .tab_active {
-	background-color: #1e2c188a;
+	background-color: #1b182c8a;
 	padding: 6px 12px;
 	border-radius: 10px !important;
 	-webkit-box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.7);
@@ -2062,7 +2062,7 @@ ul.stats-overview li:last-child {
 	/* -webkit-box-shadow: 0px 0px 48px 3px rgba(0,0,0,0.29); */
 	-moz-box-shadow: 0px 0px 48px 3px rgba(0, 0, 0, 0.29);
 	/* box-shadow: 0px 0px 48px 3px rgba(0,0,0,0.29); */
-	border: 2px solid #94ff719e;
+	border: 2px solid #71deff9e;
 	margin-right: 15px;
 	height: fit-content;
 }
@@ -2100,7 +2100,7 @@ ul.stats-overview li:last-child {
 .dropdown-content {
 	display: none;
 	position: absolute;
-	background-color: #1e2c18f5;
+	background-color: #181c2cf5;
 	min-width: 180px;
 	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 	z-index: 1;
@@ -2120,7 +2120,7 @@ ul.stats-overview li:last-child {
 /* Change color of dropdown links on hover */
 
 .dropdown-content a:hover {
-	background-color: #94ff719e;
+	background-color: #7196ff9e;
 	color: #fff !important;
 	text-decoration: none;
 }
@@ -2150,7 +2150,7 @@ li:hover .dropdown-content {
 }
 
 .tab_notactive:hover {
-	background-color: #1e2c188a;
+	background-color: #1b182c8a;
 	padding: 6px 12px;
 	border-radius: 10px !important;
 	-webkit-box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.7);
