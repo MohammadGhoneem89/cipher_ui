@@ -244,7 +244,7 @@ a:hover {
 }
 
 .login .copyright {
-	margin-top: 434px !important;
+	margin-top: 454px !important;
 	color: #a7a7a7 !important;
 }
 
@@ -265,11 +265,11 @@ a:hover {
 }
 
 .page-header.navbar.navbar-fixed-top, .page-header.navbar.navbar-static-top {
-	border-top: 4px solid #293174;
+	border-top: 4px solid #8ab4cc;
 }
 
 .font-blued1-sharp, .font-blued1-sharp+small, .font-blued2-sharp, .font-blued2-sharp+small, .font-blued3-sharp, .font-blued3-sharp+small, .font-blued4-sharp, .font-blued4-sharp+small {
-	color: #293174 !important;
+	color: #272a45 !important;
 }
 
 .dsh_blued1:hover .dashboard-stat2, .dsh_blued2:hover .dashboard-stat2, .dsh_blued3:hover .dashboard-stat2, .dsh_blued4:hover .dashboard-stat2, .overDueBlk:hover {
@@ -295,7 +295,7 @@ a:hover {
 }
 
 .portlet.light.sdg_portlet, .dashdate .modal-content {
-	border-top: 4px solid #29317452 !important;
+	border-top: 4px solid #4e51b20d  !important;
 	background: #fff !important;
 	margin-top: 0px;
 }
@@ -2178,14 +2178,14 @@ li:hover .dropdown-content {
 }
 
 .crad-box .portlet-title {
-	background-color: #eff1f8;
+	background-color: #ae8b4b12;
 }
 
 .crad-box .portlet.light>.portlet-title>.caption>.caption-subject {
 	font-size: 20px;
 	font-weight: 700;
 	text-transform: uppercase;
-	color: #293174;
+	/* color: #293174; */
 	letter-spacing: 2px;
 	/* margin-left: 45px; */
 }
@@ -2374,7 +2374,7 @@ a.actionbtn {
 /*header*/
 
 .DeviceHeader .portlet-title {
-	background: #f6f6f6;
+	background: #ae8b4b12;
 }
 
 .DeviceHeader .portlet-title {
@@ -2409,7 +2409,7 @@ a.actionbtn {
 
 .D-header .caption>.caption-subject {
 	font-size: 28px!important;
-	color: #19599e!important;
+	/* color: #b28f4e!important; */
 	position: relative;
 	top: 6px;
 	margin-left: 20px;
@@ -2418,7 +2418,7 @@ a.actionbtn {
 }
 
 span.DeviceIdno {
-	background-color: #272366;
+	background-color: #b28f4e;
 	font-size: 21px;
 	padding: 2px 8px;
 	border-radius: 3px!important;
