@@ -107,8 +107,8 @@ function mapStateToProps(state, ownProps) {
     return {
         entityDetail: state.app.entityDetail.data,
         orgID: orgID,
-        entityNames: state.app.entityList.data.typeData.entityNames,
-        fileTemplateNames: state.app.fileTemplateList.data.typeData.fileTemplateNames,
+        entityNames: _.get(state.app, 'entityList.data.typeData.entityNames', []),
+        fileTemplateNames: _.get(state.app, 'fileTemplateList.data.typeData.fileTemplateNames', []),
         typeData: state.app.typeData.data,
         readOnly: ownProps.params.mode === "view"
     };

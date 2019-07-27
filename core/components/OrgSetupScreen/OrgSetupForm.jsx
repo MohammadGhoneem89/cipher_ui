@@ -11,6 +11,7 @@ import EntityServicesForm from './OrgServicesForm.jsx';
 import EntityContactsForm from './OrgContactsForm.jsx';
 import * as utils from '../../common/utils.js';
 import ActionButton from '../../common/ActionButtonNew.jsx';
+import axios from 'axios';
 import { CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput } from '../../common/FormControls.jsx';
 
 //https://github.com/erikras/redux-form/issues/369
@@ -85,6 +86,11 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
                     disabled={state.readOnly}
                   />
                 </CheckboxList>
+              </div>
+              <div className="col-md-2 col-sm-2" style={{ marginTop: '38px' }}>
+                <input type="checkbox" className="mt-checkbox mt-checkbox-single mt-checkbox-outline"
+                  name="isConsolidate" id="isConsolidate" disabled={state.readOnly}/>
+                <label htmlFor="isConsolidate">{'Is Consolidate'}</label><br />
               </div>
             </div>
           </div>
@@ -241,14 +247,14 @@ class OrgSetupForm extends React.Component {
     this.submit = this.submit.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.onInputChangeOrderer = this.onInputChangeOrderer.bind(this);
-    
+
     this.performAction = this.performAction.bind(this);
   }
 
   updateState(data) {
     this.setState(data);
   }
-  
+
   onInputChangeOrderer = (e) => {
 
     let value;
@@ -257,7 +263,7 @@ class OrgSetupForm extends React.Component {
     } else {
       value = e.target.value;
     }
-    let netConf=_.cloneDeep(this.state.networkConfig);
+    let netConf = _.cloneDeep(this.state.networkConfig);
     netConf.orderer[e.target.name] = value;
     this.setState({
       networkConfig: netConf
@@ -265,15 +271,15 @@ class OrgSetupForm extends React.Component {
   }
 
 
-    
+
   addPeer = (e) => {
     let peerName = document.getElementById('peerName') == null ? "" : document.getElementById('peerName').value;
     let ServerName = document.getElementById('ServerName') == null ? "" : document.getElementById('ServerName').value;
     let requestURL = document.getElementById('pageType') == null ? "" : document.getElementById('pageType').value;
     let eventURL = document.getElementById('eventURL') == null ? "" : document.getElementById('eventURL').value;
     let peercertificate = document.getElementById('peercertificate') == null ? "" : document.getElementById('peercertificate').value;
-    let netConf=_.cloneDeep(this.state.networkConfig);
-    let tupple={
+    let netConf = _.cloneDeep(this.state.networkConfig);
+    let tupple = {
       "peerName": peerName,
       "requests": requestURL,
       "events": eventURL,
@@ -284,7 +290,7 @@ class OrgSetupForm extends React.Component {
         { "label": "Edit Peer", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" }
       ]
     }
-    
+
     netConf.peerList.push(tupple);
 
     this.setState({
@@ -292,15 +298,15 @@ class OrgSetupForm extends React.Component {
     })
   }
 
-    
+
   addUser = (e) => {
     let username = document.getElementById('username') == null ? "" : document.getElementById('username').value;
     let usercertificate = document.getElementById('usercertificate') == null ? "" : document.getElementById('usercertificate').value;
     let userkey = document.getElementById('userkey') == null ? "" : document.getElementById('userkey').value;
 
-    let netConf=_.cloneDeep(this.state.networkConfig);
-    
-    let tupple={
+    let netConf = _.cloneDeep(this.state.networkConfig);
+
+    let tupple = {
       "userName": "admin",
       "key": userkey,
       "cert": usercertificate,
@@ -309,7 +315,7 @@ class OrgSetupForm extends React.Component {
         { "label": "Edit Peer", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" }
       ]
     }
-    
+
     netConf.peerUser.push(tupple);
 
     this.setState({
@@ -418,16 +424,46 @@ class OrgSetupForm extends React.Component {
     }
   }
 
-  submit(data) {
+  async submit(data) {
     data.services = this.state.services;
     data.contacts = this.state.contacts;
     data.entityLogo = this.state.entityLogo ? this.state.entityLogo : data.entityLogo;
     data.documents = this.state.documents;
-    return this.props.onSubmit(data);
+    let isConsolidate = document.getElementById('isConsolidate').checked;
+    data.isConsolidate = isConsolidate || false;
+    let isOk = false;
+    try {
+      let response = await axios.post(`${constants.baseUrl}/API/CUSTOMS/consolidationConfig`, {
+        headers: {
+          token: sessionStorage.token
+        },
+        data: {
+          orgCode: sessionStorage.orgCode,
+          isConsolidate
+        }
+      });
+      if (response && response.data && response.data.errorCode == 200) {
+        isOk = true;
+        console.log('response', response)
+        return this.props.onSubmit(data);
+      } else {
+        alert(response.data.errorDescription || response.data.message)
+      }
+    } catch (error) {
+      alert('Blockchain Error')
+    }
   }
 
   render() {
     const { error, handleSubmit, pristine, reset, submitting, initialValues, containerState, containerProps } = this.props;
+    let box = document.getElementById('isConsolidate');
+    if (box) {
+      if (initialValues && initialValues.isConsolidate) {
+        box.checked = true;
+      } else {
+        box.checked = false;
+      }
+    }
 
     return (
       <div>
