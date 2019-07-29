@@ -12,10 +12,12 @@ import EntityContactsForm from './OrgContactsForm.jsx';
 import * as utils from '../../common/utils.js';
 import ActionButton from '../../common/ActionButtonNew.jsx';
 import axios from 'axios';
+import DateControl from "react-bootstrap-datetimepicker";
+
 import { CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput } from '../../common/FormControls.jsx';
 
 //https://github.com/erikras/redux-form/issues/369
-const FormSection1 = ({ error, initialValues, updateState, state, containerProps, containerState }) => {
+const FormSection1 = ({ error, initialValues, updateState, state, containerProps, containerState, onTimeChange }) => {
   return (
     <div>
       <Portlet title={"Details"}>
@@ -89,8 +91,18 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
               </div>
               <div className="col-md-2 col-sm-2" style={{ marginTop: '38px' }}>
                 <input type="checkbox" className="mt-checkbox mt-checkbox-single mt-checkbox-outline"
-                  name="isConsolidate" id="isConsolidate" disabled={state.readOnly}/>
+                  name="isConsolidate" id="isConsolidate" disabled={state.readOnly} />
                 <label htmlFor="isConsolidate">{'Is Consolidate'}</label><br />
+              </div>
+              <div className="col-md-2 col-sm-2" style={{ marginTop: '38px' }}>
+                {/* <DateControl id="fromDate" showToday={true} mode={"time"} defaultText={"12:00 AM"} /> */}
+                <DateControl
+                  mode="time"
+                  id="time"
+                  value={state.cutOf}
+                  onChange={onTimeChange}
+                  showToday={false}
+                />
               </div>
             </div>
           </div>
@@ -201,6 +213,7 @@ class OrgSetupForm extends React.Component {
       services: [],
       contacts: [],
       documents: [],
+      cutOf: undefined,
       networkConfig: {
         "ca": "https://dal-zbc01a.5.secure.blockchain.ibm.com:20327",
         "username": "admin",
@@ -247,6 +260,7 @@ class OrgSetupForm extends React.Component {
     this.submit = this.submit.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.onInputChangeOrderer = this.onInputChangeOrderer.bind(this);
+    this.onTimeChange = this.onTimeChange.bind(this);
 
     this.performAction = this.performAction.bind(this);
   }
@@ -429,6 +443,8 @@ class OrgSetupForm extends React.Component {
     data.contacts = this.state.contacts;
     data.entityLogo = this.state.entityLogo ? this.state.entityLogo : data.entityLogo;
     data.documents = this.state.documents;
+    let morningTime = new Date().setHours(0, 0, 0);
+    data.cutOf = this.state.cutOf - morningTime;
     let isConsolidate = document.getElementById('isConsolidate').checked;
     data.isConsolidate = isConsolidate || false;
     let isOk = false;
@@ -453,7 +469,12 @@ class OrgSetupForm extends React.Component {
       alert('Blockchain Error')
     }
   }
-
+  onTimeChange (date) {
+    console.log('time', date)
+    this.setState({
+      cutOf: 1564394714057
+    });
+  }
   render() {
     const { error, handleSubmit, pristine, reset, submitting, initialValues, containerState, containerProps } = this.props;
     let box = document.getElementById('isConsolidate');
@@ -474,7 +495,7 @@ class OrgSetupForm extends React.Component {
         </ModalBox>
         <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)} ref={this._form = this}>
           <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state}
-            containerProps={containerProps} containerState={containerState} />
+            containerProps={containerProps} containerState={containerState} onTimeChange={this.onTimeChange}/>
           <FormSection5 initialValues={initialValues} updateState={this.updateState} state={this.state} />
           <Portlet title={utils.getLabelByID("Documents")}>
             <FormSection6 initialValues={initialValues} updateState={this.updateState} state={this.state} />
