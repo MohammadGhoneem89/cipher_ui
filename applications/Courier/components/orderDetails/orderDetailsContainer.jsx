@@ -215,6 +215,9 @@ class OrderDetailsContainer extends React.Component {
       stateCopy.returnItems = returnItems;
       let label = _.get(stateCopy, 'orderDetails.tranxData.exportDeclaration[0].status', '')
       switch (label) {
+        case "1":
+          label = "SUBMITTED TO BLOCKCHAIN"
+          break;
         case "2":
           label = "SUBMITTED"
           break;
@@ -346,7 +349,7 @@ class OrderDetailsContainer extends React.Component {
               </div>
               <div className="col-md-12">
                 <hr />
-                <img style={{ border: "1px solid black", display: "block", marginLeft: "auto", marginRight: "auto" }} src={baseUrl + '/API/core/download?type=IMAGE&path=' + this.state.showData.deliveryImagePath} onError={this.addDefaultSignSrc} height="50%" />
+                <img style={{ border: "1px solid black", display: "block", marginLeft: "auto", marginRight: "auto" }} src={baseUrl + '/API/core/download?type=IMAGE&path=' + this.state.showData.deliveryImagePath} height="50%" />
               </div>
             </div>
           </Portlet>
