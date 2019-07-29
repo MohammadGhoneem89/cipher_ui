@@ -453,9 +453,9 @@ class OrgSetupForm extends React.Component {
         headers: {
           token: sessionStorage.token
         },
-        data: {
-          orgCode: sessionStorage.orgCode,
-          isConsolidate
+        body: {
+          eComerce: sessionStorage.orgCode,
+          isConsolidated: isConsolidate
         }
       });
       if (response && response.data && response.data.errorCode == 200) {
@@ -469,7 +469,7 @@ class OrgSetupForm extends React.Component {
       alert('Blockchain Error')
     }
   }
-  onTimeChange (date) {
+  onTimeChange(date) {
     console.log('time', date)
     this.setState({
       cutOf: 1564394714057
@@ -495,7 +495,7 @@ class OrgSetupForm extends React.Component {
         </ModalBox>
         <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)} ref={this._form = this}>
           <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state}
-            containerProps={containerProps} containerState={containerState} onTimeChange={this.onTimeChange}/>
+            containerProps={containerProps} containerState={containerState} onTimeChange={this.onTimeChange} />
           <FormSection5 initialValues={initialValues} updateState={this.updateState} state={this.state} />
           <Portlet title={utils.getLabelByID("Documents")}>
             <FormSection6 initialValues={initialValues} updateState={this.updateState} state={this.state} />

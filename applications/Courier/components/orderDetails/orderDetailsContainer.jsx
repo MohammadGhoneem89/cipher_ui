@@ -830,12 +830,6 @@ class OrderDetailsContainer extends React.Component {
                               <label>{item.transportMode}</label>
                             </div>
                             <div className="col-md-2">
-                              <label className="bold">Invoice No</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.invoiceNo}</label>
-                            </div>
-                            <div className="col-md-2">
                               <label className="bold">No of pages</label>
                             </div>
                             <div className="col-md-2">
@@ -843,6 +837,22 @@ class OrderDetailsContainer extends React.Component {
                             </div>
                           </div>
                         </div>
+                        <div>
+                          <Table title="Invoice List"
+                            className="bold"
+                            pagination={false}
+                            export={false}
+                            search={false}
+                            gridColumns={utils.getGridColumnByName("invoices")}
+                            gridData={_.get(this.state, 'orderDetails.tranxData.exportDeclaration[0].invoiceList', [])}
+                            totalRecords={5}
+                            pageChanged={() => {
+                            }}
+                            activePage={1}
+                            pageSize={10}
+                          />
+                        </div>
+
                         {this.state.orderDetails.tranxData.exportDeclaration.length > 0 && <hr />}
                       </div>;
                     })}

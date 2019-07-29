@@ -26,6 +26,16 @@ module.exports = {
     { alias: "Stats Qty", key: "statQuantity", type: "string" },
     { alias: "Net Weight", key: "netWeight", type: "string" }
   ],
+  invoices: [
+    { alias: "#", key: "", type: "serialNo" },
+    { alias: "inco Terms Code", key: "incoTermsCode", type: 'string' },
+    { alias: "Invoice Date", key: "invoiceDate", type: "string" },
+    { alias: "invoice Number", key: "invoiceNumber", type: "string" },
+    { alias: "invoice Type", key: "invoiceType", type: "string" },
+    { alias: "invoice Value", key: "invoiceValue", type: "string" },
+    { alias: "payment Instrument Type", key: "paymentInstrumentType", type: "string" },
+    { alias: "total Number Of InvoicePages", key: "totalNumberOfInvoicePages", type: "string" }
+  ],
   returnDelivery: [
     { alias: "Line No.", key: "", type: "serialNo" },
     { alias: "Description", key: "description", type: "string" },
