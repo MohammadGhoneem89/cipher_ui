@@ -144,6 +144,9 @@ class OrderList extends React.Component {
 
     getCustomsStatus(label) {
         switch (label) {
+            case "1":
+          label = "SUBMITTED TO BLOCKCHAIN"
+          break;
             case "2":
                 label = "SUBMITTED"
                 break;
