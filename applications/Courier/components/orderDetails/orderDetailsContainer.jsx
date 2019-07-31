@@ -214,53 +214,100 @@ class OrderDetailsContainer extends React.Component {
       stateCopy.orderDetails = nextProps.orderDetails;
       stateCopy.lineItems = lineItems;
       stateCopy.returnItems = returnItems;
-      let label = _.get(stateCopy, 'orderDetails.tranxData.exportDeclaration[0].status', '')
-      switch (label) {
-        case "-1":
-          label = "-1"
-          break;
-          case "1":
-          label = "1"
-          break;
-        case "2":
-          label = "SUBMITTED"
-          break;
-        case "4":
-          label = "FAIL DISPATCH"
-          break;
-        case "6":
-          label = "CLEARED"
-          break;
-        case "7":
-          label = "CLEARANCE SUBJECT TO INSPECTION"
-          break;
-        case "8":
-          label = "RELEASE FOR INSPECTION"
-          break;
-        case "9":
-          label = "DETAINED"
-        case "10":
-          label = "SUSPEND"
-        case "14":
-          label = "CANCELLED"
-        case "15":
-          label = "DECLINED"
-        case "16":
-          label = "REJECTED"
-          break;
-        default:
-          label = "CREATED"
-          break;
-      }
+
+
       if (stateCopy.orderDetails.tranxData.orderStatus == 'HAWBCREATED' && _.get(stateCopy.orderDetails.tranxData, "exportDeclaration[0]", undefined) != undefined) {
+        let label = _.get(stateCopy, 'orderDetails.tranxData.exportDeclaration[0].status', '')
+        switch (label) {
+          case "-1":
+            label = "-1"
+            break;
+          case "1":
+            label = "1"
+            break;
+          case "2":
+            label = "SUBMITTED"
+            break;
+          case "4":
+            label = "FAIL DISPATCH"
+            break;
+          case "6":
+            label = "CLEARED"
+            break;
+          case "7":
+            label = "CLEARANCE SUBJECT TO INSPECTION"
+            break;
+          case "8":
+            label = "RELEASE FOR INSPECTION"
+            break;
+          case "9":
+            label = "DETAINED"
+          case "10":
+            label = "SUSPEND"
+          case "14":
+            label = "CANCELLED"
+          case "15":
+            label = "DECLINED"
+          case "16":
+            label = "REJECTED"
+            break;
+          default:
+            label = "CREATED"
+            break;
+        }
+
         if (label != "1" && label != "-1") {
           stateCopy.orderDetails.tranxData.orderStatus = 'EXPORTCLEARED'
           stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][2].label = label
         }
       }
-      else if ((stateCopy.orderDetails.tranxData.orderStatus == 'UNDELIVERED' || stateCopy.orderDetails.tranxData.orderStatus == 'RETURNBYCUSTOMER') && _.get(stateCopy.orderDetails.tranxData, "importDeclaration[0]", undefined) != undefined) {
+      else if ((stateCopy.orderDetails.tranxData.orderStatus == 'UNDELIVERED' || stateCopy.orderDetails.tranxData.orderStatus == 'RETURNBYCUSTOMER') && _.get(stateCopy.orderDetails.tranxData, "importDecleration[0]", undefined) != undefined) {
+        let label = _.get(stateCopy, 'orderDetails.tranxData.importDecleration[0].status', '')
+
+        switch (label) {
+          case "-1":
+            label = "-1"
+            break;
+          case "1":
+            label = "1"
+            break;
+          case "2":
+            label = "SUBMITTED"
+            break;
+          case "4":
+            label = "FAIL DISPATCH"
+            break;
+          case "6":
+            label = "CLEARED"
+            break;
+          case "7":
+            label = "CLEARANCE SUBJECT TO INSPECTION"
+            break;
+          case "8":
+            label = "RELEASE FOR INSPECTION"
+            break;
+          case "9":
+            label = "DETAINED"
+            break;
+          case "10":
+            label = "SUSPEND"
+            break;
+          case "14":
+            label = "CANCELLED"
+            break;
+          case "15":
+            label = "DECLINED"
+            break;
+          case "16":
+            label = "REJECTED"
+            break;
+          default:
+            label = "CREATED"
+            break;
+        }
+
         stateCopy.orderDetails.tranxData.orderStatus = 'IMPORTCLEARED'
-        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][3].label = label
+        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][4].label = label
       }
 
       if (stateCopy.orgDetailByCode == undefined) {
@@ -801,10 +848,13 @@ class OrderDetailsContainer extends React.Component {
                             </div>
                           </div>
                         </div>
-                        {item.error && <div className="alertbox">
+                        {item.exception.length > 0 && <div className="alertbox">
                           <label className="errorcolr">Error</label>
                           <div className="errorbox">
-                            {item.error}
+                            {item.exception.map((elem, index) => {
+                             
+                              return (<p key={index}>{elem.exceptionDetails}<br /></p>)
+                            })}
                           </div>
                         </div>}
                         <div className="form-group">
