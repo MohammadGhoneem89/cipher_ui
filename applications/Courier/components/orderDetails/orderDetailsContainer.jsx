@@ -17,6 +17,7 @@ import * as requestCreator from '../../../../core/common/request.js';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 import moment from 'moment'
 import backOffices from '../../../backOffices';
+import Lable from '../../common/Lable.jsx';
 
 let baseUrl = backOffices.baseUrl;
 
@@ -215,8 +216,11 @@ class OrderDetailsContainer extends React.Component {
       stateCopy.returnItems = returnItems;
       let label = _.get(stateCopy, 'orderDetails.tranxData.exportDeclaration[0].status', '')
       switch (label) {
-        case "1":
-          label = "SUBMITTED TO BLOCKCHAIN"
+        case "-1":
+          label = "-1"
+          break;
+          case "1":
+          label = "1"
           break;
         case "2":
           label = "SUBMITTED"
@@ -249,8 +253,10 @@ class OrderDetailsContainer extends React.Component {
           break;
       }
       if (stateCopy.orderDetails.tranxData.orderStatus == 'HAWBCREATED' && _.get(stateCopy.orderDetails.tranxData, "exportDeclaration[0]", undefined) != undefined) {
-        stateCopy.orderDetails.tranxData.orderStatus = 'EXPORTCLEARED'
-        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][2].label = label
+        if (label != "1" && label != "-1") {
+          stateCopy.orderDetails.tranxData.orderStatus = 'EXPORTCLEARED'
+          stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][2].label = label
+        }
       }
       else if ((stateCopy.orderDetails.tranxData.orderStatus == 'UNDELIVERED' || stateCopy.orderDetails.tranxData.orderStatus == 'RETURNBYCUSTOMER') && _.get(stateCopy.orderDetails.tranxData, "importDeclaration[0]", undefined) != undefined) {
         stateCopy.orderDetails.tranxData.orderStatus = 'IMPORTCLEARED'
@@ -614,6 +620,11 @@ class OrderDetailsContainer extends React.Component {
             </div>
 
           </div>
+
+          {this.state.orderDetails.tranxData.exportDeclaration[0].error != "" && <div>
+            <h4 style={{ color: "red" }}><Lable text={"Error: " + this.state.orderDetails.tranxData.exportDeclaration[0].error} /></h4>
+          </div>}
+          <div></div>
 
 
           <div className="row">
