@@ -848,7 +848,7 @@ class OrderDetailsContainer extends React.Component {
                             </div>
                           </div>
                         </div>
-                        {item.exception.length > 0 && item.exception[0].exceptionCode !== "000" && <div className="alertbox">
+                        {item.exception && item.exception.length > 0 && item.exception[0].exceptionCode !== "000" && <div className="alertbox">
                           <label className="errorcolr">Error</label>
                           <div className="errorbox">
                             {item.exception.map((elem, index) => {
