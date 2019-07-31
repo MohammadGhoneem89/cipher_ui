@@ -621,12 +621,6 @@ class OrderDetailsContainer extends React.Component {
 
           </div>
 
-          {this.state.orderDetails.tranxData.exportDeclaration[0].error != "" && <div>
-            <h4 style={{ color: "red" }}><Lable text={"Error: " + this.state.orderDetails.tranxData.exportDeclaration[0].error} /></h4>
-          </div>}
-          <div></div>
-
-
           <div className="row">
             <div className="col-md-12">
               <div className="tab-pane in active">
