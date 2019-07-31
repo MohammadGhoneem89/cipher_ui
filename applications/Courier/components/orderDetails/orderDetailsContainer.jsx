@@ -305,9 +305,10 @@ class OrderDetailsContainer extends React.Component {
             label = "CREATED"
             break;
         }
-
-        stateCopy.orderDetails.tranxData.orderStatus = 'IMPORTCLEARED'
-        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][4].label = label
+        if (label != "1" && label != "-1") {
+          stateCopy.orderDetails.tranxData.orderStatus = 'IMPORTCLEARED'
+          stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][4].label = label
+        }
       }
 
       if (stateCopy.orgDetailByCode == undefined) {
@@ -852,10 +853,10 @@ class OrderDetailsContainer extends React.Component {
                           <label className="errorcolr">Error</label>
                           <div className="errorbox">
                             {item.exception.map((elem, index) => {
-                              if(elem.exceptionCode == "000") {
+                              if (elem.exceptionCode == "000") {
                                 return
                               }
-                             
+
                               return (<p key={index}>{elem.exceptionDetails}<br /></p>)
                             })}
                           </div>
