@@ -143,8 +143,8 @@ class Dashboard extends React.Component {
         this.props.actions.generalProcess(constants.getDashboardData, {
             action: 'getDashboardData',
             searchCriteria: {
-                startDate: moment(fromDate, 'YYYY-MM-DD').startOf('day'),
-                endDate: moment(toDate, 'YYYY-MM-DD').startOf('day')
+                startDate: fromDate,
+                endDate: toDate
             }
         })
     }
