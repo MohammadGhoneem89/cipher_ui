@@ -45,7 +45,7 @@ class master extends React.Component {
 	}
 
 	getHeader(Title) {
-		if (Title !== "EntityWorkboard_Heading" && Title !== "AquirerWorkboard_Heading" && Title !== "SLAWorkboard_Heading" && Title !== "blockchainWorkboard_Heading" && Title !== "KPIEntityWorkBoard_Heading") {
+		if (Title !== "EntityWorkboard_Heading" && Title !== "AquirerWorkboard_Heading" && Title !== "SLAWorkboard_Heading" && Title !== "blockchainWorkboard_Heading" && Title !== "KPIEntityWorkBoard_Heading" && Title !== "__HIDE") {
 			return (
 				<div className="portlet-title">
 					<div className="caption"> <span className="caption-subject font-black bold uppercase"> {utils.getLabelByID(Title)} </span>

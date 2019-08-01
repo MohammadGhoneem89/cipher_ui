@@ -1,7 +1,11 @@
-import StartaAppENResources from '../starta/constants/appENResources';
+import SampleAppENResources from '../SampleApp/constants/appENResources';
+import WaslAppENResources from '../WASL/constants/appENResources';
+import StartaAppENResources from '../starta/constants/appARResources';
 
 let langResources = {
-  ...StartaAppENResources,
+  ...SampleAppENResources,
+  ...WaslAppENResources,
+  ...StartaAppENResources
 };
 
 module.exports = langResources;

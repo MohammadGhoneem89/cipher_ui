@@ -30,7 +30,7 @@ class OneTimeOrder extends React.Component {
     }
 
     componentDidMount() {
-
+        this.props.actions.generalProcess(constants.getItemCatalogue, {});
     }
 
     render() {
@@ -307,6 +307,7 @@ class OneTimeOrder extends React.Component {
                             </Col>
                         </Row>
                     </Portlet>
+                    
                 </Row>
             </Row >
         )

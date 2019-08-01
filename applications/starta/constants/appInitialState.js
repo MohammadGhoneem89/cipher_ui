@@ -1,9 +1,7 @@
 export default {
-    paymentList : {
+    getItemCatalogue: {
         action: "",
         pageData: {},
-        data: {
-            searchResult: []
-        }
+        searchResult: []
     }
 }
