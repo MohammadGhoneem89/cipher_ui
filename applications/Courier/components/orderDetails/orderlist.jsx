@@ -119,9 +119,10 @@ class OrderList extends React.Component {
     }
 
     getStatus(status, expDecStatus) {
+        console.log("=======>",status,expDecStatus);
         switch (status) {
             case 'HAWBCREATED':
-                if (expDecStatus == "") {
+                if (expDecStatus == "" || expDecStatus == "-1" || expDecStatus == "1") {
                     return 'HAWB CREATED'
                 }
                 else {
