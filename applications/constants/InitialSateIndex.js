@@ -1,7 +1,5 @@
-import sampleAppInitialState from '../SampleApp/constants/appInitialState';
-import WaslInitialState from '../WASL/constants/appInitialState';
+import StartaInitialState from '../starta/constants/appInitialState';
 
 export default {
-  ...sampleAppInitialState,
-  ...WaslInitialState
+  ...StartaInitialState
 }
