@@ -32,8 +32,8 @@ class Dashboard extends React.Component {
             regions: [],
             typeData: undefined,
             getDashboardData: undefined,
-            fromDateWrkBrd: moment().subtract(29, 'days').format('YYYY-MM-DD'),
-            toDateWrkBrd: moment().format('YYYY-MM-DD'),
+            fromDateWrkBrd: moment().subtract(29, 'days').format('DD/MM/YYYY'),
+            toDateWrkBrd: moment().format('DD/MM/YYYY'),
             CBVLabels: undefined,
             CBVData: undefined,
             hsTitile: 'E-Commerce Company',
@@ -53,6 +53,7 @@ class Dashboard extends React.Component {
             requestCreator.createTypeDataRequest([
                 'dc-hsCodeFilter'
             ]));
+            alert(this.state.fromDateWrkBrd)
             this.props.actions.generalProcess(constants.getDashboardData, {
                 action: 'getDashboardData',
                 searchCriteria: {
