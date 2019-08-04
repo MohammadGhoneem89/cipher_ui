@@ -362,6 +362,14 @@ class OrderDetailsContainer extends React.Component {
     ev.target.src = '/assets/imgs/sign.png'
   }
 
+  getActiveClass(label) {
+    label = label.toUpperCase();
+    if(label == "UNDELIVERED" || label == "REJECTED" || label == "PARTIAL RETURN" || label == "FULL RETURN" || label == "CANCELLED") {
+      return "warning"
+    }
+    return "active"
+  }
+
   render() {
     console.log("state", this.state)
     let statusBarClass = "";
@@ -418,7 +426,7 @@ class OrderDetailsContainer extends React.Component {
                   if (item.legend.toUpperCase() == this.state.orderDetails.tranxData.orderStatus) {
                     statusBarClass = "notPassed"
                   }
-                  return <li key={key} style={{ width: width }} className={item.legend.toUpperCase() == this.state.orderDetails.tranxData.orderStatus ? this.state.orderDetails.tranxData.deliveryStatus == 0 ? "active" : "warning" : statusBarClass}>{item.label}</li>
+                  return <li key={key} style={{ width: width }} className={item.legend.toUpperCase() == this.state.orderDetails.tranxData.orderStatus ? this.getActiveClass(item.label) : statusBarClass}>{item.label}</li>
                 })}
               </ul>
             </div>
@@ -840,9 +848,6 @@ class OrderDetailsContainer extends React.Component {
                             </div>
                             <div className="col-md-2">
                               <label>{item.batchReqNo}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Clearnce status </label>
                             </div>
                             <div className="col-md-2">
                               <label>{item.status}</label>
