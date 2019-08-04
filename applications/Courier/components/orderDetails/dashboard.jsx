@@ -53,7 +53,7 @@ class Dashboard extends React.Component {
             requestCreator.createTypeDataRequest([
                 'dc-hsCodeFilter'
             ]));
-            alert(this.state.fromDateWrkBrd)
+            // alert(this.state.fromDateWrkBrd)
             this.props.actions.generalProcess(constants.getDashboardData, {
                 action: 'getDashboardData',
                 searchCriteria: {
