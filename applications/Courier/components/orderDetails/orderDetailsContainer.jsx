@@ -218,44 +218,8 @@ class OrderDetailsContainer extends React.Component {
 
       if (stateCopy.orderDetails.tranxData.orderStatus == 'HAWBCREATED' && _.get(stateCopy.orderDetails.tranxData, "exportDeclaration[0]", undefined) != undefined) {
         let label = _.get(stateCopy, 'orderDetails.tranxData.exportDeclaration[0].status', '')
-        switch (label) {
-          case "-1":
-            label = "-1"
-            break;
-          case "1":
-            label = "1"
-            break;
-          case "2":
-            label = "SUBMITTED"
-            break;
-          case "4":
-            label = "FAIL DISPATCH"
-            break;
-          case "6":
-            label = "CLEARED"
-            break;
-          case "7":
-            label = "CLEARANCE SUBJECT TO INSPECTION"
-            break;
-          case "8":
-            label = "RELEASE FOR INSPECTION"
-            break;
-          case "9":
-            label = "DETAINED"
-          case "10":
-            label = "SUSPEND"
-          case "14":
-            label = "CANCELLED"
-          case "15":
-            label = "DECLINED"
-          case "16":
-            label = "REJECTED"
-            break;
-          default:
-            label = "CREATED"
-            break;
-        }
-
+        
+        label = this.getStatus(label);
         if (label != "1" && label != "-1") {
           stateCopy.orderDetails.tranxData.orderStatus = 'EXPORTCLEARED'
           stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][2].label = label
@@ -264,47 +228,8 @@ class OrderDetailsContainer extends React.Component {
       else if ((stateCopy.orderDetails.tranxData.orderStatus == 'UNDELIVERED' || stateCopy.orderDetails.tranxData.orderStatus == 'RETURNBYCUSTOMER') && _.get(stateCopy.orderDetails.tranxData, "importDecleration[0]", undefined) != undefined) {
         let label = _.get(stateCopy, 'orderDetails.tranxData.importDecleration[0].status', '')
 
-        switch (label) {
-          case "-1":
-            label = "-1"
-            break;
-          case "1":
-            label = "1"
-            break;
-          case "2":
-            label = "SUBMITTED"
-            break;
-          case "4":
-            label = "FAIL DISPATCH"
-            break;
-          case "6":
-            label = "CLEARED"
-            break;
-          case "7":
-            label = "CLEARANCE SUBJECT TO INSPECTION"
-            break;
-          case "8":
-            label = "RELEASE FOR INSPECTION"
-            break;
-          case "9":
-            label = "DETAINED"
-            break;
-          case "10":
-            label = "SUSPEND"
-            break;
-          case "14":
-            label = "CANCELLED"
-            break;
-          case "15":
-            label = "DECLINED"
-            break;
-          case "16":
-            label = "REJECTED"
-            break;
-          default:
-            label = "CREATED"
-            break;
-        }
+        label = this.getStatus(label);
+
         if (label != "1" && label != "-1") {
           stateCopy.orderDetails.tranxData.orderStatus = 'IMPORTCLEARED'
           stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][4].label = label
@@ -317,6 +242,51 @@ class OrderDetailsContainer extends React.Component {
     }
 
     this.setState(stateCopy)
+  }
+
+  getStatus(label) {
+    switch (label) {
+      case "-1":
+        label = "-1"
+        break;
+      case "1":
+        label = "1"
+        break;
+      case "2":
+        label = "SUBMITTED"
+        break;
+      case "4":
+        label = "FAIL DISPATCH"
+        break;
+      case "6":
+        label = "CLEARED"
+        break;
+      case "7":
+        label = "CLEARANCE SUBJECT TO INSPECTION"
+        break;
+      case "8":
+        label = "RELEASE FOR INSPECTION"
+        break;
+      case "9":
+        label = "DETAINED"
+        break;
+      case "10":
+        label = "SUSPEND"
+        break;
+      case "14":
+        label = "CANCELLED"
+        break;
+      case "15":
+        label = "DECLINED"
+        break;
+      case "16":
+        label = "REJECTED"
+        break;
+      default:
+        label = "CREATED"
+        break;
+    }
+    return label
   }
 
   ReturnProofHandler({ actionName, index }) {
@@ -850,7 +820,10 @@ class OrderDetailsContainer extends React.Component {
                               <label>{item.batchReqNo}</label>
                             </div>
                             <div className="col-md-2">
-                              <label>{item.status}</label>
+                              <label className="bold">Status</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{(item.status == "-1" || item.status == "1") ? "HAWB CREATED" : this.getStatus(item.status) }</label>
                             </div>
                           </div>
                         </div>
