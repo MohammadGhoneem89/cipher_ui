@@ -2977,3 +2977,7 @@ label.errorcolr {
 		text-align: center;
 	}
 }
+
+.badge-warning {
+    background-color: #af8d08;
+}
