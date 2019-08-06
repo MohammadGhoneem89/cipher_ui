@@ -18,7 +18,7 @@ import ModalBox from '../../../../core/common/ModalBox.jsx';
 import moment from 'moment'
 import backOffices from '../../../backOffices';
 import Lable from '../../common/Lable.jsx';
-
+import lov from './typedata.js';
 let baseUrl = backOffices.baseUrl;
 
 class OrderDetailsContainer extends React.Component {
@@ -125,7 +125,7 @@ class OrderDetailsContainer extends React.Component {
             "legend": "ReturnByCustomer"
           },
           {
-            "label": "Cleared",
+            "label": "Import Cleared",
             "status": false,
             "type": "SUCCESS",
             "legend": "ImportCleared"
@@ -218,7 +218,7 @@ class OrderDetailsContainer extends React.Component {
 
       if (stateCopy.orderDetails.tranxData.orderStatus == 'HAWBCREATED' && _.get(stateCopy.orderDetails.tranxData, "exportDeclaration[0]", undefined) != undefined) {
         let label = _.get(stateCopy, 'orderDetails.tranxData.exportDeclaration[0].status', '')
-        
+
         label = this.getStatus(label);
         if (label != "1" && label != "-1") {
           stateCopy.orderDetails.tranxData.orderStatus = 'EXPORTCLEARED'
@@ -334,7 +334,7 @@ class OrderDetailsContainer extends React.Component {
 
   getActiveClass(label) {
     label = label.toUpperCase();
-    if(label == "UNDELIVERED" || label == "REJECTED" || label == "PARTIAL RETURN" || label == "FULL RETURN" || label == "CANCELLED") {
+    if (label == "UNDELIVERED" || label == "REJECTED" || label == "PARTIAL RETURN" || label == "FULL RETURN" || label == "CANCELLED") {
       return "warning"
     }
     return "active"
@@ -660,6 +660,9 @@ class OrderDetailsContainer extends React.Component {
                     <li id="fieldsTabLink"><a href="#ExportDeclaration" data-toggle="tab">
                       <span> Export Declaration</span></a>
                     </li>
+                    <li id="fieldsTabLink"><a href="#ImportDeclaration" data-toggle="tab">
+                      <span> Import Declaration</span></a>
+                    </li>
                     <li id="filtersTabLink"><a href="#Delivered" data-toggle="tab"> <span> Delivered</span></a>
                     </li>
                     <li id="groupsTabLink"><a href="#ReturnDetails" data-toggle="tab">
@@ -823,7 +826,7 @@ class OrderDetailsContainer extends React.Component {
                               <label className="bold">Status</label>
                             </div>
                             <div className="col-md-2">
-                              <label>{(item.status == "-1" || item.status == "1") ? "HAWB CREATED" : this.getStatus(item.status) }</label>
+                              <label>{(item.status == "-1" || item.status == "1") ? "HAWB CREATED" : this.getStatus(item.status)}</label>
                             </div>
                           </div>
                         </div>
@@ -845,13 +848,13 @@ class OrderDetailsContainer extends React.Component {
                               <label className="bold">Region Type</label>
                             </div>
                             <div className="col-md-2">
-                              <label>{item.regimeType}</label>
+                              <label>{lov('regimeType', item.regimeType)}</label>
                             </div>
                             <div className="col-md-2">
                               <label className="bold">Declaration Type</label>
                             </div>
                             <div className="col-md-2">
-                              <label>{item.declType}</label>
+                              <label>{lov('declarationType', item.declType)}</label>
                             </div>
                             <div className="col-md-2">
                               <label className="bold">Export Code Mirsal 2</label>
@@ -867,7 +870,7 @@ class OrderDetailsContainer extends React.Component {
                               <label className="bold">Transport Mode</label>
                             </div>
                             <div className="col-md-2">
-                              <label>{item.transportMode}</label>
+                              <label>{lov('transportMode', item.transportMode)}</label>
                             </div>
                             <div className="col-md-2">
                               <label className="bold">No of pages</label>
@@ -899,6 +902,123 @@ class OrderDetailsContainer extends React.Component {
                     <div className="linetext"><label className="bold">See line items in the order of declaration line
                       items</label></div>
                   </div>
+                  <div id="ImportDeclaration" className="tab-pane">
+                    {this.state.orderDetails.tranxData.importDecleration == null && <div className="row">
+                      <text className="col-md-12" style={{ textAlign: "center", color: "red", fontWeight: "bold", fontSize: "18px" }}>Import Declaration Not Found</text>
+                    </div>}
+                    {this.state.orderDetails.tranxData.importDecleration && this.state.orderDetails.tranxData.importDecleration.map(item => {
+                      return <div>
+                        <div className="form-group">
+                          <div className="row">
+                            <div className="col-md-2">
+                              <label className="bold">Declaration No</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{item.declarationNo}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Declaration Id</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{item.Id}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Version</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{item.version}</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="form-group">
+                          <div className="row">
+                            <div className="col-md-2">
+                              <label className="bold">Flight No</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{item.flightNo}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Batch Id</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{item.batchReqNo}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Status</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{(item.status == "-1" || item.status == "1") ? "HAWB CREATED" : this.getStatus(item.status)}</label>
+                            </div>
+                          </div>
+                        </div>
+                        {item.exception && item.exception.length > 0 && item.exception[0].exceptionCode !== "000" && <div className="alertbox">
+                          <label className="errorcolr">Error</label>
+                          <div className="errorbox">
+                            {item.exception.map((elem, index) => {
+                              if (elem.exceptionCode == "000") {
+                                return
+                              }
+
+                              return (<p key={index}>{elem.exceptionDetails}<br /></p>)
+                            })}
+                          </div>
+                        </div>}
+                        <div className="form-group">
+                          <div className="row">
+                            <div className="col-md-2">
+                              <label className="bold">Regime Type</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{lov('regimeType', item.regimeType)}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Declaration Type</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{lov('declarationType', item.declType)}</label>
+                            </div>
+
+                          </div>
+                        </div>
+                        <div className="form-group">
+                          <div className="row">
+                            <div className="col-md-2">
+                              <label className="bold">Transport Mode</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{lov('transportMode', item.transportMode)}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">No of pages</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{item.noOfPages}</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <Table title="Invoice List"
+                            className="bold"
+                            pagination={false}
+                            export={false}
+                            search={false}
+                            gridColumns={utils.getGridColumnByName("invoices")}
+                            gridData={_.get(this.state, 'orderDetails.tranxData.importDecleration[0].invoiceList', [])}
+                            totalRecords={5}
+                            pageChanged={() => {
+                            }}
+                            activePage={1}
+                            pageSize={10}
+                          />
+                        </div>
+
+                        {this.state.orderDetails.tranxData.exportDeclaration.length > 0 && <hr />}
+                      </div>;
+                    })}
+                    <div className="linetext"><label className="bold">See returned items tab for item level details</label></div>
+                  </div>
+
                   <div id="Delivered" className="tab-pane">
                     <div className="row">
                       <div className="col-md-12">
