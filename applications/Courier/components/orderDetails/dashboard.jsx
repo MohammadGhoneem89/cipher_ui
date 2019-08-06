@@ -23,6 +23,7 @@ import { Bar, Line } from 'react-chartjs-2';
 import TileUnit from '../../../../core/common/tileUnit.jsx';
 import HorizontalbarChartTechnician from '../../common/charts/HorizontalbarChartTechnician.jsx';
 import moment from 'moment'
+
 let interval;
 class Dashboard extends React.Component {
 
@@ -37,45 +38,55 @@ class Dashboard extends React.Component {
             CBVLabels: undefined,
             CBVData: undefined,
             hsTitile: 'E-Commerce Company',
-            topHS:{option: 'E-Commerce Company'},
+            topHS: { option: 'E-Commerce Company' },
             isLoading: true,
-            ecommerce: '001'
+            ecommerce: '001',
+            tracking: {
+                courier: "",
+                ecommerce: ""
+            }
         };
         this.generalHandler = gen.generalHandler.bind(this);
         this.customActionHandler = customActionHandler.bind(this);
         this.dateChangeWorkboard = this.dateChangeWorkboard.bind(this)
-        this.sendCall = this.sendCall.bind(this)
+        this.sendCall = this.sendCall.bind(this);
+        this.generalActionHandler = gen.generalHandler.bind(this);
+        this.applyFilter = this.applyFilter.bind(this);
+        this.clearFilter = this.clearFilter.bind(this);
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
         this.props.actions.generalProcess(constants.getTypeData,
             requestCreator.createTypeDataRequest([
-                'dc-hsCodeFilter'
+                'dc-hsCodeFilter',
             ]));
-            // alert(this.state.fromDateWrkBrd)
+
+        this.props.actions.generalProcess(constants.orgList, { action: "entityList", page: { currentPageNo: 1, pageSize: 100 } });
+        this.props.actions.generalProcess(constants.getDashboardData, {
+            action: 'getDashboardData',
+            searchCriteria: {
+                startDate: this.state.fromDateWrkBrd,
+                endDate: this.state.toDateWrkBrd,
+                ecommerce: this.state.ecommerce
+            }
+        })
+        interval = setInterval(() => {
             this.props.actions.generalProcess(constants.getDashboardData, {
                 action: 'getDashboardData',
                 searchCriteria: {
                     startDate: this.state.fromDateWrkBrd,
                     endDate: this.state.toDateWrkBrd,
-                    ecommerce: this.state.ecommerce
+                    ecommerce: this.state.ecommerce,
+                    trackCourier: this.state.tracking.courier,
+                    trackEcommerce: this.state.tracking.ecommerce
                 }
             })
-            interval = setInterval(() => {
-                this.props.actions.generalProcess(constants.getDashboardData, {
-                    action: 'getDashboardData',
-                    searchCriteria: {
-                        startDate: this.state.fromDateWrkBrd,
-                        endDate: this.state.toDateWrkBrd,
-                        ecommerce: this.state.ecommerce
-                    }
-                })
-            }, 10000);
+        }, 10000);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.typeData && nextProps.getDashboardData) {
+        if (nextProps.typeData && nextProps.getDashboardData && nextProps.entityList.data) {
             let CBVLabels = []
             let CBVData = []
             let courierByValue = _.get(nextProps, 'getDashboardData.data.courierByValue', []);
@@ -84,11 +95,33 @@ class Dashboard extends React.Component {
                 CBVData.push(element.value)
             })
 
+            let entityList = nextProps.entityList.data.searchResult;
+            let ecommerceList = []
+            let courierList = []
+            entityList.forEach((entity) => {
+                if (entity.orgType == 'Ecommerce') {
+                    let ecommerce = {
+                        label: entity.entityName.name,
+                        value: entity.spCode
+                    }
+                    ecommerceList.push(ecommerce);
+                }
+                else if (entity.orgType == 'Courier') {
+                    let courier = {
+                        label: entity.entityName.name,
+                        value: entity.spCode
+                    }
+                    courierList.push(courier);
+                }
+            })
+
             this.setState({
                 getDashboardData: nextProps.getDashboardData.data,
                 typeData: nextProps.typeData,
                 CBVLabels: CBVLabels,
                 CBVData: CBVData,
+                ecommerceList: ecommerceList,
+                courierList: courierList,
                 isLoading: false
             });
         }
@@ -145,14 +178,16 @@ class Dashboard extends React.Component {
             action: 'getDashboardData',
             searchCriteria: {
                 startDate: fromDate,
-                endDate: toDate
+                endDate: toDate,
+                trackCourier: this.state.tracking.courier,
+                trackEcommerce: this.state.tracking.ecommerce
             }
         })
     }
 
     sendCall = (topHS) => {
         this.setState({
-            topHS:{option: topHS},
+            topHS: { option: topHS },
             hsTitile: topHS
         });
         if (topHS && topHS === 'E-Commerce Company') {
@@ -161,7 +196,9 @@ class Dashboard extends React.Component {
                 searchCriteria: {
                     startDate: moment(this.state.fromDateWrkBrd, 'YYYY-MM-DD').startOf('day'),
                     endDate: moment(this.state.toDateWrkBrd, 'YYYY-MM-DD').startOf('day'),
-                    ecommerce: '001'
+                    ecommerce: '001',
+                    trackCourier: this.state.tracking.courier,
+                    trackEcommerce: this.state.tracking.ecommerce
                 }
             })
             this.setState({
@@ -174,7 +211,9 @@ class Dashboard extends React.Component {
                 searchCriteria: {
                     startDate: moment(this.state.fromDateWrkBrd, 'YYYY-MM-DD').startOf('day'),
                     endDate: moment(this.state.toDateWrkBrd, 'YYYY-MM-DD').startOf('day'),
-                    ecommerce: '002'
+                    ecommerce: '002',
+                    trackCourier: this.state.tracking.courier,
+                    trackEcommerce: this.state.tracking.ecommerce
                 }
             })
             this.setState({
@@ -186,7 +225,9 @@ class Dashboard extends React.Component {
                 searchCriteria: {
                     startDate: moment(this.state.fromDateWrkBrd, 'YYYY-MM-DD').startOf('day'),
                     endDate: moment(this.state.toDateWrkBrd, 'YYYY-MM-DD').startOf('day'),
-                    ecommerce: '003'
+                    ecommerce: '003',
+                    trackCourier: this.state.tracking.courier,
+                    trackEcommerce: this.state.tracking.ecommerce
                 }
             })
             this.setState({
@@ -200,6 +241,28 @@ class Dashboard extends React.Component {
         clearInterval(interval)
         console.log('interval', interval);
 
+    }
+
+    applyFilter() {
+        this.props.actions.generalProcess(constants.getDashboardData, {
+            action: 'getDashboardData',
+            searchCriteria: {
+                startDate: this.state.fromDateWrkBrd,
+                endDate: this.state.toDateWrkBrd,
+                ecommerce: this.state.ecommerce,
+                trackCourier: this.state.tracking.courier,
+                trackEcommerce: this.state.tracking.ecommerce
+            }
+        })
+    }
+
+    clearFilter() {
+        this.setState({
+            tracking: {
+                courier: "",
+                ecommerce: ""
+            }
+        })
     }
 
     render() {
@@ -223,15 +286,23 @@ class Dashboard extends React.Component {
                     </div>
                     <Portlet title="Order Tracking">
                         <Row>
-                            <Col col="6">
+                            <Col col="5">
                                 <Label text="Courier" columns="3"></Label>
-                                <Input fieldname='courier' formname='tracking' state={this.state}
-                                    columns='8' style={{}} actionHandler={this.generalHandler} />
+                                <Combobox fieldname='courier' formname='tracking' columns='8' style={{}} disabled={sessionStorage.orgType == 'COURIER'}
+                                    state={this.state} typeName="courierList" dataSource={this.state}
+                                    multiple={false} actionHandler={this.generalActionHandler} selected={sessionStorage.orgType == 'COURIER' ? sessionStorage.orgCode : _.get(this.state.searchCriteria, "courier", "")} />
                             </Col>
-                            <Col col="6">
+                            <Col col="5">
                                 <Label text="E-Commerce" columns="3"></Label>
-                                <Input fieldname='ecommerce' formname='tracking' state={this.state}
-                                    columns='8' style={{}} actionHandler={this.generalHandler} />
+                                <Combobox fieldname='ecommerce' formname='tracking' columns='8' style={{}} disabled={sessionStorage.orgType == 'ECOMMERCE'}
+                                    state={this.state} typeName="ecommerceList" dataSource={this.state}
+                                    multiple={false} actionHandler={this.generalActionHandler} selected={sessionStorage.orgType == 'ECOMMERCE' ? sessionStorage.orgCode : _.get(this.state.searchCriteria, "ecommerce", "")} />
+                            </Col>
+                            <Col col="1">
+                                <button type="submit" onClick={this.applyFilter} className="btn btn-success">Apply</button>
+                            </Col>
+                            <Col col="1">
+                                <button type="submit" onClick={this.clearFilter} className="btn btn-grey">Clear</button>
                             </Col>
                         </Row>
                         <Row>
@@ -313,7 +384,8 @@ function mapStateToProps(state, ownProps) {
     return {
         // listNotificationRules: _.get(state.app, 'listNotificationRules.data.searchResult', []),
         typeData: _.get(state.app.typeData, 'data', undefined),
-        getDashboardData: _.get(state.app, 'getDashboardData', undefined)
+        getDashboardData: _.get(state.app, 'getDashboardData', undefined),
+        entityList: state.app.entityList
     };
 }
 
