@@ -54,7 +54,7 @@ body .login {
 	right: 0px;
 	top: 0px;
 	bottom: 0px;
-	background: #fff url(etisalat-bg.jpg) no-repeat !important;
+	background: #fff url(ecommerce-bg.jpg) no-repeat !important;
 	background-position: center center;
 	background-size: cover !important;
 }
@@ -245,7 +245,7 @@ a:hover {
 
 .login .copyright {
 	margin-top: 454px !important;
-	color: #a7a7a7 !important;
+	color: #1b1a1a !important;
 }
 
 @media (min-width: 992px) {
