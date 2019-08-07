@@ -161,15 +161,18 @@ class OrderDetailsContainer extends React.Component {
     clearInterval(interval)
 
   }
+  fetchData(){
+    let request = {
+      "internalid": this.props.params.id
+    }
+    this.props.actions.generalProcess(constants.orderDetails, request);
+  }
   componentDidMount() {
     window.scrollTo(0, 0);
-
+    this.fetchData();
 
     interval = setInterval(() => {
-      let request = {
-        "internalid": this.props.params.id
-      }
-      this.props.actions.generalProcess(constants.orderDetails, request);
+      this.fetchData();
     }, 5000);
   }
 
