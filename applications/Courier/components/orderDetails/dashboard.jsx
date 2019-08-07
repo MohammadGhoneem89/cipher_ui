@@ -288,21 +288,23 @@ class Dashboard extends React.Component {
                         <Row>
                             <Col col="5">
                                 <Label text="Courier" columns="3"></Label>
-                                <Combobox fieldname='courier' formname='tracking' columns='8' style={{}} disabled={sessionStorage.orgType == 'COURIER'}
+                                <Combobox fieldname='courier' formname='tracking' columns='9' style={{}} disabled={sessionStorage.orgType == 'COURIER'}
                                     state={this.state} typeName="courierList" dataSource={this.state}
                                     multiple={false} actionHandler={this.generalActionHandler} selected={sessionStorage.orgType == 'COURIER' ? sessionStorage.orgCode : _.get(this.state.searchCriteria, "courier", "")} />
                             </Col>
                             <Col col="5">
                                 <Label text="E-Commerce" columns="3"></Label>
-                                <Combobox fieldname='ecommerce' formname='tracking' columns='8' style={{}} disabled={sessionStorage.orgType == 'ECOMMERCE'}
+                                <Combobox fieldname='ecommerce' formname='tracking' columns='9' style={{}} disabled={sessionStorage.orgType == 'ECOMMERCE'}
                                     state={this.state} typeName="ecommerceList" dataSource={this.state}
                                     multiple={false} actionHandler={this.generalActionHandler} selected={sessionStorage.orgType == 'ECOMMERCE' ? sessionStorage.orgCode : _.get(this.state.searchCriteria, "ecommerce", "")} />
                             </Col>
-                            <Col col="1">
-                                <button type="submit" onClick={this.applyFilter} className="btn btn-success">Apply</button>
-                            </Col>
-                            <Col col="1">
-                                <button type="submit" onClick={this.clearFilter} className="btn btn-grey">Clear</button>
+                            <Col col="2">
+                                
+                                    <div className="btn-toolbar pull-left">
+                                        <button type="submit" onClick={this.applyFilter} className="btn btn-sm btn btn-success">Apply</button>
+                                        <button type="submit" onClick={this.clearFilter} className="btn btn-sm btn btn-grey">Clear</button>
+                                    </div>
+                                
                             </Col>
                         </Row>
                         <Row>
@@ -372,10 +374,10 @@ class Dashboard extends React.Component {
                             </Portlet>
                         </Col>
                     </div>
-                </Wrapper>
+                </Wrapper >
             );
         else
-            return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
+            return (<div className="loader" > {utils.getLabelByID("Loading")}</div>)
     }
 }
 

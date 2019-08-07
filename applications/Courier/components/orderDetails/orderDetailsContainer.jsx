@@ -19,6 +19,7 @@ import moment from 'moment'
 import backOffices from '../../../backOffices';
 import Lable from '../../common/Lable.jsx';
 import lov from './typedata.js';
+
 let baseUrl = backOffices.baseUrl;
 let interval;
 class OrderDetailsContainer extends React.Component {
@@ -154,6 +155,7 @@ class OrderDetailsContainer extends React.Component {
       ]
     };
 
+
     this.DeliveryProofHandler = this.DeliveryProofHandler.bind(this);
     this.ReturnProofHandler = this.ReturnProofHandler.bind(this);
   }
@@ -161,7 +163,7 @@ class OrderDetailsContainer extends React.Component {
     clearInterval(interval)
 
   }
-  fetchData(){
+  fetchData() {
     let request = {
       "internalid": this.props.params.id
     }
@@ -175,7 +177,10 @@ class OrderDetailsContainer extends React.Component {
       this.fetchData();
     }, 5000);
   }
-
+  renderPayload(xml) {
+    
+    this.setState({ modalIsOpenXML: true, xml: xml })
+  }
   componentWillReceiveProps(nextProps) {
     let stateCopy = _.clone(this.state)
 
@@ -323,7 +328,10 @@ class OrderDetailsContainer extends React.Component {
   updateState(data) {
     this.setState(data);
   }
-
+  htmlDecode(input) {
+    var doc = new DOMParser().parseFromString(input, "text/html");
+    return doc.documentElement.textContent;
+  }
   addDefaultCourierSrc(ev) {
     ev.target.src = '/assets/imgs/courier.jpg'
   }
@@ -331,7 +339,11 @@ class OrderDetailsContainer extends React.Component {
   addDefaultECommerceSrc(ev) {
     ev.target.src = '/assets/imgs/ecommerce.png'
   }
+  formatXml(xml) {
+   
 
+    return xml;
+  }
   addDefaultHAWBSrc(ev) {
     ev.target.src = '/assets/imgs/hawb.png'
   }
@@ -358,7 +370,7 @@ class OrderDetailsContainer extends React.Component {
         className: "btn btn-default",
         label: "ADD",
         icon: "close",
-        actionHandler: this.updateState.bind(this, { modalIsOpen: false })
+        actionHandler: this.updateState.bind(this, { modalIsOpen: false, modalIsOpenXML: false })
       }
     ];
     if (this.state.isLoading)
@@ -366,6 +378,23 @@ class OrderDetailsContainer extends React.Component {
 
     return (
       <div>
+        <ModalBox isOpen={this.state.modalIsOpenXML}>
+          <Portlet title={utils.getLabelByID("XML Payload")} noCollapse={true} actions={modalActions}>
+            <div className="row">
+              <div className="col-md-12">
+                <div className="form-group">
+
+
+                  
+                    {this.formatXml(this.state.xml)}
+                 
+                </div>
+
+              </div>
+
+            </div>
+          </Portlet>
+        </ModalBox>
         <ModalBox isOpen={this.state.modalIsOpen}>
           <Portlet title={utils.getLabelByID("Proof")} noCollapse={true} actions={modalActions}>
             <div className="row">
@@ -444,145 +473,145 @@ class OrderDetailsContainer extends React.Component {
               </div>
             </div>
           </div>
-
           <div className="row">
-            <div className="col-md-4">
-              <ShadowBox title="Sold To" icon="/assets/Resources/soldTo.png">
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="bold">Name:</label>
+            <div className="row">
+              <div className="col-md-4">
+                <ShadowBox title="Sold To" icon="/assets/Resources/soldTo.png">
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Name:</label>
+                    </div>
+                    <div className="col-md-5">
+                      <label>{this.state.orderDetails.tranxData.soldTo}</label>
+                    </div>
                   </div>
-                  <div className="col-md-5">
-                    <label>{this.state.orderDetails.tranxData.soldTo}</label>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="bold">Address:</label>
-                  </div>
-                  <div className="col-md-5">
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine1}</label>
-                      </div>
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Address:</label>
+                    </div>
+                    <div className="col-md-5">
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine1}</label>
+                        </div>
 
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine2}</label>
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.soldToAddress.POBox}</label>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine2}</label>
+                        </div>
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.soldToAddress.city}</label>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.soldToAddress.POBox}</label>
+                        </div>
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.soldToAddress.city}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </ShadowBox>
-            </div>
+                </ShadowBox>
+              </div>
 
-            <div className="col-md-4">
-              <ShadowBox title="Bill To" icon="/assets/Resources/Billto.png">
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="bold">Name:</label>
-                  </div>
-                  <div className="col-md-5">
-                    <label>{this.state.orderDetails.tranxData.billTo}</label>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="bold">Address:</label>
-                  </div>
-                  <div className="col-md-5">
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.billToAddress.addressLine1}</label>
-                      </div>
+              <div className="col-md-4">
+                <ShadowBox title="Bill To" icon="/assets/Resources/Billto.png">
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Name:</label>
                     </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.billToAddress.addressLine2}</label>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.billToAddress.POBox}</label>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.billToAddress.city}</label>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.billToAddress.country}</label>
-                      </div>
+                    <div className="col-md-5">
+                      <label>{this.state.orderDetails.tranxData.billTo}</label>
                     </div>
                   </div>
-                </div>
-              </ShadowBox>
-            </div>
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Address:</label>
+                    </div>
+                    <div className="col-md-5">
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.billToAddress.addressLine1}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.billToAddress.addressLine2}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.billToAddress.POBox}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.billToAddress.city}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.billToAddress.country}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ShadowBox>
+              </div>
 
-            <div className="col-md-4">
-              <ShadowBox title="Ship To" icon="/assets/Resources/shipto.png">
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="bold">Name:</label>
-                  </div>
-                  <div className="col-md-5">
-                    <label>{this.state.orderDetails.tranxData.shipTo}</label>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="bold">Address:</label>
-                  </div>
-                  <div className="col-md-5">
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine1}</label>
-                      </div>
+              <div className="col-md-4">
+                <ShadowBox title="Ship To" icon="/assets/Resources/shipto.png">
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Name:</label>
                     </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine2}</label>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.shipToAddress.POBox}</label>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.shipToAddress.city}</label>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
-                      </div>
+                    <div className="col-md-5">
+                      <label>{this.state.orderDetails.tranxData.shipTo}</label>
                     </div>
                   </div>
-                </div>
-              </ShadowBox>
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Address:</label>
+                    </div>
+                    <div className="col-md-5">
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine1}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine2}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.shipToAddress.POBox}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.shipToAddress.city}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ShadowBox>
+              </div>
             </div>
           </div>
-
 
           <div className="row">
 
@@ -803,7 +832,7 @@ class OrderDetailsContainer extends React.Component {
                               <label>{item.declarationNo}</label>
                             </div>
                             <div className="col-md-2">
-                              <label className="bold">Declaration Id</label>
+                              <label className="bold">Request ID</label>
                             </div>
                             <div className="col-md-2">
                               <label>{item.Id}</label>
@@ -833,6 +862,7 @@ class OrderDetailsContainer extends React.Component {
                             <div className="col-md-2">
                               <label className="bold">Status</label>
                             </div>
+
                             <div className="col-md-2">
                               <label>{(item.status == "-1" || item.status == "1") ? "HAWB CREATED" : this.getStatus(item.status)}</label>
                             </div>
@@ -886,6 +916,12 @@ class OrderDetailsContainer extends React.Component {
                             <div className="col-md-2">
                               <label>{item.noOfPages}</label>
                             </div>
+                            <div className="col-md-2">
+                              <label className="bold">Payload</label>
+                            </div>
+                            <div className="col-md-2">
+                              <a href="javascript:;" onClick={this.renderPayload.bind(this, item.SOAPPayload)}>view</a>
+                            </div>
                           </div>
                         </div>
                         <div>
@@ -925,7 +961,7 @@ class OrderDetailsContainer extends React.Component {
                               <label>{item.declarationNo}</label>
                             </div>
                             <div className="col-md-2">
-                              <label className="bold">Declaration Id</label>
+                              <label className="bold">Request ID</label>
                             </div>
                             <div className="col-md-2">
                               <label>{item.Id}</label>
@@ -958,6 +994,7 @@ class OrderDetailsContainer extends React.Component {
                             <div className="col-md-2">
                               <label>{(item.status == "-1" || item.status == "1") ? "HAWB CREATED" : this.getStatus(item.status)}</label>
                             </div>
+
                           </div>
                         </div>
                         {item.exception && item.exception.length > 0 && item.exception[0].exceptionCode !== "000" && <div className="alertbox">
@@ -1002,6 +1039,12 @@ class OrderDetailsContainer extends React.Component {
                             </div>
                             <div className="col-md-2">
                               <label>{item.noOfPages}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Payload</label>
+                            </div>
+                            <div className="col-md-2">
+                              <a href="javascript:;" onClick={this.renderPayload.bind(this, item.SOAPPayload)}>view</a>
                             </div>
                           </div>
                         </div>
