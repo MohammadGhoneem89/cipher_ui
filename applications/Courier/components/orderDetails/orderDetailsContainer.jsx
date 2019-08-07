@@ -20,7 +20,7 @@ import backOffices from '../../../backOffices';
 import Lable from '../../common/Lable.jsx';
 import lov from './typedata.js';
 let baseUrl = backOffices.baseUrl;
-
+let interval;
 class OrderDetailsContainer extends React.Component {
 
   constructor(props) {
@@ -157,15 +157,20 @@ class OrderDetailsContainer extends React.Component {
     this.DeliveryProofHandler = this.DeliveryProofHandler.bind(this);
     this.ReturnProofHandler = this.ReturnProofHandler.bind(this);
   }
+  componentWillUnmount() {
+    clearInterval(interval)
 
+  }
   componentDidMount() {
     window.scrollTo(0, 0);
 
-    let request = {
-      "internalid": this.props.params.id
-    }
 
-    this.props.actions.generalProcess(constants.orderDetails, request);
+    interval = setInterval(() => {
+      let request = {
+        "internalid": this.props.params.id
+      }
+      this.props.actions.generalProcess(constants.orderDetails, request);
+    }, 5000);
   }
 
   componentWillReceiveProps(nextProps) {
