@@ -58,7 +58,7 @@ class TableCell extends React.Component {
       case "Not Reconciled":
         return " badge badge-danger badge-roundless";
       case "FINALIZED":
-        return " badge badge-info badge-roundless";
+        return " badge badge-warning badge-roundless";
       case "HAWB CREATED":
         return " badge badge-warning badge-roundless";
       case "EXPORT CLEARED":
@@ -73,7 +73,7 @@ class TableCell extends React.Component {
         return " badge badge-warning badge-roundless";
       case "PARTIAL RETURN":
         return " badge badge-success badge-roundless";
-      case "FULLRETURN":
+      case "FULL RETURN":
         return " badge badge-success badge-roundless";
     }
   }

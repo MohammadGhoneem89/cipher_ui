@@ -374,7 +374,7 @@ class OrderDetailsContainer extends React.Component {
                       <label className="bold">Date Time Stamp:</label>
                     </div>
                     <div className="col-md-3">
-                      <label>{moment.unix(this.state.showData.deliveryDate).format('DD/MM/YYYY')}</label>
+                      <label>{moment.unix((this.state.orderDetails.tranxData.ExportHAWB.deliveryDate)).format('DD/MM/YYYY')}</label>
                     </div>
                   </div>
                 </div>

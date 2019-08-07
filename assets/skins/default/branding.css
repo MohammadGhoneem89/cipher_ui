@@ -2977,7 +2977,20 @@ label.errorcolr {
 		text-align: center;
 	}
 }
-
+.badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    color: #fff;
+    vertical-align: middle;
+    background-color: #f00;
+    border-radius: 10px;
+}
 .badge-warning {
-    background-color: #af8d08;
+    background-color: #fb7425;
+}
+
+.badge-success {
+    background: #56a93c;
 }
