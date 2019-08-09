@@ -5,7 +5,7 @@ import * as utils from './utils';
 class Input extends React.Component {
     constructor(props) {
         super(props)
-        console.log('props form', this.props)
+        //console.log('props form', this.props)
     }
     getColour(status="") {
         switch (status) {

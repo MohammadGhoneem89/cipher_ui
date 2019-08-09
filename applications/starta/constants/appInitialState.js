@@ -1,7 +1,7 @@
 export default {
-    // getItemCatalogue: {
-    //     action: "",
-    //     pageData: {},
-    //     searchResult: []
-    // }
+    getItemCatalogue: {
+        action: "",
+        pageData: {},
+        searchResult: []
+    }
 }

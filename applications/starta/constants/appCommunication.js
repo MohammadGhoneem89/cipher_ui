@@ -4,6 +4,6 @@ let baseUrl = backOffices.baseUrl;
 
 
 module.exports = {
-    getItemCatalogue: `${baseUrl}/API/P2P/getItemCatalogue`,
+    getItemCatalogue: `${baseUrl}/API/STRATA/getItemCatalogueList`,
     addItemCatalogue: `${baseUrl}/API/P2P/addItemCatalogue`,
 };

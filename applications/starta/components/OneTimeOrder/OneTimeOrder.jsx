@@ -38,11 +38,24 @@ class OneTimeOrder extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actions.generalProcess(constants.getItemCatalogue, {});
+        this.props.actions.generalProcess(constants.getItemCatalogue, {
+            "body": {
+                // "page": {
+                //     "currentPageNo": 1,
+                //     "pageSize": 10
+                // },
+                // "searchCriteria": {
+                //     "itemCode": "item10022"
+                // "description":"Dust Fan",
+                // "material":"steel"
+                // }
+            }
+        });
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.itemsCatalogue) {
+            console.log(nextProps.itemsCatalogue, "ITEMCAT")
             this.setState({
                 isLoading: false,
                 itemsCatalogue: nextProps.itemsCatalogue
@@ -98,7 +111,7 @@ class OneTimeOrder extends React.Component {
                                 columns="4"
                                 style={{}}
                                 state={this.state}
-                                typeName="et-flow"
+                                typeName="et-flow"//KEY
                                 dataSource={this.state.typeData}
                                 multiple={false}
                                 actionHandler={this.generalHandler}
@@ -138,6 +151,8 @@ class OneTimeOrder extends React.Component {
                         <Portlet title="Product Catelogue">
                             <Row>
                                 {this.state.itemsCatalogue.map((item, index) => {
+
+                                    console.log(item, "ITEM")
                                     return (
                                         <Col col="3" key={index}>
                                             <Div className="procard hov procards">
@@ -370,52 +385,52 @@ class OneTimeOrder extends React.Component {
 
                         {this.state.cartItems.map((item, index) => {
                             return (
-                            <Row key={index}>
-                                <Col
-                                    col="3"
-                                    style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }} >
-                                    <Row>
-                                        <Div className="text-center proimg">
-                                            <img
-                                                className="pull-left"
-                                                src="/assets/blkimgs/product1.png"
-                                                style={{ width: "20px" }}
-                                            />
-                                            <span className="pull-left">{item.name}</span>
-                                        </Div>
-                                    </Row>
-                                </Col>
+                                <Row key={index}>
+                                    <Col
+                                        col="3"
+                                        style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }} >
+                                        <Row>
+                                            <Div className="text-center proimg">
+                                                <img
+                                                    className="pull-left"
+                                                    src="/assets/blkimgs/product1.png"
+                                                    style={{ width: "20px" }}
+                                                />
+                                                <span className="pull-left">{item.name}</span>
+                                            </Div>
+                                        </Row>
+                                    </Col>
 
-                                <Col
-                                    col="2"
-                                    style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
-                                    <Label text={item.material} />
-                                </Col>
+                                    <Col
+                                        col="2"
+                                        style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
+                                        <Label text={item.material} />
+                                    </Col>
 
-                                <Col
-                                    col="2"
-                                    style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
-                                    <Label text={item.selectedColor} />
-                                </Col>
+                                    <Col
+                                        col="2"
+                                        style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
+                                        <Label text={item.selectedColor} />
+                                    </Col>
 
-                                <Col
-                                    col="2"
-                                    style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
-                                    <span>AED {item.price}</span>
-                                </Col>
+                                    <Col
+                                        col="2"
+                                        style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
+                                        <span>AED {item.price}</span>
+                                    </Col>
 
-                                <Col
-                                    col="1"
-                                    style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
-                                    <span>{item.qty}</span>
-                                </Col>
+                                    <Col
+                                        col="1"
+                                        style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
+                                        <span>{item.qty}</span>
+                                    </Col>
 
-                                <Col
-                                    col="2"
-                                    style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
-                                    <span>AED 5000</span>
-                                </Col>
-                            </Row>)
+                                    <Col
+                                        col="2"
+                                        style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
+                                        <span>AED 5000</span>
+                                    </Col>
+                                </Row>)
                         })}
                         <Row>
                             <Col col="9"></Col>
@@ -443,9 +458,11 @@ class OneTimeOrder extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log("statestate", state.app);
+    //console.log("statestate", state.app);
     return {
-        itemsCatalogue: _.get(state, "app.getItemCatalogue.searchResult", undefined)
+        //itemsCatalogue: _.get(state.APP, "getItemCatalogue.searchResult", {"body": {}})
+        itemsCatalogue: _.get(state.app, 'getItemCatalogue.searchResult', []),
+        pageData: _.get(state.app, 'getItemCatalogue.pageData', {})
     };
 }
 
