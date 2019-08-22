@@ -7,11 +7,14 @@ import Login from "../../core/components/AuthenticationScreens/Login.jsx";
 //App Routes
 import OneTimeOrder from "./components/OneTimeOrder/OneTimeOrder.jsx";
 import ProductCatalogue from "./components/ProductCatalogue/ProductCatalogue.jsx";
-
+import ItemCatalogueList from "./components/EFP/itemMasterList.jsx";
+import ViewItemCatalogue from "./components/EFP/viewItemMaster.jsx";
 
 let authRoutes = <div>
     <Route path="/starta/oneTimeOrder" component={OneTimeOrder} />
-    <Route path="/starta/ProductCatalogue" component={ProductCatalogue} />
+    <Route path="/starta/ProductCatalogue(/:id)" component={ProductCatalogue} />
+    <Route path="/starta/itemCatalogueList" component={ItemCatalogueList} />
+    {/* <Route path="/starta/viewItemCatalogue" component={ViewItemCatalogue} /> */}
 </div>;
 
 let unAuthRoutes = <div>

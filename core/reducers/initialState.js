@@ -511,6 +511,7 @@ export default {
       }
     }
   },
+  
   getTypeDataDetailByID: {
     action: "",
     data: {}

@@ -2,6 +2,10 @@ export default {
     getItemCatalogue: {
         action: "",
         pageData: {},
-        searchResult: []
+        searchResult: undefined
+    }
+    ,
+    addItemCatalogue: {
+        
     }
 }

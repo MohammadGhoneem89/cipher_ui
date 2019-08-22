@@ -20,9 +20,18 @@ class Input extends React.Component {
         }
     }
     render() {
+        // {console.log(this.props.type,"this.props.type")}
         return (
+            
             <div className={`col-md-${this.props.columns} ${this.getColour(this.props.status)}`}>
-                <input type={this.props.type ? this.props.type : "text"} name={this.props.fieldname} disabled={this.props.disabled || false} value={this.props.value || _.get(this.props.state, `${this.props.formname}.${[this.props.fieldname]}`, "")} style={this.props.style ? this.props.style : {}} className={this.props.className}
+                {/* {console.log(this.props.type,"this.props.type")} */}
+                <input type={this.props.type ? this.props.type : "text"} 
+               
+                name={this.props.fieldname}
+                 disabled={this.props.disabled || false} value={this.props.value ||
+                     _.get(this.props.state, `${this.props.formname}.${[this.props.fieldname]}`, "")} 
+                     style={this.props.style ? this.props.style : {}}
+                      className={this.props.className}
                     onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'textbox')}
                     placeholder={this.props.placeholder} 
                     />

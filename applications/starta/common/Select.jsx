@@ -1,10 +1,11 @@
 import React from 'react';
-
+import * as utils from './utils.js';
 class Combobox extends React.Component {
 
     prepareOptions = (selectObject) => {
         let options = [];
         for (let [index, optionValue] of selectObject.entries()) {
+
             options.push(<option key={this.props.fieldname + index} value={optionValue.value}>{optionValue.label}</option>)
         }
         return options;
@@ -37,7 +38,7 @@ class Combobox extends React.Component {
                     className={this.props.className ? this.props.className: ''}
                 />
                 <datalist id={`id_${this.props.fieldname}`}>
-                    <option key="Select" value="">Select</option>
+                <option key="-1" value='' >{utils.getLabelByID("RA_Select")} </option>
                     {this.prepareOptions(_.get(this.props.dataSource, this.props.typeName, []))}
                 </datalist >
             </div>

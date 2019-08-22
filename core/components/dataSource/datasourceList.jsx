@@ -93,7 +93,20 @@ class DatasourceList extends React.Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         this.props.actions.generalProcess(constants.getDatasourceListData, this.getRequest());
-        this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/editDatasource/NEWDATASOURCE", "children": [] }] })
+        this.setState(
+            {
+                actions: [
+                    {
+                        "value": "1002",
+                        "type": "pageAction",
+                        "label": "ADD",
+                        "labelName": "COM_AB_Add",
+                        "actionType": "PORTLET_LINK",
+                        "iconName": "fa fa-plus",
+                        "URI": "/editDatasource/NEWDATASOURCE",
+                        "children": []
+                    }]
+            })
     }
     formSubmit() {
 
@@ -218,7 +231,7 @@ class DatasourceList extends React.Component {
 
                     <Portlet title={utils.getLabelByID("DatasourceList")} isPermissioned={true}
                         actions={this.state.actions}>
-                        <Table  fontclass="" gridColumns={utils.getGridColumnByName("DatasourceListData")} gridData={this.props.DatasourceListData.data.searchResult}
+                        <Table fontclass="" gridColumns={utils.getGridColumnByName("DatasourceListData")} gridData={this.props.DatasourceListData.data.searchResult}
                             totalRecords={this.props.DatasourceListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
                             pagination={true} pageChanged={this.pageChanged} export={false} search={true}
                             activePage={this.state.currentPageNo} />
