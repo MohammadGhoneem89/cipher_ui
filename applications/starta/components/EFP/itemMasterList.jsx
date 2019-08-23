@@ -93,7 +93,7 @@ class ItemMasterList extends React.Component {
                         "labelName": "COM_AB_Add",
                         "actionType": "PORTLET_LINK",
                         "iconName": "fa fa-plus",
-                        "URI": "/starta/ProductCatalogue",
+                        "URI": "/strata/ProductCatalogue",
                         "children": []
                     }]
             }
@@ -176,7 +176,7 @@ class ItemMasterList extends React.Component {
                             obj.action = [
                                 {
                                     "label": "Edit",
-                                    "URI": ["/starta/ProductCatalogue"],
+                                    "URI": ["/strata/ProductCatalogue"],
                                     "params": "_id",
                                     "iconName": "icon-docs"
                                 },

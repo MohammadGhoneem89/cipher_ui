@@ -33,12 +33,16 @@ class OneTimeOrder extends React.Component {
             cartItems: [],
             itemAddedToCart: false,
             createOrder: false,
-            grandTotal:0,
-            typeData: undefined
+            grandTotal: 0,
+            //typeData: undefined
 
-            // typeData: { "et-flow": [{ lable: "kamran", value: "haider" }] }
+            typeData: {
+                "search": [{ label: "Name", value: "name" },
+                { label: "Description", value: "description" },
+                { label: "Material", value: "material" }]
+            }
         };
-        this.nameTypeData = [];
+       // this.nameTypeData = [];
         this.total = 0;
         this.generalHandler = gen.generalHandler.bind(this);
         this.addToCart = this.addToCart.bind(this);
@@ -77,31 +81,31 @@ class OneTimeOrder extends React.Component {
     }
     componentDidMount() {
         this.props.actions.generalProcess(constants.getItemCatalogue, this.getRequest());
-        this.props.actions.generalProcess(coreConstants.getTypeData,
-            requestCreator.createTypeDataRequest([
-                'description', 'material'
-            ]));
+        // this.props.actions.generalProcess(coreConstants.getTypeData,
+        //     requestCreator.createTypeDataRequest([
+        //         'description', 'material'
+        //     ]));
         window.scrollTo(0, 0);
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("nextProps.typedata", nextProps.typeData, "nextProps.getItemCatalogue", nextProps.getItemCatalogue)
+        console.log("nextProps.getItemCatalogue", nextProps.getItemCatalogue)
         this.setState({
             getItemCatalogue: nextProps.getItemCatalogue,
-            typeData: nextProps.typeData,
+           // typeData: nextProps.typeData,
             isLoading: false
         })
-        this.getItemName(nextProps.getItemCatalogue);
+       // this.getItemName(nextProps.getItemCatalogue);
     }
 
-    getItemName = (item) => {
-        item.forEach(element => {
-            this.nameTypeData.push(element.name);
-        });
+    // getItemName = (item) => {
+    //     item.forEach(element => {
+    //         this.nameTypeData.push(element.name);
+    //     });
 
-        console.log("nameTypeData", this.nameTypeData)
-        return this.nameTypeData;
-    }
+    //     console.log("nameTypeData", this.nameTypeData)
+    //     return this.nameTypeData;
+    // }
 
     openModalBox(modelItem) {
         alert(modelItem)
@@ -115,7 +119,7 @@ class OneTimeOrder extends React.Component {
     }
 
     addToCart(cartItem) {
-        let grandTotal=0;
+        let grandTotal = 0;
         let cart = [...this.state.cartItems]
 
         cart.push(cartItem);
@@ -125,10 +129,10 @@ class OneTimeOrder extends React.Component {
         cart.forEach(element => {
             grandTotal += element.total
         });
-        
+
         this.setState({
             cartItems: cart,
-            grandTotal:grandTotal,
+            grandTotal: grandTotal,
             itemAddedToCart: true
         });
         console.log('cart', cart);
@@ -176,22 +180,7 @@ class OneTimeOrder extends React.Component {
                                 columns="4"
                                 style={{}}
                                 state={this.state}
-                                typeName="name"//KEY
-                                dataSource={this.nameTypeData}
-                                multiple={false}
-                                actionHandler={this.generalHandler}
-                                className="postform resizeselect dropmenu"
-                            />
-                        </Div>
-                        <Div className="input-group-addon option">
-                            <Select
-                                fieldname="description"
-                                id="description"
-                                formname="ruleDefination"
-                                columns="4"
-                                style={{}}
-                                state={this.state}
-                                typeName="description"//KEY
+                                typeName="search"//KEY
                                 dataSource={this.state.typeData}
                                 multiple={false}
                                 actionHandler={this.generalHandler}
@@ -199,21 +188,6 @@ class OneTimeOrder extends React.Component {
                             />
                         </Div>
 
-                        <Div className="input-group-addon option">
-                            <Select
-                                fieldname="material"
-                                formname="ruleDefination"
-                                id="material"
-                                columns="4"
-                                style={{}}
-                                state={this.state}
-                                typeName="material"
-                                dataSource={this.state.typeData}
-                                multiple={false}
-                                actionHandler={this.generalHandler}
-                                className="postform resizeselect dropmenu"
-                            />
-                        </Div>
                         <Div className="input-group-btn">
                             <button type="submit" className="btn btn-secondary" onClick={this.insertJson} >
                                 <i className="fa fa-search btn-img" aria-hidden="true"></i>
