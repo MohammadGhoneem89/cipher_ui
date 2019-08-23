@@ -8,8 +8,8 @@ module.exports = {
     { alias: "COO", key: "countryOfOrigin", type: "string" },
     { alias: "Discount", key: "discount", type: "string" },
     { alias: "Total", key: "total", type: "string" },
-    { alias: "Status", key: "statUOM", type: "string" },
-    { alias: "Status Qty", key: "statQuantity", type: "string" },
+    { alias: "Stat Qty", key: "statQuantity", type: "string" },
+    { alias: "Stat Unit", key: "statUOM", type: "string" },
     { alias: "Net Weight", key: "netWeight", type: "string" },
     { alias: "Delivery Proof", key: "actions", type: "action" }
   ],

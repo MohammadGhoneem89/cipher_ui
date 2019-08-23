@@ -17,9 +17,11 @@ import * as requestCreator from '../../../../core/common/request.js';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 import moment from 'moment'
 import backOffices from '../../../backOffices';
+import Lable from '../../common/Lable.jsx';
+import lov from './typedata.js';
 
 let baseUrl = backOffices.baseUrl;
-
+let interval;
 class OrderDetailsContainer extends React.Component {
 
   constructor(props) {
@@ -124,7 +126,7 @@ class OrderDetailsContainer extends React.Component {
             "legend": "ReturnByCustomer"
           },
           {
-            "label": "Cleared",
+            "label": "Import Cleared",
             "status": false,
             "type": "SUCCESS",
             "legend": "ImportCleared"
@@ -153,20 +155,32 @@ class OrderDetailsContainer extends React.Component {
       ]
     };
 
+
     this.DeliveryProofHandler = this.DeliveryProofHandler.bind(this);
     this.ReturnProofHandler = this.ReturnProofHandler.bind(this);
   }
+  componentWillUnmount() {
+    clearInterval(interval)
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
-
+  }
+  fetchData() {
     let request = {
       "internalid": this.props.params.id
     }
-
     this.props.actions.generalProcess(constants.orderDetails, request);
   }
+  componentDidMount() {
+    window.scrollTo(0, 0);
+    this.fetchData();
 
+    interval = setInterval(() => {
+      this.fetchData();
+    }, 5000);
+  }
+  renderPayload(xml) {
+    
+    this.setState({ modalIsOpenXML: true, xml: xml })
+  }
   componentWillReceiveProps(nextProps) {
     let stateCopy = _.clone(this.state)
 
@@ -213,48 +227,26 @@ class OrderDetailsContainer extends React.Component {
       stateCopy.orderDetails = nextProps.orderDetails;
       stateCopy.lineItems = lineItems;
       stateCopy.returnItems = returnItems;
-      let label = _.get(stateCopy, 'orderDetails.tranxData.exportDeclaration[0].status', '')
-      switch (label) {
-        case "1":
-          label = "SUBMITTED TO BLOCKCHAIN"
-          break;
-        case "2":
-          label = "SUBMITTED"
-          break;
-        case "4":
-          label = "FAIL DISPATCH"
-          break;
-        case "6":
-          label = "CLEARED"
-          break;
-        case "7":
-          label = "CLEARANCE SUBJECT TO INSPECTION"
-          break;
-        case "8":
-          label = "RELEASE FOR INSPECTION"
-          break;
-        case "9":
-          label = "DETAINED"
-        case "10":
-          label = "SUSPEND"
-        case "14":
-          label = "CANCELLED"
-        case "15":
-          label = "DECLINED"
-        case "16":
-          label = "REJECTED"
-          break;
-        default:
-          label = "CREATED"
-          break;
-      }
+
+
       if (stateCopy.orderDetails.tranxData.orderStatus == 'HAWBCREATED' && _.get(stateCopy.orderDetails.tranxData, "exportDeclaration[0]", undefined) != undefined) {
-        stateCopy.orderDetails.tranxData.orderStatus = 'EXPORTCLEARED'
-        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][2].label = label
+        let label = _.get(stateCopy, 'orderDetails.tranxData.exportDeclaration[0].status', '')
+
+        label = this.getStatus(label);
+        if (label != "1" && label != "-1") {
+          stateCopy.orderDetails.tranxData.orderStatus = 'EXPORTCLEARED'
+          stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][2].label = label
+        }
       }
-      else if ((stateCopy.orderDetails.tranxData.orderStatus == 'UNDELIVERED' || stateCopy.orderDetails.tranxData.orderStatus == 'RETURNBYCUSTOMER') && _.get(stateCopy.orderDetails.tranxData, "importDeclaration[0]", undefined) != undefined) {
-        stateCopy.orderDetails.tranxData.orderStatus = 'IMPORTCLEARED'
-        stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][3].label = label
+      else if ((stateCopy.orderDetails.tranxData.orderStatus == 'UNDELIVERED' || stateCopy.orderDetails.tranxData.orderStatus == 'RETURNBYCUSTOMER') && _.get(stateCopy.orderDetails.tranxData, "importDecleration[0]", undefined) != undefined) {
+        let label = _.get(stateCopy, 'orderDetails.tranxData.importDecleration[0].status', '')
+
+        label = this.getStatus(label);
+
+        if (label != "1" && label != "-1") {
+          stateCopy.orderDetails.tranxData.orderStatus = 'IMPORTCLEARED'
+          stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][4].label = label
+        }
       }
 
       if (stateCopy.orgDetailByCode == undefined) {
@@ -263,6 +255,51 @@ class OrderDetailsContainer extends React.Component {
     }
 
     this.setState(stateCopy)
+  }
+
+  getStatus(label) {
+    switch (label) {
+      case "-1":
+        label = "-1"
+        break;
+      case "1":
+        label = "1"
+        break;
+      case "2":
+        label = "SUBMITTED"
+        break;
+      case "4":
+        label = "FAIL DISPATCH"
+        break;
+      case "6":
+        label = "CLEARED"
+        break;
+      case "7":
+        label = "CLEARANCE SUBJECT TO INSPECTION"
+        break;
+      case "8":
+        label = "RELEASE FOR INSPECTION"
+        break;
+      case "9":
+        label = "DETAINED"
+        break;
+      case "10":
+        label = "SUSPEND"
+        break;
+      case "14":
+        label = "CANCELLED"
+        break;
+      case "15":
+        label = "DECLINED"
+        break;
+      case "16":
+        label = "REJECTED"
+        break;
+      default:
+        label = "CREATED"
+        break;
+    }
+    return label
   }
 
   ReturnProofHandler({ actionName, index }) {
@@ -291,7 +328,10 @@ class OrderDetailsContainer extends React.Component {
   updateState(data) {
     this.setState(data);
   }
-
+  htmlDecode(input) {
+    var doc = new DOMParser().parseFromString(input, "text/html");
+    return doc.documentElement.textContent;
+  }
   addDefaultCourierSrc(ev) {
     ev.target.src = '/assets/imgs/courier.jpg'
   }
@@ -299,13 +339,25 @@ class OrderDetailsContainer extends React.Component {
   addDefaultECommerceSrc(ev) {
     ev.target.src = '/assets/imgs/ecommerce.png'
   }
+  formatXml(xml) {
+   
 
+    return xml;
+  }
   addDefaultHAWBSrc(ev) {
     ev.target.src = '/assets/imgs/hawb.png'
   }
 
   addDefaultSignSrc(ev) {
     ev.target.src = '/assets/imgs/sign.png'
+  }
+
+  getActiveClass(label) {
+    label = label.toUpperCase();
+    if (label == "UNDELIVERED" || label == "REJECTED" || label == "PARTIAL RETURN" || label == "FULL RETURN" || label == "CANCELLED") {
+      return "warning"
+    }
+    return "active"
   }
 
   render() {
@@ -318,7 +370,7 @@ class OrderDetailsContainer extends React.Component {
         className: "btn btn-default",
         label: "ADD",
         icon: "close",
-        actionHandler: this.updateState.bind(this, { modalIsOpen: false })
+        actionHandler: this.updateState.bind(this, { modalIsOpen: false, modalIsOpenXML: false })
       }
     ];
     if (this.state.isLoading)
@@ -326,6 +378,23 @@ class OrderDetailsContainer extends React.Component {
 
     return (
       <div>
+        <ModalBox isOpen={this.state.modalIsOpenXML}>
+          <Portlet title={utils.getLabelByID("XML Payload")} noCollapse={true} actions={modalActions}>
+            <div className="row">
+              <div className="col-md-12">
+                <div className="form-group">
+
+
+                  
+                    {this.formatXml(this.state.xml)}
+                 
+                </div>
+
+              </div>
+
+            </div>
+          </Portlet>
+        </ModalBox>
         <ModalBox isOpen={this.state.modalIsOpen}>
           <Portlet title={utils.getLabelByID("Proof")} noCollapse={true} actions={modalActions}>
             <div className="row">
@@ -342,7 +411,7 @@ class OrderDetailsContainer extends React.Component {
                       <label className="bold">Date Time Stamp:</label>
                     </div>
                     <div className="col-md-3">
-                      <label>{moment.unix(this.state.showData.date).format('DD/MM/YYYY')}</label>
+                      <label>{moment.unix((this.state.orderDetails.tranxData.ExportHAWB.deliveryDate)).format('DD/MM/YYYY')}</label>
                     </div>
                   </div>
                 </div>
@@ -364,7 +433,7 @@ class OrderDetailsContainer extends React.Component {
                   if (item.legend.toUpperCase() == this.state.orderDetails.tranxData.orderStatus) {
                     statusBarClass = "notPassed"
                   }
-                  return <li key={key} style={{ width: width }} className={item.legend.toUpperCase() == this.state.orderDetails.tranxData.orderStatus ? this.state.orderDetails.tranxData.deliveryStatus == 0 ? "active" : "warning" : statusBarClass}>{item.label}</li>
+                  return <li key={key} style={{ width: width }} className={item.legend.toUpperCase() == this.state.orderDetails.tranxData.orderStatus ? this.getActiveClass(item.label) : statusBarClass}>{item.label}</li>
                 })}
               </ul>
             </div>
@@ -404,145 +473,145 @@ class OrderDetailsContainer extends React.Component {
               </div>
             </div>
           </div>
-
           <div className="row">
-            <div className="col-md-4">
-              <ShadowBox title="Sold To" icon="/assets/Resources/soldTo.png">
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="bold">Name:</label>
+            <div className="row">
+              <div className="col-md-4">
+                <ShadowBox title="Sold To" icon="/assets/Resources/soldTo.png">
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Name:</label>
+                    </div>
+                    <div className="col-md-5">
+                      <label>{this.state.orderDetails.tranxData.soldTo}</label>
+                    </div>
                   </div>
-                  <div className="col-md-5">
-                    <label>{this.state.orderDetails.tranxData.soldTo}</label>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="bold">Address:</label>
-                  </div>
-                  <div className="col-md-5">
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine1}</label>
-                      </div>
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Address:</label>
+                    </div>
+                    <div className="col-md-5">
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine1}</label>
+                        </div>
 
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine2}</label>
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.soldToAddress.POBox}</label>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine2}</label>
+                        </div>
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.soldToAddress.city}</label>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.soldToAddress.POBox}</label>
+                        </div>
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.soldToAddress.city}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </ShadowBox>
-            </div>
+                </ShadowBox>
+              </div>
 
-            <div className="col-md-4">
-              <ShadowBox title="Bill To" icon="/assets/Resources/Billto.png">
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="bold">Name:</label>
-                  </div>
-                  <div className="col-md-5">
-                    <label>{this.state.orderDetails.tranxData.billTo}</label>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="bold">Address:</label>
-                  </div>
-                  <div className="col-md-5">
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.billToAddress.addressLine1}</label>
-                      </div>
+              <div className="col-md-4">
+                <ShadowBox title="Bill To" icon="/assets/Resources/Billto.png">
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Name:</label>
                     </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.billToAddress.addressLine2}</label>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.billToAddress.POBox}</label>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.billToAddress.city}</label>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.billToAddress.country}</label>
-                      </div>
+                    <div className="col-md-5">
+                      <label>{this.state.orderDetails.tranxData.billTo}</label>
                     </div>
                   </div>
-                </div>
-              </ShadowBox>
-            </div>
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Address:</label>
+                    </div>
+                    <div className="col-md-5">
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.billToAddress.addressLine1}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.billToAddress.addressLine2}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.billToAddress.POBox}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.billToAddress.city}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.billToAddress.country}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ShadowBox>
+              </div>
 
-            <div className="col-md-4">
-              <ShadowBox title="Ship To" icon="/assets/Resources/shipto.png">
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="bold">Name:</label>
-                  </div>
-                  <div className="col-md-5">
-                    <label>{this.state.orderDetails.tranxData.shipTo}</label>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="bold">Address:</label>
-                  </div>
-                  <div className="col-md-5">
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine1}</label>
-                      </div>
+              <div className="col-md-4">
+                <ShadowBox title="Ship To" icon="/assets/Resources/shipto.png">
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Name:</label>
                     </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine2}</label>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.shipToAddress.POBox}</label>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.shipToAddress.city}</label>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
-                      </div>
+                    <div className="col-md-5">
+                      <label>{this.state.orderDetails.tranxData.shipTo}</label>
                     </div>
                   </div>
-                </div>
-              </ShadowBox>
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Address:</label>
+                    </div>
+                    <div className="col-md-5">
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine1}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine2}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.shipToAddress.POBox}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.shipToAddress.city}</label>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ShadowBox>
+              </div>
             </div>
           </div>
-
 
           <div className="row">
 
@@ -615,7 +684,6 @@ class OrderDetailsContainer extends React.Component {
 
           </div>
 
-
           <div className="row">
             <div className="col-md-12">
               <div className="tab-pane in active">
@@ -628,6 +696,9 @@ class OrderDetailsContainer extends React.Component {
                     <li id="groupsTabLink"><a href="#Shipping" data-toggle="tab"> <span> Shipping</span></a></li>
                     <li id="fieldsTabLink"><a href="#ExportDeclaration" data-toggle="tab">
                       <span> Export Declaration</span></a>
+                    </li>
+                    <li id="fieldsTabLink"><a href="#ImportDeclaration" data-toggle="tab">
+                      <span> Import Declaration</span></a>
                     </li>
                     <li id="filtersTabLink"><a href="#Delivered" data-toggle="tab"> <span> Delivered</span></a>
                     </li>
@@ -761,7 +832,7 @@ class OrderDetailsContainer extends React.Component {
                               <label>{item.declarationNo}</label>
                             </div>
                             <div className="col-md-2">
-                              <label className="bold">Declaration Id</label>
+                              <label className="bold">Request ID</label>
                             </div>
                             <div className="col-md-2">
                               <label>{item.Id}</label>
@@ -789,17 +860,24 @@ class OrderDetailsContainer extends React.Component {
                               <label>{item.batchReqNo}</label>
                             </div>
                             <div className="col-md-2">
-                              <label className="bold">Clearnce status </label>
+                              <label className="bold">Status</label>
                             </div>
+
                             <div className="col-md-2">
-                              <label>{item.status}</label>
+                              <label>{(item.status == "-1" || item.status == "1") ? "HAWB CREATED" : this.getStatus(item.status)}</label>
                             </div>
                           </div>
                         </div>
-                        {item.error && <div className="alertbox">
+                        {item.exception && item.exception.length > 0 && item.exception[0].exceptionCode !== "000" && <div className="alertbox">
                           <label className="errorcolr">Error</label>
                           <div className="errorbox">
-                            {item.error}
+                            {item.exception.map((elem, index) => {
+                              if (elem.exceptionCode == "000") {
+                                return
+                              }
+
+                              return (<p key={index}>{elem.exceptionDetails}<br /></p>)
+                            })}
                           </div>
                         </div>}
                         <div className="form-group">
@@ -808,13 +886,13 @@ class OrderDetailsContainer extends React.Component {
                               <label className="bold">Region Type</label>
                             </div>
                             <div className="col-md-2">
-                              <label>{item.regimeType}</label>
+                              <label>{lov('regimeType', item.regimeType)}</label>
                             </div>
                             <div className="col-md-2">
                               <label className="bold">Declaration Type</label>
                             </div>
                             <div className="col-md-2">
-                              <label>{item.declType}</label>
+                              <label>{lov('declarationType', item.declType)}</label>
                             </div>
                             <div className="col-md-2">
                               <label className="bold">Export Code Mirsal 2</label>
@@ -830,13 +908,19 @@ class OrderDetailsContainer extends React.Component {
                               <label className="bold">Transport Mode</label>
                             </div>
                             <div className="col-md-2">
-                              <label>{item.transportMode}</label>
+                              <label>{lov('transportMode', item.transportMode)}</label>
                             </div>
                             <div className="col-md-2">
                               <label className="bold">No of pages</label>
                             </div>
                             <div className="col-md-2">
                               <label>{item.noOfPages}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Payload</label>
+                            </div>
+                            <div className="col-md-2">
+                              <a href="javascript:;" onClick={this.renderPayload.bind(this, item.SOAPPayload)}>view</a>
                             </div>
                           </div>
                         </div>
@@ -862,6 +946,130 @@ class OrderDetailsContainer extends React.Component {
                     <div className="linetext"><label className="bold">See line items in the order of declaration line
                       items</label></div>
                   </div>
+                  <div id="ImportDeclaration" className="tab-pane">
+                    {this.state.orderDetails.tranxData.importDecleration == null && <div className="row">
+                      <text className="col-md-12" style={{ textAlign: "center", color: "red", fontWeight: "bold", fontSize: "18px" }}>Import Declaration Not Found</text>
+                    </div>}
+                    {this.state.orderDetails.tranxData.importDecleration && this.state.orderDetails.tranxData.importDecleration.map(item => {
+                      return <div>
+                        <div className="form-group">
+                          <div className="row">
+                            <div className="col-md-2">
+                              <label className="bold">Declaration No</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{item.declarationNo}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Request ID</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{item.Id}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Version</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{item.version}</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="form-group">
+                          <div className="row">
+                            <div className="col-md-2">
+                              <label className="bold">Flight No</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{item.flightNo}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Batch Id</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{item.batchReqNo}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Status</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{(item.status == "-1" || item.status == "1") ? "HAWB CREATED" : this.getStatus(item.status)}</label>
+                            </div>
+
+                          </div>
+                        </div>
+                        {item.exception && item.exception.length > 0 && item.exception[0].exceptionCode !== "000" && <div className="alertbox">
+                          <label className="errorcolr">Error</label>
+                          <div className="errorbox">
+                            {item.exception.map((elem, index) => {
+                              if (elem.exceptionCode == "000") {
+                                return
+                              }
+
+                              return (<p key={index}>{elem.exceptionDetails}<br /></p>)
+                            })}
+                          </div>
+                        </div>}
+                        <div className="form-group">
+                          <div className="row">
+                            <div className="col-md-2">
+                              <label className="bold">Regime Type</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{lov('regimeType', item.regimeType)}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Declaration Type</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{lov('declarationType', item.declType)}</label>
+                            </div>
+
+                          </div>
+                        </div>
+                        <div className="form-group">
+                          <div className="row">
+                            <div className="col-md-2">
+                              <label className="bold">Transport Mode</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{lov('transportMode', item.transportMode)}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">No of pages</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label>{item.noOfPages}</label>
+                            </div>
+                            <div className="col-md-2">
+                              <label className="bold">Payload</label>
+                            </div>
+                            <div className="col-md-2">
+                              <a href="javascript:;" onClick={this.renderPayload.bind(this, item.SOAPPayload)}>view</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <Table title="Invoice List"
+                            className="bold"
+                            pagination={false}
+                            export={false}
+                            search={false}
+                            gridColumns={utils.getGridColumnByName("invoices")}
+                            gridData={_.get(this.state, 'orderDetails.tranxData.importDecleration[0].invoiceList', [])}
+                            totalRecords={5}
+                            pageChanged={() => {
+                            }}
+                            activePage={1}
+                            pageSize={10}
+                          />
+                        </div>
+
+                        {this.state.orderDetails.tranxData.exportDeclaration.length > 0 && <hr />}
+                      </div>;
+                    })}
+                    <div className="linetext"><label className="bold">See returned items tab for item level details</label></div>
+                  </div>
+
                   <div id="Delivered" className="tab-pane">
                     <div className="row">
                       <div className="col-md-12">
