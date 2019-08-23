@@ -6,7 +6,8 @@ import * as actions from "../../../../core/actions/generalAction";
 
 import * as utils from "../../../../core/common/utils.js";
 import * as constants from "../../../../core/constants/Communication";
-import * as requestCreator from "../../../../core/common/request.js";
+import * as requestCreator from '../../../../core/common/request.js';
+import * as coreConstants from '../../../../core/constants/Communication.js'
 
 //Custom Components
 import Select from "../../common/Select.jsx";
@@ -19,51 +20,91 @@ import Portlet from "../../common/Portlet.jsx";
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 
 import * as gen from "../../common/generalActionHandler";
+import Combobox from "../../common/Select.jsx";
 
 class OneTimeOrder extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
             isLoading: true,
-            itemsCatalogue: [],
+            getItemCatalogue: undefined,
             modelBox: false,
             modelItem: {},
             cartItems: [],
-            typeData: { "et-flow": [{ lable: "kamran", value: "haider" }] }
+            itemAddedToCart: false,
+            createOrder: false,
+            grandTotal:0,
+            typeData: undefined
+
+            // typeData: { "et-flow": [{ lable: "kamran", value: "haider" }] }
         };
+        this.nameTypeData = [];
+        this.total = 0;
         this.generalHandler = gen.generalHandler.bind(this);
         this.addToCart = this.addToCart.bind(this);
         this.openModalBox = this.openModalBox.bind(this);
         this.closeModalBox = this.closeModalBox.bind(this);
     }
+    getRequest = () => {
+        let name = document.getElementById('name') == null ? "" : document.getElementById('name').value;
+        let material = document.getElementById('material') == null ? "" : document.getElementById('material').value;
+        let description = document.getElementById('description') == null ? "" : document.getElementById('description').value;
+        console.log(material, "material", description, "description")
+        let searchCriteria = {}
+        if (name != "")
+            searchCriteria.name = name
+        if (description != "")
+            searchCriteria.description = description
+        if (material != "")
+            searchCriteria.material = material
 
-    componentDidMount() {
-        this.props.actions.generalProcess(constants.getItemCatalogue, {
+        this.setState({ searchCriteria: searchCriteria })
+        let request = {
             "body": {
-                // "page": {
-                //     "currentPageNo": 1,
-                //     "pageSize": 10
-                // },
-                // "searchCriteria": {
-                //     "itemCode": "item10022"
-                // "description":"Dust Fan",
-                // "material":"steel"
-                // }
+                searchCriteria
             }
-        });
+        };
+        return request
+    }
+
+    insertJson = () => {
+        this.props.actions.generalProcess(constants.getItemCatalogue, this.getRequest());
+        alert("insertjson")
+    }
+    componentWillMount() {
+        // let createOrd = document.getElementById('createOrder');
+        // createOrd.style.visibility = false;
+    }
+    componentDidMount() {
+        this.props.actions.generalProcess(constants.getItemCatalogue, this.getRequest());
+        this.props.actions.generalProcess(coreConstants.getTypeData,
+            requestCreator.createTypeDataRequest([
+                'description', 'material'
+            ]));
+        window.scrollTo(0, 0);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.itemsCatalogue) {
-            console.log(nextProps.itemsCatalogue, "ITEMCAT")
-            this.setState({
-                isLoading: false,
-                itemsCatalogue: nextProps.itemsCatalogue
-            });
-        }
+        console.log("nextProps.typedata", nextProps.typeData, "nextProps.getItemCatalogue", nextProps.getItemCatalogue)
+        this.setState({
+            getItemCatalogue: nextProps.getItemCatalogue,
+            typeData: nextProps.typeData,
+            isLoading: false
+        })
+        this.getItemName(nextProps.getItemCatalogue);
+    }
+
+    getItemName = (item) => {
+        item.forEach(element => {
+            this.nameTypeData.push(element.name);
+        });
+
+        console.log("nameTypeData", this.nameTypeData)
+        return this.nameTypeData;
     }
 
     openModalBox(modelItem) {
+        alert(modelItem)
         console.log('item', modelItem);
         this.setState({
             modelBox: true,
@@ -74,14 +115,36 @@ class OneTimeOrder extends React.Component {
     }
 
     addToCart(cartItem) {
-        console.log('item', cartItem);
-        let cart = [...this.state.cartItems];
-        cart.push(cartItem);
-        this.setState({
-            cartItems: cart
-        });
-        console.log('item', cart);
+        let grandTotal=0;
+        let cart = [...this.state.cartItems]
 
+        cart.push(cartItem);
+        cart.forEach(element => {
+            element.total = element.qty * element.price
+        });
+        cart.forEach(element => {
+            grandTotal += element.total
+        });
+        
+        this.setState({
+            cartItems: cart,
+            grandTotal:grandTotal,
+            itemAddedToCart: true
+        });
+        console.log('cart', cart);
+    }
+    checkout = () => {
+        if (this.state.itemAddedToCart) {
+            alert("Checkout successful!")
+            this.setState({
+                createOrder: true
+            })
+            // let createOrd = document.getElementById('createOrder');
+            // createOrd.style.visibility = true;
+        }
+        else {
+            alert("Please add some item to cart!")
+        }
     }
 
     closeModalBox() {
@@ -90,6 +153,7 @@ class OneTimeOrder extends React.Component {
     }
 
     render() {
+        // console.log("item cat", this.state.getItemCatalogue)
         if (!this.state.isLoading)
             return (
                 <Row>
@@ -102,17 +166,18 @@ class OneTimeOrder extends React.Component {
                             style={{ width: "250%", paddingLeft: "5px" }}
                             actionHandler={this.generalHandler}
                             className="search-field productSearch"
-                            placeholder="Search For Products"
+                            placeholder="Search"
                         />
-                        <Div className="input-group-addon search-categories">
+                        <Div className="input-group-addon option">
                             <Select
-                                fieldname="product_cat"
+                                fieldname="name"
+                                id="name"
                                 formname="ruleDefination"
                                 columns="4"
                                 style={{}}
                                 state={this.state}
-                                typeName="et-flow"//KEY
-                                dataSource={this.state.typeData}
+                                typeName="name"//KEY
+                                dataSource={this.nameTypeData}
                                 multiple={false}
                                 actionHandler={this.generalHandler}
                                 className="postform resizeselect dropmenu"
@@ -120,12 +185,29 @@ class OneTimeOrder extends React.Component {
                         </Div>
                         <Div className="input-group-addon option">
                             <Select
-                                fieldname="product_cat"
+                                fieldname="description"
+                                id="description"
                                 formname="ruleDefination"
                                 columns="4"
                                 style={{}}
                                 state={this.state}
-                                typeName="et-flow"
+                                typeName="description"//KEY
+                                dataSource={this.state.typeData}
+                                multiple={false}
+                                actionHandler={this.generalHandler}
+                                className="postform resizeselect dropmenu"
+                            />
+                        </Div>
+
+                        <Div className="input-group-addon option">
+                            <Select
+                                fieldname="material"
+                                formname="ruleDefination"
+                                id="material"
+                                columns="4"
+                                style={{}}
+                                state={this.state}
+                                typeName="material"
                                 dataSource={this.state.typeData}
                                 multiple={false}
                                 actionHandler={this.generalHandler}
@@ -133,14 +215,17 @@ class OneTimeOrder extends React.Component {
                             />
                         </Div>
                         <Div className="input-group-btn">
-                            <button type="submit" className="btn btn-secondary">
+                            <button type="submit" className="btn btn-secondary" onClick={this.insertJson} >
                                 <i className="fa fa-search btn-img" aria-hidden="true"></i>
                             </button>
                         </Div>
                         <Div className="carticon cart-set">
                             <a href="#">
-                                <img src="/assets/blkimgs/cart.png" style={{ width: "30px" }} />
+                                <img src="/assets/blkimgs/cart.png"
+                                    style={{ width: "30px" }}
+                                    onClick={() => { this.checkout() }} />
                             </a>
+
                             {/* <button type="submit" className="btn btn-secondary"><i className="fa fa-shopping-cart btn-img" aria-hidden="true"></i></button> */}
                         </Div>
                         <Div></Div>
@@ -148,16 +233,17 @@ class OneTimeOrder extends React.Component {
                     </Div>
 
                     <Row>
-                        <Portlet title="Product Catelogue">
+                        {!this.state.createOrder && <Portlet title="Product Catalogue">
                             <Row>
-                                {this.state.itemsCatalogue.map((item, index) => {
+                                {/* {console.log(this.state.getItemCatalogue, "this.state.getItemCatalogue")} */}
+                                {this.state.getItemCatalogue.map((item, index) => {
 
-                                    console.log(item, "ITEM")
+                                    // console.log(item, "ITEM")
                                     return (
                                         <Col col="3" key={index}>
                                             <Div className="procard hov procards">
                                                 <Div className="counterbadge span-product">
-                                                    <span>40</span>
+                                                    {/* <span>40</span> */}
                                                 </Div>
                                                 <Div className="clear"></Div>
                                                 <Div className="text-center proimg">
@@ -184,11 +270,29 @@ class OneTimeOrder extends React.Component {
                                                         <Input
                                                             type="number"
                                                             className="form-control new-form"
-                                                            formname={`itemsCatalogue[${index}]`}
+                                                            formname={`getItemCatalogue[${index}]`}
                                                             fieldname="qty"
                                                             actionHandler={this.generalHandler}
                                                             value={item.qty}
                                                         />
+                                                    </Col>
+                                                    <Col col="3">
+                                                        <label className="qty qty-label">Color</label>
+                                                    </Col>
+                                                    <Col col="5">
+                                                        {/* {item.color+" item.color"} */}
+                                                        <Select
+                                                            fieldname="color"
+                                                            formname={`getItemCatalogue[${index}]`}
+                                                            typeName="color"
+                                                            state={this.state}
+                                                            dataSource={item}
+                                                            multiple={true}
+                                                            actionHandler={this.generalHandler}
+                                                            className="postform resizeselect dropmenu"
+                                                        />
+
+
                                                     </Col>
                                                 </Row>
                                             </Div>
@@ -197,7 +301,7 @@ class OneTimeOrder extends React.Component {
                                     );
                                 })}
                             </Row>
-                        </Portlet>
+                        </Portlet>}
                     </Row>
                     <ModalBox isOpen={this.state.modelBox ? true : false}>
                         <Row>
@@ -217,13 +321,7 @@ class OneTimeOrder extends React.Component {
                                                 <b>AED {this.state.modelItem.price} </b>
                                             </h4>
                                             <p className="dprpDesc">
-                                                Below is breakdown of an example of the meta data that
-                                                describes the producation information of the part. A
-                                                seperate STL file of the CAD describes the part geometry
-                                                and is the expected data format from the customer.
-                                                Another CMB file is created from the STL file which
-                                                describes the manufacturing parameters and paths for
-                                                manufacturing the part</p>
+                                                {this.state.modelItem.description}</p>
                                         </Div>
                                         <Div className="form-group margin">
                                             <Row>
@@ -339,118 +437,123 @@ class OneTimeOrder extends React.Component {
                             </Portlet>
                         </Row>
                     </ModalBox>
-                    <Portlet title="Create Order">
-                        <Row>
-                            <h4 className="pull-left">
-                                <b>Total Lead Time: 21 hrs </b>
-                            </h4>
-                        </Row>
-                        <Row>
-                            <Col col="3">
-                                <span>
-                                    <b>Item</b>
-                                </span>
-                            </Col>
 
-                            <Col col="2">
-                                <span>
-                                    <b>Material</b>
-                                </span>
-                            </Col>
+                    {this.state.createOrder &&
+                        <Portlet title="Create Order"
+                        //noCollapse={this.state.createOrder ? false : true}
+                        >
+                            <Row>
+                                <h4 className="pull-left">
+                                    <b>Total Lead Time: 21 hrs </b>
+                                </h4>
+                            </Row>
+                            <Row>
+                                <Col col="3">
+                                    <span>
+                                        <b>Item</b>
+                                    </span>
+                                </Col>
 
-                            <Col col="2">
-                                <span>
-                                    <b>Color</b>
-                                </span>
-                            </Col>
+                                <Col col="2">
+                                    <span>
+                                        <b>Material</b>
+                                    </span>
+                                </Col>
 
-                            <Col col="2">
-                                <span>
-                                    <b>Price</b>
-                                </span>
-                            </Col>
+                                <Col col="2">
+                                    <span>
+                                        <b>Color</b>
+                                    </span>
+                                </Col>
 
-                            <Col col="1">
-                                <span>
-                                    <b>Qty</b>
-                                </span>
-                            </Col>
+                                <Col col="2">
+                                    <span>
+                                        <b>Price</b>
+                                    </span>
+                                </Col>
 
-                            <Col col="2">
-                                <span>
-                                    <b>Total</b>
-                                </span>
-                            </Col>
-                        </Row>
+                                <Col col="1">
+                                    <span>
+                                        <b>Qty</b>
+                                    </span>
+                                </Col>
 
-                        {this.state.cartItems.map((item, index) => {
-                            return (
-                                <Row key={index}>
-                                    <Col
-                                        col="3"
-                                        style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }} >
-                                        <Row>
-                                            <Div className="text-center proimg">
-                                                <img
-                                                    className="pull-left"
-                                                    src="/assets/blkimgs/product1.png"
-                                                    style={{ width: "20px" }}
-                                                />
-                                                <span className="pull-left">{item.name}</span>
-                                            </Div>
-                                        </Row>
-                                    </Col>
+                                <Col col="2">
+                                    <span>
+                                        <b>Total</b>
+                                    </span>
+                                </Col>
+                            </Row>
 
-                                    <Col
-                                        col="2"
-                                        style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
-                                        <Label text={item.material} />
-                                    </Col>
+                            {this.state.cartItems.map((item, index) => {
+                                return (
+                                    <Row key={index}>
+                                        <Col
+                                            col="3"
+                                            style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }} >
+                                            <Row>
+                                                <Div className="text-center proimg">
+                                                    <img
+                                                        className="pull-left"
+                                                        src="/assets/blkimgs/product1.png"
+                                                        style={{ width: "20px" }}
+                                                    />
+                                                    <span className="pull-left">{item.name}</span>
+                                                </Div>
+                                            </Row>
+                                        </Col>
 
-                                    <Col
-                                        col="2"
-                                        style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
-                                        <Label text={item.selectedColor} />
-                                    </Col>
+                                        <Col
+                                            col="2"
+                                            style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
+                                            <Label text={item.material} />
+                                        </Col>
 
-                                    <Col
-                                        col="2"
-                                        style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
-                                        <span>AED {item.price}</span>
-                                    </Col>
+                                        <Col
+                                            col="2"
+                                            style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
+                                            <Label text={item.selectedColor} />
+                                        </Col>
 
-                                    <Col
-                                        col="1"
-                                        style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
-                                        <span>{item.qty}</span>
-                                    </Col>
+                                        <Col
+                                            col="2"
+                                            style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
 
-                                    <Col
-                                        col="2"
-                                        style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
-                                        <span>AED 5000</span>
-                                    </Col>
-                                </Row>)
-                        })}
-                        <Row>
-                            <Col col="9"></Col>
+                                            <span>AED  {item.price}</span>
+                                        </Col>
 
-                            <Col col="1">
-                                <span>
-                                    {" "}
-                                    <b> Grand Total </b>{" "}
-                                </span>
-                            </Col>
+                                        <Col
+                                            col="1"
+                                            style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
+                                            <span>{item.qty}</span>
+                                        </Col>
 
-                            <Col
-                                col="2"
-                                style={{ border: "2px solid grey", height: "50px", paddingTop: "12px" }}
-                            >
-                                <span style={{ color: "#c20c35" }}>AED 5000</span>
-                            </Col>
-                        </Row>
-                    </Portlet>
+                                        <Col
+                                            col="2"
+                                            style={{ border: "1px solid grey", height: "50px", paddingTop: "12px" }}>
+                                            <span>AED {item.total}</span>
+                                        </Col>
+                                    </Row>)
+                            })}
+                            <Row>
+                                <Col col="9"></Col>
 
+                                <Col col="1">
+                                    <span>
+                                        {" "}
+                                        <b> Grand Total </b>{" "}
+                                    </span>
+                                </Col>
+
+                                <Col
+                                    col="2"
+                                    style={{ border: "2px solid grey", height: "50px", paddingTop: "12px" }}
+                                >
+
+                                    <span style={{ color: "#c20c35" }}>AED {this.state.grandTotal}</span>
+                                </Col>
+                            </Row>
+                        </Portlet>}
                 </Row>
             );
         else return <div className="loader">{utils.getLabelByID("Loading")}</div>;
@@ -458,11 +561,11 @@ class OneTimeOrder extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    //console.log("statestate", state.app);
+    console.log("getItemCatalogue", state.app ? state.app : "waiting for state.app");
     return {
-        //itemsCatalogue: _.get(state.APP, "getItemCatalogue.searchResult", {"body": {}})
-        itemsCatalogue: _.get(state.app, 'getItemCatalogue.searchResult', []),
-        pageData: _.get(state.app, 'getItemCatalogue.pageData', {})
+        typeData: state.app.typeData.data,
+        getItemCatalogue: _.get(state.app, 'getItemCatalogue.searchResult', []),
+        // pageData: _.get(state.app, 'getItemCatalogue.pageData', {})
     };
 }
 

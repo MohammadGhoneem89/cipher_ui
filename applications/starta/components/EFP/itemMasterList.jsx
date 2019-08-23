@@ -61,12 +61,12 @@ class ItemMasterList extends React.Component {
         return request
     }
     formSubmit = () => {
-        
+
         this.props.actions.generalProcess(constants.getItemCatalogue, this.getRequest());
-      
+
     }
-    
-      
+
+
     componentWillReceiveProps(nextProps) {
         console.log("nextProps", nextProps.getItemCatalogue)
         if (nextProps.getItemCatalogue) {
@@ -103,7 +103,9 @@ class ItemMasterList extends React.Component {
         //clearInterval(this.timerID);
     }
 
+    searchCallBack=(keyWord) =>{
 
+    }
     pageChanged = (pageNo) => {
         let page = this.state.page;
         page.currentPageNo = pageNo;
@@ -155,7 +157,7 @@ class ItemMasterList extends React.Component {
                                 <div className="btn-toolbar pull-right">
 
                                     <button type="submit" className="btn green" onClick={this.formSubmit}
-                                         >
+                                    >
                                         {utils.getLabelByID("Search")}
                                     </button>
                                 </div>
@@ -166,13 +168,14 @@ class ItemMasterList extends React.Component {
 
                 </Portlet>
                 <Portlet title={"Item Catalogue"} actions={this.state.actions}
+
                     isPermissioned={true}>
                     {
                         this.state.gridData.map((obj) => {
 
                             obj.action = [
                                 {
-                                    "label": "View",
+                                    "label": "Edit",
                                     "URI": ["/starta/ProductCatalogue"],
                                     "params": "_id",
                                     "iconName": "icon-docs"
@@ -196,6 +199,9 @@ class ItemMasterList extends React.Component {
                         pageChanged={this.pageChanged}
                         pageSize={10}
                         pagination={true}
+                        searchCallBack={this.searchCallBack}
+                        export={false}
+                        search={true}
                         activePage={this.state.page.currentPageNo}
                     />
                 </Portlet>

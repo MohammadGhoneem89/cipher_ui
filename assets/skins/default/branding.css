@@ -2625,7 +2625,7 @@ span.DeviceIdno {
     border-color: #729c29!important;
 }
 .et-datatable .datatables_length, .dataTables_filter, .dataTables_info {
-    display: none;
+    
 }
 .et-datatable .portlet-body.et-datatable {
     margin: 20px 0;

@@ -11,15 +11,15 @@ import ItemCatalogueList from "./components/EFP/itemMasterList.jsx";
 import ViewItemCatalogue from "./components/EFP/viewItemMaster.jsx";
 
 let authRoutes = <div>
-    <Route path="/starta/oneTimeOrder" component={OneTimeOrder} />
-    <Route path="/starta/ProductCatalogue(/:id)" component={ProductCatalogue} />
-    <Route path="/starta/itemCatalogueList" component={ItemCatalogueList} />
-    {/* <Route path="/starta/viewItemCatalogue" component={ViewItemCatalogue} /> */}
+    <Route path="/strata/oneTimeOrder" component={OneTimeOrder} />
+    <Route path="/strata/ProductCatalogue(/:id)" component={ProductCatalogue} />
+    <Route path="/strata/itemCatalogueList" component={ItemCatalogueList} />
+    {/* <Route path="/strata/viewItemCatalogue" component={ViewItemCatalogue} /> */}
 </div>;
 
 let unAuthRoutes = <div>
-  <Route path="/starta/Locked" component={Locked} />
-  <Route path="/starta/login" component={Login} />
+  <Route path="/strata/Locked" component={Locked} />
+  <Route path="/strata/login" component={Login} />
 </div>;
 
 export default { authRoutes, unAuthRoutes };

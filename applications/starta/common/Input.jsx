@@ -28,7 +28,8 @@ class Input extends React.Component {
                 <input type={this.props.type ? this.props.type : "text"} 
                
                 name={this.props.fieldname}
-                 disabled={this.props.disabled || false} value={this.props.value ||
+                 disabled={this.props.disabled || false} 
+                 value={this.props.value ||
                      _.get(this.props.state, `${this.props.formname}.${[this.props.fieldname]}`, "")} 
                      style={this.props.style ? this.props.style : {}}
                       className={this.props.className}

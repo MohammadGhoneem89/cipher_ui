@@ -29,6 +29,7 @@ class ProductCatalogue extends React.Component {
         this.state = {
             isLoading: true,
             addProduct: {},
+            value: ""
             // disabled: false
 
         };
@@ -67,6 +68,12 @@ class ProductCatalogue extends React.Component {
                 'color', 'classification', 'material'
             ]));
         window.scrollTo(0, 0);
+    }
+    handleOnChange = (e) => {
+        this.setState({
+            value: e.target.value
+        })
+       
     }
     getItemDetail = (id) => {
         alert("getitemdetail func")
@@ -155,8 +162,12 @@ class ProductCatalogue extends React.Component {
                                 value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].itemCode : ""} />
                             <Label text="Name:" columns='1' />
                             <Input fieldname='name' formname='addProduct' columns='5' state={this.state}
-                                actionHandler={this.generalHandler} className="form-control"
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+                                // ref={addProduct}
+                                actionHandler={this.generalHandler} 
+                              // value={this.state.value}
+                                // onChange={this.handleOnChange}
+                                className="form-control"
+                                disabled={false}
                                 value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].name : ""} />
 
                         </Row>
@@ -165,12 +176,12 @@ class ProductCatalogue extends React.Component {
                             <Label text="Lead Time:" columns='1' />
                             <Input fieldname='leadTime' formname='addProduct' columns='5' state={this.state}
                                 actionHandler={this.generalHandler} className="form-control" type='number'
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+                                disabled={false}
                                 value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].leadTime : ""} />
                             <Label text="Print Time:" columns='1' />
                             <Input fieldname='printTime' formname='addProduct' columns='5' state={this.state}
                                 actionHandler={this.generalHandler} className="form-control" type='number'
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+                                disabled={false}
                                 value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].printTime : ""} />
                         </Row>
                         <br />
@@ -178,22 +189,28 @@ class ProductCatalogue extends React.Component {
                             <Label text="Part Num:" columns='1' />
                             <Input fieldname='partNumber' formname='addProduct' columns='5' state={this.state}
                                 actionHandler={this.generalHandler} className="form-control"
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+                                disabled={false}
                                 value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].partNumber : ""} />
                             <Label text="Classification:" columns='1' />
                             <Combobox fieldname='classification' formname='addProduct' columns='5' style={{}}
                                 state={this.state} typeName="classification" dataSource={this.state.typeData}
-                                multiple={false} actionHandler={this.generalHandler} className="form-control"
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+                                selected={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].classification : ""}
+                                multiple={false}
+                                actionHandler={this.generalHandler} className="form-control"
+                                disabled={false}
                                 value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].classification : ""} />
                         </Row>
                         <br />
                         <Row>
                             <Label text="Material:" columns='1' />
                             <Combobox fieldname='material' formname='addProduct' columns='5' style={{}}
-                                state={this.state} typeName="material" dataSource={this.state.typeData}
-                                multiple={false} actionHandler={this.generalHandler} className="form-control"
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+                                state={this.state} typeName="material"
+                                dataSource={this.state.typeData}
+                                selected={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].material : ""}
+                                multiple={false}
+
+                                actionHandler={this.generalHandler} className="form-control"
+                                disabled={false}
                                 value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].material : ""} />
                             <Label text="Color:" columns='1' />
 
@@ -201,8 +218,10 @@ class ProductCatalogue extends React.Component {
                                 state={this.state}
                                 typeName="color"
                                 dataSource={this.state.typeData}
+                                selected={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].color : ""}
+
                                 actionHandler={this.onWorkOnDataChange}
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+                                disabled={false}
                                 value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].color : ""}
                             />
                             {/* <Combobox fieldname='color' formname='addProduct' columns='5' style={{}}
@@ -214,12 +233,12 @@ class ProductCatalogue extends React.Component {
                             <Label text="Model Vol:" columns='1' />
                             <Input fieldname='modelVolume' formname='addProduct' columns='5' state={this.state}
                                 actionHandler={this.generalHandler} className="form-control" type='number'
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+                                disabled={false}
                                 value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].modelVolume : ""} />
                             <Label text="Support Vol:" columns='1' />
                             <Input fieldname='supportVolume' formname='addProduct' columns='5' state={this.state}
                                 actionHandler={this.generalHandler} className="form-control" type='number'
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+                                disabled={false}
                                 value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].supportVolume : ""} />
                         </Row>
                         <br />
@@ -227,7 +246,7 @@ class ProductCatalogue extends React.Component {
                             <Label text="Price:" columns='1' />
                             <Input fieldname='price' formname='addProduct' columns='5' state={this.state}
                                 actionHandler={this.generalHandler} className="form-control" type='number'
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+                                disabled={false}
                                 value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].price : ""} />
                         </Row>
                         <br />
@@ -235,14 +254,15 @@ class ProductCatalogue extends React.Component {
                             <Label text="Description" columns='1' />
                             <Textarea fieldname='description' formname='addProduct' rows="5"
                                 columns='7' style={{ color: 'blue' }} actionHandler={this.generalHandler}
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+                                disabled={false}
                                 value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].description : undefined}
                             />
                             <Label text="Is Active" columns='1' />
-                            <CheckBox fieldname='isActive' formname='addProduct' value={false}
+                            <CheckBox fieldname='itemStatus' formname='addProduct' value={false}
                                 columns='1' style={{}} actionHandler={this.generalHandler}
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
-                                value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].isActive : ""} />
+
+                                disabled={false}
+                                value={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].itemStatus : ""} />
                         </Row>
                         <br />
                         <Row>
