@@ -161,9 +161,7 @@ class ProductCatalogue extends React.Component {
         if (!this.state.isLoading)
 
             return (
-
-                <Row>
-                    <Portlet title='product catalogue'>
+                    <Portlet title={utils.getLabelByID("Product Catalogue")} >
                         <Row>
                             <Label text="Item Code:" columns='1' />
                             <Input fieldname='itemCode' formname='addProduct' columns='5' state={this.state} actionHandler={this.generalHandler} className="form-control"
@@ -284,12 +282,11 @@ class ProductCatalogue extends React.Component {
                                 allowedFileType=".xml , .csv , .xls" acceptedFiles="Files to be uploaded with extention *.xml, *.xls or *.csv" />
                         </Row>
                         <br />
-                        <Row>
-                            <button type="submit" className="btn green" style={{ float: "right" }} onClick={this.insertJson}>{utils.getLabelByID("Save")}</button>{"  "}
-                        </Row>
+                            <button type="submit" className="btn green" style={{ float: "right" }}  onClick={this.insertJson}>{utils.getLabelByID("Save")}</button>{"  "}
+                       <br/>
+                       <br/>
                     </Portlet>
 
-                </Row>
             );
         else
             return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
@@ -310,5 +307,5 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-ProductCatalogue.displayName = "__HIDE";
+ProductCatalogue.displayName = "Product Catalogue";
 export default connect(mapStateToProps, mapDispatchToProps)(ProductCatalogue);
