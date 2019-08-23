@@ -80,6 +80,9 @@ class ItemMasterList extends React.Component {
     }
 
     componentDidMount() {
+        this.timerID = setInterval(() =>
+            this.props.actions.generalProcess(constants.getItemCatalogue, this.getRequest())
+            , 1000);
         this.props.actions.generalProcess(constants.getItemCatalogue, this.getRequest());
         window.scrollTo(0, 0);
 
@@ -98,12 +101,13 @@ class ItemMasterList extends React.Component {
                     }]
             }
         )
+        
     }
     componentWillUnmount() {
-        //clearInterval(this.timerID);
+       clearInterval(this.timerID);
     }
 
-    searchCallBack=(keyWord) =>{
+    searchCallBack = (keyWord) => {
 
     }
     pageChanged = (pageNo) => {

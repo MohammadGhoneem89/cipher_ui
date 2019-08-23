@@ -5,7 +5,7 @@ export default {
         searchResult: undefined
     }
     ,
-    addItemCatalogue: {
+    updateItemCatalogue: {
         
     }
 }
