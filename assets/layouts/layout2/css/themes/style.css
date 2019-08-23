@@ -169,6 +169,7 @@ i.fa.fa-search {
     padding: 15px;
     margin: 15px 0 20px;
     text-align: left;
+    box-shadow: 0 -5px 5px -5px rgba(194, 12, 56, 0.32);
 }
 .procard hr {
     margin: 20px 0 12px;
@@ -177,7 +178,7 @@ i.fa.fa-search {
     margin: 40px 0 15px;
     color: #c20c38;
 }
-.procard a.addcart.full{
+.procard button.addcart.full{
     width: 100%;
 }
 .procard span.addcart {
@@ -474,4 +475,13 @@ color: white;
 .ordertrack .blue{
     background-color: #0072bc!important;
     color: white;
+}
+.colorBox {
+    width: 25px;
+    height: 25px;
+    float: right;
+
+}
+.moveRight{
+    text-align: right;
 }

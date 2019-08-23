@@ -4,9 +4,9 @@ const Product = props => {
   const {onClick, details} = props;
   return <div className="procard">
     {details.receivedQuantiy > 0 && <div className="counterbadge"><span>{details.receivedQuantiy}</span></div>}
-    <div onClick={onClick}>
+    <div onClick={onClick.bind(this, details)}>
       <div className="text-center proimg"><img src={details.image || "/assets/blkimgs/cart.png"}/></div>
-      <a href="#">
+      <a>
         <h3>{details.name}</h3>
       </a>
       <label>AED {details.price}</label>
@@ -17,26 +17,34 @@ const Product = props => {
         <label className="qty">Color</label>
       </div>
       <div className="col-md-8">
-        <select type="number" name="qty" min="0" className="form-control">
+        <select name="color" className="form-control" required="required">
           <option value="">Select</option>
-          {details.color.map(item=>{
-            return <option style={{backgroundColor: item}}>{item}</option>
+          {details.color.map(item => {
+            return <option style={{backgroundColor: item, color: "white"}}>{item}</option>
           })}
-          
+
         </select>
       </div>
       <div className="col-md-4">
         <label className="qty">Qty</label>
       </div>
       <div className="col-md-8">
-        <input type="number" name="qty" min="0" className="form-control"/>
+        <input type="number" name="quantity" min="0" className="form-control" required="required"/>
+
+
+        <input type="string" name="itemCode" value={details.itemCode} className="form-control"
+               style={{display: "none"}}/>
+        <input type="string" name="price" value={details.price} className="form-control"
+               style={{display: "none"}}/>
+        <input type="string" name="name" value={details.name} className="form-control"
+               style={{display: "none"}}/>
       </div>
     </div>
     <div className="row">
       <div className="col-md-12">
-        <a href="#" className="btn stratabtnstyle addcart full">
-          Add To Cart<i className="icon-cart" />
-        </a>
+        <button type="submit" className="btn stratabtnstyle addcart full">
+          Add To Cart <i className="fa fa-shopping-cart"/>
+        </button>
       </div>
     </div>
   </div>;
