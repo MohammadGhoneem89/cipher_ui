@@ -22,7 +22,7 @@ import DateTimeField from "react-bootstrap-datetimepicker";
 import RichTextEditor from 'react-rte';
 import * as gen from '../../common/generalActionHandler';
 import Document from '../../common/Document.jsx';
-
+import * as toaster from '../../../../core/common/toaster.js';
 class ProductCatalogue extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -98,39 +98,43 @@ class ProductCatalogue extends React.Component {
     }
 
     insertJson() {
-        this.stringToNumber('addProduct', ['leadTime', 'price', 'printTime',])
-        if (!_.isEmpty(this.props.id)) {
-            alert("updateItemCatalogue")
-            this.props.actions.generalAjxProcess(constants.updateItemCatalogue, {
-                body: {
-                    ...this.state.addProduct
-                }
-            }).then(result => {
-                result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
-            });
-        }
-        else {
-            alert("addItemCatalogue")
-            this.props.actions.generalAjxProcess(constants.addItemCatalogue, {
-                body: {
-                    ...this.state.addProduct
-                }
-            }).then(result => {
-                result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
-            });
+        if (this.state && this.state.addProduct != undefined) {
+            this.stringToNumber('addProduct', ['leadTime', 'price', 'printTime',])
+            if (!_.isEmpty(this.props.id)) {
+                alert("updateItemCatalogue")
+                this.props.actions.generalAjxProcess(constants.updateItemCatalogue, {
+                    body: {
+                        ...this.state.addProduct
+                    }
+                }).then(result => {
+                    result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
+                });
+            }
+            else {
+                alert("addItemCatalogue")
+                this.props.actions.generalAjxProcess(constants.addItemCatalogue, {
+                    body: {
+                        ...this.state.addProduct
+                    }
+                }).then(result => {
+                    result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
+                });
+            }
+        }else{
+            alert("All fields required!")
         }
     }
 
     redirectToList = () => {
-        
         browserHistory.push('/strata/itemCatalogueList')
+        toaster.showToast("Record updated successfully!");
     }
     stringToNumber(formName, fieldArray) {
         let Obj = {};
         for (let key of fieldArray) {
             Obj = this.state[formName]
             console.log(Obj, "Obj")
-            if (Obj[key] != undefined) {
+            if (Obj && Obj[key] != undefined) {
                 Obj[key] = Number(Obj[key])
             }
         }
@@ -161,131 +165,131 @@ class ProductCatalogue extends React.Component {
         if (!this.state.isLoading)
 
             return (
-                    <Portlet title={utils.getLabelByID("Product Catalogue")} >
-                        <Row>
-                            <Label text="Item Code:" columns='1' />
-                            <Input fieldname='itemCode' formname='addProduct' columns='5' state={this.state} actionHandler={this.generalHandler} className="form-control"
-                                disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
-                            />
-                            <Label text="Name:" columns='1' />
-                            <Input fieldname='name' formname='addProduct'
-                                columns='5'
-                                state={this.state}
-                                actionHandler={this.generalHandler}
-                                className="form-control"
-                                disabled={false} />
+                <Portlet title={utils.getLabelByID("Product Catalogue")} >
+                    <Row>
+                        <Label text="Item Code:" columns='1' />
+                        <Input fieldname='itemCode' formname='addProduct' columns='5' state={this.state} actionHandler={this.generalHandler} className="form-control"
+                            disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+                        />
+                        <Label text="Name:" columns='1' />
+                        <Input fieldname='name' formname='addProduct'
+                            columns='5'
+                            state={this.state}
+                            actionHandler={this.generalHandler}
+                            className="form-control"
+                            disabled={false} />
 
-                        </Row>
-                        <br />
-                        <Row>
-                            <Label text="Lead Time:" columns='1' />
-                            <Input fieldname='leadTime' formname='addProduct' columns='5'
-                                state={this.state}
-                                actionHandler={this.generalHandler}
-                                className="form-control" type='number'
-                                disabled={false}
-                            />
-                            <Label text="Print Time:" columns='1' />
-                            <Input fieldname='printTime' formname='addProduct' columns='5' state={this.state}
-                                actionHandler={this.generalHandler} className="form-control" type='number'
-                                disabled={false} />
-                        </Row>
-                        <br />
-                        <Row>
-                            <Label text="Part Num:" columns='1' />
-                            <Input fieldname='partNumber' formname='addProduct'
-                                columns='5' state={this.state}
-                                actionHandler={this.generalHandler} className="form-control"
-                                disabled={false} />
-                            <Label text="Classification:" columns='1' />
-                            <Combobox fieldname='classification' formname='addProduct' columns='5' style={{}}
-                                state={this.state}
-                                typeName="classification"
-                                dataSource={this.state.typeData}
-                                multiple={false}
-                                actionHandler={this.generalHandler} className="form-control"
-                                disabled={false}
+                    </Row>
+                    <br />
+                    <Row>
+                        <Label text="Lead Time:" columns='1' />
+                        <Input fieldname='leadTime' formname='addProduct' columns='5'
+                            state={this.state}
+                            actionHandler={this.generalHandler}
+                            className="form-control" type='number'
+                            disabled={false}
+                        />
+                        <Label text="Print Time:" columns='1' />
+                        <Input fieldname='printTime' formname='addProduct' columns='5' state={this.state}
+                            actionHandler={this.generalHandler} className="form-control" type='number'
+                            disabled={false} />
+                    </Row>
+                    <br />
+                    <Row>
+                        <Label text="Part Num:" columns='1' />
+                        <Input fieldname='partNumber' formname='addProduct'
+                            columns='5' state={this.state}
+                            actionHandler={this.generalHandler} className="form-control"
+                            disabled={false} />
+                        <Label text="Classification:" columns='1' />
+                        <Combobox fieldname='classification' formname='addProduct' columns='5' style={{}}
+                            state={this.state}
+                            typeName="classification"
+                            dataSource={this.state.typeData}
+                            multiple={false}
+                            actionHandler={this.generalHandler} className="form-control"
+                            disabled={false}
 
-                            />
-                        </Row>
-                        <br />
-                        <Row>
-                            <Label text="Material:" columns='1' />
-                            <Combobox fieldname='material' formname='addProduct' columns='5' style={{}}
-                                state={this.state} typeName="material"
-                                dataSource={this.state.typeData}
-                                multiple={false}
-                                actionHandler={this.generalHandler} className="form-control"
-                                disabled={false}
-                            />
-                            <Label text="Color:" columns='1' />
+                        />
+                    </Row>
+                    <br />
+                    <Row>
+                        <Label text="Material:" columns='1' />
+                        <Combobox fieldname='material' formname='addProduct' columns='5' style={{}}
+                            state={this.state} typeName="material"
+                            dataSource={this.state.typeData}
+                            multiple={false}
+                            actionHandler={this.generalHandler} className="form-control"
+                            disabled={false}
+                        />
+                        <Label text="Color:" columns='1' />
 
-                            <CheckList fieldname='color' formname='addProduct' columns='5' style={{}}
+                        <CheckList fieldname='color' formname='addProduct' columns='5' style={{}}
 
-                                state={this.state}
-                                typeName="color"
-                                dataSource={this.state.typeData}
-                                checked={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].color : this.state}
-                                actionHandler={this.onWorkOnDataChange}
-                                disabled={false}
+                            state={this.state}
+                            typeName="color"
+                            dataSource={this.state.typeData}
+                            checked={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].color : this.state}
+                            actionHandler={this.onWorkOnDataChange}
+                            disabled={false}
 
-                            />
-                            {/* <Combobox fieldname='color' formname='addProduct' columns='5' style={{}}
+                        />
+                        {/* <Combobox fieldname='color' formname='addProduct' columns='5' style={{}}
                                 state={this.state} typeName="color" dataSource={this.state.typeData}
                                 multiple={false} actionHandler={this.generalHandler} className="form-control" /> */}
-                        </Row>
-                        <br />
-                        <Row>
-                            <Label text="Model Vol:" columns='1' />
-                            <Input fieldname='modelVolume' formname='addProduct' columns='5' state={this.state}
-                                actionHandler={this.generalHandler} className="form-control"
-                                type='number'
-                                disabled={false}
-                            />
-                            <Label text="Support Vol:" columns='1' />
-                            <Input fieldname='supportVolume' formname='addProduct' columns='5'
-                                state={this.state}
-                                actionHandler={this.generalHandler} className="form-control"
-                                type='number'
-                                disabled={false}
-                            />
-                        </Row>
-                        <br />
-                        <Row>
-                            <Label text="Price:" columns='1' />
-                            <Input fieldname='price' formname='addProduct'
-                                columns='5'
-                                state={this.state}
-                                actionHandler={this.generalHandler} className="form-control" type='number'
-                                disabled={false}
-                            />
-                        </Row>
-                        <br />
-                        <Row>
-                            <Label text="Description" columns='1' />
-                            <Textarea fieldname='description' formname='addProduct' rows="5"
-                                state={this.state}
-                                columns='7' style={{ color: 'blue' }}
-                                actionHandler={this.generalHandler}
-                                disabled={false}
+                    </Row>
+                    <br />
+                    <Row>
+                        <Label text="Model Vol:" columns='1' />
+                        <Input fieldname='modelVolume' formname='addProduct' columns='5' state={this.state}
+                            actionHandler={this.generalHandler} className="form-control"
+                            type='number'
+                            disabled={false}
+                        />
+                        <Label text="Support Vol:" columns='1' />
+                        <Input fieldname='supportVolume' formname='addProduct' columns='5'
+                            state={this.state}
+                            actionHandler={this.generalHandler} className="form-control"
+                            type='number'
+                            disabled={false}
+                        />
+                    </Row>
+                    <br />
+                    <Row>
+                        <Label text="Price:" columns='1' />
+                        <Input fieldname='price' formname='addProduct'
+                            columns='5'
+                            state={this.state}
+                            actionHandler={this.generalHandler} className="form-control" type='number'
+                            disabled={false}
+                        />
+                    </Row>
+                    <br />
+                    <Row>
+                        <Label text="Description" columns='1' />
+                        <Textarea fieldname='description' formname='addProduct' rows="5"
+                            state={this.state}
+                            columns='7' style={{ color: 'blue' }}
+                            actionHandler={this.generalHandler}
+                            disabled={false}
 
-                            />
-                            <Label text="Is Active" columns='1' />
-                            <CheckBox fieldname='itemStatus' formname='addProduct'
-                                columns='1' style={{}} actionHandler={this.generalHandler}
-                                disabled={false}
-                            />
-                        </Row>
-                        <br />
-                        <Row>
-                            <Document initState={this.state} updateState={this.updateState} getParentState={this.getParentState}
-                                allowedFileType=".xml , .csv , .xls" acceptedFiles="Files to be uploaded with extention *.xml, *.xls or *.csv" />
-                        </Row>
-                        <br />
-                            <button type="submit" className="btn green" style={{ float: "right" }}  onClick={this.insertJson}>{utils.getLabelByID("Save")}</button>{"  "}
-                       <br/>
-                       <br/>
-                    </Portlet>
+                        />
+                        <Label text="Is Active" columns='1' />
+                        <CheckBox fieldname='itemStatus' formname='addProduct'
+                            columns='1' style={{}} actionHandler={this.generalHandler}
+                            disabled={false}
+                        />
+                    </Row>
+                    <br />
+                    <Row>
+                        <Document initState={this.state} updateState={this.updateState} getParentState={this.getParentState}
+                            allowedFileType=".xml , .csv , .xls" acceptedFiles="Files to be uploaded with extention *.xml, *.xls or *.csv" />
+                    </Row>
+                    <br />
+                    <button type="submit" className="btn green" style={{ float: "right" }} onClick={this.insertJson}>{utils.getLabelByID("Save")}</button>{"  "}
+                    <br />
+                    <br />
+                </Portlet>
 
             );
         else
