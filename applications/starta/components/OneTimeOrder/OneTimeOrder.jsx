@@ -76,7 +76,6 @@ class OneTimeOrder extends React.Component {
   };
 
   placeOrder() {
-    console.log(this.state.cartItems, "CART ITEMS");
     let items = [...this.state.cartItems];
     items.map(item=>{
       item.color = [item.color];
