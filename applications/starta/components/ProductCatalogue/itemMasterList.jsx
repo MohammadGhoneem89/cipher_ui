@@ -17,7 +17,6 @@ class ItemMasterList extends React.Component {
         this.state = {
             actions: [],
             searchCriteria: {},
-            // searchFilters: ""
             page: {
                 pageSize: 10,
                 currentPageNo: 1,
@@ -97,7 +96,7 @@ class ItemMasterList extends React.Component {
                         "labelName": "COM_AB_Add",
                         "actionType": "PORTLET_LINK",
                         "iconName": "fa fa-plus",
-                        "URI": "/strata/ProductCatalogue",
+                        "URI": "/strata/ProductCatalogue/:NEWITEM",
                         "children": []
                     }]
             }
@@ -122,9 +121,6 @@ class ItemMasterList extends React.Component {
         if (this.state.isLoading) {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         }
-
-        // this.state.gridData.sort(this.sort_by('supplierItemID', true, parseInt))
-
         return (
             <div>
                 <Portlet title={utils.getLabelByID("ITEM MASTER")}>
@@ -184,13 +180,7 @@ class ItemMasterList extends React.Component {
                                     "URI": ["/strata/ProductCatalogue"],
                                     "params": "_id",
                                     "iconName": "icon-docs"
-                                },
-                                // {
-                                //     "label": "Item Dashboard",
-                                //     "URI": ["/itemSummaryDetail"],
-                                //     "params": "_id",
-                                //     "iconName": "icon-eye"
-                                // }
+                                }
                             ]
 
                         })
@@ -216,7 +206,6 @@ class ItemMasterList extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    // console.log(state.app.getItemCatalogue,"<----")
     return {
         getItemCatalogue: _.get(state.app, 'getItemCatalogue.searchResult', []),
         getPage: _.get(state.app, 'getItemCatalogue.pageData', {})
@@ -229,47 +218,3 @@ function mapDispatchToProps(dispatch) {
 }
 ItemMasterList.displayName = "ITEM CATALOGUE";
 export default connect(mapStateToProps, mapDispatchToProps)(ItemMasterList);
-
-
-/*
- getSearchItem = () => {
-        // let _this = this;
-        // let getGridData = this.props.getItemMasterList;
-        // let item = document.getElementById('item') == null ? "" : document.getElementById('item').value;
-        // if (item !== "") {
-        //     console.log(item, "$$$$$$$$$$4");
-        //     getGridData.forEach(function (element) {
-        //         if (item == element.itemID) {
-        //             getGridData = element;
-        //             console.log(getGridData, "--------------updategetGridData");
-        //             _this.setState({ gridData: getGridData })
-        //         }
-        //     });
-
-        // } else
-        //     alert("ItemID required!")
-        let searchCriteria = {};
-        let item = document.getElementById('item') == null ? "" : document.getElementById('item').value;
-        let itemDescription = document.getElementById('itemDescription') == null ? "" : document.getElementById('itemDescription').value;
-        if (item !== "" || itemDescription !== "") {
-            searchCriteria.item = item;
-            searchCriteria.itemDescription = itemDescription;
-        }
-
-
-        let request = {
-            "body": {
-                "itemID": "001",
-                searchCriteria: searchCriteria
-
-            }
-        };
-        console.log(request, "~~~~~~~~~~~~~~~~~~~~~~")
-        // this.props.actions.generalProcess(constants.getItemMasterList, this.getRequest());
-        return request;
-
-    }
-    formSubmit() {
-
-        this.props.actions.generalProcess(constants.getItemMasterList, this.getSearchItem());
-    }*/

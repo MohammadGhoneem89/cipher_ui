@@ -28,9 +28,7 @@ class ProductCatalogue extends React.Component {
         super(props, context);
         this.state = {
             isLoading: true,
-            addProduct: {},
-            value: ""
-            // disabled: false
+            addProduct: {}
 
         };
 
@@ -53,19 +51,15 @@ class ProductCatalogue extends React.Component {
                 isLoading: false
             })
         }
-        // if (nextProps.typeData) {
-        //     this.setState({
-        //         typeData: nextProps.typeData,
-        //         isLoading: false
-        //     })
-        // }
     }
 
     componentDidMount() {
-        console.log(!_.isEmpty(this.props.id), "ITEM ID FROM PROPS")
-        if (!_.isEmpty(this.props.id)) {
+        console.log((this.props.id), "ITEM ID FROM PROPS")
+        if (this.props.id) {
+            console.log(this.props.id,"this.props.id")
             this.getItemDetail(this.props.id);
         }
+
         this.props.actions.generalProcess(coreConstants.getTypeData,
             requestCreator.createTypeDataRequest([
                 'color', 'classification', 'material'
@@ -100,8 +94,7 @@ class ProductCatalogue extends React.Component {
     insertJson() {
         if (this.state && this.state.addProduct != undefined) {
             this.stringToOtherTypes('addProduct', ['leadTime', 'price', 'printTime'],['itemStatus'])
-            // var stringValue = "true";
-            // let boolValue = (this.state.addProduct.itemStatus == "true");
+
              this.setState({})
             if (!_.isEmpty(this.props.id)) {
                 alert("updateItemCatalogue")
@@ -136,14 +129,12 @@ class ProductCatalogue extends React.Component {
         let Obj = {};
         for (let key of numbArray) {
             Obj = this.state[formName]
-            console.log(Obj, "Obj")
             if (Obj && Obj[key] != undefined) {
                 Obj[key] = Number(Obj[key])
             }
         }
         for (let key of boolArray) {
             Obj = this.state[formName]
-            console.log(Obj, "Obj")
             if (Obj && Obj[key] != undefined) {
                 Obj[key] = Obj[key] == "true" ? true : false
             }
@@ -170,7 +161,6 @@ class ProductCatalogue extends React.Component {
         })
     }
     render() {
-        //console.log("this state getItemCatalogue", this.state.typeData)
         console.log(this.state.addProduct ? console.log(this.state.addProduct) : "waiting for response from addItemCatalogue")
         if (!this.state.isLoading)
 
@@ -243,11 +233,7 @@ class ProductCatalogue extends React.Component {
                             actionHandler={this.onWorkOnDataChange}
                             disabled={false}
 
-                        />
-                        {/* <Combobox fieldname='color' formname='addProduct' columns='5' style={{}}
-                                state={this.state} typeName="color" dataSource={this.state.typeData}
-                                multiple={false} actionHandler={this.generalHandler} className="form-control" /> */}
-                    </Row>
+                        /> </Row>
                     <br />
                     <Row>
                         <Label text="Model Vol:" columns='1' />
@@ -308,7 +294,6 @@ class ProductCatalogue extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    // console.log(state.app,"STATE.APP")
     return {
         id: _.get(ownProps.params, 'id', ''),
         getItemCatalogue: _.get(state.app, 'getItemCatalogue.searchResult', []),

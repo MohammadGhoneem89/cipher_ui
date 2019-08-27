@@ -39,15 +39,15 @@ class MasterAgreementList extends React.Component {
     getRequest = () => {
 
         let contractID = document.getElementById('contractId') == null ? "" : document.getElementById('contractId').value;
-      let customerID = document.getElementById('customer') == null ? "" : document.getElementById('customer').value;
+        let customerID = document.getElementById('customer') == null ? "" : document.getElementById('customer').value;
         let searchCriteria = {}
 
         if (contractID != "")
             searchCriteria.contractID = contractID
-         if (customerID != "")
+        if (customerID != "")
             searchCriteria.customerID = customerID
 
-      
+
         this.setState({ searchCriteria: searchCriteria })
         let request = {
             "body": {
@@ -62,29 +62,33 @@ class MasterAgreementList extends React.Component {
         return request
     }
     componentWillReceiveProps(nextProps) {
-       
+
         if (nextProps.getMasterAgreement) {
 
-           console.log(nextProps.getMasterAgreement,"getMasterAgreement")
-              this.setState(
-                { gridData: nextProps.getMasterAgreement,
+            console.log(nextProps.getMasterAgreement, "getMasterAgreement")
+            this.setState(
+                {
+                    gridData: nextProps.getMasterAgreement,
                     isLoading: false,
                     page: nextProps.getPage
                 }
             )
-              // console.log(this.updateSLA(nextProps.getMasterAgreementList),"DATAAAAAAAAAAAAAA")
+            // console.log(this.updateSLA(nextProps.getMasterAgreementList),"DATAAAAAAAAAAAAAA")
 
         }
     }
 
     componentDidMount() {
-       this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
-        this.setState({ actions: 
-            [{
-             "value": "1002", "type": "pageAction", 
-        "label": "ADD", "labelName": "COM_AB_Add", 
-        "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", 
-        "URI": "/addMasterAgreement", "children": [] }] })
+        this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
+        this.setState({
+            actions:
+                [{
+                    "value": "1002", "type": "pageAction",
+                    "label": "ADD", "labelName": "COM_AB_Add",
+                    "actionType": "PORTLET_LINK", "iconName": "fa fa-plus",
+                    "URI": "/addMasterAgreement", "children": []
+                }]
+        })
         window.scrollTo(0, 0);
     }
 
@@ -148,7 +152,7 @@ class MasterAgreementList extends React.Component {
                                 obj.action = [
                                     {
                                         "label": "View",
-                                        "URI": ["/viewMasterAgreement"],
+                                        "URI": ["/strata/ViewMasterAgreement"],
                                         "params": "_id",
                                         "iconName": "icon-docs"
                                     }
@@ -178,9 +182,9 @@ class MasterAgreementList extends React.Component {
 function mapStateToProps(state, ownProps) {
     //console.log(state.app.getMasterAgreement,"state.app.getMasterAgreement")
     return {
-        
-        getMasterAgreement:_.get(state.app,"getMasterAgreement.searchResult",[]),
-        getPage: _.get(state.app,"getMasterAgreement.pageData",[])
+
+        getMasterAgreement: _.get(state.app, "getMasterAgreement.searchResult", []),
+        getPage: _.get(state.app, "getMasterAgreement.pageData", [])
     };
 }
 

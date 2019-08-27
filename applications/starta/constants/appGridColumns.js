@@ -23,5 +23,33 @@ module.exports = {
     {alias: "Customer", key: "customerID", type: 'string'},
     {alias: "Status", key: "status", type: 'string'},
     {alias: "Action", key: "action", type: "action"}
+  ],
+  viewMasterAgreementItem:[
+    {alias: "", key: "contractID", type: "hiddenID"},
+    {alias: "Contract ID", key: "contractID", type: 'string'},
+    {alias: "Strat Date", key: "startDate", type: "string"},
+    {alias: "End Date", key: "endDate", type: "string"},
+    {alias: "Customer", key: "customerID", type: 'string'},
+    {alias: "Status", key: "status", type: 'string'},
+    {alias: "Action", key: "action", type: "action"}
+  ],
+  viewMasterAgreementPenalties:[
+    {alias: "", key: "contractID", type: "hiddenID"},
+    {alias: "Contract ID", key: "contractID", type: 'string'},
+    {alias: "Strat Date", key: "startDate", type: "string"},
+    {alias: "End Date", key: "endDate", type: "string"},
+    {alias: "Customer", key: "customerID", type: 'string'},
+    {alias: "Status", key: "status", type: 'string'},
+    {alias: "Action", key: "action", type: "action"}
+  ],
+  viewMasterAgreementSLA:[
+    {alias: "", key: "contractID", type: "hiddenID"},
+    {alias: "Contract ID", key: "contractID", type: 'string'},
+    {alias: "Strat Date", key: "startDate", type: "string"},
+    {alias: "End Date", key: "endDate", type: "string"},
+    {alias: "Customer", key: "customerID", type: 'string'},
+    {alias: "Status", key: "status", type: 'string'},
+    {alias: "Action", key: "action", type: "action"}
   ]
+
 };
