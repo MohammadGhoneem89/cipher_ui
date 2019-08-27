@@ -7,14 +7,14 @@ import Login from "../../core/components/AuthenticationScreens/Login.jsx";
 //App Routes
 import OneTimeOrder from "./components/OneTimeOrder/OneTimeOrder.jsx";
 import ProductCatalogue from "./components/ProductCatalogue/ProductCatalogue.jsx";
-import ItemCatalogueList from "./components/EFP/itemMasterList.jsx";
-import ViewItemCatalogue from "./components/EFP/viewItemMaster.jsx";
+import ItemCatalogueList from "./components/ProductCatalogue/itemMasterList.jsx";
+import MasterAgreementList from "./components/MasterAgreement/MasterAgreementList.jsx";
 
 let authRoutes = <div>
     <Route path="/strata/oneTimeOrder" component={OneTimeOrder} />
     <Route path="/strata/ProductCatalogue(/:id)" component={ProductCatalogue} />
     <Route path="/strata/itemCatalogueList" component={ItemCatalogueList} />
-    {/* <Route path="/strata/viewItemCatalogue" component={ViewItemCatalogue} /> */}
+    <Route path="/strata/MasterAgreementList" component={MasterAgreementList} />
 </div>;
 
 let unAuthRoutes = <div>

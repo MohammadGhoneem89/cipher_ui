@@ -36,7 +36,7 @@ class ProductCatalogue extends React.Component {
 
         this.generalHandler = gen.generalHandler.bind(this);
         this.insertJson = this.insertJson.bind(this);
-        this.stringToNumber = this.stringToNumber.bind(this);
+        this.stringToOtherTypes = this.stringToOtherTypes.bind(this);
     }
 
     componentWillMount() {
@@ -99,7 +99,10 @@ class ProductCatalogue extends React.Component {
 
     insertJson() {
         if (this.state && this.state.addProduct != undefined) {
-            this.stringToNumber('addProduct', ['leadTime', 'price', 'printTime',])
+            this.stringToOtherTypes('addProduct', ['leadTime', 'price', 'printTime'],['itemStatus'])
+            // var stringValue = "true";
+            // let boolValue = (this.state.addProduct.itemStatus == "true");
+             this.setState({})
             if (!_.isEmpty(this.props.id)) {
                 alert("updateItemCatalogue")
                 this.props.actions.generalAjxProcess(constants.updateItemCatalogue, {
@@ -120,7 +123,7 @@ class ProductCatalogue extends React.Component {
                     result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
                 });
             }
-        }else{
+        } else {
             alert("All fields required!")
         }
     }
@@ -129,13 +132,20 @@ class ProductCatalogue extends React.Component {
         browserHistory.push('/strata/itemCatalogueList')
         toaster.showToast("Record updated successfully!");
     }
-    stringToNumber(formName, fieldArray) {
+    stringToOtherTypes(formName, numbArray,boolArray) {
         let Obj = {};
-        for (let key of fieldArray) {
+        for (let key of numbArray) {
             Obj = this.state[formName]
             console.log(Obj, "Obj")
             if (Obj && Obj[key] != undefined) {
                 Obj[key] = Number(Obj[key])
+            }
+        }
+        for (let key of boolArray) {
+            Obj = this.state[formName]
+            console.log(Obj, "Obj")
+            if (Obj && Obj[key] != undefined) {
+                Obj[key] = Obj[key] == "true" ? true : false
             }
         }
         console.log(Obj, "++++ UPDATED obj")

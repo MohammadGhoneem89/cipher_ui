@@ -5,7 +5,9 @@ export default {
         searchResult: undefined
     }
     ,
-    updateItemCatalogue: {
-        
+    getMasterAgreement: {
+        action: "",
+        pageData: {},
+        searchResult: undefined
     }
 }

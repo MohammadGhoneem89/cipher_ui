@@ -14,5 +14,14 @@ module.exports = {
     {alias: "Description", key: "description", type: "string"},
     {alias: "Unit Price", key: "price", type: "amount"},
     {alias: "Action", key: "action", type: "action"}
+  ],
+  masterAgreement: [
+    {alias: "", key: "contractID", type: "hiddenID"},
+    {alias: "Contract ID", key: "contractID", type: 'string'},
+    {alias: "Strat Date", key: "startDate", type: "string"},
+    {alias: "End Date", key: "endDate", type: "string"},
+    {alias: "Customer", key: "customerID", type: 'string'},
+    {alias: "Status", key: "status", type: 'string'},
+    {alias: "Action", key: "action", type: "action"}
   ]
 };

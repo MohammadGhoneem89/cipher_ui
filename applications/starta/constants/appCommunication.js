@@ -5,7 +5,6 @@ let baseUrl = backOffices.baseUrl;
 
 module.exports = {
     getItemCatalogue: `${baseUrl}/API/STRATA/getItemCatalogueList`,
-    addItemCatalogue: `${baseUrl}/API/P2P/addItemCatalogue`  ,
-    updateItemCatalogue:`${baseUrl}/API/P2P/updateItemCatalogue`,
+    getMasterAgreement:`${baseUrl}/API/STRATA/getMasterAgreement`,
     ipfs:`${baseUrl}/API/core/upload?type=IPFS`
 };

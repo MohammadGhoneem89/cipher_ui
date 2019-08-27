@@ -9,7 +9,7 @@ import * as constants from '../../../../core/constants/Communication.js';
 import Portlet from '../../../../core/common/Portlet.jsx';
 import _ from 'lodash';
 
-class masterAgreementList extends React.Component {
+class MasterAgreementList extends React.Component {
 
     constructor(props) {
         console.log("constructor")
@@ -21,7 +21,8 @@ class masterAgreementList extends React.Component {
                 currentPageNo: 1
             },
             isLoading: true,
-            gridData: [],
+            gridData: [{ "itemCode": "Item Code", "name": "name", "description": "description", "price": "price" }
+            ],
             actions: []
         };
         this.data = [];
@@ -29,28 +30,26 @@ class masterAgreementList extends React.Component {
     }
 
     formSubmit = () => {
-        this.props.actions.generalProcess(constants.getMasterAgreementList, this.getRequest());
+        this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
     }
     redirectToAddPage = () => {
-        this.props.actions.generalProcess(constants.getMasterAgreementList, this.getRequest());
+        //this.props.actions.generalProcess(constants.getMasterAgreementList, this.getRequest());
     }
 
     getRequest = () => {
 
-        let contractId = document.getElementById('contractId') == null ? "" : document.getElementById('contractId').value;
-        let supplierName = document.getElementById('supplierName') == null ? "" : document.getElementById('supplierName').value;
+        let contractID = document.getElementById('contractId') == null ? "" : document.getElementById('contractId').value;
+      let customerID = document.getElementById('customer') == null ? "" : document.getElementById('customer').value;
         let searchCriteria = {}
 
-        if (contractId != "")
-            searchCriteria.contractId = contractId
+        if (contractID != "")
+            searchCriteria.contractID = contractID
+         if (customerID != "")
+            searchCriteria.customerID = customerID
 
-        if (supplierName != "")
-            searchCriteria.supplierName = supplierName
-
+      
         this.setState({ searchCriteria: searchCriteria })
         let request = {
-
-            "bypassSimu": true,
             "body": {
                 "page": {
                     "currentPageNo": this.state.page.currentPageNo,
@@ -63,30 +62,29 @@ class masterAgreementList extends React.Component {
         return request
     }
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.getMasterAgreementList)
-        if (nextProps.getMasterAgreementList) {
+       
+        if (nextProps.getMasterAgreement) {
 
-
-            this.setState(
-                {
-                    
-                    gridData: nextProps.getMasterAgreementList,
+           console.log(nextProps.getMasterAgreement,"getMasterAgreement")
+              this.setState(
+                { gridData: nextProps.getMasterAgreement,
                     isLoading: false,
                     page: nextProps.getPage
                 }
             )
-        //    console.log(this.updateSLA(nextProps.getMasterAgreementList),"DATAAAAAAAAAAAAAA")
-            
+              // console.log(this.updateSLA(nextProps.getMasterAgreementList),"DATAAAAAAAAAAAAAA")
+
         }
     }
-    
 
-        
-        
-
-  componentDidMount() {
-        this.props.actions.generalProcess(constants.getMasterAgreementList, this.getRequest());
-        this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/addMasterAgreement", "children": [] }] })
+    componentDidMount() {
+       this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
+        this.setState({ actions: 
+            [{
+             "value": "1002", "type": "pageAction", 
+        "label": "ADD", "labelName": "COM_AB_Add", 
+        "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", 
+        "URI": "/addMasterAgreement", "children": [] }] })
         window.scrollTo(0, 0);
     }
 
@@ -94,11 +92,11 @@ class masterAgreementList extends React.Component {
         let page = this.state.page;
         page.currentPageNo = pageNo;
         this.setState({ page: page });
-        this.props.actions.generalProcess(constants.getMasterAgreementList, this.getRequest());
+        this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
     }
 
     render() {
-        
+
         console.log(this.state.gridData)
         if (this.state.isLoading) {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
@@ -119,10 +117,10 @@ class masterAgreementList extends React.Component {
                         </div>
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Supplier Name")}</label>
+                                <label className="control-label">{utils.getLabelByID("Customer")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="supplierName" id="supplierName" />
+                                <input type="text" className="form-control" name="customer" id="customer" />
                             </div>
                         </div>
                     </div>
@@ -130,14 +128,14 @@ class masterAgreementList extends React.Component {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="form-group col-md-12">
-                     
-                     
+
+
                                 <div className="btn-toolbar pull-right">
-                                <button type="submit" className="btn green" onClick={this.formSubmit}>
+                                    <button type="submit" className="btn green" onClick={this.formSubmit}>
                                         {utils.getLabelByID("Search")}
                                     </button>
-                        
-                                   
+
+
                                 </div>
                             </div>
                         </div>
@@ -146,7 +144,7 @@ class masterAgreementList extends React.Component {
                     <Portlet title={"Master Agreement"} actions={this.state.actions} isPermissioned={true}>
                         {
                             this.state.gridData.map((obj) => {
-                                
+
                                 obj.action = [
                                     {
                                         "label": "View",
@@ -158,6 +156,7 @@ class masterAgreementList extends React.Component {
                             })
 
                         }
+
                         <Table
                             gridColumns={utils.getGridColumnByName("masterAgreement")}
                             gridData={this.state.gridData}
@@ -177,9 +176,11 @@ class masterAgreementList extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    //console.log(state.app.getMasterAgreement,"state.app.getMasterAgreement")
     return {
-        getMasterAgreementList: state.app.getMasterAgreementList.searchResult,
-        getPage: state.app.getMasterAgreementList.pageData
+        
+        getMasterAgreement:_.get(state.app,"getMasterAgreement.searchResult",[]),
+        getPage: _.get(state.app,"getMasterAgreement.pageData",[])
     };
 }
 
@@ -187,8 +188,8 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-masterAgreementList.displayName = "MASTER AGREEMENT";
-export default connect(mapStateToProps, mapDispatchToProps)(masterAgreementList);
+MasterAgreementList.displayName = "MASTER AGREEMENT";
+export default connect(mapStateToProps, mapDispatchToProps)(MasterAgreementList);
 
 
 
@@ -223,50 +224,3 @@ export default connect(mapStateToProps, mapDispatchToProps)(masterAgreementList)
 
 
 
-// getSearchItem = () => {
-
-//     let contractID = document.getElementById('contractID') == null ? "" : document.getElementById('contractID').value;
-//     let supplierName = document.getElementById('supplierName') == null ? "" : document.getElementById('supplierName').value;
-//     let searchCriteria = {};
-//     if (contractID !== "") {
-//         searchCriteria.contractID = contractID;
-//         searchCriteria.supplierName = supplierName;
-//     }
-
-//     let request = {
-//         "body": {
-//             "contractID": "001",
-//             searchCriteria: searchCriteria
-//         }
-//     };
-
-//     console.log(request, "~~~~~~~~~~~~~~~~~~~~~~")
-//     // this.props.actions.generalProcess(constants.getItemMasterList, this.getRequest());
-//     return request;
-
-// }
-// formSubmit = () => {
-
-//     this.props.actions.generalProcess(constants.getMasterAgreementList, this.getSearchItem());
-// }
-
-
-
-//dateIssue
-
-
-            // let grid = nextProps.getMasterAgreementList;
-            // for (let i = 0; i < grid.length; i++) {
-            //     grid[i].startDate = new Date(grid[i].startDate).toLocaleDateString('en-GB', {
-            //         day: 'numeric',
-            //         month: 'numeric',
-            //         year: 'numeric'
-            //     });
-            //     grid[i].endDate = new Date(grid[i].endDate).toLocaleDateString('en-GB', {
-            //         day: 'numeric',
-            //         month: 'numeric',
-            //         year: 'numeric'
-            //     });
-            // }
-
-            // console.log("grid ", grid);
