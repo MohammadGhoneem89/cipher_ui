@@ -4,6 +4,7 @@ import Portlet from "../../common/Portlet.jsx";
 import Col from "../../common/Col.jsx";
 import Label from "../../common/Lable.jsx";
 import Input from "../../common/Input.jsx";
+import * as constants from "../../../../core/constants/Communication";
 
 const CreateOrder = props => {
   const {onClick, cartItems, state, setState, placeOrder} = props;
@@ -42,7 +43,7 @@ const CreateOrder = props => {
             });
             setState({cartItems: cart, grandTotal});
           }}/></td>
-          <td><img src={item.image || "/assets/blkimgs/cart.png"} width="40px"/> <span
+          <td><img src={item.image} width="40px"/> <span
             className="proname">{item.name}</span></td>
           <td className="moveRight">{item.price}</td>
           <td><span style={{float: "left", textTransform: "uppercase"}}>{item.color}</span> <div className="colorBox" style={{backgroundColor: item.color}}/> </td>

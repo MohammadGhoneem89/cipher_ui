@@ -31,7 +31,8 @@ class ProductCatalogue extends React.Component {
     this.state = {
       isLoading: true,
       addProduct: {},
-      productImage: {}
+      productImage: {},
+      documents: []
     };
 
     this.generalHandler = gen.generalHandler.bind(this);
@@ -156,6 +157,7 @@ class ProductCatalogue extends React.Component {
   }
 
   render() {
+    console.log(this.state.documents,"DOCUMENTS");
     if (!this.state.isLoading)
 
       return (
@@ -339,7 +341,9 @@ class ProductCatalogue extends React.Component {
           <Row>
             <Document initState={this.state} updateState={this.updateState} getParentState={this.getParentState}
                       allowedFileType=".xml , .csv , .xls"
-                      acceptedFiles="Files to be uploaded with extention *.xml, *.xls or *.csv"/>
+                      acceptedFiles="Files to be uploaded with extention *.xml, *.xls or *.csv"
+                      fileUploadURL={constants.ipfs}
+            />
           </Row>
           <br/>
           <button type="submit" className="btn green" style={{float: "right"}}

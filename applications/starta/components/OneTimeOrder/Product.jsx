@@ -4,50 +4,43 @@ import * as constants from "../../../../core/constants/Communication";
 const Product = props => {
   const {onClick, details} = props;
   return <div className="procard">
-    {details.receivedQuantiy > 0 && <div className="counterbadge"><span>{details.receivedQuantiy}</span></div>}
-    <div onClick={onClick.bind(this, details)}>
-      <div className="text-center proimg"><img src={constants.ipfsGet+details.image.hash}/></div>
-      <a>
-        <h3>{details.name}</h3>
-      </a>
-      <label>AED {details.price}</label>
+    <div>
+      <div className="text-center proimg" onClick={onClick.bind(this, details)}>
+        <img src={constants.ipfsGet + details.image.hash}/>
+      </div>
+      <a><h3>{details.name}</h3></a>
+      <label>
+        AED {details.price}
+      </label>
+      <button type="submit" className="Addcart">
+        <img src="/assets/Resources/cart.png"/>
+      </button>
     </div>
     <hr/>
     <div className="row">
-      <div className="col-md-4">
+      <div className="col-md-2 text-left">
         <label className="qty">Color</label>
       </div>
-      <div className="col-md-8">
-        <select name="color" className="form-control" required="required">
+      <div className="col-md-4">
+        <select name="color" className="form-control" required>
           <option value="">Select</option>
           {details.color.map(item => {
             return <option style={{backgroundColor: item, color: "white"}}>{item}</option>
           })}
-
         </select>
       </div>
-      <div className="col-md-4">
+      <div className="col-md-2">
         <label className="qty">Qty</label>
       </div>
-      <div className="col-md-8">
-        <input type="number" name="quantity" min="0" className="form-control" required="required"/>
-
-
-        <input type="string" name="itemCode" value={details.itemCode} className="form-control"
-               style={{display: "none"}}/>
-        <input type="string" name="price" value={details.price} className="form-control"
-               style={{display: "none"}}/>
-        <input type="string" name="name" value={details.name} className="form-control"
-               style={{display: "none"}}/>
+      <div className="col-md-4">
+        <input type="number" min="0" name="quantity" className="form-control" required/>
+        <input type="string" name="itemCode" value={details.itemCode} className="form-control" style={{display: "none"}}/>
+        <input type="string" name="price" value={details.price} className="form-control" style={{display: "none"}}/>
+        <input type="string" name="name" value={details.name} className="form-control" style={{display: "none"}}/>
+        <input type="string" name="image" value={constants.ipfsGet + details.image.hash} className="form-control" style={{display: "none"}}/>
       </div>
     </div>
-    <div className="row">
-      <div className="col-md-12">
-        <button type="submit" className="btn stratabtnstyle addcart full">
-          Add To Cart <i className="fa fa-shopping-cart"/>
-        </button>
-      </div>
-    </div>
+
   </div>;
 };
 

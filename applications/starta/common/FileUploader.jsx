@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import DropzoneComponent from 'react-dropzone-component';
-import * as constants from '../constants/Communication.js';
+import * as constants from '../../../core/constants/Communication.js';
 import * as utils from './utils.js';
-import InnerGrid from './innerGrid.jsx';
-import configTag from '../../config.js';
+import InnerGrid from '../../../core/common/innerGrid.jsx';
+import configTag from '../../../config.js';
 
 let tempGridData = {
     "message": "Successfully Uploaded",
@@ -40,7 +40,7 @@ class FileUploader extends React.Component {
         this.componentConfig = {
             iconFiletypes: ['.png', '.gif'],
             showFiletypeIcon: true,
-            postUrl: constants.uploadFile
+            postUrl: this.props.fileUploadURL || constants.uploadFile
         };
 
     }
