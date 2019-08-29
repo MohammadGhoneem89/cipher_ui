@@ -94,8 +94,6 @@ class ProductCatalogue extends React.Component {
     if (this.state && this.state.addProduct != undefined) {
       this.stringToOtherTypes('addProduct', ['leadTime', 'price', 'printTime'], ['itemStatus']);
       let addProduct = {...this.state.addProduct};
-      console.log(addProduct, "PRODUCT IMAGES");
-      console.log(this.state.image, "STATE productImages");
       addProduct.image = this.state.productImage;
       if (!_.isEmpty(this.props.id)) {
         this.props.actions.generalAjxProcess(constants.updateItemCatalogue, {
