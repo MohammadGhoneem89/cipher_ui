@@ -141,7 +141,9 @@ class OneTimeOrder extends React.Component {
 
     cart.push(cartItem);
     cart.forEach(element => {
-      element.total = element.quantity * parseInt(element.price);
+      element.quantity = parseInt(element.quantity);
+      element.price = parseInt(element.price);
+      element.total = element.quantity * element.price;
     });
     cart.forEach(element => {
       grandTotal += element.total

@@ -485,3 +485,9 @@ color: white;
 .moveRight{
     text-align: right;
 }
+#ProductImgUploader{
+    display: none;
+}
+#productImage{
+    margin-bottom: 8px;
+}

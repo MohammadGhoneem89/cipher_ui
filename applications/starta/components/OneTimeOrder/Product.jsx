@@ -1,11 +1,12 @@
 import React from "react";
+import * as constants from "../../../../core/constants/Communication";
 
 const Product = props => {
   const {onClick, details} = props;
   return <div className="procard">
     {details.receivedQuantiy > 0 && <div className="counterbadge"><span>{details.receivedQuantiy}</span></div>}
     <div onClick={onClick.bind(this, details)}>
-      <div className="text-center proimg"><img src={details.image || "/assets/blkimgs/cart.png"}/></div>
+      <div className="text-center proimg"><img src={constants.ipfsGet+details.image.hash}/></div>
       <a>
         <h3>{details.name}</h3>
       </a>

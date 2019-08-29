@@ -64,7 +64,7 @@ const CreateOrder = props => {
       onClick={()=>{
         placeOrder();
       }}>
-      Checkout </a>
+      Create Order </a>
   </Portlet>;
 };
 
