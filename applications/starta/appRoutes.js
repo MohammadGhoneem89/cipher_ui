@@ -14,7 +14,7 @@ import OrderList from "./components/OrderList/orderList.jsx";
 
 let authRoutes = <div>
     <Route path="/strata/oneTimeOrder" component={OneTimeOrder} />
-    {/* <Route path="/strata/ProductCatalogue/:isNew" component={ProductCatalogue} /> */}
+    <Route path="strata/ProductCatalogue/NEWITEM" component={ProductCatalogue} />
     <Route path="/strata/ProductCatalogue/:id" component={ProductCatalogue} />
     <Route path="/strata/itemCatalogueList" component={ItemCatalogueList} />
     <Route path="/strata/MasterAgreementList" component={MasterAgreementList} />

@@ -38,7 +38,6 @@ class Combobox extends React.Component {
                     className={this.props.className ? this.props.className: ''}
                 />
                 <datalist id={`id_${this.props.fieldname}`}>
-                <option key="0" value='Select' >{utils.getLabelByID("RA_Select")} </option>
                     {this.prepareOptions(_.get(this.props.dataSource, this.props.typeName, []))}
                 </datalist >
             </div>
