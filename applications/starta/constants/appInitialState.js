@@ -5,6 +5,11 @@ export default {
         searchResult: undefined
     }
     ,
+    getOrders: {
+        action: "",
+        pageData: {},
+        searchResult: undefined
+    },
     getMasterAgreement: {
         action: "",
         pageData: {},

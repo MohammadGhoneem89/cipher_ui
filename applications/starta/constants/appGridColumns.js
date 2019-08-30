@@ -15,6 +15,16 @@ module.exports = {
     {alias: "Unit Price", key: "price", type: "amount"},
     {alias: "Action", key: "action", type: "action"}
   ],
+  orderList: [
+    {alias: "", key: "orderID", type: "hiddenID"},
+    {alias: "Order ID", key: "orderID", type: 'string'},
+    {alias: "Contract ID", key: "contractID", type: 'string'},
+    {alias: "Customer ID", key: "customerID", type: "string"},
+    {alias: "Order Amount", key: "orderAmount", type: "amount"},
+    {alias: "Order Date", key: "orderDate", type: "epochDate"},
+    {alias: "Stage", key: "orderStatus", type: "string"},
+    {alias: "Action", key: "action", type: "action"}
+  ],
   masterAgreement: [
     {alias: "", key: "contractID", type: "hiddenID"},
     {alias: "Contract ID", key: "contractID", type: 'string'},
