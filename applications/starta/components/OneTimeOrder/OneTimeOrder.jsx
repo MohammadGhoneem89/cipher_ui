@@ -82,7 +82,7 @@ class OneTimeOrder extends React.Component {
     });
     let request = {
       "body": {
-        "orderType": "adhoc",
+        "orderType": "ONETIME",
         "raisedBy": sessionStorage.userID,
         "quoteValidity": "888",
         "orgCode": "0",
@@ -139,7 +139,18 @@ class OneTimeOrder extends React.Component {
     let grandTotal = 0;
     let cart = this.state.cartItems;
 
-    cart.push(cartItem);
+    let isNewItem = true;
+    cart.map(element => {
+      if (element.itemCode === cartItem.itemCode && element.color === cartItem.color) {
+        isNewItem = false;
+        console.log(cartItem.quantity, cartItem.quantity, "QUANTITY");
+        element.quantity = parseInt(element.quantity)+ parseInt(cartItem.quantity);
+        console.log(cartItem.quantity, cartItem.quantity, "QUANTITY");
+      }
+    });
+    if (isNewItem) {
+      cart.push(cartItem);
+    }
     cart.forEach(element => {
       element.quantity = parseInt(element.quantity);
       element.price = parseInt(element.price);
@@ -201,6 +212,7 @@ class OneTimeOrder extends React.Component {
     if (!this.state.isLoading)
       return (
         <div>
+
           {!this.state.createOrder && <div className="row">
             <div className="col-md-8 col-md-offset-2">
               <div className="masthead">
@@ -245,16 +257,18 @@ class OneTimeOrder extends React.Component {
 
           {this.state.isLoading2 && <div className="loader">{utils.getLabelByID("Loading")}</div>}
           {!this.state.createOrder && !this.state.isLoading2 && <Portlet title="Product Catalogue">
-            {this.state.getItemCatalogue.searchResult && this.state.getItemCatalogue.searchResult.map((item, index) => {
-              return (
-                <Col col="3" key={index}>
-                  <form onSubmit={this.addToCart}>
-                    <Product onClick={this.openModalBox} details={item}/>
-                  </form>
-                  <div className="seprator"/>
-                </Col>
-              );
-            })}
+            <Row>
+              {this.state.getItemCatalogue.searchResult && this.state.getItemCatalogue.searchResult.map((item, index) => {
+                return (
+                  <Col col="3" key={index}>
+                    <form onSubmit={this.addToCart}>
+                      <Product onClick={this.openModalBox} details={item}/>
+                    </form>
+                    <div className="seprator"/>
+                  </Col>
+                );
+              })}
+            </Row>
             {this.state.getItemCatalogue.pageData && <div className="text-center"><Pagination
               activePage={this.state.getItemCatalogue.pageData.currentPageNo}
               itemsCountPerPage={this.state.getItemCatalogue.pageData.pageSize}

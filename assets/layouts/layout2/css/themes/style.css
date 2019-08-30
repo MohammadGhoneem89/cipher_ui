@@ -505,6 +505,16 @@ a.stratabtnstyle:hover{
 #ProductImgUploader{
     display: none;
 }
+.moveRight{
+    text-align: right;
+}
+.moveCenter{
+    text-align: center;
+}
+.moveCenter i{
+    font-size: 22px;
+}
+
 
 .productdetails label {
     margin-bottom: 0px!important;

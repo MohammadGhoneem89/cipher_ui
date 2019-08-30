@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import * as actions from '../../../../core/actions/generalAction';
+import _ from 'lodash';
 import Row from '../../common/Row.jsx';
 import Input from '../../common/Input.jsx';
 import Textarea from '../../common/Textarea.jsx';
@@ -214,10 +215,79 @@ class ProductCatalogue extends React.Component {
 
   render() {
    // console.log(this.state.documents, "DOCUMENTS");
+    let _this = this;
+    function getImage() {
+      let image = "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png";
+      if(_.get(_this.props.getItemCatalogue[0],"image",{}) !== "{}"){
+        image = constants.ipfsGet + _.get(_this.props.getItemCatalogue,"[0].image.hash", "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png");
+      }
+      return image;
+    }
     if (!this.state.isLoading)
 
       return (
         <Portlet title={utils.getLabelByID("Product Catalogue")}>
+          <div className="col-md-12" style={{textAlign: "center", paddingBottom: "25px"}}>
+            <img id="productImage"
+                 src={getImage()}
+                 className="img-responsive img-thumbnail" alt="Product Image" width="150px"
+                 height="150px"
+                 ref={input => this.productImage = input}
+            />
+            <br/>
+            <span className="label label-primary" style={{cursor: "pointer"}} onClick={()=>{this.ProductImgUploader.click();}}>
+                      {utils.getLabelByID("Upload Image")}
+                    </span>
+
+            <input name="ProductImgUploader" id='ProductImgUploader' type='file' ref={input => this.ProductImgUploader = input} onChange={(e)=>{
+              let reader = new FileReader();
+              let files = e.target.files;
+              let _this = this;
+              if (files && files[0]) {
+                reader.onload = function (fileReader) {
+                  _this.productImage.setAttribute('src', fileReader.target.result);
+
+                  let data = new FormData();
+                  data.append('file', files[0]);
+
+                  window.fetch(coreConstants.ipfs, {
+                    method: 'POST',
+                    body: data
+                  }).then(checkStatus)
+                    .then(parseJSON)
+                    .then((item)=>{
+                      _this.setState({productImage: {
+                          name: item.name,
+                          type: item.type,
+                          hash: item.hash,
+                          path: item.path
+                        }});
+
+
+                      console.log('request succeeded with JSON response', item)
+                    }).catch(function(error) {
+                    console.log('request failed', error)
+                  })
+                };
+
+                reader.readAsDataURL(files[0]);
+
+                function checkStatus(response) {
+                  if (response.status >= 200 && response.status < 300) {
+                    return response
+                  } else {
+                    let error = new Error(response.statusText);
+                    error.response = response;
+                    throw error
+                  }
+                }
+
+                function parseJSON(response) {
+                  return response.json()
+                }
+              }
+            }}/>
+          </div>
           <Row>
             <Label text="Item Code:" columns='1' />
             <Input fieldname='itemCode' formname='addProduct' columns='5' state={this.state}
@@ -226,12 +296,11 @@ class ProductCatalogue extends React.Component {
             />
             <Label text="Name:" columns='1' />
             <Input fieldname='name' formname='addProduct'
-              columns='5'
-              state={this.state}
-              actionHandler={this.generalHandler}
-              className="form-control"
-              disabled={false} />
-
+                   columns='5'
+                   state={this.state}
+                   actionHandler={this.generalHandler}
+                   className="form-control"
+                   disabled={false}/>
           </Row>
           <br />
           <Row>
@@ -327,70 +396,6 @@ class ProductCatalogue extends React.Component {
                 columns='1' style={{}} actionHandler={this.generalHandler}
                 disabled={false}
               />
-            </div>
-            <div className="col-md-4" style={{ textAlign: "center" }}>
-
-              <img id="productImage"
-                src="https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png"
-                className="img-responsive img-thumbnail" alt="Product Image" width="150px"
-                height="150px"
-                ref={input => this.productImage = input}
-              />
-              <br />
-              <span id="ImgUploadBtn" className="label label-primary" style={{ cursor: "pointer" }} onClick={() => { this.ProductImgUploader.click(); }}>
-                {utils.getLabelByID("Upload Image")}
-              </span>
-
-              <input name="ProductImgUploader" id='ProductImgUploader' type='file' ref={input => this.ProductImgUploader = input} onChange={(e) => {
-                let reader = new FileReader();
-                let files = e.target.files;
-                let _this = this;
-                if (files && files[0]) {
-                  reader.onload = function (fileReader) {
-                    _this.productImage.setAttribute('src', fileReader.target.result);
-
-                    let data = new FormData();
-                    data.append('file', files[0]);
-
-                    window.fetch(coreConstants.ipfs, {
-                      method: 'POST',
-                      body: data
-                    }).then(checkStatus)
-                      .then(parseJSON)
-                      .then((item) => {
-                        _this.setState({
-                          productImage: {
-                            name: item.name,
-                            type: item.type,
-                            hash: item.hash,
-                            path: item.path
-                          }
-                        });
-
-
-                        console.log('request succeeded with JSON response', item)
-                      }).catch(function (error) {
-                        console.log('request failed', error)
-                      })
-                  };
-
-                  reader.readAsDataURL(files[0]);
-
-                  function checkStatus(response) {
-                    if (response.status >= 200 && response.status < 300) {
-                      return response
-                    } else {
-                      let error = new Error(response.statusText);
-                      error.response = response;
-                      throw error
-                    }
-                  }
-
-                  function parseJSON(response) {
-                    return response.json()
-                  }
-                }
-              }} />
             </div>
           </Row>
           <br />
