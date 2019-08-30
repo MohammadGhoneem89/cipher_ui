@@ -42,11 +42,13 @@ a {
 	width: 111px !important;
 }
 
-.login .logo {
+.login .logo  {
 	background: url(logo-default.png) top center;
 	background-repeat: no-repeat;
 	height: 100px;
-	margin-top: 17px !important;
+	margin-top: 18px !important;
+	position: relative;
+	top: 20px;
 }
 
 .login .logo-new {
@@ -551,12 +553,13 @@ a:hover {
 	border-color: #40496a;
 }
 
-.page-header.navbar .page-logo {
-	background: url("logo-default.png");
+.page-header.navbar .page-logo  {
+	background: url(logo-default.png);
 	background-repeat: no-repeat;
-	margin-left: 1.8%;
-	width: 179px !important;
-	margin-top: 15px;
+	margin-left: 1%;
+	width: 175px;
+	margin-top: 18px;
+	background-size: 100%;
 }
 
 .menu-toggler.sidebar-toggler:hover {
