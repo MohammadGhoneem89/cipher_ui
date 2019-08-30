@@ -18,10 +18,8 @@ const Product = props => {
     </div>
     <hr/>
     <div className="row">
-      <div className="col-md-2 text-left">
+      <div className="col-md-6">
         <label className="qty">Color</label>
-      </div>
-      <div className="col-md-4">
         <select name="color" className="form-control" required>
           <option value="">Select</option>
           {details.color.map(item => {
@@ -29,10 +27,8 @@ const Product = props => {
           })}
         </select>
       </div>
-      <div className="col-md-2">
+      <div className="col-md-6">
         <label className="qty">Qty</label>
-      </div>
-      <div className="col-md-4">
         <input type="number" min="0" name="quantity" className="form-control" required/>
         <input type="string" name="itemCode" value={details.itemCode} className="form-control" style={{display: "none"}}/>
         <input type="string" name="material" value={details.material} className="form-control" style={{display: "none"}}/>

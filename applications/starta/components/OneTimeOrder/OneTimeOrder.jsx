@@ -255,13 +255,13 @@ class OneTimeOrder extends React.Component {
                 </Col>
               );
             })}
-            {this.state.getItemCatalogue.pageData && <Pagination
+            {this.state.getItemCatalogue.pageData && <div className="text-center"><Pagination
               activePage={this.state.getItemCatalogue.pageData.currentPageNo}
               itemsCountPerPage={this.state.getItemCatalogue.pageData.pageSize}
               totalItemsCount={this.state.getItemCatalogue.pageData.totalRecords}
               pageRangeDisplayed={5}
               onChange={this.handlePageChange}
-            />}
+            /></div>}
           </Portlet>}
 
           <ModalBox isOpen={this.state.modelBox ? true : false}>
