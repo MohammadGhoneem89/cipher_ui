@@ -35,6 +35,7 @@ const Product = props => {
       <div className="col-md-4">
         <input type="number" min="0" name="quantity" className="form-control" required/>
         <input type="string" name="itemCode" value={details.itemCode} className="form-control" style={{display: "none"}}/>
+        <input type="string" name="material" value={details.material} className="form-control" style={{display: "none"}}/>
         <input type="string" name="price" value={details.price} className="form-control" style={{display: "none"}}/>
         <input type="string" name="name" value={details.name} className="form-control" style={{display: "none"}}/>
         <input type="string" name="image" value={constants.ipfsGet + details.image.hash} className="form-control" style={{display: "none"}}/>

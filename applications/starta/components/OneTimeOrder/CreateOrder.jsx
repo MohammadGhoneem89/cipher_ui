@@ -20,11 +20,12 @@ const CreateOrder = props => {
     <table id="fieldTable" className="table table-bordered table-striped table-responsive ordertable">
       <thead>
       <tr>
-        <th className="col-md-2">Remove</th>
-        <th className="col-md-2">Item</th>
+        <th className="text-center">Remove</th>
+        <th className="col-md-3">Item</th>
+        <th className="col-md-2">Material</th>
         <th className="col-md-2">Price(AED)</th>
         <th className="col-md-2">Color</th>
-        <th className="col-md-2">Qty</th>
+        <th className="col-md-1">Qty</th>
         <th className="col-md-2">Total</th>
       </tr>
       </thead>
@@ -45,6 +46,7 @@ const CreateOrder = props => {
           }}/></td>
           <td><img src={item.image} width="40px"/> <span
             className="proname">{item.name}</span></td>
+          <td className="moveRight">{item.material}</td>
           <td className="moveRight">{item.price}</td>
           <td><span style={{float: "left", textTransform: "uppercase"}}>{item.color}</span> <div className="colorBox" style={{backgroundColor: item.color}}/> </td>
           <td className="moveRight">{item.quantity}</td>

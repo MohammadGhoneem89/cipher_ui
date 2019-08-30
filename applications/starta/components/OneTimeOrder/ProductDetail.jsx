@@ -9,7 +9,7 @@ import * as constants from "../../../../core/constants/Communication";
 const ProductDetail = props => {
   const {onClick, details, state} = props;
   return <Portlet title="Product Details">
-    <div className="row">
+    <div className="row productdetails">
     <div className="col-md-4 text-center">
       <div className="prodetailsimg productImg"><img src={constants.ipfsGet + details.image.hash} width="100%"/></div>
     </div>

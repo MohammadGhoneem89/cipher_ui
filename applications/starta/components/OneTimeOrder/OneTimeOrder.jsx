@@ -77,7 +77,7 @@ class OneTimeOrder extends React.Component {
 
   placeOrder() {
     let items = [...this.state.cartItems];
-    items.map(item=>{
+    items.map(item => {
       item.color = [item.color];
     });
     let request = {
@@ -200,7 +200,7 @@ class OneTimeOrder extends React.Component {
 
     if (!this.state.isLoading)
       return (
-        <Row>
+        <div>
           {!this.state.createOrder && <div className="row">
             <div className="col-md-8 col-md-offset-2">
               <div className="masthead">
@@ -242,30 +242,28 @@ class OneTimeOrder extends React.Component {
             </div>
           </div>}
 
-          <Row>
-            {this.state.isLoading2 && <div className="loader">{utils.getLabelByID("Loading")}</div>}
-            {!this.state.createOrder && !this.state.isLoading2 && <Portlet title="Product Catalogue">
-              <Row>
-                {this.state.getItemCatalogue.searchResult && this.state.getItemCatalogue.searchResult.map((item, index) => {
-                  return (
-                    <Col col="3" key={index}>
-                      <form onSubmit={this.addToCart}>
-                        <Product onClick={this.openModalBox} details={item}/>
-                      </form>
-                      <div className="seprator"/>
-                    </Col>
-                  );
-                })}
-              </Row>
-              {this.state.getItemCatalogue.pageData && <Pagination
-                activePage={this.state.getItemCatalogue.pageData.currentPageNo}
-                itemsCountPerPage={this.state.getItemCatalogue.pageData.pageSize}
-                totalItemsCount={this.state.getItemCatalogue.pageData.totalRecords}
-                pageRangeDisplayed={5}
-                onChange={this.handlePageChange}
-              />}
-            </Portlet>}
-          </Row>
+
+          {this.state.isLoading2 && <div className="loader">{utils.getLabelByID("Loading")}</div>}
+          {!this.state.createOrder && !this.state.isLoading2 && <Portlet title="Product Catalogue">
+            {this.state.getItemCatalogue.searchResult && this.state.getItemCatalogue.searchResult.map((item, index) => {
+              return (
+                <Col col="3" key={index}>
+                  <form onSubmit={this.addToCart}>
+                    <Product onClick={this.openModalBox} details={item}/>
+                  </form>
+                  <div className="seprator"/>
+                </Col>
+              );
+            })}
+            {this.state.getItemCatalogue.pageData && <Pagination
+              activePage={this.state.getItemCatalogue.pageData.currentPageNo}
+              itemsCountPerPage={this.state.getItemCatalogue.pageData.pageSize}
+              totalItemsCount={this.state.getItemCatalogue.pageData.totalRecords}
+              pageRangeDisplayed={5}
+              onChange={this.handlePageChange}
+            />}
+          </Portlet>}
+
           <ModalBox isOpen={this.state.modelBox ? true : false}>
             <ProductDetail details={this.state.modelItem} state={this.state} closeModalBox={this.closeModalBox}/>
           </ModalBox>
@@ -278,7 +276,7 @@ class OneTimeOrder extends React.Component {
             }}
             placeOrder={this.placeOrder}
           />}
-        </Row>
+        </div>
       );
     else return <div className="loader">{utils.getLabelByID("Loading")}</div>;
   }

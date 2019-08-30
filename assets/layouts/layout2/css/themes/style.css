@@ -497,3 +497,7 @@ a.stratabtnstyle:hover{
 #ProductImgUploader{
     display: none;
 }
+
+.productdetails label {
+    margin-bottom: 0px!important;
+}
