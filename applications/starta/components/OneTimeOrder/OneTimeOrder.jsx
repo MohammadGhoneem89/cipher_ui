@@ -3,7 +3,8 @@ import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import * as actions from "../../../../core/actions/generalAction";
-
+import { browserHistory } from 'react-router';
+import * as toaster from '../../../../core/common/toaster.js';
 import * as utils from "../../../../core/common/utils.js";
 import * as constants from "../../../../core/constants/Communication";
 import * as requestCreator from '../../../../core/common/request.js';
@@ -91,8 +92,9 @@ class OneTimeOrder extends React.Component {
       }
     };
 
-    this.props.actions.generalAjxProcess(constants.createOrder, request).
-    then(result => {
+    this.props.actions.generalAjxProcess(constants.createOrder, 
+      request).then(result => {
+        console.log(result,"result")
       result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
     });
   }
