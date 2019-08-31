@@ -91,9 +91,15 @@ class OneTimeOrder extends React.Component {
       }
     };
 
-    this.props.actions.generalProcess(constants.createOrder, request);
+    this.props.actions.generalAjxProcess(constants.createOrder, request).
+    then(result => {
+      result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
+    });
   }
-
+  redirectToList = () => {
+    browserHistory.push('/strata/orderList')
+    toaster.showToast("Record updated successfully!");
+  }
   componentWillMount() {
     // let createOrd = document.getElementById('createOrder');
     // createOrd.style.visibility = false;
