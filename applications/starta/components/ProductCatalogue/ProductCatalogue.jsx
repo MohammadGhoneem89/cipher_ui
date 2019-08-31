@@ -110,35 +110,35 @@ class ProductCatalogue extends React.Component {
         alert("item description is required!")
         return;
       }
-      if (this.state.addProduct.classification== undefined || this.state.addProduct.classification.trim() == '') {
+      if (this.state.addProduct.classification== undefined) {
         alert("item classification is required!")
         return;
       }
-      if (this.state.addProduct.material== undefined || this.state.addProduct.material.trim() == '') {
+      if (this.state.addProduct.material== undefined) {
         alert("item material is required!")
         return;
       }
-      if (this.state.addProduct.price== undefined || this.state.addProduct.price.trim() == '') {
+      if (this.state.addProduct.price== undefined) {
         alert("item price is required!")
         return;
       }
-      if (this.state.addProduct.leadTime== undefined || this.state.addProduct.leadTime.trim() == '') {
+      if (this.state.addProduct.leadTime== undefined) {
         alert("item leadTime is required!")
         return;
       }
-      if (this.state.addProduct.printTime== undefined || this.state.addProduct.printTime.trim() == '') {
+      if (this.state.addProduct.printTime== undefined) {
         alert("item printTime is required!")
         return;
       }
-      if (this.state.addProduct.partNumber== undefined || this.state.addProduct.partNumber.trim() == '') {
+      if (this.state.addProduct.partNumber== undefined) {
         alert("item partNumber is required!")
         return;
       }
-      if (this.state.addProduct.modelVolume== undefined || this.state.addProduct.modelVolume.trim() == '') {
+      if (this.state.addProduct.modelVolume== undefined) {
         alert("item modelVolume is required!")
         return;
       }
-      if (this.state.addProduct.supportVolume== undefined || this.state.addProduct.supportVolume.trim() == '') {
+      if (this.state.addProduct.supportVolume== undefined) {
         alert("item supportVolume is required!")
         return;
       }
