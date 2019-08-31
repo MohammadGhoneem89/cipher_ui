@@ -188,7 +188,7 @@ class ProductCatalogue extends React.Component {
     for (let key of boolArray) {
       Obj = this.state[formName]
       if (Obj && Obj[key] != undefined) {
-        Obj[key] = Obj[key] == "true" ? true : false
+        Obj[key] ? true : false
       }
     }
     this.setState({
