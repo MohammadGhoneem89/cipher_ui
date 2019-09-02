@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import DropzoneComponent from 'react-dropzone-component';
-import * as constants from '../../../core/constants/Communication.js';
-import * as utils from './utils.js';
-import InnerGrid from '../../../core/common/innerGrid.jsx';
-import configTag from '../../../config.js';
+import * as constants from '../../../../core/constants/Communication.js';
+import * as utils from '../utils.js';
+import InnerGrid from './innerGrid.jsx';
+import configTag from '../../../../config.js';
 
 let tempGridData = {
     "message": "Successfully Uploaded",
@@ -97,8 +97,9 @@ class FileUploader extends React.Component {
     }
     getAttachementGrid(showAttachementGrid) {
         if (showAttachementGrid) {
+            
+            console.log('this.state.gridData.contextData', this.state.gridData.contextData);
             return (
-                
                     <InnerGrid TableClass="portlet light bordered sdg_portlet bg-default bg-font-default" fontclass="font-dark" title="Attachments"
                         gridColumns={utils.getGridColumnByName("downloadFileList")}
                         gridData={this.state.gridData.contextData} />

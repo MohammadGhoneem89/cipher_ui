@@ -21,7 +21,7 @@ import * as constants from '../../../../core/constants/Communication';
 import DateTimeField from "react-bootstrap-datetimepicker";
 import RichTextEditor from 'react-rte';
 import * as gen from '../../common/generalActionHandler';
-import Document from '../../common/Document.jsx';
+import Document from '../../common/IPFS/Document.jsx';
 import * as toaster from '../../../../core/common/toaster.js';
 
 
@@ -340,7 +340,7 @@ class ProductCatalogue extends React.Component {
           <br/>
           <Row>
             <Document initState={this.state} updateState={this.updateState} getParentState={this.getParentState}
-                      allowedFileType=".xml , .csv , .xls"
+                      allowedFileType=".xml , .csv , .xls , .xlsx"
                       acceptedFiles="Files to be uploaded with extention *.xml, *.xls or *.csv"
                       fileUploadURL={constants.ipfs}
             />

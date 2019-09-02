@@ -50,6 +50,10 @@ module.exports = {
     {alias: "Customer", key: "customerID", type: 'string'},
     {alias: "Status", key: "status", type: 'string'},
     {alias: "Action", key: "action", type: "action"}
+  ],
+  downloadFileList: [
+    { alias: "FU_fileName", key: "fileDetail", type: "downloadAttachement" }
+
   ]
 
 };

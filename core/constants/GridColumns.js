@@ -477,6 +477,10 @@ module.exports = {
     { alias: "FU_fileName", key: "fileDetail", type: "downloadAttachement" }
 
   ],
+  downloadFileListIPFS: [
+    { alias: "FU_fileName", key: "fileDetail", type: "downloadAttachement" }
+
+  ],
   notifications: [
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
     {alias: "NOTI_Level", key: "type", type: "icon"},
