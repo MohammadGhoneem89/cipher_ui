@@ -9,10 +9,19 @@ module.exports = {
   
   itemCatalogue: [
     {alias: "", key: "itemCode", type: "hiddenID"},
-    {alias: "Item Code", key: "itemCode", type: 'string'},
-    {alias: "Name", key: "name", type: 'string'},
-    {alias: "Description", key: "description", type: "string"},
+    {alias: "Item ID", key: "itemCode", type: 'string'},
+    {alias: " ITEM Description", key: "description", type: "string"},
     {alias: "Unit Price", key: "price", type: "amount"},
+    {alias: "Action", key: "action", type: "action"}
+  ],
+  orderList: [
+    {alias: "", key: "orderID", type: "hiddenID"},
+    {alias: "Order ID", key: "orderID", type: 'string'},
+    {alias: "Contract ID", key: "contractID", type: 'string'},
+    {alias: "Customer ID", key: "customerID", type: "string"},
+    {alias: "Order Amount", key: "orderAmount", type: "amount"},
+    {alias: "Order Date", key: "orderDate", type: "epochDate"},
+    {alias: "Stage", key: "orderStatus", type: "string"},
     {alias: "Action", key: "action", type: "action"}
   ],
   masterAgreement: [

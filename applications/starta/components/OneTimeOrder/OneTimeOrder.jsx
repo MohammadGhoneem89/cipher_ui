@@ -3,7 +3,8 @@ import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import * as actions from "../../../../core/actions/generalAction";
-
+import { browserHistory } from 'react-router';
+import * as toaster from '../../../../core/common/toaster.js';
 import * as utils from "../../../../core/common/utils.js";
 import * as constants from "../../../../core/constants/Communication";
 import * as requestCreator from '../../../../core/common/request.js';
@@ -77,12 +78,12 @@ class OneTimeOrder extends React.Component {
 
   placeOrder() {
     let items = [...this.state.cartItems];
-    items.map(item=>{
+    items.map(item => {
       item.color = [item.color];
     });
     let request = {
       "body": {
-        "orderType": "adhoc",
+        "orderType": "ONETIME",
         "raisedBy": sessionStorage.userID,
         "quoteValidity": "888",
         "orgCode": "0",
@@ -91,9 +92,16 @@ class OneTimeOrder extends React.Component {
       }
     };
 
-    this.props.actions.generalProcess(constants.createOrder, request);
+    this.props.actions.generalAjxProcess(constants.createOrder, 
+      request).then(result => {
+        console.log(result,"result")
+      result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
+    });
   }
-
+  redirectToList = () => {
+    browserHistory.push('/strata/orderList')
+    toaster.showToast("Record updated successfully!");
+  }
   componentWillMount() {
     // let createOrd = document.getElementById('createOrder');
     // createOrd.style.visibility = false;
@@ -139,7 +147,18 @@ class OneTimeOrder extends React.Component {
     let grandTotal = 0;
     let cart = this.state.cartItems;
 
-    cart.push(cartItem);
+    let isNewItem = true;
+    cart.map(element => {
+      if (element.itemCode === cartItem.itemCode && element.color === cartItem.color) {
+        isNewItem = false;
+        console.log(cartItem.quantity, cartItem.quantity, "QUANTITY");
+        element.quantity = parseInt(element.quantity)+ parseInt(cartItem.quantity);
+        console.log(cartItem.quantity, cartItem.quantity, "QUANTITY");
+      }
+    });
+    if (isNewItem) {
+      cart.push(cartItem);
+    }
     cart.forEach(element => {
       element.quantity = parseInt(element.quantity);
       element.price = parseInt(element.price);
@@ -200,7 +219,8 @@ class OneTimeOrder extends React.Component {
 
     if (!this.state.isLoading)
       return (
-        <Row>
+        <div>
+
           {!this.state.createOrder && <div className="row">
             <div className="col-md-8 col-md-offset-2">
               <div className="masthead">
@@ -242,30 +262,30 @@ class OneTimeOrder extends React.Component {
             </div>
           </div>}
 
-          <Row>
-            {this.state.isLoading2 && <div className="loader">{utils.getLabelByID("Loading")}</div>}
-            {!this.state.createOrder && !this.state.isLoading2 && <Portlet title="Product Catalogue">
-              <Row>
-                {this.state.getItemCatalogue.searchResult && this.state.getItemCatalogue.searchResult.map((item, index) => {
-                  return (
-                    <Col col="3" key={index}>
-                      <form onSubmit={this.addToCart}>
-                        <Product onClick={this.openModalBox} details={item}/>
-                      </form>
-                      <div className="seprator"/>
-                    </Col>
-                  );
-                })}
-              </Row>
-              {this.state.getItemCatalogue.pageData && <Pagination
-                activePage={this.state.getItemCatalogue.pageData.currentPageNo}
-                itemsCountPerPage={this.state.getItemCatalogue.pageData.pageSize}
-                totalItemsCount={this.state.getItemCatalogue.pageData.totalRecords}
-                pageRangeDisplayed={5}
-                onChange={this.handlePageChange}
-              />}
-            </Portlet>}
-          </Row>
+
+          {this.state.isLoading2 && <div className="loader">{utils.getLabelByID("Loading")}</div>}
+          {!this.state.createOrder && !this.state.isLoading2 && <Portlet title="Product Catalogue">
+            <Row>
+              {this.state.getItemCatalogue.searchResult && this.state.getItemCatalogue.searchResult.map((item, index) => {
+                return (
+                  <Col col="3" key={index}>
+                    <form onSubmit={this.addToCart}>
+                      <Product onClick={this.openModalBox} details={item}/>
+                    </form>
+                    <div className="seprator"/>
+                  </Col>
+                );
+              })}
+            </Row>
+            {this.state.getItemCatalogue.pageData && <div className="text-center"><Pagination
+              activePage={this.state.getItemCatalogue.pageData.currentPageNo}
+              itemsCountPerPage={this.state.getItemCatalogue.pageData.pageSize}
+              totalItemsCount={this.state.getItemCatalogue.pageData.totalRecords}
+              pageRangeDisplayed={5}
+              onChange={this.handlePageChange}
+            /></div>}
+          </Portlet>}
+
           <ModalBox isOpen={this.state.modelBox ? true : false}>
             <ProductDetail details={this.state.modelItem} state={this.state} closeModalBox={this.closeModalBox}/>
           </ModalBox>
@@ -278,7 +298,7 @@ class OneTimeOrder extends React.Component {
             }}
             placeOrder={this.placeOrder}
           />}
-        </Row>
+        </div>
       );
     else return <div className="loader">{utils.getLabelByID("Loading")}</div>;
   }

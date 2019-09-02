@@ -169,7 +169,7 @@ i.fa.fa-search {
     position: relative;
 }
 .procard hr {
-    margin: 10px 0 12px;
+    margin: 10px 0 0;
 }
 .procard h3 {
     margin: 40px 0 15px;
@@ -181,8 +181,8 @@ i.fa.fa-search {
 }
 .procard label.qty {
     position: relative;
-    /* left: 18px; */
     top: 7px;
+    font-size: 11px;
 }
 .procard .counterbadge {
     background-color: #c20c38;
@@ -488,12 +488,34 @@ a.stratabtnstyle:hover{
  }
 
 .text-center.proimg img {
-    width: 150px;
-    min-height: 150px;
+    width: 100%;
 }
+
+.text-center.proimg {
+    height: 200px;
+    vertical-align: middle;
+    display: block;
+    padding: 10px;
+}
+
+
 .procard a {
     text-decoration: none!important;
 }
 #ProductImgUploader{
     display: none;
+}
+.moveRight{
+    text-align: right;
+}
+.moveCenter{
+    text-align: center;
+}
+.moveCenter i{
+    font-size: 22px;
+}
+
+
+.productdetails label {
+    margin-bottom: 0px!important;
 }

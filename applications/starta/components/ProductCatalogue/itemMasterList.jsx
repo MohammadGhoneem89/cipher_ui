@@ -68,7 +68,7 @@ class ItemMasterList extends React.Component {
 
 
     componentWillReceiveProps(nextProps) {
-        console.log("nextProps", nextProps.getItemCatalogue)
+       // console.log("nextProps", nextProps.getItemCatalogue)
         if (nextProps.getItemCatalogue) {
 
             this.setState({
@@ -96,7 +96,7 @@ class ItemMasterList extends React.Component {
                         "labelName": "COM_AB_Add",
                         "actionType": "PORTLET_LINK",
                         "iconName": "fa fa-plus",
-                        "URI": "/strata/ProductCatalogue/:NEWITEM",
+                        "URI": "/strata/ProductCatalogue",
                         "children": []
                     }]
             }

@@ -42,11 +42,13 @@ a {
 	width: 111px !important;
 }
 
-.login .logo {
+.login .logo  {
 	background: url(logo-default.png) top center;
 	background-repeat: no-repeat;
 	height: 100px;
-	margin-top: 17px !important;
+	margin-top: 18px !important;
+	position: relative;
+	top: 20px;
 }
 
 .login .logo-new {
@@ -62,7 +64,7 @@ body .login {
 	right: 0px;
 	top: 0px;
 	bottom: 0px;
-	background: #fff url(etisalat-bg.jpg) no-repeat !important;
+	background: #fff url(loginBg.jpg) no-repeat !important;
 	background-position: center center;
 	background-size: cover !important;
 }
@@ -88,11 +90,6 @@ a:hover {
 	-ms-border-radius: 4px !important;
 	-o-border-radius: 4px !important;
 	border-radius: 4px !important;
-}
-
-.login .copyright {
-	margin-top: 463px !important;
-	color: #a7a7a7 !important;
 }
 
 @media (min-width: 992px) {
@@ -321,8 +318,8 @@ a:hover {
 }
 
 .login .copyright {
-	margin-top: 434px !important;
-	color: #a7a7a7 !important;
+	margin-top: 450px !important;
+	color: #ffffff !important;
 }
 
 @media (min-width: 992px) {
@@ -556,12 +553,13 @@ a:hover {
 	border-color: #40496a;
 }
 
-.page-header.navbar .page-logo {
-	background: url("../imgs/logo.png");
+.page-header.navbar .page-logo  {
+	background: url(logo-default.png);
 	background-repeat: no-repeat;
-	margin-left: 1.8%;
-	width: 179px !important;
-	margin-top: 15px;
+	margin-left: 1%;
+	width: 175px;
+	margin-top: 18px;
+	background-size: 100%;
 }
 
 .menu-toggler.sidebar-toggler:hover {
@@ -579,7 +577,7 @@ a:hover {
 }
 
 .page-sidebar-closed .page-header.navbar .page-logo {
-	background: url(AI_Emblm.png) no-repeat;
+	background: url(mini_logo.png) no-repeat;
 	margin-left: 0.8% !important;
 }
 
