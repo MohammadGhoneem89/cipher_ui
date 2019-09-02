@@ -154,6 +154,9 @@ class ProductCatalogue extends React.Component {
       let addProduct = { ...this.state.addProduct };
       console.log(addProduct, "addProduct")
       addProduct.image = this.state.productImage;
+      if (this.state.documents && this.state.documents.length > 0) {
+        addProduct.attachments = this.state.documents
+      }
 
       if (this.props.id) {
         this.props.actions.generalAjxProcess(constants.updateItemCatalogue, {
