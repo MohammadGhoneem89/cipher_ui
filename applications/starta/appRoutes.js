@@ -11,6 +11,7 @@ import ItemCatalogueList from "./components/ProductCatalogue/itemMasterList.jsx"
 import MasterAgreementList from "./components/MasterAgreement/MasterAgreementList.jsx";
 //import ViewMasterAgreement from "./components/MasterAgreement/ViewMasterAgreement.jsx";
 import OrderList from "./components/OrderList/orderList.jsx";
+import CustomerAssociation from "./components/CustomerAssociation/customerAssociation.jsx";
 
 
 let authRoutes = <div>
@@ -22,6 +23,7 @@ let authRoutes = <div>
   {/*<Route path="/strata/ViewMasterAgreement/:id" component={ViewMasterAgreement} />*/}
     <Route path="/strata/orderList" component={OrderList} />
     <Route path="/strata/viewOrder/:id" component={OrderList} />
+    <Route path="/strata/customerAssociation" component={CustomerAssociation} />
 </div>;
 
 let unAuthRoutes = <div>

@@ -11,5 +11,7 @@ module.exports = {
   getOrderList: `${baseUrl}/API/STRATA/getOrderList`,
   createOrder: `${baseUrl}/API/P2P/createOrder`,
   updateItemCatalogue: `${baseUrl}/API/P2P/updateItemCatalogue`,
-  addItemCatalogue: `${baseUrl}/API/P2P/addItemCatalogue`
+  addItemCatalogue: `${baseUrl}/API/P2P/addItemCatalogue`,
+  saveCustomerAssociation: `${baseUrl}/API/STRATA/saveCustomerAssociation`,
+  getCustomerAssociation: `${baseUrl}/API/STRATA/getCustomerAssociationDetail`
 };

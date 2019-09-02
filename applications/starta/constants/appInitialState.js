@@ -3,9 +3,13 @@ export default {
         action: "",
         pageData: {},
         searchResult: undefined
-    }
-    ,
+    },
     getOrders: {
+        action: "",
+        pageData: {},
+        searchResult: undefined
+    },
+    userList: {
         action: "",
         pageData: {},
         searchResult: undefined
