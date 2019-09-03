@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router';
+import {Route} from 'react-router';
 
 import Locked from "../../core/components/AuthenticationScreens/Locked.jsx";
 import Login from "../../core/components/AuthenticationScreens/Login.jsx";
@@ -16,21 +16,20 @@ import OrderDetails from "./components/OrderDetails/OrderDetailContainer.jsx";
 
 
 let authRoutes = <div>
-    <Route path="/strata/oneTimeOrder" component={OneTimeOrder} />
-    <Route path="strata/ProductCatalogue" component={ProductCatalogue} />
-    <Route path="/strata/ProductCatalogue/:id" component={ProductCatalogue} />
-    <Route path="/strata/itemCatalogueList" component={ItemCatalogueList} />
-    <Route path="/strata/MasterAgreementList" component={MasterAgreementList} />
-  <Route path="/strata/AddMasterAgreement" component={AddMasterAgreement} />
-    <Route path="/strata/orderList" component={OrderList} />
-    <Route path="/strata/viewOrder/:id" component={OrderList} />
-    <Route path="/strata/customerAssociation" component={CustomerAssociation} />
-    <Route path="/strata/viewOrder/:id" component={OrderDetails} />
+  <Route path="/strata/oneTimeOrder" component={OneTimeOrder}/>
+  <Route path="strata/ProductCatalogue" component={ProductCatalogue}/>
+  <Route path="/strata/ProductCatalogue/:id" component={ProductCatalogue}/>
+  <Route path="/strata/itemCatalogueList" component={ItemCatalogueList}/>
+  <Route path="/strata/MasterAgreementList" component={MasterAgreementList}/>
+  <Route path="/strata/AddMasterAgreement" component={AddMasterAgreement}/>
+  <Route path="/strata/customerAssociation" component={CustomerAssociation}/>
+  <Route path="/strata/orderList" component={OrderList}/>
+  <Route path="/strata/viewOrder/:id" component={OrderDetails}/>
 </div>;
 
 let unAuthRoutes = <div>
-  <Route path="/strata/Locked" component={Locked} />
-  <Route path="/strata/login" component={Login} />
+  <Route path="/strata/Locked" component={Locked}/>
+  <Route path="/strata/login" component={Login}/>
 </div>;
 
-export default { authRoutes, unAuthRoutes };
+export default {authRoutes, unAuthRoutes};
