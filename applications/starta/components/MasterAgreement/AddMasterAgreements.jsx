@@ -219,9 +219,9 @@ class AddMasterAgreement extends React.Component {
         alert(JSON.stringify(result, "result"))
         let newtupple = {
             itemCode: item,
-            description: "",
-            // rebate: this.state.orderRebate,
-            // rebate: this.state.itemRebate,
+            description: result[0].description,
+             //rebate: this.state.orderRebate,
+             rebate: this.state.itemRebate,
 
             price: unitPrice,
             quantity: expectedQuantity,
@@ -445,6 +445,7 @@ class AddMasterAgreement extends React.Component {
                                 <div className="form-group col-md-8" >
                                     {/* {console.log(initialValues)} */}
                                     <select id="supplier" className="form-control">
+                                    <option key="-1" value="">Select</option>
                                         {
                                             this.state.supplierList.map((option) => {
                                                 return (
@@ -485,6 +486,7 @@ class AddMasterAgreement extends React.Component {
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Payment Type")}</label>
                                 <div className="form-group col-md-8">
                                     <select id="paymentType" className="form-control">
+                                    <option key="-1" value="">Select</option>
                                         <option key="CHEQUE" value="CHEQUE">CHEQUE</option>
                                         <option key="CASH" value="CHEQUE">CASH</option>
                                     </select>
@@ -506,7 +508,7 @@ class AddMasterAgreement extends React.Component {
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Shipment Type")}</label>
                                 <div className="form-group col-md-8">
                                     <select id="shipmentType" className="form-control">
-                                        <option key="-1" value="">select</option>
+                                        <option key="-1" value="">Select</option>
                                     </select>
                                 </div>
                             </div>
@@ -551,6 +553,7 @@ class AddMasterAgreement extends React.Component {
                                                             <div className="form-group col-md-7" >
                                                                 {/* {console.log(initialValues)} */}
                                                                 <select id="item" className="form-control">
+                                                                <option key="-1" value="">Select</option>
                                                                     {
                                                                         this.state.itemList.map((option) => {
                                                                             return (
@@ -594,11 +597,11 @@ class AddMasterAgreement extends React.Component {
                                                                     margin: "1px"
                                                                 }}>
                                                                     <div className="tabbable-line boxless">
-                                                                        <ul className="nav nav-tabs">
+                                                                        <ul style={{ paddingTop:"5px",paddingLeft:"5px"  }}>
 
-                                                                            <li>
-                                                                                <a href="#tab_1_1_2" data-toggle="tab"
-                                                                                    style={{ fontWeight: "Bold", fontSize: "17px" }}>Order Level Rebate</a>
+                                                                            <li style={{ listStyleType: "none" }}>
+                                                                            <a style={{ fontWeight: "Bold", fontSize: "17px" }}>Order level Rebate</a>
+                                                                               
                                                                             </li>
                                                                         </ul>
                                                                     </div>
@@ -734,6 +737,7 @@ class AddMasterAgreement extends React.Component {
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("From Stage")}</label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="fromStage" className="form-control">
+                                                                <option key="-1" value="">Select</option>
                                                                     {
                                                                         STATUSES.map((option, index) => {
                                                                             return (
@@ -750,6 +754,7 @@ class AddMasterAgreement extends React.Component {
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("To Stage")}</label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="toStage" className="form-control">
+                                                                <option key="-1" value="">Select</option>
                                                                     {
                                                                         STATUSES.map((option, index) => {
                                                                             return (
@@ -800,6 +805,7 @@ class AddMasterAgreement extends React.Component {
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("From Stage")}</label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="fromStagePenalty" className="form-control">
+                                                                <option key="-1" value="">Select</option>
                                                                     {
                                                                         STATUSES.map((option, index) => {
                                                                             return (
@@ -816,6 +822,7 @@ class AddMasterAgreement extends React.Component {
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Till Stage")}</label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="tillStage" className="form-control">
+                                                                <option key="-1" value="">Select</option>
                                                                     {
                                                                         STATUSES.map((option, index) => {
                                                                             return (

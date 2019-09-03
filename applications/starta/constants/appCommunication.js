@@ -14,7 +14,7 @@ module.exports = {
   addItemCatalogue: `${baseUrl}/API/P2P/addItemCatalogue`,
 
   saveCustomerAssociation: `${baseUrl}/API/STRATA/saveCustomerAssociation`,
-  getCustomerAssociation: `${baseUrl}/API/STRATA/getCustomerAssociationDetail`
+  getCustomerAssociation: `${baseUrl}/API/STRATA/getCustomerAssociationDetail`,
 
   addMasterContract:`${baseUrl}/API/P2P/addMasterContract`
 

@@ -70,7 +70,7 @@ module.exports = {
   ],
 
   downloadFileList: [
-    { alias: "FU_fileName", key: "fileDetail", type: "downloadAttachement" }
+    { alias: "FU_fileName", key: "fileDetail", type: "downloadAttachement" }],
 
 
   rebate:[
