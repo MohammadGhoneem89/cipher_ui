@@ -9,7 +9,7 @@ module.exports = {
   itemMaster: [
     {alias: "", key: "itemCode", type: "hiddenID"},
     {alias: "Item ID", key: "itemCode", type: 'string'},
-    {alias: " ITEM Description", key: "description", type: "string"},
+    {alias: " ITEM name", key: "name", type: "string"},
     {alias: "Unit Price", key: "price", type: "amount"},
     {alias: "Expected quantity", key: "quantity", type: "amount"},
     {alias: "Action", key: "action", type: "action"}

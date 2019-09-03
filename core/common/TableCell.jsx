@@ -103,7 +103,7 @@ class TableCell extends React.Component {
         <i className={cellData.iconName} /> {cellData.label} </a>);
     }
     else if (cellData && cellData.actionType === "COMPONENT_FUNCTION") {
-
+      alert("comp funccc")
       return (<a href="javascript:;"
         onClick={this.props.componentFunction && this.props.componentFunction.bind(this, {
           index: this.props.rowIndex,
@@ -167,7 +167,7 @@ class TableCell extends React.Component {
     browserHistory.push(index);
   }
 
-  onChangeEditColumn(index,e) {
+  onChangeEditColumn(index, e) {
     alert(index)
     alert(e.target.value)
   }
@@ -278,7 +278,7 @@ class TableCell extends React.Component {
         return (<td><h3><span className={this.getClassForStatusBig(this.props.cellData.type)}
           style={{ height: "20px" }}>{this.props.cellData.value}</span></h3></td>);
       case "editableColumn":
-        return (<td><input type="text" className="form-control" value={this.props.cellData.value} onChange={this.onChangeEditColumn.bind(this,this.props.searialNo)} /></td>);
+        return (<td><input type="text" className="form-control" value={this.props.cellData.value} onChange={this.onChangeEditColumn.bind(this, this.props.searialNo)} /></td>);
       case "imageBig":
         return (<td className="ent_nme" align="center" style={{ width: this.props.columnWidth, paddingLeft: "50%" }}><img
           width="50px" height="50px" style={{ width: "50px", height: "50px" }}
@@ -344,12 +344,12 @@ class TableCell extends React.Component {
           return (<span key={i}>{item}<br /></span>);
         });
 
-        return (<td style={{fontWeight: fontWeightStyle}}> {cellData} </td>);
-        case "longString":
-            let temp = text_truncate(this.props.cellData, 100);
-            return <td style={{fontWeight: fontWeightStyle}}>
-              <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
-            </td>;
+        return (<td style={{ fontWeight: fontWeightStyle }}> {cellData} </td>);
+      case "longString":
+        let temp = text_truncate(this.props.cellData, 100);
+        return <td style={{ fontWeight: fontWeightStyle }}>
+          <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
+        </td>;
 
 
       default:

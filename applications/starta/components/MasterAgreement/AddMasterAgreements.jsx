@@ -6,6 +6,7 @@ import { browserHistory } from 'react-router';
 import * as actions from '../../../../core/actions/generalAction';
 import _ from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
+import * as requestCreator from '../../../../core/common/request.js';
 import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
@@ -15,18 +16,6 @@ import * as utils from '../../../../core/common/utils.js';
 import DateControl from '../../../../core/common/DateControl.jsx'
 import Table from '../../../../core/common/Datatable.jsx';
 import * as constants from '../../../../core/constants/Communication.js';
-
-const STATUSES = [
-    { code: "PO", desc: "Purchase Order" },
-    { code: "ACK", desc: "Acknowledged By Supplier" },
-    { code: "SUBORDER", desc: "Place Suborder" },
-    { code: "ACK-SUBORDER", desc: "Suborder Acknowledged" },
-    { code: "PROD", desc: "Production" },
-    { code: "QC", desc: "Quality Check" },
-    { code: "SHIPPED", desc: "Shipped" },
-    { code: "RECIEVED1", desc: "Received By Supplier" },
-    { code: "RECEIVED2", desc: "Received By Emirates" },
-];
 
 class AddMasterAgreement extends React.Component {
     constructor(props) {
@@ -44,7 +33,6 @@ class AddMasterAgreement extends React.Component {
             endDate: ""
         }
         this.addOrderRebate = this.addOrderRebate.bind(this);
-        this.addItemRebate = this.addItemRebate.bind(this);
     }
 
     componentWillMount() {
@@ -52,19 +40,26 @@ class AddMasterAgreement extends React.Component {
     }
 
     componentDidMount() {
+        this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({
+            "currentPageNo": 1,
+            "pageSize": 1
+        }));
         this.props.actions.generalProcess(constants.getItemCatalogue, { "body": {} })
-        //  this.props.actions.generalProcess(constants.getSupplierMasterList, this.getRequest())
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['shipmentType', 'orderStatus', 'paymentType']));
+
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.getItemCatalogue) {
-            console.log(nextProps.getItemCatalogue, "item actalogue")
+        if (nextProps.getItemCatalogue && nextProps.typeData && nextProps.entityNames) {
             this.setState({
                 itemList: nextProps.getItemCatalogue,
-                // supplierList: nextProps.getSupplierMasterList,
+                typeData: nextProps.typeData,
+                entityNames: nextProps.entityNames,
                 isLoading: false
             });
         }
+
+
     }
 
     onStartDateChange = (value) => {
@@ -82,68 +77,39 @@ class AddMasterAgreement extends React.Component {
         let rebate = document.getElementById('orderRebate') == null ? "" : document.getElementById('orderRebate').value;
 
         let data = this.state.orderRebate;
+
+        if (orderGreaterThan < 0) {
+            alert("From should be zero or greater")
+            return false;
+        }
+        if (orderLessThan <= orderGreaterThan) {
+            alert("To should be greater than From!")
+            return false;
+        }
+        if (rebate <= 0) {
+            alert("Rebate should be greater than zero!")
+            return false;
+        }
         let newtupple = {
             greaterThan: orderGreaterThan,
             lessThan: orderLessThan,
             rebate: rebate,
+            discountType: "FLAT",
             action: [{
                 label: "Delete", iconName: "fa fa-trash",
                 actionType: "COMPONENT_FUNCTION"
             },
             {
-                label: "Edit", iconName: "fa fa-edit",
-                actionType: "COMPONENT_FUNCTION"
+                label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION"
             }],
         }
-
-        // if (orderGreaterThan < 0) {
-        //     alert("From should be zero or greater")
-        //     return false;
-        // }
-        // if (orderLessThan <= orderGreaterThan) {
-        //     alert("To should be greater than From!")
-        //     return false;
-        // }
-        // if (rebate <= 0) {
-        //     alert("Rebate should be greater than zero!")
-        //     return false;
-        // }
 
         this.clearFieldsOrderRebate();
         data.push(newtupple);
         this.setState({ orderRebate: data });
     }
 
-    addItemRebate = () => {
-        let itemGreaterThan = document.getElementById('itemGreaterThan') == null ? "" : document.getElementById('itemGreaterThan').value;
-        let itemLessThan = document.getElementById('itemLessThan') == null ? "" : document.getElementById('itemLessThan').value;
-        let rebate = document.getElementById('itemRebate') == null ? "" : document.getElementById('itemRebate').value;
 
-        let data = this.state.itemRebate;
-        let newtupple = {
-            greaterThan: itemGreaterThan,
-            lessThan: itemLessThan,
-            rebate: rebate,
-            action: [{ label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }, { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }],
-        }
-
-        // if (itemGreaterThan < 0) {
-        //     alert("From should be zero or greater")
-        //     return false;
-        // }
-        // if (itemLessThan <= itemGreaterThan) {
-        //     alert("To should be greater than From!")
-        //     return false;
-        // }
-        // if (rebate <= 0) {
-        //     alert("Rebate should be greater than zero!")
-        //     return false;
-        // }
-
-        this.clearFieldsItemRebate();
-        data.push(newtupple);
-        this.setState({ itemRebate: data });
-    }
 
     addSLA = () => {
         let fromStage = document.getElementById('fromStage') == null ? "" : document.getElementById('fromStage').value;
@@ -152,6 +118,10 @@ class AddMasterAgreement extends React.Component {
 
         let data = this.state.sla;
 
+        if (duration <= 0) {
+            alert("Duration should be greater than zero!")
+            return false;
+        }
         let newtupple = {
             fromStage: fromStage,
             toStage: toStage,
@@ -161,10 +131,7 @@ class AddMasterAgreement extends React.Component {
 
         console.log("===" + JSON.stringify(newtupple))
 
-        // if (duration <= 0) {
-        //     alert("Duration should be greater than zero!")
-        //     return false;
-        // }
+
 
         this.clearFieldsSLA();
         data.push(newtupple);
@@ -176,9 +143,16 @@ class AddMasterAgreement extends React.Component {
         let tillStage = document.getElementById('tillStage') == null ? "" : document.getElementById('tillStage').value;
         let greaterThan = document.getElementById('greaterThan') == null ? "" : document.getElementById('greaterThan').value;
         let penaltyValue = document.getElementById('penaltyValue') == null ? "" : document.getElementById('penaltyValue').value;
-
-
         let data = this.state.penalties;
+
+        if (greaterThan <= 0) {
+            alert("Greater Than Time should be greater than zero!")
+            return false;
+        }
+        if (penaltyValue <= 0) {
+            alert("Penalty Value should be greater than zero!")
+            return false;
+        }
 
         let newtupple = {
             fromStage: fromStagePenalty,
@@ -190,14 +164,7 @@ class AddMasterAgreement extends React.Component {
 
         console.log("===" + JSON.stringify(newtupple))
 
-        // if (greaterThan <= 0) {
-        //     alert("Greater Than Time should be greater than zero!")
-        //     return false;
-        // }
-        // if (penaltyValue <= 0) {
-        //     alert("Penalty Value should be greater than zero!")
-        //     return false;
-        // }
+
 
         this.clearFieldsPenalty();
         data.push(newtupple);
@@ -208,20 +175,38 @@ class AddMasterAgreement extends React.Component {
         let item = document.getElementById('item') == null ? "" : document.getElementById('item').value;
         let unitPrice = document.getElementById('unitPrice') == null ? "" : document.getElementById('unitPrice').value;
         let expectedQuantity = document.getElementById('expectedQuantity') == null ? "" : document.getElementById('expectedQuantity').value;
-
-
         let data = this.state.items;
 
-        var result = this.state.itemList.filter(obj => {
+
+        if (!item.trim()) {
+            alert("item id and name is reuired!")
+            return false;
+        }
+
+        if (expectedQuantity <= 0) {
+            alert("expectedQuantity should be greater than zero!")
+            return false;
+        }
+
+        if (unitPrice <= 0) {
+            alert("unitPrice should be greater than zero!")
+            return false;
+        }
+        let result = this.state.itemList.filter(obj => {
             return obj.itemCode === item
         })
 
         alert(JSON.stringify(result, "result"))
         let newtupple = {
             itemCode: item,
-            description: result[0].description,
-             //rebate: this.state.orderRebate,
-             rebate: this.state.itemRebate,
+            name: result[0].name,
+            color: result[0].color,
+            leadTime: result[0].leadTime,
+            material: result[0].material,
+            printTime: result[0].printTime,
+            partNumber: result[0].partNumber,
+            rebate: this.state.orderRebate,
+            //rebate: this.state.itemRebate,
 
             price: unitPrice,
             quantity: expectedQuantity,
@@ -230,18 +215,14 @@ class AddMasterAgreement extends React.Component {
 
         console.log("===" + JSON.stringify(newtupple))
 
-        // if (expectedQuantity <= 0) {
-        //     alert("Expected Quantity should be greater than zero!")
-        //     return false;
-        // }
-        // if (unitPrice <= 0) {
-        //     alert("Unit Price should be greater than zero!")
-        //     return false;
-        // }
-        // if (currency.trim() == "") {
-        //     alert("Currency should be defined!")
-        //     return false;
-        // }
+        if (expectedQuantity <= 0) {
+            alert("Expected Quantity should be greater than zero!")
+            return false;
+        }
+        if (unitPrice <= 0) {
+            alert("Unit Price should be greater than zero!")
+            return false;
+        }
 
         this.clearFieldsItem();
         data.push(newtupple);
@@ -254,86 +235,79 @@ class AddMasterAgreement extends React.Component {
         let endDate = this.state.endDate;
         let paymentType = document.getElementById('paymentType') == null ? "" : document.getElementById('paymentType').value;
         let shipmentType = document.getElementById('shipmentType') == null ? "" : document.getElementById('shipmentType').value;
+        let customerID = document.getElementById('customerID') == null ? "" : document.getElementById('customerID').value;
         let days = document.getElementById('days') == null ? "" : document.getElementById('days').value;
 
+        if (!contractID.trim()) {
+            alert("Contract ID is required!")
+            return false;
+        }
+        if (!customerID) {
+            alert("Customer ID is required!")
+            return false;
+        }
+        if (!startDate) {
+            alert("Start Date is required!")
+            return false;
+        }
+        if (!endDate) {
+            alert("End Date is required!")
+            return false;
+        }
+        if (!paymentType) {
+            alert("payment Type is required!")
+            return false;
+        }
+        if (!shipmentType) {
+            alert("shipment Type is required!")
+            return false;
+        }
 
-
-        // if (contractID.trim() == "") {
-        //     alert("Contract ID should be defined!")
-        //     return false;
-        // }
-        // if (zycusContractID.trim() == "") {
-        //     alert("Zycus Contract ID should be defined!")
-        //     return false;
-        // }
-        // if (zycusContractTitle.trim() == "") {
-        //     alert("Zycus Contract Title should be defined!")
-        //     return false;
-        // }
-        // if (zycusBuyerContact.trim() == "") {
-        //     alert("Zycus Buyer Contact should be defined!")
-        //     return false;
-        // }
-        // if (supplierID.trim() == "") {
-        //     alert("Supplier ID should be defined!")
-        //     return false;
-        // }
-        // if (supplierName.trim() == "") {
-        //     alert("Supplier Name should be defined!")
-        //     return false;
-        // }
-        // if (days.trim() == "") {
-        //     alert("Days should be defined!")
-        //     return false;
-        // }
-
-
+        if (!days || days.trim() == "") {
+            alert("Days are required!")
+            return false;
+        }
 
         let items = []
-
+        console.log(this.state.items, "this.state.items")
         for (let i = 0; i < this.state.items.length; i++) {
             let product = {}
-            product.itemCode = this.state.items[i].itemCode,
-                product.name =//api,
-
-                product.description = this.state.items[i].description,//from api
-                product.price = parseInt(this.state.items[i].price, 10),//from api
-
-                product.quantity = parseInt(this.state.items[i].quantity, 10)
+            product.serial = i,
+                product.itemCode = this.state.items[i].itemCode,
+                product.name = this.state.items[i].name,
+                product.color = this.state.items[i].color,
+                product.material = this.state.items[i].material,
+                product.printTime = this.state.items[i].printTime,
+                product.leadTime = this.state.items[i].leadTime,
+                product.unitPrice = parseInt(this.state.items[i].price, 10),
+                product.expectedQuantity = parseInt(this.state.items[i].quantity, 10)
             product.itemWiseDiscount = []
+
             for (let j = 0; j < this.state.items[i].rebate.length; j++) {
                 let rebate = {}
                 rebate.greaterThan = parseInt(this.state.items[i].rebate[j].greaterThan, 10)
                 rebate.lessThan = parseInt(this.state.items[i].rebate[j].lessThan, 10)
-                rebate.rebate = parseInt(this.state.items[i].rebate[j].discount, 10)
-                product.rebate.push(rebate)
+                rebate.discount = parseInt(this.state.items[i].rebate[j].rebate, 10)
+                rebate.discountType = this.state.items[i].rebate[j].discountType
+                product.itemWiseDiscount.push(rebate)
             }
-            // product.itemwiseDiscount = []
-            // for (let j = 0; j < this.state.items[i].itemwiseDiscount.length; j++) {
-            //     let rebate = {}
-            //     rebate.greaterThan = parseInt(this.state.items[i].itemwiseDiscount[j].greaterThan, 10)
-            //     rebate.lessThan = parseInt(this.state.items[i].itemwiseDiscount[j].lessThan, 10)
-            //     rebate.discount = parseInt(this.state.items[i].itemwiseDiscount[j].discount, 10)
 
-            //     product.itemwiseDiscount.push(rebate)
-            // }
-            product.itemWiseDiscount.push(rebate)
             items.push(product)
         }
-        let SLA = []
-        console.log(this.state.sla)
+        let sla = []
+        //console.log(this.state.sla)
         for (let i = 0; i < this.state.sla.length; i++) {
-            console.log(this.state.sla[i])
+            //console.log(this.state.sla[i])
             let slaObj = {}
             slaObj.fromStage = this.state.sla[i].fromStage
             slaObj.toStage = this.state.sla[i].toStage
             slaObj.duration = parseInt(this.state.sla[i].duration, 10) * 1000
             console.log(slaObj)
-            SLA.push(slaObj)
+            sla.push(slaObj)
         }
 
         let penalties = []
-        console.log(this.state.penalties)
+        // console.log(this.state.penalties)
         for (let i = 0; i < this.state.penalties.length; i++) {
             let penaltyObj = {}
             penaltyObj.fromStage = this.state.penalties[i].fromStage
@@ -345,16 +319,10 @@ class AddMasterAgreement extends React.Component {
             penalties.push(penaltyObj)
         }
 
-        console.log("----" + JSON.stringify(this.state.supplierList))
-        console.log("supId" + supplierID)
-        var result = this.state.supplierList.filter(obj => {
-            return obj.supplierID === supplierID
-        })
-
-        console.log("===" + result)
 
         let contract = {
             contractID,
+            customerID,
             startDate,
             endDate,
             paymentTerms: {
@@ -363,18 +331,23 @@ class AddMasterAgreement extends React.Component {
             },
             shipmentType,
             items,
-            SLA,
+            sla,
             penalties
         }
 
-        console.log("===contract")
-        console.log(JSON.stringify(contract))
+        console.log(JSON.stringify(contract), ">>>>CONTRACT")
 
-        this.props.action.generalProcess(constants.addMasterContract, contract)
-
+        this.props.actions.generalAjxProcess(constants.addMasterContract, { "body": _.cloneDeep(contract) })
+            .then(result => {
+                console.log(result, "result")
+                result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
+            });
         this.clearFields();
     }
-
+    redirectToList = () => {
+        browserHistory.push('/strata/MasterAgreementList')
+        toaster.showToast("Record updated successfully!");
+    }
     clearFieldsOrderRebate() {
         $('#tab_1_1_1').find('input').val(0);
     }
@@ -404,29 +377,17 @@ class AddMasterAgreement extends React.Component {
         $('').find('input:text').val('');
     }
 
-    getRequest = () => {
-        console.log("123")
 
-        let searchCriteria = {}
-
-        this.setState({ searchCriteria: searchCriteria })
-        let request = {
-            "body": {
-                "page": {
-                    "currentPageNo": 1,
-                    "pageSize": 100
-                },
-                searchCriteria
-            }
-
-        };
-        return request
-    }
 
     render() {
-        // if (this.state.isLoading) {
-        //     return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
-        // }
+        const itemList = this.state.itemList ? this.state.itemList : []
+        const status = this.state.typeData ? this.state.typeData.orderStatus : []
+        const shipmentType = this.state.typeData ? this.state.typeData.shipmentType : []
+        const paymentTypess = this.state.typeData ? this.state.typeData.paymentType : []
+        const customerList = this.state.typeData ? this.state.entityNames : []
+        if (this.state.isLoading) {
+            return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
+        }
         return (
             <div>
                 <Portlet title={utils.getLabelByID("Basic Details")}>
@@ -444,15 +405,16 @@ class AddMasterAgreement extends React.Component {
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Customer")}</label>
                                 <div className="form-group col-md-8" >
                                     {/* {console.log(initialValues)} */}
-                                    <select id="supplier" className="form-control">
-                                    <option key="-1" value="">Select</option>
-                                        {
-                                            this.state.supplierList.map((option) => {
-                                                return (
-                                                    <option key={option.supplierID} value={option.supplierID}>{option.supplierID + " | " + option.supplierName}</option>
-                                                );
-                                            })
-                                        }
+                                    <select id="customerID" className="form-control">
+                                        <option key="-1" value="">Select</option>
+                                        <option key="ETIHAD" value="ETIHAD">ETIHAD</option>
+                                        {/* {
+                                        customerList.map((option, index) => {
+                                            return (
+                                                <option key={index} value={option.value}>{option.label}</option>
+                                            );
+                                        })
+                                    } */}
                                     </select>
                                 </div>
                             </div>
@@ -486,9 +448,14 @@ class AddMasterAgreement extends React.Component {
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Payment Type")}</label>
                                 <div className="form-group col-md-8">
                                     <select id="paymentType" className="form-control">
-                                    <option key="-1" value="">Select</option>
-                                        <option key="CHEQUE" value="CHEQUE">CHEQUE</option>
-                                        <option key="CASH" value="CHEQUE">CASH</option>
+                                        <option key="-1" value="">Select</option>
+                                        {
+                                            paymentTypess.map((item, index) => {
+                                                return (
+                                                    <option key={index} value={item.value}>{item.label}</option>
+                                                );
+                                            })
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -507,8 +474,16 @@ class AddMasterAgreement extends React.Component {
                             <div className="form-group">
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Shipment Type")}</label>
                                 <div className="form-group col-md-8">
+
                                     <select id="shipmentType" className="form-control">
                                         <option key="-1" value="">Select</option>
+                                        {
+                                            shipmentType.map((item, index) => {
+                                                return (
+                                                    <option key={index} value={item.value}>{item.label}</option>
+                                                );
+                                            })
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -553,9 +528,9 @@ class AddMasterAgreement extends React.Component {
                                                             <div className="form-group col-md-7" >
                                                                 {/* {console.log(initialValues)} */}
                                                                 <select id="item" className="form-control">
-                                                                <option key="-1" value="">Select</option>
+                                                                    <option key="-1" value="">Select</option>
                                                                     {
-                                                                        this.state.itemList.map((option) => {
+                                                                        itemList.map((option) => {
                                                                             return (
                                                                                 <option key={option.itemCode} value={option.itemCode}>{option.itemCode + " | " + option.name}</option>
                                                                             );
@@ -568,7 +543,7 @@ class AddMasterAgreement extends React.Component {
 
                                                 </div>
                                                 <div className="row">
-                                                    <div className="col-md-4">
+                                                    <div className="col-md-6">
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Expected Quantity")}</label>
                                                             <div className="form-group col-md-8">
@@ -576,7 +551,7 @@ class AddMasterAgreement extends React.Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-md-4">
+                                                    <div className="col-md-6">
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Unit Price")}</label>
                                                             <div className="form-group col-md-8">
@@ -597,11 +572,11 @@ class AddMasterAgreement extends React.Component {
                                                                     margin: "1px"
                                                                 }}>
                                                                     <div className="tabbable-line boxless">
-                                                                        <ul style={{ paddingTop:"5px",paddingLeft:"5px"  }}>
+                                                                        <ul style={{ paddingTop: "5px", paddingLeft: "5px" }}>
 
                                                                             <li style={{ listStyleType: "none" }}>
-                                                                            <a style={{ fontWeight: "Bold", fontSize: "17px" }}>Order level Rebate</a>
-                                                                               
+                                                                                <a style={{ fontWeight: "Bold", fontSize: "17px" }}>Order level Rebate</a>
+
                                                                             </li>
                                                                         </ul>
                                                                     </div>
@@ -654,54 +629,7 @@ class AddMasterAgreement extends React.Component {
 
                                                                             </div>
                                                                             {/* END Order Rebate Box */}
-                                                                            {/* Item Rebate Box */}
-                                                                            <div className="tab-pane" id="tab_1_1_2">
-                                                                                <div className="row">
-                                                                                    <div className="col-md-4">
-                                                                                        <div className="form-group">
-                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("From")}</label>
-                                                                                            <div className="form-group col-md-9">
-                                                                                                <input type="number" className="form-control" id="itemGreaterThan" />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="col-md-4">
-                                                                                        <div className="form-group">
-                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("To")}</label>
-                                                                                            <div className="form-group col-md-9">
-                                                                                                <input type="number" className="form-control" id="itemLessThan" />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="col-md-4">
-                                                                                        <div className="form-group">
-                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("Rebate")}</label>
-                                                                                            <div className="form-group col-md-9">
-                                                                                                <input type="number" className="form-control" id="itemRebate" />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="row">
-                                                                                    <div className="col-md-12">
-                                                                                        <div className="form-actions right">
-                                                                                            <div className="form-group col-md-12">
-                                                                                                <div className="btn-toolbar pull-right">
-                                                                                                    <button type="submit" className="btn btn-default" onClick={this.addItemRebate.bind(this)}> <i className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Rebate")} </button>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <Table
-                                                                                    gridColumns={utils.getGridColumnByName("rebate")}
-                                                                                    gridData={this.state.itemRebate}
-                                                                                    export={false}
-                                                                                    componentFunction={this.ActionHandlers}
-                                                                                    pagination={false} />
 
-                                                                            </div>
-                                                                            {/* END Item Rebate Box */}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -737,11 +665,11 @@ class AddMasterAgreement extends React.Component {
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("From Stage")}</label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="fromStage" className="form-control">
-                                                                <option key="-1" value="">Select</option>
+                                                                    <option key="-1" value="">Select</option>
                                                                     {
-                                                                        STATUSES.map((option, index) => {
+                                                                        status.map((option, index) => {
                                                                             return (
-                                                                                <option key={index} value={option.code}>{option.desc}</option>
+                                                                                <option key={index} value={option.value}>{option.label}</option>
                                                                             );
                                                                         })
                                                                     }
@@ -754,11 +682,11 @@ class AddMasterAgreement extends React.Component {
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("To Stage")}</label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="toStage" className="form-control">
-                                                                <option key="-1" value="">Select</option>
+                                                                    <option key="-1" value="">Select</option>
                                                                     {
-                                                                        STATUSES.map((option, index) => {
+                                                                        status.map((option, index) => {
                                                                             return (
-                                                                                <option key={index} value={option.code}>{option.desc}</option>
+                                                                                <option key={index} value={option.value}>{option.label}</option>
                                                                             );
                                                                         })
                                                                     }
@@ -805,11 +733,11 @@ class AddMasterAgreement extends React.Component {
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("From Stage")}</label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="fromStagePenalty" className="form-control">
-                                                                <option key="-1" value="">Select</option>
+                                                                    <option key="-1" value="">Select</option>
                                                                     {
-                                                                        STATUSES.map((option, index) => {
+                                                                        status.map((option, index) => {
                                                                             return (
-                                                                                <option key={index} value={option.code}>{option.desc}</option>
+                                                                                <option key={index} value={option.value}>{option.label}</option>
                                                                             );
                                                                         })
                                                                     }
@@ -822,11 +750,11 @@ class AddMasterAgreement extends React.Component {
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Till Stage")}</label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="tillStage" className="form-control">
-                                                                <option key="-1" value="">Select</option>
+                                                                    <option key="-1" value="">Select</option>
                                                                     {
-                                                                        STATUSES.map((option, index) => {
+                                                                        status.map((option, index) => {
                                                                             return (
-                                                                                <option key={index} value={option.code}>{option.desc}</option>
+                                                                                <option key={index} value={option.value}>{option.label}</option>
                                                                             );
                                                                         })
                                                                     }
@@ -899,8 +827,11 @@ class AddMasterAgreement extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    // console.log(state.app.entityList.data.typeData.entityNames,"state.app.entityList.data.typeData.entityNames")
     return {
-        getItemCatalogue: _.get(state.app, 'getItemCatalogue.searchResult', [])
+        getItemCatalogue: _.get(state.app, 'getItemCatalogue.searchResult', []),
+        typeData: state.app.typeData.data,
+        entityNames: state.app.entityList.data.typeData.entityNames
     }
 }
 

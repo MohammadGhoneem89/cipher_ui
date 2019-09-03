@@ -86,7 +86,7 @@ class MasterAgreementList extends React.Component {
                     "value": "1002", "type": "pageAction",
                     "label": "ADD", "labelName": "COM_AB_Add",
                     "actionType": "PORTLET_LINK", "iconName": "fa fa-plus",
-                    "URI": "/addMasterAgreement", "children": []
+                    "URI": "/strata/AddMasterAgreement", "children": []
                 }]
         })
         window.scrollTo(0, 0);
