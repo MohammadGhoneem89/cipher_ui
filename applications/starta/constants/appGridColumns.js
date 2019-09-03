@@ -90,6 +90,15 @@ module.exports = {
     {alias: "greater than", key: "greaterThan", type: "string"},
     {alias: "penalty value", key: "penaltyValue", type: "string"}
 
+  ],
+  LineItems:[
+    {alias: "Items Name", key: "name", type: 'string'},
+    {alias: "Item Code ", key: "itemCode", type: "string"},
+    {alias: "Qty", key: "quantity", type: "number"},
+    {alias: "Received Qty", key: "receivedQuantity", type: "number"},
+    {alias: "Amount", key: "unitPrice", type: "number"},
+    {alias: "Total", key: "totalAmount", type: "number"}
+
   ]
 
 };

@@ -19,7 +19,7 @@ import Portlet from "../../common/Portlet.jsx";
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 import Pagination from "react-js-pagination";
 import Steps from '../../../../core/common/Steps.jsx';
-
+import Table from '../../../../core/common/Datatable.jsx';
 import * as gen from "../../common/generalActionHandler";
 import Combobox from "../../common/Select.jsx";
 
@@ -35,23 +35,24 @@ class OrderDetailContainer extends React.Component {
     this.closeModalBox = this.closeModalBox.bind(this);
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+  }
 
   componentDidMount() {
-    this.props.actions.generalProcess(constants.getOrderDetail, {"body": {
+    this.props.actions.generalProcess(constants.getOrderDetail, {
+      "body": {
         "orderID": this.props.orderID,
-        "customerID": sessionStorage.orgCode
-      }});
+        "customerID": "ETIHAD"
+      }
+    });
     window.scrollTo(0, 0);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.getItemCatalogue) {
+    if (nextProps.orderDetail) {
       this.setState({
-        getItemCatalogue: nextProps.getItemCatalogue,
-        typeData: nextProps.typeData,
-        isLoading: false,
-        isLoading2: false
+        orderDetail: nextProps.orderDetail,
+        isLoading: false
       })
     }
 
@@ -59,7 +60,6 @@ class OrderDetailContainer extends React.Component {
   }
 
   openModalBox(modelItem) {
-    console.log('item', modelItem);
     this.setState({
       modelBox: true,
       modelItem
@@ -68,42 +68,45 @@ class OrderDetailContainer extends React.Component {
 
   }
 
-
-
-  handlePageChange(pageNumber) {
-    //alert(`active page is ${pageNumber}`);
-    this.getRequest(pageNumber);
-  }
-
-  checkout = () => {
-    if (this.state.itemAddedToCart) {
-      this.setState({
-        createOrder: true
-      })
-      // let createOrd = document.getElementById('createOrder');
-      // createOrd.style.visibility = true;
-    }
-    else {
-      alert("Please add some item to cart!")
-    }
-  };
-
   closeModalBox() {
     this.setState({modelBox: false});
   }
 
-  searchItem(e) {
-    e.preventDefault();
-    let formData = new FormData(e.target);
-    let data = {};
-    formData.forEach(function (value, key) {
-      data[key] = value;
-    });
-    data[data.searchType] = data.find;
-    delete data.searchType;
-    delete data.find;
-    this.getRequest(1, data)
+  getOrderStatus() {
+    let OrderReceived: "001", PurchaseOrder = "002", ComponentManufacturing = "003", PartIdentification = "004",
+      PartInspection = "005", FinalInspectionAndIdentification = "006", PartTesting = "007", Assembly = "008",
+      PaintOrFinish = "009", Dispatched = "010", Received = "011", Inspected = "012", Accepted = "013",
+      Rejected = "014", Reviewed = "015", Paid = "019";
+    let currentOrderStatus = this.state.orderDetail.order.status;
+
+    let orderStatus = [];
+    if(currentOrderStatus === OrderReceived){
+      orderStatus.push({label: "Order Received", status: true});
+      orderStatus.push({label: "Purchase Order", status: false});
+      orderStatus.push({label: "Component Manufacture", status: false});
+      orderStatus.push({label: "Dispatch", status: false});
+      orderStatus.push({label: "Received", status: false});
+      orderStatus.push({label: "Inspected", status: false});
+      orderStatus.push({label: "Accepted", status: false});
+      orderStatus.push({label: "Invoiced", status: false});
+      orderStatus.push({label: "Paid", status: false});
+    }
+    else {
+      orderStatus = [
+        {label: "Order Received", status: false},
+        {label: "Purchase Order", status: false},
+        {label: "Component Manufacture", status: false},
+        {label: "Dispatch", status: false},
+        {label: "Received", status: false},
+        {label: "Inspected", status: false},
+        {label: "Accepted", status: false},
+        {label: "Invoiced", status: false},
+        {label: "Paid", status: false}
+      ];
+    }
+    return orderStatus;
   }
+
 
   render() {
 
@@ -122,7 +125,7 @@ class OrderDetailContainer extends React.Component {
                 </div>
 
                 <div className="form-wizard stratawizard">
-                  {/*<Steps />*/}
+                  <Steps statusList={this.getOrderStatus()}/>
                   <ul className="nav nav-pills nav-justified steps">
                     <li><a href="#" data-toggle="tab" className="step" aria-expanded="false"><span
                       className="number">1</span><span className="desc"><i
@@ -173,7 +176,7 @@ class OrderDetailContainer extends React.Component {
                           <label className="bold">Etihad Airlines:</label>
                         </div>
                         <div className="col-md-4">
-                          <span style={{color:"red", fontWeight: "700"}}>32156531354</span>
+                          <span style={{color: "red", fontWeight: "700"}}>32156531354</span>
                         </div>
                       </div>
                     </div>
@@ -181,7 +184,7 @@ class OrderDetailContainer extends React.Component {
                     <div className="form-group">
                       <div className="row">
                         <div className="col-md-12">
-                          <label className="hashno">54sdf35s4ffsd545fb4534gss4v3s4sa4fd3ds</label>
+                          <label className="hashno">{this.state.orderDetail.orderID}</label>
                         </div>
                       </div>
                     </div>
@@ -202,7 +205,6 @@ class OrderDetailContainer extends React.Component {
                         </div>
                       </div>
                     </div>
-
                     <div className="form-group">
                       <div className="row">
                         <div className="col-md-3">
@@ -219,6 +221,58 @@ class OrderDetailContainer extends React.Component {
                         </div>
                         <div className="col-md-3">
                           <span>{this.state.orderDetail.receivedDate}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <div className="row">
+                        <div className="col-md-3">
+                          <label className="bold">Invoice Ref No:</label>
+                        </div>
+                        <div className="col-md-3">
+                          <div className="orderperson">
+                            <span>{this.state.orderDetail.invoice.invoiceRefNo}</span>
+                          </div>
+                        </div>
+                        <div className="col-md-3">
+                          <label className="bold">Invoice Date:</label>
+                        </div>
+                        <div className="col-md-3">
+                          <span>{this.state.orderDetail.invoice.invoiceDate}</span>
+                        </div>
+                        <br/>
+                        <div className="col-md-3">
+                          <label className="bold">Amount:</label>
+                        </div>
+                        <div className="col-md-3">
+                          <span>{this.state.orderDetail.invoice.amount}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <div className="row">
+                        <div className="col-md-3">
+                          <label className="bold">Credit Note Ref No:</label>
+                        </div>
+                        <div className="col-md-3">
+                          <div className="orderperson">
+                            <span>{this.state.orderDetail.creditNotes.creditNoteRefNo}</span>
+                          </div>
+                        </div>
+                        <div className="col-md-3">
+                          <label className="bold">Credit Note Date:</label>
+                        </div>
+                        <div className="col-md-3">
+                          <span>{this.state.orderDetail.creditNotes.creditNoteDate}</span>
+                        </div>
+                        <br/>
+                        <div className="col-md-3">
+                          <label className="bold">Credit Note Amount:</label>
+                        </div>
+                        <div className="col-md-3">
+                          <span>{this.state.orderDetail.creditNotes.creditNoteAmount}</span>
                         </div>
                       </div>
                     </div>
@@ -240,6 +294,29 @@ class OrderDetailContainer extends React.Component {
                   <a href="javascript:;" className="collapse" data-original-title="true" title=""/>
                 </div>
                 <div className="caption"><span className="caption-subject">Line Items </span></div>
+                <div className="actions"/>
+              </div>
+              <div className="portlet-body">
+                <div className="row">
+                  <div className="col-md-12">
+                    <Table
+                      gridColumns={utils.getGridColumnByName('LineItems')}
+                      gridData={this.state.orderDetail.items || []}
+                      pagination={false}
+                      export={false}
+                      search={false}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            {this.state.orderDetail.subOrder &&
+            <div className="portlet light bordered sdg_portlet ProCardssection">
+              <div className="portlet-title">
+                <div className="tools">
+                  <a href="javascript:;" className="collapse" data-original-title="true" title=""/>
+                </div>
+                <div className="caption"><span className="caption-subject">Sub Order</span></div>
                 <div className="actions"/>
               </div>
               <div className="portlet-body">
@@ -278,52 +355,7 @@ class OrderDetailContainer extends React.Component {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="portlet light bordered sdg_portlet ProCardssection">
-              <div className="portlet-title">
-                <div className="tools">
-                  <a href="javascript:;" className="collapse" data-original-title="true" title=""></a>
-                </div>
-                <div className="caption"><span className="caption-subject">Sub Order</span></div>
-                <div className="actions"></div>
-              </div>
-              <div className="portlet-body">
-                <div className="row">
-                  <div className="col-md-12">
-                    <table id="fieldTable" className="table table-bordered table-striped table-responsive ordertable">
-                      <thead>
-                      <tr>
-                        <th>Item Description</th>
-                        <th>Item code</th>
-                        <th>Qty</th>
-                        <th>Recived Qty</th>
-                        <th>Amount</th>
-                        <th>Total</th>
-                      </tr>
-                      </thead>
-                      <tbody className="ui-sortable">
-                      <tr>
-                        <td>ApplicationDate.Date</td>
-                        <td>Date</td>
-                        <td>XYZ</td>
-                        <td>Date</td>
-                        <td>XYZ</td>
-                        <td>None</td>
-                      </tr>
-                      <tr>
-                        <td>ApplicationDate.Date</td>
-                        <td>Date</td>
-                        <td>XYZ</td>
-                        <td>Date</td>
-                        <td>XYZ</td>
-                        <td>None</td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </div>}
           </div>
 
         </div>
@@ -335,7 +367,7 @@ class OrderDetailContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     typeData: state.app.typeData.data,
-    orderDetail: _.get(state.app, 'orderDetail', {}),
+    orderDetail: _.get(state.app, 'orderDetail.order', {}),
     orderID: ownProps.params.id
   };
 }
