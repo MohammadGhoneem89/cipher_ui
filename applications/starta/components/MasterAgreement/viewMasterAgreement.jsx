@@ -270,10 +270,10 @@ class ViewMasterAgreement extends React.Component {
 
             // console.log(nextProps.getMasterAgreementView[0].additionalInfo[0].discounts, "%%%%%%%%%%%%")
             this.setState({
-                gridDataDISCOUNT: nextProps.getMasterAgreementView[0].additionalInfo[0].discounts,
-                gridDataItem: this.transformResponse(nextProps.getMasterAgreementView[0].additionalInfo),
-                gridDataSLA: this.SLAresponse(nextProps.getMasterAgreementView[0].SLA),
-                gridDataPenalties: this.penalties(nextProps.getMasterAgreementView[0].penalties),
+               // gridDataDISCOUNT: nextProps.getMasterAgreementView[0].additionalInfo[0].discounts,
+              //  gridDataItem: this.transformResponse(nextProps.getMasterAgreementView[0].additionalInfo),
+              //  gridDataSLA: this.SLAresponse(nextProps.getMasterAgreementView[0].SLA),
+              //  gridDataPenalties: this.penalties(nextProps.getMasterAgreementView[0].penalties),
                 typeData: nextProps.typeData,
                 isLoading: false,
                 getPage: nextProps.getPage
