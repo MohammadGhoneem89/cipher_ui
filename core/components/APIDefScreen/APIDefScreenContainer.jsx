@@ -760,7 +760,7 @@ class APIDefinitionScreen extends React.Component {
         }
         break;
       case "Delete":
-        let result = confirm("Are you you want to delete?");
+        let result = confirm("Are you sure you want to delete?");
         if (result) {
           if (index > -1) {
             let a = this.state.simucases;

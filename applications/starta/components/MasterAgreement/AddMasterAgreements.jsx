@@ -33,6 +33,8 @@ class AddMasterAgreement extends React.Component {
             endDate: ""
         }
         this.addOrderRebate = this.addOrderRebate.bind(this);
+        this.ActionHandlers = this.ActionHandlers.bind(this);
+        this.ActionHandlersItem = this.ActionHandlersItem.bind(this)
     }
 
     componentWillMount() {
@@ -82,7 +84,7 @@ class AddMasterAgreement extends React.Component {
             alert("From should be zero or greater")
             return false;
         }
-        if (orderLessThan <= orderGreaterThan) {
+        if (orderLessThan < orderGreaterThan) {
             alert("To should be greater than From!")
             return false;
         }
@@ -100,7 +102,8 @@ class AddMasterAgreement extends React.Component {
                 actionType: "COMPONENT_FUNCTION"
             },
             {
-                label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION"
+                label: "Edit", iconName: "fa fa-edit", 
+                actionType: "COMPONENT_FUNCTION"
             }],
         }
 
@@ -163,8 +166,6 @@ class AddMasterAgreement extends React.Component {
         }
 
         console.log("===" + JSON.stringify(newtupple))
-
-
 
         this.clearFieldsPenalty();
         data.push(newtupple);
@@ -360,7 +361,7 @@ class AddMasterAgreement extends React.Component {
         $('#tab_1_1_1').find('input').val(0);
         $('#tab_1_1_2').find('input').val(0);
         $('#tab_1_1').find('input').val(0);
-        $('#tab_1_1').find('input:text').val('');
+        $("#tab_1_1 option:selected").prop("selected", "")
         this.setState({ orderRebate: [], itemRebate: [] });
     }
 
@@ -377,9 +378,66 @@ class AddMasterAgreement extends React.Component {
         $('').find('input:text').val('');
     }
 
+    ActionHandlersItem({ actionName, index }) {
+        switch (actionName) {
+            case "Edit":
+                if (index > -1) {
+                    let a = this.state.items[index];
+                    console.log(a,"a")
+                    document.getElementById('item').value = (a.itemCode);
+                    document.getElementById('unitPrice').value = parseInt(a.price, 10);
+                    document.getElementById('expectedQuantity').value = parseInt(a.quantity, 10);
+                    let tempState = this.state.items;
+                    tempState.splice(index, 1);
+                    this.setState({ items: tempState });
+                }
+                break;
+            case "Delete":
+                let result = confirm("Are you sure you want to delete?");
+                if (result) {
+                    if (index > -1) {
+                        let a = this.state.items;
+                        a.splice(index, 1);
+                        this.setState({ items: a });
+                    }
+                }
+                break;
 
+            default:
+                break;
+        }
+    }
+    ActionHandlers({ actionName, index }) {
+        switch (actionName) {
+            case "Edit":
+                if (index > -1) {
+                    let a = this.state.orderRebate[index];
+                    document.getElementById('orderGreaterThan').value = parseInt(a.greaterThan, 10);
+                    document.getElementById('orderLessThan').value = parseInt(a.lessThan, 10);
+                    document.getElementById('orderRebate').value = parseInt(a.rebate, 10);
+                    let tempState = this.state.orderRebate;
+                    tempState.splice(index, 1);
+                    this.setState({ orderRebate: tempState });
+                }
+                break;
+            case "Delete":
+                let result = confirm("Are you sure you want to delete?");
+                if (result) {
+                    if (index > -1) {
+                        let a = this.state.orderRebate;
+                        a.splice(index, 1);
+                        this.setState({ orderRebate: a });
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
 
     render() {
+        console.log("this.state", this.state)
         const itemList = this.state.itemList ? this.state.itemList : []
         const status = this.state.typeData ? this.state.typeData.orderStatus : []
         const shipmentType = this.state.typeData ? this.state.typeData.shipmentType : []
@@ -652,7 +710,7 @@ class AddMasterAgreement extends React.Component {
                                                     gridColumns={utils.getGridColumnByName("itemMaster")}
                                                     gridData={this.state.items}
                                                     export={false}
-                                                    componentFunction={this.ActionHandlers}
+                                                    componentFunction={this.ActionHandlersItem}
                                                     pagination={false} />
 
                                             </div>
