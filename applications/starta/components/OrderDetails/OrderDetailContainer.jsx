@@ -18,7 +18,7 @@ import Label from "../../common/Lable.jsx";
 import Portlet from "../../common/Portlet.jsx";
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 import Pagination from "react-js-pagination";
-import Steps from '../../../../core/common/Steps.jsx';
+import Steps from './Steps.jsx';
 import Table from '../../../../core/common/Datatable.jsx';
 import * as gen from "../../common/generalActionHandler";
 import Combobox from "../../common/Select.jsx";
@@ -73,36 +73,123 @@ class OrderDetailContainer extends React.Component {
   }
 
   getOrderStatus() {
-    let OrderReceived: "001", PurchaseOrder = "002", ComponentManufacturing = "003", PartIdentification = "004",
-      PartInspection = "005", FinalInspectionAndIdentification = "006", PartTesting = "007", Assembly = "008",
+    let OrderReceived = "001", PurchaseOrder = "002", ComponentManufacturing = "003", PartIdentification = "004",
+      PartInspection = "005", FinalInspectionAndIdentification = "006", PartTested = "007", Assembly = "008",
       PaintOrFinish = "009", Dispatched = "010", Received = "011", Inspected = "012", Accepted = "013",
       Rejected = "014", Reviewed = "015", Paid = "019";
-    let currentOrderStatus = this.state.orderDetail.order.status;
+    let currentOrderStatus = this.state.orderDetail.status;
+    // let currentOrderStatus = ComponentManufacturing;
 
-    let orderStatus = [];
-    if(currentOrderStatus === OrderReceived){
-      orderStatus.push({label: "Order Received", status: true});
-      orderStatus.push({label: "Purchase Order", status: false});
-      orderStatus.push({label: "Component Manufacture", status: false});
-      orderStatus.push({label: "Dispatch", status: false});
-      orderStatus.push({label: "Received", status: false});
-      orderStatus.push({label: "Inspected", status: false});
-      orderStatus.push({label: "Accepted", status: false});
-      orderStatus.push({label: "Invoiced", status: false});
-      orderStatus.push({label: "Paid", status: false});
+    let orderStatus = [
+      {label: "Order Received", status: false},
+      {label: "Purchase Order", status: false},
+      {label: "Manufacture Status", status: false},
+      {label: "Dispatch", status: false},
+      {label: "Received", status: false},
+      {label: "Inspected", status: false},
+      {label: "Accepted/Rejected", status: false},
+      {label: "Invoiced", status: false},
+      {label: "Paid", status: false}
+    ];
+
+    if (currentOrderStatus === OrderReceived) {
+      orderStatus[0].status = true;
     }
-    else {
-      orderStatus = [
-        {label: "Order Received", status: false},
-        {label: "Purchase Order", status: false},
-        {label: "Component Manufacture", status: false},
-        {label: "Dispatch", status: false},
-        {label: "Received", status: false},
-        {label: "Inspected", status: false},
-        {label: "Accepted", status: false},
-        {label: "Invoiced", status: false},
-        {label: "Paid", status: false}
-      ];
+    else if (currentOrderStatus === PurchaseOrder) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+    }
+    else if (currentOrderStatus === ComponentManufacturing) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].label = "Component Manufacturing";
+      orderStatus[2].text = "20%";
+    }
+    else if (currentOrderStatus === PartIdentification) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].label = "Part Identification";
+      orderStatus[2].text = "40%";
+    }
+    else if (currentOrderStatus === PartInspection) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].label = "Part Inspection";
+      orderStatus[2].text = "60%";
+    }
+    else if (currentOrderStatus === FinalInspectionAndIdentification) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].label = "Final Inspection";
+      orderStatus[2].text = "80%";
+    }
+    else if (currentOrderStatus === PartTested) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].label = "Part Tested";
+      orderStatus[2].text = "85%";
+    }
+    else if (currentOrderStatus === Assembly) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].label = "Assembly";
+      orderStatus[2].text = "95%";
+    }
+    else if (currentOrderStatus === PaintOrFinish) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].status = true;
+    }
+    else if (currentOrderStatus === Dispatched) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].status = true;
+      orderStatus[3].status = true;
+    }
+    else if (currentOrderStatus === Received) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].status = true;
+      orderStatus[3].status = true;
+      orderStatus[4].status = true;
+    }
+    else if (currentOrderStatus === Inspected) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].status = true;
+      orderStatus[3].status = true;
+      orderStatus[4].status = true;
+      orderStatus[5].status = true;
+    }
+    else if (currentOrderStatus === Accepted || currentOrderStatus === Rejected) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].status = true;
+      orderStatus[3].status = true;
+      orderStatus[4].status = true;
+      orderStatus[5].status = true;
+      orderStatus[6].status = true;
+    }
+    else if (currentOrderStatus === Reviewed) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].status = true;
+      orderStatus[3].status = true;
+      orderStatus[4].status = true;
+      orderStatus[5].status = true;
+      orderStatus[6].status = true;
+      orderStatus[7].status = true;
+    }
+    else if (currentOrderStatus === Paid) {
+      orderStatus[0].status = true;
+      orderStatus[1].status = true;
+      orderStatus[2].status = true;
+      orderStatus[3].status = true;
+      orderStatus[4].status = true;
+      orderStatus[5].status = true;
+      orderStatus[6].status = true;
+      orderStatus[7].status = true;
+      orderStatus[8].status = true;
     }
     return orderStatus;
   }
@@ -125,46 +212,7 @@ class OrderDetailContainer extends React.Component {
                 </div>
 
                 <div className="form-wizard stratawizard">
-                  <Steps statusList={this.getOrderStatus()}/>
-                  <ul className="nav nav-pills nav-justified steps">
-                    <li><a href="#" data-toggle="tab" className="step" aria-expanded="false"><span
-                      className="number">1</span><span className="desc"><i
-                      className="fa fa-check"/>Order<br/>Recived</span></a><i
-                      className="fa fa-long-arrow-right" aria-hidden="true"><span className="timer"/></i></li>
-                    <li className="inactive"><a href="#" data-toggle="tab" className="step" aria-expanded="false"><span
-                      className="number">2</span><span className="desc"><i className="fa fa-check"/> Purchase<br/>Order</span></a><i
-                      className="fa fa-long-arrow-right" aria-hidden="true"/></li>
-                    <li className="inactive"><a href="#tab1" data-toggle="tab" className="step"
-                                                aria-expanded="false"><span className="number">3</span><span
-                      className="desc"><i className="fa fa-check"/>Component <br/> Manufacture</span></a><i
-                      className="fa fa-long-arrow-right" aria-hidden="true"/></li>
-                    <li className="inactive"><a href="#tab1" data-toggle="tab" className="step"
-                                                aria-expanded="false"><span className="number">4</span><span
-                      className="desc"><i className="fa fa-check"/>Dispatched</span></a><i
-                      className="fa fa-long-arrow-right" aria-hidden="true"/></li>
-                    <li className="inactive"><a href="#tab1" data-toggle="tab" className="step"
-                                                aria-expanded="false"><span className="number">5</span><span
-                      className="desc"><i className="fa fa-check"/>Recieved</span></a>
-                      <i className="fa fa-long-arrow-right" aria-hidden="true"/></li>
-                    <li className="inactive"><a href="#tab1" data-toggle="tab" className="step"
-                                                aria-expanded="false"><span className="number">6</span><span
-                      className="desc"><i className="fa fa-check"/>Inspected</span></a>
-                      <i className="fa fa-long-arrow-right" aria-hidden="true"/></li>
-                    <li className="inactive"><a href="#tab1" data-toggle="tab" className="step"
-                                                aria-expanded="false"><span className="number">7</span><span
-                      className="desc"><i className="fa fa-check"/>Accepeted</span></a>
-                      <i className="fa fa-long-arrow-right" aria-hidden="true"/></li>
-                    <li className="inactive"><a href="#tab1" data-toggle="tab" className="step"
-                                                aria-expanded="false"><span className="number">8</span><span
-                      className="desc"><i className="fa fa-check"/>Invoiced</span></a>
-                      <i className="fa fa-long-arrow-right" aria-hidden="true"/></li>
-                    <li>
-                      <a href="#" data-toggle="tab" className="step" aria-expanded="false">
-                        <span className="number">9</span>
-                        <span className="desc">Paid</span>
-                      </a>
-                    </li>
-                  </ul>
+                  {<Steps statusList={this.getOrderStatus()}/>}
                 </div>
 
 
@@ -367,7 +415,7 @@ class OrderDetailContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     typeData: state.app.typeData.data,
-    orderDetail: _.get(state.app, 'orderDetail.order', {}),
+    orderDetail: _.get(state.app, 'orderDetail.order', undefined),
     orderID: ownProps.params.id
   };
 }
