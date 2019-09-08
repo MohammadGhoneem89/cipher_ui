@@ -45,7 +45,12 @@ module.exports = {
     { alias: "TL_Amount", key: "Amount", type: "amount" },
     { alias: "TL_actions", key: "actions", type: "action" }
   ],
-
+  PickUPEdit: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "Label", key: "label", type: "string" },
+    { alias: "Value", key: "value", type: "string" },
+    { alias: "Actions", key: "actions", type: "action" }
+  ],
   settlementListData: [
     { alias: "", key: "batchNo", type: "hiddenID" },
     { alias: "SL_entityName", key: "entityName", type: "image" },

@@ -110,8 +110,14 @@ module.exports = {
   getblockchainWorkboardData3: baseUrl + "/SIMU/3",
   getblockchainWorkboardData4: baseUrl + "/SIMU/4",
   getblockchainWorkboardData5: baseUrl + "/SIMU/5",
+  
   getPickupList: baseUrl + "/API/UI/typeDataList",
+  getPickupListByType: baseUrl + "/API/UI/typeDataListByType",
+  getPickupListForType: baseUrl + "/API/UI/typeDataListForType",
+  updateTypeData: baseUrl + "/API/UI/updateTypeData",
   getPickupListDetail: baseUrl + "/API/UI/getTypeDataDetailByID",
+
+
   passwordPolicyDetail: baseUrl + "/API/UI/fetchAllPasswordPolicy",
   validateBatch: baseUrl + "/API/UI/valBatchCreation",
   updatePasswordPolicy: baseUrl + "/API/UI/updatePasswordPolicy",

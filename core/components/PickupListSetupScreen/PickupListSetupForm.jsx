@@ -1,17 +1,17 @@
 import React from 'react';
-import {reduxForm} from 'redux-form';
+import { reduxForm } from 'redux-form';
 import validate from './validate';
-import {TextInput} from '../../common/FormControls.jsx';
+import { TextInput } from '../../common/FormControls.jsx';
 import * as utils from '../../common/utils.js';
 import _ from 'lodash';
 
 
-const PickupListSetupForm = ({handleSubmit, updateState, pristine, reset, submitting, initialValues}) => {
+const PickupListSetupForm = ({ handleSubmit, updateState, pristine, reset, submitting, initialValues }) => {
 
   return (
     <form role="form" onSubmit={handleSubmit}>
       <div className="row">
-        <div className="col-md-4 col-sm-4">
+        <div className="col-md-12">
           <TextInput
             name={"typeName"}
             label={utils.getLabelByID("PLIST_Name")}
@@ -19,18 +19,18 @@ const PickupListSetupForm = ({handleSubmit, updateState, pristine, reset, submit
           />
         </div>
       </div>
-      {_.get(initialValues,`data[${_.get(initialValues,'typeName','')}]`,[]).map((item, index) => {
+      {_.get(initialValues, `data[0][${_.get(initialValues, 'typeName', '')}]`, []).map((item, index) => {
         return <div className="row" key={index}>
           <div className="col-md-4 col-sm-4">
             <TextInput
-              name={"data[" + initialValues.typeName + "][" + index + "].label"}
+              name={"data[0][" + initialValues.typeName + "][" + index + "].label"}
               label={utils.getLabelByID("PLIST_Key")}
               type="text"
             />
           </div>
           <div className="col-md-4 col-sm-4">
             <TextInput
-              name={"data[" + initialValues.typeName + "][" + index + "].value"}
+              name={"data[0][" + initialValues.typeName + "][" + index + "].value"}
               label={utils.getLabelByID("PLIST_Value")}
               type="text"
             />
@@ -38,14 +38,18 @@ const PickupListSetupForm = ({handleSubmit, updateState, pristine, reset, submit
         </div>;
       })}
       <div className="row">
-        <div className="btn-toolbar pull-right">
-          <button type="submit" className="pull-right btn green" disabled={pristine || submitting}>
-            {utils.getLabelByID("Submit")}
-          </button>
-          <button type="button" className="pull-right btn default" disabled={pristine || submitting}
-                  onClick={reset}>
-            {utils.getLabelByID("Clear")}
-          </button>
+        <div className="col-md-12">
+          
+            <div className="btn-toolbar pull-right col-md-12">
+              <button type="submit" className="pull-right btn green" disabled={pristine || submitting}>
+                {utils.getLabelByID("Submit")}
+              </button>
+              <button type="button" className="pull-right btn default" disabled={pristine || submitting}
+                onClick={reset}>
+                {utils.getLabelByID("Clear")}
+              </button>
+            </div>
+          
         </div>
       </div>
     </form>
