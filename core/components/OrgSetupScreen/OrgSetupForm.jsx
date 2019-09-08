@@ -454,8 +454,10 @@ class OrgSetupForm extends React.Component {
           token: sessionStorage.token
         },
         body: {
-          eComerce: sessionStorage.orgCode,
+          orgCode: sessionStorage.orgCode,
+          eComerce: data.spCode,
           isConsolidated: isConsolidate
+
         }
       });
       if (response && response.data && response.data.errorCode == 200) {
