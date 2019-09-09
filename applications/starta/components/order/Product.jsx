@@ -1,6 +1,6 @@
 import React from "react";
 import * as constants from "../../../../core/constants/Communication";
-
+import * as utils from '../../../../core/common/utils.js';
 const Product = props => {
   const {onClick, details} = props;
   let price = details.price ? details.price : details.unitPrice;
@@ -17,7 +17,7 @@ const Product = props => {
       </div>
       <div>
       <label>
-        AED {price}
+        AED {utils.formatAmountField(price)}
       </label>
       
       <button type="submit" className="Addcart">

@@ -121,11 +121,17 @@ class OrderViaContract extends React.Component {
       }
     };
     console.log("request", request)
-    this.props.actions.generalAjxProcess(constants.createOrder,
-      request).then(result => {
-        console.log(result, "result")
-        result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
-      });
+    if (this.state.cartItems && this.state.cartItems.length > 0) {
+      this.props.actions.generalAjxProcess(constants.createOrder,
+        request).then(result => {
+          console.log(result, "result")
+          result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
+        });
+    } else {
+      alert("Please add atleast one item to place the order!");
+      browserHistory.push('/strata/OrderViaContract');
+      return false;
+    }
   }
   redirectToList = () => {
     browserHistory.push('/strata/orderList');
@@ -233,7 +239,6 @@ class OrderViaContract extends React.Component {
     cart.map(element => {
       if (element.itemCode === cartItem.itemCode && element.color === cartItem.color) {
         isNewItem = false;
-        console.log(cartItem.quantity, cartItem.quantity, "QUANTITY");
         element.quantity = parseInt(element.quantity) + parseInt(cartItem.quantity);
         if (element.quantity > result[0].expectedQuantity) {
           alert("The quantity you ordered for this item is more than expected quantity in master contract!")
@@ -241,7 +246,6 @@ class OrderViaContract extends React.Component {
           e.target.reset();
           return false;
         }
-        console.log(cartItem.quantity, cartItem.quantity, "QUANTITY");
       }
     });
     if (isNewItem) {
@@ -257,11 +261,11 @@ class OrderViaContract extends React.Component {
       element.quantity = parseInt(element.quantity);
       element.price = parseInt(element.price);
       element.total = element.quantity * element.price;
+      element.material=result[0].material;
     });
     cart.forEach(element => {
       grandTotal += element.total
     });
-
     this.setState({
       cartItems: cart,
       grandTotal: grandTotal,
@@ -326,7 +330,7 @@ class OrderViaContract extends React.Component {
     })
     let userID = getUserID[0]._id;
     this.getCustomerAssociationType(userID)
-    
+
     // let shipmentType = this.state.customerAssociation ? this.state.customerAssociation.shipmentType : ""
     // let paymentType = this.state.customerAssociation ? this.state.customerAssociation.paymentType : ""
     // console.log(shipmentType, "shipment")
@@ -363,7 +367,7 @@ class OrderViaContract extends React.Component {
   }
 
   render() {
-    console.log(this.state.customerAssociation, "this.state.customerAssociation")
+    console.log(this.state.cartItems ? this.state.cartItems.length : "<<<<< CART LENGTH")
     //console.log(this.state.getItemCatalogue ? this.state.getItemCatalogue : [], "RENEDER DATA")
     let masterContract = this.state.contracts ? this.getContractDetails() : []
     if (!this.state.isLoading)

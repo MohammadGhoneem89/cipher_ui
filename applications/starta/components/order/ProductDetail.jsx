@@ -5,7 +5,7 @@ import Col from "../../common/Col.jsx";
 import Label from "../../common/Lable.jsx";
 import Input from "../../common/Input.jsx";
 import * as constants from "../../../../core/constants/Communication";
-
+import * as utils from '../../../../core/common/utils.js';
 const ProductDetail = props => {
   const {onClick, details, state} = props;
   let price = details.price ? details.price : details.unitPrice;
@@ -20,7 +20,7 @@ const ProductDetail = props => {
       <div className="Prodetails">
         <h2 className="DProName">{details.name}</h2>
         <h4
-          className="Dprice"><b>AED {price}</b>
+          className="Dprice"><b>AED {utils.formatAmountField(price)}</b>
         </h4>
         <p className="dprpDesc">{details.description}</p>
       </div>
@@ -53,7 +53,7 @@ const ProductDetail = props => {
           <div className="col-md-3 ">
             <label className="bold" style={{overflowWrap: "inherit"}}>Price :</label>
           </div>
-          <div className="col-md-3 "><span>{price}</span></div>
+          <div className="col-md-3 "><span>{utils.formatAmountField(price)}</span></div>
           <div className="col-md-3 ">
             <label className="bold" style={{overflowWrap: "inherit"}}>Support Volume :</label>
           </div>
