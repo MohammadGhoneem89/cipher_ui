@@ -2,26 +2,27 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import * as actions from "../../../../core/actions/generalAction";
+import * as actions from "../../../../../core/actions/generalAction";
 
-import * as utils from "../../../../core/common/utils.js";
-import * as constants from "../../../../core/constants/Communication";
-import * as requestCreator from '../../../../core/common/request.js';
-import * as coreConstants from '../../../../core/constants/Communication.js'
+import * as utils from "../../../../../core/common/utils.js";
+import * as constants from "../../../../../core/constants/Communication";
+import * as requestCreator from '../../../../../core/common/request.js';
+import * as coreConstants from '../../../../../core/constants/Communication.js'
 
 //Custom Components
-import Select from "../../common/Select.jsx";
-import Div from "../../common/Div.jsx";
-import Row from "../../common/Row.jsx";
-import Col from "../../common/Col.jsx";
-import Label from "../../common/Lable.jsx";
-import Portlet from "../../common/Portlet.jsx";
-import ModalBox from '../../../../core/common/ModalBox.jsx';
+import Select from "../../../common/Select.jsx";
+import Div from "../../../common/Div.jsx";
+import Row from "../../../common/Row.jsx";
+import Col from "../../../common/Col.jsx";
+import Label from "../../../common/Lable.jsx";
+import Portlet from "../../../common/Portlet.jsx";
+import ModalBox from '../../../../../core/common/ModalBox.jsx';
 import Pagination from "react-js-pagination";
-import Steps from './Steps.jsx';
-import Table from '../../../../core/common/Datatable.jsx';
-import * as gen from "../../common/generalActionHandler";
-import Combobox from "../../common/Select.jsx";
+
+import Steps from '../../../../../core/common/Steps.jsx';
+import Table from '../../../../../core/common/Datatable.jsx';
+import * as gen from "../../../common/generalActionHandler";
+import Combobox from "../../../common/Select.jsx";
 
 
 class OrderDetailContainer extends React.Component {

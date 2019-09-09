@@ -19,5 +19,8 @@ export default {
     pageData: {},
     searchResult: undefined
   },
+  getCustomerAssociationDetail:{
+    data:undefined
+  },
   orderDetail: undefined
 }

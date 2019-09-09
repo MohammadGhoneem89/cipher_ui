@@ -2,29 +2,29 @@
 import React, {PropTypes} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import * as actions from "../../../../core/actions/generalAction";
+import * as actions from "../../../../../core/actions/generalAction";
 import { browserHistory } from 'react-router';
-import * as toaster from '../../../../core/common/toaster.js';
-import * as utils from "../../../../core/common/utils.js";
-import * as constants from "../../../../core/constants/Communication";
-import * as requestCreator from '../../../../core/common/request.js';
-import * as coreConstants from '../../../../core/constants/Communication.js'
+import * as toaster from '../../../../../core/common/toaster.js';
+import * as utils from "../../../../../core/common/utils.js";
+import * as constants from "../../../../../core/constants/Communication";
+import * as requestCreator from '../../../../../core/common/request.js';
+import * as coreConstants from '../../../../../core/constants/Communication.js'
 
 //Custom Components
-import Select from "../../common/Select.jsx";
-import Div from "../../common/Div.jsx";
-import Row from "../../common/Row.jsx";
-import Col from "../../common/Col.jsx";
-import Label from "../../common/Lable.jsx";
-import Portlet from "../../common/Portlet.jsx";
-import ModalBox from '../../../../core/common/ModalBox.jsx';
-import Product from './Product.jsx';
-import ProductDetail from "./ProductDetail.jsx";
-import CreateOrder from "./CreateOrder.jsx";
+import Select from "../../../common/Select.jsx";
+import Div from "../../../common/Div.jsx";
+import Row from "../../../common/Row.jsx";
+import Col from "../../../common/Col.jsx";
+import Label from "../../../common/Lable.jsx";
+import Portlet from "../../../common/Portlet.jsx";
+import ModalBox from '../../../../../core/common/ModalBox.jsx';
+import Product from '../Product.jsx';
+import ProductDetail from "../ProductDetail.jsx";
+import CreateOrder from "../CreateOrder.jsx";
 import Pagination from "react-js-pagination";
 
-import * as gen from "../../common/generalActionHandler";
-import Combobox from "../../common/Select.jsx";
+import * as gen from "../../../common/generalActionHandler";
+import Combobox from "../../../common/Select.jsx";
 
 
 class OneTimeOrder extends React.Component {

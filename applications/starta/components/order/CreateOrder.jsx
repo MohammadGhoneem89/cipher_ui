@@ -4,7 +4,7 @@ import Portlet from "../../common/Portlet.jsx";
 import Col from "../../common/Col.jsx";
 import Label from "../../common/Lable.jsx";
 import Input from "../../common/Input.jsx";
-import * as constants from "../../../../core/constants/Communication";
+//import * as constants from "../../../../../../core/constants/Communication";
 
 const CreateOrder = props => {
   const {onClick, cartItems, state, setState, placeOrder} = props;

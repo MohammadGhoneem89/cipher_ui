@@ -102,7 +102,7 @@ class ProductCatalogue extends React.Component {
         alert("Item Code is required!")
         return;
       }
-      if (this.state.addProduct.name== undefined || this.state.addProduct.name.trim() == '') {
+      if (this.state.addProduct.name == undefined || this.state.addProduct.name.trim() == '') {
         alert("item name is required!")
         return;
       }
@@ -110,46 +110,46 @@ class ProductCatalogue extends React.Component {
         alert("item description is required!")
         return;
       }
-      if (this.state.addProduct.classification== undefined) {
+      if (this.state.addProduct.classification == undefined) {
         alert("item classification is required!")
         return;
       }
-      if (this.state.addProduct.material== undefined) {
+      if (this.state.addProduct.material == undefined) {
         alert("item material is required!")
         return;
       }
-      if (this.state.addProduct.price== undefined) {
+      if (this.state.addProduct.price == undefined) {
         alert("item price is required!")
         return;
       }
-      if (this.state.addProduct.leadTime== undefined) {
+      if (this.state.addProduct.leadTime == undefined) {
         alert("item leadTime is required!")
         return;
       }
-      if (this.state.addProduct.printTime== undefined) {
+      if (this.state.addProduct.printTime == undefined) {
         alert("item printTime is required!")
         return;
       }
-      if (this.state.addProduct.partNumber== undefined) {
+      if (this.state.addProduct.partNumber == undefined) {
         alert("item partNumber is required!")
         return;
       }
-      if (this.state.addProduct.modelVolume== undefined) {
+      if (this.state.addProduct.modelVolume == undefined) {
         alert("item modelVolume is required!")
         return;
       }
-      if (this.state.addProduct.supportVolume== undefined) {
+      if (this.state.addProduct.supportVolume == undefined) {
         alert("item supportVolume is required!")
         return;
       }
 
       this.validate = true;
     } else {
-      alert("All fields required!")
+      alert("All fields are required!")
     }
 
     if (this.validate) {
-      console.log(this.validate," validate")
+      console.log(this.validate, " validate")
       this.stringToOtherTypes('addProduct', ['leadTime', 'price', 'printTime'], ['itemStatus']);
       let addProduct = { ...this.state.addProduct };
       console.log(addProduct, "addProduct")
@@ -217,12 +217,12 @@ class ProductCatalogue extends React.Component {
   }
 
   render() {
-   // console.log(this.state.documents, "DOCUMENTS");
+     console.log(this.state?this.state : "Waititng for state");
     let _this = this;
     function getImage() {
       let image = "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png";
-      if(_.get(_this.props.getItemCatalogue[0],"image",{}) !== "{}"){
-        image = constants.ipfsGet + _.get(_this.props.getItemCatalogue,"[0].image.hash", "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png");
+      if (_.get(_this.props.getItemCatalogue[0], "image", {}) !== "{}") {
+        image = constants.ipfsGet + _.get(_this.props.getItemCatalogue, "[0].image.hash", "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png");
       }
       return image;
     }
@@ -230,19 +230,19 @@ class ProductCatalogue extends React.Component {
 
       return (
         <Portlet title={utils.getLabelByID("Product Catalogue")}>
-          <div className="col-md-12" style={{textAlign: "center", paddingBottom: "25px"}}>
+          <div className="col-md-12" style={{ textAlign: "center", paddingBottom: "25px" }}>
             <img id="productImage"
-                 src={getImage()}
-                 className="img-responsive img-thumbnail" alt="Product Image" width="150px"
-                 height="150px"
-                 ref={input => this.productImage = input}
+              src={getImage()}
+              className="img-responsive img-thumbnail" alt="Product Image" width="150px"
+              height="150px"
+              ref={input => this.productImage = input}
             />
-            <br/>
-            <span className="label label-primary" style={{cursor: "pointer"}} onClick={()=>{this.ProductImgUploader.click();}}>
-                      {utils.getLabelByID("Upload Image")}
-                    </span>
+            <br />
+            <span className="label label-primary" style={{ cursor: "pointer" }} onClick={() => { this.ProductImgUploader.click(); }}>
+              {utils.getLabelByID("Upload Image")}
+            </span>
 
-            <input name="ProductImgUploader" id='ProductImgUploader' type='file' ref={input => this.ProductImgUploader = input} onChange={(e)=>{
+            <input name="ProductImgUploader" id='ProductImgUploader' type='file' ref={input => this.ProductImgUploader = input} onChange={(e) => {
               let reader = new FileReader();
               let files = e.target.files;
               let _this = this;
@@ -258,19 +258,21 @@ class ProductCatalogue extends React.Component {
                     body: data
                   }).then(checkStatus)
                     .then(parseJSON)
-                    .then((item)=>{
-                      _this.setState({productImage: {
+                    .then((item) => {
+                      _this.setState({
+                        productImage: {
                           name: item.name,
                           type: item.type,
                           hash: item.hash,
                           path: item.path
-                        }});
+                        }
+                      });
 
 
                       console.log('request succeeded with JSON response', item)
-                    }).catch(function(error) {
-                    console.log('request failed', error)
-                  })
+                    }).catch(function (error) {
+                      console.log('request failed', error)
+                    })
                 };
 
                 reader.readAsDataURL(files[0]);
@@ -289,7 +291,7 @@ class ProductCatalogue extends React.Component {
                   return response.json()
                 }
               }
-            }}/>
+            }} />
           </div>
           <Row>
             <Label text="Item Code:" columns='1' />
@@ -299,11 +301,11 @@ class ProductCatalogue extends React.Component {
             />
             <Label text="Name:" columns='1' />
             <Input fieldname='name' formname='addProduct'
-                   columns='5'
-                   state={this.state}
-                   actionHandler={this.generalHandler}
-                   className="form-control"
-                   disabled={false}/>
+              columns='5'
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              disabled={false} />
           </Row>
           <br />
           <Row>
@@ -379,34 +381,35 @@ class ProductCatalogue extends React.Component {
             <Input fieldname='price' formname='addProduct'
               columns='5'
               state={this.state}
-              actionHandler={this.generalHandler} className="form-control" type='number'
+              actionHandler={this.generalHandler}
+              className="form-control" type='number'
               disabled={false}
             />
           </Row>
           <br />
           <Row>
-            <div className="col-md-8">
-              <Label text="Description" columns='1' />
-              <Textarea fieldname='description' formname='addProduct' rows="5"
-                state={this.state}
-                columns='7' style={{ color: 'blue' }}
-                actionHandler={this.generalHandler}
-                disabled={false}
+            <Label text="Description :" columns='1' />
+            <Textarea fieldname='description' formname='addProduct' rows="5"
+              state={this.state}
+              columns='7' style={{ color: 'blue' }}
+              actionHandler={this.generalHandler}
+              disabled={false}
 
-              />
-              <Label text="Is Active" columns='1' />
-              <CheckBox fieldname='itemStatus' formname='addProduct'
-                columns='1' style={{}} actionHandler={this.generalHandler}
-                disabled={false}
-              />
-            </div>
+            />
+            <Label text="Is Active" columns='1' />
+            <CheckBox fieldname='itemStatus' formname='addProduct'
+              value={this.state.addProduct ? this.state.addProduct.itemStatus : false}
+              columns='3' style={{}} actionHandler={this.generalHandler}
+              disabled={false}
+            />
           </Row>
           <br />
           <Row>
-            <Document initState={this.state} updateState={this.updateState} getParentState={this.getParentState}
-                      allowedFileType=".xml , .csv , .xls , .xlsx"
-                      acceptedFiles="Files to be uploaded with extention *.xml, *.xls or *.csv"
-                      fileUploadURL={constants.ipfs}
+            <Document initState={this.state} updateState={this.updateState}
+              getParentState={this.getParentState}
+              allowedFileType=".xml , .csv , .xls , .xlsx"
+              acceptedFiles="Files to be uploaded with extention *.xml, *.xls or *.csv"
+              fileUploadURL={constants.ipfs}
             />
           </Row>
           <br />

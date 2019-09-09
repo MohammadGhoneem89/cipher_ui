@@ -7,10 +7,10 @@ import Table from '../../../../core/common/Datatable.jsx';
 import * as actions from '../../../../core/actions/generalAction';
 import * as constants from '../../../../core/constants/Communication.js';
 import Portlet from '../../../../core/common/Portlet.jsx';
-
+import ModalBox from '../../../../core/common/ModalBox.jsx';
 import _ from 'lodash';
 
-class ItemMasterList extends React.Component {
+class ProductCatalogueList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -68,7 +68,7 @@ class ItemMasterList extends React.Component {
 
 
     componentWillReceiveProps(nextProps) {
-       // console.log("nextProps", nextProps.getItemCatalogue)
+        // console.log("nextProps", nextProps.getItemCatalogue)
         if (nextProps.getItemCatalogue) {
 
             this.setState({
@@ -101,10 +101,10 @@ class ItemMasterList extends React.Component {
                     }]
             }
         )
-        
+
     }
     componentWillUnmount() {
-       //clearInterval(this.timerID);
+        //clearInterval(this.timerID);
     }
 
     searchCallBack = (keyWord) => {
@@ -116,13 +116,36 @@ class ItemMasterList extends React.Component {
         this.setState({ page: page });
         this.props.actions.generalProcess(constants.getItemCatalogue, this.getRequest());
     }
-
+    updateState = (data) => {
+        this.setState(data);
+    }
     render() {
+        let modalAction = [
+            {
+                type: "modal",
+                className: "btn btn-default",
+                label: utils.getLabelByID("Close"),
+                icon: "close",
+                actionHandler: this.updateState.bind(this, {
+                    modelBoxData: false
+                })
+            }
+        ]
         if (this.state.isLoading) {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         }
         return (
             <div>
+                <ModalBox isOpen={this.state.modelBoxData ? true : false}>
+                    <Portlet title={utils.getLabelByID("Details")} actions={modalAction}>
+                        {(() => {
+                            if (this.state.modelBoxData) {
+                                return this.state.modelBoxData.replace(/(.{60})/g, "$1\n");
+                            }
+                        })()}
+                    </Portlet>
+                </ModalBox>
+
                 <Portlet title={utils.getLabelByID("ITEM MASTER")}>
 
                     <div className="row">
@@ -136,20 +159,21 @@ class ItemMasterList extends React.Component {
                         </div>
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Item Description")}</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="ItemDescription" id="itemDescription" />
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
                                 <label className="control-label">{utils.getLabelByID("Item Name")}</label>
                             </div>
                             <div className="form-group col-md-8">
                                 <input type="text" className="form-control" name="name" id="name" />
                             </div>
                         </div>
+                        <div className="col-md-6">
+                            <div className="form-group col-md-4">
+                                <label className="control-label">{utils.getLabelByID("Item Description")}</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <input type="text" className="form-control" name="ItemDescription" id="itemDescription" />
+                            </div>
+                        </div>
+                        
                     </div>
 
                     <div className="row">
@@ -197,6 +221,9 @@ class ItemMasterList extends React.Component {
                         searchCallBack={this.searchCallBack}
                         export={false}
                         search={true}
+                        renderPopupBody={(data) => {
+                            this.updateState({ modelBoxData: data });
+                        }}
                         activePage={this.state.page.currentPageNo}
                     />
                 </Portlet>
@@ -216,5 +243,5 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-ItemMasterList.displayName = "ITEM CATALOGUE";
-export default connect(mapStateToProps, mapDispatchToProps)(ItemMasterList);
+ProductCatalogueList.displayName = "ITEM CATALOGUE";
+export default connect(mapStateToProps, mapDispatchToProps)(ProductCatalogueList);

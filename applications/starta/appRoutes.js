@@ -5,15 +5,16 @@ import Locked from "../../core/components/AuthenticationScreens/Locked.jsx";
 import Login from "../../core/components/AuthenticationScreens/Login.jsx";
 
 //App Routes
-import OneTimeOrder from "./components/OneTimeOrder/OneTimeOrder.jsx";
+import OneTimeOrder from "./components/order/OneTimeOrder/OneTimeOrder.jsx";
 import ProductCatalogue from "./components/ProductCatalogue/ProductCatalogue.jsx";
-import ItemCatalogueList from "./components/ProductCatalogue/itemMasterList.jsx";
+import ItemCatalogueList from "./components/ProductCatalogue/ProductCatalogueList.jsx";
 import MasterAgreementList from "./components/MasterAgreement/MasterAgreementList.jsx";
 import AddMasterAgreement from "./components/MasterAgreement/AddMasterAgreements.jsx";
 import OrderList from "./components/OrderList/orderList.jsx";
 import CustomerAssociation from "./components/CustomerAssociation/customerAssociation.jsx";
-import OrderDetails from "./components/OrderDetails/OrderDetailContainer.jsx";
 
+import OrderDetails from "./components/order/OrderDetails/OrderDetailContainer.jsx";
+import OrderViaContract from "./components/order/OrderViaContract/OrderViaContract.jsx";
 
 let authRoutes = <div>
   <Route path="/strata/oneTimeOrder" component={OneTimeOrder}/>

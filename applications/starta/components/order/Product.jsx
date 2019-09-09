@@ -3,15 +3,23 @@ import * as constants from "../../../../core/constants/Communication";
 
 const Product = props => {
   const {onClick, details} = props;
+  let price = details.price ? details.price : details.unitPrice;
   return <div className="procard">
     <div>
       <div className="text-center proimg" onClick={onClick.bind(this, details)}>
         <img src={constants.ipfsGet + details.image.hash}/>
       </div>
       <a><h3>{details.name}</h3></a>
+      
       <label>
-        AED {details.price}
+       Material : {details.material}
       </label>
+      </div>
+      <div>
+      <label>
+        AED {price}
+      </label>
+      
       <button type="submit" className="Addcart">
         <img src="/assets/Resources/cart.png"/>
       </button>
@@ -28,11 +36,11 @@ const Product = props => {
         </select>
       </div>
       <div className="col-md-6">
+        {/* {console.log(details,"DETAILS!!!")} */}
         <label className="qty">Qty</label>
-        <input type="number" min="0" name="quantity" className="form-control" required/>
+        <input type="number" min="0" name="quantity" defaultValue={0} className="form-control" required/>
         <input type="string" name="itemCode" value={details.itemCode} className="form-control" style={{display: "none"}}/>
-        <input type="string" name="material" value={details.material} className="form-control" style={{display: "none"}}/>
-        <input type="string" name="price" value={details.price} className="form-control" style={{display: "none"}}/>
+        <input type="string" name="price" value={price} className="form-control" style={{display: "none"}}/>
         <input type="string" name="name" value={details.name} className="form-control" style={{display: "none"}}/>
         <input type="string" name="image" value={constants.ipfsGet + details.image.hash} className="form-control" style={{display: "none"}}/>
       </div>

@@ -2,6 +2,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import * as toaster from '../../../../core/common/toaster.js';
 import { browserHistory } from 'react-router';
 import * as actions from '../../../../core/actions/generalAction';
 import _ from 'lodash';

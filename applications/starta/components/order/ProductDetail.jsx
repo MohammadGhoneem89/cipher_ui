@@ -8,29 +8,30 @@ import * as constants from "../../../../core/constants/Communication";
 
 const ProductDetail = props => {
   const {onClick, details, state} = props;
+  let price = details.price ? details.price : details.unitPrice;
+  console.log(details,"--- <<<< DETAILS")
   return <Portlet title="Product Details">
     <div className="row productdetails">
     <div className="col-md-4 text-center">
-      <div className="prodetailsimg productImg"><img src={constants.ipfsGet + details.image.hash} width="100%"/></div>
+      <div className="prodetailsimg productImg">
+        <img src={constants.ipfsGet + details.image.hash} width="100%"/></div>
     </div>
     <div className="col-md-8 text-left">
       <div className="Prodetails">
-        <h2 className="DProName">Air Springs</h2>
+        <h2 className="DProName">{details.name}</h2>
         <h4
-          className="Dprice"><b>AED  500</b>
+          className="Dprice"><b>AED {price}</b>
         </h4>
-        <p className="dprpDesc">Air suspension is a type of vehicle suspension powered by an electric or engine-driven
-          air pump or compressor. This compressor pumps the air into a flexible bellows, usually made from
-          textile-reinforced rubber</p>
+        <p className="dprpDesc">{details.description}</p>
       </div>
       <div className="form-group margin">
         <div className="row">
           <div className="col-md-3 ">
-            <label className="bold" style={{overflowWrap: "inherit"}}>Name</label>
+            <label className="bold" style={{overflowWrap: "inherit"}}>Name :</label>
           </div>
           <div className="col-md-3 "><span>{details.name}</span></div>
           <div className="col-md-3 ">
-            <label className="bold" style={{overflowWrap: "inherit"}}>Model Material</label>
+            <label className="bold" style={{overflowWrap: "inherit"}}>Material :</label>
           </div>
           <div className="col-md-3 "><span>{details.material}</span></div>
         </div>
@@ -38,11 +39,11 @@ const ProductDetail = props => {
       <div className="form-group margin">
         <div className="row">
           <div className="col-md-3 ">
-            <label className="bold" style={{overflowWrap: "inherit"}}>Part number</label>
+            <label className="bold" style={{overflowWrap: "inherit"}}>Part number :</label>
           </div>
           <div className="col-md-3 "><span>{details.partNumber}</span></div>
           <div className="col-md-3 ">
-            <label className="bold" style={{overflowWrap: "inherit"}}>Model Volume:</label>
+            <label className="bold" style={{overflowWrap: "inherit"}}>Model Volume :</label>
           </div>
           <div className="col-md-3 "><span>{details.modelVolume}</span></div>
         </div>
@@ -50,11 +51,11 @@ const ProductDetail = props => {
       <div className="form-group margin">
         <div className="row">
           <div className="col-md-3 ">
-            <label className="bold" style={{overflowWrap: "inherit"}}>Price:</label>
+            <label className="bold" style={{overflowWrap: "inherit"}}>Price :</label>
           </div>
-          <div className="col-md-3 "><span>{details.price}</span></div>
+          <div className="col-md-3 "><span>{price}</span></div>
           <div className="col-md-3 ">
-            <label className="bold" style={{overflowWrap: "inherit"}}>Support Volume</label>
+            <label className="bold" style={{overflowWrap: "inherit"}}>Support Volume :</label>
           </div>
           <div className="col-md-3 "><span>{details.supportVolume}</span></div>
         </div>
@@ -62,7 +63,7 @@ const ProductDetail = props => {
       <div className="form-group margin">
         <div className="row">
           <div className="col-md-3 ">
-            <label className="bold" style={{overflowWrap: "inherit"}}>Print Time:</label>
+            <label className="bold" style={{overflowWrap: "inherit"}}>Print Time :</label>
           </div>
           <div className="col-md-3 "><span>{details.printTime}</span></div>
         </div>
