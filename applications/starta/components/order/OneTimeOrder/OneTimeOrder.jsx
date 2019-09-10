@@ -1,7 +1,7 @@
 /*standard imports*/
-import React, {PropTypes} from "react";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
+import React, { PropTypes } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import * as actions from "../../../../../core/actions/generalAction";
 import { browserHistory } from 'react-router';
 import * as toaster from '../../../../../core/common/toaster.js';
@@ -45,9 +45,9 @@ class OneTimeOrder extends React.Component {
       //typeData: undefined
 
       typeData: {
-        "search": [{label: "Name", value: "name"},
-          {label: "Description", value: "description"},
-          {label: "Material", value: "material"}]
+        "search": [{ label: "Name", value: "name" },
+        { label: "Description", value: "description" },
+        { label: "Material", value: "material" }]
       }
     };
     // this.nameTypeData = [];
@@ -73,7 +73,7 @@ class OneTimeOrder extends React.Component {
       }
     };
     this.props.actions.generalProcess(constants.getItemCatalogue, request);
-    this.setState({currentPageNo, searchCriteria: request.body.searchCriteria, isLoading2: true})
+    this.setState({ currentPageNo, searchCriteria: request.body.searchCriteria, isLoading2: true })
   };
 
   placeOrder() {
@@ -85,18 +85,22 @@ class OneTimeOrder extends React.Component {
       "body": {
         "orderType": "ONETIME",
         "raisedBy": sessionStorage.userID,
-        "quoteValidity": "888",
-        "orgCode": "0",
-        "incoTerms": "",
+        "quoteValidity": "",
+        "incoTerms": "EXW",
         "items": items
       }
     };
 
-    this.props.actions.generalAjxProcess(constants.createOrder, 
-      request).then(result => {
-        console.log(result,"result")
-      result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
-    });
+    if (this.state.cartItems && this.state.cartItems.length > 0) {
+      this.props.actions.generalAjxProcess(constants.createOrder,
+        request).then(result => {
+          console.log(result, "result")
+          result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
+        });
+    } else {
+      toaster.showToast("Please add at least one item to place the order!","ERROR");
+      return false;
+    }
   }
   redirectToList = () => {
     browserHistory.push('/strata/orderList')
@@ -147,13 +151,17 @@ class OneTimeOrder extends React.Component {
     let grandTotal = 0;
     let cart = this.state.cartItems;
 
+    if (cartItem.quantity == 0) {
+      alert("Quantity cannot be zero!")
+      cartItem.quantity = 0;
+      e.target.reset();
+      return false;
+    }
     let isNewItem = true;
     cart.map(element => {
       if (element.itemCode === cartItem.itemCode && element.color === cartItem.color) {
         isNewItem = false;
-        console.log(cartItem.quantity, cartItem.quantity, "QUANTITY");
-        element.quantity = parseInt(element.quantity)+ parseInt(cartItem.quantity);
-        console.log(cartItem.quantity, cartItem.quantity, "QUANTITY");
+        element.quantity = parseInt(element.quantity) + parseInt(cartItem.quantity);
       }
     });
     if (isNewItem) {
@@ -196,7 +204,7 @@ class OneTimeOrder extends React.Component {
   };
 
   closeModalBox() {
-    this.setState({modelBox: false});
+    this.setState({ modelBox: false });
   }
 
   searchItem(e) {
@@ -206,6 +214,7 @@ class OneTimeOrder extends React.Component {
     formData.forEach(function (value, key) {
       data[key] = value;
     });
+
     data[data.searchType] = data.find;
     delete data.searchType;
     delete data.find;
@@ -229,11 +238,11 @@ class OneTimeOrder extends React.Component {
                   <div className="input-group">
                     <div className="input-search-field">
                       <input type="text" id="search" className="form-control search-field product-search-field"
-                             dir="ltr" name="find" placeholder="Search for Products" autoComplete="off"/>
+                        dir="ltr" name="find" placeholder="Search for Products" autoComplete="off" />
                     </div>
                     <div className="input-group-addon search-categories">
                       <select name="searchType" id="productCategory" className="postform resizeselect"
-                              style={{width: "143px"}}>
+                        style={{ width: "143px" }}>
                         <option value="name">Name</option>
                         <option className="level-0" value="description">Description</option>
                         <option className="level-0" value="material">Material</option>
@@ -241,7 +250,7 @@ class OneTimeOrder extends React.Component {
                     </div>
                     <div className="input-group-addon search-categories">
                       <select name="classification" id="product_cat" className="postform resizeselect"
-                              style={{width: "143px"}}>
+                        style={{ width: "143px" }}>
                         <option value="">All Categories</option>
                         {categories.map((item, index) => {
                           return <option key={index} className="level-0" value={item.value}>{item.label}</option>;
@@ -250,13 +259,13 @@ class OneTimeOrder extends React.Component {
                     </div>
                     <div className="input-group-btn">
                       <button type="submit" className="btn btn-secondary"><i className="fa fa-search"
-                                                                             aria-hidden="true"/></button>
+                        aria-hidden="true" /></button>
                     </div>
                   </div>
                 </form>
                 <div className="cartitemcount"><span>{this.state.cartItems.length}</span></div>
                 <div className="carticon" onClick={this.checkout}>
-                  <a href="#"><img src="/assets/Resources/cart.png"/></a>
+                  <a href="#"><img src="/assets/Resources/cart.png" /></a>
                 </div>
               </div>
             </div>
@@ -270,9 +279,9 @@ class OneTimeOrder extends React.Component {
                 return (
                   <Col col="3" key={index}>
                     <form onSubmit={this.addToCart}>
-                      <Product onClick={this.openModalBox} details={item}/>
+                      <Product onClick={this.openModalBox} details={item} />
                     </form>
-                    <div className="seprator"/>
+                    <div className="seprator" />
                   </Col>
                 );
               })}
@@ -287,7 +296,7 @@ class OneTimeOrder extends React.Component {
           </Portlet>}
 
           <ModalBox isOpen={this.state.modelBox ? true : false}>
-            <ProductDetail details={this.state.modelItem} state={this.state} closeModalBox={this.closeModalBox}/>
+            <ProductDetail details={this.state.modelItem} state={this.state} closeModalBox={this.closeModalBox} />
           </ModalBox>
 
           {this.state.createOrder && <CreateOrder
@@ -313,7 +322,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)};
+  return { actions: bindActionCreators(actions, dispatch) };
 }
 
 OneTimeOrder.displayName = "__HIDE";

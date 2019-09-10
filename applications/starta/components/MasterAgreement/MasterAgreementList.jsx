@@ -8,6 +8,7 @@ import * as actions from '../../../../core/actions/generalAction';
 import * as constants from '../../../../core/constants/Communication.js';
 import Portlet from '../../../../core/common/Portlet.jsx';
 import _ from 'lodash';
+import * as requestCreator from '../../../../core/common/request.js';
 
 class MasterAgreementList extends React.Component {
 
@@ -21,8 +22,7 @@ class MasterAgreementList extends React.Component {
                 currentPageNo: 1
             },
             isLoading: true,
-            gridData: [{ "itemCode": "Item Code", "name": "name", "description": "description", "price": "price" }
-            ],
+            gridData: [],
             actions: []
         };
         this.data = [];
@@ -62,23 +62,21 @@ class MasterAgreementList extends React.Component {
         return request
     }
     componentWillReceiveProps(nextProps) {
-
-        if (nextProps.getMasterAgreement) {
-
+        if (nextProps.getMasterAgreement && nextProps.typeData) {
             console.log(nextProps.getMasterAgreement, "getMasterAgreement")
             this.setState(
                 {
-                    gridData: nextProps.getMasterAgreement,
+                    gridData: this.formatContractData(nextProps.getMasterAgreement),
                     isLoading: false,
+                    typeData: nextProps.typeData,
                     page: nextProps.getPage
                 }
             )
-            // console.log(this.updateSLA(nextProps.getMasterAgreementList),"DATAAAAAAAAAAAAAA")
-
         }
     }
 
     componentDidMount() {
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['orderStatus']));
         this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
         this.setState({
             actions:
@@ -91,7 +89,27 @@ class MasterAgreementList extends React.Component {
         })
         window.scrollTo(0, 0);
     }
+    getStatusLabel = status => {
+        if (this.state.typeData && this.state.typeData.orderStatus) {
+            let orderStatus = this.state.typeData.orderStatus;
+            for (let i in orderStatus) {
+                if (orderStatus[i].value == status) {
+                    return orderStatus[i].label;
+                }
+            }
+        }
+    }
 
+    formatContractData = (gridData) => {
+        for (let i in gridData) {
+            let status = gridData[i].status;
+            if (status) {
+                gridData[i].status = this.getStatusLabel(status);
+            }
+            
+        }
+        return gridData;
+    }
     pageChanged = (pageNo) => {
         let page = this.state.page;
         page.currentPageNo = pageNo;
@@ -100,8 +118,6 @@ class MasterAgreementList extends React.Component {
     }
 
     render() {
-
-        console.log(this.state.gridData)
         if (this.state.isLoading) {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         }
@@ -164,7 +180,6 @@ class MasterAgreementList extends React.Component {
                         <Table
                             gridColumns={utils.getGridColumnByName("masterAgreement")}
                             gridData={this.state.gridData}
-
                             fontclass=""
                             totalRecords={this.props.getPage.totalRecords}
                             pageSize={10}
@@ -180,9 +195,9 @@ class MasterAgreementList extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    //console.log(state.app.getMasterAgreement,"state.app.getMasterAgreement")
+    console.log(state.app.getMasterAgreement, "state.app.getMasterAgreement")
     return {
-
+        typeData: state.app.typeData.data,
         getMasterAgreement: _.get(state.app, "getMasterAgreement.searchResult", []),
         getPage: _.get(state.app, "getMasterAgreement.pageData", [])
     };

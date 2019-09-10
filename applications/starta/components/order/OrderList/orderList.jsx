@@ -1,7 +1,7 @@
 /*standard imports*/
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as utils from '../../../../../core/common/utils.js';
 import Table from '../../../../../core/common/Datatable.jsx';
 import * as actions from '../../../../../core/actions/generalAction';
@@ -31,24 +31,24 @@ class OrderList extends React.Component {
       isLoading: false,
       gridData: [],
       orderSearch: {},
-      fromDate: '',
-      toDate: ''
+      fromDate: undefined,
+      toDate: undefined
     };
     this.generalHandler = gen.generalHandler.bind(this);
   }
 
   getRequest = isFormSubmit => {
-    let fromDate = this.state.fromDate || '',
-      toDate = this.state.toDate || '',
+    let fromDate = this.state.fromDate,
+      toDate = this.state.toDate,
       contractID = this.state.orderSearch.contractID || '',
       orderID = this.state.orderSearch.orderID || '',
       orderStatus = this.state.orderSearch.orderStatus || '';
 
     let searchCriteria = {};
 
-    if (fromDate != '') searchCriteria.fromDate = fromDate;
+    if (fromDate) { searchCriteria.fromDate = fromDate };
 
-    if (toDate != '') searchCriteria.toDate = toDate;
+    if (toDate) searchCriteria.toDate = toDate;
 
     if (contractID != '') searchCriteria.contractID = contractID;
 
@@ -67,6 +67,7 @@ class OrderList extends React.Component {
         searchCriteria
       }
     };
+
     if (isFormSubmit) {
       this.updateCurrentPage(1);
     }
@@ -94,7 +95,7 @@ class OrderList extends React.Component {
 
   getStatusLabel = status => {
     if (this.state.typeData.Status) {
-      let {label} = this.state.typeData.Status.find(obj => obj.value == status);
+      let { label } = this.state.typeData.Status.find(obj => obj.value == status);
       return label;
     }
   };
@@ -109,11 +110,11 @@ class OrderList extends React.Component {
   }
 
   onFromDateChange = value => {
-    this.state.fromDate = value;
+    value == 'Invalid date' ? this.state.fromDate = undefined : this.state.fromDate = value;
   };
 
   onToDateChange = value => {
-    this.state.toDate = value;
+    value == 'Invalid date' ? this.state.toDate = undefined : this.state.toDate = value;
   };
 
   searchCallBack = keyWord => {
@@ -126,7 +127,7 @@ class OrderList extends React.Component {
   updateCurrentPage = pageNo => {
     let page = this.state.page;
     page.currentPageNo = pageNo;
-    this.setState({page});
+    this.setState({ page });
   };
 
   clearFields = () => {
@@ -146,35 +147,35 @@ class OrderList extends React.Component {
         <Portlet title={utils.getLabelByID('Order List Filter(s)')}>
           <Row>
             <Col col="6">
-              <Label text={utils.getLabelByID('From Date')} columns="4"/>
+              <Label text={utils.getLabelByID('From Date')} columns="4" />
               <div className="form-group col-md-8" id="OrderSearch">
-                <DateControl id="fromDate" dateChange={this.onFromDateChange}/>
+                <DateControl id="fromDate" dateChange={this.onFromDateChange} />
               </div>
             </Col>
             <Col col="6">
-              <Label text={utils.getLabelByID('To Date')} columns="4"/>
+              <Label text={utils.getLabelByID('To Date')} columns="4" />
               <div className="form-group col-md-8">
-                <DateControl id="toDate" dateChange={this.onToDateChange}/>
+                <DateControl id="toDate" dateChange={this.onToDateChange} />
               </div>
             </Col>
           </Row>
           <Row>
             <Col col="6">
-              <Label text={utils.getLabelByID('Contract ID')} columns="4"/>
+              <Label text={utils.getLabelByID('Contract ID')} columns="4" />
               <Input fieldname="contractID" formname="orderSearch" columns="8" state={this.state}
-                     actionHandler={this.generalHandler} className="form-control"/>
+                actionHandler={this.generalHandler} className="form-control" />
             </Col>
             <Col col="6">
-              <Label text={utils.getLabelByID('Order ID')} columns="4"/>
+              <Label text={utils.getLabelByID('Order ID')} columns="4" />
               <Input fieldname="orderID" formname="orderSearch" columns="8" state={this.state}
-                     actionHandler={this.generalHandler} className="form-control"/>
+                actionHandler={this.generalHandler} className="form-control" />
             </Col>
           </Row>
           <Row>
             <Col col="6">
-              <Label text={utils.getLabelByID('Order Status')} columns="4"/>
+              <Label text={utils.getLabelByID('Order Status')} columns="4" />
               <Combobox fieldname="orderStatus" formname="orderSearch" columns="8" state={this.state} typeName="Status"
-                        dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control"/>
+                dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" />
             </Col>
           </Row>
 
@@ -231,7 +232,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)};
+  return { actions: bindActionCreators(actions, dispatch) };
 }
 
 OrderList.displayName = 'Order List';

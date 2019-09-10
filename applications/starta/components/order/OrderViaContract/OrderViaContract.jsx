@@ -30,7 +30,6 @@ import Combobox from "../../../common/Select.jsx";
 class OrderViaContract extends React.Component {
   constructor(props, context) {
     super(props, context);
-    //console.log(sessionStorage.userID,"orgcode!!!!")
     this.state = {
       isLoading: true,
       isLoading2: false,
@@ -81,7 +80,7 @@ class OrderViaContract extends React.Component {
       "body": {
         "page": {
           "currentPageNo": currentPageNo || this.state.currentPageNo || 1,
-          "pageSize": 8
+          "pageSize": 28
         },
         "searchCriteria": searchCriteria || this.state.searchCriteria
       }
@@ -100,6 +99,7 @@ class OrderViaContract extends React.Component {
       contractID.push(obj.contractID);
 
     });
+    console.log(contractID,"???? CONTRACTID")
     return contractID;
   }
   placeOrder() {
@@ -130,6 +130,7 @@ class OrderViaContract extends React.Component {
     } else {
       alert("Please add atleast one item to place the order!");
       browserHistory.push('/strata/OrderViaContract');
+      toaster.showToast("Failed to place the order!");
       return false;
     }
   }
@@ -367,7 +368,7 @@ class OrderViaContract extends React.Component {
   }
 
   render() {
-    console.log(this.state.cartItems ? this.state.cartItems.length : "<<<<< CART LENGTH")
+    console.log(this.state.contracts ? this.state.contracts : "<<<<< contracts")
     //console.log(this.state.getItemCatalogue ? this.state.getItemCatalogue : [], "RENEDER DATA")
     let masterContract = this.state.contracts ? this.getContractDetails() : []
     if (!this.state.isLoading)

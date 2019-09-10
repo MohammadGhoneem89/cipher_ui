@@ -36,7 +36,6 @@ const Product = props => {
         </select>
       </div>
       <div className="col-md-6">
-        {/* {console.log(details,"DETAILS!!!")} */}
         <label className="qty">Qty</label>
         <input type="number" min="0" name="quantity" defaultValue={0} className="form-control" required/>
         <input type="string" name="itemCode" value={details.itemCode} className="form-control" style={{display: "none"}}/>

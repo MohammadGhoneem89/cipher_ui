@@ -35,7 +35,7 @@ module.exports = {
   masterAgreement: [
     {alias: "", key: "contractID", type: "hiddenID"},
     {alias: "Contract ID", key: "contractID", type: 'string'},
-    {alias: "Strat Date", key: "startDate", type: "string"},
+    {alias: "start Date", key: "startDate", type: "string"},
     {alias: "End Date", key: "endDate", type: "string"},
     {alias: "Customer", key: "customerID", type: 'string'},
     {alias: "Status", key: "status", type: 'string'},
@@ -62,7 +62,7 @@ module.exports = {
   viewMasterAgreementSLA:[
     {alias: "", key: "contractID", type: "hiddenID"},
     {alias: "Contract ID", key: "contractID", type: 'string'},
-    {alias: "Strat Date", key: "startDate", type: "string"},
+    {alias: "START Date", key: "startDate", type: "string"},
     {alias: "End Date", key: "endDate", type: "string"},
     {alias: "Customer", key: "customerID", type: 'string'},
     {alias: "Status", key: "status", type: 'string'},
@@ -76,18 +76,20 @@ module.exports = {
   rebate:[
     {alias: "greater Than", key: "greaterThan", type: 'string'},
     {alias: "less Than", key: "lessThan", type: "string"},
+    {alias: "REBATE type", key: "discountType", type: "string"},
     {alias: "REBATE", key: "rebate", type: "string"},
     {alias: "Action", key: "action", type: 'action'}
   ],
   SLA:[
-    {alias: "FROM stage", key: "fromStage", type: 'string'},
-    {alias: "TO stage ", key: "toStage", type: "string"},
-    {alias: "duration", key: "duration", type: "string"}
+    {alias: "FROM stage", key: "fromStageLabel", type: 'string'},
+    {alias: "TO stage ", key: "toStageLabel", type: "string"},
+    {alias: "duration (DAYS)", key: "duration", type: "string"}
   ],
   Penalties:[
-    {alias: "FROM stage", key: "fromStage", type: 'string'},
-    {alias: "TILL stage ", key: "tillStage", type: "string"},
+    {alias: "FROM stage", key: "fromStagePenaltyLabel", type: 'string'},
+    {alias: "TILL stage ", key: "tillStageLabel", type: "string"},
     {alias: "greater than", key: "greaterThan", type: "string"},
+    {alias: "penalty type", key: "penaltyType", type: "string"},
     {alias: "penalty value", key: "penaltyValue", type: "string"}
 
   ],

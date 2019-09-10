@@ -33,6 +33,11 @@ class AddMasterAgreement extends React.Component {
             startDate: "",
             endDate: ""
         }
+        this.fromStage = undefined;
+        this.toStage = undefined;
+        this.fromStagePenalty = undefined;
+        this.tillStage = undefined;
+
         this.addOrderRebate = this.addOrderRebate.bind(this);
         this.ActionHandlers = this.ActionHandlers.bind(this);
         this.ActionHandlersItem = this.ActionHandlersItem.bind(this)
@@ -66,19 +71,28 @@ class AddMasterAgreement extends React.Component {
     }
 
     onStartDateChange = (value) => {
+        console.log(value,"start date")
         this.state.startDate = value;
     }
 
     onEndDateChange = (value) => {
-        //alert(value)
+        console.log(value,"end date")
         this.state.endDate = value;
     }
+
+    getStatusLabel = status => {
+        if (this.state.typeData.orderStatus) {
+            let { label } = this.state.typeData.orderStatus.find(obj => obj.value == status);
+            return label;
+        }
+    };
 
     addOrderRebate = () => {
         let orderGreaterThan = document.getElementById('orderGreaterThan') == null ? "" : document.getElementById('orderGreaterThan').value;
         let orderLessThan = document.getElementById('orderLessThan') == null ? "" : document.getElementById('orderLessThan').value;
+        let rebateType = document.getElementById('rebateType') == null ? "" : document.getElementById('rebateType').value;
         let rebate = document.getElementById('orderRebate') == null ? "" : document.getElementById('orderRebate').value;
-
+        
         let data = this.state.orderRebate;
 
         if (orderGreaterThan < 0) {
@@ -89,6 +103,10 @@ class AddMasterAgreement extends React.Component {
             alert("To should be greater than From!")
             return false;
         }
+        if (!rebateType) {
+            alert("Rebate Type is required!")
+            return false;
+        }
         if (rebate <= 0) {
             alert("Rebate should be greater than zero!")
             return false;
@@ -97,13 +115,13 @@ class AddMasterAgreement extends React.Component {
             greaterThan: orderGreaterThan,
             lessThan: orderLessThan,
             rebate: rebate,
-            discountType: "FLAT",
+            discountType: rebateType,
             action: [{
                 label: "Delete", iconName: "fa fa-trash",
                 actionType: "COMPONENT_FUNCTION"
             },
             {
-                label: "Edit", iconName: "fa fa-edit", 
+                label: "Edit", iconName: "fa fa-edit",
                 actionType: "COMPONENT_FUNCTION"
             }],
         }
@@ -113,22 +131,35 @@ class AddMasterAgreement extends React.Component {
         this.setState({ orderRebate: data });
     }
 
-
+    //this.fromStage = value
+    //fromStage = label
 
     addSLA = () => {
-        let fromStage = document.getElementById('fromStage') == null ? "" : document.getElementById('fromStage').value;
-        let toStage = document.getElementById('toStage') == null ? "" : document.getElementById('toStage').value;
+        this.fromStage = document.getElementById('fromStage') == null ? "" : document.getElementById('fromStage').value;
+        this.toStage = document.getElementById('toStage') == null ? "" : document.getElementById('toStage').value;
         let duration = document.getElementById('duration') == null ? "" : document.getElementById('duration').value;
 
         let data = this.state.sla;
-
+        if (!this.fromStage) {
+            alert("From Stage is required!")
+            return false;
+        }
+        if (!this.toStage) {
+            alert("To Stage is required!")
+            return false;
+        }
         if (duration <= 0) {
             alert("Duration should be greater than zero!")
             return false;
         }
+        let fromStageLabel = this.getStatusLabel(this.fromStage);
+        let toStageLabel = this.getStatusLabel(this.toStage);
+
         let newtupple = {
-            fromStage: fromStage,
-            toStage: toStage,
+            fromStageLabel: fromStageLabel,
+            toStageLabel: toStageLabel,
+            fromStage: this.fromStage,
+            toStage: this.toStage,
             duration: duration,
             action: [{ label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }, { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }],
         }
@@ -143,14 +174,24 @@ class AddMasterAgreement extends React.Component {
     }
 
     addPenalty = () => {
-        let fromStagePenalty = document.getElementById('fromStagePenalty') == null ? "" : document.getElementById('fromStagePenalty').value;
-        let tillStage = document.getElementById('tillStage') == null ? "" : document.getElementById('tillStage').value;
+        this.fromStagePenalty = document.getElementById('fromStagePenalty') == null ? "" : document.getElementById('fromStagePenalty').value;
+        this.tillStage = document.getElementById('tillStage') == null ? "" : document.getElementById('tillStage').value;
         let greaterThan = document.getElementById('greaterThan') == null ? "" : document.getElementById('greaterThan').value;
+        let penaltyType = document.getElementById('penaltyType') == null ? "" : document.getElementById('penaltyType').value;
         let penaltyValue = document.getElementById('penaltyValue') == null ? "" : document.getElementById('penaltyValue').value;
+
         let data = this.state.penalties;
+
+        let fromStagePenaltyLabel = this.getStatusLabel(this.fromStagePenalty);
+        let tillStageLabel = this.getStatusLabel(this.tillStage);
+
 
         if (greaterThan <= 0) {
             alert("Greater Than Time should be greater than zero!")
+            return false;
+        }
+        if (!penaltyType) {
+            alert("Penalty Type is required!")
             return false;
         }
         if (penaltyValue <= 0) {
@@ -158,10 +199,14 @@ class AddMasterAgreement extends React.Component {
             return false;
         }
 
+
         let newtupple = {
-            fromStage: fromStagePenalty,
-            tillStage: tillStage,
+            fromStagePenaltyLabel: fromStagePenaltyLabel,
+            tillStageLabel: tillStageLabel,
+            fromStage: this.fromStagePenalty,
+            tillStage: this.tillStage,
             greaterThan: greaterThan,
+            penaltyType: penaltyType,
             penaltyValue: penaltyValue,
             action: [{ label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }, { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }],
         }
@@ -197,8 +242,6 @@ class AddMasterAgreement extends React.Component {
         let result = this.state.itemList.filter(obj => {
             return obj.itemCode === item
         })
-
-        alert(JSON.stringify(result, "result"))
         let newtupple = {
             itemCode: item,
             name: result[0].name,
@@ -281,7 +324,7 @@ class AddMasterAgreement extends React.Component {
                 product.material = this.state.items[i].material,
                 product.printTime = this.state.items[i].printTime,
                 product.leadTime = this.state.items[i].leadTime,
-                product.unitPrice = parseInt(this.state.items[i].price, 10),
+                product.unitPrice = parseFloat(this.state.items[i].price, 10),
                 product.expectedQuantity = parseInt(this.state.items[i].quantity, 10)
             product.itemWiseDiscount = []
 
@@ -289,7 +332,7 @@ class AddMasterAgreement extends React.Component {
                 let rebate = {}
                 rebate.greaterThan = parseInt(this.state.items[i].rebate[j].greaterThan, 10)
                 rebate.lessThan = parseInt(this.state.items[i].rebate[j].lessThan, 10)
-                rebate.discount = parseInt(this.state.items[i].rebate[j].rebate, 10)
+                rebate.discount = parseFloat(this.state.items[i].rebate[j].rebate, 10)
                 rebate.discountType = this.state.items[i].rebate[j].discountType
                 product.itemWiseDiscount.push(rebate)
             }
@@ -297,9 +340,7 @@ class AddMasterAgreement extends React.Component {
             items.push(product)
         }
         let sla = []
-        //console.log(this.state.sla)
         for (let i = 0; i < this.state.sla.length; i++) {
-            //console.log(this.state.sla[i])
             let slaObj = {}
             slaObj.fromStage = this.state.sla[i].fromStage
             slaObj.toStage = this.state.sla[i].toStage
@@ -309,14 +350,13 @@ class AddMasterAgreement extends React.Component {
         }
 
         let penalties = []
-        // console.log(this.state.penalties)
         for (let i = 0; i < this.state.penalties.length; i++) {
             let penaltyObj = {}
             penaltyObj.fromStage = this.state.penalties[i].fromStage
             penaltyObj.tillStage = this.state.penalties[i].tillStage
             penaltyObj.greaterThan = parseInt(this.state.penalties[i].greaterThan, 10)
-            penaltyObj.penaltyType = "FLAT"
-            penaltyObj.value = parseInt(this.state.penalties[i].penaltyValue, 10)
+            penaltyObj.penaltyType = this.state.penalties[i].penaltyType
+            penaltyObj.penaltyValue = parseFloat(this.state.penalties[i].penaltyValue, 10)
 
             penalties.push(penaltyObj)
         }
@@ -336,9 +376,6 @@ class AddMasterAgreement extends React.Component {
             sla,
             penalties
         }
-
-        console.log(JSON.stringify(contract), ">>>>CONTRACT")
-
         this.props.actions.generalAjxProcess(constants.addMasterContract, { "body": _.cloneDeep(contract) })
             .then(result => {
                 console.log(result, "result")
@@ -362,16 +399,19 @@ class AddMasterAgreement extends React.Component {
         $('#tab_1_1_1').find('input').val(0);
         $('#tab_1_1_2').find('input').val(0);
         $('#tab_1_1').find('input').val(0);
-        $("#tab_1_1 option:selected").prop("selected", "")
+        $("#tab_1_1 select").val("");
         this.setState({ orderRebate: [], itemRebate: [] });
     }
 
     clearFieldsSLA() {
+        $("#tab_1_2 select").val("");
         $('#tab_1_2').find('input').val(0);
     }
 
     clearFieldsPenalty() {
+        $('#tab_1_3').find("select").prop("selectedIndex", "");
         $('#tab_1_3').find('input').val(0);
+
     }
 
     clearFields() {
@@ -384,7 +424,7 @@ class AddMasterAgreement extends React.Component {
             case "Edit":
                 if (index > -1) {
                     let a = this.state.items[index];
-                    console.log(a,"a")
+                    console.log(a, "a")
                     document.getElementById('item').value = (a.itemCode);
                     document.getElementById('unitPrice').value = parseInt(a.price, 10);
                     document.getElementById('expectedQuantity').value = parseInt(a.quantity, 10);
@@ -438,7 +478,6 @@ class AddMasterAgreement extends React.Component {
     }
 
     render() {
-        console.log("this.state", this.state)
         const itemList = this.state.itemList ? this.state.itemList : []
         const status = this.state.typeData ? this.state.typeData.orderStatus : []
         const shipmentType = this.state.typeData ? this.state.typeData.shipmentType : []
@@ -466,14 +505,14 @@ class AddMasterAgreement extends React.Component {
                                     {/* {console.log(initialValues)} */}
                                     <select id="customerID" className="form-control">
                                         <option key="-1" value="">Select</option>
-                                        <option key="ETIHAD" value="ETIHAD">ETIHAD</option>
-                                        {/* {
-                                        customerList.map((option, index) => {
-                                            return (
-                                                <option key={index} value={option.value}>{option.label}</option>
-                                            );
-                                        })
-                                    } */}
+                                        {/* <option key="ETIHAD" value="ETIHAD">ETIHAD</option> */}
+                                        {
+                                            customerList.map((option, index) => {
+                                                return (
+                                                    <option key={index} value={option.value}>{option.label}</option>
+                                                );
+                                            })
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -644,7 +683,7 @@ class AddMasterAgreement extends React.Component {
                                                                             {/* Order Rebate Box */}
                                                                             <div className="tab-pane active" id="tab_1_1_1">
                                                                                 <div className="row">
-                                                                                    <div className="col-md-4">
+                                                                                    <div className="col-md-6">
                                                                                         <div className="form-group">
                                                                                             <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("From")}</label>
                                                                                             <div className="form-group col-md-9">
@@ -652,7 +691,7 @@ class AddMasterAgreement extends React.Component {
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div className="col-md-4">
+                                                                                    <div className="col-md-6">
                                                                                         <div className="form-group">
                                                                                             <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("To")}</label>
                                                                                             <div className="form-group col-md-9">
@@ -660,9 +699,26 @@ class AddMasterAgreement extends React.Component {
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div className="col-md-4">
+
+                                                                                </div>
+                                                                                <div className="row">
+                                                                                    <div className="col-md-6">
                                                                                         <div className="form-group">
-                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("Rebate")}</label>
+                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("Rebate Type")}</label>
+                                                                                            <div className="form-group col-md-9">
+                                                                                                <select id="rebateType" className="form-control" >
+                                                                                                    <option key="-1" value="">Select</option>
+                                                                                                    <option key="0" value="flat">Flat</option>
+                                                                                                    <option key="1" value="percentage">Percentage</option>
+
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div className="col-md-6">
+                                                                                        <div className="form-group">
+                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("Rebate Value")}</label>
                                                                                             <div className="form-group col-md-9">
                                                                                                 <input type="number" className="form-control" id="orderRebate" />
                                                                                             </div>
@@ -791,12 +847,12 @@ class AddMasterAgreement extends React.Component {
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("From Stage")}</label>
                                                             <div className="form-group col-md-8">
-                                                                <select id="fromStagePenalty" className="form-control">
-                                                                    <option key="-1" value="">Select</option>
+                                                                <select id="fromStagePenalty" className="form-control" disabled>
+                                                                    {/* <option key="-1" value="">Select</option> */}
                                                                     {
                                                                         status.map((option, index) => {
                                                                             return (
-                                                                                <option key={index} value={option.value}>{option.label}</option>
+                                                                                <option key={index} value="002">Purchase Order</option>
                                                                             );
                                                                         })
                                                                     }
@@ -808,12 +864,12 @@ class AddMasterAgreement extends React.Component {
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Till Stage")}</label>
                                                             <div className="form-group col-md-8">
-                                                                <select id="tillStage" className="form-control">
-                                                                    <option key="-1" value="">Select</option>
+                                                                <select id="tillStage" className="form-control" disabled>
+                                                                    {/* <option key="-1" value="">Select</option> */}
                                                                     {
                                                                         status.map((option, index) => {
                                                                             return (
-                                                                                <option key={index} value={option.value}>{option.label}</option>
+                                                                                <option key={index} value="011">Received</option>
                                                                             );
                                                                         })
                                                                     }
@@ -821,6 +877,8 @@ class AddMasterAgreement extends React.Component {
                                                             </div>
                                                         </div>
                                                     </div>
+
+
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-6">
@@ -831,14 +889,32 @@ class AddMasterAgreement extends React.Component {
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                </div>
+
+                                                <div className="row">
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("PenaltyValue")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Penalty Type")}</label>
+                                                            <div className="form-group col-md-8">
+                                                                <select id="penaltyType" className="form-control" >
+                                                                    <option key="-1" value="">Select</option>
+                                                                    <option key="0" value="flat">Flat</option>
+                                                                    <option key="1" value="percentage">Percentage</option>
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="form-group">
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Penalty Value")}</label>
                                                             <div className="form-group col-md-8">
                                                                 <input type="number" className="form-control" id="penaltyValue" />
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-12">

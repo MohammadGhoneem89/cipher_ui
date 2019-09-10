@@ -9,7 +9,7 @@ import * as utils from '../../../../core/common/utils.js';
 const ProductDetail = props => {
   const {onClick, details, state} = props;
   let price = details.price ? details.price : details.unitPrice;
-  console.log(details,"--- <<<< DETAILS")
+  
   return <Portlet title="Product Details">
     <div className="row productdetails">
     <div className="col-md-4 text-center">

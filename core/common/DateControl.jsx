@@ -17,16 +17,16 @@ class DateControl extends React.Component {
 
     }
     dateChange(value) {
-        //alert(this.UNIXConvertToDate(value))
-        if(this.props.dateChange)
+        // if(value=='Invalid date') { alert(this.props.dateChange(value)) }
+        if (this.props.dateChange)
             this.props.dateChange(value);
     }
     UNIXConvertToDate(UNIXTS) {
-        if (UNIXTS ==0)
+        if (UNIXTS == 0)
             return "";
-        let date = new Date(UNIXTS*1000);
+        let date = new Date(UNIXTS * 1000);
         let day = date.getDate();
-        let month = date.getMonth()+1;
+        let month = date.getMonth() + 1;
         let year = date.getFullYear();
         let hours = date.getHours();
         let minutes = "0" + date.getMinutes();
@@ -45,7 +45,7 @@ class DateControl extends React.Component {
         return (
             <div id={dateControlID}>
                 <DatePicker inputFormat={format} name={this.props.name} defaultText={defaultText}
-                            mode={mode} showToday={showToday} readOnly = {true} onChange={this.dateChange} />
+                    mode={mode} showToday={showToday} readOnly={true} onChange={this.dateChange} />
             </div>
         );
     }
