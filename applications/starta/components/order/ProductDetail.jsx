@@ -68,7 +68,7 @@ const ProductDetail = props => {
           <div className="col-md-3 "><span>{details.printTime}</span></div>
         </div>
       </div>
-      <div className="form-group margin">
+      {/* <div className="form-group margin">
         <div className="row">
           <div className="col-md-12">
             <div className="filebtn">
@@ -76,7 +76,7 @@ const ProductDetail = props => {
               <a href="#" className="btn stratabtnstyle manufacture">Manufacturing File</a></div>
           </div>
         </div>
-      </div>
+      </div> */}
       <br/>
     </div>
     <div className="col-md-12 text-right">

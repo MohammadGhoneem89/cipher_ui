@@ -99,7 +99,7 @@ class OrderViaContract extends React.Component {
       contractID.push(obj.contractID);
 
     });
-    console.log(contractID,"???? CONTRACTID")
+    console.log(contractID, "???? CONTRACTID")
     return contractID;
   }
   placeOrder() {
@@ -262,7 +262,7 @@ class OrderViaContract extends React.Component {
       element.quantity = parseInt(element.quantity);
       element.price = parseInt(element.price);
       element.total = element.quantity * element.price;
-      element.material=result[0].material;
+      element.material = result[0].material;
     });
     cart.forEach(element => {
       grandTotal += element.total
@@ -298,12 +298,16 @@ class OrderViaContract extends React.Component {
     this.setState({ modelBox: false });
   }
   handleOnChange(e) {
-    //alert(e.target.value,"value")
+
     if (e.target.value == "") {
       this.setState({
         contractState: false
       })
     }
+
+    this.setState({
+      cartItems: []
+    })
   }
   getCustomerAssociationType(userID) {
     console.log(userID, "userID")
@@ -381,15 +385,15 @@ class OrderViaContract extends React.Component {
                 <form className="navbar-search" method="get" autoComplete="off" onSubmit={this.searchItem}>
                   <label className="sr-only screen-reader-text" htmlFor="search">Select Master Contract:</label>
                   <div className="input-group">
-                    <div className="input-search-field">
+                    {/* <div className="input-search-field">
                       <input type="text" id="search" className="form-control search-field product-search-field"
                         dir="ltr" name="" id="" placeholder="Select Master Contract" autoComplete="off" />
-                    </div>
+                    </div> */}
 
-                    <div className="input-group-addon search-categories">
+                    <div className="form-control search-field product-search-field">
                       <select name="contractID" id="contractID"
                         onChange={(e) => this.handleOnChange(e)}
-                        className="postform resizeselect"
+                        className="col-md-12"
                         style={{ width: "143px" }}>
                         <option value="">All Contracts</option>
                         {masterContract.map((contract, index) => {
@@ -450,13 +454,6 @@ class OrderViaContract extends React.Component {
                   </div>
                 </div>
 
-                <div className="col-md-4" style={{ paddingLeft: "75px" }}>
-                  <img className="img-thumbnail img-rounded"
-                    style={{ height: "150px", width: "200px" }}
-                    src="/assets/Resources/etihad.png"
-                  //src={this.contractData.image}
-                  />
-                </div>
               </div>
             </div>}
           <br />
