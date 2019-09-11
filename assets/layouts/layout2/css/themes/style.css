@@ -26,6 +26,24 @@
     float: left;
     width: 52%;
 }
+.via-contract .navbar-search>.input-group .search-categories {
+
+    border-left: 1px!important;
+    background-color: transparent;
+    width: 100%;
+    border-top-left-radius: 2.467em!important;
+    border-bottom-left-radius: 2.467em!important;
+    border-color: #c20c35;
+    border-width: 2px;
+    border-right: 0px;
+}
+
+.via-contract .navbar-search .search-categories>select {
+    width: 100%;
+    margin-left: 20px;    
+}
+
+
 .screen-reader-text {
     clip: rect(1px 1px 1px 1px);
     clip: rect(1px,1px,1px,1px);

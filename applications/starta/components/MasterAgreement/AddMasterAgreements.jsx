@@ -24,6 +24,7 @@ class AddMasterAgreement extends React.Component {
         this.state = {
             orderRebate: [],
             itemRebate: [],
+            disabledPagging:true,
             sla: [],
             items: [],
             itemList: [],
@@ -52,7 +53,16 @@ class AddMasterAgreement extends React.Component {
             "currentPageNo": 1,
             "pageSize": 1
         }));
-        this.props.actions.generalProcess(constants.getItemCatalogue, { "body": {} })
+        
+        this.state.disabledPagging ? this.props.actions.generalProcess(constants.getItemCatalogue, { "body": {} }) : this.props.actions.generalProcess(constants.getItemCatalogue, {
+            "body": {
+                "page": {
+                    "currentPageNo": this.state.page.currentPageNo,
+                    "pageSize": this.state.page.pageSize
+
+                }
+            }
+        })
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['shipmentType', 'orderStatus', 'paymentType']));
 
     }
@@ -71,12 +81,12 @@ class AddMasterAgreement extends React.Component {
     }
 
     onStartDateChange = (value) => {
-        console.log(value,"start date")
+        console.log(value, "start date")
         this.state.startDate = value;
     }
 
     onEndDateChange = (value) => {
-        console.log(value,"end date")
+        console.log(value, "end date")
         this.state.endDate = value;
     }
 
@@ -92,7 +102,7 @@ class AddMasterAgreement extends React.Component {
         let orderLessThan = document.getElementById('orderLessThan') == null ? "" : document.getElementById('orderLessThan').value;
         let rebateType = document.getElementById('rebateType') == null ? "" : document.getElementById('rebateType').value;
         let rebate = document.getElementById('orderRebate') == null ? "" : document.getElementById('orderRebate').value;
-        
+
         let data = this.state.orderRebate;
 
         if (orderGreaterThan < 0) {
@@ -502,10 +512,8 @@ class AddMasterAgreement extends React.Component {
                             <div className="form-group">
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Customer")}</label>
                                 <div className="form-group col-md-8" >
-                                    {/* {console.log(initialValues)} */}
                                     <select id="customerID" className="form-control">
                                         <option key="-1" value="">Select</option>
-                                        {/* <option key="ETIHAD" value="ETIHAD">ETIHAD</option> */}
                                         {
                                             customerList.map((option, index) => {
                                                 return (

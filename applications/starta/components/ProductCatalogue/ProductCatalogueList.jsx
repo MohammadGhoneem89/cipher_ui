@@ -17,6 +17,7 @@ class ProductCatalogueList extends React.Component {
         this.state = {
             actions: [],
             searchCriteria: {},
+            disabledPagging: true,
             page: {
                 pageSize: 10,
                 currentPageNo: 1,

@@ -41,6 +41,7 @@ class OrderViaContract extends React.Component {
       modelBox: false,
       modelItem: {},
       cartItems: [],
+      disabledPagging: true,
       itemAddedToCart: false,
       createOrder: false,
       grandTotal: 0,
@@ -60,7 +61,9 @@ class OrderViaContract extends React.Component {
       endDate: "",
       image: ""
     };
+
     this.total = 0;
+    this.items = [];
     this.getCustomerAssociationType = this.getCustomerAssociationType.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.generalHandler = gen.generalHandler.bind(this);
@@ -74,21 +77,7 @@ class OrderViaContract extends React.Component {
     // this.getProducts = this.getProducts.bind(this);
   }
 
-  getRequest = (currentPageNo, searchCriteria) => {
-    // alert(JSON.stringify(searchCriteria), "searchcriteria")
-    let request = {
-      "body": {
-        "page": {
-          "currentPageNo": currentPageNo || this.state.currentPageNo || 1,
-          "pageSize": 28
-        },
-        "searchCriteria": searchCriteria || this.state.searchCriteria
-      }
-    };
 
-    this.props.actions.generalProcess(constants.getMasterAgreement, request);
-    this.setState({ currentPageNo, searchCriteria: request.body.searchCriteria, isLoading2: true })
-  };
 
   getContractDetails() {
     let contractID = [];
@@ -99,7 +88,6 @@ class OrderViaContract extends React.Component {
       contractID.push(obj.contractID);
 
     });
-    console.log(contractID, "???? CONTRACTID")
     return contractID;
   }
   placeOrder() {
@@ -120,11 +108,9 @@ class OrderViaContract extends React.Component {
         "paymentType": this.state.customerAssociation.paymentType
       }
     };
-    console.log("request", request)
     if (this.state.cartItems && this.state.cartItems.length > 0) {
       this.props.actions.generalAjxProcess(constants.createOrder,
         request).then(result => {
-          console.log(result, "result")
           result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
         });
     } else {
@@ -156,6 +142,19 @@ class OrderViaContract extends React.Component {
         {}
       )
     );
+    if (this.state.disabledPagging) { this.props.actions.generalProcess(constants.getMasterAgreement, { "body": {} }) }
+    else {
+      this.props.actions.generalProcess(constants.getMasterAgreement,
+        {
+          "body": {
+            "page": {
+              "pageSize": 10,
+              "currentPageNo": 1
+            }
+          }
+        })
+    }
+
     this.getRequest();
     window.scrollTo(0, 0);
 
@@ -189,20 +188,20 @@ class OrderViaContract extends React.Component {
     }
 
     if (nextProps.customerAssociation) {
-      console.log(nextProps.customerAssociation, "nextProps.customerAssociation")
+      // console.log(nextProps.customerAssociation, "nextProps.customerAssociation")
       let customerAssociation = _.pick(nextProps.customerAssociation, ['userId', '_id', 'customerType', 'paymentType', 'shipmentType']);
       this.setState({ customerAssociation });
     }
 
     if (nextProps.userList.length) {
-      console.log(nextProps.userList, "nextProps.userList")
+      // console.log(nextProps.userList, "nextProps.userList")
       this.setState({ userList: nextProps.userList });
     }
   }
 
 
   openModalBox(modelItem) {
-    console.log('item', modelItem);
+    // console.log('item', modelItem);
     this.setState({
       modelBox: true,
       modelItem
@@ -219,7 +218,7 @@ class OrderViaContract extends React.Component {
     formData.forEach(function (value, key) {
       cartItem[key] = value;
     });
-    console.log("cartItem", cartItem)
+    // console.log("cartItem", cartItem)
     let grandTotal = 0;
     let cart = this.state.cartItems;
 
@@ -310,14 +309,16 @@ class OrderViaContract extends React.Component {
     })
   }
   getCustomerAssociationType(userID) {
-    console.log(userID, "userID")
+    // console.log(userID, "userID")
     this.props.actions.generalProcess(constants.getCustomerAssociation,
       { data: { userId: userID } });
 
   }
   searchItem(e) {
     e.preventDefault();
+    console.log(this.state.itemCatalogue, "this.state.itemCatalogue")
     let itemData = this.state.itemCatalogue.length > 0 ? this.state.itemCatalogue : alert("not found itemcat")
+    console.log(itemData, "itemData")
     let result = this.state.contracts.filter(obj => {
       return obj.contractID == document.getElementById('contractID').value
     })
@@ -329,7 +330,7 @@ class OrderViaContract extends React.Component {
     this.contractData.customerID = result[0].customerID;
     this.contractData.contractID ? this.setState({ contractState: true }) : this.setState({ contractState: false })
 
-    console.log("this.state.userList", this.state.userList)
+    // console.log("this.state.userList", this.state.userList)
     let getUserID = this.state.userList.filter(obj => {
       return obj.orgCode == this.contractData.customerID
     })
@@ -356,24 +357,46 @@ class OrderViaContract extends React.Component {
       }
     }
     console.log("result after image", result[0].items)
-    let items =
-    {
-      searchResult: result[0].items,
-      pageData: {
-        currentPageNo: this.state.currentPageNo ? this.state.currentPageNo : 1,
-        pageSize: 8,
-        totalRecords: result[0].items.length
-      }
-    }
-
-    this.setState({
-      getItemCatalogue: items
-    })
+    this.items = result[0].items;
+    this.getRequest();
   }
 
+
+  getItems = (currentPageNo, pageSize) => {
+
+    !currentPageNo ? currentPageNo = 1 : currentPageNo;
+    let firstIndex = (pageSize * (currentPageNo - 1));
+    let secondIndex = 0;
+    if (this.state.itemCatalogueUpdated && this.state.itemCatalogueUpdated.searchResult)
+      secondIndex = this.state.itemCatalogueUpdated.searchResult.length - 1;
+
+    let _items = this.items.slice(firstIndex,
+      (this.items.length < (firstIndex + pageSize)) ? (secondIndex = firstIndex + secondIndex) : (secondIndex = firstIndex + pageSize));
+
+
+    console.log("firstIndex", firstIndex);
+    console.log("secondIndex", secondIndex)
+    return _items;
+
+  }
+  getRequest = (currentPageNo) => {
+    let items = {
+      searchResult: this.getItems(currentPageNo, 8),
+      pageData: {
+        "currentPageNo": currentPageNo || this.state.currentPageNo || 1,
+        pageSize: 8,
+        totalRecords: this.items.length
+      }
+    }
+    this.setState({
+      itemCatalogueUpdated: items,
+      currentPageNo
+    });
+  };
+
   render() {
-    console.log(this.state.contracts ? this.state.contracts : "<<<<< contracts")
-    //console.log(this.state.getItemCatalogue ? this.state.getItemCatalogue : [], "RENEDER DATA")
+    console.log(this.state.itemCatalogueUpdated, "itemCatalogueUpdated render")
+    console.log(this.items, "this.items")
     let masterContract = this.state.contracts ? this.getContractDetails() : []
     if (!this.state.isLoading)
       return (
@@ -381,20 +404,14 @@ class OrderViaContract extends React.Component {
 
           {!this.state.createOrder && <div className="row">
             <div className="col-md-8 col-md-offset-2">
-              <div className="masthead">
+              <div className="masthead via-contract">
                 <form className="navbar-search" method="get" autoComplete="off" onSubmit={this.searchItem}>
                   <label className="sr-only screen-reader-text" htmlFor="search">Select Master Contract:</label>
                   <div className="input-group">
-                    {/* <div className="input-search-field">
-                      <input type="text" id="search" className="form-control search-field product-search-field"
-                        dir="ltr" name="" id="" placeholder="Select Master Contract" autoComplete="off" />
-                    </div> */}
-
-                    <div className="form-control search-field product-search-field">
+                    <div className="form-control search-field product-search-field search-categories">
                       <select name="contractID" id="contractID"
                         onChange={(e) => this.handleOnChange(e)}
-                        className="col-md-12"
-                        style={{ width: "143px" }}>
+                        className="col-md-12">
                         <option value="">All Contracts</option>
                         {masterContract.map((contract, index) => {
                           return <option key={index} className="level-0"
@@ -408,7 +425,9 @@ class OrderViaContract extends React.Component {
                     </div>
                   </div>
                 </form>
-                <div className="cartitemcount"><span>{this.state.cartItems.length}</span></div>
+                <div className="cartitemcount"><span>{this.state.cartItems.length}
+                </span>
+                </div>
                 <div className="carticon" onClick={this.checkout}>
                   <a href="#"><img src="/assets/Resources/cart.png" /></a>
                 </div>
@@ -462,10 +481,14 @@ class OrderViaContract extends React.Component {
             !this.state.createOrder && !this.state.isLoading2 &&
             <Portlet title="Product Catalogue">
               <Row>
-                {this.state.contractState && this.state.getItemCatalogue && this.state.getItemCatalogue.searchResult &&
-                  this.state.getItemCatalogue.searchResult.map((item, index) => {
+                {this.state.contractState && this.state.itemCatalogueUpdated &&
+                  this.state.itemCatalogueUpdated.searchResult &&
+                  this.state.itemCatalogueUpdated.searchResult.map((item, index) => {
                     return (
+
+
                       <Col col="3" key={index}>
+
                         <form onSubmit={this.addToCart}>
                           <Product onClick={this.openModalBox} details={item} />
                         </form>
@@ -475,11 +498,11 @@ class OrderViaContract extends React.Component {
                   })}
               </Row>
               {<div className="text-center">
-                {this.state.getItemCatalogue &&
-                  this.state.getItemCatalogue.pageData && <Pagination
-                    activePage={this.state.getItemCatalogue.pageData.currentPageNo}
-                    itemsCountPerPage={this.state.getItemCatalogue.pageData.pageSize}
-                    totalItemsCount={this.state.getItemCatalogue.pageData.totalRecords}
+                {this.state.itemCatalogueUpdated &&
+                  this.state.itemCatalogueUpdated.pageData && <Pagination
+                    activePage={this.state.itemCatalogueUpdated.pageData.currentPageNo}
+                    itemsCountPerPage={this.state.itemCatalogueUpdated.pageData.pageSize}
+                    totalItemsCount={this.state.itemCatalogueUpdated.pageData.totalRecords}
                     pageRangeDisplayed={5}
                     onChange={this.handlePageChange}
                   />}
