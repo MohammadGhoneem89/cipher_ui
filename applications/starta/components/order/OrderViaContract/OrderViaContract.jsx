@@ -47,11 +47,7 @@ class OrderViaContract extends React.Component {
       grandTotal: 0,
       contractState: false,
       orgCode: window.sessionStorage.getItem("orgCode"),
-      typeData: {
-        "search": [{ label: "Name", value: "name" },
-        { label: "Description", value: "description" },
-        { label: "Material", value: "material" }]
-      }
+
     };
     // this.contractState = false;
     this.contractData = {
@@ -228,7 +224,7 @@ class OrderViaContract extends React.Component {
       e.target.reset();
       return false;
     }
-    let itemCat = this.state.getItemCatalogue.searchResult;
+    let itemCat = this.state.itemCatalogue.searchResult;
     let result = itemCat.filter(obj => {
       return obj.itemCode == cartItem.itemCode
     })
@@ -412,7 +408,7 @@ class OrderViaContract extends React.Component {
                       <select name="contractID" id="contractID"
                         onChange={(e) => this.handleOnChange(e)}
                         className="col-md-12">
-                        <option value="">All Contracts</option>
+                        <option value="">Select Contract</option>
                         {masterContract.map((contract, index) => {
                           return <option key={index} className="level-0"
                             value={contract}>{contract}</option>;
