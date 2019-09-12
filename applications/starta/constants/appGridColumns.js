@@ -54,7 +54,7 @@ module.exports = {
     { alias: "ORDER ID", key: "orderID", type: "string" },
     // { alias: "Customer", key: "customerID", type: "string" },
     { alias: "Supplier Name", key: "supplierName", type: "string" },
-    { alias: "Amount", key: "amount", type: "amount" },
+    { alias: "Amount", key: "amount", type: "string" },
     { alias: "PO Date", key: "dateCreated", type: "epochDate" },
     { alias: "Expected Date", key: "expectedDate", type: "epochDate" },
     { alias: "Stage", key: "stage", type: "string" },
@@ -69,22 +69,22 @@ module.exports = {
     { alias: "Status", key: "status", type: "string" },
     { alias: "PO Date", key: "dateCreated", type: "epochDate" },
     { alias: "Expected Date", key: "dateCreated", type: "epochDate" },
-    { alias: "Amount", key: "amount", type: "amount" },
+    { alias: "Amount", key: "amount", type: "string" },
      { alias: "SETTLE", key: "actions", type: "action" }
   ],
   dashboardSupplierSettlement: [
     { alias: "", key: "_id", type: "hiddenID" },
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "Supplier Name", key: "name", type: "string" },
-    { alias: "Total Received", key: "totalReceived", type: "amount" },
-    { alias: "To Receive", key: "receivable", type: "amount" }
+    { alias: "Total Received", key: "totalReceived", type: "string" },
+    { alias: "To Receive", key: "receivable", type: "string" }
   ],
   dashboardCustomerSettlement: [
     { alias: "", key: "_id", type: "hiddenID" },
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "Supplier Name", key: "name", type: "string" },
-    { alias: "Total Paid", key: "totalPaid", type: "amount" },
-    { alias: "To Pay", key: "toPay", type: "amount" }
+    { alias: "Total Paid", key: "totalPaid", type: "string" },
+    { alias: "To Pay", key: "toPay", type: "string" }
   ],
   pendingQuotes: [
     { alias: "", key: "orderID", type: "hiddenID" },
@@ -92,7 +92,7 @@ module.exports = {
     { alias: "ORDER ID", key: "orderID", type: "string" },
     // { alias: "Customer", key: "customerID", type: "string" },
     { alias: "Supplier Name", key: "supplierName", type: "string" },
-    { alias: "Amount", key: "amount", type: "amount" },
+    { alias: "Amount", key: "amount", type: "string" },
     { alias: "PO Date", key: "dateCreated", type: "epochDate" },
     { alias: "Expected Date", key: "expectedDate", type: "epochDate" },
     { alias: "Stage", key: "stage", type: "string" },

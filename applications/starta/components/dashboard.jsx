@@ -25,7 +25,7 @@ class Dashboard extends React.Component {
             gridDataSupplierList: undefined,
             graphLabels: {
                 xaxis: "STATUS",
-                yaxis: "SUPPLIER"
+                yaxis: "CUSTOMER"
             },
             setPagingForSupplier: {
                 currentPageNo: undefined,
@@ -166,8 +166,8 @@ class Dashboard extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data.dashboardPendingGridData ) {
-             console.log(nextProps.data.dashboardPendingGridData, "&&&&&&&&&&&&&&&&&")
+        if (nextProps.data.dashboardPendingGridData) {
+            console.log(nextProps.data.dashboardPendingGridData, "&&&&&&&&&&&&&&&&&")
             this.setState({
                 getSuppliersList: this.transformResponse(nextProps.suppliers),
                 getPendingOrders: this.transformStatus(nextProps.data.dashboardPendingGridData.pendingOrderRows),
@@ -424,7 +424,7 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        // this.supplierChange("APPAREL FZCO11");
+        // this.supplierChange("ETIHAD11");
         // this.state.getSupplierMasterList ?
         //     console.log(this.props.suppliers, "000000000000000") : ""
         if (this.state.isLoading)
@@ -437,8 +437,10 @@ class Dashboard extends React.Component {
                             <div className="daterange_con">
                                 <div className="row">
                                     <div className="center-block dashdate">
-                                        <div className="col-md-4 padding-top-15">
-                                            <DateRangePicker />
+                                        {/* <div className="col-md-4 padding-top-15"> */}
+                                            {/* <DateRangePicker /> */}
+                                        {/* </div> */}
+                                        <div className="col-md-4">
                                         </div>
                                         <div className="col-md-4">
                                         </div>
@@ -470,12 +472,12 @@ class Dashboard extends React.Component {
                             <div className="row">
                                 <TileUnit data={this.props.data.dashboardTiles} />
                             </div>
-                        {/* {this.state.getSuppliersList && this.props.supplierPageDate && */}
+                            {/* {this.state.getSuppliersList && this.props.supplierPageDate && */}
 
-                                <div className="row">
-                                    <div className="col-md-12">
+                            <div className="row">
+                                <div className="col-md-12">
 
-                                        {/* {
+                                    {/* {
                                             this.state.getSuppliersList.map((obj) => {
 
                                                 obj.action = [
@@ -489,7 +491,7 @@ class Dashboard extends React.Component {
                                             })
 
                                         } */}
-                                        {/* <Table TableClass="portlet light bordered sdg_portlet"
+                                    {/* <Table TableClass="portlet light bordered sdg_portlet"
                                             title={utils.getLabelByID("SUPPLIERS")}
                                             gridColumns={utils.getGridColumnByName("supplierMasterList")}
                                             gridData={this.state.getSuppliersList}
@@ -499,14 +501,14 @@ class Dashboard extends React.Component {
                                             pageChanged={(currentPage) => { this.pageChange(currentPage, 'suppliers') }}
                                             export={false}
                                             pagination={true} /> */}
-                                    </div>
                                 </div>
+                            </div>
                             {/* } */}
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
                                     <div className="caption "><span className="caption-subject " /></div>
                                     <div className="center-block" style={{ width: "500px" }}>
-                                        <div className="input-group" id="defaultrange" style={{ display: "inline", marginRight: "10px" }}>
+                                        <div className="input-group" id="defaultrange" style={{ display: "inline", marginRight: "10px", borderBlockColor: "red" }}>
                                             <DateRangePicker onChangeRange={this.dateChangeGraph} />
                                         </div>
                                         <button type="submit" className="btn dash green input-xsmall"
@@ -519,7 +521,7 @@ class Dashboard extends React.Component {
 
                                         <CommonBarChart toDate={this.state.toDate}
                                             fromDate={this.state.fromDate}
-                                             graphLabels={this.state.graphData.labels}
+                                            graphLabels={this.state.graphLabels}
                                             labels={this.props.data.graphData.labels}
                                             chartData={this.props.data.graphData.chartData}
                                             legends={this.props.data.graphData.legends}
@@ -626,7 +628,7 @@ class Dashboard extends React.Component {
 function mapStateToProps(state, ownProps) {
     console.log(state.app.customerDashboardData, "**********DATA");
     if (state.app.customerDashboardData !== undefined) {
-        
+
         return {
             data: state.app.customerDashboardData.data,
             //suppliers: state.app.supplierMasterList.searchResult,
