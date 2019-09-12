@@ -22,5 +22,13 @@ export default {
   getCustomerAssociationDetail:{
     data:undefined
   },
+  customerDashboardData:{
+    data: {},
+    pageData: {}
+  },
+  supDashboardData:{
+    data: {},
+    pageData: {}
+  },
   orderDetail: undefined
 }

@@ -125,7 +125,7 @@ class Dashboard extends React.Component {
         // console.log("--------------------------------",
         //     transformSupplierMasterList, "UPDATES!!!!!!1111")
         // return transformSupplierMasterList.sort();
-        return _.sortBy(transformSupplierMasterList, 'supplierName.name' );
+        return _.sortBy(transformSupplierMasterList, 'supplierName.name');
     }
 
 
@@ -141,7 +141,7 @@ class Dashboard extends React.Component {
                 case "ACK-SUBORDER": { item.stage = "Suborder Acknowledged"; break; };
                 case "RECIEVED": { item.stage = "Received By Emirates"; break; };
                 case "RECEIVED2": { item.stage = "Received By Supplier"; break; };
-                default: { item.stage= item.stage}
+                default: { item.stage = item.stage }
             }
         }
         //  console.log("-->>>>>>>>>>>>>>>>>>----",
@@ -150,24 +150,24 @@ class Dashboard extends React.Component {
     }
 
     componentWillMount() {
-        this.getDashboardData();
-        this.getSuppliersList();
+        this.getDashboardData("ETIHAD");
+        // this.getSuppliersList();
 
         window.scrollTo(0, 0);
     }
 
     componentDidMount() {
 
-       // this.timerID = setInterval(() => this.getDashboardData(), 5000);
+        // this.timerID = setInterval(() => this.getDashboardData(), 5000);
 
     }
     componentWillUnmount() {
-        clearInterval(this.timerID);
+        //clearInterval(this.timerID);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data.dashboardPendingGridData && nextProps.suppliers) {
-           // console.log(nextProps.data.dashboardPendingGridData, "&&&&&&&&&&&&&&&&&")
+        if (nextProps.data.dashboardPendingGridData ) {
+             console.log(nextProps.data.dashboardPendingGridData, "&&&&&&&&&&&&&&&&&")
             this.setState({
                 getSuppliersList: this.transformResponse(nextProps.suppliers),
                 getPendingOrders: this.transformStatus(nextProps.data.dashboardPendingGridData.pendingOrderRows),
@@ -183,6 +183,7 @@ class Dashboard extends React.Component {
 
 
     getDashboardData = (supplier) => {
+        console.log(supplier, "suppleir")
         this.props.actions.generalProcess(url.cusDashboardData, {
             supplier: supplier || this.state.supplierAddress,
             // user: this.state.user,
@@ -195,7 +196,7 @@ class Dashboard extends React.Component {
 
 
         });
-    
+
     };
 
     pageChange = (currentPage, pageName) => {
@@ -208,14 +209,14 @@ class Dashboard extends React.Component {
     };
     supplierChange = (e) => {
         let suppData = this.supplierData.sort();
-        
+
         for (let i in suppData) {
             if (e.target.value == suppData[i].supplierName.name) {
-              //  console.log(e.target.value+ "  " +suppData[i].supplierID, " ||||||||||||||||||  traget value ")
+                //  console.log(e.target.value+ "  " +suppData[i].supplierID, " ||||||||||||||||||  traget value ")
                 this.onSupplierChange(suppData[i].supplierID)
             }
             else if (e.target.value == 'ALL') {
-               // console.log(e.target.value, " ||||||||||||||||||  ALL traget value ")
+                // console.log(e.target.value, " ||||||||||||||||||  ALL traget value ")
                 this.onSupplierChange(e.target.value);
             }
 
@@ -246,9 +247,9 @@ class Dashboard extends React.Component {
 
         let transformOrderList = [];
         if (gridData) {
-          //  console.log("gridData   ", gridData)
+            //  console.log("gridData   ", gridData)
             gridData.map((order) => {
-               // console.log("order   ", order)
+                // console.log("order   ", order)
                 transformOrderList.push({
                     "orderID": order.orderID,
                     "supplierName": order.supplierName,
@@ -271,10 +272,10 @@ class Dashboard extends React.Component {
         //alert(JSON.stringify(order))
         let totalSLATime = 0
         for (let i = 0; i < order.sla.length; i++) {
-         //   console.log("order.sla" + order.sla[i])
+            //   console.log("order.sla" + order.sla[i])
             totalSLATime += order.sla[i].duration / 1000
         }
-       // console.log("total sla " + totalSLATime)
+        // console.log("total sla " + totalSLATime)
 
         let actualTime = Math.round((new Date()).getTime() / 1000) - order.dateCreated
         //let actualTime = 1555308812 - order.dateCreated
@@ -288,7 +289,7 @@ class Dashboard extends React.Component {
                     SLAToCurrent += order.sla[i].duration / 1000
                 }
             }
-           // console.log("SLAToCurrent: " + SLAToCurrent)
+            // console.log("SLAToCurrent: " + SLAToCurrent)
         }
 
         if (order.status == "ACK") {
@@ -297,7 +298,7 @@ class Dashboard extends React.Component {
                     SLAToCurrent += order.sla[i].duration / 1000
                 }
             }
-           // console.log("SLAToCurrent: " + SLAToCurrent)
+            // console.log("SLAToCurrent: " + SLAToCurrent)
         }
 
         if (order.status == "SUBORDER") {
@@ -315,7 +316,7 @@ class Dashboard extends React.Component {
                     SLAToCurrent += order.sla[i].duration / 1000
                 }
             }
-           // console.log("SLAToCurrent: " + SLAToCurrent)
+            // console.log("SLAToCurrent: " + SLAToCurrent)
         }
 
         if (order.status == "PROD") {
@@ -324,7 +325,7 @@ class Dashboard extends React.Component {
                     SLAToCurrent += order.sla[i].duration / 1000
                 }
             }
-           // console.log("SLAToCurrent: " + SLAToCurrent)
+            // console.log("SLAToCurrent: " + SLAToCurrent)
         }
 
         else if (order.status == "QC") {
@@ -333,7 +334,7 @@ class Dashboard extends React.Component {
                     SLAToCurrent += order.sla[i].duration / 1000
                 }
             }
-          //  console.log("SLAToCurrent: " + SLAToCurrent)
+            //  console.log("SLAToCurrent: " + SLAToCurrent)
         }
 
         else if (order.status == "SHIPPED") {
@@ -342,7 +343,7 @@ class Dashboard extends React.Component {
                     SLAToCurrent += order.sla[i].duration / 1000
                 }
             }
-          //  console.log("SLAToCurrent: " + SLAToCurrent)
+            //  console.log("SLAToCurrent: " + SLAToCurrent)
         }
 
         else if (order.status == "RECEIVED1") {
@@ -351,17 +352,17 @@ class Dashboard extends React.Component {
                     SLAToCurrent += order.sla[i].duration / 1000
                 }
             }
-           // console.log("SLAToCurrent: " + SLAToCurrent)
+            // console.log("SLAToCurrent: " + SLAToCurrent)
         }
 
         else if (order.status == "INVOICED" || order.status == "RECEIVED2") {
             SLAToCurrent = totalSLATime
             actualTime = order.invoiceTime - order.dateCreated
-           // console.log("SLAToCurrent: " + SLAToCurrent)
+            // console.log("SLAToCurrent: " + SLAToCurrent)
         }
 
         if (actualTime >= totalSLATime) {
-           // console.log(actualTime)
+            // console.log(actualTime)
             //console.log(SLAToCurrent)
 
             let seconds = actualTime - SLAToCurrent
@@ -452,12 +453,12 @@ class Dashboard extends React.Component {
                                                     <select name="supplier" className="form-control" value={this.state.value}
                                                         onChange={this.supplierChange}>
                                                         <option key="-1" onChange={this.supplierChange} >ALL</option>
-                                                        {/* <option value="APPAREL FZCO">APPAREL FZCO</option> */}
-                                                        {this.state.getSuppliersList.map((option, index) =>
+                                                        <option value="ETIHAD">ETIHAD</option>
+                                                        {/* {this.state.getSuppliersList.map((option, index) =>
                                                             (<option value={option.supplierName.name}
                                                                 key={index}>
                                                                 {utils.getLabelByID(option.supplierName.name)}
-                                                            </option>))}
+                                                            </option>))} */}
                                                     </select>
 
                                                 </div>
@@ -469,12 +470,12 @@ class Dashboard extends React.Component {
                             <div className="row">
                                 <TileUnit data={this.props.data.dashboardTiles} />
                             </div>
-                            {this.state.getSuppliersList && this.props.supplierPageDate &&
-                               
+                        {/* {this.state.getSuppliersList && this.props.supplierPageDate && */}
+
                                 <div className="row">
                                     <div className="col-md-12">
 
-                                        {
+                                        {/* {
                                             this.state.getSuppliersList.map((obj) => {
 
                                                 obj.action = [
@@ -487,7 +488,7 @@ class Dashboard extends React.Component {
                                                 ]
                                             })
 
-                                        }
+                                        } */}
                                         {/* <Table TableClass="portlet light bordered sdg_portlet"
                                             title={utils.getLabelByID("SUPPLIERS")}
                                             gridColumns={utils.getGridColumnByName("supplierMasterList")}
@@ -500,7 +501,7 @@ class Dashboard extends React.Component {
                                             pagination={true} /> */}
                                     </div>
                                 </div>
-                            }
+                            {/* } */}
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
                                     <div className="caption "><span className="caption-subject " /></div>
@@ -518,7 +519,7 @@ class Dashboard extends React.Component {
 
                                         <CommonBarChart toDate={this.state.toDate}
                                             fromDate={this.state.fromDate}
-                                            graphLabels={this.state.graphLabels}
+                                             graphLabels={this.state.graphData.labels}
                                             labels={this.props.data.graphData.labels}
                                             chartData={this.props.data.graphData.chartData}
                                             legends={this.props.data.graphData.legends}
@@ -543,7 +544,7 @@ class Dashboard extends React.Component {
                                     {/* </div>
                                             </div>
                                         </div> */}
-                                    
+
                                     <Table TableClass="portlet light bordered sdg_portlet"
                                         title={utils.getLabelByID("Pending Orders")}
                                         gridColumns={utils.getGridColumnByName("pendingQuotes")}
@@ -574,7 +575,7 @@ class Dashboard extends React.Component {
                                         pageChanged={(currentPage) => { this.pageChange(currentPage, 'dashboardCompletedGridData') }}
                                         export={false}
                                         pagination={true} />
-                                        
+
 
                                 </div>
                             </div>
@@ -591,8 +592,8 @@ class Dashboard extends React.Component {
                                         pageChanged={(currentPage) => { this.pageChange(currentPage, 'dashboardSettlementGridData') }}
                                         export={false}
                                         pagination={true} />
-                                         
-                                        
+
+
 
                                 </div>
                             </div>
@@ -606,10 +607,10 @@ class Dashboard extends React.Component {
                                         gridData={this.props.data.dashboardSupplierSettlement.supplierWiseSettlementRows ?
                                             this.props.data.dashboardSupplierSettlement.supplierWiseSettlementRows : 0}
                                         totalRecords={this.props.data.dashboardSupplierSettlement.pageData.totalRecords}
-                                       activePage={this.state.dashboardSupplierSettlement.pageData.currentPageNo}
+                                        activePage={this.state.dashboardSupplierSettlement.pageData.currentPageNo}
                                         pageSize={this.state.dashboardSupplierSettlement.pageData.pageSize}
                                         pageChanged={(currentPage) => { this.pageChange(currentPage, 'dashboardSupplierSettlement') }}
-                                        
+
                                         export={false}
                                         pagination={true} />
                                 </div>
@@ -623,15 +624,16 @@ class Dashboard extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    console.log(state.app.customerDashboardData, "**********DATA");
+    if (state.app.customerDashboardData !== undefined) {
+        
+        return {
+            data: state.app.customerDashboardData.data,
+            //suppliers: state.app.supplierMasterList.searchResult,
+            //supplierPageDate: state.app.supplierMasterList.pageData,
 
-   if (state.app.customerDashboardData !== undefined)
-        console.log(state.app.customerDashboardData, "**********DATA");
-       return {
-           data: state.app.customerDashboardData.data,
-           suppliers: state.app.supplierMasterList.searchResult,
-           supplierPageDate: state.app.supplierMasterList.pageData,
-
-       };
+        };
+    }
 }
 
 function mapDispatchToProps(dispatch) {

@@ -15,5 +15,8 @@ module.exports = {
   getOrderDetail: `${baseUrl}/API/P2P/getOrderDetail`,
   saveCustomerAssociation: `${baseUrl}/API/STRATA/saveCustomerAssociation`,
   getCustomerAssociation: `${baseUrl}/API/STRATA/getCustomerAssociationDetail`,
-  addMasterContract:`${baseUrl}/API/P2P/addMasterContract`
+  addMasterContract: `${baseUrl}/API/P2P/addMasterContract`,
+  
+  cusDashboardData: `${baseUrl}/API/STRATA/cusDashboardData`,
+  supDashboardData: `${baseUrl}/API/STRATA/supDashboardData`
 };
