@@ -16,7 +16,7 @@ class Dashboard extends React.Component {
         super(props);
         const pageSize = 10;
         const currentPageNo = 1;
-        const supplierID = ""
+        const supplierID = "ETIHAD"
         this.supplierData = [];
         this.state = {
 
@@ -205,7 +205,7 @@ class Dashboard extends React.Component {
         this.setState({ pageName: currentGrid });
         console.log(pageName, "__________________GRID!!!!")
         // this.props.actions.generalProcess(url.cusDashboardData, {pageName:this.state[pageName]})
-        this.getDashboardData();
+        this.getDashboardData("ETIHAD");
     };
     supplierChange = (e) => {
         let suppData = this.supplierData.sort();
@@ -231,12 +231,12 @@ class Dashboard extends React.Component {
         this.state.dashboardCompletedGridData.supplierID = currentSupplier;
         this.state.dashboardSettlementGridData.supplierID = currentSupplier;
         this.state.dashboardSupplierSettlement.supplierID = currentSupplier;
-        this.getDashboardData();
+        this.getDashboardData("ETIHAD");
         console.log(">>>>>>>>", this.state.dashboardPendingGridData.supplierID, "UPDATE ID")
     };
     getLoad = () => {
         this.setState({ isLoading: true });
-        this.getDashboardData();
+        this.getDashboardData("ETIHAD");
     }
     getSuppliersList = () => {
         this.props.actions.generalProcess(url.getSupplierMasterList,

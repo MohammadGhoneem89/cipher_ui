@@ -6,7 +6,7 @@ const Product = props => {
   let price = details.price ? details.price : details.unitPrice;
   return <div className="procard">
     <div className="counterbadge">
-      <span>{40}
+      <span>{details.receivedQuantity}
       </span>
     </div>
     <div>
