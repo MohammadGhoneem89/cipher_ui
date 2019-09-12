@@ -15,7 +15,7 @@ import CustomerAssociation from "./components/CustomerAssociation/customerAssoci
 
 import OrderDetails from "./components/order/OrderDetails/OrderDetailContainer.jsx";
 import OrderViaContract from "./components/order/OrderViaContract/OrderViaContract.jsx";
-
+import CustomerDashboard  from "./components/dashboard.jsx";
 let authRoutes = <div>
   <Route path="/strata/oneTimeOrder" component={OneTimeOrder}/>
   <Route path="strata/ProductCatalogue" component={ProductCatalogue}/>
@@ -27,6 +27,7 @@ let authRoutes = <div>
   <Route path="/strata/orderList" component={OrderList}/>
   <Route path="/strata/OrderViaContract" component={OrderViaContract}/>
   <Route path="/strata/viewOrder/:id" component={OrderDetails}/>
+  <Route path="/customer" component={CustomerDashboard}/>
 </div>;
 
 let unAuthRoutes = <div>
