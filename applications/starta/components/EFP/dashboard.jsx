@@ -158,7 +158,7 @@ class Dashboard extends React.Component {
 
     componentDidMount() {
 
-        this.timerID = setInterval(() => this.getDashboardData(), 5000);
+       // this.timerID = setInterval(() => this.getDashboardData(), 5000);
 
     }
     componentWillUnmount() {
@@ -192,7 +192,10 @@ class Dashboard extends React.Component {
             dashboardItemsGridData: this.state.dashboardItemsGridData,
             suppliers: this.state.suppliers,
             dashboardSupplierSettlement: this.state.dashboardSupplierSettlement
+
+
         });
+    
     };
 
     pageChange = (currentPage, pageName) => {
@@ -467,7 +470,7 @@ class Dashboard extends React.Component {
                                 <TileUnit data={this.props.data.dashboardTiles} />
                             </div>
                             {this.state.getSuppliersList && this.props.supplierPageDate &&
-                                // console.log()
+                               
                                 <div className="row">
                                     <div className="col-md-12">
 
@@ -496,7 +499,8 @@ class Dashboard extends React.Component {
                                             export={false}
                                             pagination={true} /> */}
                                     </div>
-                                </div>}
+                                </div>
+                            }
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
                                     <div className="caption "><span className="caption-subject " /></div>
@@ -554,6 +558,7 @@ class Dashboard extends React.Component {
                                         export={false}
                                         pagination={true} />
 
+
                                 </div>
                             </div>
 
@@ -569,6 +574,7 @@ class Dashboard extends React.Component {
                                         pageChanged={(currentPage) => { this.pageChange(currentPage, 'dashboardCompletedGridData') }}
                                         export={false}
                                         pagination={true} />
+                                        
 
                                 </div>
                             </div>
@@ -585,6 +591,8 @@ class Dashboard extends React.Component {
                                         pageChanged={(currentPage) => { this.pageChange(currentPage, 'dashboardSettlementGridData') }}
                                         export={false}
                                         pagination={true} />
+                                         
+                                        
 
                                 </div>
                             </div>
@@ -592,14 +600,16 @@ class Dashboard extends React.Component {
                             <div className="row">
                                 <div className="col-md-12">
                                     <Table TableClass="portlet light bordered sdg_portlet"
-                                        title={utils.getLabelByID("Supplier wise Settlement")}
+                                        title={utils.getLabelByID("Customer wise Settlement")}
                                         gridColumns={utils.getGridColumnByName("dashboardCustomerSettlement")}
+                                        gridData={[]}
                                         gridData={this.props.data.dashboardSupplierSettlement.supplierWiseSettlementRows ?
                                             this.props.data.dashboardSupplierSettlement.supplierWiseSettlementRows : 0}
                                         totalRecords={this.props.data.dashboardSupplierSettlement.pageData.totalRecords}
-                                        activePage={this.state.dashboardSupplierSettlement.pageData.currentPageNo}
+                                       activePage={this.state.dashboardSupplierSettlement.pageData.currentPageNo}
                                         pageSize={this.state.dashboardSupplierSettlement.pageData.pageSize}
                                         pageChanged={(currentPage) => { this.pageChange(currentPage, 'dashboardSupplierSettlement') }}
+                                        
                                         export={false}
                                         pagination={true} />
                                 </div>
@@ -614,14 +624,14 @@ class Dashboard extends React.Component {
 
 function mapStateToProps(state, ownProps) {
 
-    if (state.app.customerDashboardData !== undefined)
+   // if (state.app.customerDashboardData !== undefined)
         // console.log(state.app.customerDashboardData, "**********DATA");
-        return {
-            data: state.app.customerDashboardData.data,
-            suppliers: state.app.supplierMasterList.searchResult,
-            supplierPageDate: state.app.supplierMasterList.pageData,
+      //  return {
+           // data: state.app.customerDashboardData.data,
+           // suppliers: state.app.supplierMasterList.searchResult,
+           // supplierPageDate: state.app.supplierMasterList.pageData,
 
-        };
+       // };
 }
 
 function mapDispatchToProps(dispatch) {

@@ -31,6 +31,7 @@ class OrderViaContract extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      _contractID: "",
       isLoading: true,
       isLoading2: false,
       currentPageNo: 1,
@@ -208,7 +209,7 @@ class OrderViaContract extends React.Component {
 
   addToCart(e) {
     e.preventDefault();
-    // alert("addtocart")
+    console.log(this.state.itemCatalogue ? this.state.itemCatalogue : "this.state.itemCatalogue")
     let formData = new FormData(e.target);
     let cartItem = {};
     formData.forEach(function (value, key) {
@@ -224,7 +225,10 @@ class OrderViaContract extends React.Component {
       e.target.reset();
       return false;
     }
-    let itemCat = this.state.itemCatalogue.searchResult;
+    let itemCat;
+    if (this.state.itemCatalogue && this.state.itemCatalogue.length > 0) {
+      itemCat = this.state.itemCatalogue;
+    }
     let result = itemCat.filter(obj => {
       return obj.itemCode == cartItem.itemCode
     })
@@ -293,15 +297,16 @@ class OrderViaContract extends React.Component {
     this.setState({ modelBox: false });
   }
   handleOnChange(e) {
-
     if (e.target.value == "") {
       this.setState({
-        contractState: false
+        contractState: false,
+        _contractID
       })
     }
-
     this.setState({
-      cartItems: []
+      _contractID: document.getElementById('contractID').value,
+      cartItems: [],
+      grandTotal: 0
     })
   }
   getCustomerAssociationType(userID) {
@@ -312,19 +317,19 @@ class OrderViaContract extends React.Component {
   }
   searchItem(e) {
     e.preventDefault();
-    console.log(this.state.itemCatalogue, "this.state.itemCatalogue")
+    console.log(document.getElementById('contractID').value, "handelonchange")
+    console.log(this.state._contractID, "this.state._contractID")
     let itemData = this.state.itemCatalogue.length > 0 ? this.state.itemCatalogue : alert("not found itemcat")
-    console.log(itemData, "itemData")
     let result = this.state.contracts.filter(obj => {
       return obj.contractID == document.getElementById('contractID').value
     })
-
+    console.log(result, "result-----")
 
     this.contractData.contractID = result[0].contractID;
     this.contractData.startDate = result[0].startDate;
     this.contractData.endDate = result[0].endDate;
     this.contractData.customerID = result[0].customerID;
-    this.contractData.contractID ? this.setState({ contractState: true }) : this.setState({ contractState: false })
+    this.state._contractID ? this.setState({ contractState: true }) : this.setState({ contractState: false })
 
     // console.log("this.state.userList", this.state.userList)
     let getUserID = this.state.userList.filter(obj => {
@@ -359,16 +364,21 @@ class OrderViaContract extends React.Component {
 
 
   getItems = (currentPageNo, pageSize) => {
-
+    let _items;
     !currentPageNo ? currentPageNo = 1 : currentPageNo;
     let firstIndex = (pageSize * (currentPageNo - 1));
     let secondIndex = 0;
-    if (this.state.itemCatalogueUpdated && this.state.itemCatalogueUpdated.searchResult)
+    if (this.state.itemCatalogueUpdated && this.state.itemCatalogueUpdated.searchResult && this.state.itemCatalogueUpdated.searchResult.length > 0) {
+      console.log(this.state.itemCatalogueUpdated.searchResult, "this.state.itemCatalogueUpdated.searchResult")
       secondIndex = this.state.itemCatalogueUpdated.searchResult.length - 1;
+    }
 
-    let _items = this.items.slice(firstIndex,
-      (this.items.length < (firstIndex + pageSize)) ? (secondIndex = firstIndex + secondIndex) : (secondIndex = firstIndex + pageSize));
+    if (this.items.length < (firstIndex + pageSize)) {
+      secondIndex = firstIndex + secondIndex
+    }
+    else { secondIndex = firstIndex + pageSize };
 
+    secondIndex == 0 ? _items = this.items.slice(firstIndex) : _items = this.items.slice(firstIndex, secondIndex)
 
     console.log("firstIndex", firstIndex);
     console.log("secondIndex", secondIndex)
@@ -391,8 +401,8 @@ class OrderViaContract extends React.Component {
   };
 
   render() {
-    console.log(this.state.itemCatalogueUpdated, "itemCatalogueUpdated render")
-    console.log(this.items, "this.items")
+    //console.log(this.state.itemCatalogueUpdated, "itemCatalogueUpdated render")
+    //console.log(this.items, "this.items")
     let masterContract = this.state.contracts ? this.getContractDetails() : []
     if (!this.state.isLoading)
       return (
@@ -405,13 +415,14 @@ class OrderViaContract extends React.Component {
                   <label className="sr-only screen-reader-text" htmlFor="search">Select Master Contract:</label>
                   <div className="input-group">
                     <div className="form-control search-field product-search-field search-categories">
-                      <select name="contractID" id="contractID"
+                      <select name="contractID" id="contractID" value={this.state._contractID}
                         onChange={(e) => this.handleOnChange(e)}
                         className="col-md-12">
                         <option value="">Select Contract</option>
-                        {masterContract.map((contract, index) => {
+                        {masterContract.map((contractID, index) => {
                           return <option key={index} className="level-0"
-                            value={contract}>{contract}</option>;
+                            value={contractID}>
+                            {contractID}</option>;
                         })}
                       </select>
                     </div>

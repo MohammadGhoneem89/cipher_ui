@@ -41,6 +41,64 @@ module.exports = {
     {alias: "Status", key: "status", type: 'string'},
     {alias: "Action", key: "action", type: "action"}
   ],
+  supplierMasterList: [
+    { alias: "", key: "supplierID", type: "hiddenID" },
+    { alias: "Supplier Code", key: "supplierID", type: 'string' },
+   { alias: "Name", key: "supplierName", type: "publicImage" },
+    { alias: "Country", key: "supplierCountry", type: "string" },
+    { alias: "Action", key: "action", type: "action" }
+  ],
+  completeQuotes: [
+    { alias: "", key: "orderID", type: "hiddenID" },
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "ORDER ID", key: "orderID", type: "string" },
+    // { alias: "Customer", key: "customerID", type: "string" },
+    { alias: "Supplier Name", key: "supplierName", type: "string" },
+    { alias: "Amount", key: "amount", type: "amount" },
+    { alias: "PO Date", key: "dateCreated", type: "epochDate" },
+    { alias: "Expected Date", key: "expectedDate", type: "epochDate" },
+    { alias: "Stage", key: "stage", type: "string" },
+    { alias: "Status", key: "status", type: "statusLabel" },
+    { alias: "COMPLETED ORDER", key: "actions", type: "action" }
+  ],
+  settlements:[
+    { alias: "", key: "orderID", type: "hiddenID" },
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "ORDER ID", key: "orderID", type: "string" },
+    { alias: "Supplier Name", key: "supplierName", type: "string" },
+    { alias: "Status", key: "status", type: "string" },
+    { alias: "PO Date", key: "dateCreated", type: "epochDate" },
+    { alias: "Expected Date", key: "dateCreated", type: "epochDate" },
+    { alias: "Amount", key: "amount", type: "amount" },
+     { alias: "SETTLE", key: "actions", type: "action" }
+  ],
+  dashboardSupplierSettlement: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "Supplier Name", key: "name", type: "string" },
+    { alias: "Total Received", key: "totalReceived", type: "amount" },
+    { alias: "To Receive", key: "receivable", type: "amount" }
+  ],
+  dashboardCustomerSettlement: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "Supplier Name", key: "name", type: "string" },
+    { alias: "Total Paid", key: "totalPaid", type: "amount" },
+    { alias: "To Pay", key: "toPay", type: "amount" }
+  ],
+  pendingQuotes: [
+    { alias: "", key: "orderID", type: "hiddenID" },
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "ORDER ID", key: "orderID", type: "string" },
+    // { alias: "Customer", key: "customerID", type: "string" },
+    { alias: "Supplier Name", key: "supplierName", type: "string" },
+    { alias: "Amount", key: "amount", type: "amount" },
+    { alias: "PO Date", key: "dateCreated", type: "epochDate" },
+    { alias: "Expected Date", key: "expectedDate", type: "epochDate" },
+    { alias: "Stage", key: "stage", type: "string" },
+    { alias: "Status", key: "status", type: "statusLabel" },
+    { alias: "PENDING ORDER", key: "actions", type: "action" }
+  ],
   viewMasterAgreementItem:[
     {alias: "", key: "contractID", type: "hiddenID"},
     {alias: "Contract ID", key: "contractID", type: 'string'},
