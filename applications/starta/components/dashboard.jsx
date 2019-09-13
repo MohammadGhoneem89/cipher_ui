@@ -16,7 +16,7 @@ class Dashboard extends React.Component {
         super(props);
         const pageSize = 10;
         const currentPageNo = 1;
-        const supplierID = "ETIHAD"
+        const customerID = "ETIHAD"
         this.supplierData = [];
         this.state = {
 
@@ -39,21 +39,21 @@ class Dashboard extends React.Component {
                     currentPageNo: currentPageNo,
                     pageSize: pageSize
                 },
-                supplierID: supplierID
+                customerID: customerID
             },
             dashboardCompletedGridData: {
                 pageData: {
                     currentPageNo: currentPageNo,
                     pageSize: pageSize
                 },
-                supplierID: supplierID
+                customerID: customerID
             },
             dashboardSettlementGridData: {
                 pageData: {
                     currentPageNo: currentPageNo,
                     pageSize: pageSize
                 },
-                supplierID: supplierID
+                customerID: customerID
             },
             dashboardItemsGridData: {
 
@@ -88,12 +88,12 @@ class Dashboard extends React.Component {
                     }
                 }
             },
-            dashboardSupplierSettlement: {
+            dashboardCustomerSettlement: {
                 pageData: {
                     currentPageNo: currentPageNo,
                     pageSize: pageSize
                 },
-                supplierID: supplierID
+                customerID: customerID
             }
         };
         this.transformStatus = this.transformStatus.bind(this);
@@ -184,7 +184,7 @@ class Dashboard extends React.Component {
 
     getDashboardData = (supplier) => {
         console.log(supplier, "suppleir")
-        this.props.actions.generalProcess(url.cusDashboardData, {
+        this.props.actions.generalProcess(url.customerDashboard, {
             supplier: supplier || this.state.supplierAddress,
             // user: this.state.user,
             dashboardPendingGridData: this.state.dashboardPendingGridData,
@@ -192,7 +192,7 @@ class Dashboard extends React.Component {
             dashboardSettlementGridData: this.state.dashboardSettlementGridData,
             dashboardItemsGridData: this.state.dashboardItemsGridData,
             suppliers: this.state.suppliers,
-            dashboardSupplierSettlement: this.state.dashboardSupplierSettlement
+            dashboardCustomerSettlement: this.state.dashboardCustomerSettlement
 
 
         });
@@ -230,7 +230,7 @@ class Dashboard extends React.Component {
         this.state.dashboardPendingGridData.supplierID = currentSupplier;
         this.state.dashboardCompletedGridData.supplierID = currentSupplier;
         this.state.dashboardSettlementGridData.supplierID = currentSupplier;
-        this.state.dashboardSupplierSettlement.supplierID = currentSupplier;
+        this.state.dashboardCustomerSettlement.supplierID = currentSupplier;
         this.getDashboardData("ETIHAD");
         console.log(">>>>>>>>", this.state.dashboardPendingGridData.supplierID, "UPDATE ID")
     };
@@ -252,12 +252,14 @@ class Dashboard extends React.Component {
                 // console.log("order   ", order)
                 transformOrderList.push({
                     "orderID": order.orderID,
-                    "supplierName": order.supplierName,
+                    "customerID": order.customerID,
                     "amount": order.amount,
                     "dateCreated": order.dateCreated,
                     "expectedDate": order.expectedDate,
-                    "stage": this.transformOrderStatus(order),
-                    "status": this.determineStatus(order),
+                    "orderType":order.orderType,
+                   // "stage": this.transformOrderStatus(order),
+                    "status":order.status,
+                   // "status": this.determineStatus(order),
                     "actions": order.actions,
 
                 });
@@ -508,11 +510,11 @@ class Dashboard extends React.Component {
                                 <div className="portlet-title">
                                     <div className="caption "><span className="caption-subject " /></div>
                                     <div className="center-block" style={{ width: "500px" }}>
-                                        <div className="input-group" id="defaultrange" style={{ display: "inline", marginRight: "10px", borderBlockColor: "red" }}>
+                                        {/* <div className="input-group" id="defaultrange" style={{ display: "inline", marginRight: "10px", borderBlockColor: "red" }}>
                                             <DateRangePicker onChangeRange={this.dateChangeGraph} />
                                         </div>
                                         <button type="submit" className="btn dash green input-xsmall"
-                                            onClick={this.getLoad} >{utils.getLabelByID("Search")}</button>
+                                            onClick={this.getLoad} >{utils.getLabelByID("Search")}</button> */}
 
                                     </div>
                                 </div>
@@ -604,14 +606,13 @@ class Dashboard extends React.Component {
                                 <div className="col-md-12">
                                     <Table TableClass="portlet light bordered sdg_portlet"
                                         title={utils.getLabelByID("Customer wise Settlement")}
-                                        gridColumns={utils.getGridColumnByName("dashboardCustomerSettlement")}
-                                        gridData={[]}
-                                        gridData={this.props.data.dashboardSupplierSettlement.supplierWiseSettlementRows ?
-                                            this.props.data.dashboardSupplierSettlement.supplierWiseSettlementRows : 0}
-                                        totalRecords={this.props.data.dashboardSupplierSettlement.pageData.totalRecords}
-                                        activePage={this.state.dashboardSupplierSettlement.pageData.currentPageNo}
-                                        pageSize={this.state.dashboardSupplierSettlement.pageData.pageSize}
-                                        pageChanged={(currentPage) => { this.pageChange(currentPage, 'dashboardSupplierSettlement') }}
+                                        gridColumns={utils.getGridColumnByName("customerWiseSettlement")}
+                                        gridData={this.props.data.dashboardCustomerSettlement.customerWiseSettlement ?
+                                            this.props.data.dashboardCustomerSettlement.customerWiseSettlement : 0}
+                                        totalRecords={this.props.data.dashboardCustomerSettlement.pageData.totalRecords}
+                                        activePage={this.state.dashboardCustomerSettlement.pageData.currentPageNo}
+                                        pageSize={this.state.dashboardCustomerSettlement.pageData.pageSize}
+                                        pageChanged={(currentPage) => { this.pageChange(currentPage, 'dashboardCustomerSettlement') }}
 
                                         export={false}
                                         pagination={true} />

@@ -52,26 +52,24 @@ module.exports = {
     { alias: "", key: "orderID", type: "hiddenID" },
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "ORDER ID", key: "orderID", type: "string" },
-    // { alias: "Customer", key: "customerID", type: "string" },
-    { alias: "Supplier Name", key: "supplierName", type: "string" },
-    { alias: "Amount", key: "amount", type: "string" },
+    { alias: "CUSTOMER ID", key: "customerID", type: "string" },
+    { alias: "Amount", key: "amount", type: "amount" },
     { alias: "PO Date", key: "dateCreated", type: "epochDate" },
-    { alias: "Expected Date", key: "expectedDate", type: "epochDate" },
-    { alias: "Stage", key: "stage", type: "string" },
-    { alias: "Status", key: "status", type: "statusLabel" },
+    { alias: "order Type", key: "orderType", type: "string" },
+    { alias: "Status", key: "status", type: "status" },
     { alias: "COMPLETED ORDER", key: "actions", type: "action" }
   ],
   settlements:[
     { alias: "", key: "orderID", type: "hiddenID" },
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "ORDER ID", key: "orderID", type: "string" },
-    { alias: "Supplier Name", key: "supplierName", type: "string" },
+    { alias: "CUSTOMER ID", key: "customerID", type: "string" },
     { alias: "Status", key: "status", type: "string" },
     { alias: "PO Date", key: "dateCreated", type: "epochDate" },
-    { alias: "Expected Date", key: "dateCreated", type: "epochDate" },
-    { alias: "Amount", key: "amount", type: "string" },
+    { alias: "Amount", key: "amount", type: "amount" },
      { alias: "SETTLE", key: "actions", type: "action" }
   ],
+  
   dashboardSupplierSettlement: [
     { alias: "", key: "_id", type: "hiddenID" },
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
@@ -79,24 +77,22 @@ module.exports = {
     { alias: "Total Received", key: "totalReceived", type: "string" },
     { alias: "To Receive", key: "receivable", type: "string" }
   ],
-  dashboardCustomerSettlement: [
+  customerWiseSettlement: [
     { alias: "", key: "_id", type: "hiddenID" },
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
-    { alias: "Supplier Name", key: "name", type: "string" },
-    { alias: "Total Paid", key: "totalPaid", type: "string" },
-    { alias: "To Pay", key: "toPay", type: "string" }
+    { alias: "customer id", key: "customerID", type: "string" },
+    { alias: "Total Paid", key: "paidAmount", type: "amount" },
+    { alias: "To Pay", key: "toPay", type: "amount" }
   ],
   pendingQuotes: [
     { alias: "", key: "orderID", type: "hiddenID" },
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "ORDER ID", key: "orderID", type: "string" },
-    // { alias: "Customer", key: "customerID", type: "string" },
-    { alias: "Supplier Name", key: "supplierName", type: "string" },
-    { alias: "Amount", key: "amount", type: "string" },
+    { alias: "CUSTOMER ID", key: "customerID", type: "string" },
+    { alias: "Amount", key: "amount", type: "amount" },
     { alias: "PO Date", key: "dateCreated", type: "epochDate" },
-    { alias: "Expected Date", key: "expectedDate", type: "epochDate" },
-    { alias: "Stage", key: "stage", type: "string" },
-    { alias: "Status", key: "status", type: "statusLabel" },
+    { alias: "ORDER TYPE", key: "orderType", type: "string" },
+    { alias: "Status", key: "status", type: "string" },
     { alias: "PENDING ORDER", key: "actions", type: "action" }
   ],
   viewMasterAgreementItem:[
