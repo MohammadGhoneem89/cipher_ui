@@ -454,16 +454,16 @@ class Dashboard extends React.Component {
 
 
                                                 <div className="form-group col-md-6">
-                                                    <select name="supplier" className="form-control" value={this.state.value}
+                                                    {/* <select name="supplier" className="form-control" value={this.state.value}
                                                         onChange={this.supplierChange}>
                                                         <option key="-1" onChange={this.supplierChange} >ALL</option>
-                                                        <option value="ETIHAD">ETIHAD</option>
+                                                        <option value="ETIHAD">ETIHAD</option> */}
                                                         {/* {this.state.getSuppliersList.map((option, index) =>
                                                             (<option value={option.supplierName.name}
                                                                 key={index}>
                                                                 {utils.getLabelByID(option.supplierName.name)}
                                                             </option>))} */}
-                                                    </select>
+                                                    {/* </select> */}
 
                                                 </div>
                                             </div>
@@ -583,29 +583,12 @@ class Dashboard extends React.Component {
 
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <Table TableClass="portlet light bordered sdg_portlet"
-                                        title={utils.getLabelByID("Settlements")}
-                                        gridColumns={utils.getGridColumnByName("settlements")}
-                                        gridData={this.props.data.dashboardSettlementGridData.settlementsRows ?
-                                            this.props.data.dashboardSettlementGridData.settlementsRows : []}
-                                        totalRecords={this.props.data.dashboardSettlementGridData.pageData.totalRecords}
-                                        activePage={this.state.dashboardSettlementGridData.pageData.currentPageNo}
-                                        pageSize={this.state.dashboardSettlementGridData.pageData.pageSize}
-                                        pageChanged={(currentPage) => { this.pageChange(currentPage, 'dashboardSettlementGridData') }}
-                                        export={false}
-                                        pagination={true} />
-
-
-
-                                </div>
-                            </div>
+                            
 
                             <div className="row">
                                 <div className="col-md-12">
                                     <Table TableClass="portlet light bordered sdg_portlet"
-                                        title={utils.getLabelByID("Customer wise Settlement")}
+                                        title={utils.getLabelByID("Supplier wise Settlement")}
                                         gridColumns={utils.getGridColumnByName("customerWiseSettlement")}
                                         gridData={this.props.data.dashboardCustomerSettlement.customerWiseSettlement ?
                                             this.props.data.dashboardCustomerSettlement.customerWiseSettlement : 0}

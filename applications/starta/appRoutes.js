@@ -15,8 +15,8 @@ import CustomerAssociation from "./components/CustomerAssociation/customerAssoci
 
 import OrderDetails from "./components/order/OrderDetails/OrderDetailContainer.jsx";
 import OrderViaContract from "./components/order/OrderViaContract/OrderViaContract.jsx";
-import CustomerDashboard from "./components/dashboard.jsx";
 import SupplierDashboard from "./components/supplierDashboard.jsx";
+import CustomerDashboard from "./components/customerDashboard.jsx";
 let authRoutes = <div>
   <Route path="/strata/oneTimeOrder" component={OneTimeOrder} />
   <Route path="/customer" component={CustomerDashboard} />
