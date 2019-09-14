@@ -184,7 +184,7 @@ class Dashboard extends React.Component {
 
     getDashboardData = (supplier) => {
         console.log(supplier, "suppleir")
-        this.props.actions.generalProcess(url.customerDashboard, {
+        this.props.actions.generalProcess(url.supplierDashboardData, {
             supplier: supplier || this.state.supplierAddress,
             // user: this.state.user,
             dashboardPendingGridData: this.state.dashboardPendingGridData,
@@ -205,7 +205,7 @@ class Dashboard extends React.Component {
         this.setState({ pageName: currentGrid });
         console.log(pageName, "__________________GRID!!!!")
         // this.props.actions.generalProcess(url.cusDashboardData, {pageName:this.state[pageName]})
-        this.getDashboardData("ETIHAD");
+        this.getDashboardData();
     };
     supplierChange = (e) => {
         let suppData = this.supplierData.sort();
@@ -627,11 +627,11 @@ class Dashboard extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log(state.app.customerDashboardData, "**********DATA");
-    if (state.app.customerDashboardData !== undefined) {
+    console.log(state.app.supplierDashboardData, "**********DATA");
+    if (state.app.supplierDashboardData !== undefined) {
 
         return {
-            data: state.app.customerDashboardData.data,
+            data: state.app.supplierDashboardData.data,
             //suppliers: state.app.supplierMasterList.searchResult,
             //supplierPageDate: state.app.supplierMasterList.pageData,
 

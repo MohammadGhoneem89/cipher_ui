@@ -18,5 +18,5 @@ module.exports = {
   addMasterContract: `${baseUrl}/API/P2P/addMasterContract`,
 
   customerDashboard: `${baseUrl}/API/STRATA/customerDashboard`,
-  supDashboardData: `${baseUrl}/API/STRATA/supDashboardData`
+  supplierDashboardData: `${baseUrl}/API/STRATA/supplierDashboardData`
 };

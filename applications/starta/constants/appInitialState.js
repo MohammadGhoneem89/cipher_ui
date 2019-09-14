@@ -26,7 +26,7 @@ export default {
     data: {},
     pageData: {}
   },
-  supDashboardData:{
+  supplierDashboardData:{
     data: {},
     pageData: {}
   },
