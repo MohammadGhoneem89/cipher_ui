@@ -1,26 +1,28 @@
 module.exports = {
   paymentSearch: [
-    {alias: "", key: "_id", type: "hiddenID"},
-    {alias: "BankCode", key: "bankCode", type: 'string'},
-    {alias: "Name", key: "name", type: 'string'},
-    {alias: "Code", key: "code", type: "string"},
-    {alias: "Action", key: "action", type: "action"}
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "BankCode", key: "bankCode", type: 'string' },
+    { alias: "Name", key: "name", type: 'string' },
+    { alias: "Code", key: "code", type: "string" },
+    { alias: "Action", key: "action", type: "action" }
   ],
   itemMaster: [
-    {alias: "", key: "itemCode", type: "hiddenID"},
-    {alias: "Item ID", key: "itemCode", type: 'string'},
-    {alias: " ITEM name", key: "name", type: "string"},
-    {alias: "Unit Price", key: "price", type: "amount"},
-    {alias: "Expected quantity", key: "quantity", type: "amount"},
-    {alias: "Action", key: "action", type: "action"}
+    { alias: "", key: "itemCode", type: "hiddenID" },
+    { alias: "Item ID", key: "itemCode", type: 'string' },
+    { alias: " ITEM name", key: "name", type: "string" },
+    { alias: "Unit Price", key: "price", type: "amount" },
+    { alias: "Expected quantity", key: "quantity", type: "amount" },
+    { alias: "Action", key: "action", type: "action" }
   ],
   itemCatalogue: [
+
     {alias: "", key: "itemCode", type: "hiddenID"},
     {alias: "Item ID", key: "itemCode", type: 'string'},
     {alias: " ITEM name", key: "name", type: "string"},
     {alias: " ITEM Description", key: "description", type: "longString"},
     {alias: "Unit Price", key: "price", type: "amount"},
     {alias: "Action", key: "action", type: "action"}
+
   ],
   orderList: [
     {alias: "", key: "orderID", type: "hiddenID"},
@@ -33,6 +35,7 @@ module.exports = {
     {alias: "Action", key: "action", type: "action"}
   ],
   masterAgreement: [
+<<<<<<< Updated upstream
     {alias: "", key: "contractID", type: "hiddenID"},
     {alias: "Contract ID", key: "contractID", type: 'string'},
     {alias: "start Date", key: "startDate", type: "string"},
@@ -95,23 +98,32 @@ module.exports = {
     { alias: "Status", key: "status", type: "string" },
     { alias: "PENDING ORDER", key: "actions", type: "action" }
   ],
-  viewMasterAgreementItem:[
-    {alias: "", key: "contractID", type: "hiddenID"},
-    {alias: "Contract ID", key: "contractID", type: 'string'},
-    {alias: "Strat Date", key: "startDate", type: "string"},
-    {alias: "End Date", key: "endDate", type: "string"},
-    {alias: "Customer", key: "customerID", type: 'string'},
-    {alias: "Status", key: "status", type: 'string'},
-    {alias: "Action", key: "action", type: "action"}
+  viewMasterAgreementItem1:[
+    { alias: "", key: "uniqueId", type: "hiddenID" },
+    { alias: "Contract ID", key: "contractID", type: 'string' },
+    { alias: "Strat Date", key: "startDate", type: "string" },
+    { alias: "End Date", key: "endDate", type: "string" },
+    { alias: "Customer", key: "customerID", type: 'string' },
+    { alias: "Status", key: "status", type: 'string' },
+    { alias: "Action", key: "action", type: "action" }
   ],
-  viewMasterAgreementPenalties:[
-    {alias: "", key: "contractID", type: "hiddenID"},
-    {alias: "Contract ID", key: "contractID", type: 'string'},
-    {alias: "Start Date", key: "startDate", type: "string"},
-    {alias: "End Date", key: "endDate", type: "string"},
-    {alias: "Customer", key: "customerID", type: 'string'},
-    {alias: "Status", key: "status", type: 'string'},
-    {alias: "Action", key: "action", type: "action"}
+  viewMasterAgreementItem: [
+    { alias: "", key: "itemCode", type: "hiddenID" },
+    { alias: "ITEM ID", key: "itemCode", type: 'string' },
+    { alias: "ITEM DESCRIPTION", key: "itemImage", type: "image"},
+    { alias: "UNIT PRICE", key: "unitPrice", type: "string" },
+    { alias: "EXPECTED QUANTITY", key: "expectedQuantity", type: 'string' },
+    { alias: "RECEIVED QUANTITY", key: "receivedQuantity", type: 'string' },
+    { alias: "REBATE", key: "rebate", type: "string" },
+    { alias: "ACTION", key: "action", type: "action" }
+
+  ],
+  viewMasterAgreementPenalties: [
+    { alias: "FROM STAGE", key: "fromStage", type: 'string' },
+    { alias: "TILL STAGE", key: "tillStage", type: "string" },
+    { alias: "TIME TAKEN (Days)", key: "greaterThan", type: "string" },
+    { alias: "PENALTY TYPE", key: "penaltyType", type: 'string' },
+    { alias: "PENALTY VALUE", key: "penaltyValue", type: 'string' }
   ],
   viewMasterAgreementSLA:[
     {alias: "", key: "contractID", type: "hiddenID"},
@@ -121,6 +133,19 @@ module.exports = {
     {alias: "Customer", key: "customerID", type: 'string'},
     {alias: "Status", key: "status", type: 'string'},
     {alias: "Action", key: "action", type: "action"}
+
+  viewMasterAgreementSLA: [
+    { alias: "FROM", key: "fromStage", type: 'string' },
+    { alias: "TO", key: "toStage", type: "string" },
+    { alias: "DURATION (DAYS)", key: "duration", type: "string" }
+  ],
+
+  viewMasterAgreementDISCOUNT: [
+    { alias: "", key: "", type: "hiddenID" },
+    { alias: ">", key: "greaterThan", type: 'numeric' },
+    { alias: "<", key: "lessThan", type: "numeric" },
+    { alias: "FLAT VALUE PER ITEM", key: "discount", type: "numeric" },
+
   ],
 
   downloadFileList: [
@@ -146,14 +171,15 @@ module.exports = {
     {alias: "penalty type", key: "penaltyType", type: "string"},
     {alias: "penalty value", key: "penaltyValue", type: "string"}
 
+
   ],
-  LineItems:[
-    {alias: "Items Name", key: "name", type: 'string'},
-    {alias: "Item Code ", key: "itemCode", type: "string"},
-    {alias: "Qty", key: "quantity", type: "number"},
-    {alias: "Received Qty", key: "receivedQuantity", type: "number"},
-    {alias: "Amount", key: "unitPrice", type: "number"},
-    {alias: "Total", key: "totalAmount", type: "number"}
+  LineItems: [
+    { alias: "Items Name", key: "name", type: 'string' },
+    { alias: "Item Code ", key: "itemCode", type: "string" },
+    { alias: "Qty", key: "quantity", type: "number" },
+    { alias: "Received Qty", key: "receivedQuantity", type: "number" },
+    { alias: "Amount", key: "unitPrice", type: "number" },
+    { alias: "Total", key: "totalAmount", type: "number" }
 
   ]
 

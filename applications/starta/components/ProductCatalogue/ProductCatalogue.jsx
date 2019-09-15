@@ -33,7 +33,8 @@ class ProductCatalogue extends React.Component {
       isLoading: true,
       addProduct: {},
       productImage: {},
-      documents: []
+      documents: [],
+      typeData: {}
     };
     this.validate = false;
     this.generalHandler = gen.generalHandler.bind(this);
@@ -47,21 +48,34 @@ class ProductCatalogue extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.getItemCatalogue && nextProps.typeData) {
+    console.log(nextProps, "props recieved");
+
+    if (nextProps.typeData && !nextProps.params.id) {
+      this.setState({
+        addProduct: {},
+        productImage: {},
+        documents: [],
+        typeData: nextProps.typeData,
+        isLoading: false
+      });
+    }
+
+    if (nextProps.getItemCatalogue && nextProps.typeData && nextProps.params.id) {
       this.setState({
         addProduct: nextProps.getItemCatalogue[0],
         typeData: nextProps.typeData,
         isLoading: false
-      })
+      });
     }
 
   }
 
   componentDidMount() {
     console.log(this.props, "this.props")
-    console.log(this.props.id, "ITEM ID FROM PROPS")
-    if (this.props.id) {
-      this.getItemDetail(this.props.id);
+    console.log(this.props.params.id, "ITEM ID FROM params")
+
+    if (this.props.params.id) {
+      this.getItemDetail(this.props.params.id);
     }
 
     this.props.actions.generalProcess(coreConstants.getTypeData,
@@ -102,6 +116,13 @@ class ProductCatalogue extends React.Component {
         alert("Item Code is required!")
         return;
       }
+<<<<<<< Updated upstream
+=======
+      if (this.state.addProduct.name.length > 20){
+        alert("Item name must be less than 20 characters!")
+        return;
+      }
+>>>>>>> Stashed changes
       if (this.state.addProduct.name == undefined || this.state.addProduct.name.trim() == '') {
         alert("item name is required!")
         return;
@@ -158,7 +179,7 @@ class ProductCatalogue extends React.Component {
         addProduct.attachments = this.state.documents
       }
 
-      if (this.props.id) {
+      if (this.props.params.id) {
         this.props.actions.generalAjxProcess(constants.updateItemCatalogue, {
           body: addProduct
         }).then(result => {
@@ -217,14 +238,31 @@ class ProductCatalogue extends React.Component {
   }
 
   render() {
+<<<<<<< Updated upstream
      console.log(this.state?this.state : "Waititng for state");
     let _this = this;
     function getImage() {
       let image = "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png";
       if (_.get(_this.props.getItemCatalogue[0], "image", {}) !== "{}") {
         image = constants.ipfsGet + _.get(_this.props.getItemCatalogue, "[0].image.hash", "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png");
+=======
+    // console.log(this.state.documents, "DOCUMENTS");
+    let _this = this;
+
+    const addDefaultSrc = e => e.target.src = "/assets/Resources/images/default.png";
+
+    const getImage = () => {
+      const defaultImg = "/assets/Resources/images/default.png";
+
+      if (_.get(this.state.addProduct, "image", {}) !== "{}") {
+        let img = _.get(this.state.addProduct, "image.hash", defaultImg);
+        if (img === defaultImg) {
+          return defaultImg;
+        } else {
+          return constants.ipfsGet + img;
+        }
+>>>>>>> Stashed changes
       }
-      return image;
     }
     if (!this.state.isLoading)
 
@@ -233,6 +271,10 @@ class ProductCatalogue extends React.Component {
           <div className="col-md-12" style={{ textAlign: "center", paddingBottom: "25px" }}>
             <img id="productImage"
               src={getImage()}
+<<<<<<< Updated upstream
+=======
+              onError={addDefaultSrc}
+>>>>>>> Stashed changes
               className="img-responsive img-thumbnail" alt="Product Image" width="150px"
               height="150px"
               ref={input => this.productImage = input}
@@ -297,7 +339,7 @@ class ProductCatalogue extends React.Component {
             <Label text="Item Code:" columns='1' />
             <Input fieldname='itemCode' formname='addProduct' columns='5' state={this.state}
               actionHandler={this.generalHandler} className="form-control"
-              disabled={this.props.getItemCatalogue.length > 0 ? "disabled" : ""}
+              disabled={this.props.params.id ? "disabled" : ""}
             />
             <Label text="Name:" columns='1' />
             <Input fieldname='name' formname='addProduct'
@@ -356,7 +398,7 @@ class ProductCatalogue extends React.Component {
               state={this.state}
               typeName="color"
               dataSource={this.state.typeData}
-              checked={this.props.getItemCatalogue.length > 0 ? this.props.getItemCatalogue[0].color : this.state}
+              checked={Object.keys(this.state.addProduct).length > 0 ? this.state.addProduct.color : this.state}
               actionHandler={this.onWorkOnDataChange}
               disabled={false}
 
@@ -405,10 +447,16 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
+<<<<<<< Updated upstream
             <Document initState={this.state} updateState={this.updateState}
               getParentState={this.getParentState}
               allowedFileType=".xml , .csv , .xls , .xlsx"
               acceptedFiles="Files to be uploaded with extention *.xml, *.xls or *.csv"
+=======
+            <Document initState={this.state} updateState={this.updateState} getParentState={this.getParentState}
+              allowedFileType=".jpg, .jpeg, .png, .bmp, .tiff, .svg, .gif, .pdf, .docx, .doc, .xlsb, .cmb, .stl, .xml , .csv , .xls , .xlsx"
+              acceptedFiles="Files to be uploaded with any image extension or *.docx, *.doc, *.xlsb, *.cmb, *.stl, *.xml , *.csv , *.xls , *.xlsx"
+>>>>>>> Stashed changes
               fileUploadURL={constants.ipfs}
             />
           </Row>
@@ -437,9 +485,11 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators(actions, dispatch) }
-
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  }
 }
+
 
 ProductCatalogue.displayName = "Product Catalogue";
 export default connect(mapStateToProps, mapDispatchToProps)(ProductCatalogue);

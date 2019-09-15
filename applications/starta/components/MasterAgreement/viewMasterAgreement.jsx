@@ -14,30 +14,26 @@ import * as utils from '../../../../core/common/utils.js';
 import Table from '../../../../core/common/Datatable.jsx';
 import Portlet from '../../../../core/common/Portlet.jsx';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
+import Discount from './Discount.jsx'
 
 class ViewMasterAgreement extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            searchCriteria: {},
-            page: {
-                pageSize: 10,
-                currentPageNo: 1
+            isLoading: true,
+            agreementDetail: {
+                items: [],
+                sla: [],
+                penalties: []
             },
-            getPage: undefined,
             isModalOpen: false,
             selectedIndex: 0,
-            isLoading: false,
-            index: 0,
-            gridData: [],
-            typeData: undefined,
-            gridDataItem: []
-
+            orgImgName: ""
         };
-        this.pageChanged = this.pageChanged.bind(this);
     }
 
+    /** unused 
     transformResponse = (getItemList) => {
 
         let transformItemList = [];
@@ -61,45 +57,11 @@ class ViewMasterAgreement extends React.Component {
 
             });
         }
-
-        // console.log("--------------------------------",
-        // transformItemList, "UPDATES!!!!!!1111")
         return transformItemList;
     }
+    */
 
-    componentWillMount() {
-    }
-
-    pageChanged = (pageNo) => {
-        let page = this.state.page;
-        page.currentPageNo = pageNo;
-        this.setState({ page: page });
-        //this.props.actions.generalProcess(constants.getMasterAgreementView, this.getRequest());
-    }
-
-
-    getRequest = () => {
-        this.setState({ isLoading: true });
-
-        let contractID = this.props.params.id;
-
-        let request = {
-            "body": {
-                "page": {
-                    "currentPageNo": this.state.page.currentPageNo,
-                    "pageSize": this.state.page.pageSize
-                },
-                "searchCriteria": {
-                    "contractId": contractID
-                }
-            }
-
-        };
-        //this.props.actions.generalProcess(constants.getMasterAgreementView, request);
-    }
-    // formSubmit=()=>{
-
-    // }
+    addDefaultSrc = e => e.target.src = "/assets/Resources/images/default.png";
     detailsActionHandlers = ({ actionName, index }) => {
         switch (actionName) {
             case "View":
@@ -111,31 +73,31 @@ class ViewMasterAgreement extends React.Component {
         }
     }
 
-
+    /** unused
     SLAresponse = (data) => {
 
-        data.forEach(function (item) {
-            console.log("duration --------!!!", item.duration)
-            let s = (((item.duration) % 60000) / 1000).toFixed(0);
-            let d = Math.floor((s) / (3600 * 24));
-            let h = Math.floor((s) % (3600 * 24) / 3600);
-            let m = Math.floor((s) % 3600 / 60);
+        data.forEach( (item) => {
+            // console.log("duration --------!!!", item.duration)
+            // let s = (((item.duration) % 60000) / 1000).toFixed(0);
+            // let d = Math.floor((s) / (3600 * 24));
+            // let h = Math.floor((s) % (3600 * 24) / 3600);
+            // let m = Math.floor((s) % 3600 / 60);
 
 
-            // var seconds = ((millis % 60000) / 1000)
-            let dDisplay = d > 0 ? d + (d == 1 ? " day " : " days ") : "";
-            let hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
-            let mDisplay = ""
-            let sDisplay = ""
-            if (d <= 0) {
-                mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
-                if (h <= 0) {
-                    sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : (item.duration + " milliseconds");
-                }
-            }
+            // // var seconds = ((millis % 60000) / 1000)
+            // let dDisplay = d > 0 ? d + (d == 1 ? " day " : " days ") : "";
+            // let hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
+            // let mDisplay = ""
+            // let sDisplay = ""
+            // if (d <= 0) {
+            //     mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
+            //     if (h <= 0) {
+            //         sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : (item.duration + " milliseconds");
+            //     }
+            // }
 
 
-            item.duration = dDisplay + hDisplay + mDisplay + sDisplay;
+            // item.duration = dDisplay + hDisplay + mDisplay + sDisplay;
 
             if (item.fromStage == "PO") {
                 item.fromStage = "Purchase Order";
@@ -196,7 +158,9 @@ class ViewMasterAgreement extends React.Component {
         return data;
 
     }
+     */
 
+    /** unused 
     penalties = (data) => {
         //   alert(data)
         data.forEach(function (item) {
@@ -226,7 +190,9 @@ class ViewMasterAgreement extends React.Component {
         return data;
 
     }
+    */
 
+    /** unused 
     updateSLA = (list) => {
         if (list) {
 
@@ -256,299 +222,331 @@ class ViewMasterAgreement extends React.Component {
             });
         }
     }
+    */
+    mapSLAResp = (key) => {
+        switch (key) {
+            case "001":
+                return "Order Received"
+            case "002":
+                return "Purchase Order"
+            case "003":
+                return "Component Manufacturing"
+            case "004":
+                return "Part Identification"
+            case "005":
+                return "Part Inspection"
+            case "006":
+                return "File Inspection and Identification"
+            case "007":
+                return "Part Testing"
+            case "008":
+                return "Assembly"
+            case "009":
+                return "Paint/Finish"
+            case "010":
+                return "Dispatched"
+            case "011":
+                return "Received"
+            case "012":
+                return "Inspected"
+            case "013":
+                return "Accepted"
+            case "014":
+                return "Rejected"
+            case "015":
+                return "Reviewed"
+            case "016":
+                return "Concession"
+            case "017":
+                return "Scrapped"
+            case "018":
+                return "Payment Order"
+            case "019":
+                return "Paid"
+            case "020":
+                return "Invoiced"
 
+        }
 
+    }
     componentDidMount() {
-        //this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['paymentTerms']));
-        //this.props.actions.generalProcess(constants.getMasterAgreementView, this.getRequest());
+        console.log(this.props, "did mount Props");
+        const req = {
+            header: {
+                username: "strata_api",
+                password: "1f40fc92da241694750979ee6cf582f2d5d7d28e18335de05abc54d0560e0f5302860c652bf08d560252aa5e74210546f369fbbbce8c12cfc7957b2652fe9a75"
+            },
+            body: {
+                contractID: this.props.params.contractID,
+                customerID: this.props.params.customerID
+            }
+        }
+        this.props.actions.generalProcess(constants.getMasterAgreementData, req);
+
+        this.props.actions.generalProcess(constants.getOrgImage, requestCreator.createEntityListRequest({
+            "currentPageNo": 1,
+            "pageSize": 10
+        }, {
+            "spCode": this.props.params.customerID
+        }));
+
         window.scrollTo(0, 0);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.getMasterAgreementView) {
+        console.log(nextProps, "will recieve Props")
+        if (nextProps.agreementDetail) {
 
-
-            // console.log(nextProps.getMasterAgreementView[0].additionalInfo[0].discounts, "%%%%%%%%%%%%")
-            this.setState({
-               // gridDataDISCOUNT: nextProps.getMasterAgreementView[0].additionalInfo[0].discounts,
-              //  gridDataItem: this.transformResponse(nextProps.getMasterAgreementView[0].additionalInfo),
-              //  gridDataSLA: this.SLAresponse(nextProps.getMasterAgreementView[0].SLA),
-              //  gridDataPenalties: this.penalties(nextProps.getMasterAgreementView[0].penalties),
-                typeData: nextProps.typeData,
-                isLoading: false,
-                getPage: nextProps.getPage
+            let data = [...nextProps.agreementDetail.sla];
+            data.map((obj) => {
+                obj.fromStage = this.mapSLAResp(obj.fromStage)
+                obj.toStage = this.mapSLAResp(obj.toStage)
+                return obj
             });
 
-            console.log("--------", this.state.gridDataItem);
+            this.setState({
+                agreementDetail: {
+                    ...nextProps.agreementDetail,
+                    sla: [...data]
+                },
+                isLoading: false
+            });
+        }
+        if (nextProps.orgImgName) {
+            this.setState({
+                orgImgName: nextProps.orgImgName
+            })
         }
     }
+
     render() {
-
-        if (this.state.isLoading) {
-            return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
-        }
-        // if (this.props.getMasterAgreementView) {
-        console.log("DATA STATE ---->>>>>>>>>>>>>>>>>>>>>>", this.state.gridDataItem)
         return (
-            <div>
-                <div className="portlet light bordered">
-                    <div className="portlet-body">
-                        <div className="row">
-                            <div className="portlet-body form" style={{ paddingLeft: "20px" }}>
-                                <form className="form-horizontal" role="form">
-                                    <div className="form-body" style={{ paddingLeft: "18px" }}>
-                                        <div className="col-md-8">
-                                            <div className="row">
-                                                <label className="control-label" style={{ fontWeight: "bold" }} >
-                                                    {/* {utils.getLabelByID("CONTRACT # " + this.props.getMasterAgreementView[0].contractId)} */}
-                                                </label>
+            this.state.isLoading ? <div className="loader"> {utils.getLabelByID("loading")}</div> : (
+                <div>
+                    <div className="portlet light bordered">
+                        <div className="portlet-body">
+                            <div className="row">
+                                <div className="portlet-body form" style={{ paddingLeft: "20px" }}>
+                                    <form className="form-horizontal" role="form">
+                                        <div className="form-body" style={{ paddingLeft: "18px" }}>
+                                            <div className="col-md-8">
+                                                <div className="row">
+                                                    <label className="control-label" style={{ fontWeight: "bold" }} >
+                                                        {"CONTRACT # " + this.state.agreementDetail.contractID}
+                                                    </label>
 
-                                            </div>
-                                            <br />
-                                            <div className="row">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label" style={{ fontWeight: "bold" }}>{utils.getLabelByID("Supplier : ")}</label>
                                                 </div>
-                                                <div className="form-group col-md-8">
-                                                    {/* <label className="control-label" >{this.props.getMasterAgreementView[0].supplierName}</label> */}
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label" style={{ fontWeight: "bold" }}>{utils.getLabelByID("Country : ")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    {/* <label className="control-label" >{this.props.getMasterAgreementView[0].supplierCountry}</label> */}
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <div className="form-group col-md-8" style={{ paddingLeft: 0 }}>
-                                                        <label className="control-label" style={{ fontWeight: "bold" }}>{utils.getLabelByID("Start Date:")}</label>
+                                                <br />
+                                                <div className="row">
+                                                    <div className="col-md-4">
+                                                        <div className="form-group col-md-6" style={{ paddingLeft: 0 }}>
+                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"Customer: "}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-6">
+                                                            {<label className="control-label" >{this.state.agreementDetail.customerID}</label>}
+                                                        </div>
                                                     </div>
-                                                    <div className="form-group col-md-4">
-                                                        {/* <label className="control-label" style={{ paddingLeft: "3px" }}>{this.props.getMasterAgreementView[0].startDate}</label> */}
+
+                                                    <div className="col-md-4">
+                                                        <div className="form-group col-md-6">
+                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"Payment Terms: "}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-6">
+                                                            {<label className="control-label" >{this.state.agreementDetail.paymentTerms.paymentType}</label>}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="col-md-4">
+                                                        <div className="form-group col-md-6">
+                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"Duration: "}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-6">
+                                                            {<label className="control-label" >{this.state.agreementDetail.paymentTerms.days}</label>}
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div className="row">
+                                                    <div className="col-md-4">
+                                                        <div className="form-group col-md-6" style={{ paddingLeft: 0 }}>
+                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"Start Date:"}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-6">
+                                                            {<label className="control-label" style={{ paddingLeft: "3px" }}>{this.state.agreementDetail.startDate}</label>}
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-4">
+                                                        <div className="form-group col-md-6">
+                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"End Date:"}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-6">
+                                                            {<label className="control-label" >{this.state.agreementDetail.endDate}</label>}
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-4">
+                                                        <div className="form-group col-md-6">
+                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"Shipment Type:"}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-6">
+                                                            {<label className="control-label" >{this.state.agreementDetail.shipmentType}</label>}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-md-6">
-                                                    <div className="form-group col-md-6">
-                                                        <label className="control-label" style={{ fontWeight: "bold" }}>{utils.getLabelByID("End Date:")}</label>
-                                                    </div>
-                                                    <div className="form-group col-md-6">
-                                                        {/* <label className="control-label" >{this.props.getMasterAgreementView[0].endDate}</label> */}
-                                                    </div>
-                                                </div>
                                             </div>
-
-
-                                            <div className="row">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label" style={{ fontWeight: "bold" }}>{utils.getLabelByID("Zycus Contract Title : ")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    {/* <label className="control-label" >{this.props.getMasterAgreementView[0].zycusContractTitle}</label> */}
-                                                </div>
+                                            <div className="col-md-4" style={{ paddingLeft: "90px" }}>
+                                                <img className="img-thumbnail img-rounded" style={{ height: "200px", width: "200px" }}
+                                                    src={constants.baseUrl + "/" + this.state.orgImgName}
+                                                    onError={this.addDefaultSrc}
+                                                />
                                             </div>
-
-                                            <div className="row">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label" style={{ fontWeight: "bold" }}>{utils.getLabelByID("Zycus Contract ID : ")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    {/* <label className="control-label" >{this.props.getMasterAgreementView[0].zycusContractId}</label> */}
-                                                </div>
-                                            </div>
-
-
-                                            <div className="row">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label" style={{ fontWeight: "bold" }}>{utils.getLabelByID("Zycus Buyer Contact : ")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    {/* <label className="control-label" >{this.props.getMasterAgreementView[0].zycusBuyerContact}</label> */}
-                                                </div>
-                                            </div>
-
-
                                         </div>
-                                        <div className="col-md-4" style={{ paddingLeft: "90px" }}>
-                                            <img className="img-thumbnail img-rounded" style={{ height: "200px", width: "200px" }}
-                                            // src={this.props.getMasterAgreementView[0].logo}
-                                            />
-                                        </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <Portlet title={"ITEM DETAILS"}>
-                    {
-                        this.state.gridDataItem.map((obj) => {
 
-                            obj.action = [
-
-                                {
-                                    label: utils.getLabelByID("View"),
-                                    "iconName": "icon-docs",
-                                    "params": "_id",
-                                    actionType: "COMPONENT_FUNCTION"
+                    <Portlet title={"ITEM DETAILS"}>
+                        {
+                            this.state.agreementDetail.items.map((item) => {
+                                item.action = [
+                                    {
+                                        label: utils.getLabelByID("View"),
+                                        "iconName": "icon-docs",
+                                        "params": "_id",
+                                        actionType: "COMPONENT_FUNCTION"
+                                    }
+                                ]
+                                item.rebate = item.itemWiseDiscount.length > 0 ? item.itemWiseDiscount[0].discount : "none"
+                                item.itemImage = {
+                                    name: item.name,
+                                    imageURL: _.get(item, "itemImage.imageURL", "")
                                 }
-
-                            ]
-                        })
-
-                    }
-
-                    <Table gridColumns={utils.getGridColumnByName("viewMasterAgreementItem")}
-                        gridData={this.state.gridDataItem}
-                        fontclass=""
-                        // totalRecords={this.props.getPage.totalRecords}
-                        pageSize={10}
-                        pageChanged={this.pageChanged}
-                        // componentFunction={this.detailsActionHandlers}
-                        pagination={false}
-                        activePage={this.state.page.currentPageNo} />
-                </Portlet>
-
-                <Portlet title={"SLA"}>
+                            })
+                        }
+                        <Table gridColumns={utils.getGridColumnByName("viewMasterAgreementItem")}
+                            gridData={this.state.agreementDetail.items}
+                            fontclass=""
+                            componentFunction={this.detailsActionHandlers}
+                            pagination={false} />
+                    </Portlet>
 
 
-                    <Table gridColumns={utils.getGridColumnByName("viewMasterAgreementSLA")}
-                        gridData={this.state.gridDataSLA}
-                        fontclass=""
-                        // totalRecords={this.props.getPage.totalRecords}
-                        pageSize={10}
-                        pageChanged={this.pageChanged}
-                        pagination={false}
-                        activePage={this.state.page.currentPageNo} />
-                </Portlet>
+                    <Portlet title={"SLA"}>
+                        {
+                            console.log(this.state.agreementDetail.sla, "changedddddddddddddd")
+                        }
+                        <Table gridColumns={utils.getGridColumnByName("viewMasterAgreementSLA")}
+                            gridData={this.state.agreementDetail.sla}
+                            fontclass=""
+                            pagination={false} />
+                    </Portlet>
 
-                <Portlet title={"PENALTIES"}>
+                    <Portlet title={"PENALTIES"}>
+                        {
+                            this.state.agreementDetail.penalties.map((obj) => {
+                                obj.fromStage = "Purchase Order"
+                                obj.tillStage = "Shipped"
+                            })
+                        }
+                        <Table
+                            gridColumns={utils.getGridColumnByName("viewMasterAgreementPenalties")}
+                            gridData={this.state.agreementDetail.penalties}
+                            fontclass=""
+                            pagination={false} />
+                    </Portlet>
 
-                    <Table
-                        gridColumns={utils.getGridColumnByName("viewMasterAgreementPenalties")}
-                        gridData={this.state.gridDataPenalties}
-                        fontclass=""
-                        //totalRecords={this.props.getPage.totalRecords}
-                        pageSize={10}
-                        pageChanged={this.pageChanged}
-                        pagination={false}
-                        activePage={this.state.page.currentPageNo} />
-                </Portlet>
-
-                {/* <div className="order-content">
-                        <div className="order-delay-card">
-                            */}
-                < div className="row" style={{ padding: "20px" }}>
-                    <div className="col-md-12 " >
-                        <div className="col-md-4 " >
-                            <div className="table100 ver1 m-b-110" >
-                                <div className="table100-head orderdetails-table">
-                                    <div className="order-title">Amount Realized</div>
-                                </div>
-                                <div className="" style={{ marginTop: "24px" }}>
-                                    <div className="col-md-12 orderdetail-txt">
-
-                                        <div className="col-md-12 text-center">
-                                            {/* <h4 style={{ fontWeight: "800", padding: "26px", fontSize: "32px" }}>{(Math.round(this.props.getMasterAgreementView[0].amountRealized)).toLocaleString()}</h4> */}
+                    < div className="row" style={{ padding: "20px" }}>
+                        <div className="col-md-12 " >
+                            <div className="col-md-3 " >
+                                <div className="table100 ver1 m-b-110" >
+                                    <div className="table100-head orderdetails-table">
+                                        <div className="order-title">Amount Realized</div>
+                                    </div>
+                                    <div className="" style={{ marginTop: "24px" }}>
+                                        <div className="col-md-12 orderdetail-txt">
+                                            <div className="col-md-12 text-center">
+                                                <h4 style={{ fontWeight: "800", padding: "26px", fontSize: "32px" }}>
+                                                    {(Math.round(this.state.agreementDetail.amountRealized)).toLocaleString()}
+                                                </h4>
+                                            </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="col-md-4 " >
-                            <div className="table100 ver1 m-b-110" >
-                                <div className="table100-head orderdetails-table">
-                                    <div className="order-title">Total Rebate</div>
-                                </div>
-                                <div className="" style={{ marginTop: "24px" }}>
-                                    <div className="col-md-12 orderdetail-txt">
-
-                                        <div className="col-md-12 text-center">
-                                            <h4 style={{ fontWeight: "800", padding: "26px", fontSize: "32px" }}>
-                                                {/* {(Math.round(this.props.getMasterAgreementView[0].totalRebate)).toLocaleString()} */}
-                                            </h4>
+                            <div className="col-md-3 " >
+                                <div className="table100 ver1 m-b-110" >
+                                    <div className="table100-head orderdetails-table">
+                                        <div className="order-title">Total Rebate</div>
+                                    </div>
+                                    <div className="" style={{ marginTop: "24px" }}>
+                                        <div className="col-md-12 orderdetail-txt">
+                                            <div className="col-md-12 text-center">
+                                                <h4 style={{ fontWeight: "800", padding: "26px", fontSize: "32px" }}>
+                                                    {(Math.round(this.state.agreementDetail.totalRebate)).toLocaleString()}
+                                                </h4>
+                                            </div>
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="col-md-4 " >
-                            <div className="table100 ver1 m-b-110" >
-                                <div className="table100-head orderdetails-table">
-                                    <div className="order-title">Total Penalty </div>
+                            <div className="col-md-3 " >
+                                <div className="table100 ver1 m-b-110" >
+                                    <div className="table100-head orderdetails-table">
+                                        <div className="order-title">Total Penalty </div>
+                                    </div>
+                                    <div className="" style={{ marginTop: "24px" }}>
+                                        <div className="col-md-12 orderdetail-txt">
+                                            <div className="col-md-12 text-center">
+                                                <h4 style={{ fontWeight: "800", padding: "26px", fontSize: "32px" }}>
+                                                    {(Math.round(this.state.agreementDetail.totalPenalty)).toLocaleString()}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="" style={{ marginTop: "24px" }}>
-                                    <div className="col-md-12 orderdetail-txt">
+                            </div>
 
-                                        <div className="col-md-12 text-center">
-                                            {/* <h4 style={{ fontWeight: "800", padding: "26px", fontSize: "32px" }}>{(Math.round(this.props.getMasterAgreementView[0].totalPenalty)).toLocaleString()} */}
-
+                            <div className="col-md-3 " >
+                                <div className="table100 ver1 m-b-110" >
+                                    <div className="table100-head orderdetails-table">
+                                        <div className="order-title">Total Credit Note</div>
+                                    </div>
+                                    <div className="" style={{ marginTop: "24px" }}>
+                                        <div className="col-md-12 orderdetail-txt">
+                                            <div className="col-md-12 text-center">
+                                                <h4 style={{ fontWeight: "800", padding: "26px", fontSize: "32px" }}>
+                                                    {"VAL???"/*(Math.round(this.state.agreementDetail.totalPenalty)).toLocaleString()*/}
+                                                </h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <ModalBox isOpen={this.state.isModalOpen}>
+                        <Discount parent={this} />
+                    </ModalBox>
+
+
                 </div>
-
-                {/* </div>
-                    </div> */}
-                <div className="row">
-                    <div className="col-md-6" style={{ marginTop: "20px" }}>
-                        <div className="form-group col-md-4">
-                            <label className="control-label">{utils.getLabelByID("Payment Terms :")}</label>
-                        </div>
-                        <div className="form-group col-md-8">
-                            <select name="paymentTerms" id="paymentTerms" className="form-control" disabled>
-                                {/* <option key="-1" value=""></option> */}
-                                {this.state.typeData && this.state.typeData.paymentTerms && this.state.typeData.paymentTerms.map((option, index) => {
-                                    return (
-                                        <option key={index} value={option.value}>{option.label}</option>
-                                    );
-                                })}
-                            </select>
-
-                        </div>
-                    </div>
-                    <div className="col-md-6" style={{ marginTop: "20px" }}>
-                        <div className="form-group col-md-4">
-                            <label className="control-label">{utils.getLabelByID("Duration :")}</label>
-                        </div>
-                        <div className="form-group col-md-8">
-                            <input type="text" className="form-control" name="" value="1" disabled />
-                        </div>
-                    </div>
-                </div>
-                {/* <div>
-                    <button type="submit" className="btn green" onClick={this.showModal}>DISCOUNT</button>
-                </div> */}
-                <ModalBox isOpen={this.state.isModalOpen}>
-                    {/* <Discount parent={this} /> */}
-                </ModalBox>
-            </div >
-
+            )
         );
     }
 }
 
-
-
 function mapStateToProps(state, ownProps) {
-
-
     return {
-        // getMasterAgreementView: state.app.getMasterAgreementView.searchResult,
-        // getPage: state.app.getMasterAgreementView.pageData,
-        // typeData: state.app.typeData.data
-    };
+        agreementDetail: state.app.agreementDetail,
+        orgImgName: _.get(state.app, "entityList.data.searchResult[0].entityName.name")
+    }
 }
 
 function mapDispatchToProps(dispatch) {
