@@ -7,6 +7,7 @@ import { browserHistory } from 'react-router';
 import * as actions from '../../../../core/actions/generalAction';
 import _ from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
+import * as requestCreator from '../../../../core/common/request.js';
 
 import get from 'lodash/get';
 import find from 'lodash/find';
@@ -17,6 +18,7 @@ import * as utils from '../../../../core/common/utils.js';
 import DateControl from '../../../../core/common/DateControl.jsx'
 import Table from '../../../../core/common/Datatable.jsx';
 import * as constants from '../../../../core/constants/Communication.js';
+import { DatePicker } from 'antd';
 
 class AddMasterAgreement extends React.Component {
     constructor(props) {
@@ -32,7 +34,12 @@ class AddMasterAgreement extends React.Component {
             penalties: [],
             isLoading: false,
             startDate: "",
-            endDate: ""
+            endDate: "",
+            contractID : "",
+            customerID : "",
+            paymentType: "",
+            days: "",
+            shipmentType: ""
         }
         this.fromStage = undefined;
         this.toStage = undefined;
@@ -65,10 +72,103 @@ class AddMasterAgreement extends React.Component {
         })
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['shipmentType', 'orderStatus', 'paymentType']));
 
+        // -- Edit Master Agreement Page code starts here --
+        console.log(this.props, "did mount Props");
+        const req = {
+            header: {
+                username: "strata_api",
+                password: "1f40fc92da241694750979ee6cf582f2d5d7d28e18335de05abc54d0560e0f5302860c652bf08d560252aa5e74210546f369fbbbce8c12cfc7957b2652fe9a75"
+            },
+            body: {
+                contractID: this.props.params.contractID,
+                customerID: this.props.params.customerID
+            }
+        }
+        this.props.actions.generalProcess(constants.getMasterAgreementData, req);
+        // -- Ends -- 
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.getItemCatalogue && nextProps.typeData && nextProps.entityNames) {
+
+        // -- Edit Master Agreement Page code starts here --
+        if (nextProps.getAgreementDetail && nextProps.params.contractID && nextProps.params.customerID && nextProps.getItemCatalogue && nextProps.typeData && nextProps.entityNames){
+            
+            
+            // Fix json Response and load state from props
+            let items = []
+            for (let i=0; i<nextProps.getAgreementDetail.items.length; i++){
+                let item = {}
+                item.serial = _.get(nextProps.getAgreementDetail.items[i],"serial", "") 
+                item.itemCode = _.get(nextProps.getAgreementDetail.items[i],"itemCode", "")
+                item.name = _.get(nextProps.getAgreementDetail.items[i],"name", "")
+                item.color = _.get(nextProps.getAgreementDetail.items[i],"color", [])
+                item.material = _.get(nextProps.getAgreementDetail.items[i],"material", "") 
+                item.printTime = _.get(nextProps.getAgreementDetail.items[i],"printTime", "") 
+                item.leadTime = _.get(nextProps.getAgreementDetail.items[i],"leadTime", "") 
+                item.price = _.get(nextProps.getAgreementDetail.items[i],"unitPrice", "") 
+                item.quantity = _.get(nextProps.getAgreementDetail.items[i],"expectedQuantity", "")
+                
+                item.rebate = []
+                for(let j=0; j<nextProps.getAgreementDetail.items[i].itemWiseDiscount.length; j++){
+                    let reb = {}
+                    reb.greaterThan = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j],"greaterThan")
+                    reb.lessThan = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j],"lessThan")
+                    reb.rebate = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j],"discount")
+                    reb.discountType = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j],"discountType")
+                    item.rebate.push(reb)
+                }
+                items.push(item)
+            }
+
+            let sla = []
+            for (let i=0; i < nextProps.getAgreementDetail.sla.length; i++){
+                let slaObj = {}
+                slaObj.fromStage = nextProps.getAgreementDetail.sla[i].fromStage
+                slaObj.toStage = nextProps.getAgreementDetail.sla[i].toStage
+                slaObj.duration = nextProps.getAgreementDetail.sla[i].duration
+                sla.push(slaObj)
+            }
+
+            let penalties = []
+            for(let i=0; i<nextProps.getAgreementDetail.penalties.length; i++){
+                let penaltyObj = {}
+                penaltyObj.fromStage = _.get(nextProps.getAgreementDetail.penalties[i], "fromStage")
+                penaltyObj.fromStagePenaltyLabel = _.get(nextProps.getAgreementDetail.penalties[i], "fromStage")
+                penaltyObj.tillStage = _.get(nextProps.getAgreementDetail.penalties[i], "tillStage")
+                penaltyObj.tillStageLabel = _.get(nextProps.getAgreementDetail.penalties[i], "tillStage")
+                penaltyObj.greaterThan = _.get(nextProps.getAgreementDetail.penalties[i], "greaterThan")
+                penaltyObj.penaltyType = _.get(nextProps.getAgreementDetail.penalties[i], "penaltyType")
+                penaltyObj.penaltyValue = _.get(nextProps.getAgreementDetail.penalties[i], "penaltyValue")
+                penalties.push(penaltyObj)
+            }
+
+            document.getElementById('contractID').disabled = true
+            
+            this.setState({
+                items,
+                sla,
+                penalties,
+                contractID: nextProps.getAgreementDetail.contractID,
+                customerID: nextProps.getAgreementDetail.customerID,
+                days: _.get(nextProps.getAgreementDetail, "paymentTerms.days",undefined),
+                paymentType: _.get(nextProps.getAgreementDetail, "paymentTerms.paymentType",undefined) ? nextProps.getAgreementDetail.paymentTerms.paymentType.toUpperCase() : undefined,
+                shipmentType: _.get(nextProps.getAgreementDetail, "shipmentType", undefined) ? nextProps.getAgreementDetail.shipmentType.toUpperCase() : undefined,
+                startDate: nextProps.getAgreementDetail.startDate,
+                endDate: nextProps.getAgreementDetail.endDate,
+
+
+
+                itemList: nextProps.getItemCatalogue,
+                typeData: nextProps.typeData,
+                entityNames: nextProps.entityNames,
+                isLoading: false
+            })
+            
+
+        }
+        // -- Ends --
+
+        if (nextProps.getItemCatalogue && nextProps.typeData && nextProps.entityNames && !nextProps.params.contractID) {
             this.setState({
                 itemList: nextProps.getItemCatalogue,
                 typeData: nextProps.typeData,
@@ -82,12 +182,16 @@ class AddMasterAgreement extends React.Component {
 
     onStartDateChange = (value) => {
         console.log(value, "start date")
-        this.state.startDate = value;
+        this.setState({
+            startDate: value
+        })
     }
 
     onEndDateChange = (value) => {
         console.log(value, "end date")
-        this.state.endDate = value;
+        this.setState({
+            endDate: value
+        })
     }
 
     getStatusLabel = status => {
@@ -283,7 +387,7 @@ class AddMasterAgreement extends React.Component {
         data.push(newtupple);
         this.setState({ items: data });
     }
-
+    
     addContract = () => {
         let contractID = document.getElementById('contractID') == null ? "" : document.getElementById('contractID').value;
         let startDate = this.state.startDate;
@@ -386,11 +490,19 @@ class AddMasterAgreement extends React.Component {
             sla,
             penalties
         }
-        this.props.actions.generalAjxProcess(constants.addMasterContract, { "body": _.cloneDeep(contract) })
+        if (!this.props.params.contractID){
+            this.props.actions.generalAjxProcess(constants.addMasterContract, { "body": _.cloneDeep(contract) })
             .then(result => {
                 console.log(result, "result")
                 result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
             });
+        } else {
+            this.props.actions.generalAjxProcess(constants.updateMasterContract, { "body": _.cloneDeep(contract) })
+            .then(result => {
+                console.log(result, "result")
+                result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
+            });
+        }
         this.clearFields();
     }
     redirectToList = () => {
@@ -486,6 +598,7 @@ class AddMasterAgreement extends React.Component {
                 break;
         }
     }
+    onChange = (e) => {this.setState({ [e.target.name]: e.target.value })};
 
     render() {
         const itemList = this.state.itemList ? this.state.itemList : []
@@ -504,7 +617,16 @@ class AddMasterAgreement extends React.Component {
                             <div className="form-group">
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Contract ID")}</label>
                                 <div className="form-group col-md-8">
-                                    <input type="text" className="form-control" id="contractID" />
+
+                                    <input 
+                                        name="contractID"
+                                        type="text" 
+                                        className="form-control" 
+                                        id="contractID"
+                                        value={this.state.contractID}
+                                        onChange={this.onChange}
+                                    />
+
                                 </div>
                             </div>
                         </div>
@@ -512,8 +634,8 @@ class AddMasterAgreement extends React.Component {
                             <div className="form-group">
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Customer")}</label>
                                 <div className="form-group col-md-8" >
-                                    <select id="customerID" className="form-control">
-                                        <option key="-1" value="">Select</option>
+                                    <select id="customerID" name="customerID" className="form-control" value={this.state.customerID} onChange={this.onChange} >
+                                        <option key="-1">Select</option>
                                         {
                                             customerList.map((option, index) => {
                                                 return (
@@ -531,7 +653,7 @@ class AddMasterAgreement extends React.Component {
                             <div className="form-group">
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Start Date")}</label>
                                 <div className="form-group col-md-8">
-                                    <DateControl id="startDate" dateChange={this.onStartDateChange} />
+                                    <DateControl id="startDate" value={this.state.startDate} dateChange={this.onStartDateChange} />
                                 </div>
                             </div>
                         </div>
@@ -539,7 +661,7 @@ class AddMasterAgreement extends React.Component {
                             <div className="form-group">
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("End Date")}</label>
                                 <div className="form-group col-md-8">
-                                    <DateControl id="endDate" dateChange={this.onEndDateChange} />
+                                    <DateControl id="endDate" value={this.state.endDate} dateChange={this.onEndDateChange} />
                                 </div>
                             </div>
                         </div>
@@ -553,8 +675,8 @@ class AddMasterAgreement extends React.Component {
                             <div className="form-group">
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Payment Type")}</label>
                                 <div className="form-group col-md-8">
-                                    <select id="paymentType" className="form-control">
-                                        <option key="-1" value="">Select</option>
+                                    <select name="paymentType" id="paymentType" className="form-control" value={this.state.paymentType} onChange={this.onChange}>
+                                        <option key="-1" >Select</option>
                                         {
                                             paymentTypess.map((item, index) => {
                                                 return (
@@ -570,7 +692,14 @@ class AddMasterAgreement extends React.Component {
                             <div className="form-group">
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Days")}</label>
                                 <div className="form-group col-md-8">
-                                    <input type="number" className="form-control" id="days" />
+                                    <input
+                                        name="days"
+                                        type="number" 
+                                        className="form-control" 
+                                        id="days"
+                                        onChange={this.onChange}
+                                        value={this.state.days}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -581,8 +710,8 @@ class AddMasterAgreement extends React.Component {
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Shipment Type")}</label>
                                 <div className="form-group col-md-8">
 
-                                    <select id="shipmentType" className="form-control">
-                                        <option key="-1" value="">Select</option>
+                                    <select id="shipmentType" className="form-control" name="shipmentType" value={this.state.shipmentType} onChange={this.onChange}>
+                                        <option key="-1" >Select</option>
                                         {
                                             shipmentType.map((item, index) => {
                                                 return (
@@ -957,7 +1086,10 @@ class AddMasterAgreement extends React.Component {
                             <div className="form-group col-md-12">
                                 <div className="btn-toolbar pull-right">
                                     <br />
-                                    <button type="submit" onClick={this.addContract.bind(this)} className="btn green">Create Contract</button>
+                                    <button type="submit" onClick={this.addContract} className="btn green">
+                                        {this.props.params.contractID && "Update Contract"}
+                                        {!this.props.params.contractID && "Create Contract"}
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -974,7 +1106,8 @@ function mapStateToProps(state, ownProps) {
     return {
         getItemCatalogue: _.get(state.app, 'getItemCatalogue.searchResult', []),
         typeData: state.app.typeData.data,
-        entityNames: state.app.entityList.data.typeData.entityNames
+        entityNames: state.app.entityList.data.typeData.entityNames,
+        getAgreementDetail: _.get(state.app, 'agreementDetail')
     }
 }
 

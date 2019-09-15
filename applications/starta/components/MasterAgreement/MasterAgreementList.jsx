@@ -171,6 +171,12 @@ class MasterAgreementList extends React.Component {
                                         "URI": ["/strata/ViewMasterAgreement"],
                                         "params": "_id",
                                         "iconName": "icon-docs"
+                                    },
+                                    {
+                                        "label": "Edit",
+                                        "URI": ["/strata/AddMasterAgreement/"],
+                                        "params": "_id",
+                                        "iconName": "icon-docs"
                                     }
                                 ]
                             })
