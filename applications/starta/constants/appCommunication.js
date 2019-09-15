@@ -12,6 +12,8 @@ module.exports = {
   ipfsGet: `http://13.80.7.122:9081/API/core/download?type=IPFS&path=`,
   getOrderList: `${baseUrl}/API/STRATA/getOrderList`,
   createOrder: `${baseUrl}/API/P2P/createOrder`,
+  updateOrderStatus: `${baseUrl}/API/P2P/updateOrderStatus`,
+  updateOrderStatusCustomer: `${baseUrl}/API/P2P/updateOrderStatusCustomer`,
   updateItemCatalogue: `${baseUrl}/API/P2P/updateItemCatalogue`,
   addItemCatalogue: `${baseUrl}/API/P2P/addItemCatalogue`,
   getOrderDetail: `${baseUrl}/API/P2P/getOrderDetail`,
