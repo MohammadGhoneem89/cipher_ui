@@ -274,11 +274,7 @@ class OneTimeOrder extends React.Component {
                     </div>
                     <div className="input-group-addon search-categories">
                       <select name="searchType" id="productCategory" className="postform resizeselect"
-<<<<<<< Updated upstream:applications/starta/components/order/OneTimeOrder/OneTimeOrder.jsx
-                        style={{ width: "143px" }}>
-=======
                               style={{width: "143px", webkitAppearance: "menulist"}}>
->>>>>>> Stashed changes:applications/starta/components/OneTimeOrder/OneTimeOrder.jsx
                         <option value="name">Name</option>
                         <option className="level-0" value="description">Description</option>
                         <option className="level-0" value="material">Material</option>
@@ -286,11 +282,7 @@ class OneTimeOrder extends React.Component {
                     </div>
                     <div className="input-group-addon search-categories">
                       <select name="classification" id="product_cat" className="postform resizeselect"
-<<<<<<< Updated upstream:applications/starta/components/order/OneTimeOrder/OneTimeOrder.jsx
-                        style={{ width: "143px" }}>
-=======
                               style={{width: "143px", webkitAppearance: "menulist"}}>
->>>>>>> Stashed changes:applications/starta/components/OneTimeOrder/OneTimeOrder.jsx
                         <option value="">All Categories</option>
                         {categories.map((item, index) => {
                           return <option key={index} className="level-0" value={item.value}>{item.label}</option>;

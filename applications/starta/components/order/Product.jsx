@@ -3,6 +3,10 @@ import * as constants from "../../../../core/constants/Communication";
 import * as utils from '../../../../core/common/utils.js';
 const Product = props => {
   const { onClick, details } = props;
+  const addDefaultSrc = (e) => {
+    e.target.src = "/assets/Resources/images/default.png"
+    e.target.style= {height:"auto"}
+  };
   let price = details.price ? details.price : details.unitPrice;
   return <div className="procard">
     <div className="counterbadge">
@@ -12,7 +16,7 @@ const Product = props => {
     <div>
 
       <div className="text-center proimg" onClick={onClick.bind(this, details)}>
-        <img src={constants.ipfsGet + details.image.hash} />
+        <img src={constants.ipfsGet + details.image.hash} style={{ height: "inherit" }} onError={addDefaultSrc}/>
       </div>
       <a><h3>{details.name}</h3></a>
 

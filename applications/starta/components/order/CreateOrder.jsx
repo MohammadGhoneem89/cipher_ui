@@ -8,6 +8,9 @@ import * as utils from '../../../../core/common/utils.js';
 //import * as constants from "../../../../../../core/constants/Communication";
 
 const CreateOrder = props => {
+  const addDefaultSrc = (e) => {
+    e.target.src = "/assets/Resources/images/default.png"
+  }
   const { onClick, cartItems, state, setState, placeOrder } = props;
 
   console.log(JSON.stringify(cartItems))
@@ -48,7 +51,7 @@ const CreateOrder = props => {
               });
               setState({ cartItems: cart, grandTotal });
             }} /></td>
-            <td><img src={item.image} width="40px" /> <span
+            <td><img src={item.image} onError={addDefaultSrc} width="40px" /> <span
               className="proname">{item.name}</span></td>
             <td>{item.material}</td>
             <td className="moveRight" style={{

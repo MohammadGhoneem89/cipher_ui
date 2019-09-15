@@ -15,14 +15,12 @@ module.exports = {
     { alias: "Action", key: "action", type: "action" }
   ],
   itemCatalogue: [
-
-    {alias: "", key: "itemCode", type: "hiddenID"},
-    {alias: "Item ID", key: "itemCode", type: 'string'},
-    {alias: " ITEM name", key: "name", type: "string"},
-    {alias: " ITEM Description", key: "description", type: "longString"},
-    {alias: "Unit Price", key: "price", type: "amount"},
-    {alias: "Action", key: "action", type: "action"}
-
+    { alias: "", key: "itemCode", type: "hiddenID" },
+    { alias: "Name", key: "itemImage", type: "image", width: "20%", url: '' },
+    { alias: "Item ID", key: "itemCode", type: 'string' },
+    { alias: " ITEM Description", key: "description", type: "string" },
+    { alias: "Unit Price", key: "price", type: "amount" },
+    { alias: "Action", key: "action", type: "action" }
   ],
   orderList: [
     {alias: "", key: "orderID", type: "hiddenID"},
@@ -35,8 +33,7 @@ module.exports = {
     {alias: "Action", key: "action", type: "action"}
   ],
   masterAgreement: [
-<<<<<<< Updated upstream
-    {alias: "", key: "contractID", type: "hiddenID"},
+    {alias: "", key: "uniqueId", type: "hiddenID"},
     {alias: "Contract ID", key: "contractID", type: 'string'},
     {alias: "start Date", key: "startDate", type: "string"},
     {alias: "End Date", key: "endDate", type: "string"},
@@ -125,14 +122,7 @@ module.exports = {
     { alias: "PENALTY TYPE", key: "penaltyType", type: 'string' },
     { alias: "PENALTY VALUE", key: "penaltyValue", type: 'string' }
   ],
-  viewMasterAgreementSLA:[
-    {alias: "", key: "contractID", type: "hiddenID"},
-    {alias: "Contract ID", key: "contractID", type: 'string'},
-    {alias: "START Date", key: "startDate", type: "string"},
-    {alias: "End Date", key: "endDate", type: "string"},
-    {alias: "Customer", key: "customerID", type: 'string'},
-    {alias: "Status", key: "status", type: 'string'},
-    {alias: "Action", key: "action", type: "action"}
+
 
   viewMasterAgreementSLA: [
     { alias: "FROM", key: "fromStage", type: 'string' },

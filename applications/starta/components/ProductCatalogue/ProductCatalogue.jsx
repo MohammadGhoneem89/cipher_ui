@@ -116,13 +116,10 @@ class ProductCatalogue extends React.Component {
         alert("Item Code is required!")
         return;
       }
-<<<<<<< Updated upstream
-=======
       if (this.state.addProduct.name.length > 20){
         alert("Item name must be less than 20 characters!")
         return;
       }
->>>>>>> Stashed changes
       if (this.state.addProduct.name == undefined || this.state.addProduct.name.trim() == '') {
         alert("item name is required!")
         return;
@@ -238,14 +235,6 @@ class ProductCatalogue extends React.Component {
   }
 
   render() {
-<<<<<<< Updated upstream
-     console.log(this.state?this.state : "Waititng for state");
-    let _this = this;
-    function getImage() {
-      let image = "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png";
-      if (_.get(_this.props.getItemCatalogue[0], "image", {}) !== "{}") {
-        image = constants.ipfsGet + _.get(_this.props.getItemCatalogue, "[0].image.hash", "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png");
-=======
     // console.log(this.state.documents, "DOCUMENTS");
     let _this = this;
 
@@ -261,7 +250,6 @@ class ProductCatalogue extends React.Component {
         } else {
           return constants.ipfsGet + img;
         }
->>>>>>> Stashed changes
       }
     }
     if (!this.state.isLoading)
@@ -271,10 +259,7 @@ class ProductCatalogue extends React.Component {
           <div className="col-md-12" style={{ textAlign: "center", paddingBottom: "25px" }}>
             <img id="productImage"
               src={getImage()}
-<<<<<<< Updated upstream
-=======
               onError={addDefaultSrc}
->>>>>>> Stashed changes
               className="img-responsive img-thumbnail" alt="Product Image" width="150px"
               height="150px"
               ref={input => this.productImage = input}
@@ -447,16 +432,9 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-<<<<<<< Updated upstream
-            <Document initState={this.state} updateState={this.updateState}
-              getParentState={this.getParentState}
-              allowedFileType=".xml , .csv , .xls , .xlsx"
-              acceptedFiles="Files to be uploaded with extention *.xml, *.xls or *.csv"
-=======
             <Document initState={this.state} updateState={this.updateState} getParentState={this.getParentState}
               allowedFileType=".jpg, .jpeg, .png, .bmp, .tiff, .svg, .gif, .pdf, .docx, .doc, .xlsb, .cmb, .stl, .xml , .csv , .xls , .xlsx"
               acceptedFiles="Files to be uploaded with any image extension or *.docx, *.doc, *.xlsb, *.cmb, *.stl, *.xml , *.csv , *.xls , *.xlsx"
->>>>>>> Stashed changes
               fileUploadURL={constants.ipfs}
             />
           </Row>
