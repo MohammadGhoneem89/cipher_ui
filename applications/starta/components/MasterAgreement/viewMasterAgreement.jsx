@@ -521,7 +521,7 @@ class ViewMasterAgreement extends React.Component {
                                         <div className="col-md-12 orderdetail-txt">
                                             <div className="col-md-12 text-center">
                                                 <h4 style={{ fontWeight: "800", padding: "26px", fontSize: "32px" }}>
-                                                    {"VAL???"/*(Math.round(this.state.agreementDetail.totalPenalty)).toLocaleString()*/}
+                                                    {(Math.round(this.state.agreementDetail.creditNoteAmount)).toLocaleString()}
                                                 </h4>
                                             </div>
                                         </div>

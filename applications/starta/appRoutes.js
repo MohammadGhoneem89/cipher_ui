@@ -27,6 +27,7 @@ let authRoutes = <div>
   <Route path="/strata/itemCatalogueList" component={ItemCatalogueList} />
   <Route path="/strata/MasterAgreementList" component={MasterAgreementList} />
   <Route path="/strata/AddMasterAgreement" component={AddMasterAgreement} />
+  <Route path="/strata/AddMasterAgreement/:contractID/:customerID" component={AddMasterAgreement} />
   <Route path="/strata/ViewMasterAgreement/:contractID/:customerID" component={ViewMasterAgreement}/>
   <Route path="/strata/customerAssociation" component={CustomerAssociation} />
   <Route path="/strata/orderList" component={OrderList} />
