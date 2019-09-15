@@ -34,8 +34,6 @@ class OrderDetailContainer extends React.Component {
     };
     this.openModalBox = this.openModalBox.bind(this);
     this.closeModalBox = this.closeModalBox.bind(this);
-    this.getStagePriorToPaymentOrder = this.getStagePriorToPaymentOrder.bind(this);
-    this.nextStatus = this.nextStatus.bind(this);
   }
 
   componentWillMount() {
@@ -45,7 +43,7 @@ class OrderDetailContainer extends React.Component {
     this.props.actions.generalProcess(constants.getOrderDetail, {
       "body": {
         "orderID": this.props.orderID,
-        "customerID": "ETIHAD"
+        "customerID": this.props.customerID
       }
     });
     window.scrollTo(0, 0);
@@ -75,318 +73,31 @@ class OrderDetailContainer extends React.Component {
     this.setState({ modelBox: false });
   }
 
-  getOrderStatus() {
-    let OrderReceived = "001", PurchaseOrder = "002", ComponentManufacturing = "003", PartIdentification = "004",
-      PartInspection = "005", FinalInspectionAndIdentification = "006", PartTested = "007", Assembly = "008",
-      PaintOrFinish = "009", Dispatched = "010", Received = "011", Inspected = "012", Accepted = "013",
-      Rejected = "014", Reviewed = "015", Concession = "016", PaymentOrder = "018", Scrapped = "017", Paid = "019";
-    let currentOrderStatus = this.state.orderDetail.status;
-    // let currentOrderStatus = ComponentManufacturing;
-
-    let orderStatus = [
-      { label: "Order Received", status: false },
-      { label: "Purchase Order", status: false },
-      { label: "Component Manufacturing", status: false },
-      { label: "Dispatch", status: false },
-      { label: "Received", status: false },
-      { label: "Inspected", status: false },
-      { label: "Accepted/Rejected", status: false },
-      { label: "Payment Order", status: false },
-      { label: "Paid", status: false }
-    ];
-
-    if (currentOrderStatus === OrderReceived) {
-      orderStatus[0].status = true;
-    }
-    else if (currentOrderStatus === PurchaseOrder) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-    }
-    else if (currentOrderStatus === ComponentManufacturing) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].label = "Component Manufacturing";
-      orderStatus[2].text = "20%";
-    }
-    else if (currentOrderStatus === PartIdentification) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].label = "Part Identification";
-      orderStatus[2].text = "40%";
-    }
-    else if (currentOrderStatus === PartInspection) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].label = "Part Inspection";
-      orderStatus[2].text = "60%";
-    }
-    else if (currentOrderStatus === FinalInspectionAndIdentification) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].label = "Final Inspection";
-      orderStatus[2].text = "80%";
-    }
-    else if (currentOrderStatus === PartTested) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].label = "Part Tested";
-      orderStatus[2].text = "85%";
-    }
-    else if (currentOrderStatus === Assembly) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].label = "Assembly";
-      orderStatus[2].text = "95%";
-    }
-    else if (currentOrderStatus === PaintOrFinish) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].status = true;
-    }
-    else if (currentOrderStatus === Dispatched) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].status = true;
-      orderStatus[3].status = true;
-    }
-    else if (currentOrderStatus === Received) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].status = true;
-      orderStatus[3].status = true;
-      orderStatus[4].status = true;
-    }
-    else if (currentOrderStatus === Inspected) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].status = true;
-      orderStatus[3].status = true;
-      orderStatus[4].status = true;
-      orderStatus[5].status = true;
-    }
-    else if (currentOrderStatus === Accepted) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].status = true;
-      orderStatus[3].status = true;
-      orderStatus[4].status = true;
-      orderStatus[5].status = true;
-      orderStatus[6].status = true;
-      orderStatus[6].label = "Accepted";
-    }
-    else if (currentOrderStatus === Rejected) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].status = true;
-      orderStatus[3].status = true;
-      orderStatus[4].status = true;
-      orderStatus[5].status = true;
-      orderStatus[6].status = true;
-      orderStatus[6].label = "Rejected";
-    }
-    else if (currentOrderStatus === Reviewed) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].status = true;
-      orderStatus[3].status = true;
-      orderStatus[4].status = true;
-      orderStatus[5].status = true;
-      orderStatus[6].status = true;
-      orderStatus[6].label = "Reviewed";
-    }
-    else if (currentOrderStatus === Concession) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].status = true;
-      orderStatus[3].status = true;
-      orderStatus[4].status = true;
-      orderStatus[5].status = true;
-      orderStatus[6].status = true;
-      orderStatus[6].label = "Concession";
-    }
-    else if (currentOrderStatus === Scrapped) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].status = true;
-      orderStatus[3].status = true;
-      orderStatus[4].status = true;
-      orderStatus[5].status = true;
-      orderStatus[6].status = true;
-      orderStatus[6].label = "Scrapped";
-    }
-    else if (currentOrderStatus === PaymentOrder) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].status = true;
-      orderStatus[3].status = true;
-      orderStatus[4].status = true;
-      orderStatus[5].status = true;
-      orderStatus[6].status = true;
-      orderStatus[6].label = this.getStagePriorToPaymentOrder() == Accepted ? "Accepted" : "Concession";
-      orderStatus[7].status = true;
-      orderStatus[7].label = "Payment Order";
-    }
-    else if (currentOrderStatus === Paid) {
-      orderStatus[0].status = true;
-      orderStatus[1].status = true;
-      orderStatus[2].status = true;
-      orderStatus[3].status = true;
-      orderStatus[4].status = true;
-      orderStatus[5].status = true;
-      orderStatus[6].status = true;
-      orderStatus[6].label = this.getStagePriorToPaymentOrder() == Accepted ? "Accepted" : "Concession";
-      orderStatus[7].status = true;
-      orderStatus[8].status = true;
-    }
-    return orderStatus;
-  }
-
-  getStagePriorToPaymentOrder() {
-    let activities = _.clone(this.state.orderDetail.activities);
-    activities.forEach(element => {
-      if (element.toStage === "018") {
-        return element.fromStage;
-      }
-    });
-  }
-
   errorHandler(event) {
     event.target.src = "http://localhost:9086/images/1f31e930-e0d5-11e7-88e2-f718f78167e9.png"
   }
 
-  nextStatus() {
-    let status = this.state.orderDetail.status;
-    if (status === "001" && (sessionStorage.orgType === "CUSTOMER" || sessionStorage.orgType === "PM")) {
-      return [
-        {
-          type: 1,
-          label: "Purchase Order",
-          status: "002"
-        }
-      ]
-    }
-    else if (status === "002" && (sessionStorage.orgType === "SUPPLIER" || sessionStorage.orgType === "PM")) {
-      return [
-        {
-          type: 2,
-          label: "Component Manufacture",
-          status: "003"
-        }
-      ]
-    }
-    else if (status === "003" && (sessionStorage.orgType === "SUPPLIER" || sessionStorage.orgType === "PM")) {
-      return [
-        {
-          type: 1,
-          label: "Part Identification",
-          status: "004"
-        }
-      ]
-    }
-    else if (status === "004" && (sessionStorage.orgType === "SUPPLIER" || sessionStorage.orgType === "PM")) {
-      return [
-        {
-          type: 1,
-          label: "Part Inspection",
-          status: "005"
-        }
-      ]
-    }
-    else if (status === "005" && (sessionStorage.orgType === "SUPPLIER" || sessionStorage.orgType === "PM")) {
-      return [
-        {
-          type: 1,
-          label: "Final Inspection and Indentification",
-          status: "006"
-        }
-      ]
-    }
-    else if ((status === "006" || status === "007" || status === "008" || status === "009") && (sessionStorage.orgType === "SUPPLIER" || sessionStorage.orgType === "PM")) {
-      return [
-        {
-          type: 2,
-          label: "Manufacturing Sub-Status",
-          status: "007"
-        },
-        {
-          type: 1,
-          label: "Dispatch",
-          status: "010"
-        }
-      ]
-    }
-
-    else if (status === "010") {
-      return [
-        {
-          type: 3,
-          label: "Received",
-          status: "011"
-        }
-      ]
-    }
-    else if (status === "011" && (sessionStorage.orgType === "CUSTOMER" || sessionStorage.orgType === "PM")) {
-      return [
-        {
-          type: 1,
-          label: "Inspected",
-          status: "012"
-        }
-      ]
-    }
-    else if (status === "012" && (sessionStorage.orgType === "CUSTOMER" || sessionStorage.orgType === "PM")) {
-      return [
-        {
-          type: 1,
-          label: "Accepted",
-          status: "013"
-        },
-        {
-          type: 1,
-          label: "Rejected",
-          status: "014"
-        }
-      ]
-    }
-    else if (status === "014" && (sessionStorage.orgType === "CUSTOMER" || sessionStorage.orgType === "PM")) {
-      return [
-        {
-          type: 1,
-          label: "Reviewed",
-          status: "015"
-        }
-      ]
-    }
-    else if (status === "015" && (sessionStorage.orgType === "CUSTOMER" || sessionStorage.orgType === "PM")) {
-      return [
-        {
-          type: 1,
-          label: "Concession",
-          status: "016"
-        },
-        {
-          type: 1,
-          label: "Scrapped",
-          status: "017"
-        }
-      ]
-    }
-    else if (status === "018" && (sessionStorage.orgType === "SUPPLIER" || sessionStorage.orgType === "PM")) {
-      return [
-        {
-          type: 1,
-          label: "Paid",
-          status: "019"
-        }
-      ]
-    }
-    else return []
-  }
-
   statusButtonHandler(element) {
+    console.log('statusButtonHandler!!! ', element, this.props.orderID)
     switch(element.type) {
       case 1:
         //send status update request
+        if(element.processor === 'SUPPLIER') {
+          this.props.actions.generalProcess(constants.updateOrderStatus, {
+            "body": {
+              "orderID": this.props.orderID,
+              "customerID": this.props.customerID,
+              "status": element.status
+            }
+          });
+        } else {
+          this.props.actions.generalProcess(constants.updateOrderStatusCustomer, {
+            "body": {
+              "orderID": this.props.orderID,
+              "status": element.status
+            }
+          });
+        }
       case 2:
         //component manufacture substatus
       case 3:
@@ -398,7 +109,7 @@ class OrderDetailContainer extends React.Component {
 
   render() {
 
-    let nextStatus = this.nextStatus();
+    console.log('orderDetail', this.state.orderDetail)
 
     if (!this.state.isLoading)
       return (
@@ -612,33 +323,30 @@ class OrderDetailContainer extends React.Component {
               <div className="row">
                 <div className="col-md-12">
 
-                  <div className="timelineview">
-                    <a href="#" onClick={this.openModalBox} className="btn stratabtnstyle">Time Line View </a>
+                  <div className="form-wizard stratawizard">
+                    {<Steps statusList={this.state.orderDetail.statusList} />}
                   </div>
 
-                  <div className="form-wizard stratawizard">
-                    {<Steps statusList={this.getOrderStatus()} />}
-                  </div>
+                  <br/>
 
                   <div className="shadowBox Courierbox">
                     <div className="form-group">
-                      <div className="row">
-                        <div className="col-md-2">
-                          <label className="bold">Etihad Airlines:</label>
-                        </div>
-                        <div className="col-md-6"></div>
-                        <div className="col-md-4 text-center">
-                          <img src="/assets/Resources/etihadlogo.png" onError={this.errorHandler} width="100%" />
-                        </div>
-                      </div>
+                      <Row>
+                        <Col col="6">
+                          <Label columns="12" style={{fontSize:22}} text={this.state.orderDetail.entityName}></Label>
+                        </Col>
+                        <Col col="6">
+                          <img src={this.state.orderDetail.entityLogo} style={{width:50}} onError={this.errorHandler}/>
+                        </Col>
+                      </Row>
                     </div>
 
                     <div className="form-group">
-                      <div className="row">
-                        <div className="col-md-12">
-                          <label className="hashno">{this.state.orderDetail.orderID}</label>
-                        </div>
-                      </div>
+                      <Row>
+                        <Col col="12">
+                          <Label columns="12" className="hashno" text={this.state.orderDetail.orderID}></Label>
+                        </Col>
+                      </Row>
                     </div>
 
                     <div className="form-group">
@@ -646,8 +354,8 @@ class OrderDetailContainer extends React.Component {
                       <Col col="6">
                           <Label columns="6" text="Order Raised By:"></Label>
                           <Col col="6" className="orderperson">
-                            <img src="/assets/Resources/person.jpg" width="25px" onError={this.errorHandler} />
-                            <span>{this.state.orderDetail.raisedBy}</span>
+                            <img src={this.state.orderDetail.raisedByPic} width="25" style={{marginRight:5}} onError={this.errorHandler} />
+                            <span>{this.state.orderDetail.raisedByName}</span>
                           </Col>
                         </Col>
                         
@@ -666,7 +374,7 @@ class OrderDetailContainer extends React.Component {
                           </Col>
                         </Col>
                         <Col col="6">
-                          <Label columns="6" text="Recived Date:"></Label>
+                          <Label columns="6" text="Received Date:"></Label>
                           <Col col="6">
                             <span>{this.state.orderDetail.receivedDate}</span>
                           </Col>
@@ -682,13 +390,13 @@ class OrderDetailContainer extends React.Component {
                         <Col col="6">
                           <Label columns="6" text="Invoice Date:"></Label>
                           <Col col="6">
-                            <span>{_.get(this.state.orderDetail, "invoice.invoiceDate", "")}</span>
+                            <span>{_.get(this.state.orderDetail, "invoice.invoiceDate")}</span>
                           </Col>
                         </Col>
                       </Row>
                       <Row>
                         <Col col="6">
-                          <Label columns="6" text="Amount:"></Label>
+                          <Label columns="6" text="Invoice Amount:"></Label>
                           <Col col="6">
                             <span>AED {utils.formatAmountField(_.get(this.state.orderDetail, "invoice.amount", 0))}</span>
                           </Col>
@@ -704,7 +412,7 @@ class OrderDetailContainer extends React.Component {
                         <Col col="6">
                           <Label columns="6" text="Credit Note Date:"></Label>
                           <Col col="6">
-                            <span>{_.get(this.state.orderDetail, "creditNotes.creditNoteDate", "")}</span>
+                            <span>{_.get(this.state.orderDetail, "creditNotes.creditNoteDate")}</span>
                           </Col>
                         </Col>
                         <Col col="6">
@@ -725,7 +433,7 @@ class OrderDetailContainer extends React.Component {
                   <div className="tools">
                     <a href="javascript:;" className="collapse" data-original-title="true" title="" />
                   </div>
-                  <div className="caption"><span className="caption-subject">Line Items </span></div>
+                  <div className="caption"><span className="caption-subject">Line Items</span></div>
                   <div className="actions" />
                 </div>
                 <div className="portlet-body">
@@ -742,6 +450,8 @@ class OrderDetailContainer extends React.Component {
                   </div>
                 </div>
               </div>
+
+              {/* Sub-Order Details */}
               {this.state.orderDetail.subOrder &&
                 <div className="portlet light bordered sdg_portlet ProCardssection">
                   <div className="portlet-title">
@@ -788,13 +498,13 @@ class OrderDetailContainer extends React.Component {
                     </div>
                   </div>
                 </div>}
-              {/* {nextStatus.length == 1 && nextStatus[0].status !== "011" && <div className="timelineview">
-                <a href="#" onClick={this.sendStatusUpdateRequest} className="btn stratabtnstyle">{nextStatus[0].label}</a>
-              </div>} */}
+
+              {/* Buttons */}
               <div className="timelineview">
-                {nextStatus.map(element => {
-                  return <a href="#" onClick={() => {this.statusButtonHandler(element)}} className="btn stratabtnstyle">{element.label}</a>
+                {this.state.orderDetail.actionButtons.map(element => {
+                  return <a onClick={() => {this.statusButtonHandler(element)}} className="btn stratabtnstyle" style={{marginLeft: 10}}>{element.label}</a>
                 })}
+                <a onClick={this.openModalBox} className="btn stratabtnstyle" style={{marginLeft: 10}}>Timeline View</a>
               </div>
             </div>
           </div>
@@ -808,7 +518,8 @@ function mapStateToProps(state, ownProps) {
   return {
     typeData: state.app.typeData.data,
     orderDetail: _.get(state.app, 'orderDetail.order', undefined),
-    orderID: ownProps.params.id
+    orderID: ownProps.params.id,
+    customerID: ownProps.params.customerId
   };
 }
 
