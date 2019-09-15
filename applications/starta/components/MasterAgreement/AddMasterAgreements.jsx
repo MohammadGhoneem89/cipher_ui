@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router';
 import * as actions from '../../../../core/actions/generalAction';
 import _ from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
-import * as requestCreator from '../../../../core/common/request.js';
+
 import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';

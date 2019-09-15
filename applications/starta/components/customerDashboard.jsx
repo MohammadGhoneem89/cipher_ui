@@ -9,7 +9,7 @@ import TileUnit from '../../../core/common/tileUnit.jsx';
 import * as url from '../../../core/constants/Communication.js';
 import Table from '../../../core/common/Datatable.jsx';
 import { browserHistory } from "react-router";
-
+import * as requestCreator from '../../../core/common/request.js';
 class Dashboard extends React.Component {
 
     constructor(props) {
@@ -150,15 +150,17 @@ class Dashboard extends React.Component {
     }
 
     componentWillMount() {
-        this.getDashboardData("ETIHAD");
-        // this.getSuppliersList();
+        this.getDashboardData("");
+       
 
         window.scrollTo(0, 0);
     }
 
     componentDidMount() {
-
-        // this.timerID = setInterval(() => this.getDashboardData(), 5000);
+        // this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({
+        //     "currentPageNo": 1,
+        //     "pageSize": 1
+        // }));
 
     }
     componentWillUnmount() {
@@ -166,7 +168,7 @@ class Dashboard extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data.dashboardPendingGridData) {
+        if (nextProps.data.dashboardPendingGridData && nextProps.entityNames) {
             console.log(nextProps.data.dashboardPendingGridData, "&&&&&&&&&&&&&&&&&")
             this.setState({
                 getSuppliersList: this.transformResponse(nextProps.suppliers),
@@ -174,6 +176,7 @@ class Dashboard extends React.Component {
                 getCompletedOrders: this.transformStatus(nextProps.data.dashboardCompletedGridData.completedOrderRows),
                 setPagingForSupplier: nextProps.supplierPageDate,
                 isLoading: false,
+                entityNames: nextProps.entityNames,
             });
             this.supplierData = this.transformResponse(nextProps.suppliers)
         }
@@ -256,10 +259,10 @@ class Dashboard extends React.Component {
                     "amount": order.amount,
                     "dateCreated": order.dateCreated,
                     "expectedDate": order.expectedDate,
-                    "orderType":order.orderType,
-                   // "stage": this.transformOrderStatus(order),
-                    "status":order.status,
-                   // "status": this.determineStatus(order),
+                    "orderType": order.orderType,
+                    // "stage": this.transformOrderStatus(order),
+                    "status": order.status,
+                    // "status": this.determineStatus(order),
                     "actions": order.actions,
 
                 });
@@ -426,9 +429,7 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        // this.supplierChange("ETIHAD11");
-        // this.state.getSupplierMasterList ?
-        //     console.log(this.props.suppliers, "000000000000000") : ""
+        
         if (this.state.isLoading)
             return (<div className="loader">{utils.getLabelByID("Loading")}</div>);
         else if (this.props.data.graphData) {
@@ -440,7 +441,7 @@ class Dashboard extends React.Component {
                                 <div className="row">
                                     <div className="center-block dashdate">
                                         {/* <div className="col-md-4 padding-top-15"> */}
-                                            {/* <DateRangePicker /> */}
+                                        {/* <DateRangePicker /> */}
                                         {/* </div> */}
                                         <div className="col-md-4">
                                         </div>
@@ -458,12 +459,13 @@ class Dashboard extends React.Component {
                                                         onChange={this.supplierChange}>
                                                         <option key="-1" onChange={this.supplierChange} >ALL</option>
                                                         <option value="ETIHAD">ETIHAD</option> */}
-                                                        {/* {this.state.getSuppliersList.map((option, index) =>
+                                                    {/* {this.state.getSuppliersList.map((option, index) =>
                                                             (<option value={option.supplierName.name}
                                                                 key={index}>
                                                                 {utils.getLabelByID(option.supplierName.name)}
                                                             </option>))} */}
                                                     {/* </select> */}
+                                                    
 
                                                 </div>
                                             </div>
@@ -583,7 +585,7 @@ class Dashboard extends React.Component {
 
                                 </div>
                             </div>
-                            
+
 
                             <div className="row">
                                 <div className="col-md-12">
@@ -610,14 +612,12 @@ class Dashboard extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log(state.app.customerDashboardData, "**********DATA");
+    console.log(state.app.entityList.data.typeData.entityNames, "**********DATA");
     if (state.app.customerDashboardData !== undefined) {
 
         return {
             data: state.app.customerDashboardData.data,
-            //suppliers: state.app.supplierMasterList.searchResult,
-            //supplierPageDate: state.app.supplierMasterList.pageData,
-
+            
         };
     }
 }

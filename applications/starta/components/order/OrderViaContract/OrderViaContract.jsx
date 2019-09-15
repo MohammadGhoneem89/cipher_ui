@@ -35,9 +35,9 @@ class OrderViaContract extends React.Component {
       isLoading: true,
       isLoading2: false,
       currentPageNo: 1,
+      contracts: [],
       itemCatalogue: undefined,
       getItemCatalogue: undefined,
-      customerAssociation: undefined,
       searchCriteria: {},
       modelBox: false,
       modelItem: {},
@@ -61,7 +61,6 @@ class OrderViaContract extends React.Component {
 
     this.total = 0;
     this.items = [];
-    this.getCustomerAssociationType = this.getCustomerAssociationType.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.generalHandler = gen.generalHandler.bind(this);
     this.addToCart = this.addToCart.bind(this);
@@ -96,13 +95,12 @@ class OrderViaContract extends React.Component {
       "body": {
         "orderType": "MASTER",
         "raisedBy": sessionStorage.userID,
-        "quoteValidity": "xyz",
+        "quoteValidity": "456",
         "incoTerms": "EXW",
         "items": items,
         "contractID": this.contractData.contractID,
-        "customerID": this.contractData.customerID,
-        "shipmentType": this.state.customerAssociation.shipmentType,
-        "paymentType": this.state.customerAssociation.paymentType
+        "shipmentType": this.contractData.shipmentType,
+        "paymentType": this.contractData.paymentType
       }
     };
     if (this.state.cartItems && this.state.cartItems.length > 0) {
@@ -129,16 +127,7 @@ class OrderViaContract extends React.Component {
   componentDidMount() {
 
     this.props.actions.generalProcess(constants.getItemCatalogue, { "body": {} });
-    this.props.actions.generalProcess(
-      constants.getUserList,
-      requestCreator.createUserListRequest(
-        {
-          currentPageNo: 1,
-          pageSize: 100
-        },
-        {}
-      )
-    );
+    
     if (this.state.disabledPagging) { this.props.actions.generalProcess(constants.getMasterAgreement, { "body": {} }) }
     else {
       this.props.actions.generalProcess(constants.getMasterAgreement,
@@ -183,17 +172,6 @@ class OrderViaContract extends React.Component {
         isLoading2: false
       })
     }
-
-    if (nextProps.customerAssociation) {
-      // console.log(nextProps.customerAssociation, "nextProps.customerAssociation")
-      let customerAssociation = _.pick(nextProps.customerAssociation, ['userId', '_id', 'customerType', 'paymentType', 'shipmentType']);
-      this.setState({ customerAssociation });
-    }
-
-    if (nextProps.userList.length) {
-      // console.log(nextProps.userList, "nextProps.userList")
-      this.setState({ userList: nextProps.userList });
-    }
   }
 
 
@@ -209,13 +187,12 @@ class OrderViaContract extends React.Component {
 
   addToCart(e) {
     e.preventDefault();
-    console.log(this.state.itemCatalogue ? this.state.itemCatalogue : "this.state.itemCatalogue")
     let formData = new FormData(e.target);
     let cartItem = {};
     formData.forEach(function (value, key) {
       cartItem[key] = value;
     });
-    // console.log("cartItem", cartItem)
+    console.log("cartItem", cartItem)
     let grandTotal = 0;
     let cart = this.state.cartItems;
 
@@ -226,8 +203,14 @@ class OrderViaContract extends React.Component {
       return false;
     }
     let itemCat;
-    if (this.state.itemCatalogue && this.state.itemCatalogue.length > 0) {
-      itemCat = this.state.itemCatalogue;
+    let contractData;
+    if (this.state.contracts) {
+      contractData = this.state.contracts.filter(obj => {
+        return obj.contractID == document.getElementById('contractID').value
+      })
+    }
+    if (contractData[0].items) {
+      itemCat = contractData[0].items
     }
     let result = itemCat.filter(obj => {
       return obj.itemCode == cartItem.itemCode
@@ -309,12 +292,7 @@ class OrderViaContract extends React.Component {
       grandTotal: 0
     })
   }
-  getCustomerAssociationType(userID) {
-    // console.log(userID, "userID")
-    this.props.actions.generalProcess(constants.getCustomerAssociation,
-      { data: { userId: userID } });
 
-  }
   searchItem(e) {
     e.preventDefault();
     console.log(document.getElementById('contractID').value, "handelonchange")
@@ -328,22 +306,10 @@ class OrderViaContract extends React.Component {
     this.contractData.contractID = result[0].contractID;
     this.contractData.startDate = result[0].startDate;
     this.contractData.endDate = result[0].endDate;
-    this.contractData.customerID = result[0].customerID;
+    this.contractData.paymentType = result[0].paymentTerms.paymentType;
+
+    this.contractData.shipmentType = result[0].shipmentType;
     this.state._contractID ? this.setState({ contractState: true }) : this.setState({ contractState: false })
-
-    // console.log("this.state.userList", this.state.userList)
-    let getUserID = this.state.userList.filter(obj => {
-      return obj.orgCode == this.contractData.customerID
-    })
-    let userID = getUserID[0]._id;
-    this.getCustomerAssociationType(userID)
-
-    // let shipmentType = this.state.customerAssociation ? this.state.customerAssociation.shipmentType : ""
-    // let paymentType = this.state.customerAssociation ? this.state.customerAssociation.paymentType : ""
-    // console.log(shipmentType, "shipment")
-
-    // this.contractData.shipmentType = shipmentType;
-    // this.contractData.paymentType = paymentType;
 
 
     for (let i = 0; i < result[0].items.length; i++) {
@@ -540,10 +506,7 @@ class OrderViaContract extends React.Component {
 function mapStateToProps(state, ownProps) {
   // console.log("state.app", state.app.typeData.data)
   return {
-    // typeData: state.app.typeData.data,
-    userList: _.get(state.app, 'userList.data.searchResult', []),
     itemCatalogue: _.get(state.app, 'getItemCatalogue.searchResult', []),
-    customerAssociation: _.get(state.app, 'getCustomerAssociationDetail.data', {}),
     getMasterAgreement: _.get(state.app, 'getMasterAgreement.searchResult', {})
   };
 }
