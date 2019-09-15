@@ -107,14 +107,8 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        // this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({
-        //     "currentPageNo": 1,
-        //     "pageSize": 1
-        // }));
-
     }
     componentWillUnmount() {
-        //clearInterval(this.timerID);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -168,9 +162,6 @@ class Dashboard extends React.Component {
                             <div className="daterange_con">
                                 <div className="row">
                                     <div className="center-block dashdate">
-                                        {/* <div className="col-md-4 padding-top-15"> */}
-                                        {/* <DateRangePicker /> */}
-                                        {/* </div> */}
                                         <div className="col-md-4">
                                         </div>
                                         <div className="col-md-4">
@@ -183,17 +174,6 @@ class Dashboard extends React.Component {
 
 
                                                 <div className="form-group col-md-6">
-                                                    {/* <select name="supplier" className="form-control" value={this.state.value}
-                                                        onChange={this.supplierChange}>
-                                                        <option key="-1" onChange={this.supplierChange} >ALL</option>
-                                                        <option value="ETIHAD">ETIHAD</option> */}
-                                                    {/* {this.state.getSuppliersList.map((option, index) =>
-                                                            (<option value={option.supplierName.name}
-                                                                key={index}>
-                                                                {utils.getLabelByID(option.supplierName.name)}
-                                                            </option>))} */}
-                                                    {/* </select> */}
-                                                    
 
                                                 </div>
                                             </div>
@@ -204,47 +184,15 @@ class Dashboard extends React.Component {
                             <div className="row">
                                 <TileUnit data={this.props.data.dashboardTiles} />
                             </div>
-                            {/* {this.state.getSuppliersList && this.props.supplierPageDate && */}
-
                             <div className="row">
                                 <div className="col-md-12">
-
-                                    {/* {
-                                            this.state.getSuppliersList.map((obj) => {
-
-                                                obj.action = [
-                                                    {
-                                                        "label": "View",
-                                                        "URI": ["/viewSupplier"],
-                                                        "params": "_id",
-                                                        "iconName": "icon-docs"
-                                                    }
-                                                ]
-                                            })
-
-                                        } */}
-                                    {/* <Table TableClass="portlet light bordered sdg_portlet"
-                                            title={utils.getLabelByID("SUPPLIERS")}
-                                            gridColumns={utils.getGridColumnByName("supplierMasterList")}
-                                            gridData={this.state.getSuppliersList}
-                                            totalRecords={this.props.supplierPageDate.totalRecords}
-                                            activePage={this.state.suppliers.body.pageData.currentPageNo}
-                                            pageSize={this.state.suppliers.body.pageData.pageSize}
-                                            pageChanged={(currentPage) => { this.pageChange(currentPage, 'suppliers') }}
-                                            export={false}
-                                            pagination={true} /> */}
                                 </div>
                             </div>
-                            {/* } */}
+                        
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
                                     <div className="caption "><span className="caption-subject " /></div>
                                     <div className="center-block" style={{ width: "500px" }}>
-                                        {/* <div className="input-group" id="defaultrange" style={{ display: "inline", marginRight: "10px", borderBlockColor: "red" }}>
-                                            <DateRangePicker onChangeRange={this.dateChangeGraph} />
-                                        </div>
-                                        <button type="submit" className="btn dash green input-xsmall"
-                                            onClick={this.getLoad} >{utils.getLabelByID("Search")}</button> */}
 
                                     </div>
                                 </div>
@@ -264,20 +212,8 @@ class Dashboard extends React.Component {
                                     }
                                 </div>
                             </div>
-                            {/* <div className="portlet light bordered sdg_portlet"> */}
-
                             <div className="row">
                                 <div className="col-md-12">
-                                    {/* <div className="portlet-title">
-                                            <div className="col-md-12">
-                                                <div className="form-group col-md-12">
-                                                    {/* <div className="btn-toolbar pull-right">
-                                                        <button style={{ float: "right", marginBottom: "10px" }} onClick={() => browserHistory.push('/quote/create')} className="btn green">{utils.getLabelByID("Place Quote")}</button>
-                                                        <button style={{ float: "right", marginBottom: "10px" }} onClick={() => browserHistory.push('/maQuote/create')} className="btn green">{utils.getLabelByID("MA Order")}</button>
-                                                    </div> */}
-                                    {/* </div>
-                                            </div>
-                                        </div> */}
 
                                     <Table TableClass="portlet light bordered sdg_portlet"
                                         title={utils.getLabelByID("Pending Orders")}
