@@ -52,6 +52,7 @@ class OneTimeOrder extends React.Component {
     };
     // this.nameTypeData = [];
     this.total = 0;
+    this.customerData={};
     this.generalHandler = gen.generalHandler.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.openModalBox = this.openModalBox.bind(this);
@@ -81,7 +82,19 @@ class OneTimeOrder extends React.Component {
     items.map(item => {
       item.color = [item.color];
     });
-    console.log(this.state.getCustomerShipmentAndPaymentType,"getCustomerShipmentAndPaymentType")
+    console.log(this.customerData," =====this.customerData")
+    if(this.state.getCustomerShipmentAndPaymentType)
+     console.log(this.state.getCustomerShipmentAndPaymentType, "this.state.getCustomerShipmentAndPaymentType");
+    // let userID;
+    // if (this.state.userList) {
+    //   userID = this.state.userList.filter(obj => {
+    //     return obj.userID == sessionStorage.userID
+    //   })
+    // }
+    // console.log(userID[0]._id, "<<<<< userID")
+    // let value = userID[0]._id;
+    
+
     let request = {
       "body": {
         "orderType": "ONETIME",
@@ -89,11 +102,13 @@ class OneTimeOrder extends React.Component {
         "quoteValidity": "",
         "incoTerms": "EXW",
         "items": items,
-        "shipmentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.shipmentType : "",
-        "paymentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.paymentType : "",
+        "data": {
+          "shipmentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.shipmentType : "",
+          "paymentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.paymentType : "",
+        }
       }
     };
-    console.log(request,"request")
+    console.log(request, "request")
     if (this.state.cartItems && this.state.cartItems.length > 0) {
       this.props.actions.generalAjxProcess(constants.createOrder,
         request).then(result => {
@@ -116,25 +131,35 @@ class OneTimeOrder extends React.Component {
 
   componentDidMount() {
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['classification']));
-    this.props.actions.generalProcess(constants.getCustomerShipmentAndPaymentType);
-
+    this.props.actions.generalProcess(constants.getCustomerShipmentAndPaymentType, { data: { userId: '' } });
+    // this.props.actions.generalProcess(
+    //   constants.getUserList,
+    //   requestCreator.createUserListRequest(
+    //     {
+    //       currentPageNo: 1,
+    //       pageSize: 100
+    //     },
+    //     {}
+    //   )
+    // );
     this.getRequest();
     window.scrollTo(0, 0);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.getItemCatalogue, nextProps.typeData && nextProps.getCustomerShipmentAndPaymentType) {
-      console.log(nextProps.getCustomerShipmentAndPaymentType,"nextProps.getCustomerShipmentAndPaymentType")
+      console.log(nextProps.getCustomerShipmentAndPaymentType, "nextProps.getCustomerShipmentAndPaymentType")
       this.setState({
         getItemCatalogue: nextProps.getItemCatalogue,
         typeData: nextProps.typeData,
+        //userList: nextProps.userList,
         getCustomerShipmentAndPaymentType: nextProps.getCustomerShipmentAndPaymentType,
         isLoading: false,
         isLoading2: false
       })
-    }
 
-    // this.getItemName(nextProps.getItemCatalogue);
+      this.customerData = nextProps.getCustomerShipmentAndPaymentType
+    }
   }
 
   openModalBox(modelItem) {
@@ -229,9 +254,9 @@ class OneTimeOrder extends React.Component {
   }
 
   render() {
-    // console.log("item cat", this.state.getItemCatalogue)
-    // let categories = ["Computer Components", "Accessories", "Cameras & Photography", "Computer Components", "Gadgets", "Home Entertainment", "Laptops & Computers", "Printers & Ink", "Smart Phones & Tablets", "Video Games & Consoles"];
-    let categories = this.state.typeData.classification;
+   
+     console.log(" this.customerData", this.customerData)
+  let categories = this.state.typeData.classification;
 
     if (!this.state.isLoading)
       return (
@@ -321,10 +346,12 @@ class OneTimeOrder extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  console.log(state.app.getCustomerShipmentAndPaymentType ? state.app.getCustomerShipmentAndPaymentType : "STATE APP getCustomerShipmentAndPaymentType")
   return {
     typeData: state.app.typeData.data,
     getItemCatalogue: _.get(state.app, 'getItemCatalogue', {}),
-    getCustomerShipmentAndPaymentType: _.get(state.app, 'getCustomerShipmentAndPaymentType.getCustomerShipmentAndPaymentType', {})
+    //userList: _.get(state.app, 'userList.data.searchResult', []),
+    getCustomerShipmentAndPaymentType: _.get(state.app, 'getCustomerShipmentAndPaymentType', {})
   };
 }
 

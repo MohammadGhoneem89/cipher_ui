@@ -19,16 +19,17 @@ export default {
     pageData: {},
     searchResult: undefined
   },
-  getCustomerAssociationDetail:{
-    data:undefined
+  getCustomerAssociationDetail: {
+    data: undefined
   },
-  customerDashboardData:{
+  customerDashboardData: {
     data: {},
     pageData: {}
   },
-  supplierDashboardData:{
+  supplierDashboardData: {
     data: {},
     pageData: {}
   },
-  orderDetail: undefined
+  orderDetail: undefined,
+  getCustomerShipmentAndPaymentType: {  }
 }
