@@ -23,7 +23,7 @@ module.exports = {
     { alias: "Action", key: "action", type: "action" }
   ],
   orderList: [
-    {alias: "", key: "orderID", type: "hiddenID"},
+    {alias: "", key: "gridKey", type: "hiddenID"},
     {alias: "Order ID", key: "orderID", type: 'string'},
     {alias: "Contract ID", key: "contractID", type: 'string'},
     {alias: "Customer ID", key: "customerID", type: "string"},
@@ -164,13 +164,12 @@ module.exports = {
 
   ],
   LineItems: [
-    { alias: "Items Name", key: "name", type: 'string' },
+    { alias: "Item Name", key: "name", type: 'string' },
     { alias: "Item Code ", key: "itemCode", type: "string" },
-    { alias: "Qty", key: "quantity", type: "number" },
-    { alias: "Received Qty", key: "receivedQuantity", type: "number" },
-    { alias: "Amount", key: "unitPrice", type: "number" },
-    { alias: "Total", key: "totalAmount", type: "number" }
-
+    { alias: "Qty", key: "quantity", type: "rightAlign" },
+    { alias: "Received Qty", key: "receivedQuantity", type: "rightAlign" },
+    { alias: "Amount", key: "unitPrice", type: "amount" },
+    { alias: "Total", key: "totalAmount", type: "amount" }
   ]
 
 };

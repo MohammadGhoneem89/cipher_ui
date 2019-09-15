@@ -31,7 +31,7 @@ let authRoutes = <div>
   <Route path="/strata/customerAssociation" component={CustomerAssociation} />
   <Route path="/strata/orderList" component={OrderList} />
   <Route path="/strata/OrderViaContract" component={OrderViaContract} />
-  <Route path="/strata/viewOrder/:id" component={OrderDetails} />
+  <Route path="/strata/viewOrder/:id/:customerId" component={OrderDetails} />
 </div>;
 
 let unAuthRoutes = <div>
