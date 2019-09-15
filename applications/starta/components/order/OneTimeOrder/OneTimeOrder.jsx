@@ -42,7 +42,7 @@ class OneTimeOrder extends React.Component {
       itemAddedToCart: false,
       createOrder: false,
       grandTotal: 0,
-      //typeData: undefined
+      getCustomerShipmentAndPaymentType: {},
 
       typeData: {
         "search": [{ label: "Name", value: "name" },
@@ -81,16 +81,19 @@ class OneTimeOrder extends React.Component {
     items.map(item => {
       item.color = [item.color];
     });
+    console.log(this.state.getCustomerShipmentAndPaymentType,"getCustomerShipmentAndPaymentType")
     let request = {
       "body": {
         "orderType": "ONETIME",
         "raisedBy": sessionStorage.userID,
         "quoteValidity": "",
         "incoTerms": "EXW",
-        "items": items
+        "items": items,
+        "shipmentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.shipmentType : "",
+        "paymentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.paymentType : "",
       }
     };
-
+    console.log(request,"request")
     if (this.state.cartItems && this.state.cartItems.length > 0) {
       this.props.actions.generalAjxProcess(constants.createOrder,
         request).then(result => {
@@ -98,7 +101,7 @@ class OneTimeOrder extends React.Component {
           result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
         });
     } else {
-      toaster.showToast("Please add at least one item to place the order!","ERROR");
+      toaster.showToast("Please add at least one item to place the order!", "ERROR");
       return false;
     }
   }
@@ -113,15 +116,19 @@ class OneTimeOrder extends React.Component {
 
   componentDidMount() {
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['classification']));
+    this.props.actions.generalProcess(constants.getCustomerShipmentAndPaymentType);
+
     this.getRequest();
     window.scrollTo(0, 0);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.getItemCatalogue, nextProps.typeData) {
+    if (nextProps.getItemCatalogue, nextProps.typeData && nextProps.getCustomerShipmentAndPaymentType) {
+      console.log(nextProps.getCustomerShipmentAndPaymentType,"nextProps.getCustomerShipmentAndPaymentType")
       this.setState({
         getItemCatalogue: nextProps.getItemCatalogue,
         typeData: nextProps.typeData,
+        getCustomerShipmentAndPaymentType: nextProps.getCustomerShipmentAndPaymentType,
         isLoading: false,
         isLoading2: false
       })
@@ -317,7 +324,7 @@ function mapStateToProps(state, ownProps) {
   return {
     typeData: state.app.typeData.data,
     getItemCatalogue: _.get(state.app, 'getItemCatalogue', {}),
-    // pageData: _.get(state.app, 'getItemCatalogue.pageData', {})
+    getCustomerShipmentAndPaymentType: _.get(state.app, 'getCustomerShipmentAndPaymentType.getCustomerShipmentAndPaymentType', {})
   };
 }
 

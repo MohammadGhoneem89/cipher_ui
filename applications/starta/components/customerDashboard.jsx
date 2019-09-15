@@ -168,7 +168,7 @@ class Dashboard extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data.dashboardPendingGridData && nextProps.entityNames) {
+        if (nextProps.data.dashboardPendingGridData) {
             console.log(nextProps.data.dashboardPendingGridData, "&&&&&&&&&&&&&&&&&")
             this.setState({
                 getSuppliersList: this.transformResponse(nextProps.suppliers),
@@ -176,7 +176,6 @@ class Dashboard extends React.Component {
                 getCompletedOrders: this.transformStatus(nextProps.data.dashboardCompletedGridData.completedOrderRows),
                 setPagingForSupplier: nextProps.supplierPageDate,
                 isLoading: false,
-                entityNames: nextProps.entityNames,
             });
             this.supplierData = this.transformResponse(nextProps.suppliers)
         }
@@ -612,9 +611,7 @@ class Dashboard extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log(state.app.entityList.data.typeData.entityNames, "**********DATA");
     if (state.app.customerDashboardData !== undefined) {
-
         return {
             data: state.app.customerDashboardData.data,
             

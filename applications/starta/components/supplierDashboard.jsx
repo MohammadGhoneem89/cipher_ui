@@ -13,13 +13,12 @@ class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
-        const pageSize = 10;
-        const currentPageNo = 1;
-        const customerID = ""
-        this.supplierData = [];
+        this.pageSize = 10;
+        this.currentPageNo = 1;
+        // this.customerID = "";
         this.state = {
 
-            value: '',
+            customerID: "",
             isLoading: true,
             gridDataSupplierList: undefined,
             graphLabels: {
@@ -35,44 +34,48 @@ class Dashboard extends React.Component {
             toDate: moment().format('DD/MM/YYYY'),
             dashboardPendingGridData: {
                 pageData: {
-                    currentPageNo: currentPageNo,
-                    pageSize: pageSize
+
+                    pageSize: this.pageSize,
+                    currentPageNo: this.currentPageNo
                 },
-                customerID: customerID
+                customerID: ""
             },
             dashboardCompletedGridData: {
                 pageData: {
-                    currentPageNo: currentPageNo,
-                    pageSize: pageSize
+                    pageSize: this.pageSize,
+                    currentPageNo: this.currentPageNo
                 },
-                customerID: customerID
+                customerID: ""
             },
             dashboardSettlementGridData: {
                 pageData: {
-                    currentPageNo: currentPageNo,
-                    pageSize: pageSize
+                    pageSize: this.pageSize,
+                    currentPageNo: this.currentPageNo
                 },
-                customerID: customerID
+                customerID: ""
             },
             dashboardCustomerSettlement: {
                 pageData: {
-                    currentPageNo: currentPageNo,
-                    pageSize: pageSize
+                    pageSize: this.pageSize,
+                    currentPageNo: this.currentPageNo
                 },
-                customerID: customerID
+                customerID: ""
             }
         };
     }
     componentWillMount() {
-        this.getDashboardData("");
-        window.scrollTo(0, 0);
     }
 
     componentDidMount() {
+        this.getDashboardData(this.customerName);
+        this.props.actions.generalProcess(url.getEntityList, requestCreator.createEntityListRequest({
+            "currentPageNo": 1,
+            "pageSize": 1
+        }));
 
+        window.scrollTo(0, 0);
     }
     componentWillUnmount() {
-        //clearInterval(this.timerID);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -86,19 +89,27 @@ class Dashboard extends React.Component {
             });
         }
     }
+    updateState = (e) => {
+        console.log(e.target.value, "updatestate customerID")
+        let value = e.target.value;
+        if (e.target.value == 'ALLCUSTOMERS') { value = "" }
+        this.setState({ isLoading: true, customerID: value });
+        this.state.dashboardPendingGridData.customerID = value;
+        this.state.dashboardCompletedGridData.customerID = value;
+        this.state.dashboardSettlementGridData.customerID = value;
+        this.state.dashboardCustomerSettlement.customerID = value;
+        this.getDashboardData();
+        console.log(">>>>>>>>", this.state.dashboardPendingGridData.customerID, "UPDATE ID")
 
-    getDashboardData = (supplier) => {
+    }
+    getDashboardData = () => {
         this.props.actions.generalProcess(url.supplierDashboardData, {
-            supplier: supplier || this.state.supplierAddress,
             dashboardPendingGridData: this.state.dashboardPendingGridData,
             dashboardCompletedGridData: this.state.dashboardCompletedGridData,
             dashboardSettlementGridData: this.state.dashboardSettlementGridData,
-            dashboardCustomerSettlement: this.state.dashboardCustomerSettlement
+            dashboardCustomerSettlement: this.state.dashboardCustomerSettlement,
         });
-        this.props.actions.generalProcess(url.getEntityList, requestCreator.createEntityListRequest({
-            "currentPageNo": 1,
-            "pageSize": 1
-        }));
+
     };
 
     pageChange = (currentPage, pageName) => {
@@ -106,37 +117,18 @@ class Dashboard extends React.Component {
         currentGrid.pageData.currentPageNo = currentPage;
         this.setState({ pageName: currentGrid });
         console.log(pageName, "pageChanged !!!!")
-        this.getDashboardData();
+        this.getDashboardData(this.customerName);
     };
     supplierChange = (e) => {
-        let suppData = this.supplierData.sort();
-
-        for (let i in suppData) {
-            if (e.target.value == suppData[i].supplierName.name) {
-                //  console.log(e.target.value+ "  " +suppData[i].supplierID, " ||||||||||||||||||  traget value ")
-                this.onSupplierChange(suppData[i].supplierID)
-            }
-            else if (e.target.value == 'ALL') {
-                // console.log(e.target.value, " ||||||||||||||||||  ALL traget value ")
-                this.onSupplierChange(e.target.value);
-            }
-
-        }
-        this.setState({ value: e.target.value });
-        // this.onSupplierChange('8314891')
+        // this.setState({
+        //     customer:e.target.value
+        // })
+        console.log(e.target.value, "e.target.value")
+        this.getDashboardData(e.target.value);
     };
-    onSupplierChange = (currentSupplier) => {
-        // alert("onsupplierchange")
-        this.setState({ isLoading: true });
-        this.state.dashboardPendingGridData.supplierID = currentSupplier;
-        this.state.dashboardCompletedGridData.supplierID = currentSupplier;
-        this.state.dashboardSettlementGridData.supplierID = currentSupplier;
-        this.state.dashboardCustomerSettlement.supplierID = currentSupplier;
-        this.getDashboardData("");
-        console.log(">>>>>>>>", this.state.dashboardPendingGridData.supplierID, "UPDATE ID")
-    };
-    
+
     render() {
+        console.log(this.state.getPendingOrders, "getPendingOrders")
         const customerList = this.state.entityNames ? this.state.entityNames : [];
         if (this.state.isLoading)
             return (<div className="loader">{utils.getLabelByID("Loading")}</div>);
@@ -160,11 +152,11 @@ class Dashboard extends React.Component {
 
 
                                                 <div className="form-group col-md-6">
-                                                    <select id="customerID" className="form-control" value={this.state.value} onChange={this.supplierChange}>
+                                                    <select id="customerID" className="form-control" value={this.state.customerID} onChange={this.updateState}>
                                                         {
                                                             customerList.map((option, index) => {
                                                                 return (
-                                                                    <option key={index} value={option.value} onChange={this.supplierChange}>{option.label}</option>
+                                                                    <option key={index} value={option.value}>{option.label}</option>
                                                                 );
                                                             })
                                                         }
@@ -290,7 +282,7 @@ class Dashboard extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log(state.app, "state.app");
+    console.log(state.app.supplierDashboardData, "state.app.supplierDashboardData");
     if (state.app.supplierDashboardData !== undefined) {
 
         return {
