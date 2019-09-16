@@ -170,6 +170,12 @@ module.exports = {
     { alias: "Received Qty", key: "receivedQuantity", type: "rightAlign" },
     { alias: "Amount", key: "unitPrice", type: "amount" },
     { alias: "Total", key: "totalAmount", type: "amount" }
+  ],
+  ReceiptLineItems: [
+    { alias: "Item Name", key: "name", type: 'string' },
+    { alias: "Item Code ", key: "itemCode", type: "string" },
+    { alias: "Qty", key: "quantity", type: "rightAlign" },
+    { alias: "Received Qty", key: "receivedQuantity", type: "rightAlign" }
   ]
 
 };
