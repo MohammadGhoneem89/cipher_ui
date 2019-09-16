@@ -18,6 +18,8 @@ import Label from "../../../common/Lable.jsx";
 import Portlet from "../../../common/Portlet.jsx";
 import ModalBox from '../../../../../core/common/ModalBox.jsx';
 import Pagination from "react-js-pagination";
+import OptionalStatus from "./OptionalStatus.jsx"
+import Receipt from "./Receipt.jsx"
 
 import Steps from '../../../../../core/common/Steps.jsx';
 import Table from '../../../../../core/common/Datatable.jsx';
@@ -29,11 +31,16 @@ class OrderDetailContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      
+      optionalStatusValue: "",
+      receiptModalBox: false,
+      optionalStatusModalBox: false,
+      timelineViewModalBox: false,
       isLoading: true,
       orderDetail: {},
     };
-    this.openModalBox = this.openModalBox.bind(this);
-    this.closeModalBox = this.closeModalBox.bind(this);
+    this.openTimelineViewModalBox = this.openTimelineViewModalBox.bind(this);
+    this.closeTimelineViewModalBox = this.closeTimelineViewModalBox.bind(this);
   }
 
   componentWillMount() {
@@ -60,17 +67,17 @@ class OrderDetailContainer extends React.Component {
     // this.getItemName(nextProps.getItemCatalogue);
   }
 
-  openModalBox(modelItem) {
+  openTimelineViewModalBox(modelItem) {
     this.setState({
-      modelBox: true,
+      timelineViewModalBox: true,
       modelItem
     });
 
 
   }
-
-  closeModalBox() {
-    this.setState({ modelBox: false });
+  
+  closeTimelineViewModalBox() {
+    this.setState({ timelineViewModalBox: false });
   }
 
   errorHandler(event) {
@@ -78,7 +85,7 @@ class OrderDetailContainer extends React.Component {
   }
 
   statusButtonHandler(element) {
-    console.log('statusButtonHandler!!! ', element, this.props.orderID)
+    
     switch(element.type) {
       case 1:
         //send status update request
@@ -98,23 +105,21 @@ class OrderDetailContainer extends React.Component {
             }
           });
         }
+        break;
       case 2:
         //component manufacture substatus
+        this.optionalStatusModalBoxChangeState();
+        break;
       case 3:
         //receipt popup
+        this.receiptModalBoxChangeState();
+        break;
       default:
         break;
     }
   }
-
-  render() {
-
-    console.log('orderDetail', this.state.orderDetail)
-
-    if (!this.state.isLoading)
-      return (
-        <div>
-          <ModalBox isOpen={this.state.modelBox}>
+  timeLineViewModalBoxItem = () => {
+    return (
             <div class="modal fade in ordertrack" role="basic" aria-hidden="true">
               <div className="modal-dialog">
                 <div className="modal-content">
@@ -315,7 +320,122 @@ class OrderDetailContainer extends React.Component {
                 {/* <!-- /.modal-content --> */}
               </div>
             </div>
-          </ModalBox>
+    )
+  }
+
+  receiptModalBoxChangeState = () => {
+    this.setState({
+      receiptModalBox: !(this.state.receiptModalBox)
+    })
+  }
+
+  optionalStatusModalBoxChangeState = () => {
+    this.setState({
+      optionalStatusModalBox: !(this.state.optionalStatusModalBox)
+    })
+  }
+
+  optionalStatusUpdateValue = (val) => {
+    this.setState({
+      optionalStatusValue: val
+    })
+  }
+
+  getItems = () => {
+    let items = []
+    for (let i=0; i<this.state.orderDetail.items.length; i++){
+      if ((this.state.orderDetail.items[i].quantity - this.state.orderDetail.items[i].receivedQuantity)>0){
+        items.push(this.state.orderDetail.items[i])
+      }
+    }
+    console.log(items,"getItems()")
+    return items
+  }
+
+  getOptionalOptions = () => {
+    const constants = [
+      {label:"Part Tested", value:"007"},
+      {label:"Assembly",value:"008"},
+      {label:"Paint Or Finish",value:"009"}
+    ]
+    
+    const activities = _.get(this.state.orderDetail,"activities",[])
+    for (let j=0;j<activities.length;j++){
+      const element = activities[j]
+      for (let i=0; i<constants.length; i++){
+        if (constants[i].value===element.toStage){
+          constants.splice(i,1)
+        }
+      }
+      if ((constants.length===0)){
+        break;
+      }
+    }
+    
+    return constants
+  }
+
+  optionalStatusHandleSubmit = (e) => {
+    e.preventDefault();
+    
+    this.props.actions.generalProcess(constants.updateOrderStatus, {
+      "body": {
+        "orderID": this.props.orderID, // Why Props
+        "customerID": this.props.customerID, // Why Props
+        "status": this.state.optionalStatusValue
+      }
+    });
+  }
+
+  receiptModalBoxItem = ()=> {
+    return (
+      <Receipt
+        closePortlet = { this.receiptModalBoxChangeState }
+        items = { this.getItems() }
+      />
+    )
+  }
+
+  optionalStatusModalBoxItem = ()=> {
+    return (
+      <div>
+        <OptionalStatus
+          value = { this.state.optionalStatusValue}
+          handleSubmit = { this.optionalStatusHandleSubmit}
+          onUpdate = { this.optionalStatusUpdateValue}
+          closePortlet = { this.optionalStatusModalBoxChangeState}
+          options = { this.getOptionalOptions() }
+          // [
+          //   {label:"Part Tested", value:"007"}, 
+          //   {label:"Assembly",value:"008"}, 
+          //   {label:"Paint Or Finish",value:"009"}
+          //  ] 
+          
+          />
+      </div>
+    )
+  }
+  render() {
+
+    console.log('orderDetail', this.state.orderDetail)
+
+    if (!this.state.isLoading)
+      return (
+        <div>
+          <div id="Modal Boxes">
+            <ModalBox isOpen={this.state.timelineViewModalBox}>
+              { this.timeLineViewModalBoxItem() }
+            </ModalBox>
+            
+            <ModalBox isOpen={this.state.optionalStatusModalBox}>
+              { this.optionalStatusModalBoxItem() }
+            </ModalBox>
+
+            <ModalBox isOpen={this.state.receiptModalBox}>
+              { this.receiptModalBoxItem() }
+            </ModalBox>
+          </div>
+          
           <div className="col-md-12">
             <div className="portlet light" style={{ minHeight: "854px" }}>
 
@@ -504,7 +624,7 @@ class OrderDetailContainer extends React.Component {
                 {this.state.orderDetail.actionButtons.map(element => {
                   return <a onClick={() => {this.statusButtonHandler(element)}} className="btn stratabtnstyle" style={{marginLeft: 10}}>{element.label}</a>
                 })}
-                <a onClick={this.openModalBox} className="btn stratabtnstyle" style={{marginLeft: 10}}>Timeline View</a>
+                <a onClick={this.openTimelineViewModalBox} className="btn stratabtnstyle" style={{marginLeft: 10}}>Timeline View</a>
               </div>
             </div>
           </div>
