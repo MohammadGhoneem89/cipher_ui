@@ -119,13 +119,6 @@ class Dashboard extends React.Component {
         console.log(pageName, "pageChanged !!!!")
         this.getDashboardData(this.customerName);
     };
-    supplierChange = (e) => {
-        // this.setState({
-        //     customer:e.target.value
-        // })
-        console.log(e.target.value, "e.target.value")
-        this.getDashboardData(e.target.value);
-    };
 
     render() {
         console.log(this.state.getPendingOrders, "getPendingOrders")

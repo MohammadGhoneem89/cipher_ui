@@ -119,6 +119,7 @@ class Dashboard extends React.Component {
                 getPendingOrders: nextProps.data.dashboardPendingGridData.pendingOrderRows,
                 getCompletedOrders: nextProps.data.dashboardCompletedGridData.completedOrderRows,
                 setPagingForSupplier: nextProps.supplierPageDate,
+                graphData:nextProps.data.graphData,
                 isLoading: false,
             });
         }
@@ -197,16 +198,16 @@ class Dashboard extends React.Component {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    {this.props.data.graphData.labels && this.props.data.graphData.legends &&
+                                    {this.state.graphData.labels && this.state.graphData.legends &&
 
                                         <CommonBarChart toDate={this.state.toDate}
                                             fromDate={this.state.fromDate}
                                             graphLabels={this.state.graphLabels}
-                                            labels={this.props.data.graphData.labels}
-                                            chartData={this.props.data.graphData.chartData}
-                                            legends={this.props.data.graphData.legends}
-                                            firstBarData={this.props.data.graphData.chartData.firstBar}
-                                            secondBarData={this.props.data.graphData.chartData.secondBar}
+                                            labels={this.state.graphData.labels}
+                                            chartData={this.state.graphData.chartData}
+                                            legends={this.state.graphData.legends}
+                                            firstBarData={this.state.graphData.chartData.firstBar}
+                                            secondBarData={this.state.graphData.chartData.secondBar}
 
                                         />
                                     }

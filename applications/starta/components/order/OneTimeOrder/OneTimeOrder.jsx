@@ -52,7 +52,7 @@ class OneTimeOrder extends React.Component {
     };
     // this.nameTypeData = [];
     this.total = 0;
-    this.customerData={};
+    this.customerData = {};
     this.generalHandler = gen.generalHandler.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.openModalBox = this.openModalBox.bind(this);
@@ -82,9 +82,9 @@ class OneTimeOrder extends React.Component {
     items.map(item => {
       item.color = [item.color];
     });
-    console.log(this.customerData," =====this.customerData")
-    if(this.state.getCustomerShipmentAndPaymentType)
-     console.log(this.state.getCustomerShipmentAndPaymentType, "this.state.getCustomerShipmentAndPaymentType");
+    console.log(this.customerData, " =====this.customerData")
+    if (this.state.getCustomerShipmentAndPaymentType)
+      console.log(this.state.getCustomerShipmentAndPaymentType, "this.state.getCustomerShipmentAndPaymentType");
     // let userID;
     // if (this.state.userList) {
     //   userID = this.state.userList.filter(obj => {
@@ -93,7 +93,7 @@ class OneTimeOrder extends React.Component {
     // }
     // console.log(userID[0]._id, "<<<<< userID")
     // let value = userID[0]._id;
-    
+
 
     let request = {
       "body": {
@@ -102,10 +102,9 @@ class OneTimeOrder extends React.Component {
         "quoteValidity": "",
         "incoTerms": "EXW",
         "items": items,
-        "data": {
-          "shipmentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.shipmentType : "",
-          "paymentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.paymentType : "",
-        }
+        "shipmentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.shipmentType : "",
+        "paymentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.paymentType : "",
+
       }
     };
     console.log(request, "request")
@@ -254,9 +253,9 @@ class OneTimeOrder extends React.Component {
   }
 
   render() {
-   
-     console.log(" this.customerData", this.customerData)
-  let categories = this.state.typeData.classification;
+
+    console.log(" this.customerData", this.customerData)
+    let categories = this.state.typeData.classification;
 
     if (!this.state.isLoading)
       return (
@@ -274,7 +273,7 @@ class OneTimeOrder extends React.Component {
                     </div>
                     <div className="input-group-addon search-categories">
                       <select name="searchType" id="productCategory" className="postform resizeselect"
-                              style={{width: "143px", webkitAppearance: "menulist"}}>
+                        style={{ width: "143px", webkitAppearance: "menulist" }}>
                         <option value="name">Name</option>
                         <option className="level-0" value="description">Description</option>
                         <option className="level-0" value="material">Material</option>
@@ -282,7 +281,7 @@ class OneTimeOrder extends React.Component {
                     </div>
                     <div className="input-group-addon search-categories">
                       <select name="classification" id="product_cat" className="postform resizeselect"
-                              style={{width: "143px", webkitAppearance: "menulist"}}>
+                        style={{ width: "143px", webkitAppearance: "menulist" }}>
                         <option value="">All Categories</option>
                         {categories.map((item, index) => {
                           return <option key={index} className="level-0" value={item.value}>{item.label}</option>;
