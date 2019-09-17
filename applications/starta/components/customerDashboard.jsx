@@ -101,7 +101,7 @@ class Dashboard extends React.Component {
 
     componentWillMount() {
         this.getDashboardData("");
-       
+
 
         window.scrollTo(0, 0);
     }
@@ -119,7 +119,7 @@ class Dashboard extends React.Component {
                 getPendingOrders: nextProps.data.dashboardPendingGridData.pendingOrderRows,
                 getCompletedOrders: nextProps.data.dashboardCompletedGridData.completedOrderRows,
                 setPagingForSupplier: nextProps.supplierPageDate,
-                graphData:nextProps.data.graphData,
+                graphData: nextProps.data.graphData,
                 isLoading: false,
             });
         }
@@ -152,7 +152,7 @@ class Dashboard extends React.Component {
     };
 
     render() {
-        
+
         if (this.state.isLoading)
             return (<div className="loader">{utils.getLabelByID("Loading")}</div>);
         else if (this.props.data.graphData) {
@@ -162,24 +162,24 @@ class Dashboard extends React.Component {
                         <div className="col-md-12 ">
                             <div className="daterange_con">
                                 <div className="row">
-                                    <div className="center-block dashdate">
+                                    {/* <div className="center-block dashdate"> */}
                                         <div className="col-md-4">
                                         </div>
                                         <div className="col-md-4">
                                         </div>
                                         <div className="col-md-4">
                                             <div className="col-md-12">
-                                                <div className="form-group col-md-3"></div>
+                                                {/* <div className="form-group col-md-3"></div>
                                                 <div className="form-group col-md-3">
                                                 </div>
 
 
                                                 <div className="form-group col-md-6">
 
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
-                                    </div>
+                                    {/* </div> */}
                                 </div>
                             </div>
                             <div className="row">
@@ -189,7 +189,7 @@ class Dashboard extends React.Component {
                                 <div className="col-md-12">
                                 </div>
                             </div>
-                        
+
                             <div className="portlet light bordered sdg_portlet">
                                 <div className="portlet-title">
                                     <div className="caption "><span className="caption-subject " /></div>
@@ -280,7 +280,7 @@ function mapStateToProps(state, ownProps) {
     if (state.app.customerDashboardData !== undefined) {
         return {
             data: state.app.customerDashboardData.data,
-            
+
         };
     }
 }
