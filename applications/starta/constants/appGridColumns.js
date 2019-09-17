@@ -18,7 +18,7 @@ module.exports = {
     { alias: "", key: "itemCode", type: "hiddenID" },
     { alias: "Name", key: "itemImage", type: "image", width: "20%", url: '' },
     { alias: "Item ID", key: "itemCode", type: 'string' },
-    { alias: " ITEM Description", key: "description", type: "string" },
+    { alias: " ITEM Description", key: "description", type: "longString" },
     { alias: "Unit Price", key: "price", type: "amount" },
     { alias: "Action", key: "action", type: "action" }
   ],

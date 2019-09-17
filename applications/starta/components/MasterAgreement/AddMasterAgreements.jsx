@@ -340,7 +340,7 @@ class AddMasterAgreement extends React.Component {
 
 
         if (!item.trim()) {
-            alert("item id and name is reuired!")
+            alert("item id and name is required!")
             return false;
         }
 
@@ -511,6 +511,7 @@ class AddMasterAgreement extends React.Component {
     }
     clearFieldsOrderRebate() {
         $('#tab_1_1_1').find('input').val(0);
+        $("#tab_1_1 select").val("");
     }
 
     clearFieldsItemRebate() {
@@ -695,6 +696,7 @@ class AddMasterAgreement extends React.Component {
                                     <input
                                         name="days"
                                         type="number" 
+                                        min="0"
                                         className="form-control" 
                                         id="days"
                                         onChange={this.onChange}
@@ -782,7 +784,7 @@ class AddMasterAgreement extends React.Component {
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Expected Quantity")}</label>
                                                             <div className="form-group col-md-8">
-                                                                <input type="number" className="form-control" id="expectedQuantity" />
+                                                                <input type="number"  min="0" className="form-control" id="expectedQuantity" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -790,7 +792,7 @@ class AddMasterAgreement extends React.Component {
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Unit Price")}</label>
                                                             <div className="form-group col-md-8">
-                                                                <input type="number" className="form-control" id="unitPrice" />
+                                                                <input type="number"  min="0" className="form-control" id="unitPrice" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -824,7 +826,7 @@ class AddMasterAgreement extends React.Component {
                                                                                         <div className="form-group">
                                                                                             <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("From")}</label>
                                                                                             <div className="form-group col-md-9">
-                                                                                                <input type="number" className="form-control" id="orderGreaterThan" />
+                                                                                                <input type="number" min="0" className="form-control" id="orderGreaterThan" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -832,7 +834,7 @@ class AddMasterAgreement extends React.Component {
                                                                                         <div className="form-group">
                                                                                             <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("To")}</label>
                                                                                             <div className="form-group col-md-9">
-                                                                                                <input type="number" className="form-control" id="orderLessThan" />
+                                                                                                <input type="number"  min="0" className="form-control" id="orderLessThan" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -857,7 +859,7 @@ class AddMasterAgreement extends React.Component {
                                                                                         <div className="form-group">
                                                                                             <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("Rebate Value")}</label>
                                                                                             <div className="form-group col-md-9">
-                                                                                                <input type="number" className="form-control" id="orderRebate" />
+                                                                                                <input type="number"  min="0" className="form-control" id="orderRebate" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -952,7 +954,7 @@ class AddMasterAgreement extends React.Component {
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Duration")}</label>
                                                             <div className="form-group col-md-8">
-                                                                <input type="number" className="form-control" id="duration" />
+                                                                <input type="number" min="0" className="form-control" id="duration" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1022,7 +1024,7 @@ class AddMasterAgreement extends React.Component {
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Greater Than (seconds)")}</label>
                                                             <div className="form-group col-md-8">
-                                                                <input type="number" className="form-control" id="greaterThan" />
+                                                                <input type="number"  min="0" className="form-control" id="greaterThan" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1047,7 +1049,7 @@ class AddMasterAgreement extends React.Component {
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Penalty Value")}</label>
                                                             <div className="form-group col-md-8">
-                                                                <input type="number" className="form-control" id="penaltyValue" />
+                                                                <input type="number"  min="0" className="form-control" id="penaltyValue" />
                                                             </div>
                                                         </div>
                                                     </div>
