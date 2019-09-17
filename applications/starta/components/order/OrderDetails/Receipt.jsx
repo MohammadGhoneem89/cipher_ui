@@ -1,10 +1,15 @@
 import * as utils from "../../../../../core/common/utils";
 import Portlet from '../../../../../core/common/Portlet.jsx';
-import { DropdownInput, TextInput } from '../../../../../core/common/FormControls.jsx';
-import { reduxForm } from 'redux-form';
+
 import Table from '../../../../../core/common/Datatable.jsx';
 
 import React, { Component } from 'react'
+
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../../../../../core/actions/generalAction";
+
+import * as constants from "../../../../../core/constants/Communication";
 
 class Receipt extends Component {
     constructor(props, context) {
@@ -26,28 +31,37 @@ class Receipt extends Component {
         let itemCodes = []
         for (let i = 0; i < this.state.items.length; i++) {
             if ((this.state.items[i].quantity - this.state.items[i].receivedQuantity) > 0) {
-                itemCodes.push({
-                    label: this.state.items[i].itemCode,
-                    value: this.state.items[i].itemCode
-                })
+                itemCodes.push(this.state.items[i].itemCode)
             }
+        }
+        itemCodes = [...new Set(itemCodes)]
+        
+        let itemCodesObjs = []
+        for (let i = 0; i < itemCodes.length; i++) {
+            itemCodesObjs.push({
+                label: itemCodes[i],
+                value: itemCodes[i]
+            })
         }
 
         this.setState({
-            itemCodes
+            itemCodes : itemCodesObjs
         })
     }
+    // event handler
     updateItemColors = (e) => {
         let colors = []
         for (let i = 0; i < this.state.items.length; i++) {
             if (this.state.items[i].itemCode === e.target.value) {
                 for (let j = 0; j < this.state.items[i].color.length; j++) {
-                    colors.push({
-                        label: this.state.items[i].color[j],
-                        value: this.state.items[i].color[j]
-                    })
+                    if (!(this.state.items[i].quantity===this.state.items[i].receivedQuantity)){
+                        colors.push({
+                            label: this.state.items[i].color[j],
+                            value: this.state.items[i].color[j]
+                        })
+                    }
+                    
                 }
-                break
             }
         }
 
@@ -63,29 +77,32 @@ class Receipt extends Component {
             let itemCodes = []
             for (let i = 0; i < this.props.items.length; i++) {
                 if ((this.props.items[i].quantity - this.props.items[i].receivedQuantity) > 0) {
-                    itemCodes.push({
-                        label: this.props.items[i].itemCode,
-                        value: this.props.items[i].itemCode
-                    })
+                    itemCodes.push( this.props.items[i].itemCode)
                 }
             }
 
+            itemCodes = [...new Set(itemCodes)]
+        
+            let itemCodesObjs = []
+            for (let i = 0; i < itemCodes.length; i++) {
+                itemCodesObjs.push({
+                    label: itemCodes[i],
+                    value: itemCodes[i]
+                })
+            }
 
             this.setState({
+                customerID: this.props.customerID,
+                orderID: this.props.orderID,
                 items: this.props.items,
                 closePortlet: this.props.closePortlet,
-                itemCodes
+                itemCodes : itemCodesObjs
             })
-
-
-
         }
     }
 
 
     onQuantityChange = (e) => { 
-        // Check the this.state.quantity
-        // Must be less than this.state.wo wala item . quantity - recv quantity 
         this.setState({ 
             [e.target.name]: e.target.value 
         }); 
@@ -97,13 +114,90 @@ class Receipt extends Component {
         })
     }
 
+    onClick = (e) => {
+        console.log('Form submit')
+        this.props.actions.generalProcess(constants.updateOrderStatusCustomer, {
+            "body": {
+              "orderID": this.state.orderID,
+              "customerID": this.state.customerID,
+              "status": "011",// Recieved Status
+              itemReceipts: this.state.displayItems
+            }
+          });
+    }
+
     addItem = (e) => {
-        // Form Submit Action
+
+        // update item codes
+        // item code ko "" kro
+        // colorcodes khali kro
+
+        // states se slected item aur uski values get kro aur add kro display items
+
+        // Form Submit Action disable
         e.preventDefault();
+
+        for (let i=0; i<this.state.items.length; i++){
+            if (this.state.items[i].itemCode === this.state.itemCode && this.state.items[i].color[0]===this.state.itemColor){
+                let remainingQuantity = this.state.items[i].quantity - this.state.items[i].receivedQuantity
+                if (this.state.quantity > remainingQuantity ){
+                    let err = this.state.items[i].itemCode + ' of '+this.state.items[i].color[0]+' color must not exceed '+remainingQuantity+' in quantity.'
+                    alert(err)
+                    return
+                }
+            }
+        }
+
+        // states passes validation
+        // lets add in "displayItems" from items
+        // lets pop the same from "items" as a result
+
+        let displayItems = [...this.state.displayItems]
+        let items = [...this.state.items]
+        let found = false
+        for (let i=0; i<displayItems.length; i++) {
+            if (displayItems[i].itemCode === this.state.itemCode && displayItems[i].color === this.state.itemColor){
+                // update quantity of already present display item
+                displayItems[i].quantity = parseInt(displayItems[i].quantity) + parseInt(this.state.quantity)
+                found = true
+                break
+            }
+        }
+        if (!found){
+            //  add in display items as new display item
+            displayItems.push({ itemCode: this.state.itemCode, color: this.state.itemColor, quantity: parseInt(this.state.quantity) })
+        }
+        // add quantity in recieved
+        for (let i=0;i<items.length;i++){
+            if (items[i].itemCode === this.state.itemCode && items[i].color[0] === this.state.itemColor){
+                items[i].receivedQuantity = parseInt(items[i].receivedQuantity) + parseInt(this.state.quantity)
+            }
+        }
+        
+        // update item codes
+        let itemCodes = []
+        for (let i = 0; i < this.state.items.length; i++) {
+            if ((this.state.items[i].quantity - this.state.items[i].receivedQuantity) > 0) {
+                itemCodes.push(this.state.items[i].itemCode)
+            }
+        }
+        itemCodes = [...new Set(itemCodes)]
+        
+        let itemCodesObjs = []
+        for (let i = 0; i < itemCodes.length; i++) {
+            itemCodesObjs.push({
+                label: itemCodes[i],
+                value: itemCodes[i]
+            })
+        }
+
         this.setState({
-            displayItems: [
-                { name: "sample", itemCode: "sample", quantity: 3, receivedQuantity: 4 }
-            ]
+            displayItems: [...displayItems],
+            items: [...items],
+            itemCodes : [...itemCodesObjs],
+            itemCode: "",
+            itemColor: "",
+            quantity:0
         })
     }
 
@@ -126,22 +220,28 @@ class Receipt extends Component {
                         <div className="row">
                             <div className="col-md-8">
                                 <div className="col-md-4">
-                                    <DropdownInput
-                                        value={this.state.itemCode}
-                                        name={"receiptItemCodes"}
-                                        options={this.state.itemCodes}
-                                        label={utils.getLabelByID("Item")}
-                                        onChange={this.updateItemColors}
-                                    />
+                                    <select id="itemCode" name="itemCode" className="form-control" value={this.state.itemCode} onChange={this.updateItemColors} >
+                                        <option key="-1">Select</option>
+                                        {
+                                            this.state.itemCodes.map((option, index) => {
+                                                return (
+                                                    <option key={index} value={option.value}>{option.label}</option>
+                                                );
+                                            })
+                                        }
+                                    </select>
                                 </div>
                                 <div className="col-md-4">
-                                    <DropdownInput
-                                        value={this.state.itemColor}
-                                        name={"receiptItemColors"}
-                                        options={this.state.itemColors}
-                                        label={utils.getLabelByID("Color")}
-                                        onChange={this.onColorChange}
-                                    />
+                                    <select id="itemColor" name="itemColor" className="form-control" value={this.state.itemColor} onChange={this.onColorChange} >
+                                            <option key="-1">Select</option>
+                                            {
+                                                this.state.itemColors.map((option, index) => {
+                                                    return (
+                                                        <option key={index} value={option.value}>{option.label}</option>
+                                                    );
+                                                })
+                                            }
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -149,12 +249,14 @@ class Receipt extends Component {
                         <div className="row">
                             <div className="col-md-8">
                                 <div className="col-md-4">
-                                    <TextInput
-                                        name={"quantity"}
-                                        label={"Quantity"}
+                                    <input
+                                        name="quantity"
+                                        type="number" 
+                                        className="form-control" 
+                                        id="quantity"
+                                        onChange={this.onQuantityChange}
                                         value={this.state.quantity}
-                                        onChange={this.onQuantityChange}>
-                                    </TextInput>
+                                    />
                                 </div>
                             </div>
 
@@ -185,8 +287,11 @@ class Receipt extends Component {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="btn-toolbar pull-right">
-                                <button type="submit" className="pull-right btn green">
-                                    {utils.getLabelByID("Update")}
+                                <button 
+                                type="submit" 
+                                onClick={this.onClick} 
+                                className="pull-right btn green">
+                                    {utils.getLabelByID("Recieved")}
                                 </button>
                             </div>
                         </div>
@@ -204,8 +309,19 @@ class Receipt extends Component {
     }
 }
 
-
-export default reduxForm({
-    form: 'Receipt', // a unique identifier for this form
-    enableReinitialize: false
-})(Receipt);
+function mapStateToProps(state, ownProps) {
+    return {
+        
+    };
+  }
+  
+function mapDispatchToProps(dispatch) {
+return { actions: bindActionCreators(actions, dispatch) };
+}
+  
+Receipt.displayName = "__HIDE";
+export default connect(
+mapStateToProps,
+mapDispatchToProps
+)(Receipt);
+  

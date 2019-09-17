@@ -392,8 +392,10 @@ class OrderDetailContainer extends React.Component {
       <Receipt
         closePortlet = { this.receiptModalBoxChangeState }
         items = { this.getItems() }
+        orderID = {this.props.orderID}
+        customerID = {this.props.customerID}
       />
-    )
+      )
   }
 
   optionalStatusModalBoxItem = ()=> {
@@ -405,12 +407,6 @@ class OrderDetailContainer extends React.Component {
           onUpdate = { this.optionalStatusUpdateValue}
           closePortlet = { this.optionalStatusModalBoxChangeState}
           options = { this.getOptionalOptions() }
-          // [
-          //   {label:"Part Tested", value:"007"}, 
-          //   {label:"Assembly",value:"008"}, 
-          //   {label:"Paint Or Finish",value:"009"}
-          //  ] 
-          
           />
       </div>
     )
