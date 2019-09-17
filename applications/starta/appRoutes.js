@@ -18,6 +18,8 @@ import OrderDetails from "./components/order/OrderDetails/OrderDetailContainer.j
 import OrderViaContract from "./components/order/OrderViaContract/OrderViaContract.jsx";
 import SupplierDashboard from "./components/supplierDashboard.jsx";
 import CustomerDashboard from "./components/customerDashboard.jsx";
+import Cipher from "./components/Cipher.jsx";
+
 let authRoutes = <div>
   <Route path="/strata/oneTimeOrder" component={OneTimeOrder} />
   <Route path="/customer" component={CustomerDashboard} />
@@ -38,6 +40,7 @@ let authRoutes = <div>
 let unAuthRoutes = <div>
   <Route path="/strata/Locked" component={Locked} />
   <Route path="/strata/login" component={Login} />
+  <Route path="/cipher" component={Cipher} />
 </div>;
 
 export default { authRoutes, unAuthRoutes };

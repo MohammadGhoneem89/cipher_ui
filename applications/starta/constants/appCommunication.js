@@ -4,6 +4,8 @@ let baseUrl = backOffices.baseUrl;
 
 
 module.exports = {
+  encrypt: `${baseUrl}/API/STRATA/encryptData`,
+  decrypt: `${baseUrl}/API/STRATA/decryptData`,
   getOrgImage: `${baseUrl}/API/UI/orgList`,  
   getMasterAgreementData: `${baseUrl}/API/P2P/getMasterAgreementData`,
   getItemCatalogue: `${baseUrl}/API/STRATA/getItemCatalogueList`,
