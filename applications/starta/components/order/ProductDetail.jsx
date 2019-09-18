@@ -17,7 +17,7 @@ const ProductDetail = props => {
     <div className="row productdetails">
     <div className="col-md-4 text-center">
       <div className="prodetailsimg productImg">
-        <img src={constants.ipfsGet + details.image.hash} onError={addDefaultSrc} width="100%"/></div>
+        <img src={constants.ipfsGet + details.image.hash} onError={addDefaultSrc} width="100%" style={{height:"inherit"}}/></div>
     </div>
     <div className="col-md-8 text-left">
       <div className="Prodetails">
