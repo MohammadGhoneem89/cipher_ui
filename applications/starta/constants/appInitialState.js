@@ -19,6 +19,11 @@ export default {
     pageData: {},
     searchResult: undefined
   },
+  getSubOrderList:{
+    action: "",
+    pageData: {},
+    searchResult: undefined
+  },
   getCustomerAssociationDetail: {
     data: undefined
   },

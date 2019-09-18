@@ -19,7 +19,8 @@ import OrderViaContract from "./components/order/OrderViaContract/OrderViaContra
 import SupplierDashboard from "./components/supplierDashboard.jsx";
 import CustomerDashboard from "./components/customerDashboard.jsx";
 import Cipher from "./components/Cipher.jsx";
-
+import Suborder from "./components/suborder/SubOrderDetail.jsx";
+import SuborderList from "./components/suborder/SubOrderList.jsx";
 let authRoutes = <div>
   <Route path="/strata/oneTimeOrder" component={OneTimeOrder} />
   <Route path="/customer" component={CustomerDashboard} />
@@ -35,6 +36,8 @@ let authRoutes = <div>
   <Route path="/strata/orderList" component={OrderList} />
   <Route path="/strata/OrderViaContract" component={OrderViaContract} />
   <Route path="/strata/viewOrder/:id/:customerId" component={OrderDetails} />
+  <Route path="/strata/subOrder/:id" component={Suborder} />
+  <Route path="/strata/subOrderList" component={SuborderList} />
 </div>;
 
 let unAuthRoutes = <div>

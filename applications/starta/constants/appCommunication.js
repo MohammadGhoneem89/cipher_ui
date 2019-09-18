@@ -26,5 +26,6 @@ module.exports = {
 
   getCustomerShipmentAndPaymentType:`${baseUrl}/API/STRATA/getCustomerShipmentAndPaymentType`,
   customerDashboard: `${baseUrl}/API/STRATA/customerDashboard`,
-  supplierDashboardData: `${baseUrl}/API/STRATA/supplierDashboardData`
+  supplierDashboardData: `${baseUrl}/API/STRATA/supplierDashboardData`,
+  getSubOrderList:`${baseUrl}/API/STRATA/getSubOrderList`
 };

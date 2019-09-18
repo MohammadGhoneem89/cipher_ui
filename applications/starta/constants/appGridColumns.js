@@ -171,6 +171,19 @@ module.exports = {
     { alias: "Amount", key: "unitPrice", type: "amount" },
     { alias: "Total", key: "totalAmount", type: "amount" }
   ],
+  SubOrderItems: [
+    { alias: "Item Name", key: "name", type: 'string' },
+    { alias: "Item Code ", key: "itemCode", type: "string" },
+    { alias: "Quantity", key: "quantity", type: "rightAlign" },
+    { alias: "Price", key: "price", type: "amount" }
+  ],
+  suborder:[
+    { alias: "sub order id", key: "subOrderID", type: 'string' },
+    { alias: "supplier id ", key: "supplierID", type: "string" },
+    { alias: "received date", key: "orderDate", type: "string" },
+    { alias: "order amount", key: "orderAmount", type: "amount" },
+    {alias: "Action", key: "action", type: 'action'}
+  ],
   ReceiptLineItems: [
     { alias: "Item Code ", key: "itemCode", type: "string" },
     { alias: "Color ", key: "color", type: "string" },
