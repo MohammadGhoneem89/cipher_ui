@@ -43,9 +43,10 @@ class SubOrderList extends React.Component {
         let searchCriteria = {}
 
         if (suborderID != "")
-            searchCriteria.suborderID = suborderID
+            searchCriteria.subOrderID = suborderID
         if (status != "")
-            searchCriteria.status = status
+        
+            searchCriteria.status = this.getStatusValue(status);
 
 
         this.setState({ searchCriteria: searchCriteria })
@@ -78,15 +79,7 @@ class SubOrderList extends React.Component {
     componentDidMount() {
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['SubOrder_Status']));
         this.props.actions.generalProcess(constants.getSubOrderList, this.getRequest());
-        this.setState({
-            actions:
-                [{
-                    "value": "1002", "type": "pageAction",
-                    "label": "ADD", "labelName": "COM_AB_Add",
-                    "actionType": "PORTLET_LINK", "iconName": "fa fa-plus",
-                    "URI": "/strata/subOrder", "children": []
-                }]
-        })
+
         window.scrollTo(0, 0);
     }
     getStatusLabel = status => {
@@ -99,7 +92,12 @@ class SubOrderList extends React.Component {
             }
         }
     }
-
+    getStatusValue = status => {
+        if (this.state.typeData && this.state.typeData.SubOrder_Status) {
+          let { value } = this.state.typeData.SubOrder_Status.find(obj => obj.label == status);
+          return value;
+        }
+      }
     formatContractData = (gridData) => {
         for (let i in gridData) {
             let status = gridData[i].status;
@@ -132,7 +130,7 @@ class SubOrderList extends React.Component {
                                 <label className="control-label">{utils.getLabelByID("Sub Order ID")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="subOrderID" id="subOrderID" />
+                                <input type="text" className="form-control" name="suborderID" id="suborderID" />
                             </div>
                         </div>
                         <div className="col-md-6">
