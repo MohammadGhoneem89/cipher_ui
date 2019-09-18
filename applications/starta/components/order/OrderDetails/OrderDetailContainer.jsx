@@ -580,36 +580,26 @@ class OrderDetailContainer extends React.Component {
                   <div className="portlet-body">
                     <div className="row">
                       <div className="col-md-12">
-                        <table id="fieldTable" className="table table-bordered table-striped table-responsive ordertable">
-                          <thead>
-                            <tr>
-                              <th>Item Description</th>
-                              <th>Item code</th>
-                              <th>Qty</th>
-                              <th>Recived Qty</th>
-                              <th>Amount</th>
-                              <th>Total</th>
-                            </tr>
-                          </thead>
-                          <tbody className="ui-sortable">
-                            <tr>
-                              <td>ApplicationDate.Date</td>
-                              <td>Date</td>
-                              <td>XYZ</td>
-                              <td>Date</td>
-                              <td>XYZ</td>
-                              <td>None</td>
-                            </tr>
-                            <tr>
-                              <td>ApplicationDate.Date</td>
-                              <td>Date</td>
-                              <td>XYZ</td>
-                              <td>Date</td>
-                              <td>XYZ</td>
-                              <td>None</td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        {
+                          this.state.orderDetail.subOrder.map((obj) => {
+
+                              obj.action = [
+                                  {
+                                      "label": "View",
+                                      "URI": ["/strata/subOrder"],
+                                      "params": "_id",
+                                      "iconName": "icon-docs"
+                                  }
+                              ]
+                          })
+                        }
+                        <Table
+                            gridColumns={utils.getGridColumnByName('suborder')}
+                            gridData={this.state.orderDetail.subOrder || []}
+                            pagination={false}
+                            export={false}
+                            search={false}
+                          />
                       </div>
                     </div>
                   </div>
