@@ -27,65 +27,89 @@ import * as gen from "../../common/generalActionHandler";
 const statusList = [
     {
         "label": "Sub Order",
-        "status": true
+        "status": false,
+        "value": "001"
     },
     {
         "label": "Dispatched",
-        "status": false
+        "status": false,
+        "value": "002"
     },
     {
         "label": "Received",
-        "status": false
+        "status": false,
+        "value": "003"
     },
     {
         "label": "Invoiced",
-        "status": false
+        "status": false,
+        "value": "004"
     },
     {
         "label": "Paid",
-        "status": false
+        "status": false,
+        "value": "005"
     }
 ]
 class SubOrder extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-
-            optionalStatusValue: "",
-            receiptModalBox: false,
-            optionalStatusModalBox: false,
-            timelineViewModalBox: false,
-            isLoading: true,
-            orderDetail: {},
+            suborderDetail: undefined,
+            searchCriteria: {},
+            page: {
+                pageSize: 10,
+                currentPageNo: 1
+            },
         };
+        this.pageChanged = this.pageChanged.bind(this);
     }
 
     componentWillMount() {
+        this.props.actions.generalProcess(constants.getSubOrderList, this.getRequest())
+    }
+    updateStatus = (statusValue) => {
+        for (let i in statusList) {
+            statusList[i].status = true;
+            if (statusList[i].value == statusValue) {
+                break;
+            }
+        }
+    }
+
+    getRequest = () => {
+        let request = {
+            "body": {
+                "page": {
+                    "currentPageNo": this.state.page.currentPageNo,
+                    "pageSize": this.state.page.pageSize
+                },
+                searchCriteria: { subOrderID: this.props.subOrderID }
+            }
+
+        };
+        return request
     }
 
     componentDidMount() {
-        this.props.actions.generalProcess(constants.getOrderDetail, {
-            "body": {
-                "orderID": "954ac140-d931-11e9-8841-71e8cf5034b8",
-                "customerID": "ETIHAD"
-            }
-        });
         window.scrollTo(0, 0);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.orderDetail) {
-            console.log(this.props.subOrderID, "this.props.subOrderID")
+        if (nextProps.getSubOrderList) {
             this.setState({
-                orderDetail: nextProps.orderDetail,
-                suborderDetail: nextProps.orderDetail.subOrder.filter(obj => { return obj.subOrderID = this.props.subOrderID }),
+                suborderDetail: nextProps.getSubOrderList,
                 isLoading: false
             })
         }
-
-        // this.getItemName(nextProps.getItemCatalogue);
+        //this.updateStatus(nextProps.getSubOrderList[0].status);
     }
-
+    pageChanged = (pageNo) => {
+        let page = this.state.page;
+        page.currentPageNo = pageNo;
+        this.setState({ page: page });
+        this.props.actions.generalProcess(constants.getSubOrderList, this.getRequest());
+    }
     errorHandler(event) {
         event.target.src = "http://localhost:9086/images/1f31e930-e0d5-11e7-88e2-f718f78167e9.png"
     }
@@ -94,6 +118,8 @@ class SubOrder extends React.Component {
     render() {
         const suborder = this.state.suborderDetail ? this.state.suborderDetail[0] : []
         console.log('suborder', suborder)
+        let statusValue = this.state.suborderDetail ? this.state.suborderDetail[0].status : []
+        this.updateStatus(statusValue);
 
         if (!this.state.isLoading)
             return (
@@ -179,9 +205,11 @@ class SubOrder extends React.Component {
                                             <Table
                                                 gridColumns={utils.getGridColumnByName('SubOrderItems')}
                                                 gridData={suborder.items || []}
-                                                pagination={false}
-                                                export={false}
-                                                search={false}
+                                                totalRecords={this.props.getPage.totalRecords}
+                                                pageSize={10}
+                                                pageChanged={this.pageChanged}
+                                                pagination={true}
+                                                activePage={this.state.page.currentPageNo}
                                             />
                                         </div>
                                     </div>
@@ -198,9 +226,9 @@ class SubOrder extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        typeData: state.app.typeData.data,
-        orderDetail: _.get(state.app, 'orderDetail.order', undefined),
+        getSubOrderList: _.get(state.app, "getSubOrderList.searchResult", []),
         subOrderID: ownProps.params.id,
+        getPage: _.get(state.app, "getSubOrderList.pageData", [])
     };
 }
 

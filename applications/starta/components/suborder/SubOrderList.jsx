@@ -10,6 +10,34 @@ import Portlet from '../../../../core/common/Portlet.jsx';
 import _ from 'lodash';
 import * as requestCreator from '../../../../core/common/request.js';
 
+
+const statusList = [
+    {
+        "label": "Sub Order",
+        "status": true,
+        "value":"001"
+    },
+    {
+        "label": "Dispatched",
+        "status": false,
+        "value":"002",
+    },
+    {
+        "label": "Received",
+        "value":"003",
+        "status": false
+    },
+    {
+        "label": "Invoiced",
+        "value":"004",
+        "status": false
+    },
+    {
+        "label": "Paid",
+        "value":"005",
+        "status": false
+    }
+]
 class SubOrderList extends React.Component {
 
     constructor(props) {
@@ -32,10 +60,6 @@ class SubOrderList extends React.Component {
     formSubmit = () => {
         this.props.actions.generalProcess(constants.getSubOrderList, this.getRequest());
     }
-    redirectToAddPage = () => {
-        //this.props.actions.generalProcess(constants.getSubOrderList, this.getRequest());
-    }
-
     getRequest = () => {
 
         let suborderID = document.getElementById('suborderID') == null ? "" : document.getElementById('suborderID').value;
@@ -46,7 +70,7 @@ class SubOrderList extends React.Component {
             searchCriteria.subOrderID = suborderID
         if (status != "")
         
-            searchCriteria.status = this.getStatusValue(status);
+           { searchCriteria.status = this.getStatusLabel(status)};
 
 
         this.setState({ searchCriteria: searchCriteria })
@@ -63,13 +87,12 @@ class SubOrderList extends React.Component {
         return request
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.getSubOrderList && nextProps.typeData) {
+        if (nextProps.getSubOrderList ) {
             console.log(nextProps.getSubOrderList, "getSubOrderList")
             this.setState(
                 {
-                    gridData: this.formatContractData(nextProps.getSubOrderList),
+                    gridData: this.formatData(nextProps.getSubOrderList),
                     isLoading: false,
-                    typeData: nextProps.typeData,
                     page: nextProps.getPage
                 }
             )
@@ -77,28 +100,21 @@ class SubOrderList extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['SubOrder_Status']));
-        this.props.actions.generalProcess(constants.getSubOrderList, this.getRequest());
+         this.props.actions.generalProcess(constants.getSubOrderList, this.getRequest());
 
         window.scrollTo(0, 0);
     }
     getStatusLabel = status => {
-        if (this.state.typeData && this.state.typeData.SubOrder_Status) {
-            let SubOrder_Status = this.state.typeData.SubOrder_Status;
-            for (let i in SubOrder_Status) {
-                if (SubOrder_Status[i].value == status) {
-                    return SubOrder_Status[i].label;
+            for (let i in statusList) {
+                if (statusList[i].value == status) {
+                    return statusList[i].label;
+                }
+                if (statusList[i].label == status) {
+                    return statusList[i].value;
                 }
             }
-        }
     }
-    getStatusValue = status => {
-        if (this.state.typeData && this.state.typeData.SubOrder_Status) {
-          let { value } = this.state.typeData.SubOrder_Status.find(obj => obj.label == status);
-          return value;
-        }
-      }
-    formatContractData = (gridData) => {
+    formatData = (gridData) => {
         for (let i in gridData) {
             let status = gridData[i].status;
             if (status) {
@@ -195,7 +211,6 @@ class SubOrderList extends React.Component {
 function mapStateToProps(state, ownProps) {
     console.log(state.app.getSubOrderList, "state.app.getSubOrderList")
     return {
-        typeData: state.app.typeData.data,
         getSubOrderList: _.get(state.app, "getSubOrderList.searchResult", []),
         getPage: _.get(state.app, "getSubOrderList.pageData", [])
     };
