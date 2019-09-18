@@ -461,7 +461,7 @@ class ProductCatalogue extends React.Component {
           <Row>
             <Document initState={this.state} updateState={this.updateState} getParentState={this.getParentState}
               allowedFileType=".jpg, .jpeg, .png, .bmp, .tiff, .svg, .gif, .pdf, .docx, .doc, .xlsb, .cmb, .stl, .xml , .csv , .xls , .xlsx"
-              acceptedFiles="Files to be uploaded with any image extension or *.docx, *.doc, *.xlsb, *.cmb, *.stl, *.xml , *.csv , *.xls , *.xlsx"
+              acceptedFiles="Files to be uploaded with any image extension or *.pdf, *.docx, *.doc, *.xlsb, *.cmb, *.stl, *.xml , *.csv , *.xls , *.xlsx"
               fileUploadURL={constants.ipfs}
             />
           </Row>
