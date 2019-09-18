@@ -44,8 +44,14 @@ class DateControl extends React.Component {
         const dateControlID = this.props.id || "datePicker";
         return (
             <div id={dateControlID}>
-                <DatePicker inputFormat={format} name={this.props.name} inputProps = {{value:this.props.value}} defaultText={defaultText}
-                    mode={mode} showToday={showToday} readOnly={true} onChange={this.dateChange} />
+                {
+                this.props.value===undefined ? (
+                    <DatePicker inputFormat={format} name={this.props.name} defaultText={defaultText}
+                        mode={mode} showToday={showToday} readOnly={true} onChange={this.dateChange} />) : (
+                    <DatePicker inputFormat={format} name={this.props.name} inputProps = {{value:this.props.value}} defaultText={defaultText}
+                        mode={mode} showToday={showToday} readOnly={true} onChange={this.dateChange} />)
+                }
+                
             </div>
         );
     }
