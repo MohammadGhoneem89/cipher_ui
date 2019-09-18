@@ -261,19 +261,51 @@ class TableCell extends React.Component {
         return (<td className={this.getClassForOverdue(this.props.cellData.type)}><span
           style={{ fontSize: "15px!important" }}>{this.props.cellData.value}</span></td>);
       case "image":
+        
         if (this.props.url) {
-          return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
-            width="28px" height="28px"
-            src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
-              href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
-          </td>);
+          if (this.props.rowData.image.type==='IPFS'){
+              return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="28px" height="28px"
+              src={constants.ipfsGet + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+                href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+            </td>);
+          }else {
+              return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="28px" height="28px"
+              src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+                href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+            </td>);
+          }
         }
         else {
-          return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+          if (this.props.rowData.image.type==='IPFS'){
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+            width="28px" height="28px"
+            src={constants.ipfsGet + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+          </td>);
+          } else{
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
             width="28px" height="28px"
             src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
           </td>);
+          }
+          
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       case "statusLabelBig":
         return (<td><h3><span className={this.getClassForStatusBig(this.props.cellData.type)}
           style={{ height: "20px" }}>{this.props.cellData.value}</span></h3></td>);
