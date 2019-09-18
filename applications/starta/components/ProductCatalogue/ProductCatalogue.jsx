@@ -62,11 +62,34 @@ class ProductCatalogue extends React.Component {
       });
     }
 
-    if (nextProps.getItemCatalogue && nextProps.typeData && nextProps.params.id) {
+    if (nextProps.getItemCatalogue.length>0 && nextProps.typeData && nextProps.params.id) {
+
+      // Insert Attachments into documents
+      let documents = []
+      
+      for (let i=0;i<nextProps.getItemCatalogue[0].attachments.length;i++){
+        documents.push({
+          fileDetail: {
+            name: nextProps.getItemCatalogue[0].attachments[i].name,
+            UUID: ''
+          }, 
+          documentName: nextProps.getItemCatalogue[0].attachments[i].name,
+          fileType: '',
+          documentHash : nextProps.getItemCatalogue[0].attachments[i].hash,
+          retreivalPath: nextProps.getItemCatalogue[0].attachments[i].path,
+          hash: nextProps.getItemCatalogue[0].attachments[i].hash,
+          name: nextProps.getItemCatalogue[0].attachments[i].name,
+          path: nextProps.getItemCatalogue[0].attachments[i].path,
+          type: nextProps.getItemCatalogue[0].attachments[i].type,
+          actions: undefined
+        })
+      }
+
       this.setState({
+        documents: [...documents],
         addProduct: nextProps.getItemCatalogue[0],
         typeData: nextProps.typeData,
-        isLoading: false
+        isLoading: false,
       });
     }
 
@@ -238,7 +261,8 @@ class ProductCatalogue extends React.Component {
   }
 
   render() {
-    // console.log(this.state.documents, "DOCUMENTS");
+    
+    console.log(this.state.documents, "DOCUMENTS");
     let _this = this;
 
     const addDefaultSrc = e => e.target.src = "/assets/Resources/images/default.png";

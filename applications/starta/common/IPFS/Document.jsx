@@ -27,7 +27,14 @@ const Document = ({ updateState, initState, getParentState, allowedFileType, acc
       "hash": data.hash,
       "name": data.name,
       "path": data.downloadPath,
-      "type": "IPFS"
+      "type": "IPFS",
+      
+      "fileDetail": {name: data.name, UUID: data.cipherMessageId},
+      "documentName": data.name,
+      "fileType": '',
+      "retreivalPath": data.downloadPath,
+      "documentHash": data.hash,
+      "actions": data.actions
     };
     let state = _.clone(initState)
     state.documents.push(document)

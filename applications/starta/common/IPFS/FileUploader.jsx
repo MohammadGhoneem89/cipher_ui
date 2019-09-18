@@ -46,7 +46,8 @@ class FileUploader extends React.Component {
     }
 
     componentDidMount() {
-
+        let gridData = { contextData: this.props.initialValues };
+        this.setState({ gridData });
     }
 
 
