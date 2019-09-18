@@ -32,7 +32,9 @@ class ProductCatalogue extends React.Component {
     this.state = {
       isLoading: true,
       addProduct: {},
-      productImage: {},
+      productImage: {
+
+      },
       documents: [],
       typeData: {}
     };
@@ -171,7 +173,8 @@ class ProductCatalogue extends React.Component {
       this.stringToOtherTypes('addProduct', ['leadTime', 'price', 'printTime'], ['itemStatus']);
       let addProduct = { ...this.state.addProduct };
       console.log(addProduct, "addProduct")
-      addProduct.image = this.state.productImage;
+      addProduct.image = Object.keys(this.state.productImage).length > 0 ? this.state.productImage : addProduct.image;
+      console.log(addProduct, "addProduct")
       if (this.state.documents && this.state.documents.length > 0) {
         addProduct.attachments = this.state.documents
       }
