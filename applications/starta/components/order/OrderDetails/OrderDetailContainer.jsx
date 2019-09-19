@@ -26,6 +26,8 @@ import Table from '../../../../../core/common/Datatable.jsx';
 import * as gen from "../../../common/generalActionHandler";
 import Combobox from "../../../common/Select.jsx";
 
+import { baseUrl } from '../../../../../core/constants/Communication.js';
+
 
 class OrderDetailContainer extends React.Component {
   constructor(props, context) {
@@ -56,6 +58,7 @@ class OrderDetailContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.orderDetail) {
+
       this.setState({
         orderDetail: nextProps.orderDetail,
         isLoading: false
@@ -239,7 +242,7 @@ class OrderDetailContainer extends React.Component {
                 <div className="col-md-12">
 
                   <div className="form-wizard stratawizard">
-                    {<Steps statusList={this.state.orderDetail.statusList} />}
+                    {<Steps hideNumber={true} statusList={this.state.orderDetail.statusList} />}
                   </div>
 
                   <br/>
@@ -248,10 +251,10 @@ class OrderDetailContainer extends React.Component {
                     <div className="form-group">
                       <Row>
                         <Col col="6">
-                          <Label columns="12" style={{fontSize:22}} text={this.state.orderDetail.entityName}></Label>
+                          <Label columns="12" style={{fontSize:22, paddingTop: '30px'}} text={this.state.orderDetail.entityName}></Label>
                         </Col>
-                        <Col col="6">
-                          <img src={this.state.orderDetail.entityLogo} style={{width:50}} onError={this.errorHandler}/>
+                        <Col col="6" className='pull-right' style={{width:'27%'}}> 
+                          <img className='img-thumbnail img-rounded' src={baseUrl + this.state.orderDetail.entityLogo} style={{width:'120px'}} onError={this.errorHandler}/>
                         </Col>
                       </Row>
                     </div>
@@ -269,7 +272,7 @@ class OrderDetailContainer extends React.Component {
                       <Col col="6">
                           <Label columns="6" text="Order Raised By:"></Label>
                           <Col col="6" className="orderperson">
-                            <img src={this.state.orderDetail.raisedByPic} width="25" style={{marginRight:5}} onError={this.errorHandler} />
+                            <img  src={baseUrl + this.state.orderDetail.raisedByPic} width="25" style={{marginRight:"5", borderRadius: "50% !important" }} onError={this.errorHandler} />
                             <span>{this.state.orderDetail.raisedByName}</span>
                           </Col>
                         </Col>
