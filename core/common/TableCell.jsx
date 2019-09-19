@@ -4,7 +4,7 @@ import { baseUrl } from '../constants/Communication.js';
 import { browserHistory } from 'react-router';
 import * as utils from './utils.js';
 import * as dates from './dates.js';
-
+import _ from 'lodash';
 
 class TableCell extends React.Component {
   constructor() {
@@ -263,7 +263,7 @@ class TableCell extends React.Component {
       case "image":
         
         if (this.props.url) {
-          if (this.props.rowData.image.type==='IPFS'){
+          if (_.get(this.props,'rowData.image.type','')==='IPFS'){
               return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
               width="28px" height="28px"
               src={constants.ipfsGet + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
@@ -278,7 +278,7 @@ class TableCell extends React.Component {
           }
         }
         else {
-          if (this.props.rowData.image.type==='IPFS'){
+          if (_.get(this.props,'rowData.image.type','')==='IPFS'){
             return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
             width="28px" height="28px"
             src={constants.ipfsGet + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
