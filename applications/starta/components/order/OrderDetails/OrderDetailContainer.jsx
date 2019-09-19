@@ -345,7 +345,9 @@ class OrderDetailContainer extends React.Component {
     let items = []
     for (let i=0; i<this.state.orderDetail.items.length; i++){
       if ((this.state.orderDetail.items[i].quantity - this.state.orderDetail.items[i].receivedQuantity)>0){
-        items.push(this.state.orderDetail.items[i])
+        items.push({
+          ...this.state.orderDetail.items[i]
+        })
       }
     }
     console.log(items,"getItems()")
@@ -385,6 +387,8 @@ class OrderDetailContainer extends React.Component {
         "status": this.state.optionalStatusValue
       }
     });
+    // Close the pop up
+    this.optionalStatusModalBoxChangeState();
   }
 
   receiptModalBoxItem = ()=> {
