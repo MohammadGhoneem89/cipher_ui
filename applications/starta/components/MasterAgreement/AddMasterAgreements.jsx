@@ -183,14 +183,14 @@ class AddMasterAgreement extends React.Component {
     onStartDateChange = (value) => {
         console.log(value, "start date")
         this.setState({
-            startDate: value
+            startDate: utils.UNIXConvertToDate(value)
         })
     }
 
     onEndDateChange = (value) => {
         console.log(value, "end date")
         this.setState({
-            endDate: value
+            endDate: utils.UNIXConvertToDate(value)
         })
     }
 
