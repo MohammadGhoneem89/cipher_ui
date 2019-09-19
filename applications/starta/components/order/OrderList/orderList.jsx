@@ -32,7 +32,8 @@ class OrderList extends React.Component {
       gridData: [],
       orderSearch: {},
       fromDate: undefined,
-      toDate: undefined
+      toDate: undefined,
+      orderStatus: ''
     };
     this.generalHandler = gen.generalHandler.bind(this);
   }
@@ -42,8 +43,8 @@ class OrderList extends React.Component {
       toDate = this.state.toDate,
       contractID = this.state.orderSearch.contractID || '',
       orderID = this.state.orderSearch.orderID || '',
-      orderStatus = this.state.orderSearch.orderStatus || '';
-
+      orderStatus = this.state.orderStatus || '';
+      
     let searchCriteria = {};
 
     if (fromDate) { searchCriteria.fromDate = fromDate };
@@ -138,6 +139,11 @@ class OrderList extends React.Component {
     });
   };
 
+  onChange = (e) => {
+    this.setState({
+      [e.target.name] : e.target.value
+    })
+  }
   render() {
     if (this.state.isLoading) {
       return <div className="loader"> {utils.getLabelByID('loading')}</div>;
@@ -174,8 +180,26 @@ class OrderList extends React.Component {
           <Row>
             <Col col="6">
               <Label text={utils.getLabelByID('Order Status')} columns="4" />
+              {console.log (this.state.typeData)}
+              <div className="col-md-8">
+              <select id="orderStatus" name="orderStatus" className="form-control" value={this.state.orderStatus} onChange={this.onChange} >
+                <option key="-1" value="">Select</option>
+                {
+                    this.state.typeData && this.state.typeData.Status.map((option, index) => {
+                        return (
+                            <option key={index} value={option.value}>{option.label}</option>
+                        );
+                    })
+                }
+              </select>
+              </div>
+              
+              {/* 
               <Combobox fieldname="orderStatus" formname="orderSearch" columns="8" state={this.state} typeName="Status"
-                dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" />
+                dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" /> 
+              */}
+
+
             </Col>
           </Row>
 
