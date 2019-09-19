@@ -52,6 +52,7 @@ class SubOrderList extends React.Component {
             isLoading: true,
             gridData: [],
             actions: []
+            
         };
         this.data = [];
         this.pageChanged = this.pageChanged.bind(this);

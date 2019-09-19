@@ -24,33 +24,7 @@ import Table from '../../../../core/common/Datatable.jsx';
 import * as gen from "../../common/generalActionHandler";
 
 
-const statusList = [
-    {
-        "label": "Sub Order",
-        "status": false,
-        "value": "001"
-    },
-    {
-        "label": "Dispatched",
-        "status": false,
-        "value": "002"
-    },
-    {
-        "label": "Received",
-        "status": false,
-        "value": "003"
-    },
-    {
-        "label": "Invoiced",
-        "status": false,
-        "value": "004"
-    },
-    {
-        "label": "Paid",
-        "status": false,
-        "value": "005"
-    }
-]
+
 class SubOrder extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -61,20 +35,52 @@ class SubOrder extends React.Component {
                 pageSize: 10,
                 currentPageNo: 1
             },
+            statusList: [
+                {
+                    "label": "Sub Order",
+                    "status": false,
+                    "value": "001"
+                },
+                {
+                    "label": "Dispatched",
+                    "status": false,
+                    "value": "002"
+                },
+                {
+                    "label": "Received",
+                    "status": false,
+                    "value": "003"
+                },
+                {
+                    "label": "Invoiced",
+                    "status": false,
+                    "value": "004"
+                },
+                {
+                    "label": "Paid",
+                    "status": false,
+                    "value": "005"
+                }
+            ]
         };
         this.pageChanged = this.pageChanged.bind(this);
     }
 
     componentWillMount() {
-        this.props.actions.generalProcess(constants.getSubOrderList, this.getRequest())
+
     }
     updateStatus = (statusValue) => {
-        for (let i in statusList) {
-            statusList[i].status = true;
-            if (statusList[i].value == statusValue) {
+        let statuslist = this.state.statusList;
+        for (let i in statuslist) {
+            statuslist[i].status = true;
+            if (statuslist[i].value == statusValue) {
                 break;
             }
         }
+        this.setState({
+            statusList: statuslist
+        })
+
     }
 
     getRequest = () => {
@@ -92,17 +98,19 @@ class SubOrder extends React.Component {
     }
 
     componentDidMount() {
+        this.props.actions.generalProcess(constants.getSubOrderList, this.getRequest())
         window.scrollTo(0, 0);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.getSubOrderList) {
+        if (nextProps.getSubOrderList && nextProps.getSubOrderList.length > 0) {
             this.setState({
-                suborderDetail: nextProps.getSubOrderList,
+                suborderDetail: nextProps.getSubOrderList[0],
                 isLoading: false
             })
+              this.updateStatus(nextProps.getSubOrderList[0].status);
         }
-        //this.updateStatus(nextProps.getSubOrderList[0].status);
+
     }
     pageChanged = (pageNo) => {
         let page = this.state.page;
@@ -116,10 +124,9 @@ class SubOrder extends React.Component {
 
 
     render() {
-        const suborder = this.state.suborderDetail ? this.state.suborderDetail[0] : []
+        const suborder = this.state.suborderDetail ? this.state.suborderDetail : {}
         console.log('suborder', suborder)
-        let statusValue = this.state.suborderDetail ? this.state.suborderDetail[0].status : []
-        this.updateStatus(statusValue);
+
 
         if (!this.state.isLoading)
             return (
@@ -132,7 +139,7 @@ class SubOrder extends React.Component {
                                 <div className="col-md-12">
 
                                     <div className="form-wizard stratawizard">
-                                        {<Steps statusList={statusList} />}
+                                        {<Steps statusList={this.state.statusList} />}
                                     </div>
 
                                     <br />
