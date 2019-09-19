@@ -178,7 +178,7 @@ class OrderDetailsContainer extends React.Component {
     }, 5000);
   }
   renderPayload(xml) {
-    
+
     this.setState({ modalIsOpenXML: true, xml: xml })
   }
   componentWillReceiveProps(nextProps) {
@@ -340,7 +340,7 @@ class OrderDetailsContainer extends React.Component {
     ev.target.src = '/assets/imgs/ecommerce.png'
   }
   formatXml(xml) {
-   
+
 
     return xml;
   }
@@ -385,9 +385,9 @@ class OrderDetailsContainer extends React.Component {
                 <div className="form-group">
 
 
-                  
-                    {this.formatXml(this.state.xml)}
-                 
+
+                  {this.formatXml(this.state.xml)}
+
                 </div>
 
               </div>
@@ -724,7 +724,7 @@ class OrderDetailsContainer extends React.Component {
                   </div>
                   <div id="HAWB" className="tab-pane">
                     {this.state.orderDetails.tranxData.ExportHAWB.HAWBNumber == "" && <div className="row">
-                      <text className="col-md-12" style={{ textAlign: "center", color: "red", fontWeight: "bold", fontSize: "18px" }}>HAWB Not Found</text>
+                      <text className="col-md-12" style={{ textAlign: "center", color: "#3064f0c4", fontWeight: "bold", fontSize: "18px" }}>HAWB Not Found</text>
                     </div>}
                     <div className="row">
                       <div className="col-md-6">
@@ -748,17 +748,19 @@ class OrderDetailsContainer extends React.Component {
                     <div>
                       <div className="form-group">
                         {this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.MAWBNumber == "" && <div className="row">
-                          <text className="col-md-12" style={{ textAlign: "center", color: "red", fontWeight: "bold", fontSize: "18px" }}>Shipping Details Not Found</text>
+                          <text className="col-md-12" style={{ textAlign: "center", color: "#3064f0c4", fontWeight: "bold", fontSize: "18px" }}>Shipping Details Not Found</text>
                         </div>}
-                        <div className="row">
-                          <div className="col-md-2">
-                            <label className="bold">MAWB #</label>
-                          </div>
-                          <div className="col-md-2">
-                            <label>{this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.MAWBNumber}</label>
-                          </div>
+                      </div>
+                      {this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.MAWBNumber != "" && <div>
+                      <div className="row">
+                        <div className="col-md-2">
+                          <label className="bold">MAWB #</label>
+                        </div>
+                        <div className="col-md-2">
+                          <label>{this.state.orderDetails.tranxData.ExportHAWB.shippingDetails.MAWBNumber}</label>
                         </div>
                       </div>
+
                       <div className="form-group">
                         <div className="row">
                           <div className="col-md-2">
@@ -813,13 +815,14 @@ class OrderDetailsContainer extends React.Component {
                           </div>
                         </div>
                       </div>
-                      {this.state.orderDetails.tranxData.ImportHAWBList > 0 && <hr />}
-                    </div>
+                      </div>}
 
+                    </div>
+                    {this.state.orderDetails.tranxData.ImportHAWBList > 0 && <hr />}
                   </div>
                   <div id="ExportDeclaration" className="tab-pane">
                     {this.state.orderDetails.tranxData.exportDeclaration == null && <div className="row">
-                      <text className="col-md-12" style={{ textAlign: "center", color: "red", fontWeight: "bold", fontSize: "18px" }}>Export Declaration Not Found</text>
+                      <text className="col-md-12" style={{ textAlign: "center", color: "#3064f0c4", fontWeight: "bold", fontSize: "18px" }}>Export Declaration Not Found</text>
                     </div>}
                     {this.state.orderDetails.tranxData.exportDeclaration && this.state.orderDetails.tranxData.exportDeclaration.map(item => {
                       return <div>
@@ -857,7 +860,7 @@ class OrderDetailsContainer extends React.Component {
                               <label className="bold">Batch Id</label>
                             </div>
                             <div className="col-md-2">
-                              <label>{item.batchReqNo}</label>
+                              <label>{item.ackNo}</label>
                             </div>
                             <div className="col-md-2">
                               <label className="bold">Status</label>
@@ -948,7 +951,7 @@ class OrderDetailsContainer extends React.Component {
                   </div>
                   <div id="ImportDeclaration" className="tab-pane">
                     {this.state.orderDetails.tranxData.importDecleration == null && <div className="row">
-                      <text className="col-md-12" style={{ textAlign: "center", color: "red", fontWeight: "bold", fontSize: "18px" }}>Import Declaration Not Found</text>
+                      <text className="col-md-12" style={{ textAlign: "center", color: "#3064f0c4", fontWeight: "bold", fontSize: "18px" }}>Import Declaration Not Found</text>
                     </div>}
                     {this.state.orderDetails.tranxData.importDecleration && this.state.orderDetails.tranxData.importDecleration.map(item => {
                       return <div>
@@ -986,7 +989,7 @@ class OrderDetailsContainer extends React.Component {
                               <label className="bold">Batch Id</label>
                             </div>
                             <div className="col-md-2">
-                              <label>{item.batchReqNo}</label>
+                              <label>{item.ackNo}</label>
                             </div>
                             <div className="col-md-2">
                               <label className="bold">Status</label>
