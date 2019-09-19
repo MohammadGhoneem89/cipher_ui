@@ -94,11 +94,25 @@ class Steps extends React.Component {
                 <ul className="nav nav-pills nav-justified steps">
                     {this.props.statusList.map((sd, index) => (
                         <li className={this.getLiCSS(sd)}>
-                            <a href="#tab1" data-toggle="tab" className="step" aria-expanded="false">
-                                <span className={'number'}> {index + 1} </span>
-                                <span className="desc">
-                                    <i className="fa fa-check"></i> {sd.label} </span>
-                            </a>
+                            {
+                                this.props.hideNumber===true ?
+                                (
+                                    <a href="#tab1" data-toggle="tab" className="step" aria-expanded="false">
+                                        <span className={'number'}> </span>
+                                        <span className="desc">
+                                            <i className="fa fa-check" style={{'position': 'inherit'}} ></i> 
+                                            {sd.label}
+                                        </span>
+                                    </a>
+                                ) : (
+                                    <a href="#tab1" data-toggle="tab" className="step" aria-expanded="false">
+                                        <span className={'number'}> {index + 1} </span>
+                                        <span className="desc">
+                                            <i className="fa fa-check"></i> {sd.label} 
+                                        </span>
+                                    </a>
+                                )
+                            }
                             {this.displayTicker(this.props.statusList, index)}
                             {this.getArrow(index, this.props.statusList.length)}
                         </li>
