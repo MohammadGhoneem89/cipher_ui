@@ -20,7 +20,7 @@ import ModalBox from '../../../../../core/common/ModalBox.jsx';
 import Pagination from "react-js-pagination";
 import OptionalStatus from "./OptionalStatus.jsx"
 import Receipt from "./Receipt.jsx"
-
+import Timeline from "./Timeline.jsx"
 import Steps from '../../../../../core/common/Steps.jsx';
 import Table from '../../../../../core/common/Datatable.jsx';
 import * as gen from "../../../common/generalActionHandler";
@@ -39,8 +39,6 @@ class OrderDetailContainer extends React.Component {
       isLoading: true,
       orderDetail: {},
     };
-    this.openTimelineViewModalBox = this.openTimelineViewModalBox.bind(this);
-    this.closeTimelineViewModalBox = this.closeTimelineViewModalBox.bind(this);
   }
 
   componentWillMount() {
@@ -65,19 +63,6 @@ class OrderDetailContainer extends React.Component {
     }
 
     // this.getItemName(nextProps.getItemCatalogue);
-  }
-
-  openTimelineViewModalBox(modelItem) {
-    this.setState({
-      timelineViewModalBox: true,
-      modelItem
-    });
-
-
-  }
-  
-  closeTimelineViewModalBox() {
-    this.setState({ timelineViewModalBox: false });
   }
 
   errorHandler(event) {
@@ -118,209 +103,11 @@ class OrderDetailContainer extends React.Component {
         break;
     }
   }
-  timeLineViewModalBoxItem = () => {
-    return (
-            <div class="modal fade in ordertrack" role="basic" aria-hidden="true">
-              <div className="modal-dialog">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <div className="imgicon"><img src="/assets/Resources/OptimizationBox.png" /></div>
-                    <button type="button" className="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 className="modal-title text-center">Order ID # ORD66667</h4>
-                  </div>
-                  <div className="modal-body">
 
-                    <div className="timeline  white-bg ">
-                      {/* <!-- TIMELINE ITEM --> */}
-                      <div className="timeline-item">
-                        <div className="timeline-badge green">
-                          <i className="fa fa-check" aria-hidden="true"></i>
-
-                        </div>
-                        <div className="timeline-body">
-                          <div className="timeline-body-arrow"><img src="/assets/Resources/purchase.png" /></div>
-                          <div className="timeline-body-head">
-                            <div className="timeline-body-head-caption">
-                              <a href="javascript:;">Purchase Order</a>
-                            </div>
-                          </div>
-                          <div className="timeline-body-content">
-                            <span className="trckdate">22/04/2019</span>
-                            <span className="trcktime">22/04/2019</span>
-
-
-                          </div>
-                        </div>
-                      </div>
-                      {/* <!-- END TIMELINE ITEM -->
-                        <!-- TIMELINE ITEM --> */}
-
-                      <div className="timeline-item">
-                        <div className="timeline-badge blue ">
-                          <i className="fa fa-check" aria-hidden="true"></i>
-
-                        </div>
-                        <div className="timeline-body">
-                          <div className="timeline-body-arrow"><img src="/assets/Resources/manufacturing.png" /></div>
-                          <div className="timeline-body-head">
-                            <div className="timeline-body-head-caption">
-                              <a href="javascript:;">Component Manufacture</a>
-                            </div>
-                          </div>
-                          <div className="timeline-body-content">
-                            <span className="trckdate">22/04/2019</span>
-                            <span className="trcktime">22/04/2019</span>
-
-                          </div>
-                        </div>
-                      </div>
-
-
-                      <div className="timeline-item">
-                        <div className="timeline-badge">
-                          <i className="fa fa-check" aria-hidden="true"></i>
-
-                        </div>
-                        <div className="timeline-body">
-                          <div className="timeline-body-arrow"><img src="/assets/Resources/analytics.png" /></div>
-                          <div className="timeline-body-head">
-                            <div className="timeline-body-head-caption">
-                              <a href="javascript:;">Part Identification</a>
-                            </div>
-                          </div>
-                          <div className="timeline-body-content">
-                            <span className="trckdate">22/04/2019</span>
-                            <span className="trcktime">22/04/2019</span>
-
-
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="timeline-item">
-                        <div className="timeline-badge">
-                          <i className="fa fa-check" aria-hidden="true"></i>
-
-                        </div>
-                        <div className="timeline-body">
-                          <div className="timeline-body-arrow"><img src="/assets/Resources/description.png" /></div>
-                          <div className="timeline-body-head">
-                            <div className="timeline-body-head-caption">
-                              <a href="javascript:;">Part Description</a>
-                            </div>
-                          </div>
-                          <div className="timeline-body-content">
-                            <span className="trckdate">22/04/2019</span>
-                            <span className="trcktime">22/04/2019</span>
-
-
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="timeline-item">
-                        <div className="timeline-badge">
-                          <i className="fa fa-check" aria-hidden="true"></i>
-
-                        </div>
-                        <div className="timeline-body">
-                          <div className="timeline-body-arrow"><img src="/assets/Resources/code.png" /></div>
-                          <div className="timeline-body-head">
-                            <div className="timeline-body-head-caption">
-                              <a href="javascript:;">Final Inspection & Identification</a>
-                            </div>
-                          </div>
-                          <div className="timeline-body-content">
-                            <span className="trckdate">22/04/2019</span>
-                            <span className="trcktime">22/04/2019</span>
-
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="timeline-item">
-                        <div className="timeline-badge">
-                          <i className="fa fa-check" aria-hidden="true"></i>
-
-                        </div>
-                        <div className="timeline-body">
-                          <div className="timeline-body-arrow"><img src="/assets/Resources/order.png" /></div>
-                          <div className="timeline-body-head">
-                            <div className="timeline-body-head-caption">
-                              <a href="javascript:;">Part Test</a>
-                            </div>
-                          </div>
-                          <div className="timeline-body-content">
-                            <span className="trckdate">22/04/2019</span>
-                            <span className="trcktime">22/04/2019</span>
-
-
-                          </div>
-                        </div>
-                      </div>
-
-
-                      <div className="timeline-item">
-                        <div className="timeline-badge">
-                          <i className="fa fa-check" aria-hidden="true"></i>
-
-                        </div>
-                        <div className="timeline-body">
-                          <div className="timeline-body-arrow"><img src="/assets/Resources/tracking.png" /></div>
-                          <div className="timeline-body-head">
-                            <div className="timeline-body-head-caption">
-                              <a href="javascript:;">Dispatched</a>
-                            </div>
-                          </div>
-                          <div className="timeline-body-content">
-                            <span className="trckdate">22/04/2019</span>
-                            <span className="trcktime">22/04/2019</span>
-
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="timeline-item">
-                        <div className="timeline-badge">
-                          <i className="fa fa-check" aria-hidden="true"></i>
-
-                        </div>
-                        <div className="timeline-body">
-                          <div className="timeline-body-arrow"><img src="/assets/Resources/delivery.png" /></div>
-                          <div className="timeline-body-head">
-                            <div className="timeline-body-head-caption">
-                              <a href="javascript:;">Received</a>
-                            </div>
-                          </div>
-                          <div className="timeline-body-content">
-                            <span className="trckdate">22/04/2019</span>
-                            <span className="trcktime">22/04/2019</span>
-
-                            <div className="remark">
-                              <span className="font-grey-cascade">Remarks <i className="fa fa-minus-circle"
-                                aria-hidden="true"></i></span>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-                      {/* <!-- END TIMELINE ITEM -->
-                        <!-- TIMELINE ITEM WITH GOOGLE MAP --> */}
-
-
-                    </div>
-
-
-                  </div>
-                  {/* <!-- <div className="modal-footer">
-                        <button type="button" className="btn dark btn-outline" data-dismiss="modal">Close</button>
-                        <button type="button" className="btn green">Save changes</button>
-                    </div> --> */}
-                </div>
-                {/* <!-- /.modal-content --> */}
-              </div>
-            </div>
-    )
+  timeLineViewModalBoxChangeState = () => {
+    this.setState({
+      timelineViewModalBox: !(this.state.timelineViewModalBox)
+    })
   }
 
   receiptModalBoxChangeState = () => {
@@ -389,6 +176,14 @@ class OrderDetailContainer extends React.Component {
     });
     // Close the pop up
     this.optionalStatusModalBoxChangeState();
+  }
+
+  timeLineViewModalBoxItem = ()=> {
+    return (
+      <Timeline 
+        closePortlet = { this.timeLineViewModalBoxChangeState }
+      />
+    )
   }
 
   receiptModalBoxItem = ()=> {
@@ -614,7 +409,7 @@ class OrderDetailContainer extends React.Component {
                 {this.state.orderDetail.actionButtons.map(element => {
                   return <a onClick={() => {this.statusButtonHandler(element)}} className="btn stratabtnstyle" style={{marginLeft: 10}}>{element.label}</a>
                 })}
-                <a onClick={this.openTimelineViewModalBox} className="btn stratabtnstyle" style={{marginLeft: 10}}>Timeline View</a>
+                <a onClick={this.timeLineViewModalBoxChangeState} className="btn stratabtnstyle" style={{marginLeft: 10}}>Timeline View</a>
               </div>
             </div>
           </div>
