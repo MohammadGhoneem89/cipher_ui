@@ -29,7 +29,7 @@ module.exports = {
     { alias: "Customer ID", key: "customerID", type: "string" },
     { alias: "Order Amount", key: "orderAmount", type: "amount" },
     { alias: "Order Date", key: "orderDate", type: "epochDate" },
-    { alias: "Stage", key: "orderStatus", type: "string" },
+    { alias: "Stage", key: "status", type: "string" },
     { alias: "Action", key: "action", type: "action" }
   ],
   masterAgreement: [

@@ -17,7 +17,84 @@ import Label from '../../../common/Lable.jsx';
 import * as gen from '../../../common/generalActionHandler';
 
 import _ from 'lodash';
-
+const orderStatus = [
+  {
+    "label": "Order Received",
+    "value": "001"
+  },
+  {
+    "label": "Purchase Order",
+    "value": "002"
+  },
+  {
+    "label": "Component Manufacturing",
+    "value": "003"
+  },
+  {
+    "label": "Part Identification",
+    "value": "004"
+  },
+  {
+    "label": "Part Inspection",
+    "value": "005"
+  },
+  {
+    "label": "Final Inspection And Identification",
+    "value": "006"
+  },
+  {
+    "label": "Part Testing",
+    "value": "007"
+  },
+  {
+    "label": "Assembly",
+    "value": "008"
+  },
+  {
+    "label": "Paint Or Finish",
+    "value": "009"
+  },
+  {
+    "label": "Dispatched",
+    "value": "010"
+  },
+  {
+    "label": "Received",
+    "value": "011"
+  },
+  {
+    "label": "Inspected",
+    "value": "012"
+  },
+  {
+    "label": "Accepted",
+    "value": "013"
+  },
+  {
+    "label": "Rejected",
+    "value": "014"
+  },
+  {
+    "label": "Reviewed",
+    "value": "015"
+  },
+  {
+    "label": "Concession",
+    "value": "016"
+  },
+  {
+    "label": "Scrapped",
+    "value": "017"
+  },
+  {
+    "label": "Payment Order",
+    "value": "018"
+  },
+  {
+    "label": "Paid",
+    "value": "019"
+  }
+]
 class OrderList extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +121,7 @@ class OrderList extends React.Component {
       contractID = this.state.orderSearch.contractID || '',
       orderID = this.state.orderSearch.orderID || '',
       orderStatus = this.state.orderStatus || '';
-      
+
     let searchCriteria = {};
 
     if (fromDate) { searchCriteria.fromDate = fromDate };
@@ -80,30 +157,40 @@ class OrderList extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.getOrderList && this.state.typeData) {
-      nextProps.getOrderList.forEach(order => {
-        order.orderStatus = this.getStatusLabel(order.status);
+ 
+    if (nextProps.getOrderList && nextProps.typeData) {
+
+      console.log(nextProps.getOrderList, "nextProps.getOrderList")
+      this.setState({
+        gridData: this.formatData(nextProps.getOrderList),
+        page: nextProps.getPage,
+        typeData: nextProps.typeData,
+        isLoading: false
       });
     }
-    this.setState({
-      gridData: nextProps.getOrderList,
-      page: nextProps.getPage,
-      typeData: nextProps.typeData,
-      isLoading: false
-    });
-
   }
 
   getStatusLabel = status => {
-    if (this.state.typeData.Status) {
-      let { label } = this.state.typeData.Status.find(obj => obj.value == status);
-      return label;
+    let Orderstatus = this.props.typeData ? this.props.typeData.orderStatus:[]
+    for (let i in Orderstatus) {
+      if (Orderstatus[i].value == status) {
+        return Orderstatus[i].label;
+      }
     }
-  };
+  }
+  formatData = (gridData) => {
+    for (let i in gridData) {
+      let status = gridData[i].status;
+      if (status) {
+        gridData[i].status = this.getStatusLabel(status);
+      }
 
+    }
+    return gridData;
+  }
   componentDidMount() {
     window.scrollTo(0, 0);
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['Status']));
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['orderStatus']));
     this.props.actions.generalProcess(constants.getOrderList, this.getRequest());
   }
 
@@ -141,7 +228,7 @@ class OrderList extends React.Component {
 
   onChange = (e) => {
     this.setState({
-      [e.target.name] : e.target.value
+      [e.target.name]: e.target.value
     })
   }
   render() {
@@ -180,20 +267,19 @@ class OrderList extends React.Component {
           <Row>
             <Col col="6">
               <Label text={utils.getLabelByID('Order Status')} columns="4" />
-              {console.log (this.state.typeData)}
               <div className="col-md-8">
-              <select id="orderStatus" name="orderStatus" className="form-control" value={this.state.orderStatus} onChange={this.onChange} >
-                <option key="-1" value="">Select</option>
-                {
-                    this.state.typeData && this.state.typeData.Status.map((option, index) => {
-                        return (
-                            <option key={index} value={option.value}>{option.label}</option>
-                        );
+                <select id="orderStatus" name="orderStatus" className="form-control" value={this.state.orderStatus} onChange={this.onChange} >
+                  <option key="-1" value="">Select</option>
+                  {
+                    orderStatus.map((option, index) => {
+                      return (
+                        <option key={index} value={option.value}>{option.label}</option>
+                      );
                     })
-                }
-              </select>
+                  }
+                </select>
               </div>
-              
+
               {/* 
               <Combobox fieldname="orderStatus" formname="orderSearch" columns="8" state={this.state} typeName="Status"
                 dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" /> 

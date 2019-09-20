@@ -57,11 +57,33 @@ class OrderDetailContainer extends React.Component {
         "customerID": this.props.customerID
       }
     });
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['SubOrder_Status']));
     window.scrollTo(0, 0);
   }
+  getStatusLabel = status => {
+    let suborderStatus = this.props.typeData ? this.props.typeData.SubOrder_Status : []
+    for (let i in suborderStatus) {
+      if (suborderStatus[i].value == status) {
+        return suborderStatus[i].label;
+      }
+    }
+  }
+  formatData = (gridData) => {
+    for (let i in gridData) {
+      let status = gridData[i].status;
+      if (status) {
+        gridData[i].status = this.getStatusLabel(status);
+      }
 
+    }
+    return gridData;
+  }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.orderDetail) {
+
+    if (nextProps.orderDetail && nextProps.orderDetail.subOrder && nextProps.typeData) {
+      this.setState({ subOrder: this.formatData(nextProps.orderDetail.subOrder) })
+    }
+    if (nextProps.orderDetail && nextProps.typeData) {
       let recList = [];
       let orderDetail = nextProps.orderDetail
       orderDetail.items && orderDetail.items.forEach((elem) => {
@@ -81,12 +103,16 @@ class OrderDetailContainer extends React.Component {
 
 
         })
-      })
+      });//getStatusLabel
+
+
       console.log(recList, "recList")
       this.setState({
         orderDetail: nextProps.orderDetail,
+
         isLoading: false,
-        receipt: recList
+        receipt: recList,
+        typeData: nextProps.typeData
       });
       // this.getReceiveDate(nextProps.orderDetail.activities);
     }
@@ -385,9 +411,11 @@ class OrderDetailContainer extends React.Component {
 
   getItems = () => {
     let items = []
-    for (let i = 0; i < this.state.orderDetail.items.length; i++) {
-      if ((this.state.orderDetail.items[i].quantity - this.state.orderDetail.items[i].receivedQuantity) > 0) {
-        items.push(this.state.orderDetail.items[i])
+    if (this.state.orderDetail && this.state.orderDetail.items && this.state.orderDetail.items.length > 0) {
+      for (let i = 0; i < this.state.orderDetail.items.length; i++) {
+        if ((this.state.orderDetail.items[i].quantity - this.state.orderDetail.items[i].receivedQuantity) > 0) {
+          items.push(this.state.orderDetail.items[i])
+        }
       }
     }
     console.log(items, "getItems()")
@@ -479,7 +507,7 @@ class OrderDetailContainer extends React.Component {
   }
   render() {
 
-    console.log('orderDetail :  ', this.state.orderDetail.items)
+    console.log('subOrder :  ', this.state.subOrder)
 
     if (!this.state.isLoading)
       return (
@@ -529,7 +557,7 @@ class OrderDetailContainer extends React.Component {
                 <div className="col-md-12">
 
                   <div className="form-wizard stratawizard">
-                    {<Steps hideNumber={true} statusList={this.state.orderDetail.statusList} />}
+                    {<Steps hideNumber={true} statusList={this.state.orderDetail.statusList ? this.state.orderDetail.statusList : []} />}
                   </div>
 
                   <br />
@@ -670,7 +698,7 @@ class OrderDetailContainer extends React.Component {
                     <div className="row">
                       <div className="col-md-12">
                         {
-                          this.state.orderDetail.subOrder.map((obj) => {
+                          this.state.subOrder.map((obj) => {
 
                             obj.action = [
                               {
@@ -684,7 +712,7 @@ class OrderDetailContainer extends React.Component {
                         }
                         <Table
                           gridColumns={utils.getGridColumnByName('suborder')}
-                          gridData={this.state.orderDetail.subOrder || []}
+                          gridData={this.state.subOrder || []}
                           pagination={false}
                           export={false}
                           search={false}
@@ -696,7 +724,7 @@ class OrderDetailContainer extends React.Component {
 
               {/* Buttons */}
               <div className="timelineview">
-                {this.state.orderDetail.actionButtons.map(element => {
+                {this.state.orderDetail && this.state.orderDetail.actionButtons && this.state.orderDetail.actionButtons.map(element => {
                   return <a onClick={() => { this.statusButtonHandler(element) }} className="btn stratabtnstyle" style={{ marginLeft: 10 }}>{element.label}</a>
                 })}
 
