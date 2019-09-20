@@ -11,7 +11,7 @@ module.exports = {
     { alias: "Item ID", key: "itemCode", type: 'string' },
     { alias: " ITEM name", key: "name", type: "string" },
     { alias: "Unit Price", key: "price", type: "amount" },
-    { alias: "Expected quantity", key: "quantity", type: "amount" },
+    { alias: "Expected quantity", key: "quantity", type: "rightAlign" },
     { alias: "Action", key: "action", type: "action" }
   ],
   itemCatalogue: [
@@ -24,7 +24,7 @@ module.exports = {
   ],
   orderList: [
     { alias: "", key: "gridKey", type: "hiddenID" },
-    { alias: "Order ID", key: "orderID", type: 'string' },
+    { alias: "main Order ID", key: "orderID", type: 'string' },
     { alias: "Contract ID", key: "contractID", type: 'string' },
     { alias: "Customer ID", key: "customerID", type: "string" },
     { alias: "Order Amount", key: "orderAmount", type: "amount" },
@@ -38,7 +38,6 @@ module.exports = {
     { alias: "start Date", key: "startDate", type: "string" },
     { alias: "End Date", key: "endDate", type: "string" },
     { alias: "Customer", key: "customerID", type: 'string' },
-    { alias: "Status", key: "status", type: 'string' },
     { alias: "Action", key: "action", type: "action" }
   ],
   supplierMasterList: [
@@ -101,7 +100,6 @@ module.exports = {
     { alias: "Strat Date", key: "startDate", type: "string" },
     { alias: "End Date", key: "endDate", type: "string" },
     { alias: "Customer", key: "customerID", type: 'string' },
-    { alias: "Status", key: "status", type: 'string' },
     { alias: "Action", key: "action", type: "action" }
   ],
   viewMasterAgreementItem: [
@@ -181,7 +179,8 @@ module.exports = {
     { alias: "", key: "subOrderID", type: "hiddenID" },
     { alias: "sub order id", key: "subOrderID", type: 'string' },
     { alias: "supplier id ", key: "supplierID", type: "string" },
-    { alias: "received date", key: "orderDate", type: "string" },
+    { alias: "MAIN order id", key: "orderID", type: "string" },
+    { alias: "SUB order date", key: "orderDate", type: "string" },
     { alias: "order amount", key: "orderAmount", type: "amount" },
     { alias: "status ", key: "status", type: "string" },
     { alias: "Action", key: "action", type: 'action' }

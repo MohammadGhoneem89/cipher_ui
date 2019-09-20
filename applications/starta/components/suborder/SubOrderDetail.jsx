@@ -52,7 +52,7 @@ class SubOrder extends React.Component {
                     "value": "003"
                 },
                 {
-                    "label": "Invoiced",
+                    "label": "Payment Order",
                     "status": false,
                     "value": "004"
                 },
@@ -146,30 +146,25 @@ class SubOrder extends React.Component {
 
                                     <div className="shadowBox Courierbox">
                                         <div className="form-group">
-                                            <Row>
+                                            {suborder.entityName && <Row>
                                                 <Col col="6">
                                                     <Label columns="6" text="Supplier ID :"></Label>
                                                     <Col col="6" >
-                                                        <span>{suborder.supplierID}</span>
+                                                        <span>{suborder.entityName}</span>
                                                     </Col>
                                                 </Col>
                                                 <Col col="3">
 
                                                     <Col col="12">
-                                                        <img src="/assets/Resources/images/etihadlogo.png"
+                                                        <img src={suborder.entityLogo}
                                                             onError={this.errorHandler} />
                                                     </Col>
 
                                                 </Col>
-                                                <Col col="3">
-                                                    <Col col="12">
-                                                        <img src="/assets/Resources/images/etihadlogo.png" onError={this.errorHandler} />
 
-                                                    </Col>
-                                                </Col>
-
-
-                                            </Row> <Row>
+                                            </Row> }
+                                            
+                                            <Row>
                                                 <Col col="12">
                                                     <Label columns="12" className="hashno" text="0x53467374HJDBCJN73Y8923YUE23"></Label>
                                                 </Col>

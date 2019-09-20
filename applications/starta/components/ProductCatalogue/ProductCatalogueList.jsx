@@ -147,7 +147,7 @@ class ProductCatalogueList extends React.Component {
                     </Portlet>
                 </ModalBox>
 
-                <Portlet title={utils.getLabelByID("ITEM MASTER")}>
+                <Portlet title={utils.getLabelByID("ITEM catalogue")}>
 
                     <div className="row">
                         <div className="col-md-6">
@@ -193,7 +193,7 @@ class ProductCatalogueList extends React.Component {
 
 
                 </Portlet>
-                <Portlet title={"Item Catalogue"} actions={this.state.actions}
+                <Portlet title={"Item catalogue"} actions={this.state.actions}
 
                     isPermissioned={true}>
                     {

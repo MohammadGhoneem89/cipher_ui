@@ -15,26 +15,26 @@ const statusList = [
     {
         "label": "Sub Order",
         "status": true,
-        "value":"001"
+        "value": "001"
     },
     {
         "label": "Dispatched",
         "status": false,
-        "value":"002",
+        "value": "002",
     },
     {
         "label": "Received",
-        "value":"003",
+        "value": "003",
         "status": false
     },
     {
-        "label": "Invoiced",
-        "value":"004",
+        "label": "Payment Order",
+        "value": "004",
         "status": false
     },
     {
         "label": "Paid",
-        "value":"005",
+        "value": "005",
         "status": false
     }
 ]
@@ -52,7 +52,7 @@ class SubOrderList extends React.Component {
             isLoading: true,
             gridData: [],
             actions: []
-            
+
         };
         this.data = [];
         this.pageChanged = this.pageChanged.bind(this);
@@ -64,14 +64,13 @@ class SubOrderList extends React.Component {
     getRequest = () => {
 
         let suborderID = document.getElementById('suborderID') == null ? "" : document.getElementById('suborderID').value;
+        let orderID = document.getElementById('orderID') == null ? "" : document.getElementById('orderID').value;
         let status = document.getElementById('status') == null ? "" : document.getElementById('status').value;
         let searchCriteria = {}
 
-        if (suborderID != "")
-            searchCriteria.subOrderID = suborderID
-        if (status != "")
-        
-           { searchCriteria.status = this.getStatusLabel(status)};
+        if (suborderID != "") { searchCriteria.subOrderID = suborderID }
+        if (orderID != "") { searchCriteria.orderID = orderID }
+        if (status != "") { searchCriteria.status = status };
 
 
         this.setState({ searchCriteria: searchCriteria })
@@ -88,7 +87,7 @@ class SubOrderList extends React.Component {
         return request
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.getSubOrderList ) {
+        if (nextProps.getSubOrderList) {
             console.log(nextProps.getSubOrderList, "getSubOrderList")
             this.setState(
                 {
@@ -101,19 +100,16 @@ class SubOrderList extends React.Component {
     }
 
     componentDidMount() {
-         this.props.actions.generalProcess(constants.getSubOrderList, this.getRequest());
+        this.props.actions.generalProcess(constants.getSubOrderList, this.getRequest());
 
         window.scrollTo(0, 0);
     }
     getStatusLabel = status => {
-            for (let i in statusList) {
-                if (statusList[i].value == status) {
-                    return statusList[i].label;
-                }
-                if (statusList[i].label == status) {
-                    return statusList[i].value;
-                }
+        for (let i in statusList) {
+            if (statusList[i].value == status) {
+                return statusList[i].label;
             }
+        }
     }
     formatData = (gridData) => {
         for (let i in gridData) {
@@ -121,7 +117,7 @@ class SubOrderList extends React.Component {
             if (status) {
                 gridData[i].status = this.getStatusLabel(status);
             }
-            
+
         }
         return gridData;
     }
@@ -150,12 +146,29 @@ class SubOrderList extends React.Component {
                                 <input type="text" className="form-control" name="suborderID" id="suborderID" />
                             </div>
                         </div>
+
+                        <div className="col-md-6">
+                            <div className="form-group col-md-4">
+                                <label className="control-label">{utils.getLabelByID("Main Order ID")}</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <input type="text" className="form-control" name="orderID" id="orderID" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="row">
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
                                 <label className="control-label">{utils.getLabelByID("Status")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="status" id="status" />
+                                <select name="status" id="status" className="form-control">
+                                    <option value="">Select</option>
+                                    {statusList.map((item, index) => {
+                                        return <option key={index} value={item.value}>{item.label}</option>;
+                                    })}
+                                </select>
                             </div>
                         </div>
                     </div>

@@ -85,14 +85,6 @@ class OneTimeOrder extends React.Component {
     console.log(this.customerData, " =====this.customerData")
     if (this.state.getCustomerShipmentAndPaymentType)
       console.log(this.state.getCustomerShipmentAndPaymentType, "this.state.getCustomerShipmentAndPaymentType");
-    // let userID;
-    // if (this.state.userList) {
-    //   userID = this.state.userList.filter(obj => {
-    //     return obj.userID == sessionStorage.userID
-    //   })
-    // }
-    // console.log(userID[0]._id, "<<<<< userID")
-    // let value = userID[0]._id;
 
 
     let request = {
@@ -104,7 +96,7 @@ class OneTimeOrder extends React.Component {
         "items": items,
         "shipmentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.shipmentType : "",
         "paymentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.paymentType : "",
-
+        "purchaseOrderType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.purchaseOrderType : "",
       }
     };
     console.log(request, "request")

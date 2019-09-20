@@ -58,10 +58,10 @@ class CustomerAssociation extends React.Component {
             this.formSubmitted = false;
         } else {
             if (nextProps.customerAssociation) {
-                let customerAssociation = _.pick(nextProps.customerAssociation, ['userId', '_id', 'customerType', 'paymentType', 'shipmentType']);
+                let customerAssociation = _.pick(nextProps.customerAssociation, ['userId', '_id', 'customerType', 'paymentType', 'shipmentType','purchaseOrderType']);
                 this.setState({ customerAssociation });
             } else if (this.state.customerAssociation && this.state.customerAssociation._id) {
-                let customerAssociation = _.omit(this.state.customerAssociation, ['_id', 'customerType', 'paymentType', 'shipmentType']);
+                let customerAssociation = _.omit(this.state.customerAssociation, ['_id', 'customerType', 'paymentType', 'shipmentType','purchaseOrderType']);
                 this.setState({ customerAssociation });
             }
         }
@@ -69,7 +69,7 @@ class CustomerAssociation extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['customerType', 'paymentType', 'shipmentType']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['customerType', 'paymentType', 'shipmentType','purchaseOrderType']));
         this.props.actions.generalProcess(
             constants.getUserList,
             requestCreator.createUserListRequest(
@@ -122,6 +122,12 @@ class CustomerAssociation extends React.Component {
                         <Col col="6">
                             <Label text={utils.getLabelByID('Shipment Type')} columns="4" />
                             <Combobox fieldname="shipmentType" formname="customerAssociation" columns="8" state={this.state} typeName="shipmentType" dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col col="6">
+                            <Label text={utils.getLabelByID('Purchase Order Type')} columns="4" />
+                            <Combobox fieldname="purchaseOrderType" formname="customerAssociation" columns="8" state={this.state} typeName="purchaseOrderType" dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" />
                         </Col>
                     </Row>
                     <br />
