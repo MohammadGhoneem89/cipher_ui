@@ -189,6 +189,12 @@ module.exports = {
     { alias: "Item Code ", key: "itemCode", type: "string" },
     { alias: "Color ", key: "color", type: "string" },
     { alias: "Qty", key: "quantity", type: "rightAlign" }
-  ]
-
+  ],
+  orderReciepts:[
+    { alias: "item ", key: "item", type: "string" },
+    { alias: "item Code", key: "itemCode", type: "string" },
+    { alias: "Receipt No", key: "receiptNo", type: "string" },
+    { alias: "Receipt Date", key: "receiptDate", type: "string" },
+    { alias: "Receipt Quantity", key: "receiptQuantity", type: "string" },
+  ],
 };

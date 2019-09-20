@@ -62,10 +62,31 @@ class OrderDetailContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.orderDetail) {
+      let recList = [];
+      let orderDetail = nextProps.orderDetail
+      orderDetail.items && orderDetail.items.forEach((elem) => {
 
+        console.log(elem, "elem")
+        elem.itemReceipts && elem.itemReceipts.forEach((recItm) => {
+          console.log(recItm, "recItm")
+          let item = {
+            itemCode: elem.itemCode,
+            receiptNo: recItm.receiptNo,
+            receiptDate: recItm.receiptDate,
+            receiptQuantity: recItm.quantity,
+            item: elem.name
+          }
+          console.log(item, "item")
+          recList.push(item)
+
+
+        })
+      })
+      console.log(recList, "recList")
       this.setState({
         orderDetail: nextProps.orderDetail,
-        isLoading: false
+        isLoading: false,
+        receipt: recList
       });
       // this.getReceiveDate(nextProps.orderDetail.activities);
     }
@@ -86,11 +107,11 @@ class OrderDetailContainer extends React.Component {
       receiptModalBoxGrid: true,
     });
   }
-  closeReceiptModal =()=>{
+  closeReceiptModal = () => {
     this.setState({
       receiptModalBoxGrid: false,
     });
-    
+
   }
 
   closeTimelineViewModalBox() {
@@ -341,7 +362,7 @@ class OrderDetailContainer extends React.Component {
         </div>
       </div>
     )
->>>>>>> Stashed changes
+
   }
 
   receiptModalBoxChangeState = () => {
@@ -410,10 +431,10 @@ class OrderDetailContainer extends React.Component {
     this.optionalStatusModalBoxChangeState();
   }
 
-  timeLineViewModalBoxItem = ()=> {
+  timeLineViewModalBoxItem = () => {
     return (
-      <Timeline 
-        closePortlet = { this.timeLineViewModalBoxChangeState }
+      <Timeline
+        closePortlet={this.timeLineViewModalBoxChangeState}
       />
     )
   }
@@ -457,7 +478,7 @@ class OrderDetailContainer extends React.Component {
     )
   }
   render() {
-    
+
     console.log('orderDetail :  ', this.state.orderDetail.items)
 
     if (!this.state.isLoading)
@@ -476,28 +497,28 @@ class OrderDetailContainer extends React.Component {
               {this.receiptModalBoxItem()}
             </ModalBox>
             <ModalBox isOpen={this.state.receiptModalBoxGrid}>
-                        <Portlet title={utils.getLabelByID("Order Reciepts")} isPermissioned={true}>
-                            <div className="row" >
-                                <div className="col-md-12">
+              <Portlet title={utils.getLabelByID("Order Receipts")} isPermissioned={true}>
+                <div className="row" >
+                  <div className="col-md-12">
 
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <Table gridColumns={utils.getGridColumnByName("LineItems")}
-                                             gridData={this.state.orderDetail.items || []}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-actions right">
-                                    <div className="form-group col-md-12">
-                                        <div className="btn-toolbar pull-right">
-                                            <button type="button" className="btn btn-default" onClick={this.closeReceiptModal} >{utils.getLabelByID("Close")}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Portlet>
-                    </ModalBox>
+                    <div className="row">
+                      <div className="col-md-12">
+                        <Table gridColumns={utils.getGridColumnByName("orderReciepts")}
+                          gridData={this.state.receipt ? this.state.receipt : []}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-actions right">
+                    <div className="form-group col-md-12">
+                      <div className="btn-toolbar pull-right">
+                        <button type="button" className="btn btn-default" onClick={this.closeReceiptModal} >{utils.getLabelByID("Close")}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Portlet>
+            </ModalBox>
           </div>
 
           <div className="col-md-12">
@@ -679,7 +700,7 @@ class OrderDetailContainer extends React.Component {
                   return <a onClick={() => { this.statusButtonHandler(element) }} className="btn stratabtnstyle" style={{ marginLeft: 10 }}>{element.label}</a>
                 })}
 
-                <a onClick={this.timeLineViewModalBoxChangeState} className="btn stratabtnstyle" style={{marginLeft: 10}}>Timeline View</a>
+                <a onClick={this.timeLineViewModalBoxChangeState} className="btn stratabtnstyle" style={{ marginLeft: 10 }}>Timeline View</a>
 
                 <a onClick={this.openTimelineViewModalBox} className="btn stratabtnstyle" style={{ marginLeft: 10 }}>Timeline View</a>
                 <a onClick={this.openReceiptModal} className="btn stratabtnstyle" style={{ marginLeft: 10 }}>View Receipts</a>
