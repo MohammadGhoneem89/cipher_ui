@@ -87,10 +87,25 @@ class OrderViaContract extends React.Component {
     return contractID;
   }
   placeOrder() {
+    let totalLeadTime = 0;
+    let calculateLeadTime = 1;
+    let firstTerm = 1.0;
     let items = [...this.state.cartItems];
+
     items.map(item => {
       item.color = [item.color];
     });
+
+    for (let i = 0; i < items.length; i++) {
+      calculateLeadTime = 1;
+      for (let j = 1; j <= i; j++) {
+        firstTerm = 1.0;
+        if (items[i].quantity != 1) { firstTerm = 0.73 * items[i].quantity * items[i].printTime }
+        calculateLeadTime *= [firstTerm + items[i].leadTime]
+      }
+      totalLeadTime += calculateLeadTime;
+    }
+
     let request = {
       "body": {
         "orderType": "MASTER",
@@ -100,7 +115,8 @@ class OrderViaContract extends React.Component {
         "items": items,
         "contractID": this.contractData.contractID,
         "shipmentType": this.contractData.shipmentType,
-        "paymentType": this.contractData.paymentType
+        "paymentType": this.contractData.paymentType,
+        "totalLeadTime": totalLeadTime
       }
     };
     if (this.state.cartItems && this.state.cartItems.length > 0) {
@@ -127,7 +143,7 @@ class OrderViaContract extends React.Component {
   componentDidMount() {
 
     this.props.actions.generalProcess(constants.getItemCatalogue, { "body": {} });
-    
+
     if (this.state.disabledPagging) { this.props.actions.generalProcess(constants.getMasterAgreement, { "body": {} }) }
     else {
       this.props.actions.generalProcess(constants.getMasterAgreement,
@@ -319,6 +335,8 @@ class OrderViaContract extends React.Component {
           result[0].items[i].description = itemData[j].description;
           result[0].items[i].modelVolume = itemData[j].modelVolume;
           result[0].items[i].supportVolume = itemData[j].supportVolume;
+          result[0].items[i].printTime = itemData[j].printTime;
+          result[0].items[i].leadTime = itemData[j].leadTime;
           result[0].items[i].partNumber = itemData[j].partNumber;
         }
       }

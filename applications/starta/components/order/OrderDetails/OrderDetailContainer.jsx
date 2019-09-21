@@ -685,7 +685,7 @@ class OrderDetailContainer extends React.Component {
               </div>
 
               {/* Sub-Order Details */}
-              {this.state.orderDetail.subOrder &&
+              {this.state.subOrder &&
                 <div className="portlet light bordered sdg_portlet ProCardssection">
                   <div className="portlet-title">
                     <div className="tools">
@@ -743,6 +743,7 @@ class OrderDetailContainer extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+ // console.log(_.get(state.app, 'orderDetail', undefined), "orderDetail: _.get(state.app, 'orderDetail.order', undefined),")
   return {
     typeData: state.app.typeData.data,
     orderDetail: _.get(state.app, 'orderDetail.order', undefined),

@@ -48,7 +48,7 @@ module.exports = {
     { alias: "Action", key: "action", type: "action" }
   ],
   completeQuotes: [
-    { alias: "", key: "orderID", type: "hiddenID" },
+    { alias: "", key: "gridKey", type: "hiddenID" },
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "ORDER ID", key: "orderID", type: "string" },
     { alias: "CUSTOMER ID", key: "customerID", type: "string" },
@@ -59,7 +59,7 @@ module.exports = {
     { alias: "COMPLETED ORDER", key: "actions", type: "action" }
   ],
   settlements: [
-    { alias: "", key: "orderID", type: "hiddenID" },
+    { alias: "", key: "gridKey", type: "hiddenID" },
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "ORDER ID", key: "orderID", type: "string" },
     { alias: "CUSTOMER ID", key: "customerID", type: "string" },
@@ -84,7 +84,7 @@ module.exports = {
     { alias: "To Pay", key: "toPay", type: "amount" }
   ],
   pendingQuotes: [
-    { alias: "", key: "orderID", type: "hiddenID" },
+    { alias: "", key: "gridKey", type: "hiddenID" },
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "ORDER ID", key: "orderID", type: "string" },
     { alias: "CUSTOMER ID", key: "customerID", type: "string" },

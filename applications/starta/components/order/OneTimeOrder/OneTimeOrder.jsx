@@ -78,11 +78,24 @@ class OneTimeOrder extends React.Component {
   };
 
   placeOrder() {
+    let totalLeadTime = 0;
+    let calculateLeadTime = 1;
+    let firstTerm = 1.0;
+    
     let items = [...this.state.cartItems];
     items.map(item => {
       item.color = [item.color];
     });
-    console.log(this.customerData, " =====this.customerData")
+
+    for (let i = 0; i < items.length; i++) {
+      calculateLeadTime = 1;
+      for (let j = 1; j <= i; j++) {
+        firstTerm = 1.0;
+        if (items[i].quantity != 1) { firstTerm = 0.73 * items[i].quantity * items[i].printTime }
+        calculateLeadTime *= [firstTerm + items[i].leadTime]
+      }
+      totalLeadTime += calculateLeadTime;
+    }
     if (this.state.getCustomerShipmentAndPaymentType)
       console.log(this.state.getCustomerShipmentAndPaymentType, "this.state.getCustomerShipmentAndPaymentType");
 
@@ -97,6 +110,7 @@ class OneTimeOrder extends React.Component {
         "shipmentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.shipmentType : "",
         "paymentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.paymentType : "",
         "purchaseOrderType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.purchaseOrderType : "",
+        "totalLeadTime": totalLeadTime
       }
     };
     console.log(request, "request")

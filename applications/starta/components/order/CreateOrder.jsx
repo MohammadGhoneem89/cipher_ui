@@ -49,7 +49,9 @@ const CreateOrder = props => {
               cart.forEach(element => {
                 grandTotal += element.total
               });
-              setState({ cartItems: cart, grandTotal });
+              
+              
+              setState({ cartItems: cart, grandTotal  });
             }} /></td>
             <td><img src={item.image} onError={addDefaultSrc} width="40px" /> <span
               className="proname">{item.name}</span></td>
