@@ -108,7 +108,10 @@ class OrderDetailContainer extends React.Component {
 
       console.log(recList, "recList")
       this.setState({
-        orderDetail: nextProps.orderDetail,
+        orderDetail: {
+          ...nextProps.orderDetail,
+          transactionID:'92217a5a5cfa4e704df5e6cf464ea7c4da3030d75b2a07e1def291f9b90c5fe9'
+        },
 
         isLoading: false,
         receipt: recList,
@@ -414,7 +417,9 @@ class OrderDetailContainer extends React.Component {
     if (this.state.orderDetail && this.state.orderDetail.items && this.state.orderDetail.items.length > 0) {
       for (let i = 0; i < this.state.orderDetail.items.length; i++) {
         if ((this.state.orderDetail.items[i].quantity - this.state.orderDetail.items[i].receivedQuantity) > 0) {
-          items.push(this.state.orderDetail.items[i])
+          items.push({
+            ...this.state.orderDetail.items[i]
+          })
         }
       }
     }
@@ -566,10 +571,10 @@ class OrderDetailContainer extends React.Component {
                     <div className="form-group">
                       <Row>
                         <Col col="6">
-                          <Label columns="12" style={{ fontSize: 22 }} text={this.state.orderDetail.entityName}></Label>
+                          <Label columns="12" style={{fontSize:22, paddingTop: '30px'}} text={this.state.orderDetail.entityName}></Label>
                         </Col>
-                        <Col col="6">
-                          <img src={this.state.orderDetail.entityLogo} style={{ width: 50 }} onError={this.errorHandler} />
+                        <Col col="6" className='pull-right' style={{width:'27%'}}> 
+                          <img className='img-thumbnail img-rounded' src={baseUrl + this.state.orderDetail.entityLogo} style={{width:'120px'}} onError={this.errorHandler}/>
                         </Col>
                       </Row>
                     </div>
@@ -577,7 +582,14 @@ class OrderDetailContainer extends React.Component {
                     <div className="form-group">
                       <Row>
                         <Col col="12">
-                          <Label columns="12" className="hashno" text={this.state.orderDetail.orderID}></Label>
+                        {
+                          this.state.orderDetail.transactionID ? (
+                            <Label columns="12" className="hashno" text={this.state.orderDetail.transactionID}></Label>
+                          ) : (
+                            <Label columns="12" className="hashno" text={this.state.orderDetail.orderID}></Label>
+                          )
+                        }
+                          
                         </Col>
                       </Row>
                     </div>
@@ -587,7 +599,7 @@ class OrderDetailContainer extends React.Component {
                         <Col col="6">
                           <Label columns="6" text="Order Raised By:"></Label>
                           <Col col="6" className="orderperson">
-                            <img src={this.state.orderDetail.raisedByPic} width="25" style={{ marginRight: 5 }} onError={this.errorHandler} />
+                            <img  src={baseUrl + this.state.orderDetail.raisedByPic} width="25" style={{marginRight:"5", borderRadius: "50% !important" }} onError={this.errorHandler} />
                             <span>{this.state.orderDetail.raisedByName}</span>
                           </Col>
                         </Col>
