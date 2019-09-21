@@ -27,7 +27,7 @@ import * as gen from "../../../common/generalActionHandler";
 import Combobox from "../../../common/Select.jsx";
 
 import { baseUrl } from '../../../../../core/constants/Communication.js';
-
+import QRCodeJquery from './../../../common/QRCodeJquery.jsx'
 
 class OrderDetailContainer extends React.Component {
   constructor(props, context) {
@@ -60,6 +60,13 @@ class OrderDetailContainer extends React.Component {
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['SubOrder_Status']));
     window.scrollTo(0, 0);
   }
+
+  generateQRCode(BlockChainAddress) {
+    let qrString = constants.blockChainViewer + BlockChainAddress;
+    return (<div><QRCodeJquery size="160" errorCorrectionLevel="H" qrString={qrString} />
+      <span><a href={qrString} target="_app">View</a></span><span style={{ paddingLeft: "12px", fontSize: "5" }} /></div>)
+  }
+
   getStatusLabel = status => {
     let suborderStatus = this.props.typeData ? this.props.typeData.SubOrder_Status : []
     for (let i in suborderStatus) {
@@ -570,11 +577,17 @@ class OrderDetailContainer extends React.Component {
                   <div className="shadowBox Courierbox">
                     <div className="form-group">
                       <Row>
-                        <Col col="6">
+                        <Col col="4">
                           <Label columns="12" style={{fontSize:22, paddingTop: '30px'}} text={this.state.orderDetail.entityName}></Label>
                         </Col>
-                        <Col col="6" className='pull-right' style={{width:'27%'}}> 
-                          <img className='img-thumbnail img-rounded' src={baseUrl + this.state.orderDetail.entityLogo} style={{width:'120px'}} onError={this.errorHandler}/>
+                        <Col col="8" className='pull-right' style={{marginRight:'-17%'}}>
+                          <Col col="4">
+                            {this.state.orderDetail.transactionID && this.generateQRCode(this.state.orderDetail.transactionID)}
+                          </Col>
+                          <Col col="4">
+                            <img className='img-thumbnail img-rounded' src={baseUrl + this.state.orderDetail.entityLogo} style={{width:'120px'}} onError={this.errorHandler}/>
+                          </Col>
+                          
                         </Col>
                       </Row>
                     </div>
