@@ -166,7 +166,7 @@ class SubOrder extends React.Component {
                                             
                                             <Row>
                                                 <Col col="12">
-                                                    <Label columns="12" className="hashno" text="0x53467374HJDBCJN73Y8923YUE23"></Label>
+                                                    <Label columns="12" className="hashno" text={suborder.trxid}></Label>
                                                 </Col>
                                             </Row>
                                             <Row>
