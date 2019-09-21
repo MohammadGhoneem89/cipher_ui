@@ -10,7 +10,7 @@ import ProductCatalogue from "./components/ProductCatalogue/ProductCatalogue.jsx
 import ItemCatalogueList from "./components/ProductCatalogue/ProductCatalogueList.jsx";
 import MasterAgreementList from "./components/MasterAgreement/MasterAgreementList.jsx";
 import AddMasterAgreement from "./components/MasterAgreement/AddMasterAgreements.jsx";
-import ViewMasterAgreement from "./components/MasterAgreement/ViewMasterAgreement.jsx";
+import ViewMasterAgreement from "./components/MasterAgreement/viewMasterAgreement.jsx";
 import OrderList from "./components/order/OrderList/orderList.jsx";
 import CustomerAssociation from "./components/CustomerAssociation/customerAssociation.jsx";
 
