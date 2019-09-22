@@ -93,7 +93,7 @@ module.exports = {
   repostActionInternal: baseUrl + '/API',
   tranBlockChainId: baseUrl + "/API/UI/tranBlockChainId",
 
-  blockChainViewer: "http://localhost:3000" + "/BlockchainViewer/",
+  blockChainViewer: "/BlockchainViewer/",
 
 
   getTranByHash: blockChainViewerURL + "/CCI/ePay/getTranxByHash",

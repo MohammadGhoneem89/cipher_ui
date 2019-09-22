@@ -43,8 +43,7 @@ class OrderDetailContainer extends React.Component {
         receivedDate: undefined
       },
     };
-    this.openTimelineViewModalBox = this.openTimelineViewModalBox.bind(this);
-    this.closeTimelineViewModalBox = this.closeTimelineViewModalBox.bind(this);
+
   }
 
   componentWillMount() {
@@ -64,7 +63,7 @@ class OrderDetailContainer extends React.Component {
   generateQRCode(BlockChainAddress) {
     let qrString = constants.blockChainViewer + BlockChainAddress;
     return (<div><QRCodeJquery size="160" errorCorrectionLevel="H" qrString={qrString} />
-      <span><a href={qrString} target="_app">View</a></span><span style={{ paddingLeft: "12px", fontSize: "5" }} /></div>)
+      <span><a href={qrString} target="_app">View</a></span><span style={{  fontSize: 5, width: "150px" }} /></div>)
   }
 
   getStatusLabel = status => {
@@ -101,7 +100,7 @@ class OrderDetailContainer extends React.Component {
           let item = {
             itemCode: elem.itemCode,
             receiptNo: recItm.receiptNo,
-            receiptDate: recItm.receiptDate,
+            receiptDate:  utils.UNIXConvertToDate(recItm.receiptDate),
             receiptQuantity: recItm.quantity,
             item: elem.name
           }
@@ -123,21 +122,16 @@ class OrderDetailContainer extends React.Component {
         isLoading: false,
         receipt: recList,
         typeData: nextProps.typeData
-      });
-      // this.getReceiveDate(nextProps.orderDetail.activities);
+      }); 
     }
-
-
   }
 
-  openTimelineViewModalBox(modelItem) {
+  timeLineViewModalBoxChangeState = () => {
     this.setState({
-      timelineViewModalBox: true,
-      modelItem
-    });
-
-
+      timelineViewModalBox: !(this.state.timelineViewModalBox)
+    })
   }
+
   openReceiptModal = () => {
     this.setState({
       receiptModalBoxGrid: true,
@@ -149,11 +143,6 @@ class OrderDetailContainer extends React.Component {
     });
 
   }
-
-  closeTimelineViewModalBox() {
-    this.setState({ timelineViewModalBox: false });
-  }
-
   errorHandler(event) {
     event.target.src = "http://localhost:9086/images/1f31e930-e0d5-11e7-88e2-f718f78167e9.png"
   }
@@ -191,214 +180,6 @@ class OrderDetailContainer extends React.Component {
       default:
         break;
     }
-  }
-
-
-
-  timeLineViewModalBoxItem = () => {
-    return (
-      <div class="modal fade in ordertrack" role="basic" aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <div className="imgicon"><img src="/assets/Resources/OptimizationBox.png" /></div>
-              <button type="button" className="close" data-dismiss="modal" aria-hidden="true"></button>
-              <h4 className="modal-title text-center">Order ID # ORD66667</h4>
-            </div>
-            <div className="modal-body">
-
-              <div className="timeline  white-bg ">
-                {/* <!-- TIMELINE ITEM --> */}
-                <div className="timeline-item">
-                  <div className="timeline-badge green">
-                    <i className="fa fa-check" aria-hidden="true"></i>
-
-                  </div>
-                  <div className="timeline-body">
-                    <div className="timeline-body-arrow"><img src="/assets/Resources/purchase.png" /></div>
-                    <div className="timeline-body-head">
-                      <div className="timeline-body-head-caption">
-                        <a href="javascript:;">Purchase Order</a>
-                      </div>
-                    </div>
-                    <div className="timeline-body-content">
-                      <span className="trckdate">22/04/2019</span>
-                      <span className="trcktime">22/04/2019</span>
-
-
-                    </div>
-                  </div>
-                </div>
-                {/* <!-- END TIMELINE ITEM -->
-                        <!-- TIMELINE ITEM --> */}
-
-                <div className="timeline-item">
-                  <div className="timeline-badge blue ">
-                    <i className="fa fa-check" aria-hidden="true"></i>
-
-                  </div>
-                  <div className="timeline-body">
-                    <div className="timeline-body-arrow"><img src="/assets/Resources/manufacturing.png" /></div>
-                    <div className="timeline-body-head">
-                      <div className="timeline-body-head-caption">
-                        <a href="javascript:;">Component Manufacture</a>
-                      </div>
-                    </div>
-                    <div className="timeline-body-content">
-                      <span className="trckdate">22/04/2019</span>
-                      <span className="trcktime">22/04/2019</span>
-
-                    </div>
-                  </div>
-                </div>
-
-
-                <div className="timeline-item">
-                  <div className="timeline-badge">
-                    <i className="fa fa-check" aria-hidden="true"></i>
-
-                  </div>
-                  <div className="timeline-body">
-                    <div className="timeline-body-arrow"><img src="/assets/Resources/analytics.png" /></div>
-                    <div className="timeline-body-head">
-                      <div className="timeline-body-head-caption">
-                        <a href="javascript:;">Part Identification</a>
-                      </div>
-                    </div>
-                    <div className="timeline-body-content">
-                      <span className="trckdate">22/04/2019</span>
-                      <span className="trcktime">22/04/2019</span>
-
-
-                    </div>
-                  </div>
-                </div>
-
-                <div className="timeline-item">
-                  <div className="timeline-badge">
-                    <i className="fa fa-check" aria-hidden="true"></i>
-
-                  </div>
-                  <div className="timeline-body">
-                    <div className="timeline-body-arrow"><img src="/assets/Resources/description.png" /></div>
-                    <div className="timeline-body-head">
-                      <div className="timeline-body-head-caption">
-                        <a href="javascript:;">Part Description</a>
-                      </div>
-                    </div>
-                    <div className="timeline-body-content">
-                      <span className="trckdate">22/04/2019</span>
-                      <span className="trcktime">22/04/2019</span>
-
-
-                    </div>
-                  </div>
-                </div>
-
-                <div className="timeline-item">
-                  <div className="timeline-badge">
-                    <i className="fa fa-check" aria-hidden="true"></i>
-
-                  </div>
-                  <div className="timeline-body">
-                    <div className="timeline-body-arrow"><img src="/assets/Resources/code.png" /></div>
-                    <div className="timeline-body-head">
-                      <div className="timeline-body-head-caption">
-                        <a href="javascript:;">Final Inspection & Identification</a>
-                      </div>
-                    </div>
-                    <div className="timeline-body-content">
-                      <span className="trckdate">22/04/2019</span>
-                      <span className="trcktime">22/04/2019</span>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div className="timeline-item">
-                  <div className="timeline-badge">
-                    <i className="fa fa-check" aria-hidden="true"></i>
-
-                  </div>
-                  <div className="timeline-body">
-                    <div className="timeline-body-arrow"><img src="/assets/Resources/order.png" /></div>
-                    <div className="timeline-body-head">
-                      <div className="timeline-body-head-caption">
-                        <a href="javascript:;">Part Test</a>
-                      </div>
-                    </div>
-                    <div className="timeline-body-content">
-                      <span className="trckdate">22/04/2019</span>
-                      <span className="trcktime">22/04/2019</span>
-
-
-                    </div>
-                  </div>
-                </div>
-
-
-                <div className="timeline-item">
-                  <div className="timeline-badge">
-                    <i className="fa fa-check" aria-hidden="true"></i>
-
-                  </div>
-                  <div className="timeline-body">
-                    <div className="timeline-body-arrow"><img src="/assets/Resources/tracking.png" /></div>
-                    <div className="timeline-body-head">
-                      <div className="timeline-body-head-caption">
-                        <a href="javascript:;">Dispatched</a>
-                      </div>
-                    </div>
-                    <div className="timeline-body-content">
-                      <span className="trckdate">22/04/2019</span>
-                      <span className="trcktime">22/04/2019</span>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div className="timeline-item">
-                  <div className="timeline-badge">
-                    <i className="fa fa-check" aria-hidden="true"></i>
-
-                  </div>
-                  <div className="timeline-body">
-                    <div className="timeline-body-arrow"><img src="/assets/Resources/delivery.png" /></div>
-                    <div className="timeline-body-head">
-                      <div className="timeline-body-head-caption">
-                        <a href="javascript:;">Received</a>
-                      </div>
-                    </div>
-                    <div className="timeline-body-content">
-                      <span className="trckdate">22/04/2019</span>
-                      <span className="trcktime">22/04/2019</span>
-
-                      <div className="remark">
-                        <span className="font-grey-cascade">Remarks <i className="fa fa-minus-circle"
-                          aria-hidden="true"></i></span>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-                {/* <!-- END TIMELINE ITEM -->
-                        <!-- TIMELINE ITEM WITH GOOGLE MAP --> */}
-
-
-              </div>
-
-
-            </div>
-            {/* <!-- <div className="modal-footer">
-                        <button type="button" className="btn dark btn-outline" data-dismiss="modal">Close</button>
-                        <button type="button" className="btn green">Save changes</button>
-                    </div> --> */}
-          </div>
-          {/* <!-- /.modal-content --> */}
-        </div>
-      </div>
-    )
-
   }
 
   receiptModalBoxChangeState = () => {
@@ -578,28 +359,25 @@ class OrderDetailContainer extends React.Component {
                     <div className="form-group">
                       <Row>
                         <Col col="4">
-                          <Label columns="12" style={{fontSize:22, paddingTop: '30px'}} text={this.state.orderDetail.entityName}></Label>
+                          <Label columns="12" style={{fontSize:22}} text={this.state.orderDetail.entityName}></Label>
                         </Col>
-                        <Col col="8" className='pull-right' style={{marginRight:'-17%'}}>
-                          <Col col="4">
-                            {this.state.orderDetail.transactionID && this.generateQRCode(this.state.orderDetail.transactionID)}
-                          </Col>
+                        <Col col="8" className='pull-right' style={{marginRight:'-13%'}}>
                           <Col col="4">
                             <img className='img-thumbnail img-rounded' src={baseUrl + this.state.orderDetail.entityLogo} style={{width:'120px'}} onError={this.errorHandler}/>
+                          </Col>
+                          <Col col="4">
+                            {this.state.orderDetail.transactionID && this.generateQRCode(this.state.orderDetail.transactionID)}
                           </Col>
                           
                         </Col>
                       </Row>
-                    </div>
-
-                    <div className="form-group">
                       <Row>
                         <Col col="12">
                         {
                           this.state.orderDetail.transactionID ? (
-                            <Label columns="12" className="hashno" text={this.state.orderDetail.transactionID}></Label>
+                            <Label columns="12" className="hashno" text={this.state.orderDetail.transactionID} style={{  marginTop: "-10%"}} ></Label>
                           ) : (
-                            <Label columns="12" className="hashno" text={this.state.orderDetail.orderID}></Label>
+                            <Label columns="12" className="hashno" text={this.state.orderDetail.orderID} style={{  marginTop: "-10%"}}></Label>
                           )
                         }
                           
@@ -607,12 +385,16 @@ class OrderDetailContainer extends React.Component {
                       </Row>
                     </div>
 
+               
+                    
+              
+
                     <div className="form-group">
                       <Row>
                         <Col col="6">
                           <Label columns="6" text="Order Raised By:"></Label>
                           <Col col="6" className="orderperson">
-                            <img  src={baseUrl + this.state.orderDetail.raisedByPic} width="25" style={{marginRight:"5", borderRadius: "50% !important" }} onError={this.errorHandler} />
+                            <img  src={baseUrl + this.state.orderDetail.raisedByPic} width="25" style={{marginRight:5, borderRadius: "50% !important" }} onError={this.errorHandler} />
                             <span>{this.state.orderDetail.raisedByName}</span>
                           </Col>
                         </Col>
@@ -628,13 +410,13 @@ class OrderDetailContainer extends React.Component {
                         <Col col="6">
                           <Label columns="6" text="Quotation Date:"></Label>
                           <Col col="6">
-                            <span>{this.state.orderDetail.orderDate}</span>
+                            <span>{this.state.orderDetail.orderDate && (this.state.orderDetail.orderDate).split(' ')[0]}</span>
                           </Col>
                         </Col>
                         <Col col="6">
                           <Label columns="6" text="Received Date:"></Label>
                           <Col col="6">
-                            <span>{this.state.orderDetail.receivedDate}</span>
+                            <span>{this.state.orderDetail.receivedDate && (this.state.orderDetail.receivedDate).split(' ')[0]}</span>
                           </Col>
                         </Col>
                       </Row>
@@ -648,7 +430,7 @@ class OrderDetailContainer extends React.Component {
                         <Col col="6">
                           <Label columns="6" text="Invoice Date:"></Label>
                           <Col col="6">
-                            <span>{_.get(this.state.orderDetail, "invoice.invoiceDate")}</span>
+                            <span>{_.get(this.state.orderDetail, "invoice.invoiceDate")  && _.get(this.state.orderDetail, "invoice.invoiceDate").split(' ')[0]}</span>
                           </Col>
                         </Col>
                       </Row>
@@ -754,10 +536,8 @@ class OrderDetailContainer extends React.Component {
                 })}
 
                 <a onClick={this.timeLineViewModalBoxChangeState} className="btn stratabtnstyle" style={{ marginLeft: 10 }}>Timeline View</a>
-
-                <a onClick={this.openTimelineViewModalBox} className="btn stratabtnstyle" style={{ marginLeft: 10 }}>Timeline View</a>
-                <a onClick={this.openReceiptModal} className="btn stratabtnstyle" style={{ marginLeft: 10 }}>View Receipts</a>
-
+                {parseInt(_.get(this.state.orderDetail,'status','0')) >= 10 && <a onClick={this.openReceiptModal} className="btn stratabtnstyle" style={{ marginLeft: 10 }}>View Receipts</a> }
+                
               </div>
             </div>
           </div>
