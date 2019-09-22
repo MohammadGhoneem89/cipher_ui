@@ -113,11 +113,13 @@ class Dashboard extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.data.dashboardPendingGridData) {
-            console.log(nextProps.data.dashboardPendingGridData, "&&&&&&&&&&&&&&&&&")
+            console.log(nextProps.data, "&&&&&&&&&&&&&&&&&")
             this.setState({
                 getSuppliersList: nextProps.suppliers,
                 getPendingOrders: nextProps.data.dashboardPendingGridData.pendingOrderRows,
                 getCompletedOrders: nextProps.data.dashboardCompletedGridData.completedOrderRows,
+              //  settlement: nextProps.data.dashboardSettlementGridData.settlementsRows,
+                customerWiseSettlement: nextProps.data.dashboardCustomerSettlement.customerWiseSettlement,
                 setPagingForSupplier: nextProps.supplierPageDate,
                 graphData: nextProps.data.graphData,
                 isLoading: false,
@@ -257,8 +259,7 @@ class Dashboard extends React.Component {
                                     <Table TableClass="portlet light bordered sdg_portlet"
                                         title={utils.getLabelByID("Supplier wise Settlement")}
                                         gridColumns={utils.getGridColumnByName("customerWiseSettlement")}
-                                        gridData={this.props.data.dashboardCustomerSettlement.customerWiseSettlement ?
-                                            this.props.data.dashboardCustomerSettlement.customerWiseSettlement : 0}
+                                        gridData={this.state.customerWiseSettlement}
                                         totalRecords={this.props.data.dashboardCustomerSettlement.pageData.totalRecords}
                                         activePage={this.state.dashboardCustomerSettlement.pageData.currentPageNo}
                                         pageSize={this.state.dashboardCustomerSettlement.pageData.pageSize}

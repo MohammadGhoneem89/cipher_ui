@@ -67,7 +67,7 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        this.getDashboardData(this.customerName);
+        this.getDashboardData();
         this.props.actions.generalProcess(url.getEntityList, requestCreator.createEntityListRequest({
             "currentPageNo": 1,
             "pageSize": 1
@@ -80,17 +80,20 @@ class Dashboard extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.data.dashboardPendingGridData && nextProps.entityNames) {
+            console.log(nextProps.data, "DATA")
             this.setState({
                 entityNames: nextProps.entityNames,
                 getPendingOrders: nextProps.data.dashboardPendingGridData.pendingOrderRows,
                 getCompletedOrders: nextProps.data.dashboardCompletedGridData.completedOrderRows,
+                settlement: nextProps.data.dashboardSettlementGridData.settlementsRows,
+                customerWiseSettlement: nextProps.data.dashboardCustomerSettlement.customerWiseSettlement,
                 setPagingForSupplier: nextProps.supplierPageDate,
                 isLoading: false,
             });
         }
     }
     updateState = (e) => {
-        console.log(e.target.value, "updatestate customerID")
+        // console.log(e.target.value, "updatestate customerID")
         let value = e.target.value;
         if (e.target.value == 'ALLCUSTOMERS') { value = "" }
         this.setState({ isLoading: true, customerID: value });
@@ -117,11 +120,11 @@ class Dashboard extends React.Component {
         currentGrid.pageData.currentPageNo = currentPage;
         this.setState({ pageName: currentGrid });
         console.log(pageName, "pageChanged !!!!")
-        this.getDashboardData(this.customerName);
+        this.getDashboardData();
     };
 
     render() {
-        console.log(this.state.getPendingOrders, "getPendingOrders")
+        // console.log(this.state.getPendingOrders, "getPendingOrders")
         const customerList = this.state.entityNames ? this.state.entityNames : [];
         if (this.state.isLoading)
             return (<div className="loader">{utils.getLabelByID("Loading")}</div>);
@@ -236,8 +239,7 @@ class Dashboard extends React.Component {
                                     <Table TableClass="portlet light bordered sdg_portlet"
                                         title={utils.getLabelByID("Settlements")}
                                         gridColumns={utils.getGridColumnByName("settlements")}
-                                        gridData={this.props.data.dashboardSettlementGridData.settlementsRows ?
-                                            this.props.data.dashboardSettlementGridData.settlementsRows : []}
+                                        gridData={this.state.settlement}
                                         totalRecords={this.props.data.dashboardSettlementGridData.pageData.totalRecords}
                                         activePage={this.state.dashboardSettlementGridData.pageData.currentPageNo}
                                         pageSize={this.state.dashboardSettlementGridData.pageData.pageSize}
@@ -255,8 +257,7 @@ class Dashboard extends React.Component {
                                     <Table TableClass="portlet light bordered sdg_portlet"
                                         title={utils.getLabelByID("Customer wise Settlement")}
                                         gridColumns={utils.getGridColumnByName("customerWiseSettlement")}
-                                        gridData={this.props.data.dashboardCustomerSettlement.customerWiseSettlement ?
-                                            this.props.data.dashboardCustomerSettlement.customerWiseSettlement : 0}
+                                        gridData={this.state.customerWiseSettlement}
                                         totalRecords={this.props.data.dashboardCustomerSettlement.pageData.totalRecords}
                                         activePage={this.state.dashboardCustomerSettlement.pageData.currentPageNo}
                                         pageSize={this.state.dashboardCustomerSettlement.pageData.pageSize}
@@ -275,7 +276,7 @@ class Dashboard extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log(state.app.supplierDashboardData, "state.app.supplierDashboardData");
+    //console.log(state.app.supplierDashboardData, "state.app.supplierDashboardData");
     if (state.app.supplierDashboardData !== undefined) {
 
         return {
