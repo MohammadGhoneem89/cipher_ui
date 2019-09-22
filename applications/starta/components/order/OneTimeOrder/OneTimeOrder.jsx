@@ -333,7 +333,9 @@ class OneTimeOrder extends React.Component {
           </Portlet>}
 
           <ModalBox isOpen={this.state.modelBox ? true : false}>
-            <ProductDetail details={this.state.modelItem} state={this.state} closeModalBox={this.closeModalBox} />
+            <form onSubmit={this.addToCart}>
+              <ProductDetail details={this.state.modelItem} state={this.state} closeModalBox={this.closeModalBox} />
+            </form>
           </ModalBox>
 
           {this.state.createOrder && <CreateOrder
