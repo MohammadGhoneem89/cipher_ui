@@ -502,7 +502,9 @@ class OrderViaContract extends React.Component {
           }
 
           <ModalBox isOpen={this.state.modelBox ? true : false}>
-            <ProductDetail details={this.state.modelItem} state={this.state} closeModalBox={this.closeModalBox} />
+            <form onSubmit={this.addToCart}>
+              <ProductDetail details={this.state.modelItem} state={this.state} closeModalBox={this.closeModalBox} />
+            </form>
           </ModalBox>
 
           {
