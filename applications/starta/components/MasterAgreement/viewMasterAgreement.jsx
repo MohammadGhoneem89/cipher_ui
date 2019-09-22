@@ -317,6 +317,11 @@ class ViewMasterAgreement extends React.Component {
                 orgImgName: nextProps.orgImgName
             })
         }
+        if (nextProps.orgName) {
+            this.setState({
+                orgName: nextProps.orgName
+            })
+        }
     }
 
     render() {
@@ -338,66 +343,75 @@ class ViewMasterAgreement extends React.Component {
                                                 </div>
                                                 <br />
                                                 <div className="row">
-                                                    <div className="col-md-4">
-                                                        <div className="form-group col-md-6" style={{ paddingLeft: 0 }}>
-                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"Customer: "}</label>
+                                                    <div className="col-md-6">
+                                                        <div className="form-group col-md-3" style={{ paddingLeft: 0 }}>
+                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"Customer:"}</label>
                                                         </div>
-                                                        <div className="form-group col-md-6">
-                                                            {<label className="control-label" >{this.state.agreementDetail.customerID}</label>}
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="col-md-4">
-                                                        <div className="form-group col-md-6">
-                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"Payment Terms: "}</label>
-                                                        </div>
-                                                        <div className="form-group col-md-6">
-                                                            {<label className="control-label" >{this.state.agreementDetail.paymentTerms.paymentType}</label>}
+                                                        <div className="form-group col-md-3">
+                                                            {
+                                                                this.state.orgName ? (
+                                                                    <label className="control-label" style={{textAlign: "initial", whiteSpace: "nowrap"}} >{this.state.orgName}</label>
+                                                                ) : (
+                                                                    <label className="control-label" style={{textAlign: "initial", whiteSpace: "nowrap"}} >{this.state.agreementDetail.customerID}</label>
+                                                                )
+                                                            }
                                                         </div>
                                                     </div>
+                                                    <div className="col-md-6">
+                                                        <div className="form-group col-md-4"  style={{ paddingLeft: -15 }}>
+                                                            <label className="control-label" style={{ fontWeight: "bold", textAlign: 'initial' }}>{"Payment Terms: "}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-2">
+                                                            {<label className="control-label" style={{wordWrap: 'normal'}} >{this.state.agreementDetail.paymentTerms.paymentType}</label>}
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                                    <div className="col-md-4">
-                                                        <div className="form-group col-md-6">
+
+
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        <div className="form-group col-md-3" style={{ paddingLeft: 0 }}>
+                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"Start Date:"}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-3">
+                                                            {<label className="control-label" >{this.state.agreementDetail.startDate}</label>}
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="form-group col-md-4"  style={{ paddingLeft: -15 }}>
+                                                            <label className="control-label" style={{ fontWeight: "bold", textAlign: 'initial' }}>{"End Date:"}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-2">
+                                                            {<label className="control-label" style={{wordWrap: 'normal'}} >{this.state.agreementDetail.endDate}</label>}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        <div className="form-group col-md-3" style={{ paddingLeft: 0 }}>
                                                             <label className="control-label" style={{ fontWeight: "bold" }}>{"Duration: "}</label>
                                                         </div>
-                                                        <div className="form-group col-md-6">
+                                                        <div className="form-group col-md-3">
                                                             {<label className="control-label" >{this.state.agreementDetail.paymentTerms.days}</label>}
                                                         </div>
                                                     </div>
-
-
-                                                </div>
-
-                                                <div className="row">
-                                                    <div className="col-md-4">
-                                                        <div className="form-group col-md-6" style={{ paddingLeft: 0 }}>
-                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"Start Date:"}</label>
+                                                    <div className="col-md-6">
+                                                        <div className="form-group col-md-4"  style={{ paddingLeft: -15 }}>
+                                                            <label className="control-label" style={{ fontWeight: "bold", textAlign: 'initial' }}>{"Shipment Type:"}</label>
                                                         </div>
-                                                        <div className="form-group col-md-6">
-                                                            {<label className="control-label" style={{ paddingLeft: "3px" }}>{this.state.agreementDetail.startDate}</label>}
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4">
-                                                        <div className="form-group col-md-6">
-                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"End Date:"}</label>
-                                                        </div>
-                                                        <div className="form-group col-md-6">
-                                                            {<label className="control-label" >{this.state.agreementDetail.endDate}</label>}
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4">
-                                                        <div className="form-group col-md-6">
-                                                            <label className="control-label" style={{ fontWeight: "bold" }}>{"Shipment Type:"}</label>
-                                                        </div>
-                                                        <div className="form-group col-md-6">
-                                                            {<label className="control-label" >{this.state.agreementDetail.shipmentType}</label>}
+                                                        <div className="form-group col-md-2">
+                                                            {<label className="control-label" style={{wordWrap: 'normal'}} >{this.state.agreementDetail.shipmentType}</label>}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-md-4" style={{ paddingLeft: "90px" }}>
                                                 <img className="img-thumbnail img-rounded" style={{ height: "200px", width: "200px" }}
-                                                    src={constants.baseUrl + "/" + this.state.orgImgName}
+                                                    src={constants.baseUrl + this.state.orgImgName}
                                                     onError={this.addDefaultSrc}
                                                 />
                                             </div>
@@ -423,7 +437,7 @@ class ViewMasterAgreement extends React.Component {
                                 item.rebate = item.itemWiseDiscount.length > 0 ? item.itemWiseDiscount[0].discount : "none"
                                 item.itemImage = {
                                     name: item.name,
-                                    imageURL: _.get(item, "itemImage.imageURL", "")
+                                    imageURL: _.get(item, "image.hash", "")
                                 }
                             })
                         }
@@ -545,7 +559,8 @@ class ViewMasterAgreement extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         agreementDetail: state.app.agreementDetail,
-        orgImgName: _.get(state.app, "entityList.data.searchResult[0].entityName.name")
+        orgImgName: _.get(state.app, "entityList.data.searchResult[0].entityName.imageURL"),
+        orgName: _.get(state.app, "entityList.data.searchResult[0].entityName.name")
     }
 }
 
