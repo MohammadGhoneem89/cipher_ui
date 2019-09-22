@@ -80,9 +80,17 @@ class Dashboard extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.data.dashboardPendingGridData && nextProps.entityNames) {
+            let entityNames = [...nextProps.entityNames]
+            entityNames = entityNames.filter((item)=> {
+                if (item.orgType==='CUSTOMER'){
+                    return true
+                } else {
+                    return false
+                }
+            })
             console.log(nextProps.data, "DATA")
             this.setState({
-                entityNames: nextProps.entityNames,
+                entityNames: [...entityNames],
                 getPendingOrders: nextProps.data.dashboardPendingGridData.pendingOrderRows,
                 getCompletedOrders: nextProps.data.dashboardCompletedGridData.completedOrderRows,
                 settlement: nextProps.data.dashboardSettlementGridData.settlementsRows,
