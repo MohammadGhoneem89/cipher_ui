@@ -61,9 +61,9 @@ class OrderDetailContainer extends React.Component {
   }
 
   generateQRCode(BlockChainAddress) {
-    let qrString = constants.blockChainViewer + BlockChainAddress;
-    return (<div><QRCodeJquery size="160" errorCorrectionLevel="H" qrString={qrString} />
-      <span><a href={qrString} target="_app">View</a></span><span style={{  fontSize: 5, width: "150px" }} /></div>)
+    let qrString = '/hyperledger/hashSearch/' + BlockChainAddress;
+    return (<div><QRCodeJquery size="116" errorCorrectionLevel="H" qrString={qrString} />
+      <span><a href={qrString} target="_app">View</a></span><span style={{  fontSize: 5, width: "116px" }} /></div>)
   }
 
   getStatusLabel = status => {
@@ -375,9 +375,9 @@ class OrderDetailContainer extends React.Component {
                         <Col col="12">
                         {
                           this.state.orderDetail.transactionID ? (
-                            <Label columns="12" className="hashno" text={this.state.orderDetail.transactionID} style={{  marginTop: "-10%"}} ></Label>
+                            <Label columns="12" className="hashno" text={this.state.orderDetail.transactionID} style={{  marginTop: "-7%"}} ></Label>
                           ) : (
-                            <Label columns="12" className="hashno" text={this.state.orderDetail.orderID} style={{  marginTop: "-10%"}}></Label>
+                            <Label columns="12" className="hashno" text={this.state.orderDetail.orderID} style={{  marginTop: "-7%"}}></Label>
                           )
                         }
                           
