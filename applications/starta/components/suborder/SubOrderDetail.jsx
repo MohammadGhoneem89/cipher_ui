@@ -15,7 +15,7 @@ import Div from "../../common/Div.jsx";
 import Row from "../../common/Row.jsx";
 import Col from "../../common/Col.jsx";
 import Label from "../../common/Lable.jsx";
-import Portlet from "../../common/Portlet.jsx";
+
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 import Pagination from "react-js-pagination";
 
@@ -23,7 +23,8 @@ import Steps from '../../../../core/common/Steps.jsx';
 import Table from '../../../../core/common/Datatable.jsx';
 import * as gen from "../../common/generalActionHandler";
 
-
+import QRCodeJquery from '../../common/QRCodeJquery.jsx'
+import { baseUrl } from '../../../../core/constants/Communication.js';
 
 class SubOrder extends React.Component {
     constructor(props, context) {
@@ -108,7 +109,7 @@ class SubOrder extends React.Component {
                 suborderDetail: nextProps.getSubOrderList[0],
                 isLoading: false
             })
-              this.updateStatus(nextProps.getSubOrderList[0].status);
+            this.updateStatus(nextProps.getSubOrderList[0].status);
         }
 
     }
@@ -122,6 +123,11 @@ class SubOrder extends React.Component {
         event.target.src = "http://localhost:9086/images/1f31e930-e0d5-11e7-88e2-f718f78167e9.png"
     }
 
+    generateQRCode = (BlockChainAddress) => {
+        let qrString = '/hyperledger/hashSearch/' + BlockChainAddress;
+        return (<div><QRCodeJquery size="116" errorCorrectionLevel="H" qrString={qrString} />
+            <span><a href={qrString} target="_app">View</a></span><span style={{ fontSize: 5, width: "116px" }} /></div>)
+    }
 
     render() {
         const suborder = this.state.suborderDetail ? this.state.suborderDetail : {}
@@ -133,45 +139,70 @@ class SubOrder extends React.Component {
                 <div>
 
                     <div className="col-md-12">
-                        <Portlet title={utils.getLabelByID("Sub Order")}>
+                        <div className="portlet light" style={{ minHeight: "854px" }}>
+
+                            <div className="caption">
+                                <span className="caption-subject">Sub Order</span>
+                            </div>
 
                             <div className="row">
                                 <div className="col-md-12">
 
                                     <div className="form-wizard stratawizard">
-                                        {<Steps statusList={this.state.statusList} />}
+                                        {<Steps hideNumber={true} statusList={this.state.statusList} />}
                                     </div>
 
                                     <br />
 
                                     <div className="shadowBox Courierbox">
                                         <div className="form-group">
-                                            {suborder.entityName && <Row>
-                                                <Col col="6">
-                                                    <Label columns="6" text="Supplier ID :"></Label>
-                                                    <Col col="6" >
-                                                        <span>{suborder.entityName}</span>
-                                                    </Col>
-                                                </Col>
-                                                <Col col="3">
-
-                                                    <Col col="12">
-                                                        <img src={suborder.entityLogo}
-                                                            onError={this.errorHandler} />
-                                                    </Col>
-
-                                                </Col>
-
-                                            </Row> }
-                                            
                                             <Row>
-                                                <Col col="12">
-                                                    <Label columns="12" className="hashno" text={suborder.trxid}></Label>
-                                                </Col>
+
+                                                <div className="col-md-12">
+                                                    <div className="col-md-4">
+                                                        <Label columns="12" style={{ fontSize: 22 }} text= {_.get(suborder, "entityName", "")}></Label>
+                                                    </div>
+                                                    <div className="col-md-8" className='pull-right' style={{marginRight:'10%'}}>
+                                                        <div className="col-md-4">
+                                                            <img className='img-thumbnail img-rounded' src={baseUrl + suborder.entityLogo}
+                                                                style={{ width: '260px' }} onError={this.errorHandler} />
+                                                        </div>
+                                                        <div className="col-md-4">
+                                                            {suborder.trxid && this.generateQRCode(suborder.trxid)}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
                                             </Row>
                                             <Row>
+                                                <div className="col-md-12">
+                                                    {
+                                                        suborder.trxid && (<Label columns="12" className="hashno" text={suborder.trxid} style={{marginTop: "-5%", marginLeft: "16px"}}></Label>)
+                                                    }
+                                                    {
+                                                        suborder.trxid === "" && (<Label columns="12" className="hashno" text={suborder.orderID} style={{marginTop: "-5%", marginLeft: "16px"}}></Label>)
+                                                    }
+
+                                                </div>
+                                            </Row>
+
+                                            <br>
+                                            </br>
+
+                                            <Row>
                                                 <Col col="6">
-                                                    <Label columns="6" text="Amount:"></Label>
+                                                    <Label columns="6" style={{marginLeft: "19px"}} text="Supplier ID :"></Label>
+                                                    <Col col="6">
+                                                        <span> {_.get(suborder, "entityName", "")} </span>
+                                                    </Col>
+                                                </Col>
+                                            </Row>
+
+
+                                            <Row>
+                                                <Col col="6">
+                                                    <Label columns="6" style={{marginLeft: "19px"}} text="Amount :"></Label>
                                                     <Col col="6">
                                                         <span>AED {utils.formatAmountField(suborder.orderAmount || 0)}</span>
                                                     </Col>
@@ -179,9 +210,9 @@ class SubOrder extends React.Component {
                                             </Row>
                                             <Row>
                                                 <Col col="6">
-                                                    <Label columns="6" text="Received Date:"></Label>
+                                                    <Label columns="6" style={{marginLeft: "19px"}} text="Received Date :"></Label>
                                                     <Col col="6">
-                                                        <span> {suborder.orderDate}</span>
+                                                        <span> {suborder.orderDate && suborder.orderDate.split(' ')[0]}</span>
                                                     </Col>
                                                 </Col>
                                             </Row>
@@ -218,7 +249,7 @@ class SubOrder extends React.Component {
                                 </div>
                             </div>
 
-                        </Portlet>
+                        </div>
                     </div>
                 </div>
             );
