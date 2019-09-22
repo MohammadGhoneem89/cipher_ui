@@ -19,6 +19,7 @@ class Receipt extends Component {
         this.state = {
             itemCode: "",
             itemColor: "",
+            receiptNum: "",
             itemCodes: [],
             itemColors: [],
             displayItems: [],
@@ -105,18 +106,12 @@ class Receipt extends Component {
         }
     }
 
-
-    onQuantityChange = (e) => { 
+    onChange = (e) => { 
         this.setState({ 
             [e.target.name]: e.target.value 
         }); 
     }
-
-    onColorChange = (e) => {
-        this.setState({
-            itemColor: e.target.value
-        })
-    }
+    
 
     onClick = (e) => {
         
@@ -145,6 +140,11 @@ class Receipt extends Component {
         e.preventDefault();
 
         // field validation
+        if (this.state.receiptNum === "") {
+            alert('Please enter Receipt Number for the item.')
+            return
+        }
+
         if  (this.state.itemCode === ""){
             alert('Please select any Item.')
             return
@@ -160,11 +160,13 @@ class Receipt extends Component {
             return
         }
 
-        // update item codes
-        // item code ko "" kro
-        // colorcodes khali kro
+        
 
-        // states se slected item aur uski values get kro aur add kro display items
+        // update item codes
+        // item code -> "" here
+        // colorcodes -> empty here
+
+        // select values from state and add in display items
 
 
         for (let i=0; i<this.state.items.length; i++){
@@ -195,7 +197,12 @@ class Receipt extends Component {
         }
         if (!found){
             //  add in display items as new display item
-            displayItems.push({ itemCode: this.state.itemCode, color: this.state.itemColor, quantity: parseInt(this.state.quantity) })
+            displayItems.push({ 
+                itemCode: this.state.itemCode, 
+                color: this.state.itemColor, 
+                quantity: parseInt(this.state.quantity),
+                receiptNo: this.state.receiptNum
+            })
         }
         // add quantity in recieved
         for (let i=0;i<items.length;i++){
@@ -253,6 +260,19 @@ class Receipt extends Component {
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="col-md-4">
+                                    <label className="control-label" style={{ fontWeight: "bold" }}>
+                                        {"Receipt No."}
+                                    </label>
+                                    <input
+                                        name="receiptNum"
+                                        type="number" 
+                                        className="form-control" 
+                                        id="receiptNum"
+                                        onChange={this.onChange}
+                                        value={this.state.receiptNum}
+                                    />
+                                </div>
+                                <div className="col-md-4">
                                     <label className="control-label" style={{ fontWeight: "bold" }}>{"Items "}</label>
                                     <select id="itemCode" name="itemCode" className="form-control" value={this.state.itemCode} onChange={this.updateItemColors} >
                                         <option key="-1">Select</option>
@@ -265,9 +285,14 @@ class Receipt extends Component {
                                         }
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+                        <br></br>
+                        <div className="row">
+                            <div className="col-md-12">
                                 <div className="col-md-4">
                                     <label className="control-label" style={{ fontWeight: "bold" }}>{"Colors "}</label>
-                                    <select id="itemColor" name="itemColor" className="form-control" value={this.state.itemColor} onChange={this.onColorChange} >
+                                    <select id="itemColor" name="itemColor" className="form-control" value={this.state.itemColor} onChange={this.onChange} >
                                             <option key="-1">Select</option>
                                             {
                                                 this.state.itemColors.map((option, index) => {
@@ -285,7 +310,7 @@ class Receipt extends Component {
                                         type="number" 
                                         className="form-control" 
                                         id="quantity"
-                                        onChange={this.onQuantityChange}
+                                        onChange={this.onChange}
                                         value={this.state.quantity}
                                     />
                                 </div>
