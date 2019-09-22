@@ -38,17 +38,17 @@ class Receipt extends Component {
             }
         }
         itemCodes = [...new Set(itemCodes)]
-        
+
         let itemCodesObjs = []
         for (let i = 0; i < itemCodes.length; i++) {
             itemCodesObjs.push({
-                label: itemNames[i] +' - '+ itemCodes[i],
+                label: itemNames[i] + ' - ' + itemCodes[i],
                 value: itemCodes[i]
             })
         }
 
         this.setState({
-            itemCodes : itemCodesObjs
+            itemCodes: itemCodesObjs
         })
     }
     // event handler
@@ -57,13 +57,13 @@ class Receipt extends Component {
         for (let i = 0; i < this.state.items.length; i++) {
             if (this.state.items[i].itemCode === e.target.value) {
                 for (let j = 0; j < this.state.items[i].color.length; j++) {
-                    if (!(this.state.items[i].quantity===this.state.items[i].receivedQuantity)){
+                    if (!(this.state.items[i].quantity === this.state.items[i].receivedQuantity)) {
                         colors.push({
                             label: this.state.items[i].color[j],
                             value: this.state.items[i].color[j]
                         })
                     }
-                    
+
                 }
             }
         }
@@ -81,17 +81,17 @@ class Receipt extends Component {
             let itemNames = []
             for (let i = 0; i < this.props.items.length; i++) {
                 if ((this.props.items[i].quantity - this.props.items[i].receivedQuantity) > 0) {
-                    itemCodes.push( this.props.items[i].itemCode)
-                    itemNames.push( this.props.items[i].name)
+                    itemCodes.push(this.props.items[i].itemCode)
+                    itemNames.push(this.props.items[i].name)
                 }
             }
 
             itemCodes = [...new Set(itemCodes)]
-        
+
             let itemCodesObjs = []
             for (let i = 0; i < itemCodes.length; i++) {
                 itemCodesObjs.push({
-                    label: itemNames[i] +' - '+ itemCodes[i],
+                    label: itemNames[i] + ' - ' + itemCodes[i],
                     value: itemCodes[i]
                 })
             }
@@ -101,22 +101,22 @@ class Receipt extends Component {
                 orderID: this.props.orderID,
                 items: this.props.items,
                 closePortlet: this.props.closePortlet,
-                itemCodes : itemCodesObjs
+                itemCodes: itemCodesObjs
             })
         }
     }
 
-    onChange = (e) => { 
-        this.setState({ 
-            [e.target.name]: e.target.value 
-        }); 
+    onChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
     }
-    
+
 
     onClick = (e) => {
-        
+
         // field validation
-        if (this.state.displayItems.length === 0){
+        if (this.state.displayItems.length === 0) {
             alert('Add items to recieve.')
             return
         }
@@ -124,12 +124,12 @@ class Receipt extends Component {
         console.log('Form submit')
         this.props.actions.generalProcess(constants.updateOrderStatusCustomer, {
             "body": {
-              "orderID": this.state.orderID,
-              "customerID": this.state.customerID,
-              "status": "011",// Recieved Status
-              itemReceipts: this.state.displayItems
+                "orderID": this.state.orderID,
+                "customerID": this.state.customerID,
+                "status": "011",// Recieved Status
+                itemReceipts: this.state.displayItems
             }
-          });
+        });
 
         // Remove this line if want to recieve and stay on this pop up  
         this.state.closePortlet();
@@ -145,22 +145,22 @@ class Receipt extends Component {
             return
         }
 
-        if  (this.state.itemCode === ""){
+        if (this.state.itemCode === "") {
             alert('Please select any Item.')
             return
-        } 
-        
-        if (this.state.itemColor === ""){
+        }
+
+        if (this.state.itemColor === "") {
             alert('Please select any Color for the selected item.')
             return
         }
 
-        if (this.state.quantity===0 || this.state.quantity < 0 ){
+        if (this.state.quantity === 0 || this.state.quantity < 0) {
             alert('Please enter a valid Quantity.')
             return
         }
 
-        
+
 
         // update item codes
         // item code -> "" here
@@ -169,11 +169,11 @@ class Receipt extends Component {
         // select values from state and add in display items
 
 
-        for (let i=0; i<this.state.items.length; i++){
-            if (this.state.items[i].itemCode === this.state.itemCode && this.state.items[i].color[0]===this.state.itemColor){
+        for (let i = 0; i < this.state.items.length; i++) {
+            if (this.state.items[i].itemCode === this.state.itemCode && this.state.items[i].color[0] === this.state.itemColor) {
                 let remainingQuantity = this.state.items[i].quantity - this.state.items[i].receivedQuantity
-                if (this.state.quantity > remainingQuantity ){
-                    let err = this.state.items[i].itemCode + ' of '+this.state.items[i].color[0]+' color must not exceed '+remainingQuantity+' in quantity.'
+                if (this.state.quantity > remainingQuantity) {
+                    let err = this.state.items[i].itemCode + ' of ' + this.state.items[i].color[0] + ' color must not exceed ' + remainingQuantity + ' in quantity.'
                     alert(err)
                     return
                 }
@@ -187,30 +187,30 @@ class Receipt extends Component {
         let displayItems = [...this.state.displayItems]
         let items = [...this.state.items]
         let found = false
-        for (let i=0; i<displayItems.length; i++) {
-            if (displayItems[i].itemCode === this.state.itemCode && displayItems[i].color === this.state.itemColor){
+        for (let i = 0; i < displayItems.length; i++) {
+            if (displayItems[i].itemCode === this.state.itemCode && displayItems[i].color === this.state.itemColor) {
                 // update quantity of already present display item
                 displayItems[i].quantity = parseInt(displayItems[i].quantity) + parseInt(this.state.quantity)
                 found = true
                 break
             }
         }
-        if (!found){
+        if (!found) {
             //  add in display items as new display item
-            displayItems.push({ 
-                itemCode: this.state.itemCode, 
-                color: this.state.itemColor, 
+            displayItems.push({
+                itemCode: this.state.itemCode,
+                color: this.state.itemColor,
                 quantity: parseInt(this.state.quantity),
                 receiptNo: this.state.receiptNum
             })
         }
         // add quantity in recieved
-        for (let i=0;i<items.length;i++){
-            if (items[i].itemCode === this.state.itemCode && items[i].color[0] === this.state.itemColor){
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].itemCode === this.state.itemCode && items[i].color[0] === this.state.itemColor) {
                 items[i].receivedQuantity = parseInt(items[i].receivedQuantity) + parseInt(this.state.quantity)
             }
         }
-        
+
         // update item codes
         let itemCodes = []
         let itemNames = []
@@ -221,11 +221,11 @@ class Receipt extends Component {
             }
         }
         itemCodes = [...new Set(itemCodes)]
-        
+
         let itemCodesObjs = []
         for (let i = 0; i < itemCodes.length; i++) {
             itemCodesObjs.push({
-                label: itemNames[i] +' - '+ itemCodes[i],
+                label: itemNames[i] + ' - ' + itemCodes[i],
                 value: itemCodes[i]
             })
         }
@@ -233,11 +233,11 @@ class Receipt extends Component {
         this.setState({
             displayItems: [...displayItems],
             items: [...items],
-            itemCodes : [...itemCodesObjs],
+            itemCodes: [...itemCodesObjs],
             itemColors: [],
             itemCode: "",
             itemColor: "",
-            quantity:0
+            quantity: 0
         })
     }
 
@@ -260,19 +260,6 @@ class Receipt extends Component {
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="col-md-4">
-                                    <label className="control-label" style={{ fontWeight: "bold" }}>
-                                        {"Receipt No."}
-                                    </label>
-                                    <input
-                                        name="receiptNum"
-                                        type="number" 
-                                        className="form-control" 
-                                        id="receiptNum"
-                                        onChange={this.onChange}
-                                        value={this.state.receiptNum}
-                                    />
-                                </div>
-                                <div className="col-md-4">
                                     <label className="control-label" style={{ fontWeight: "bold" }}>{"Items "}</label>
                                     <select id="itemCode" name="itemCode" className="form-control" value={this.state.itemCode} onChange={this.updateItemColors} >
                                         <option key="-1">Select</option>
@@ -285,35 +272,52 @@ class Receipt extends Component {
                                         }
                                     </select>
                                 </div>
+
+                                <div className="col-md-4">
+                                    <label className="control-label" style={{ fontWeight: "bold" }}>{"Colors "}</label>
+                                    <select id="itemColor" name="itemColor" className="form-control" value={this.state.itemColor} onChange={this.onChange} >
+                                        <option key="-1">Select</option>
+                                        {
+                                            this.state.itemColors.map((option, index) => {
+                                                return (
+                                                    <option key={index} value={option.value}>{option.label}</option>
+                                                );
+                                            })
+                                        }
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <br></br>
                         <div className="row">
                             <div className="col-md-12">
-                                <div className="col-md-4">
-                                    <label className="control-label" style={{ fontWeight: "bold" }}>{"Colors "}</label>
-                                    <select id="itemColor" name="itemColor" className="form-control" value={this.state.itemColor} onChange={this.onChange} >
-                                            <option key="-1">Select</option>
-                                            {
-                                                this.state.itemColors.map((option, index) => {
-                                                    return (
-                                                        <option key={index} value={option.value}>{option.label}</option>
-                                                    );
-                                                })
-                                            }
-                                    </select>
-                                </div>
+
                                 <div className="col-md-4">
                                     <label className="control-label" style={{ fontWeight: "bold" }}>{"Quantity "}</label>
                                     <input
                                         name="quantity"
-                                        type="number" 
-                                        className="form-control" 
+                                        type="number"
+                                        className="form-control"
                                         id="quantity"
                                         onChange={this.onChange}
                                         value={this.state.quantity}
                                     />
                                 </div>
+                                <div className="col-md-4">
+                                    <label className="control-label" style={{ fontWeight: "bold" }}>
+                                        {"Receipt No."}
+                                    </label>
+                                    <input
+                                        name="receiptNum"
+                                        type="text"
+                                        className="form-control"
+                                        id="receiptNum"
+                                        onChange={this.onChange}
+                                        value={this.state.receiptNum}
+                                    />
+                                </div>
+
+
                             </div>
                         </div>
                         <br></br>
@@ -342,10 +346,10 @@ class Receipt extends Component {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="btn-toolbar pull-right">
-                                <button 
-                                type="submit" 
-                                onClick={this.onClick} 
-                                className="pull-right btn green">
+                                <button
+                                    type="submit"
+                                    onClick={this.onClick}
+                                    className="pull-right btn green">
                                     {utils.getLabelByID("Recieved")}
                                 </button>
                             </div>
@@ -366,17 +370,16 @@ class Receipt extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        
+
     };
-  }
-  
-function mapDispatchToProps(dispatch) {
-return { actions: bindActionCreators(actions, dispatch) };
 }
-  
+
+function mapDispatchToProps(dispatch) {
+    return { actions: bindActionCreators(actions, dispatch) };
+}
+
 Receipt.displayName = "__HIDE";
 export default connect(
-mapStateToProps,
-mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(Receipt);
-  
