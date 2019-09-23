@@ -537,3 +537,13 @@ a.stratabtnstyle:hover{
 .productdetails label {
     margin-bottom: 0px!important;
 }
+
+
+li.inactive .step {
+    position: relative;
+    top: -33px;
+}
+li.done .step {
+    position: relative;
+    top: 12px;
+}

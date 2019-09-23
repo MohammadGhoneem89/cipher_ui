@@ -350,7 +350,7 @@ class OrderDetailContainer extends React.Component {
                 <div className="col-md-12">
 
                   <div className="form-wizard stratawizard">
-                    {<Steps hideNumber={true} statusList={this.state.orderDetail.statusList ? this.state.orderDetail.statusList : []} />}
+                    {<Steps hideNumber={false} statusList={this.state.orderDetail.statusList ? this.state.orderDetail.statusList : []} />}
                   </div>
 
                   <br />

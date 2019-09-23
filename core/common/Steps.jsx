@@ -13,14 +13,11 @@ class Steps extends React.Component {
     componentDidMount() {
 
         if (this.props.displayTicker && this.props.displayTicker == true) {
-            
+
             let timerID = 0;
             timerID = setInterval(this.timer.bind(this), 1000);
-            this.setState({timerID})
-
+            this.setState({ timerID })
         }
-
-
     }
 
     componentWillMount() {
@@ -66,7 +63,7 @@ class Steps extends React.Component {
 
     getArrow(index, statusLength) {
         if (index != statusLength - 1)
-            return (<i className="fa fa-long-arrow-right" aria-hidden="true" style={{marginTop:'25%'}}></i>)
+            return (<i className="fa fa-long-arrow-right" aria-hidden="true" style={{ marginTop: '25%' }}></i>)
     }
     getLiCSS(sd) {
         if (sd.type && sd.type == 'ERROR')
@@ -79,45 +76,62 @@ class Steps extends React.Component {
     }
     displayTicker(statusList, index) {
         if (this.props.displayTicker && this.props.displayTicker == true) {
-            
-            if (this.props.SLAStatus == statusList[index].label && this.props.move !='NONE' && statusList.length -1 !=index)
-            {
+
+            if (this.props.SLAStatus == statusList[index].label && this.props.move != 'NONE' && statusList.length - 1 != index) {
                 return (<span id="counterStamp">{this.state.countDownDisplay} </span>)
             }
         }
     }
+
+
+
+
+
+
+
     render() {
         return (<div>
 
 
             <div className="form-wizard">
                 <ul className="nav nav-pills nav-justified steps">
-                    {this.props.statusList.map((sd, index) => (
-                        <li className={this.getLiCSS(sd)}>
-                            {
-                                this.props.hideNumber===true ?
-                                (
-                                    <a href="#tab1" data-toggle="tab" className="step" aria-expanded="false">
-                                        <span className={'number'}> </span>
-                                        <span className="desc">
-                                            <i className="fa fa-check" style={{'position': 'inherit'}} ></i> 
-                                            {sd.label}
-                                        </span>
-                                    </a>
-                                ) : (
-                                    <a href="#tab1" data-toggle="tab" className="step" aria-expanded="false">
-                                        <span className={'number'}> {index + 1} </span>
-                                        <span className="desc">
-                                            <i className="fa fa-check"></i> {sd.label} 
-                                        </span>
-                                    </a>
-                                )
-                            }
-                            {this.displayTicker(this.props.statusList, index)}
-                            {this.getArrow(index, this.props.statusList.length)}
-                        </li>
+                    {
+                        this.props.statusList.map((sd, index) => (
 
-                    ))
+                            <li className={this.getLiCSS(sd)}>
+
+                                {
+                                    this.getLiCSS(sd) === 'done' ? (
+                                        <a href="#tab1" data-toggle="tab" className="step" aria-expanded="false">
+                                            <span className={'number'}>
+                                                {''}
+                                            </span>
+                                            <span className="desc">
+                                                <i className="fa fa-check" style={{ 'position': 'inherit' }} ></i>
+                                                {sd.label}
+                                            </span>
+                                        </a>
+                                    ) : (
+                                            <a href="#tab1" data-toggle="tab" className="step" aria-expanded="false">
+                                                <span className={'number'}>
+                                                    {(index + 1)}
+                                                </span>
+                                                <span className="desc">
+                                                    <i className="fa fa-check" style={{ 'position': 'inherit' }}></i>
+                                                    {sd.label}
+                                                </span>
+                                            </a>
+                                        )
+                                }
+
+
+
+
+
+                                {this.displayTicker(this.props.statusList, index)}
+                                {this.getArrow(index, this.props.statusList.length)}
+                            </li>
+                        ))
                     }
                 </ul>
             </div>
