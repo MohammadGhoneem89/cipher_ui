@@ -160,6 +160,12 @@ class OrderDetailContainer extends React.Component {
               "status": element.status
             }
           });
+          //General process wait load state
+          this.setState({
+            isLoading:true
+          })
+          window.scrollTo(0, 0);
+
         } else {
           this.props.actions.generalProcess(constants.updateOrderStatusCustomer, {
             "body": {
@@ -167,6 +173,11 @@ class OrderDetailContainer extends React.Component {
               "status": element.status
             }
           });
+          //General process wait load state
+          this.setState({
+            isLoading:true
+          })
+          window.scrollTo(0, 0);
         }
         break;
       case 2:
@@ -240,7 +251,11 @@ class OrderDetailContainer extends React.Component {
 
   optionalStatusHandleSubmit = (e) => {
     e.preventDefault();
-
+    console.log(this.state.optionalStatusValue, "valueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+    if (this.state.optionalStatusValue === ""){
+      alert("Status must be selected to update.")
+      return;
+    }
     this.props.actions.generalProcess(constants.updateOrderStatus, {
       "body": {
         "orderID": this.props.orderID, // Why Props
@@ -250,6 +265,11 @@ class OrderDetailContainer extends React.Component {
     });
     // Close the pop up
     this.optionalStatusModalBoxChangeState();
+    //General process wait load state
+    this.setState({
+      isLoading:true
+    })
+    window.scrollTo(0, 0);
   }
 
   timeLineViewModalBoxItem = () => {
@@ -277,6 +297,7 @@ class OrderDetailContainer extends React.Component {
   receiptModalBoxItem = () => {
     return (
       <Receipt
+        parent = {this}
         closePortlet={this.receiptModalBoxChangeState}
         items={this.getItems()}
         orderID={this.props.orderID}

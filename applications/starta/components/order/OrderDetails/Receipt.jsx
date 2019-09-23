@@ -131,6 +131,11 @@ class Receipt extends Component {
             }
         });
 
+        //General process wait load state
+        this.props.parent.setState ({
+            isLoading:true
+        }) 
+        window.scrollTo(0, 0);
         // Remove this line if want to recieve and stay on this pop up  
         this.state.closePortlet();
     }
