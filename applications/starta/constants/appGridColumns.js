@@ -164,6 +164,8 @@ module.exports = {
   LineItems: [
     { alias: "Item Name", key: "name", type: 'string' },
     { alias: "Item Code ", key: "itemCode", type: "string" },
+    { alias: "Material ", key: "material", type: "string" },
+    { alias: "Color ", key: "color", type: "string" },
     { alias: "Qty", key: "quantity", type: "rightAlign" },
     { alias: "Received Qty", key: "receivedQuantity", type: "rightAlign" },
     { alias: "Amount", key: "unitPrice", type: "amount" },
