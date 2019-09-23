@@ -82,7 +82,7 @@ const CreateOrder = props => {
         <tr>
           <td className="text-right" colSpan="5"><b>Grand Total</b></td>
           <td colSpan="3" className="moveRight">
-            <spans style={{ color: "#c20c35", fontWeight: 600, textAlign: "right", }}>{"AED "   + utils.formatAmountField(state.grandTotal)}
+            <spans style={{ color: "#c20c35", fontWeight: 625, textAlign: "right", fontSize: '14px' }}>{"AED "   + utils.formatAmountField(state.grandTotal)}
             </spans>
           </td>
         </tr>
