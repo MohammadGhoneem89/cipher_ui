@@ -115,8 +115,18 @@ class AddMasterAgreement extends React.Component {
                     reb.lessThan = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j],"lessThan")
                     reb.rebate = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j],"discount")
                     reb.discountType = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j],"discountType")
+                    reb.action= [
+                        {
+                            label: "Delete", iconName: "fa fa-trash",
+                            actionType: "COMPONENT_FUNCTION"
+                        },
+                        {
+                            label: "Edit", iconName: "fa fa-edit",
+                            actionType: "COMPONENT_FUNCTION"
+                        }]
                     item.rebate.push(reb)
                 }
+                item.action = [{ label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }, { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }]
                 items.push(item)
             }
 
@@ -124,18 +134,21 @@ class AddMasterAgreement extends React.Component {
             for (let i=0; i < nextProps.getAgreementDetail.sla.length; i++){
                 let slaObj = {}
                 slaObj.fromStage = nextProps.getAgreementDetail.sla[i].fromStage
-                slaObj.toStage = nextProps.getAgreementDetail.sla[i].toStage
-                slaObj.duration = nextProps.getAgreementDetail.sla[i].duration
+                slaObj.fromStageLabel = this.mapStatusCodes (nextProps.getAgreementDetail.sla[i].fromStage)
+
+                slaObj.toStage   = nextProps.getAgreementDetail.sla[i].toStage
+                slaObj.toStageLabel =  this.mapStatusCodes (nextProps.getAgreementDetail.sla[i].toStage)
+                slaObj.duration  = nextProps.getAgreementDetail.sla[i].duration
                 sla.push(slaObj)
             }
 
             let penalties = []
             for(let i=0; i<nextProps.getAgreementDetail.penalties.length; i++){
                 let penaltyObj = {}
-                penaltyObj.fromStage = _.get(nextProps.getAgreementDetail.penalties[i], "fromStage")
-                penaltyObj.fromStagePenaltyLabel = _.get(nextProps.getAgreementDetail.penalties[i], "fromStage")
+                penaltyObj.fromStage = '002'
+                penaltyObj.fromStagePenaltyLabel =  this.mapStatusCodes ( '002' )
                 penaltyObj.tillStage = _.get(nextProps.getAgreementDetail.penalties[i], "tillStage")
-                penaltyObj.tillStageLabel = _.get(nextProps.getAgreementDetail.penalties[i], "tillStage")
+                penaltyObj.tillStageLabel =  this.mapStatusCodes ( _.get(nextProps.getAgreementDetail.penalties[i], "tillStage") )
                 penaltyObj.greaterThan = _.get(nextProps.getAgreementDetail.penalties[i], "greaterThan")
                 penaltyObj.penaltyType = _.get(nextProps.getAgreementDetail.penalties[i], "penaltyType")
                 penaltyObj.penaltyValue = _.get(nextProps.getAgreementDetail.penalties[i], "penaltyValue")
@@ -207,7 +220,7 @@ class AddMasterAgreement extends React.Component {
         let rebateType = document.getElementById('rebateType') == null ? "" : document.getElementById('rebateType').value;
         let rebate = document.getElementById('orderRebate') == null ? "" : document.getElementById('orderRebate').value;
 
-        let data = this.state.orderRebate;
+        let data = [...this.state.orderRebate];
 
         if (orderGreaterThan < 0) {
             alert("From should be zero or greater")
@@ -239,14 +252,63 @@ class AddMasterAgreement extends React.Component {
                 actionType: "COMPONENT_FUNCTION"
             }],
         }
-
+        let itemTemp = document.getElementById('item').value;
         this.clearFieldsOrderRebate();
+        document.getElementById('item').value = itemTemp
         data.push(newtupple);
         this.setState({ orderRebate: data });
     }
 
     //this.fromStage = value
     //fromStage = label
+
+    mapStatusCodes = (key) => {
+        switch (key) {
+            case "001":
+                return "Order Received"
+            case "002":
+                return "Purchase Order"
+            case "003":
+                return "Component Manufacturing"
+            case "004":
+                return "Part Identification"
+            case "005":
+                return "Part Inspection"
+            case "006":
+                return "File Inspection and Identification"
+            case "007":
+                return "Part Testing"
+            case "008":
+                return "Assembly"
+            case "009":
+                return "Paint/Finish"
+            case "010":
+                return "Dispatched"
+            case "011":
+                return "Received"
+            case "012":
+                return "Inspected"
+            case "013":
+                return "Accepted"
+            case "014":
+                return "Rejected"
+            case "015":
+                return "Reviewed"
+            case "016":
+                return "Concession"
+            case "017":
+                return "Scrapped"
+            case "018":
+                return "Payment Order"
+            case "019":
+                return "Paid"
+            case "020":
+                return "Invoiced"
+            default:
+                return ""
+        }
+
+    }
 
     addSLA = () => {
         this.fromStage = document.getElementById('fromStage') == null ? "" : document.getElementById('fromStage').value;
@@ -547,13 +609,18 @@ class AddMasterAgreement extends React.Component {
             case "Edit":
                 if (index > -1) {
                     let a = this.state.items[index];
+                    console.log(this.state.items[index], "itemWiseDisocunt")
+                    let rebate = [...this.state.items[index].rebate]
                     console.log(a, "a")
                     document.getElementById('item').value = (a.itemCode);
                     document.getElementById('unitPrice').value = parseInt(a.price, 10);
                     document.getElementById('expectedQuantity').value = parseInt(a.quantity, 10);
-                    let tempState = this.state.items;
+                    let tempState = [...this.state.items];
                     tempState.splice(index, 1);
-                    this.setState({ items: tempState });
+                    this.setState({
+                        orderRebate: rebate,
+                        items: tempState
+                    });
                 }
                 break;
             case "Delete":
@@ -579,6 +646,7 @@ class AddMasterAgreement extends React.Component {
                     document.getElementById('orderGreaterThan').value = parseInt(a.greaterThan, 10);
                     document.getElementById('orderLessThan').value = parseInt(a.lessThan, 10);
                     document.getElementById('orderRebate').value = parseInt(a.rebate, 10);
+                    document.getElementById('rebateType').value = a.discountType
                     let tempState = this.state.orderRebate;
                     tempState.splice(index, 1);
                     this.setState({ orderRebate: tempState });
@@ -874,7 +942,8 @@ class AddMasterAgreement extends React.Component {
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>                                                  <Table
+                                                                                </div>                                                  
+                                                                                <Table
                                                                                     gridColumns={utils.getGridColumnByName("rebate")}
                                                                                     gridData={this.state.orderRebate}
                                                                                     export={false}

@@ -148,18 +148,16 @@ module.exports = {
     { alias: "Action", key: "action", type: 'action' }
   ],
   SLA: [
-    { alias: "FROM stage", key: "fromStageLabel", type: 'string' },
-    { alias: "TO stage ", key: "toStageLabel", type: "string" },
-    { alias: "duration (DAYS)", key: "duration", type: "string" }
+    { alias: "FROM", key: "fromStageLabel", type: 'string' },
+    { alias: "TO", key: "toStageLabel", type: "string" },
+    { alias: "DURATION (DAYS)", key: "duration", type: "string" }
   ],
   Penalties: [
-    { alias: "FROM stage", key: "fromStagePenaltyLabel", type: 'string' },
-    { alias: "TILL stage ", key: "tillStageLabel", type: "string" },
-    { alias: "greater than", key: "greaterThan", type: "string" },
-    { alias: "penalty type", key: "penaltyType", type: "string" },
-    { alias: "penalty value", key: "penaltyValue", type: "string" }
-
-
+    { alias: "FROM STAGE", key: "fromStagePenaltyLabel", type: 'string' },
+    { alias: "TILL STAGE", key: "tillStageLabel", type: "string" },
+    { alias: "TIME TAKEN (Days)", key: "greaterThan", type: "string" },
+    { alias: "PENALTY TYPE", key: "penaltyType", type: 'string' },
+    { alias: "PENALTY VALUE", key: "penaltyValue", type: 'string' }
   ],
   LineItems: [
     { alias: "Item Name", key: "name", type: 'string' },
