@@ -114,7 +114,12 @@ class Steps extends React.Component {
                                     ) : (
                                             <a href="#tab1" data-toggle="tab" className="step" aria-expanded="false">
                                                 <span className={'number'}>
-                                                    {(index + 1)}
+                                                    {
+                                                        sd.text && (sd.text)
+                                                    }
+                                                    {
+                                                        !(sd.text) && (index + 1)
+                                                    }
                                                 </span>
                                                 <span className="desc">
                                                     <i className="fa fa-check" style={{ 'position': 'inherit' }}></i>
