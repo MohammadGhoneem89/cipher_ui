@@ -8,10 +8,10 @@ const Product = props => {
   };
   let price = details.price ? details.price : details.unitPrice;
   return <div className="procard">
-    {!(details.receivedQuantity === undefined) && <div className="counterbadge">
+    {/* {!(details.receivedQuantity === undefined) && <div className="counterbadge">
       <span>{details.receivedQuantity}
       </span>
-    </div>}
+    </div>} */}
     <div>
 
       <div className="text-center proimg" onClick={onClick.bind(this, details)}>

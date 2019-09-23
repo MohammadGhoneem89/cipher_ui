@@ -66,11 +66,23 @@ const ProductDetail = props => {
             </div>
           </div>
           <div className="form-group margin">
+            
             <div className="row">
               <div className="col-md-3 ">
                 <label className="bold" style={{ overflowWrap: "inherit" }}>Print Time :</label>
               </div>
-              <div className="col-md-3 "><span>{details.printTime}</span></div>
+              <div className="col-md-3 "><span>{details.printTime}</span>
+              </div>
+              {!(details.receivedQuantity===undefined) && (
+                <div className="">
+                  <div className="col-md-3 ">
+                    <label className="bold" >Received Qty :</label>
+                  </div>
+                  <div className="col-md-3 ">
+                    <span>{details.receivedQuantity}</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           {/* <div className="form-group margin">
