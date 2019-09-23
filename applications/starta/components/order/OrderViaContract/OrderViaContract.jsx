@@ -86,6 +86,28 @@ class OrderViaContract extends React.Component {
     });
     return contractID;
   }
+
+  getLeadTime = () => {
+    let totalLeadTime = 0;
+    let calculateLeadTime = 1;
+    let firstTerm = 1.0;
+    
+    let items = [...this.state.cartItems];
+
+    for (let i = 0; i < items.length; i++) {
+      calculateLeadTime = 1;
+      for (let j = 1; j <= i; j++) {
+        firstTerm = 1.0;
+        if (items[i].quantity != 1) { firstTerm = 0.73 * items[i].quantity * items[i].printTime }
+        calculateLeadTime *= [firstTerm + items[i].leadTime]
+      }
+      totalLeadTime += calculateLeadTime;
+    }
+    
+    return  totalLeadTime
+  }
+
+
   placeOrder() {
     let totalLeadTime = 0;
     let calculateLeadTime = 1;
@@ -208,9 +230,21 @@ class OrderViaContract extends React.Component {
     formData.forEach(function (value, key) {
       cartItem[key] = value;
     });
-    console.log("cartItem", cartItem)
+
+
+    console.log(cartItem,'cart item')
+    let material = ''
+    for (let i=0;i<_.get(this.state,'itemCatalogue',[]).length;i++){
+      if (this.state.itemCatalogue[i].itemCode===cartItem.itemCode){
+        console.log(this.state.itemCatalogue[i],'found')
+        cartItem.leadTime = this.state.itemCatalogue[i].leadTime
+        cartItem.printTime = this.state.itemCatalogue[i].printTime
+        cartItem.material =  this.state.itemCatalogue[i].material
+        break
+      }
+    }
     let grandTotal = 0;
-    let cart = this.state.cartItems;
+    let cart = [...this.state.cartItems];
 
     if (cartItem.quantity == 0) {
       alert("Quantity cannot be zero!")
@@ -514,6 +548,7 @@ class OrderViaContract extends React.Component {
               setState={(data) => {
                 this.setState(data)
               }}
+              getLeadTime= {this.getLeadTime}
               placeOrder={this.placeOrder}
             />
           }
