@@ -203,8 +203,21 @@ class OneTimeOrder extends React.Component {
       cartItem[key] = value;
     });
 
+    console.log(cartItem,'cart item')
+    let material = ''
+    for (let i=0;i<_.get(this.state,'getItemCatalogue.searchResult',[]).length;i++){
+      if (this.state.getItemCatalogue.searchResult[i].itemCode===cartItem.itemCode){
+        console.log(this.state.getItemCatalogue.searchResult[i],'found')
+        cartItem.leadTime = this.state.getItemCatalogue.searchResult[i].leadTime
+        cartItem.printTime = this.state.getItemCatalogue.searchResult[i].printTime
+        cartItem.material =  this.state.getItemCatalogue.searchResult[i].material
+        break
+      }
+    }
+
+
     let grandTotal = 0;
-    let cart = this.state.cartItems;
+    let cart = [...this.state.cartItems];
 
     if (cartItem.quantity == 0) {
       alert("Quantity cannot be zero!")

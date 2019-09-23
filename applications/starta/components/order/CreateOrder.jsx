@@ -13,7 +13,7 @@ const CreateOrder = props => {
   }
   const { onClick, cartItems, state, setState, placeOrder } = props;
 
-  console.log(JSON.stringify(cartItems))
+  console.log(JSON.stringify(cartItems), "CART ITEMS")
   return <Portlet title="Create Order" noCollapse={true}>
     <a
       href="#"
@@ -22,13 +22,13 @@ const CreateOrder = props => {
         setState({ createOrder: false });
       }}>
       Add More Items </a>
-      {/* <br></br><br></br>
+      <br></br><br></br>
       <label >
         <b>Lead Time : </b>
       </label> 
       <label className='caption-subject' style={{marginLeft: "10px"}}>
         { props.getLeadTime() }
-      </label>  */}
+      </label> 
     <hr />
     <table id="fieldTable" className="table table-bordered table-striped table-responsive ordertable">
       <thead>
