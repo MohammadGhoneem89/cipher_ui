@@ -8,6 +8,7 @@ import TileUnit from '../../../core/common/tileUnit.jsx';
 import * as url from '../../../core/constants/Communication.js';
 import Table from '../../../core/common/Datatable.jsx';
 import * as requestCreator from '../../../core/common/request.js';
+import { setTimeout } from 'timers';
 
 class Dashboard extends React.Component {
 
@@ -67,7 +68,7 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        this.getDashboardData();
+        
         this.props.actions.generalProcess(url.getEntityList, requestCreator.createEntityListRequest({
             "currentPageNo": 1,
             "pageSize": 1
@@ -79,7 +80,8 @@ class Dashboard extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data.dashboardPendingGridData && nextProps.entityNames) {
+
+        if (nextProps.entityNames){
             let entityNames = [...nextProps.entityNames]
             entityNames = entityNames.filter((item)=> {
                 if (item.orgType==='CUSTOMER'){
@@ -88,16 +90,32 @@ class Dashboard extends React.Component {
                     return false
                 }
             })
+            this.setState({
+                entityNames: [...entityNames]
+            })
+            
+        }
+
+        // get dashboard data from first entityName for initial load
+        if (this.state.isLoading===true){
+            this.getDashboardData();
+        }
+
+        if (nextProps.data.dashboardPendingGridData) {
+            
             console.log(nextProps.data, "DATA")
             this.setState({
-                entityNames: [...entityNames],
                 getPendingOrders: nextProps.data.dashboardPendingGridData.pendingOrderRows,
                 getCompletedOrders: nextProps.data.dashboardCompletedGridData.completedOrderRows,
                 settlement: nextProps.data.dashboardSettlementGridData.settlementsRows,
                 customerWiseSettlement: nextProps.data.dashboardCustomerSettlement.customerWiseSettlement,
-                setPagingForSupplier: nextProps.supplierPageDate,
-                isLoading: false,
+                setPagingForSupplier: nextProps.supplierPageDate
             });
+            setTimeout(()=>{
+                this.setState({
+                    isLoading: false
+                })
+            },500)
         }
     }
     updateState = (e) => {
@@ -115,10 +133,22 @@ class Dashboard extends React.Component {
     }
     getDashboardData = () => {
         this.props.actions.generalProcess(url.supplierDashboardData, {
-            dashboardPendingGridData: this.state.dashboardPendingGridData,
-            dashboardCompletedGridData: this.state.dashboardCompletedGridData,
-            dashboardSettlementGridData: this.state.dashboardSettlementGridData,
-            dashboardCustomerSettlement: this.state.dashboardCustomerSettlement,
+            dashboardPendingGridData: {
+                ...this.state.dashboardPendingGridData,
+                customerID: this.state.dashboardPendingGridData.customerID || _.get(this.state,'entityNames[0].value','')
+            },
+            dashboardCompletedGridData: {
+                ...this.state.dashboardCompletedGridData,
+                customerID: this.state.dashboardPendingGridData.customerID || _.get(this.state,'entityNames[0].value','')
+            },
+            dashboardSettlementGridData: {
+                ...this.state.dashboardSettlementGridData,
+                customerID: this.state.dashboardPendingGridData.customerID || _.get(this.state,'entityNames[0].value','')
+            },
+            dashboardCustomerSettlement: {
+                ...this.state.dashboardCustomerSettlement,
+                customerID: this.state.dashboardPendingGridData.customerID || _.get(this.state,'entityNames[0].value','')
+            }
         });
 
     };
@@ -284,15 +314,10 @@ class Dashboard extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    //console.log(state.app.supplierDashboardData, "state.app.supplierDashboardData");
-    if (state.app.supplierDashboardData !== undefined) {
-
-        return {
-            data: state.app.supplierDashboardData.data,
-            entityNames: state.app.entityList.data.typeData.entityNames
-
-        };
-    }
+    return {
+        data: _.get(state.app,'supplierDashboardData.data',undefined),
+        entityNames: _.get(state.app,'entityList.data.typeData.entityNames',undefined)
+    };
 }
 
 function mapDispatchToProps(dispatch) {
