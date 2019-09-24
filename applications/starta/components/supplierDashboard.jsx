@@ -109,13 +109,10 @@ class Dashboard extends React.Component {
                 getCompletedOrders: nextProps.data.dashboardCompletedGridData.completedOrderRows,
                 settlement: nextProps.data.dashboardSettlementGridData.settlementsRows,
                 customerWiseSettlement: nextProps.data.dashboardCustomerSettlement.customerWiseSettlement,
-                setPagingForSupplier: nextProps.supplierPageDate
+                setPagingForSupplier: nextProps.supplierPageDate,
+                isLoading:false
             });
-            setTimeout(()=>{
-                this.setState({
-                    isLoading: false
-                })
-            },500)
+            
         }
     }
     updateState = (e) => {
