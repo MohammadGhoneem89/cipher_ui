@@ -133,19 +133,25 @@ class OneTimeOrder extends React.Component {
     };
     console.log(request, "request")
     if (this.state.cartItems && this.state.cartItems.length > 0) {
+      this.setState({
+        isLoading:true
+      })
       this.props.actions.generalAjxProcess(constants.createOrder,
         request).then(result => {
           console.log(result, "result")
-          result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
+          result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.successAction(result.orderID)
         });
     } else {
       toaster.showToast("Please add at least one item to place the order!", "ERROR");
       return false;
     }
   }
-  redirectToList = () => {
-    browserHistory.push('/strata/orderList')
-    toaster.showToast("Record updated successfully!");
+  successAction = (orderID) => {
+    browserHistory.push({
+      pathname : '/strata/orderList',
+      state: { orderID }
+    })
+    toaster.showToast("Order Created successfully!");
   }
   componentWillMount() {
     // let createOrd = document.getElementById('createOrder');

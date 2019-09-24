@@ -2,6 +2,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router';
 import * as utils from '../../../../../core/common/utils.js';
 import Table from '../../../../../core/common/Datatable.jsx';
 import * as actions from '../../../../../core/actions/generalAction';
@@ -110,16 +111,22 @@ class OrderList extends React.Component {
       orderSearch: {},
       fromDate: undefined,
       toDate: undefined,
-      orderStatus: ''
+      orderStatus: '',
+      orderIDhistory: true
     };
     this.generalHandler = gen.generalHandler.bind(this);
   }
 
-  getRequest = isFormSubmit => {
+  getRequest = (isFormSubmit, orderIDarg) => {
+
+    if (!(typeof (orderIDarg) === "string")){
+      orderIDarg = ''
+    }
+    
     let fromDate = this.state.fromDate,
       toDate = this.state.toDate,
       contractID = this.state.orderSearch.contractID || '',
-      orderID = this.state.orderSearch.orderID || '',
+      orderID = this.state.orderSearch.orderID || orderIDarg || '',
       orderStatus = this.state.orderStatus || '';
 
     let searchCriteria = {};
@@ -152,9 +159,11 @@ class OrderList extends React.Component {
     return request;
   };
 
-  formSubmit = () => {
-    this.props.actions.generalProcess(constants.getOrderList, this.getRequest(true));
+  formSubmit = (orderID= undefined) => {
+    this.props.actions.generalProcess(constants.getOrderList, this.getRequest(true, orderID));
   };
+
+
 
   componentWillReceiveProps(nextProps) {
  
@@ -167,6 +176,15 @@ class OrderList extends React.Component {
         typeData: nextProps.typeData,
         isLoading: false
       });
+
+      if (this.props.location.state){
+          if (!(this.props.location.state.orderID === _.get(this.state,'orderSearch.orderID',''))){
+            this.setState({
+              orderIDhistory: false
+            })
+          }
+      }
+
     }
   }
 
@@ -191,7 +209,22 @@ class OrderList extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['orderStatus']));
-    this.props.actions.generalProcess(constants.getOrderList, this.getRequest());
+    
+
+    console.log(this.props.location.state, 'PROPSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS')
+    if ( this.props.location.state && this.state.orderIDhistory ) {
+      this.setState({
+        orderSearch: {
+          ...this.state.orderSearch,
+          orderID: this.props.location.state.orderID,
+          orderIDhistory: false
+        }
+      })
+      console.log('submitting Form');
+      this.formSubmit(this.props.location.state.orderID)
+    } else {
+      this.props.actions.generalProcess(constants.getOrderList, this.getRequest());
+    } 
   }
 
   componentWillUnmount() {
@@ -260,7 +293,7 @@ class OrderList extends React.Component {
             </Col>
             <Col col="6">
               <Label text={utils.getLabelByID('Order ID')} columns="4" />
-              <Input fieldname="orderID" formname="orderSearch" columns="8" state={this.state}
+              <Input id="orderID" fieldname="orderID" formname="orderSearch" columns="8" state={this.state}
                 actionHandler={this.generalHandler} className="form-control" />
             </Col>
           </Row>
@@ -303,6 +336,28 @@ class OrderList extends React.Component {
               </div>
             </div>
           </div>
+
+          {
+            ( this.props.location.state && this.state.orderIDhistory ) && 
+              <div>
+                
+                  <div className="alert alert-light" role="alert">
+                    
+                  </div>
+
+
+                  <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">Order Created</h4>
+                    <p>Succesfull creation of order with order id : <b>{this.props.location.state.orderID}</b></p>
+                  </div>
+               
+                
+              </div>
+            
+          }
+
+
+
         </Portlet>
         <Portlet title={'Orders'} actions={this.state.actions} isPermissioned={true}>
           {this.state.gridData.map(obj => {
