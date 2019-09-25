@@ -222,7 +222,6 @@ export default function Timeline(props) {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn dark btn-outline" data-dismiss="modal" onClick={props.closePortlet}>Close</button>
-                        <button type="button" className="btn green">Save changes</button>
                     </div>
                 </div>
                 {/* <!-- /.modal-content --> */}
