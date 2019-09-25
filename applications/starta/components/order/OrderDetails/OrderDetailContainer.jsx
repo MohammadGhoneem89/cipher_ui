@@ -33,6 +33,7 @@ class OrderDetailContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      processor: "",
       receiptModalBoxGrid: false,
       optionalStatusValue: "",
       receiptModalBox: false,
@@ -63,7 +64,7 @@ class OrderDetailContainer extends React.Component {
   generateQRCode(BlockChainAddress) {
     let qrString = '/hyperledger/hashSearch/' + BlockChainAddress;
     return (<div><QRCodeJquery size="116" errorCorrectionLevel="H" qrString={qrString} />
-      <span><a href={qrString} target="_app">View</a></span><span style={{  fontSize: 5, width: "116px" }} /></div>)
+      <span><a href={qrString} target="_app">View</a></span><span style={{ fontSize: 5, width: "116px" }} /></div>)
   }
 
   getStatusLabel = status => {
@@ -100,7 +101,7 @@ class OrderDetailContainer extends React.Component {
           let item = {
             itemCode: elem.itemCode,
             receiptNo: recItm.receiptNo,
-            receiptDate:  utils.UNIXConvertToDate(recItm.receiptDate),
+            receiptDate: utils.UNIXConvertToDate(recItm.receiptDate),
             receiptQuantity: recItm.quantity,
             item: elem.name
           }
@@ -116,13 +117,13 @@ class OrderDetailContainer extends React.Component {
       this.setState({
         orderDetail: {
           ...nextProps.orderDetail,
-          transactionID:'92217a5a5cfa4e704df5e6cf464ea7c4da3030d75b2a07e1def291f9b90c5fe9'
+          transactionID: '92217a5a5cfa4e704df5e6cf464ea7c4da3030d75b2a07e1def291f9b90c5fe9'
         },
 
         isLoading: false,
         receipt: recList,
         typeData: nextProps.typeData
-      }); 
+      });
     }
   }
 
@@ -162,7 +163,7 @@ class OrderDetailContainer extends React.Component {
           });
           //General process wait load state
           this.setState({
-            isLoading:true
+            isLoading: true
           })
           window.scrollTo(0, 0);
 
@@ -175,19 +176,25 @@ class OrderDetailContainer extends React.Component {
           });
           //General process wait load state
           this.setState({
-            isLoading:true
+            isLoading: true
           })
           window.scrollTo(0, 0);
         }
         break;
-      case 2:
+      case 2: {
         //component manufacture substatus
         this.optionalStatusModalBoxChangeState();
         break;
-      case 3:
+      }
+      case 3: {
+        console.log(element.processor, ' Processor')
         //receipt popup
+        this.setState({
+          processor: element.processor
+        })
         this.receiptModalBoxChangeState();
         break;
+      }
       default:
         break;
     }
@@ -252,7 +259,7 @@ class OrderDetailContainer extends React.Component {
   optionalStatusHandleSubmit = (e) => {
     e.preventDefault();
     console.log(this.state.optionalStatusValue, "valueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-    if (this.state.optionalStatusValue === ""){
+    if (this.state.optionalStatusValue === "") {
       alert("Status must be selected to update.")
       return;
     }
@@ -267,17 +274,17 @@ class OrderDetailContainer extends React.Component {
     this.optionalStatusModalBoxChangeState();
     //General process wait load state
     this.setState({
-      isLoading:true
+      isLoading: true
     })
     window.scrollTo(0, 0);
   }
 
   timeLineViewModalBoxItem = () => {
     return (
-      
-        <Timeline
-          closePortlet={this.timeLineViewModalBoxChangeState}
-        />
+
+      <Timeline
+        closePortlet={this.timeLineViewModalBoxChangeState}
+      />
     )
   }
   // getReceiveDate = (activities) => {
@@ -296,9 +303,11 @@ class OrderDetailContainer extends React.Component {
 
   // }
   receiptModalBoxItem = () => {
+    console.log(this.state.processor, ' :processor2')
     return (
       <Receipt
-        parent = {this}
+        processor= {this.state.processor}
+        parent={this}
         closePortlet={this.receiptModalBoxChangeState}
         items={this.getItems()}
         orderID={this.props.orderID}
@@ -331,7 +340,7 @@ class OrderDetailContainer extends React.Component {
             <div className={'timeline-popup-order'}>
               {this.state.timelineViewModalBox && this.timeLineViewModalBoxItem()}
             </div>
-            
+
             <ModalBox isOpen={this.state.optionalStatusModalBox}>
               {this.optionalStatusModalBoxItem()}
             </ModalBox>
@@ -381,105 +390,105 @@ class OrderDetailContainer extends React.Component {
                     <div className="form-group">
                       <Row>
                         <Col col="4">
-                          <Label columns="12" style={{fontSize:22}} text={this.state.orderDetail.entityName}></Label>
+                          <Label columns="12" style={{ fontSize: 22 }} text={this.state.orderDetail.entityName}></Label>
                         </Col>
-                        <Col col="8" className='pull-right' style={{marginRight:'-13%'}}>
+                        <Col col="8" className='pull-right' style={{ marginRight: '-13%' }}>
                           <Col col="4">
-                            <img className='img-thumbnail img-rounded' src={baseUrl + this.state.orderDetail.entityLogo} style={{width:'120px'}} onError={this.errorHandler}/>
+                            <img className='img-thumbnail img-rounded' src={baseUrl + this.state.orderDetail.entityLogo} style={{ width: '120px' }} onError={this.errorHandler} />
                           </Col>
                           <Col col="4">
                             {this.state.orderDetail.transactionID && this.generateQRCode(this.state.orderDetail.transactionID)}
                           </Col>
-                          
+
                         </Col>
                       </Row>
                       <Row>
                         <Col col="12">
-                        {
-                          this.state.orderDetail.transactionID ? (
-                            <Label columns="12" className="hashno" text={this.state.orderDetail.transactionID} style={{  marginTop: "-7%"}} ></Label>
-                          ) : (
-                            <Label columns="12" className="hashno" text={this.state.orderDetail.orderID} style={{  marginTop: "-7%"}}></Label>
-                          )
-                        }
-                          
+                          {
+                            this.state.orderDetail.transactionID ? (
+                              <Label columns="12" className="hashno" text={this.state.orderDetail.transactionID} style={{ marginTop: "-7%" }} ></Label>
+                            ) : (
+                                <Label columns="12" className="hashno" text={this.state.orderDetail.orderID} style={{ marginTop: "-7%" }}></Label>
+                              )
+                          }
+
                         </Col>
                       </Row>
                     </div>
 
-               
-                    
-              
+
+
+
 
                     <div className="form-group">
                       <Row>
                         <Col col="6">
-                          <Label columns="6" text="Order Raised By:"></Label>
-                          <Col col="6" className="orderperson">
-                            <img  src={baseUrl + this.state.orderDetail.raisedByPic} width="25" style={{marginRight:5, borderRadius: "50% !important" }} onError={this.errorHandler} />
+                          <Label columns="3" text="Order Raised By:"></Label>
+                          <Col col="9" className="orderperson">
+                            <img src={baseUrl + this.state.orderDetail.raisedByPic} width="25" style={{ marginRight: 5, borderRadius: "50% !important" }} onError={this.errorHandler} />
                             <span>{this.state.orderDetail.raisedByName}</span>
                           </Col>
                         </Col>
 
                         <Col col="6">
-                          <Label columns="6" text="Amount:"></Label>
-                          <Col col="6">
+                          <Label columns="3" text="Amount:"></Label>
+                          <Col col="9">
                             <span>AED {utils.formatAmountField(this.state.orderDetail.orderAmount || 0)}</span>
                           </Col>
                         </Col>
                       </Row>
                       <Row>
                         <Col col="6">
-                          <Label columns="6" text="Quotation Date:"></Label>
-                          <Col col="6">
+                          <Label columns="3" text="Quotation Date:"></Label>
+                          <Col col="9">
                             <span>{this.state.orderDetail.orderDate && (this.state.orderDetail.orderDate).split(' ')[0]}</span>
                           </Col>
                         </Col>
                         <Col col="6">
-                          <Label columns="6" text="Received Date:"></Label>
-                          <Col col="6">
+                          <Label columns="3" text="Received Date:"></Label>
+                          <Col col="9">
                             <span>{this.state.orderDetail.receivedDate && (this.state.orderDetail.receivedDate).split(' ')[0]}</span>
                           </Col>
                         </Col>
                       </Row>
                       <Row>
                         <Col col="6">
-                          <Label columns="6" text="Invoice Ref No:"></Label>
-                          <Col col="6">
+                          <Label columns="3" text="Invoice Ref No:"></Label>
+                          <Col col="9">
                             <span>{_.get(this.state.orderDetail, "invoice.invoiceRefNo", "")}</span>
                           </Col>
                         </Col>
                         <Col col="6">
-                          <Label columns="6" text="Invoice Date:"></Label>
-                          <Col col="6">
-                            <span>{_.get(this.state.orderDetail, "invoice.invoiceDate")  && _.get(this.state.orderDetail, "invoice.invoiceDate").split(' ')[0]}</span>
+                          <Label columns="3" text="Invoice Date:"></Label>
+                          <Col col="9">
+                            <span>{_.get(this.state.orderDetail, "invoice.invoiceDate") && _.get(this.state.orderDetail, "invoice.invoiceDate").split(' ')[0]}</span>
                           </Col>
                         </Col>
                       </Row>
                       <Row>
                         <Col col="6">
-                          <Label columns="6" text="Invoice Amount:"></Label>
-                          <Col col="6">
+                          <Label columns="3" text="Invoice Amount:"></Label>
+                          <Col col="9">
                             <span>AED {utils.formatAmountField(_.get(this.state.orderDetail, "invoice.amount", 0))}</span>
                           </Col>
                         </Col>
                         <Col col="6">
-                          <Label columns="6" text="Credit Note Ref No:"></Label>
-                          <Col col="6">
+                          <Label columns="3" text="Credit Note Ref No:"></Label>
+                          <Col col="9">
                             <span>{_.get(this.state.orderDetail, "creditNotes.creditNoteRefNo", "")}</span>
                           </Col>
                         </Col>
                       </Row>
                       <Row>
                         <Col col="6">
-                          <Label columns="6" text="Credit Note Date:"></Label>
-                          <Col col="6">
+                          <Label columns="3" text="Credit Note Date:"></Label>
+                          <Col col="9">
                             <span>{_.get(this.state.orderDetail, "creditNotes.creditNoteDate")}</span>
                           </Col>
                         </Col>
                         <Col col="6">
-                          <Label columns="6" text="Credit Note Amount:"></Label>
-                          <Col col="6">
+                          <Label columns="3" text="Credit Note Amount:"></Label>
+                          <Col col="9">
                             <span>AED {utils.formatAmountField(_.get(this.state.orderDetail, "creditNotes.creditNoteAmount", 0))}</span>
                           </Col>
                         </Col>
@@ -558,8 +567,8 @@ class OrderDetailContainer extends React.Component {
                 })}
 
                 <a onClick={this.timeLineViewModalBoxChangeState} className="btn stratabtnstyle" style={{ marginLeft: 10 }}>Timeline View</a>
-                {parseInt(_.get(this.state.orderDetail,'status','0')) >= 10 && <a onClick={this.openReceiptModal} className="btn stratabtnstyle" style={{ marginLeft: 10 }}>View Receipts</a> }
-                
+                {parseInt(_.get(this.state.orderDetail, 'status', '0')) >= 10 && <a onClick={this.openReceiptModal} className="btn stratabtnstyle" style={{ marginLeft: 10 }}>View Receipts</a>}
+
               </div>
             </div>
           </div>
@@ -570,7 +579,7 @@ class OrderDetailContainer extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
- // console.log(_.get(state.app, 'orderDetail', undefined), "orderDetail: _.get(state.app, 'orderDetail.order', undefined),")
+  // console.log(_.get(state.app, 'orderDetail', undefined), "orderDetail: _.get(state.app, 'orderDetail.order', undefined),")
   return {
     typeData: state.app.typeData.data,
     orderDetail: _.get(state.app, 'orderDetail.order', undefined),

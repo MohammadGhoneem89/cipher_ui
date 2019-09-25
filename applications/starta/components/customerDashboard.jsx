@@ -257,8 +257,8 @@ class Dashboard extends React.Component {
                             <div className="row">
                                 <div className="col-md-12">
                                     <Table TableClass="portlet light bordered sdg_portlet"
-                                        title={utils.getLabelByID("Supplier wise Settlement")}
-                                        gridColumns={utils.getGridColumnByName("customerWiseSettlement")}
+                                        title={utils.getLabelByID("Settlement")}
+                                        gridColumns={utils.getGridColumnByName("customerSettlement")}
                                         gridData={this.state.customerWiseSettlement}
                                         totalRecords={this.props.data.dashboardCustomerSettlement.pageData.totalRecords}
                                         activePage={this.state.dashboardCustomerSettlement.pageData.currentPageNo}

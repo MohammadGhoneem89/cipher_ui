@@ -121,15 +121,29 @@ class Receipt extends Component {
             return
         }
 
-        console.log('Form submit')
-        this.props.actions.generalProcess(constants.updateOrderStatusCustomer, {
-            "body": {
-                "orderID": this.state.orderID,
-                "customerID": this.state.customerID,
-                "status": "011",// Recieved Status
-                itemReceipts: this.state.displayItems
-            }
-        });
+        console.log(this.props.processor, ' : Form submit')
+        
+        if (this.props.processor==='SUPPLIER'){
+
+            this.props.actions.generalProcess(constants.updateOrderStatus, {
+                "body": {
+                  "orderID": this.props.orderID,
+                  "customerID": this.props.customerID,
+                  "status": "011",// Recieved Status
+                  itemReceipts: this.state.displayItems
+                }
+              });
+
+        } else {
+            this.props.actions.generalProcess(constants.updateOrderStatusCustomer, {
+                "body": {
+                  "orderID": this.props.orderID,
+                  "status": "011",// Recieved Status
+                  itemReceipts: this.state.displayItems
+                }
+              });
+        }
+        
 
         //General process wait load state
         this.props.parent.setState ({
