@@ -63,7 +63,7 @@ class Steps extends React.Component {
 
     getArrow(index, statusLength) {
         if (index != statusLength - 1)
-            return (<i className="fa fa-long-arrow-right" aria-hidden="true" style={{ marginTop: '25%' }}></i>)
+            return (<i className="fa fa-long-arrow-right" aria-hidden="true"></i>)
     }
     getLiCSS(sd) {
         if (sd.type && sd.type == 'ERROR')

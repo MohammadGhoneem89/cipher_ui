@@ -236,7 +236,7 @@ i.fa.fa-search {
 .form-wizard.stratawizard {
     margin-top: 20px;
 }
-.form-wizard.stratawizard .nav-justified.steps .fa-long-arrow-right:before {
+/* .form-wizard.stratawizard .nav-justified.steps .fa-long-arrow-right:before {
     content: "" !important;
     position: absolute !important;
     left: 50% !important;
@@ -247,7 +247,7 @@ i.fa.fa-search {
     height: 3px !important;
     z-index: 9 !important;
 
-}
+} */
 .form-wizard.stratawizard .steps > li > a.step > .desc{
     display: block;
     font-size: 12px;

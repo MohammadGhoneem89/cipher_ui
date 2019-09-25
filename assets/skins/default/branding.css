@@ -1866,7 +1866,7 @@ td {
 	position: initial;
 }
 
-.form-wizard .nav-justified.steps .fa-long-arrow-right:before {
+/* .form-wizard .nav-justified.steps .fa-long-arrow-right:before {
 	content: "" !important;
 	position: absolute !important;
 	left: 50% !important;
@@ -1876,7 +1876,7 @@ td {
 	background-color: #eeeeee !important;
 	height: 3px !important;
 	z-index: 9 !important;
-}
+} */
 
 .form-wizard .desc {
 	padding-top: 10px !important;
@@ -3343,7 +3343,7 @@ i.fa.fa-search {
 .form-wizard.stratawizard {
     margin-top: 20px;
 }
-.form-wizard.stratawizard .nav-justified.steps .fa-long-arrow-right:before {
+/* .form-wizard.stratawizard .nav-justified.steps .fa-long-arrow-right:before {
     content: "" !important;
     position: absolute !important;
     left: 50% !important;
@@ -3354,7 +3354,7 @@ i.fa.fa-search {
     height: 3px !important;
     z-index: 9 !important;
 
-}
+} */
 .form-wizard.stratawizard .steps > li > a.step > .desc{
     display: block;
     font-size: 12px;
@@ -3703,22 +3703,4 @@ span.DeviceIdno {
 ul.sub-menu li.nav-item {
     text-align: center;
 }
-}
-
-
-i.fa.fa-long-arrow-right:after {
-    content: "";
-    width: 0;
-    height: 0;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-left: 15px solid #eeeeee;
-    position: absolute;
-    top: 47px;
-    right: -45px;
-    z-index: 85;
-}
-
-.ReactModalPortal .ReactModal__Content.ReactModal__Content--after-open {
-    transform: unset!important;
 }
