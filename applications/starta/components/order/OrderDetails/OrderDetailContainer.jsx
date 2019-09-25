@@ -274,9 +274,10 @@ class OrderDetailContainer extends React.Component {
 
   timeLineViewModalBoxItem = () => {
     return (
-      <Timeline
-        closePortlet={this.timeLineViewModalBoxChangeState}
-      />
+      
+        <Timeline
+          closePortlet={this.timeLineViewModalBoxChangeState}
+        />
     )
   }
   // getReceiveDate = (activities) => {
@@ -327,10 +328,10 @@ class OrderDetailContainer extends React.Component {
       return (
         <div>
           <div id="Modal Boxes">
-            <ModalBox isOpen={this.state.timelineViewModalBox}>
-              {this.timeLineViewModalBoxItem()}
-            </ModalBox>
-
+            <div className={'timeline-popup-order'}>
+              {this.state.timelineViewModalBox && this.timeLineViewModalBoxItem()}
+            </div>
+            
             <ModalBox isOpen={this.state.optionalStatusModalBox}>
               {this.optionalStatusModalBoxItem()}
             </ModalBox>

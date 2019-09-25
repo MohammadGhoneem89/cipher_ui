@@ -217,12 +217,13 @@ class OneTimeOrder extends React.Component {
         cartItem.leadTime = this.state.getItemCatalogue.searchResult[i].leadTime
         cartItem.printTime = this.state.getItemCatalogue.searchResult[i].printTime
         cartItem.material =  this.state.getItemCatalogue.searchResult[i].material
+        cartItem.price = this.state.getItemCatalogue.searchResult[i].price
         break
       }
     }
 
 
-    let grandTotal = 0;
+    let grandTotal = 0.0;
     let cart = [...this.state.cartItems];
 
     if (cartItem.quantity == 0) {
@@ -235,15 +236,15 @@ class OneTimeOrder extends React.Component {
     cart.map(element => {
       if (element.itemCode === cartItem.itemCode && element.color === cartItem.color) {
         isNewItem = false;
-        element.quantity = parseInt(element.quantity) + parseInt(cartItem.quantity);
+        element.quantity = parseFloat(parseInt(element.quantity)) + parseFloat(parseInt(cartItem.quantity));
       }
     });
     if (isNewItem) {
       cart.push(cartItem);
     }
     cart.forEach(element => {
-      element.quantity = parseInt(element.quantity);
-      element.price = parseInt(element.price);
+      element.quantity = parseFloat(parseInt(element.quantity));
+      element.price = parseFloat(element.price);
       element.total = element.quantity * element.price;
     });
     cart.forEach(element => {

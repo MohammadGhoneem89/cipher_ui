@@ -49,9 +49,9 @@ const CreateOrder = props => {
             <td className="moveCenter"><i className="fa fa-remove" onClick={() => {
               let cart = [...cartItems];
               cart.splice(index, 1);
-              let grandTotal = 0;
+              let grandTotal = 0.0;
               cart.forEach(element => {
-                element.total = element.quantity * parseInt(element.price)
+                element.total = parseFloat(parseInt(element.quantity)) * parseFloat(element.price)
               });
               cart.forEach(element => {
                 grandTotal += element.total
@@ -76,13 +76,13 @@ const CreateOrder = props => {
             <td className="moveRight" style={{
               textAlign: "right",
               fontWeight: 'bold'
-            }}>{utils.formatAmountField(item.price * item.quantity)}</td>
+            }}>{utils.formatAmountField( parseFloat(parseInt(item.quantity)) * parseFloat(item.price))}</td>
           </tr>;
         })}
         <tr>
-          <td className="text-right" colSpan="5"><b>Grand Total</b></td>
+          <td className="text-right" colSpan="5"><b style={{ fontSize: '14px'}}>Grand Total</b></td>
           <td colSpan="3" className="moveRight">
-            <spans style={{ color: "#c20c35", fontWeight: 625, textAlign: "right", fontSize: '14px' }}>{"AED "   + utils.formatAmountField(state.grandTotal)}
+            <spans style={{ color: "#c20c35", fontWeight: 625, textAlign: "right", fontSize: '16px' }}>{"AED "   + utils.formatAmountField(state.grandTotal)}
             </spans>
           </td>
         </tr>
