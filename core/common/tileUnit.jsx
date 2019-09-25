@@ -33,8 +33,10 @@ class TileUnit extends React.Component {
     }
 
     abbreviateNumber(value) {
+        // Converts number to at most 2 decimal places
+        value= Math.round(value * 100) / 100
         let newValue = value;
-        if (value >= 1000) {
+        if (Math.abs(value) >= 1000) {
             let suffixes = ["", "K", "M", "B", "T"];
             let suffixNum = Math.floor(("" + value).length / 3);
             let shortValue = '';
