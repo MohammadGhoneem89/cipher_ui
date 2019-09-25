@@ -281,10 +281,14 @@ class OrderDetailContainer extends React.Component {
 
   timeLineViewModalBoxItem = () => {
 
-    let activities = []
+    let activities = [{
+      stage:  '001',
+      date: '',
+      actionBy: ''
+    }]
     this.state.orderDetail.activities.forEach(activity=>{
       activities.push({
-        stage: activity.toStage || '001',
+        stage: activity.toStage,
         date: activity.date,
         actionBy: activity.actionBy
       })

@@ -12,13 +12,13 @@ export default function Timeline(props) {
         "/assets/Resources/description.png",
         "/assets/Resources/code.png",
         "/assets/Resources/order.png",
+        "/assets/Resources/assembly.png",
+        "/assets/Resources/painting.png",
         "/assets/Resources/tracking.png",
-        "/assets/Resources/tracking.png",
-        "/assets/Resources/tracking.png",
-        "/assets/Resources/tracking.png",
-        "/assets/Resources/tracking.png",
-        "/assets/Resources/tracking.png",
-        "/assets/Resources/tracking.png"
+        "/assets/Resources/delivery.png",
+        "/assets/Resources/inspection.png",
+        "/assets/Resources/acceptance.png",
+        "/assets/Resources/rejected.png"
     ]
     const actions = [
        "Order Received",
@@ -71,8 +71,9 @@ export default function Timeline(props) {
                                 </div>
                             </div>
                             <div className="timeline-body-content">
-                                <span className="trckdate">{dateValue} </span>
-                                <span className="trcktime">{timeValue}</span>
+                                
+                                {dateValue && <span className="trckdate">{dateValue} </span>}
+                                {timeValue && <span className="trcktime">{timeValue}</span>}
 
                                 <div className="remark">
                                     <span className="font-grey-cascade">{actionBy} </span>
