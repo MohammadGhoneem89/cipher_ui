@@ -3704,3 +3704,21 @@ ul.sub-menu li.nav-item {
     text-align: center;
 }
 }
+
+
+i.fa.fa-long-arrow-right:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 15px solid #eeeeee;
+    position: absolute;
+    top: 47px;
+    right: -45px;
+    z-index: 85;
+}
+
+.ReactModalPortal .ReactModal__Content.ReactModal__Content--after-open {
+    transform: unset!important;
+}

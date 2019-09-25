@@ -3,7 +3,7 @@ import Portlet from '../../../../../core/common/Portlet.jsx';
 
 export default function Timeline(props) {
     return (
-       
+        <div className="modal fade in" id="full-width" tabindex="-1" role="basic" aria-hidden="true" style={{ display: "block"}}>
 
             <div className="modal-dialog ordertrack">
                 <div className="modal-content">
@@ -17,10 +17,34 @@ export default function Timeline(props) {
                         <div className="timeline  white-bg ">
                             {/* <!-- TIMELINE ITEM --> */}
                             <div className="timeline-item">
-                                {/* <div className="timeline-badge green">
+                                <div className="timeline-badge green">
                                     <i className="fa fa-check" aria-hidden="true"></i>
 
-                                </div> */}
+                                </div>
+                                <div className="timeline-body">
+                                    <div className="timeline-body-arrow"><img src="/assets/Resources/delivery.png" /></div>
+                                    <div className="timeline-body-head">
+                                        <div className="timeline-body-head-caption">
+                                            <a href="javascript:;">Order Received</a>
+                                        </div>
+                                    </div>
+                                    <div className="timeline-body-content">
+                                        <span className="trckdate">22/04/2019</span>
+                                        <span className="trcktime">22/04/2019</span>
+
+                                        <div className="remark">
+                                            <span className="font-grey-cascade">Remarks <i className="fa fa-minus-circle"
+                                                aria-hidden="true"></i></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="timeline-item">
+                                <div className="timeline-badge green">
+                                    <i className="fa fa-check" aria-hidden="true"></i>
+                                </div>
                                 <div className="timeline-body">
                                     <div className="timeline-body-arrow"><img src="/assets/Resources/purchase.png" /></div>
                                     <div className="timeline-body-head">
@@ -203,6 +227,6 @@ export default function Timeline(props) {
                 </div>
                 {/* <!-- /.modal-content --> */}
             </div>
-
+        </div>
     )
 }
