@@ -63,7 +63,7 @@ class OrderDetailContainer extends React.Component {
 
   generateQRCode(BlockChainAddress) {
     let qrString = '/hyperledger/hashSearch/' + BlockChainAddress;
-    return (<div><QRCodeJquery size="116" errorCorrectionLevel="H" qrString={qrString} />
+    return (<div><QRCodeJquery size="155" errorCorrectionLevel="H" qrString={qrString} />
       <span><a href={qrString} target="_app">View</a></span><span style={{ fontSize: 5, width: "116px" }} /></div>)
   }
 
@@ -387,12 +387,12 @@ class OrderDetailContainer extends React.Component {
                   <br />
 
                   <div className="shadowBox Courierbox">
-                    <div className="form-group">
+                    <div className="form-group" style={{ marginBottom: "0px"}}>
                       <Row>
                         <Col col="4">
-                          <Label columns="12" style={{ fontSize: 22 }} text={this.state.orderDetail.entityName}></Label>
+                          <Label columns="12" style={{ fontSize: 22, marginTop: '10px' }} text={this.state.orderDetail.entityName}></Label>
                         </Col>
-                        <Col col="8" className='pull-right' style={{ marginRight: '-13%' }}>
+                        <Col col="8" className='pull-right' style={{ marginRight: '-28%' }}>
                           <Col col="4">
                             <img className='img-thumbnail img-rounded' src={baseUrl + this.state.orderDetail.entityLogo} style={{ width: '120px' }} onError={this.errorHandler} />
                           </Col>
@@ -406,9 +406,9 @@ class OrderDetailContainer extends React.Component {
                         <Col col="12">
                           {
                             this.state.orderDetail.transactionID ? (
-                              <Label columns="12" className="hashno" text={this.state.orderDetail.transactionID} style={{ marginTop: "-7%" }} ></Label>
+                              <Label columns="12" className="hashno" text={this.state.orderDetail.transactionID} style={{ marginTop: "-8%" }} ></Label>
                             ) : (
-                                <Label columns="12" className="hashno" text={this.state.orderDetail.orderID} style={{ marginTop: "-7%" }}></Label>
+                                <Label columns="12" className="hashno" text={this.state.orderDetail.orderID} style={{ marginTop: "-8%" }}></Label>
                               )
                           }
 
@@ -416,11 +416,7 @@ class OrderDetailContainer extends React.Component {
                       </Row>
                     </div>
 
-
-
-
-
-                    <div className="form-group">
+                    <div className="form-group" style={{marginTop: '0px'}}>
                       <Row>
                         <Col col="6">
                           <Label columns="3" text="Order Raised By:"></Label>
@@ -487,9 +483,9 @@ class OrderDetailContainer extends React.Component {
                           </Col>
                         </Col>
                         <Col col="6">
-                          <Label columns="3" text="Credit Note Amount:"></Label>
-                          <Col col="9">
-                            <span>AED {utils.formatAmountField(_.get(this.state.orderDetail, "creditNotes.creditNoteAmount", 0))}</span>
+                          <Label columns="4" text="Credit Note Amount:"></Label>
+                          <Col col="5">
+                            <span style={{marginLeft:'-53px'}}>AED {utils.formatAmountField(_.get(this.state.orderDetail, "creditNotes.creditNoteAmount", 0))}</span>
                           </Col>
                         </Col>
                       </Row>
