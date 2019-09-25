@@ -280,9 +280,20 @@ class OrderDetailContainer extends React.Component {
   }
 
   timeLineViewModalBoxItem = () => {
+
+    let activities = []
+    this.state.orderDetail.activities.forEach(activity=>{
+      activities.push({
+        stage: activity.toStage || '001',
+        date: activity.date,
+        actionBy: activity.actionBy
+      })
+    })
     return (
 
       <Timeline
+        activities={activities}
+        orderID={this.props.orderID}
         closePortlet={this.timeLineViewModalBoxChangeState}
       />
     )
