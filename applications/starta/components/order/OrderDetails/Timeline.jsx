@@ -5,7 +5,7 @@ export default function Timeline(props) {
     return (
        
 
-            <div className="modal-dialog">
+            <div className="modal-dialog ordertrack">
                 <div className="modal-content">
                     <div className="modal-header">
                         <div className="imgicon"><img src="/assets/Resources/OptimizationBox.png" /></div>

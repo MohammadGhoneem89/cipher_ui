@@ -3361,11 +3361,12 @@ i.fa.fa-search {
     font-weight: 600;
     color: grey;
 }
+
 .form-wizard.stratawizard .steps>li>a.step>.number {
     margin: 0 auto;
     width: 3em;
     height: 3em;
-    padding: 12 !important;
+    padding: 6px !important;
     position: relative;
     z-index: 99;
     border: 2px solid;
@@ -3373,7 +3374,11 @@ i.fa.fa-search {
     border-color: #c20c35;
     font-weight: 700;
     background-color: white;
+    display: block;
+    text-align: center;
+    line-height: 32px;
 }
+
 label.hashno {
     background-color: green;
     color: white;
