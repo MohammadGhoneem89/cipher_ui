@@ -680,7 +680,16 @@ class AddMasterAgreement extends React.Component {
         const status = this.state.typeData ? this.state.typeData.orderStatus : []
         const shipmentType = this.state.typeData ? this.state.typeData.shipmentType : []
         const paymentTypess = this.state.typeData ? this.state.typeData.paymentType : []
-        const customerList = this.state.typeData ? this.state.entityNames : []
+        let customerList = this.state.typeData ? this.state.entityNames : []
+
+        customerList = customerList.filter(item=>{
+            if (item.orgType === 'CUSTOMER'){
+                return true
+            }
+            return false
+        })
+
+
         if (this.state.isLoading) {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         }
