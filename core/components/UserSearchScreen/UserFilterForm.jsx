@@ -23,69 +23,70 @@ const UserFilterForm = props => {
         <form role="form" onSubmit={handleSubmit}>
             <div className="row">
                 <div className="col-md-12 col-sm-12">
-                    <div className="row">
-                        <div className="col-md-4 col-sm-4">
-                            <TextInput
-                                name="userID"
-                                label="User ID"
-                                type="text"
-                            />
-                        </div>
-                        <div className="col-md-4 col-sm-4">
-                            <TextInput
-                                name="firstName"
-                                label="Firt Name"
-                                type="text"
-                            />
-                        </div>
 
+                    <div className="col-md-6 col-sm-6">
+                        <TextInput
+                            name="userID"
+                            label="User ID"
+                            type="text"
+                        />
+                    </div>
+                    <div className="col-md-6 col-sm-6">
+                        <TextInput
+                            name="firstName"
+                            label="Firt Name"
+                            type="text"
+                        />
                     </div>
 
-					{false &&
-                    <div className="row">
-                        <div className="col-md-4 col-sm-4">
-                            <TextInput
-                                name="lastName"
-                                label="Last Name"
-                                type="text"
-                            />
-                        </div>
-                        <div className="col-md-4 col-sm-4">
-                            {userType != 'Entity' && userType != 'Acquirer' &&
-                                <DropdownInput name="orgType" options={orgType}
-                                    label="Organization Type"
+
+
+                    {false &&
+                        <div>
+                            <div className="col-md-6 col-sm-6">
+                                <TextInput
+                                    name="lastName"
+                                    label="Last Name"
+                                    type="text"
+                                />
+                            </div>
+                            <div className="col-md-6 col-sm-6">
+                                {userType != 'Entity' && userType != 'Acquirer' &&
+                                    <DropdownInput name="orgType" options={orgType}
+                                        label="Organization Type"
                                     />
-                            }
+                                }
+                            </div>
                         </div>
-                    </div>
-					}
-                    <div className="row">
-                        <div className="col-md-4 col-sm-4">
-                    
+                    }
 
-                    <DropdownInput name="userType" options={callerType}
-                        label="User Type"
-                         />
-                    </div>
+                    <div className="col-md-6 col-sm-6">
+
+
+                        <DropdownInput name="userType" options={callerType}
+                            label="User Type"
+                        />
                     </div>
 
-
-                </div>
-
-                <div className="row">
                     <div className="col-md-12">
-                        <div className="pull-right">
-                            <button type="submit" className="btn green" disabled={submitting}>
-                                Search
+                        <div className="col-md-12">
+                            <div className="pull-right">
+                                <button type="submit" className="btn green" disabled={submitting}>
+                                    Search
                             </button>
-                            {"  "}
-                            <button type="button" className="btn default" disabled={pristine || submitting} onClick={reset}>
-                                Clear
+                                {"  "}
+                                <button type="button" className="btn default"  onClick={reset}>
+                                    Clear
                             </button>
-                            {"  "}
+                                {"  "}
+                            </div>
                         </div>
                     </div>
                 </div>
+
+
+
+
 
             </div>
         </form>

@@ -61,11 +61,11 @@ class EmailTemplateContainer extends React.Component {
     render() {
         if (!this.state.isLoading) {
             return (
-                <Portlet title={"Create Email Template"}>
+                
                     <EmailTemplateForm onSubmit={this.submit} initialValues={this.state.emailTemplateDetail}
                                        containerState={this.state}
                                        containerProps={this.props}/>
-                </Portlet>
+               
             );
         }
         else {

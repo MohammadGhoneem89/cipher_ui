@@ -49,6 +49,20 @@ const TemplateDetails = ({ error, initialValues, containerState, updateState, st
             type="text"
           />
         </div>
+        <div className="col-md-6 col-sm-6">
+          <TextInput
+            name="skipTopLines"
+            label={utils.getLabelByID("FTEMP_skipTopLines")}
+            type="number"
+          />
+        </div>
+        <div className="col-md-6 col-sm-6">
+          <TextInput
+            name="skipBottomLines"
+            label={utils.getLabelByID("FTEMP_skipBottomLines")}
+            type="number"
+          />
+        </div>
 
         <div className="col-md-6 col-sm-6">
           <TextInput name="XMLMainTag"
@@ -56,20 +70,7 @@ const TemplateDetails = ({ error, initialValues, containerState, updateState, st
             type="text"
           />
         </div>
-        <div className="col-md-3 col-sm-3">
-          <TextInput
-            name="skipTopLines"
-            label={utils.getLabelByID("FTEMP_skipTopLines")}
-            type="number"
-          />
-        </div>
-        <div className="col-md-3 col-sm-3">
-          <TextInput
-            name="skipBottomLines"
-            label={utils.getLabelByID("FTEMP_skipBottomLines")}
-            type="number"
-          />
-        </div>
+
       </div>
     </Portlet>
   );

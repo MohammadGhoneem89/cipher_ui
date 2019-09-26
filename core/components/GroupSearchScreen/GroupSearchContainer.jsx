@@ -87,8 +87,8 @@ class GroupSearchContainer extends React.Component {
                 }
             }
 
-            this.setState({ pageNo: pageNo})
-            
+            this.setState({ pageNo: pageNo })
+
             this.props.actions.generalProcess(constants.getGroupList, request);
 
         }
@@ -98,8 +98,11 @@ class GroupSearchContainer extends React.Component {
 
         if (!this.state.isLoading && this.state.groupList)
             return (
-                <Portlet title={"Group Seach Filter"}>
-                    <GroupFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state} />
+                <div>
+                    <Portlet title={"Group Seach Filter"}>
+                        <GroupFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state} />
+
+                    </Portlet>
                     <Portlet title={"Group List"} isPermissioned={true} actions={this.props.groupList.data.actions}>
                         <Table
                             pagination={true}
@@ -110,12 +113,12 @@ class GroupSearchContainer extends React.Component {
                             totalRecords={this.state.groupList.pageData.totalRecords}
                             pageChanged={this.pageChanged}
                             pageSize={10}
-                            activePage ={this.state.pageNo}
+                            activePage={this.state.pageNo}
                             searchCriteria={this.state.filterCriteria}
                             gridType={"groupList"}
                         />
                     </Portlet>
-                </Portlet>
+                </div>
             );
         else
             return (<div className="loader">Loading...</div>)

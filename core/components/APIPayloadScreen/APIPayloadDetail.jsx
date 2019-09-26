@@ -95,7 +95,7 @@ class APIPayloadDetail extends React.Component {
     performAction(actionID) {
         $('#modelWindows').modal('hide');
         toaster.showToast("Request submitted successfully", "SUCCESS");
-        if(this.props.APIPayloadDetailData.payload.header){
+        if (this.props.APIPayloadDetailData.payload.header) {
             delete this.props.APIPayloadDetailData.payload.header.password;
         }
         return this.props.APIPayloadDetailData.payload;
@@ -105,7 +105,7 @@ class APIPayloadDetail extends React.Component {
     render() {
 
         if (this.props.APIPayloadDetailData.payload) {
-            if(this.props.APIPayloadDetailData.payload.header){
+            if (this.props.APIPayloadDetailData.payload.header) {
                 delete this.props.APIPayloadDetailData.payload.header.password;
             }
 
@@ -121,16 +121,17 @@ class APIPayloadDetail extends React.Component {
             let repostActionURL = this.props.APIPayloadDetailData.channel == 'Cipher' ? constants.repostAction : constants.repostActionInternal;
             return (
 
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="form-body" id="auditTrailSection">
+                           
+                                <h3 className="form-section" style={{ fontWeight: "bold" }}>{"JSON"}</h3>
+                                <JSONPretty id="json-pretty" style={{ height: "400", width: "1000" }} json={this.props.APIPayloadDetailData.payload}></JSONPretty>
+                                <div>
+                                    <ActionButton actionList={action} performAction={this.performAction} repostActionURL={repostActionURL} />
+                                </div>
 
-                <div>
-                    <div className="form-body" id="auditTrailSection">
-                        <div className="row">
-                            <h3 className="form-section" style={{ fontWeight: "bold" }}>{"JSON"}</h3>
-                            <JSONPretty id="json-pretty" style={{ height: "400", width: "1000" }} json={this.props.APIPayloadDetailData.payload}></JSONPretty>
-                            <div>
-                                <ActionButton actionList={action} performAction={this.performAction} repostActionURL={repostActionURL} />
-                            </div>
-
+                            
                         </div>
                     </div>
                 </div >

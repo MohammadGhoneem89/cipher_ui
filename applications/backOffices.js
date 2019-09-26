@@ -10,11 +10,11 @@ const backOffices = {
 */
 
 const backOffices = {
-  baseUrl: "http://13.80.7.122:9081",
-  blockChainURL: "http://13.80.7.122:9081",
-  webSocketURL: "http://13.80.7.122:9081",
-  repostActionURL: "http://13.80.7.122:9081/API",
-  blockChainViewerURL: "http://13.80.7.122:9081"
+  baseUrl: "http://127.0.0.1:9081",
+  blockChainURL: "http://127.0.0.1:9081",
+  webSocketURL: "http://127.0.0.1:9081",
+  repostActionURL: "http://127.0.0.1:9081/API",
+  blockChainViewerURL: "http://127.0.0.1:9081"
 };
 
 //  backOffices = {
@@ -27,11 +27,11 @@ const backOffices = {
 
 
 // const backOffices = {
-//     baseUrl: "http://localhost:9081",
-//     blockChainURL: "http://localhost:9081",
-//     webSocketURL: "http://localhost:9081",
-//     repostActionURL: "http://localhost:9081/API",
-//     blockChainViewerURL: "http://localhost:9081"
+//     baseUrl: "http://localhost:9080",
+//     blockChainURL: "http://localhost:9080",
+//     webSocketURL: "http://localhost:9080",
+//     repostActionURL: "http://localhost:9080/API",
+//     blockChainViewerURL: "http://localhost:9080"
 // };
 
 

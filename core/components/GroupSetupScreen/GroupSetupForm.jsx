@@ -95,17 +95,18 @@ class GroupSetupForm extends React.Component {
         const { error, handleSubmit, pristine, reset, submitting, initialValues, pageActions, checked, expanded } = this.props;
         return (
             <div>
-                <form>
-                </form>
                 <form role="form" onSubmit={handleSubmit(this.submit)}>
                     <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state} />
-                    <GroupTree updateState={this.updateState} state={this.state} initialValues={initialValues} />
-                    <div className="clearfix">
-                        <ActionButton actionList={pageActions}
-                            performAction={this.performAction}
-                            submitting={submitting} pristine={pristine} />
+                    <div className="col-md-12">
+                        <GroupTree updateState={this.updateState} state={this.state} initialValues={initialValues} />
                     </div>
-
+                    <div className="col-md-12">
+                        <div className="clearfix">
+                            <ActionButton actionList={pageActions}
+                                performAction={this.performAction}
+                                submitting={submitting} pristine={pristine} />
+                        </div>
+                    </div>
                 </form>
             </div>
         );

@@ -1,6 +1,6 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import initialState from '../../reducers/initialState.js';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
@@ -9,7 +9,7 @@ import Portlet from '../../common/Portlet.jsx';
 import GroupSetupForm from './GroupSetupForm.jsx'
 import CheckboxTree from 'react-checkbox-tree';
 import 'react-checkbox-tree/lib/react-checkbox-tree.css'
-import {SubmissionError} from 'redux-form'
+import { SubmissionError } from 'redux-form'
 
 
 class RoleSetupContainer extends React.Component {
@@ -41,7 +41,7 @@ class RoleSetupContainer extends React.Component {
 
   componentDidMount() {
     if (this.state.groupID) {
-      var request = {"id": this.state.groupID};
+      var request = { "id": this.state.groupID };
       this.props.actions.generalProcess(constants.getGroupDetail, request);
     }
     else {
@@ -90,7 +90,7 @@ class RoleSetupContainer extends React.Component {
 
   updateNodesByType() {
     let nodes = this.props.groupDetail.nodes;
-    
+
     let UINodes = [];
     let APINodes = [];
 
@@ -115,7 +115,7 @@ class RoleSetupContainer extends React.Component {
       this.props.groupDetail.nodes = APINodes;
     else if (this.state.groupID && this.props.groupDetail.type == 'UI')
       this.props.groupDetail.nodes = UINodes;
-      console.log("================================",JSON.stringify(this.props.groupDetail))
+    console.log("================================", JSON.stringify(this.props.groupDetail))
   }
 
   render() {
@@ -125,10 +125,13 @@ class RoleSetupContainer extends React.Component {
       return (
 
         <Portlet title={"Group"}>
-
-          <GroupSetupForm onSubmit={this.submit} initialValues={this.props.groupDetail} checked={this.state.checked}
-                          pageActions={this.state.pageActions}
-                          expanded={this.state.expanded}/>
+          <div className="row">
+            <div className="col-md-12">
+              <GroupSetupForm onSubmit={this.submit} initialValues={this.props.groupDetail} checked={this.state.checked}
+                pageActions={this.state.pageActions}
+                expanded={this.state.expanded} />
+            </div>
+          </div>
         </Portlet>
       );
     }

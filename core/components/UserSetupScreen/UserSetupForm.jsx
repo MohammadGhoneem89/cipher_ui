@@ -59,10 +59,9 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
 
       }
     }
-    return arr;
+    return initialValues.groups;
   }
 
-  { console.log(containerState.typeData.ORG_TYPES, "oooooorrrrrrrrggggggggggg") }
   return (
     <div>
       <div className="row">
@@ -197,12 +196,12 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
         <div className="col-md-6 col-sm-6">
           <DropdownInput name="hypUser" options={containerState.networkUserTypeData.hyperledger}
             label="User Association Hyperledger" onChange={updateHypUser}
-             />
+          />
         </div>
         <div className="col-md-6 col-sm-6">
           <DropdownInput name="quorrumUser" options={containerState.networkUserTypeData.quorrum}
             label="User Association Quorrum" onChange={updateQuorrumUser}
-             />
+          />
         </div>
       </div>
 
@@ -210,23 +209,22 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
 
 
         <div className="col-md-6 col-sm-6">
-          <CheckboxList>
-            <CheckboxInput
-              name="isActive"
-              label="Is Active"
-              type="checkbox"
-            />
-          </CheckboxList>
-
+          <div className="form-group" style={{ marginTop: "15px" }}>
+            <CheckboxList>
+              <CheckboxInput
+                name="isActive"
+                label="Is Active"
+                type="checkbox"
+              />
+            </CheckboxList>
+          </div>
         </div>
       </div>
       <hr />
       <h4 className="caption" style={{ fontWeight: "bold" }}>User Groups</h4>
       <div className="row" style={{ padding: "15px" }}>
         <div className="col-md-12 col-sm-12">
-
           <div className="icheck-list">
-
             {assignedGroup().map((sd, index) => (
               <CheckboxList key={index}>
                 <CheckboxInput
@@ -309,8 +307,8 @@ class UserSetupForm extends React.Component {
 
   submit(data) {
     data.profilePic = this.state.profilePic ? this.state.profilePic : data.profilePic;
-    data.hypUser = this.state.hypUser ;
-    data.quorrumUser = this.state.quorrumUser ;
+    data.hypUser = this.state.hypUser;
+    data.quorrumUser = this.state.quorrumUser;
     return this.props.onSubmit(data);
   }
 
@@ -331,8 +329,7 @@ class UserSetupForm extends React.Component {
     const { error, handleSubmit, pristine, reset, submitting, initialValues, pageActions, containerState, containerProps } = this.props;
     return (
       <div>
-        <form>
-        </form>
+                
         <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)}>
           <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state}
             containerProps={containerProps} containerState={containerState} firstScreen={this.state.typeData} />
@@ -341,8 +338,6 @@ class UserSetupForm extends React.Component {
               performAction={this.performAction}
               submitting={submitting}
               pristine={pristine} />
-
-
           </div>
         </form>
 

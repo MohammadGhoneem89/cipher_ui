@@ -133,25 +133,31 @@ class UserSearchContainer extends React.Component {
 
         if (!this.state.isLoading && this.state.userList)
             return (
-
-                <Portlet title={"User Seach Filter"}>
-                    <UserFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state} />
-                    {/*<ActionButton actionList={this.props.userList.data.actions} performAction={this.performAction} />*/}
-                    <Portlet title={"User List"} isPermissioned={true} actions={this.props.userList.data.actions}>
-                        <Table
-                            pagination={true}
-                            export={false} 
-                            search={true}
-                            gridColumns={utils.getGridColumnByName("userSearch")}
-                            gridData={this.state.userList.data.searchResult}
-                            totalRecords={this.state.userList.pageData.totalRecords}
-                            pageChanged={this.pageChanged}
-                            pageSize={10}
-                            searchCriteria={this.state.filterCriteria}
-                            activePage={this.state.pageNo} gridType={"userList"}
-                        />
+                <div>
+                    <Portlet title={"User Seach Filter"}>
+                        <div className="row">
+                            <UserFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state} />
+                        </div>
                     </Portlet>
-                </Portlet>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <Portlet title={"User List"} isPermissioned={true} actions={this.props.userList.data.actions}>
+                                <Table
+                                    pagination={true}
+                                    export={false}
+                                    search={true}
+                                    gridColumns={utils.getGridColumnByName("userSearch")}
+                                    gridData={this.state.userList.data.searchResult}
+                                    totalRecords={this.state.userList.pageData.totalRecords}
+                                    pageChanged={this.pageChanged}
+                                    pageSize={10}
+                                    searchCriteria={this.state.filterCriteria}
+                                    activePage={this.state.pageNo} gridType={"userList"}
+                                />
+                            </Portlet>
+                        </div>
+                    </div>
+                </div>
             );
         else
             return (<div className="loader">Loading...</div>)

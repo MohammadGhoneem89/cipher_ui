@@ -45,11 +45,11 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
 
             <div className="row" style={{ display: "inline" }}>
               <div className="col-md-6 col-sm-6" style={{ textAlign: "center" }} />
-              <div className="col-md-5 col-sm-5" style={{ textAlign: "center" }}>
+              <div className="col-md-3 col-sm-3" style={{ textAlign: "center" }}>
                 <img id="EntityLogo"
                   src={initialValues.entityLogo ? constants.baseUrl + initialValues.entityLogo.sizeMedium : "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png"}
-                  className="img-responsive img-thumbnail" alt="Entity Logo" width="150px"
-                  height="150px" />
+                  className="img-responsive img-thumbnail" alt="Entity Logo" width="110px"
+                  height="110px" />
                 {!state.readOnly &&
                   <div className="col-md-12 col-sm-12" style={{ textAlign: "center" }}>
                     <span id="ImgUploadBtn" className="label label-primary" style={{ cursor: "pointer" }}>
@@ -61,52 +61,58 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
               </div>
             </div>
           </div>
-          <div className="col-md-12 col-sm-12">
-            <div className="row">
-              <div className="col-md-4 col-sm-4">
-                <DropdownInput name="parentEntity" options={containerProps.entityNames}
-                  label={utils.getLabelByID("parentEntity")}
-                  disabled={state.readOnly}
-                />
-              </div>
-              <div className="col-md-4 col-sm-4">
-                <TextInput
-                  name="spCode"
-                  label={utils.getLabelByID("ES_spCode")}
-                  type="text"
-                  disabled={state.readOnly}
-                />
-              </div>
+
+          </div>
+          <div className="row">
+
+          <div className="col-md-6 col-sm-6">
+            <DropdownInput name="parentEntity" options={containerProps.entityNames}
+              label={utils.getLabelByID("parentEntity")}
+              disabled={state.readOnly}
+            />
+          </div>
+          <div className="col-md-6 col-sm-6" >
+            <TextInput
+              name="spCode"
+              label={utils.getLabelByID("ES_spCode")}
+              type="text"
+              disabled={state.readOnly}
+            />
+          </div>
+
+          <div className="col-md-6 col-sm-6" >
+            <div className="col-md-3 col-sm-3" >
+              <label>Cutoff Time</label>
             </div>
-            <div className="row">
-              <div className="col-md-2 col-sm-2">
-                <CheckboxList>
-                  <CheckboxInput
-                    name="isActive"
-                    label={utils.getLabelByID("isActive")}
-                    type="checkbox"
-                    disabled={state.readOnly}
-                  />
-                </CheckboxList>
-              </div>
-              <div className="col-md-2 col-sm-2" style={{ marginTop: '38px' }}>
-                <input type="checkbox" className="mt-checkbox mt-checkbox-single mt-checkbox-outline"
-                  name="isConsolidate" id="isConsolidate" disabled={state.readOnly} />
-                <label htmlFor="isConsolidate">{'Is Consolidate'}</label><br />
-              </div>
-              <div className="col-md-2 col-sm-2" style={{ marginTop: '38px' }}>
-                {/* <DateControl id="fromDate" showToday={true} mode={"time"} defaultText={"12:00 AM"} /> */}
-                <DateControl
-                  mode="time"
-                  id="time"
-                  value={state.cutOf}
-                  onChange={onTimeChange}
-                  showToday={false}
+            <div className="col-md-9 col-sm-9" >
+              <DateControl
+                mode="time"
+                id="time"
+                value={state.cutOf}
+                onChange={onTimeChange}
+                showToday={false}
+              />
+            </div>
+          </div>
+          <div className="col-md-6 col-sm-6" >
+            <div className="col-md-3 col-sm-3" style={{ marginTop: '10px' }}>
+              <CheckboxList>
+                <CheckboxInput
+                  name="isActive"
+                  label={utils.getLabelByID("isActive")}
+                  type="checkbox"
+                  disabled={state.readOnly}
                 />
-              </div>
+              </CheckboxList>
+            </div>
+            <div className="col-md-3 col-sm-3" style={{ marginTop: '10px' }}>
+              <input type="checkbox" className="mt-checkbox mt-checkbox-single mt-checkbox-outline"
+                name="isConsolidate" id="isConsolidate" disabled={state.readOnly} />
+              <label htmlFor="isConsolidate">{'Is Consolidate'}</label><br />
             </div>
           </div>
         </div>
+
       </Portlet>
     </div>
 

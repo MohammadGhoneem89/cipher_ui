@@ -14,14 +14,14 @@ const GroupFilterForm = props => {
             <div className="row">
                 <div className="col-md-12 col-sm-12">
                     <div className="row">
-                        <div className="col-md-4 col-sm-4">
+                        <div className="col-md-6 col-sm-6">
                             <TextInput
                                 name="name"
                                 label="Group Name"
                                 type="text"
                             />
                         </div>
-                        <div className="col-md-4 col-sm-4">
+                        <div className="col-md-6 col-sm-6">
 
                             <TextInput
                                 name="description"
@@ -32,7 +32,7 @@ const GroupFilterForm = props => {
                     </div>
 
                     <div className="row">
-                        <div className="col-md-4 col-sm-4">
+                        <div className="col-md-6 col-sm-6">
 
                             <DropdownInput name="type" options={grpType}
                                 label="Group Type"
@@ -44,13 +44,14 @@ const GroupFilterForm = props => {
 
                 <div className="row">
                     <div className="col-md-12">
-                        <div className="pull-right">
-                            <button type="submit" className="btn green" disabled={submitting}>
-                                Search
-                        </button>
-                            <button type="button" className="btn default" disabled={pristine || submitting} onClick={reset}>
-                                Clear
-                        </button>        </div>
+                        <div className="col-md-12">
+                            <div className="col-md-12 form-group">
+                                <div className="btn-toolbar pull-right">
+                                    <button type="submit" className="btn green" disabled={submitting}> Search   </button>
+                                    <button type="button" className="btn default" disabled={pristine || submitting} onClick={reset}>     Clear</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

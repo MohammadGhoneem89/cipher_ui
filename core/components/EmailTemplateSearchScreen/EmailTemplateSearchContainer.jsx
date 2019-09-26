@@ -1,7 +1,7 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {browserHistory} from 'react-router';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
@@ -38,7 +38,7 @@ class EmailTemplateSearchContainer extends React.Component {
             "pageSize": 10
         }));
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ETEMP_templateTypes']));
-        this.setState({isLoading: true});
+        this.setState({ isLoading: true });
     }
 
     loadURL(url) {
@@ -47,18 +47,21 @@ class EmailTemplateSearchContainer extends React.Component {
 
     submit(searchCriteria) {
         this.props.actions.generalProcess(constants.getEmailTemplateList, requestCreator.createEmailTemplateListRequest({
-                "currentPageNo": 1,
-                "pageSize": 10
-            },
+            "currentPageNo": 1,
+            "pageSize": 10
+        },
             searchCriteria));
     }
 
     render() {
         if (!this.state.isLoading && this.state.emailTemplateList)
             return (
-                <Portlet title={"Email Template Search"}>
-                    <EmailTemplateFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria}
-                                             containerSate={this.state}/>
+                <div>
+                    <Portlet title={"Email Template Search"}>
+                        <EmailTemplateFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria}
+                            containerSate={this.state} />
+
+                    </Portlet>
                     <Portlet title={"Email Template List"} isPermissioned={true} actions={this.state.emailTemplateList.data.actions}>
                         <Table
                             pagination={true}
@@ -69,7 +72,7 @@ class EmailTemplateSearchContainer extends React.Component {
                             totalRecords={this.state.emailTemplateList.pageData.totalRecords}
                         />
                     </Portlet>
-                </Portlet>
+                </div>
             );
         else
             return (<div className="loader">Loading...</div>)

@@ -230,10 +230,12 @@ class APIPayloadList extends React.Component {
 
                                         <div className="row">
                                             <div className="col-md-12">
-                                                <div className="pull-right">
-                                                    <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
-                                                    {"  "}
-                                                    <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
+                                                <div className="col-md-12">
+                                                    <div className="pull-right">
+                                                        <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
+                                                        {"  "}
+                                                        <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -250,21 +252,21 @@ class APIPayloadList extends React.Component {
                                 renderPopupBody={this.renderPopupBody} activePage={this.state.currentPageNo} />
                         </div>
                     </div>
-                    <div className="modal fade in modal-overflow" id="modelWindows" tabindex="-1" role="basic" aria-hidden="true" style={{ display: "none",  paddingTop: "10" }}>
-                    <div className="modal-dialog" style={{ width: "1050" }}>
-                        <div className="modal-content" style={{ padding: "10px" }}>
-                            <div className="modal-header">
-                                <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">{utils.getLabelByID("TLP_Close")}</span></button>
-                                <h3 className="modal-title">{"API Payload Detail"}</h3>
-                            </div>
+                    <div className="modal fade in modal-overflow" id="modelWindows" tabindex="-1" role="basic" aria-hidden="true" style={{ display: "none", paddingTop: "10" }}>
+                        <div className="modal-dialog" style={{ width: "1050" }}>
+                            <div className="modal-content" style={{ padding: "10px" }}>
+                                <div className="modal-header">
+                                    <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">{utils.getLabelByID("TLP_Close")}</span></button>
+                                    <h3 className="modal-title">{"API Payload Detail"}</h3>
+                                </div>
 
-                            {<div className="modal-body" id="popup">
-                                <APIPayloadDetail APIPayloadID={this.state.APIPayloadID} />
+                                {<div className="modal-body" id="popup">
+                                    <APIPayloadDetail APIPayloadID={this.state.APIPayloadID} />
+
+                                </div>
+                                }
 
                             </div>
-                            }
-                          
-                        </div>
                         </div>
                     </div>
 

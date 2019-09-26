@@ -18,13 +18,13 @@ class UserSetupContainer extends React.Component {
       userDetail: initialState.userDetails.data,
       pageActions: initialState.userDetails.data.actions,
       userID: undefined,
-      typeData: undefined,
+      typeData: [],
       isLoading: true,
       entityNames: undefined,
       permissionTypeData: [],
       networkUserTypeData: {},
-      quorrumUser:undefined,
-      hypUser:undefined
+      quorrumUser: undefined,
+      hypUser: undefined
     };
 
     this.submit = this.submit.bind(this);
@@ -51,12 +51,12 @@ class UserSetupContainer extends React.Component {
     this.props.actions.generalProcess(constants.getUserDetail, request);
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES']));
 
-    if (!this.props.entityNames.length > 0) {
-      this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({
-        "currentPageNo": 1,
-        "pageSize": 1
-      }));
-    }
+
+    this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({
+      "currentPageNo": 1,
+      "pageSize": 1
+    }));
+
   }
 
   componentWillUnmount() {
@@ -102,9 +102,9 @@ class UserSetupContainer extends React.Component {
     updatedData.passwordHashType = 'sha512';
     updatedData.groups = groupsListUpdate;
     updatedData.passwordHashType = "SHA512";
-   
-    updatedData.hypUser=updatedData.hypUser;
-    updatedData.quorrumUser=updatedData.quorrumUser;
+
+    updatedData.hypUser = updatedData.hypUser;
+    updatedData.quorrumUser = updatedData.quorrumUser;
     let dataSubmit = {
       "action": "userInsert",
       "data": updatedData
@@ -168,31 +168,14 @@ class UserSetupContainer extends React.Component {
   render() {
 
     if (!this.state.isLoading) {
-      let allowedGroup = []
+
       let groupList = []
-      if (sessionStorage.orgType == 'Entity' || sessionStorage.orgType == 'Acquirer') {
-
-        if (sessionStorage.orgType == 'Entity')
-          allowedGroup = config.entityGroupList;
-        else
-          allowedGroup = config.acquirerGroupList;
-
-        for (let groupCount = 0; groupCount < this.state.userDetail.groups.length; groupCount++) {
-          let isValid = false;
-          for (let count = 0; count < allowedGroup.length; count++) {
-            if (this.state.userDetail.groups[groupCount].name == allowedGroup[count]) {
-              isValid = true;
-              break;
-            }
-          }
-          if (isValid) {
-            groupList.push(this.state.userDetail.groups[groupCount])
-
-          }
-        }
-        this.state.userDetail.groups = groupList;
+      for (let groupCount = 0; groupCount < this.state.userDetail.groups.length; groupCount++) {
+          groupList.push(this.state.userDetail.groups[groupCount])
       }
+      this.state.userDetail.groups = groupList;
 
+      console.log(groupList)
       return (
 
         <Portlet title={"User"}>
@@ -213,31 +196,16 @@ class UserSetupContainer extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  let userID = ownProps.params.userID;
-  if (userID) {
-    // console.log(state.app.entityList.data.typeData.entityNames, "peeeerrrrrrmmmmmissssionsssss")
-    return {
-      userDetail: state.app.userDetails.data.searchResult,
-      pageActions: state.app.userDetails.data.actions,
-      userID: ownProps.params.userID,
-      entityNames: state.app.entityList.data.typeData.entityNames,
-      typeData: state.app.typeData.data,
-      permission: state.app.permissionData.data.menuPermissions,
-      NetworkUserTypeData: state.app.NetworkUserTypeData,
-    };
-  }
-  else {
+  return {
+    userDetail: state.app.userDetails.data.searchResult,
+    pageActions: state.app.userDetails.data.actions,
+    userID: ownProps.params.userID,
+    entityNames: _.get(state.app, 'entityList.data.typeData.entityNames', undefined),
+    typeData: _.get(state.app, 'typeData.data', undefined),
+    permission: state.app.permissionData.data.menuPermissions,
+    NetworkUserTypeData: state.app.NetworkUserTypeData,
+  };
 
-    return {
-      userDetail: state.app.userDetails.data.searchResult,
-      pageActions: state.app.userDetails.data.actions,
-      userID: undefined,
-      entityNames: state.app.entityList.data.typeData.entityNames,
-      typeData: state.app.typeData.data,
-      permission: state.app.permissionData.data.menuPermissions,
-      NetworkUserTypeData: state.app.NetworkUserTypeData,
-    };
-  }
 }
 
 function mapDispatchToProps(dispatch) {

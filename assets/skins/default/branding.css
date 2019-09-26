@@ -295,7 +295,7 @@ a:hover {
 }
 
 .portlet.light.sdg_portlet, .dashdate .modal-content {
-	border-top: 4px solid #ae8b4b52  !important;
+	border-top: 2px solid #ae8b4b52  !important;
 	background: #fff !important;
 	margin-top: 0px;
 }
