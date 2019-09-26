@@ -32,7 +32,7 @@ class AddMasterAgreement extends React.Component {
             itemList: [],
             supplierList: [],
             penalties: [],
-            isLoading: false,
+            isLoading: true,
             startDate: "",
             endDate: "",
             contractID : "",
@@ -155,7 +155,7 @@ class AddMasterAgreement extends React.Component {
                 penalties.push(penaltyObj)
             }
 
-            document.getElementById('contractID').disabled = true
+            //document.getElementById('contractID').disabled = true
             
             this.setState({
                 items,
@@ -709,6 +709,7 @@ class AddMasterAgreement extends React.Component {
                                         id="contractID"
                                         value={this.state.contractID}
                                         onChange={this.onChange}
+                                        disabled= {this.props.params.customerID ? true : false}
                                     />
 
                                 </div>

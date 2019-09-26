@@ -67,9 +67,9 @@ class MasterAgreementList extends React.Component {
             this.setState(
                 {
                     gridData: this.formatContractData(nextProps.getMasterAgreement),
-                    isLoading: false,
                     typeData: nextProps.typeData,
-                    page: nextProps.getPage
+                    page: nextProps.getPage,
+                    isLoading: false
                 }
             )
         }

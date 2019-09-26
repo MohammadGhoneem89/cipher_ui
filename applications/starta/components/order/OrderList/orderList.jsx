@@ -106,7 +106,7 @@ class OrderList extends React.Component {
         currentPageNo: 1,
         totalRecords: 0
       },
-      isLoading: false,
+      isLoading: true,
       gridData: [],
       orderSearch: {},
       fromDate: undefined,

@@ -183,8 +183,8 @@ class OneTimeOrder extends React.Component {
         typeData: nextProps.typeData,
         //userList: nextProps.userList,
         getCustomerShipmentAndPaymentType: nextProps.getCustomerShipmentAndPaymentType,
-        isLoading: false,
-        isLoading2: false
+        isLoading2: false,
+        isLoading: false
       })
 
       this.customerData = nextProps.getCustomerShipmentAndPaymentType

@@ -24,7 +24,7 @@ class ProductCatalogueList extends React.Component {
                 totalRecords: 0
             },
 
-            isLoading: false,
+            isLoading: true,
             gridData: [],
 
         };

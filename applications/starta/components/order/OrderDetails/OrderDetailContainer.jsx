@@ -119,7 +119,6 @@ class OrderDetailContainer extends React.Component {
           ...nextProps.orderDetail,
           transactionID: '92217a5a5cfa4e704df5e6cf464ea7c4da3030d75b2a07e1def291f9b90c5fe9'
         },
-
         isLoading: false,
         receipt: recList,
         typeData: nextProps.typeData
