@@ -489,6 +489,12 @@ class AddMasterAgreement extends React.Component {
             return false;
         }
 
+        // load until redirection 
+        this.setState({
+            isLoading: true
+        })
+        window.scrollTo(0, 0);
+
         let items = []
         console.log(this.state.items, "this.state.items")
         for (let i = 0; i < this.state.items.length; i++) {

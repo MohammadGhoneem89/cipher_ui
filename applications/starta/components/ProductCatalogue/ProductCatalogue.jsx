@@ -193,6 +193,12 @@ class ProductCatalogue extends React.Component {
 
     if (this.validate) {
       console.log(this.validate, " validate")
+      // load until redirection 
+      this.setState({
+        isLoading: true
+      })
+      window.scrollTo(0, 0);
+
       this.stringToOtherTypes('addProduct', ['leadTime', 'price', 'printTime'], ['itemStatus']);
       let addProduct = { ...this.state.addProduct };
       console.log(addProduct, "addProduct")
