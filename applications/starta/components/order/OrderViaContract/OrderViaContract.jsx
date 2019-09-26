@@ -142,9 +142,12 @@ class OrderViaContract extends React.Component {
       }
     };
     if (this.state.cartItems && this.state.cartItems.length > 0) {
+      this.setState({
+        isLoading:true
+      })
       this.props.actions.generalAjxProcess(constants.createOrder,
         request).then(result => {
-          result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
+          result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.successAction(result.orderID)
         });
     } else {
       alert("Please add atleast one item to place the order!");
@@ -153,10 +156,15 @@ class OrderViaContract extends React.Component {
       return false;
     }
   }
-  redirectToList = () => {
-    browserHistory.push('/strata/orderList');
-    toaster.showToast("Record updated successfully!");
+  
+  successAction = (orderID) => {
+    browserHistory.push({
+      pathname : '/strata/orderList',
+      state: { orderID }
+    })
+    toaster.showToast("Order Created successfully!");
   }
+
   componentWillMount() {
     // let createOrd = document.getElementById('createOrder');
     // createOrd.style.visibility = false;
@@ -243,7 +251,7 @@ class OrderViaContract extends React.Component {
         break
       }
     }
-    let grandTotal = 0;
+    let grandTotal = 0.0;
     let cart = [...this.state.cartItems];
 
     if (cartItem.quantity == 0) {
@@ -272,7 +280,7 @@ class OrderViaContract extends React.Component {
     cart.map(element => {
       if (element.itemCode === cartItem.itemCode && element.color === cartItem.color) {
         isNewItem = false;
-        element.quantity = parseInt(element.quantity) + parseInt(cartItem.quantity);
+        element.quantity = parseFloat(parseInt(element.quantity)) + parseFloat(parseInt(cartItem.quantity));
         if (element.quantity > result[0].expectedQuantity) {
           alert("The quantity you ordered for this item is more than expected quantity in master contract!")
           cartItem.quantity = 0;
@@ -291,8 +299,8 @@ class OrderViaContract extends React.Component {
       cart.push(cartItem);
     }
     cart.forEach(element => {
-      element.quantity = parseInt(element.quantity);
-      element.price = parseInt(element.price);
+      element.quantity = parseFloat(parseInt(element.quantity));
+      element.price = parseFloat(element.price);
       element.total = element.quantity * element.price;
       element.material = result[0].material;
     });
