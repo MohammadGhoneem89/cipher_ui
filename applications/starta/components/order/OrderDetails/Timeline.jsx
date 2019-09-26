@@ -18,7 +18,12 @@ export default function Timeline(props) {
         "/assets/Resources/delivery.png",
         "/assets/Resources/inspection.png",
         "/assets/Resources/acceptance.png",
-        "/assets/Resources/rejected.png"
+        "/assets/Resources/rejected.png",
+        "/assets/Resources/rating.png",
+        "/assets/Resources/clipboard.png",
+        "/assets/Resources/recycle.png",
+        "/assets/Resources/receipt.png",
+        "/assets/Resources/money-bag.png",
     ]
     const actions = [
        "Order Received",
@@ -34,9 +39,13 @@ export default function Timeline(props) {
        "Received",
        "Inspected",
        "Accepted",
-       "Rejected"
+       "Rejected",
+       'Reviewed',
+       'Concession',
+       'Scrapped',
+       'Payment Order',
+       'Paid'
     ]
-
 
     const timeLineItems = () => {
         return (

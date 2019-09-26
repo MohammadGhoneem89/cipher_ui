@@ -287,6 +287,13 @@ class OrderDetailContainer extends React.Component {
       actionBy: ''
     }]
     this.state.orderDetail.activities.forEach(activity=>{
+      if (activity.toStage=='018'){
+        activities.push({
+          stage: '013',
+          date: activity.date,
+          actionBy: activity.actionBy
+        })
+      }
       activities.push({
         stage: activity.toStage,
         date: activity.date,
