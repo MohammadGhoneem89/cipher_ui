@@ -81,7 +81,8 @@ module.exports = {
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "customer id", key: "customerID", type: "string" },
     { alias: "Receivable", key: "toPay", type: "amount" },
-    { alias: "Amount Received", key: "paidAmount", type: "amount" }
+    { alias: "Amount Received", key: "paidAmount", type: "amount" },
+    { alias: "Credit Note Amount", key: "creditNoteAmount", type: "amount" }
     
   ],
    customerSettlement: [
@@ -89,7 +90,8 @@ module.exports = {
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "customer id", key: "customerID", type: "string" },
     { alias: "Payable", key: "toPay", type: "amount" },
-    { alias: "Amount Paid", key: "paidAmount", type: "amount" }
+    { alias: "Amount Paid", key: "paidAmount", type: "amount" },
+    { alias: "Credit Note Amount", key: "creditNoteAmount", type: "amount" }
   ],
   pendingQuotes: [
     { alias: "", key: "gridKey", type: "hiddenID" },
