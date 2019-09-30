@@ -13,7 +13,6 @@ const CreateOrder = props => {
   }
   const { onClick, cartItems, state, setState, placeOrder } = props;
 
-  console.log(JSON.stringify(cartItems), "CART ITEMS")
   return <Portlet title="Create Order" noCollapse={true}>
     <a
       href="#"
@@ -22,13 +21,13 @@ const CreateOrder = props => {
         setState({ createOrder: false });
       }}>
       Add More Items </a>
-      <br></br><br></br>
-      <label >
-        <b>Lead Time : </b>
-      </label> 
-      <label className='caption-subject' style={{marginLeft: "10px"}}>
-        { props.getLeadTime() }
-      </label> 
+    <br></br><br></br>
+    <label >
+      <b>Lead Time : </b>
+    </label>
+    <label className='caption-subject' style={{ marginLeft: "10px" }}>
+      {props.getLeadTime()}
+    </label>
     <hr />
     <table id="fieldTable" className="table table-bordered table-striped table-responsive ordertable">
       <thead>
@@ -44,6 +43,7 @@ const CreateOrder = props => {
       </thead>
 
       <tbody className="ui-sortable">
+
         {cartItems.map((item, index) => {
           return <tr>
             <td className="moveCenter"><i className="fa fa-remove" onClick={() => {
@@ -57,8 +57,9 @@ const CreateOrder = props => {
                 grandTotal += element.total
               });
               
-              
-              setState({ cartItems: cart, grandTotal  });
+              setState({
+                cartItems: cart, grandTotal
+              });
             }} /></td>
             <td><img src={item.image} onError={addDefaultSrc} width="40px" /> <span
               className="proname">{item.name}</span></td>
@@ -76,13 +77,22 @@ const CreateOrder = props => {
             <td className="moveRight" style={{
               textAlign: "right",
               fontWeight: 'bold'
-            }}>{utils.formatAmountField( parseFloat(parseInt(item.quantity)) * parseFloat(item.price))}</td>
+            }}>{utils.formatAmountField(parseFloat(parseInt(item.quantity)) * parseFloat(item.price))}</td>
+
           </tr>;
         })}
         <tr>
-          <td className="text-right" colSpan="5"><b style={{ fontSize: '14px'}}>Grand Total</b></td>
+          <td className="text-right" colSpan="5"><b style={{ fontSize: '14px' }}>Total Batch Size :</b></td>
           <td colSpan="3" className="moveRight">
-            <spans style={{ color: "#c20c35", fontWeight: 625, textAlign: "right", fontSize: '16px' }}>{"AED "   + utils.formatAmountField(state.grandTotal)}
+            <spans style={{ color: "#c20c35", fontWeight: 625, textAlign: "right", fontSize: '16px' }}>
+              {"AED " + utils.formatAmountField(state.totalBatchSize)}
+            </spans>
+          </td>
+        </tr>
+        <tr>
+          <td className="text-right" colSpan="5"><b style={{ fontSize: '14px' }}>Grand Total</b></td>
+          <td colSpan="3" className="moveRight">
+            <spans style={{ color: "#c20c35", fontWeight: 625, textAlign: "right", fontSize: '16px' }}>{"AED " + utils.formatAmountField(state.grandTotal)}
             </spans>
           </td>
         </tr>

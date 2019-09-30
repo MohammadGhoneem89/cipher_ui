@@ -42,6 +42,7 @@ class OneTimeOrder extends React.Component {
       itemAddedToCart: false,
       createOrder: false,
       grandTotal: 0,
+      totalBatchSize: 0,
       getCustomerShipmentAndPaymentType: {},
 
       typeData: {
@@ -65,7 +66,7 @@ class OneTimeOrder extends React.Component {
     let totalLeadTime = 0;
     let calculateLeadTime = 1;
     let firstTerm = 1.0;
-    
+
     let items = [...this.state.cartItems];
 
     for (let i = 0; i < items.length; i++) {
@@ -77,8 +78,8 @@ class OneTimeOrder extends React.Component {
       }
       totalLeadTime += calculateLeadTime;
     }
-    
-    return  totalLeadTime
+
+    return totalLeadTime
   }
   getRequest = (currentPageNo, searchCriteria) => {
     // this.setState({searchCriteria: searchCriteria});
@@ -99,7 +100,7 @@ class OneTimeOrder extends React.Component {
     let totalLeadTime = 0;
     let calculateLeadTime = 1;
     let firstTerm = 1.0;
-    
+
     let items = [...this.state.cartItems];
     items.map(item => {
       item.color = [item.color];
@@ -134,7 +135,7 @@ class OneTimeOrder extends React.Component {
     console.log(request, "request")
     if (this.state.cartItems && this.state.cartItems.length > 0) {
       this.setState({
-        isLoading:true
+        isLoading: true
       })
       this.props.actions.generalAjxProcess(constants.createOrder,
         request).then(result => {
@@ -148,7 +149,7 @@ class OneTimeOrder extends React.Component {
   }
   successAction = (orderID) => {
     browserHistory.push({
-      pathname : '/strata/orderList',
+      pathname: '/strata/orderList',
       state: { orderID }
     })
     toaster.showToast("Order Created successfully!");
@@ -209,21 +210,23 @@ class OneTimeOrder extends React.Component {
       cartItem[key] = value;
     });
 
-    console.log(cartItem,'cart item')
+    console.log(cartItem, 'cart item')
     let material = ''
-    for (let i=0;i<_.get(this.state,'getItemCatalogue.searchResult',[]).length;i++){
-      if (this.state.getItemCatalogue.searchResult[i].itemCode===cartItem.itemCode){
-        console.log(this.state.getItemCatalogue.searchResult[i],'found')
+    for (let i = 0; i < _.get(this.state, 'getItemCatalogue.searchResult', []).length; i++) {
+      if (this.state.getItemCatalogue.searchResult[i].itemCode === cartItem.itemCode) {
+        console.log(this.state.getItemCatalogue.searchResult[i].batchSize, 'found')
         cartItem.leadTime = this.state.getItemCatalogue.searchResult[i].leadTime
         cartItem.printTime = this.state.getItemCatalogue.searchResult[i].printTime
-        cartItem.material =  this.state.getItemCatalogue.searchResult[i].material
+        cartItem.material = this.state.getItemCatalogue.searchResult[i].material
         cartItem.price = this.state.getItemCatalogue.searchResult[i].price
+        cartItem.batchSize = this.state.getItemCatalogue.searchResult[i].batchSize ? this.state.getItemCatalogue.searchResult[i].batchSize : 1
         break
       }
     }
 
 
     let grandTotal = 0.0;
+    let totalBatchSize = 0;
     let cart = [...this.state.cartItems];
 
     if (cartItem.quantity == 0) {
@@ -250,11 +253,17 @@ class OneTimeOrder extends React.Component {
     cart.forEach(element => {
       grandTotal += element.total
     });
-
+    console.log(totalBatchSize, "++totalBatchSize")
+    cart.forEach(element => {
+      console.log(element, "ELEMENT")
+      console.log(element.batchSize, element.quantity, element.batchSize * element.quantity, "element.batchSize", "element.quantity")
+      totalBatchSize += element.batchSize * element.quantity;
+    });
     this.setState({
       cartItems: cart,
       grandTotal: grandTotal,
-      itemAddedToCart: true
+      itemAddedToCart: true,
+      totalBatchSize: totalBatchSize
     });
     e.target.reset();
     console.log('cart', cart);
@@ -382,7 +391,7 @@ class OneTimeOrder extends React.Component {
             setState={(data) => {
               this.setState(data)
             }}
-            getLeadTime= {this.getLeadTime}
+            getLeadTime={this.getLeadTime}
             placeOrder={this.placeOrder}
           />}
         </div>

@@ -62,20 +62,20 @@ class ProductCatalogue extends React.Component {
       });
     }
 
-    if (nextProps.getItemCatalogue.length>0 && nextProps.typeData && nextProps.params.id) {
+    if (nextProps.getItemCatalogue.length > 0 && nextProps.typeData && nextProps.params.id) {
 
       // Insert Attachments into documents
       let documents = []
-      
-      for (let i=0;i<nextProps.getItemCatalogue[0].attachments.length;i++){
+
+      for (let i = 0; i < nextProps.getItemCatalogue[0].attachments.length; i++) {
         documents.push({
           fileDetail: {
             name: nextProps.getItemCatalogue[0].attachments[i].name,
             UUID: ''
-          }, 
+          },
           documentName: nextProps.getItemCatalogue[0].attachments[i].name,
           fileType: '',
-          documentHash : nextProps.getItemCatalogue[0].attachments[i].hash,
+          documentHash: nextProps.getItemCatalogue[0].attachments[i].hash,
           retreivalPath: nextProps.getItemCatalogue[0].attachments[i].path,
           hash: nextProps.getItemCatalogue[0].attachments[i].hash,
           name: nextProps.getItemCatalogue[0].attachments[i].name,
@@ -141,7 +141,7 @@ class ProductCatalogue extends React.Component {
         alert("Item Code is required!")
         return;
       }
-      if (this.state.addProduct.name.length > 20){
+      if (this.state.addProduct.name.length > 20) {
         alert("Item name must be less than 20 characters!")
         return;
       }
@@ -199,7 +199,7 @@ class ProductCatalogue extends React.Component {
       })
       window.scrollTo(0, 0);
 
-      this.stringToOtherTypes('addProduct', ['leadTime', 'price', 'printTime'], ['itemStatus']);
+      this.stringToOtherTypes('addProduct', ['leadTime', 'price', 'printTime','version','batchSize'], ['itemStatus']);
       let addProduct = { ...this.state.addProduct };
       console.log(addProduct, "addProduct")
       addProduct.image = Object.keys(this.state.productImage).length > 0 ? this.state.productImage : addProduct.image;
@@ -267,7 +267,7 @@ class ProductCatalogue extends React.Component {
   }
 
   render() {
-    
+
     console.log(this.state.documents, "DOCUMENTS");
     let _this = this;
 
@@ -443,6 +443,28 @@ class ProductCatalogue extends React.Component {
               state={this.state}
               actionHandler={this.generalHandler}
               className="form-control" type='number'
+              disabled={false}
+            />
+          </Row>
+          <br />
+          <Row>
+            <Label text="Version :" columns='1' />
+            <Input fieldname='version' formname='addProduct'
+              columns='5'
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control" type='text'
+              disabled={false}
+            />
+
+            <Label text="Batch Size :" columns='1' />
+
+            <Input fieldname='batchSize' formname='addProduct'
+              columns='5'
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control" type='number' 
+              min='1'
               disabled={false}
             />
           </Row>

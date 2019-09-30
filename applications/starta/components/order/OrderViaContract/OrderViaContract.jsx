@@ -248,10 +248,12 @@ class OrderViaContract extends React.Component {
         cartItem.leadTime = this.state.itemCatalogue[i].leadTime
         cartItem.printTime = this.state.itemCatalogue[i].printTime
         cartItem.material =  this.state.itemCatalogue[i].material
+        cartItem.batchSize = this.state.getItemCatalogue.searchResult[i].batchSize ? this.state.getItemCatalogue.searchResult[i].batchSize : 1
         break
       }
     }
     let grandTotal = 0.0;
+    let totalBatchSize = 0;
     let cart = [...this.state.cartItems];
 
     if (cartItem.quantity == 0) {
@@ -307,10 +309,15 @@ class OrderViaContract extends React.Component {
     cart.forEach(element => {
       grandTotal += element.total
     });
+    cart.forEach(element => {
+      totalBatchSize += element.batchSize * element.quantity;
+    });
+    console.log(totalBatchSize,"++totalBatchSize")
     this.setState({
       cartItems: cart,
       grandTotal: grandTotal,
-      itemAddedToCart: true
+      itemAddedToCart: true,
+      totalBatchSize:totalBatchSize
     });
     e.target.reset();
     // console.log('cart', cart);
@@ -347,7 +354,8 @@ class OrderViaContract extends React.Component {
     this.setState({
       _contractID: document.getElementById('contractID').value,
       cartItems: [],
-      grandTotal: 0
+      grandTotal: 0,
+      totalBatchSize:0
     })
   }
 
