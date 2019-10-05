@@ -60,9 +60,9 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
               <label className="form-group control-label col-md-4" style={{
                 textAlign: "left",
                 fontWeight: "normal"
-              }}>{utils.getLabelByID("Orginization Alias")}</label>
+              }}>{utils.getLabelByID("Orginization Type")}</label>
               <div className="form-group col-md-8">
-                <select id="orginizationAlias" className="form-control" name="orginizationAlias"  onChange={onInputChange}>
+                <select id="orginizationAlias" className="form-control" name="orginizationAlias"  onChange={onInputChange} value={state.orginizationAlias}>
                 <option key="" value="">--select--</option>
                   {
 
