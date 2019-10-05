@@ -149,6 +149,11 @@ class UserSetupContainer2 extends Component {
             }
             console.log(this.props.params.userID, ' : User ID')
 
+            let hypUser = nextProps.userDetail.hypUser
+            if (nextProps.userDetail.network){
+                hypUser = nextProps.userDetail.network+'-'+hypUser
+            }
+
             if (this.props.params.userID && nextProps.userDetail.userID) {
                 this.setState({
                     id: this.props.params.userID,
@@ -156,7 +161,8 @@ class UserSetupContainer2 extends Component {
                     userDetail: {
                         ...nextProps.userDetail,
                         firstScreen,
-                        groups
+                        groups,
+                        hypUser
                     },
                     typeData: {
                         ...this.state.typeData,
@@ -178,7 +184,8 @@ class UserSetupContainer2 extends Component {
                     isLoading: false,
                     userDetail: {
                         firstScreen,
-                        groups
+                        groups,
+                        hypUser
                     },
                     typeData: {
                         ...this.state.typeData,
@@ -257,7 +264,7 @@ class UserSetupContainer2 extends Component {
         let hypUserArray = this.state.userDetail.hypUser && ~this.state.userDetail.hypUser.indexOf('-') ? this.state.userDetail.hypUser.split('-') : ['', this.state.userDetail.hypUser];
         let hypUser = hypUserArray.pop();
         console.log('hypUserArray', hypUserArray.join('-'));
-        let network = hypUserArray && hypUserArray.length? hypUserArray.join('-') : hypUserArray[0];
+        let network = hypUserArray && hypUserArray.length ? hypUserArray.join('-') : hypUserArray[0];
 
 
         if (this.props.params.userID) {
@@ -322,11 +329,11 @@ class UserSetupContainer2 extends Component {
     resetPassword = () => {
 
         if (this.props.params.userID) {
-          let request = { "userID": this.props.params.userID };
-          this.props.actions.generalProcess(constants.passwordReset, request);
+            let request = { "userID": this.props.params.userID };
+            this.props.actions.generalProcess(constants.passwordReset, request);
         }
-    
-      }
+
+    }
 
     performAction = (actionObj) => {
         if (actionObj.value === "4055") {
@@ -450,7 +457,7 @@ class UserSetupContainer2 extends Component {
                         onChangeHandler={this.onChange.bind(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         imgDiv={this.imgDiv.bind(this)}
-                        performAction = {this.performAction}
+                        performAction={this.performAction}
                     />
                 </Portlet>
 
