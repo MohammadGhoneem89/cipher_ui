@@ -15,6 +15,8 @@ class Input extends React.Component {
                 return "form-group has-warning"
             case "REJECTED":
                 return "form-group has-error"
+            case "ERROR":
+                return "form-group has-error"
             default:
                 return "form-group"
         }
@@ -26,7 +28,6 @@ class Input extends React.Component {
             <div className={`col-md-${this.props.columns} ${this.getColour(this.props.status)}`}>
                 {/* {console.log(this.props.type,"this.props.type")} */}
                 <input type={this.props.type ? this.props.type : "text"}
-
                     name={this.props.fieldname}
                     min={this.props.min ? this.props.min : 0}
                     disabled={this.props.disabled || false}
@@ -37,6 +38,12 @@ class Input extends React.Component {
                     onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'textbox')}
                     placeholder={this.props.placeholder}
                 />
+                {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <span className="help-block">{this.props.state.errors[this.props.fieldname]}</span>}
+
+
+                {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />
+                }
+
             </div>
         );
     }

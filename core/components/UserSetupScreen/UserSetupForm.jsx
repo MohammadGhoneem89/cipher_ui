@@ -54,10 +54,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
     let arr = []
     for (let i = 0; i < initialValues.groups.length - 1; i++) {
 
-      if (initialValues.groups[i].isAssigned === true) {
         arr.push(initialValues.groups[i])
-
-      }
     }
     return arr;
   }

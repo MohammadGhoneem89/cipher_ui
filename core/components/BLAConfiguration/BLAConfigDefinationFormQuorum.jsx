@@ -57,13 +57,23 @@ const BLAConfigDefinationFormQuorum = ({ onInputChange, onInputChangeOrderer, ad
           </div>
           <div className="col-md-6">
             <div className="form-group">
-
               <label className="form-group control-label col-md-4" style={{
                 textAlign: "left",
                 fontWeight: "normal"
-              }}>{utils.getLabelByID("orginizationAlias")}</label>
+              }}>{utils.getLabelByID("Orginization Alias")}</label>
               <div className="form-group col-md-8">
-                <input type="text" className="form-control" name="orginizationAlias" onChange={onInputChange} value={state.orginizationAlias} />
+                <select id="orginizationAlias" className="form-control" name="orginizationAlias" onChange={onInputChange}>
+                <option key="" value="">--select--</option>
+                  {
+
+                    typeData.ORG_TYPES &&
+                    typeData.ORG_TYPES.map((option, index) => {
+                      return (
+                        <option key={index} value={option.value}>{option.label}</option>
+                      );
+                    })
+                  }
+                </select>
               </div>
             </div>
           </div>

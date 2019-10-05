@@ -7,6 +7,9 @@ const validate = values => {
     if(!values.type){
         errors.type = 'Required';
     }
+    if(!values.usecase){
+        errors.usecase = 'Required';
+    }
     return errors
 };
 

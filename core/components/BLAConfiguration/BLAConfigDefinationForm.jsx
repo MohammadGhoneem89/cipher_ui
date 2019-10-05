@@ -19,7 +19,7 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
                   <label className="control-label">{utils.getLabelByID("Blockchain Type")}</label>
                 </div>
                 <div className="form-group col-md-8">
-                  <select id="type" name="type" disabled={flag} onChange={onInputChange} value={state.type} className="form-control">
+                  <select id="type" name="type"  onChange={onInputChange} value={state.type} className="form-control">
                     <option key="" value="">--select--</option>
                     {
                       typeData.BLCHN_TYPE.map((option, index) => {
@@ -57,18 +57,26 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
           </div>
           <div className="col-md-6">
             <div className="form-group">
-
               <label className="form-group control-label col-md-4" style={{
                 textAlign: "left",
                 fontWeight: "normal"
-              }}>{utils.getLabelByID("orginizationAlias")}</label>
+              }}>{utils.getLabelByID("Orginization Alias")}</label>
               <div className="form-group col-md-8">
-                <input type="text" className="form-control" name="orginizationAlias" onChange={onInputChange} value={state.orginizationAlias} />
+                <select id="orginizationAlias" className="form-control" name="orginizationAlias"  onChange={onInputChange}>
+                <option key="" value="">--select--</option>
+                  {
+
+                    typeData.ORG_TYPES &&
+                    typeData.ORG_TYPES.map((option, index) => {
+                      return (
+                        <option key={index} value={option.value}>{option.label}</option>
+                      );
+                    })
+                  }
+                </select>
               </div>
             </div>
           </div>
-
-
 
           <div className="col-md-6">
             <div className="form-group">

@@ -47,9 +47,6 @@ class RoleSetupContainer extends React.Component {
         else {
             this.props.actions.generalProcess(constants.getGroupDetail, requestCreator.createGroupDetailRequest("-1"));
         }
-        // Get Type Data in any case
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['USE_CASE'])); 
-
     }
     componentWillUnmount() {
     }
@@ -72,21 +69,18 @@ class RoleSetupContainer extends React.Component {
                 });
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.groupDetail && nextProps.useCases) {
-            
+        if (nextProps.groupDetail) {
             this.setState({
                 groupDetail: nextProps.groupDetail,
                 pageActions: nextProps.pageActions,
-                isLoading: false,
-                useCases: nextProps.useCases
+                isLoading: false
             });
         }
-        if (!nextProps.groupDetail && nextProps.useCases) {
-            
+        else {
+
             this.setState({
                 groupDetail: initialState.groupDetail.data,
                 pageActions: nextProps.pageActions,
-                useCases: nextProps.useCases
             });
         }
     }
@@ -110,12 +104,10 @@ class RoleSetupContainer extends React.Component {
 
         this.props.groupDetail.nodes = [];
   
-        if( this.props.groupDetail.type == 'API')
+        if(this.state.groupID && this.props.groupDetail.type == 'API')
             this.props.groupDetail.nodes = APINodes;
-        else if ( this.props.groupDetail.type == 'UI')
+        else if (this.state.groupID && this.props.groupDetail.type == 'UI')
             this.props.groupDetail.nodes = UINodes;        
-
-        console.log(this.props.groupDetail, ' GROUP_DETAIL')
     }
 
     render() {
@@ -127,7 +119,7 @@ class RoleSetupContainer extends React.Component {
                 <Portlet title={"Group"}>
 
                     <GroupSetupForm onSubmit={this.submit} initialValues={this.props.groupDetail} checked={this.state.checked} pageActions= {this.state.pageActions}
-                        expanded={this.state.expanded} useCases = {this.state.useCases}/>
+                        expanded={this.state.expanded} />
                 </Portlet>
             );
         }
@@ -142,16 +134,14 @@ function mapStateToProps(state, ownProps) {
         return {
             groupDetail: state.app.groupDetail.data.searchResult,
             pageActions: state.app.groupDetail.data.actions,
-            groupID: ownProps.params.groupID,
-            useCases: _.get(state.app, 'typeData.data.USE_CASE', undefined)
+            groupID: ownProps.params.groupID
         };
     }
     else {
         return {
             groupDetail: state.app.groupDetail.data.searchResult,
             pageActions: state.app.groupDetail.data.actions,
-            groupID: undefined,
-            useCases: _.get(state.app, 'typeData.data.USE_CASE', undefined)
+            groupID: undefined
         };
     }
 }

@@ -13,6 +13,7 @@ import GroupSearch from './components/GroupSearchScreen/GroupSearchContainer.jsx
 import GroupSetup from './components/GroupSetupScreen/GroupSetupContainer.jsx';
 import UserSearch from './components/UserSearchScreen/UserSearchContainer.jsx';
 import UserSetup from './components/UserSetupScreen/UserSetupContainer.jsx';
+import UserSetup2 from './components/UserSetupScreen/UserSetupContainer2.jsx';
 import WorkingCalendar from './components/WorkingCalendar/WorkingCalContainer.jsx';
 import ChangePassword from './components/AuthenticationScreens/changePassword.jsx';
 import PasswordPolicy from './components/PasswordPolicyScreen/PasswordPolicyContainer.jsx';
@@ -92,8 +93,10 @@ export default (
       <Route path="/groupSetup" component={GroupSetup} />
       <Route path="/groupSetup/:groupID" component={GroupSetup} />
       <Route path="/userList" component={UserSearch} />
-      <Route path="/userSetup" component={UserSetup} />
-      <Route path="/userSetup/:userID" component={UserSetup} />
+      <Route path="/userSetup2" component={UserSetup} />
+      <Route path="/userSetup2/:userID" component={UserSetup} />
+      <Route path="/userSetup" component={UserSetup2} />
+      <Route path="/userSetup/:userID" component={UserSetup2} />
       <Route path="/workingCalendarDetail" component={WorkingCalendar} />
       <Route path="/cipher/blockchain/edit" component={BlockchainEditor} />
       <Route path="/cipher/blockchain/blockSearch" component={BlockSearchScreen} />
