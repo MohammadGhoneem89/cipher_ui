@@ -150,8 +150,8 @@ class UserSetupContainer2 extends Component {
             console.log(this.props.params.userID, ' : User ID')
 
             let hypUser = nextProps.userDetail.hypUser
-            if (nextProps.userDetail.network){
-                hypUser = nextProps.userDetail.network+'-'+hypUser
+            if (nextProps.userDetail.network) {
+                hypUser = nextProps.userDetail.network + '-' + hypUser
             }
 
             if (this.props.params.userID && nextProps.userDetail.userID) {
@@ -204,7 +204,19 @@ class UserSetupContainer2 extends Component {
             }
         }
     }
+    validateEmail = (email) => {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+    validateIPaddress = (ipaddress) => {
+        if (String(ipaddress).trim() == '*.*.*.*') {
+            return true
+        } else {
+            var re = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+            return re.test(ipaddress)
+        }
 
+    }
     onSubmit = (e) => {
         e.preventDefault()
         console.log(this.state.userDetail)
@@ -236,8 +248,14 @@ class UserSetupContainer2 extends Component {
         if (this.state.userDetail.userType === 'Human' && !this.state.userDetail.email) {
             errors.email = 'Field is Required'
         }
+        if (this.state.userDetail.userType === 'Human' && !this.validateEmail(this.state.userDetail.email)) {
+            errors.email = 'Email address not valid'
+        }
         if (this.state.userDetail.userType === 'Human' && !this.state.userDetail.allowedIPRange) {
             errors.allowedIPRange = 'Field is Required'
+        }
+        if (this.state.userDetail.userType === 'Human' && !this.validateIPaddress(this.state.userDetail.allowedIPRange)) {
+            errors.allowedIPRange = 'Invalid IP Address'
         }
         if (!this.state.userDetail.firstScreen) {
             errors.firstScreen = 'Field is Required'
@@ -282,7 +300,8 @@ class UserSetupContainer2 extends Component {
                     passwordHashType: "sha512",
                     firstScreen,
                     network,
-                    hypUser
+                    hypUser,
+                    allowedIPRange: [String(this.state.userDetail.allowedIPRange)]
                 }))
                 .catch(err => {
                     this.setState({
@@ -310,7 +329,8 @@ class UserSetupContainer2 extends Component {
                     passwordHashType: "sha512",
                     firstScreen,
                     network,
-                    hypUser
+                    hypUser,
+                    allowedIPRange: this.state.userDetail.allowedIPRange
                 }))
                 .catch(err => {
                     this.setState({

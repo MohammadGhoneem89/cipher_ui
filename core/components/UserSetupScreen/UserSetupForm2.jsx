@@ -282,7 +282,7 @@ export default function UserSetupForm2(props) {
 
                         </div>
                         <Input
-                            status={(containerState.errors && containerState.errors.email) ? "ERROR" : undefined}
+                            status={((containerState.errors && containerState.errors.email) || (containerState.errors && containerState.errors.errors && containerState.errors.errors.email)   ) ? "ERROR" : undefined}
                             errorIconStyle={{
                                 left: '365px',
                                 top: '10px',
@@ -294,7 +294,6 @@ export default function UserSetupForm2(props) {
                             columns='7'
                             placeholder='sample@org.com'
                             state={containerState}
-                            type='email'
                             actionHandler={generalHandler}
                             className="form-control"
                             disabled={false} />

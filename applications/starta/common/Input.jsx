@@ -39,10 +39,10 @@ class Input extends React.Component {
                     placeholder={this.props.placeholder}
                 />
                 {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <span className="help-block">{this.props.state.errors[this.props.fieldname]}</span>}
+                {(this.props.state.errors && this.props.state.errors.errors && this.props.state.errors.errors[this.props.fieldname]) && <span className="help-block">{this.props.state.errors.errors[this.props.fieldname].message}</span>}
 
-
-                {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />
-                }
+                {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />}
+                {(this.props.state.errors && this.props.state.errors.errors && this.props.state.errors.errors[this.props.fieldname]) && <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />}
 
             </div>
         );
