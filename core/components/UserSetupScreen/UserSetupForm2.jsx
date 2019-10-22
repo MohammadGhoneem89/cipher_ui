@@ -23,6 +23,7 @@ export default function UserSetupForm2(props) {
         typeData,
         generalHandler,
         customHandler,
+        userTypeHandler,
         onChangeHandler,
         onSubmit,
         imgDiv,
@@ -56,7 +57,7 @@ export default function UserSetupForm2(props) {
                             typeName="callerTypes"
                             dataSource={typeData}
                             multiple={false}
-                            actionHandler={generalHandler}
+                            actionHandler={userTypeHandler}
                             className="form-control"
                             disabled={false}
                         />
@@ -278,11 +279,11 @@ export default function UserSetupForm2(props) {
                     <Row>
                         <div className="col-md-5">
                             <Label text="Email" columns='4' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
-                            <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""} style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
+                            <Label text={"*"} style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
 
                         </div>
                         <Input
-                            status={((containerState.errors && containerState.errors.email) || (containerState.errors && containerState.errors.errors && containerState.errors.errors.email)   ) ? "ERROR" : undefined}
+                            status={((containerState.errors && containerState.errors.email) || (containerState.errors && containerState.errors.errors && containerState.errors.errors.email)) ? "ERROR" : undefined}
                             errorIconStyle={{
                                 left: '365px',
                                 top: '10px',
@@ -303,7 +304,7 @@ export default function UserSetupForm2(props) {
                     <Row>
                         <div className="col-md-5" style={{ width: '22%' }}>
                             <Label text="Allowed IP" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }} />
-                            <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""} style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
+                            <Label text={"*"} style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
                         </div>
                         <Input
                             status={(containerState.errors && containerState.errors.allowedIPRange) ? "ERROR" : undefined}
@@ -334,7 +335,7 @@ export default function UserSetupForm2(props) {
                     <Row>
                         <div className="col-md-5">
                             <Label text="Landing Page" columns='4' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
-                            <Label text="*" columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
+                            <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""} columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
                         </div>
                         <Combobox
                             status={(containerState.errors && containerState.errors.firstScreen) ? "ERROR" : undefined}
@@ -393,14 +394,21 @@ export default function UserSetupForm2(props) {
                                     <div className="col-md-12 text-center">
                                         <div className="custom-control custom-checkbox" style={{ padding: '26px', textAlign: 'left' }}>
 
-                                            {containerState.userDetail.groups && containerState.userDetail.groups.map((item, index) => {
+                                            {containerState.userDetail.groups && containerState.userDetail.groups.filter((item, index) => {
+                                                if (containerState.userDetail.userType === 'Human' && item.type != 'API') {
+                                                    return true
+                                                } else if (containerState.userDetail.userType === 'API' && item.type === 'API') {
+                                                    return true
+                                                }
+                                                return false
+                                            }).map((item, index) => {
                                                 return (
                                                     <div key={index} style={{ padding: '10px' }}>
                                                         <label key={1} className="mt-checkbox mt-checkbox-outline"
                                                             style={{ marginBottom: "0px", marginTop: "0px" }}>
                                                             <input type="checkbox" className="form-control"
                                                                 name={index}
-                                                                checked={item.isAssigned}
+                                                                checked={containerState.groupIndex === index ? true : false}
                                                                 onChange={onChangeHandler} />
                                                             <span></span>
                                                             {item.name}
@@ -494,7 +502,7 @@ export default function UserSetupForm2(props) {
 
             <div className="clearfix">
                 <ActionButton actionList={containerState.actions}
-                    />
+                />
             </div>
 
             {/* <div className="clearfix">

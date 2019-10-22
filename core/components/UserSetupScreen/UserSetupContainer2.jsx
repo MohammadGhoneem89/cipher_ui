@@ -23,7 +23,8 @@ class UserSetupContainer2 extends Component {
             isLoading: true,
             typeData: {},
             userDetail: {},
-            errors: {}
+            errors: {},
+            groupIndex: 0
         };
     }
 
@@ -135,18 +136,8 @@ class UserSetupContainer2 extends Component {
                 }
             });
 
-            let groups = []
-            if (!this.props.params.userID) {
-                // select a default group
-                nextProps.userDetail.groups.forEach((item, index) => {
-                    groups.push({
-                        ...item,
-                        isAssigned: (index === 0 ? true : false)
-                    })
-                });
-            } else {
-                groups = [...nextProps.userDetail.groups]
-            }
+            let groups = [...nextProps.userDetail.groups]
+            
             console.log(this.props.params.userID, ' : User ID')
 
             let hypUser = nextProps.userDetail.hypUser
@@ -245,19 +236,19 @@ class UserSetupContainer2 extends Component {
         if (this.state.userDetail.userType === 'Human' && !this.state.userDetail.firstName) {
             errors.firstName = 'Field is Required'
         }
-        if (this.state.userDetail.userType === 'Human' && !this.state.userDetail.email) {
+        if (!this.state.userDetail.email) {
             errors.email = 'Field is Required'
         }
-        if (this.state.userDetail.userType === 'Human' && !this.validateEmail(this.state.userDetail.email)) {
+        if (!this.validateEmail(this.state.userDetail.email)) {
             errors.email = 'Email address not valid'
         }
-        if (this.state.userDetail.userType === 'Human' && !this.state.userDetail.allowedIPRange) {
+        if (!this.state.userDetail.allowedIPRange) {
             errors.allowedIPRange = 'Field is Required'
         }
-        if (this.state.userDetail.userType === 'Human' && !this.validateIPaddress(this.state.userDetail.allowedIPRange)) {
+        if (!this.validateIPaddress(this.state.userDetail.allowedIPRange)) {
             errors.allowedIPRange = 'Invalid IP Address'
         }
-        if (!this.state.userDetail.firstScreen) {
+        if (this.state.userDetail.userType === 'Human' && !this.state.userDetail.firstScreen) {
             errors.firstScreen = 'Field is Required'
         }
 
@@ -284,19 +275,27 @@ class UserSetupContainer2 extends Component {
         console.log('hypUserArray', hypUserArray.join('-'));
         let network = hypUserArray && hypUserArray.length ? hypUserArray.join('-') : hypUserArray[0];
 
-
         if (this.props.params.userID) {
             this.setState({
                 isLoading: true
             })
             window.scrollTo(0, 0);
+            const checkedGroups =  this.state.userDetail.groups.filter((group,index)=>{
+                if (this.state.userDetail.userType === 'Human' && group.type != 'API') {
+                    return true
+                } else if (this.state.userDetail.userType === 'API' && group.type === 'API') {
+                    return true
+                }
+                return false
+            }).filter((group,index) => {
+                return index===this.state.groupIndex
+            })
+            debugger
             this.props.actions.generalAjxProcess(constants.userUpdate,
                 requestCreator.createUserInsertRequest({
                     ...this.state.userDetail,
                     id: this.props.params.userID,
-                    groups: this.state.userDetail.groups.filter(group => {
-                        return group.isAssigned
-                    }),
+                    groups: checkedGroups,
                     passwordHashType: "sha512",
                     firstScreen,
                     network,
@@ -319,13 +318,22 @@ class UserSetupContainer2 extends Component {
                 isLoading: true
             })
             window.scrollTo(0, 0);
+            const checkedGroups =  this.state.userDetail.groups.filter((group,index)=>{
+                if (this.state.userDetail.userType === 'Human' && group.type != 'API') {
+                    return true
+                } else if (this.state.userDetail.userType === 'API' && group.type === 'API') {
+                    return true
+                }
+                return false
+            }).filter((group,index) => {
+                return index===this.state.groupIndex
+            })
+            debugger
             this.props.actions.generalAjxProcess(constants.userInsert,
                 requestCreator.createUserInsertRequest({
                     ...this.state.userDetail,
                     id: this.props.params.userID,
-                    groups: this.state.userDetail.groups.filter(group => {
-                        return group.isAssigned
-                    }),
+                    groups: checkedGroups,
                     passwordHashType: "sha512",
                     firstScreen,
                     network,
@@ -379,6 +387,17 @@ class UserSetupContainer2 extends Component {
         return arr;
     };
 
+    userTypeHandler(formname, fieldname, type, e) {
+        let value = e.target.value;
+        let formdata = _.get(this.state, formname, {});
+        _.set(formdata, e.target.name, value);
+
+        this.setState({
+            [formname]: formdata,
+            groupIndex: 0
+        });
+    };
+
     customHandler(formname, fieldname, type, e) {
         let value = e.target.value;
         let formdata = _.get(this.state, formname, {});
@@ -405,20 +424,38 @@ class UserSetupContainer2 extends Component {
     onChange(e) {
 
         let groups = [...this.state.userDetail.groups]
-
+        
         // clear all groups if a new is going to be selected to make it a combo box instead of checkbox
         groups.map(item => {
             item.isAssigned = false
+            return item
         })
         // checkbox ended
 
-        groups[parseInt(e.target.name)].isAssigned = !(groups[parseInt(e.target.name)].isAssigned)
+        let groupIndex = -1;
+
+        
+        groups.filter((item, index) => {
+            if (this.state.userDetail.userType === 'Human' && item.type != 'API') {
+                return true
+            } else if (this.state.userDetail.userType === 'API' && item.type === 'API') {
+                return true
+            }
+            return false
+        }).forEach((item,index)=>{
+            if (parseInt(e.target.name)===index){
+                groupIndex = index
+            }
+        })
+        console.log(groupIndex, ' groupIndex >>>>>>>>>>>>>>>>>>>>>>')
+
 
         this.setState({
             userDetail: {
                 ...this.state.userDetail,
                 groups: [...groups]
-            }
+            },
+            groupIndex
         })
     }
 
@@ -474,6 +511,7 @@ class UserSetupContainer2 extends Component {
                         containerState={this.state}
                         generalHandler={gen.generalHandler.bind(this)}
                         customHandler={this.customHandler.bind(this)}
+                        userTypeHandler={this.userTypeHandler.bind(this)}
                         onChangeHandler={this.onChange.bind(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         imgDiv={this.imgDiv.bind(this)}

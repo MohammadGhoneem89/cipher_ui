@@ -35,7 +35,7 @@ const UserFilterForm = props => {
 
                 </div>
                 <div className="col-md-6">
-                    <Label text="Firt Name" columns='6' divStyle={{ width: '20%', paddingTop: '20px' }} />
+                    <Label text="First Name" columns='6' divStyle={{ width: '20%', paddingTop: '20px' }} />
                     <div className="col-md-6">
                         <TextInput
                             name="firstName"
