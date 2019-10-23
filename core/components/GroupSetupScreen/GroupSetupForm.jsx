@@ -10,7 +10,7 @@ import GroupTree from './GroupTree.jsx'
 import validate from './validate';
 import ActionButton from '../../common/ActionButtonNew.jsx';
 
-import Label from '../../../applications/starta/common/Lable.jsx';
+import Label from '../../common/Lable.jsx';
 
 const FormSection1 = ({ error, initialValues, updateState, state, useCases }) => {
     let grpType = [

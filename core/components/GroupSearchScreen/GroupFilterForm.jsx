@@ -2,7 +2,7 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { CheckboxInput, CheckboxList, TextInput, DropdownInput } from '../../common/FormControls.jsx';
 
-import Label from '../../../applications/starta/common/Lable.jsx';
+import Label from '../../common/Lable.jsx';
 
 const GroupFilterForm = props => {
     const { handleSubmit, pristine, reset, submitting } = props;

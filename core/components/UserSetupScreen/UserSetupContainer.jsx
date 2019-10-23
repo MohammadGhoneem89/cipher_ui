@@ -113,7 +113,7 @@ class UserSetupContainer extends Component {
 
     componentWillReceiveProps(nextProps) {
         let perTypeData = this.getPermissionTypeData(nextProps.permission)
-        if (nextProps.userDetail && nextProps.userDetail.groups && nextProps.entityNames && nextProps.orgTypes && nextProps.callerTypes && nextProps.firstScreens && nextProps.hyperledgerData && nextProps.quorrumData) {
+        if (nextProps.userDetail && nextProps.userDetail.groups && nextProps.entityNames && (nextProps.orgTypes || nextProps.callerTypes || nextProps.firstScreens) && nextProps.hyperledgerData && nextProps.quorrumData) {
 
             let userType = sessionStorage.orgType;
             let authenticationType = [];
@@ -130,11 +130,14 @@ class UserSetupContainer extends Component {
                 ];
             }
             let firstScreen = ''
-            nextProps.firstScreens.forEach(obj => {
-                if (obj.url === nextProps.userDetail.firstScreen) {
-                    firstScreen = obj.value
-                }
-            });
+            if (nextProps.firstScreens){
+                nextProps.firstScreens.forEach(obj => {
+                    if (obj.url === nextProps.userDetail.firstScreen) {
+                        firstScreen = obj.value
+                    }
+                });
+            }
+            
 
             let groups = [...nextProps.userDetail.groups]
             
@@ -158,8 +161,8 @@ class UserSetupContainer extends Component {
                     typeData: {
                         ...this.state.typeData,
                         orgTypes: nextProps.orgTypes,
-                        callerTypes: nextProps.callerTypes,
-                        firstScreens: nextProps.firstScreens,
+                        callerTypes: nextProps.callerTypes || [],
+                        firstScreens: nextProps.firstScreens || [],
                         entityNames: nextProps.entityNames,
                         hyperledgerData: nextProps.hyperledgerData,
                         quorrumData: nextProps.quorrumData,
@@ -181,8 +184,8 @@ class UserSetupContainer extends Component {
                     typeData: {
                         ...this.state.typeData,
                         orgTypes: nextProps.orgTypes,
-                        callerTypes: nextProps.callerTypes,
-                        firstScreens: nextProps.firstScreens,
+                        callerTypes: nextProps.callerTypes || [],
+                        firstScreens: nextProps.firstScreens || [],
                         entityNames: nextProps.entityNames,
                         hyperledgerData: nextProps.hyperledgerData,
                         quorrumData: nextProps.quorrumData,
