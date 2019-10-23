@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { CheckboxInput, CheckboxList, TextInput } from '../../common/FormControls.jsx';
 import { DropdownInput } from '../../common/FormControls.jsx';
 
-import Label from '../../../applications/starta/common/Lable.jsx';
+import Label from '../../common/Lable.jsx';
 
 const UserFilterForm = props => {
     const { handleSubmit, pristine, reset, submitting } = props;
