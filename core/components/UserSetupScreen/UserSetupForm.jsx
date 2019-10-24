@@ -187,7 +187,7 @@ export default function UserSetupForm(props) {
                 </div>
                 <div className="col-md-6">
                     {!containerState.id && <Row>
-                        <div className="col-md-5" style={{ width: '22%' }}>
+                        <div className="col-md-5" style={{ width: '23%' }}>
                             <Label text="Password" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }} />
                             <Label text="*" style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
                         </div>
@@ -248,7 +248,7 @@ export default function UserSetupForm(props) {
                 </div>
                 <div className="col-md-6">
                     <Row>
-                        <div className="col-md-5" style={{ width: '22%' }}>
+                        <div className="col-md-5" style={{ width: '23%' }}>
                             <Label text="Last Name" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }} />
                             <Label text="" columns='1' />
                         </div>
@@ -305,7 +305,7 @@ export default function UserSetupForm(props) {
                 </div>
                 <div className="col-md-6">
                     <Row>
-                        <div className="col-md-5" style={{ width: '22%' }}>
+                        <div className="col-md-5" style={{ width: '23%' }}>
                             <Label text="Allowed IP" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }} />
                             <Label text={"*"} style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
                         </div>
@@ -502,7 +502,7 @@ export default function UserSetupForm(props) {
                 </Col>
             </Row>
 
-
+            <br></br>
             <div className="clearfix">
                 <ActionButton actionList={containerState.actions}
                 />
