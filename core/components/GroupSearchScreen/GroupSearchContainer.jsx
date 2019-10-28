@@ -34,6 +34,7 @@ class GroupSearchContainer extends React.Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0,0);
         this.props.actions.updateStore({
             groupDetail: initialState.groupDetail
         })
