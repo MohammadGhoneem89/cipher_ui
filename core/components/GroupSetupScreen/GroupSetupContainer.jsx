@@ -18,7 +18,7 @@ class RoleSetupContainer extends React.Component {
         this.state = {
             initialValues: {
                 groupDetail: initialState.groupDetail.data,
-                pageActions : initialState.groupDetail.data.actions,
+                pageActions: initialState.groupDetail.data.actions,
 
             },
             groupID: undefined,
@@ -26,7 +26,6 @@ class RoleSetupContainer extends React.Component {
         };
 
         this.submit = this.submit.bind(this);
-        this.updateNodesByType = this.updateNodesByType.bind(this);
     }
 
     componentWillMount() {
@@ -40,6 +39,7 @@ class RoleSetupContainer extends React.Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0)
         if (this.state.groupID) {
             var request = { "id": this.state.groupID };
             this.props.actions.generalProcess(constants.getGroupDetail, request);
@@ -48,18 +48,21 @@ class RoleSetupContainer extends React.Component {
             this.props.actions.generalProcess(constants.getGroupDetail, requestCreator.createGroupDetailRequest("-1"));
         }
         // Get Type Data in any case
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['USE_CASE'])); 
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['USE_CASE']));
 
     }
     componentWillUnmount() {
     }
+
+
     submit(data) {
         data.id = data._id;
         var dataSubmit = {
             "action": "groupInsert",
             data
         }
-
+        this.setState({ isLoading: true })
+        window.scrollTo(0, 0)
         if (this.state.groupID)
             return this.props.actions.reduxFormProcess(constants.groupUpdate, dataSubmit)
                 .catch((error) => {
@@ -71,63 +74,70 @@ class RoleSetupContainer extends React.Component {
                     throw new SubmissionError(error);
                 });
     }
+
+
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.groupDetail && nextProps.useCases) {
-            
+
+            let nodes = [...nextProps.groupDetail.nodes];
+            let UINodes = [];
+            let APINodes = [];
+
+            for (let count = 0; count < nodes.length; count++) {
+                let child = nodes[count];
+                if (child.permissionType == 'UI')
+                    UINodes.push(child)
+                else
+                    APINodes.push(child)
+            }
+            if (APINodes[0])
+                APINodes[0].label = "API Permissions Core";
+            if (APINodes[1])
+                APINodes[1].label = "API Permissions" + " " + APINodes[1].useCase;
+
+
+            if (!nextProps.groupDetail.type) {
+                nodes = []
+            }
+            if (nextProps.groupDetail.type == 'UI') {
+                nodes = [...UINodes]
+            } else if (nextProps.groupDetail.type == 'API') {
+                nodes = [...APINodes]
+            }
+
+
             this.setState({
-                groupDetail: nextProps.groupDetail,
+                groupDetail: {
+                    ...nextProps.groupDetail,
+                    checked: [...nextProps.groupDetail.checked],
+                    nodes,
+                    UINodes,
+                    APINodes
+                },
                 pageActions: nextProps.pageActions,
                 isLoading: false,
                 useCases: nextProps.useCases
             });
         }
         if (!nextProps.groupDetail && nextProps.useCases) {
-            
+
             this.setState({
-                groupDetail: initialState.groupDetail.data,
+                groupDetail: initialState.groupDetail.data.searchResult,
                 pageActions: nextProps.pageActions,
                 useCases: nextProps.useCases
             });
         }
     }
-    updateNodesByType() {
-        let nodes = this.props.groupDetail.nodes;
-        let UINodes = [];
-        let APINodes = [];
-
-        for (let count = 0; count < nodes.length; count++) {
-            let child = nodes[count];
-            if (child.type == 'module' && child.label == "API Permissions")
-                APINodes.push(child)
-            else
-                UINodes.push(child)
-        }
-
-        APINodes[0].label = "API Permissions Core"; //" " +  APINodes[0].useCase
-        APINodes[1].label = "API Permissions" + " " + APINodes[1].useCase;
-        this.props.groupDetail.UINodes = UINodes;
-        this.props.groupDetail.APINodes = APINodes;
-
-        this.props.groupDetail.nodes = [];
-  
-        if( this.props.groupDetail.type == 'API')
-            this.props.groupDetail.nodes = APINodes;
-        else if ( this.props.groupDetail.type == 'UI')
-            this.props.groupDetail.nodes = UINodes;        
-
-        console.log(this.props.groupDetail, ' GROUP_DETAIL')
-    }
 
     render() {
         if (!this.state.isLoading) {
-            this.updateNodesByType();
 
             return (
 
                 <Portlet title={"Group"}>
-
-                    <GroupSetupForm onSubmit={this.submit} initialValues={this.props.groupDetail} checked={this.state.checked} pageActions= {this.state.pageActions}
-                        expanded={this.state.expanded} useCases = {this.state.useCases}/>
+                    <GroupSetupForm onSubmit={this.submit} initialValues={this.state.groupDetail} checked={this.state.checked} pageActions={this.state.pageActions}
+                        expanded={this.state.expanded} useCases={this.state.useCases} />
                 </Portlet>
             );
         }

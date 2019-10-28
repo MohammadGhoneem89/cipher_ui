@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
+import initialState from '../../reducers/initialState.js';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
@@ -33,6 +34,9 @@ class GroupSearchContainer extends React.Component {
     }
 
     componentDidMount() {
+        this.props.actions.updateStore({
+            groupDetail: initialState.groupDetail
+        })
         var request = {
             "action": "groupList",
             "searchCriteria": {

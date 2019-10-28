@@ -14,7 +14,7 @@ const GroupTree = props => {
                         <h4 className="caption" style={{ fontWeight: 'bold', textAlign: 'center', color: 'black' }}>Permissions</h4>
                     </div>
 
-                    <div className="form-group" style={{ padding: '15'}}>
+                    <div className="form-group" style={{ padding: '15px'}}>
                         <CheckboxTree
                             nodes={initialValues.nodes}
                             checked={state.checked}
