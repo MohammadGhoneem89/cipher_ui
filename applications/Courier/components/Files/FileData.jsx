@@ -296,7 +296,7 @@ class FileData extends React.Component {
                     </ModalBox>
                     <Wrapper title="File Details" identity={this.state.fileDetails[0].name}>
                         <div className="row">
-                            <TileUnit data={[{ "id": 1, "title": "Total", "value": this.state.fileData.length, "actionURI": "", "overDue": "", "fontClass": "green-steel", "percentageTag": false }, { "id": 2, "title": "Under Process", "value": this.state.under_process, "actionURI": "", "overDue": "", "fontClass": "green-turquoise", "percentageTag": false }, { "id": 3, "title": "Failed", "value": this.state.failed, "actionURI": "", "overDue": "", "fontClass": "green-meadow", "percentageTag": false }, { "id": 4, "title": "Processed", "value": this.state.processed, "actionURI": "", "overDue": "", "fontClass": "green-meadow", "percentageTag": false },]} />
+                            <TileUnit data={[{ "id": 1, "title": "Total", "value": this.state.pageData.totalRecords, "actionURI": "", "overDue": "", "fontClass": "green-steel", "percentageTag": false }, { "id": 2, "title": "Under Process", "value": this.state.under_process, "actionURI": "", "overDue": "", "fontClass": "green-turquoise", "percentageTag": false }, { "id": 3, "title": "Failed", "value": this.state.failed, "actionURI": "", "overDue": "", "fontClass": "green-meadow", "percentageTag": false }, { "id": 4, "title": "Processed", "value": this.state.processed, "actionURI": "", "overDue": "", "fontClass": "green-meadow", "percentageTag": false },]} />
                         </div>
                         <Portlet title="Data">
                             <Row>
