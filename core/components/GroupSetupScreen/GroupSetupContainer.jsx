@@ -110,7 +110,7 @@ class RoleSetupContainer extends React.Component {
             this.setState({
                 groupDetail: {
                     ...nextProps.groupDetail,
-                    checked: [...nextProps.groupDetail.checked],
+                    checked: [..._.get(nextProps.groupDetail,'checked',[])],
                     nodes,
                     UINodes,
                     APINodes

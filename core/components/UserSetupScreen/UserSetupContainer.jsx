@@ -293,7 +293,7 @@ class UserSetupContainer extends Component {
             }).filter((group,index) => {
                 return index===this.state.groupIndex
             })
-            debugger
+            
             this.props.actions.generalAjxProcess(constants.userUpdate,
                 requestCreator.createUserInsertRequest({
                     ...this.state.userDetail,
@@ -331,7 +331,7 @@ class UserSetupContainer extends Component {
             }).filter((group,index) => {
                 return index===this.state.groupIndex
             })
-            debugger
+            
             this.props.actions.generalAjxProcess(constants.userInsert,
                 requestCreator.createUserInsertRequest({
                     ...this.state.userDetail,
