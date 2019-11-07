@@ -3,6 +3,8 @@ import { reduxForm } from 'redux-form';
 import { CheckboxInput, CheckboxList, TextInput } from '../../common/FormControls.jsx';
 import { DropdownInput } from '../../common/FormControls.jsx';
 
+import Label from '../../common/Lable.jsx';
+
 const UserFilterForm = props => {
     const { handleSubmit, pristine, reset, submitting } = props;
 
@@ -22,73 +24,48 @@ const UserFilterForm = props => {
     return (
         <form role="form" onSubmit={handleSubmit}>
             <div className="row">
-                <div className="col-md-12 col-sm-12">
-
-                    <div className="col-md-6 col-sm-6">
+                <div className="col-md-6">
+                    <Label text="User ID" columns='3' style={{ paddingTop: '25px' }} />
                         <TextInput
                             name="userID"
-                            label="User ID"
                             type="text"
                         />
-                    </div>
-                    <div className="col-md-6 col-sm-6">
+                </div>
+                
+                <div className="col-md-6 ">
+                    <Label text="First Name" columns='3' style={{ paddingTop: '25px' }} />
                         <TextInput
                             name="firstName"
-                            label="Firt Name"
                             type="text"
                         />
-                    </div>
+                </div>
+               
+            </div>
 
-
-
-                    {false &&
-                        <div>
-                            <div className="col-md-6 col-sm-6">
-                                <TextInput
-                                    name="lastName"
-                                    label="Last Name"
-                                    type="text"
-                                />
-                            </div>
-                            <div className="col-md-6 col-sm-6">
-                                {userType != 'Entity' && userType != 'Acquirer' &&
-                                    <DropdownInput name="orgType" options={orgType}
-                                        label="Organization Type"
-                                    />
-                                }
-                            </div>
-                        </div>
-                    }
-
-                    <div className="col-md-6 col-sm-6">
-
-
+            
+            <div className="row">
+                <div className="col-md-6">
+                    <Label text="User Type" columns='3' style={{ paddingTop: '25px' }} />
                         <DropdownInput name="userType" options={callerType}
-                            label="User Type"
                         />
                     </div>
 
-                    <div className="col-md-12">
-                        <div className="col-md-12">
-                            <div className="pull-right">
-                                <button type="submit" className="btn green" disabled={submitting}>
-                                    Search
-                            </button>
-                                {"  "}
-                                <button type="button" className="btn default"  onClick={reset}>
-                                    Clear
-                            </button>
-                                {"  "}
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
-
-
-
-
+            
+            <div className="row">
+            <div className="clearfix pull-right" >
+                    <button type="submit" className="btn green" disabled={submitting} style={{marginRight:"10px"}}>
+                        Search
+                    </button>
+                    <button type="button" className="btn default" disabled={pristine || submitting} onClick={reset} style={{marginRight:"25px"}}>
+                        Clear
+                    </button>
             </div>
+            </div>
+            
+            
+
+
         </form>
     );
 };

@@ -2994,3 +2994,70 @@ label.errorcolr {
 .badge-success {
     background: #56a93c;
 }
+
+
+/* Tiles*/
+
+.table100 {
+    position: relative;
+}
+
+
+.table100.ver1 {
+    border-radius: 5px !important;
+    overflow: hidden;
+    box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.06);
+    -o-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+    -ms-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+    /* height: 28%; */
+    background-color: #fff;
+}
+
+
+.container-table100 {
+    width: 100%;
+    min-height: 100vh;
+    background: #fff;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 33px 30px;
+}
+
+.orderdetails-table{
+	
+    box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.06);
+    -moz-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.06);
+    -o-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.06);
+    -ms-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.06);
+    padding-top: 6px;
+    padding-bottom: 0px;
+    font-size: 16px;
+    color: #d71923;
+    line-height: 1.9;
+    /* background-color: #d71923; */
+
+}
+
+.table100-head {
+   
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.table100.ver1 th {
+    font-size: 19px;
+    color: #fff;
+    line-height: 1.4;
+    background-color: #d71923;
+}
+

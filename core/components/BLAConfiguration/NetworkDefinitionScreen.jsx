@@ -334,7 +334,7 @@ class NetworkDefinitionScreen extends React.Component {
   }
   componentDidMount() {
     //this.props.actions.generalProcess(constants.getAPIList);
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['NLB_Type', 'BLCHN_TYPE']));
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['NLB_Type', 'BLCHN_TYPE', 'ORG_TYPES']));
     if (this.props.id !== "NEW") {
       this.props.actions.generalProcess(constants.getNetworkConfigByID, {
         "_id": this.props.id //"5bf9c9df4cb0c690e4461b89"

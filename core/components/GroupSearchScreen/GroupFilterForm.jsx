@@ -2,6 +2,8 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { CheckboxInput, CheckboxList, TextInput, DropdownInput } from '../../common/FormControls.jsx';
 
+import Label from '../../common/Lable.jsx';
+
 const GroupFilterForm = props => {
     const { handleSubmit, pristine, reset, submitting } = props;
 
@@ -10,52 +12,48 @@ const GroupFilterForm = props => {
         { value: "API", label: "API" },
     ];
     return (
-        <form role="form" onSubmit={handleSubmit}>
+        <form role="form" onSubmit={handleSubmit} >
             <div className="row">
-                <div className="col-md-12 col-sm-12">
-                    <div className="row">
-                        <div className="col-md-6 col-sm-6">
-                            <TextInput
-                                name="name"
-                                label="Group Name"
-                                type="text"
-                            />
-                        </div>
-                        <div className="col-md-6 col-sm-6">
-
-                            <TextInput
-                                name="description"
-                                label="Description"
-                                type="text"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="row">
-                        <div className="col-md-6 col-sm-6">
-
-                            <DropdownInput name="type" options={grpType}
-                                label="Group Type"
-                            />
-
-                        </div>
-                    </div>
+                <div className="col-md-6">
+                    <Label text="Group Name" columns="3"  style={{paddingTop:"25px"}}/>
+                        <TextInput
+                            name="name"
+                            type="text"             
+                        />
                 </div>
 
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="col-md-12">
-                            <div className="col-md-12 form-group">
-                                <div className="btn-toolbar pull-right">
-                                    <button type="submit" className="btn green" disabled={submitting}> Search   </button>
-                                    <button type="button" className="btn default" disabled={pristine || submitting} onClick={reset}>     Clear</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div className="col-md-6">
+                    <Label text="Description" columns="3" style={{paddingTop:"25px"}} />
+                        <TextInput
+                            name="description"
+                            type="text"
+                        />
                 </div>
 
             </div>
+
+
+            <div className="row">
+                   <div className="col-md-6">
+                    <Label   text="Group Type"   columns="3" style={{paddingTop:"25px"}} />
+                    <DropdownInput name="type" options={grpType}/>
+                    </div>
+            </div>
+
+            <div className="row">
+            <div className=" clearfix pull-right" >
+                    
+                    <button type="submit" className="btn green" disabled={submitting} style={{marginRight:"10px"}}>
+                        Search
+                    </button>
+                    <button type="button" className="btn default" disabled={pristine || submitting} onClick={reset} 
+                    style={{marginRight:"25px"}}>
+                        Clear
+                    </button> 
+                     </div>
+                     </div>
+                     
+
         </form>
     );
 };

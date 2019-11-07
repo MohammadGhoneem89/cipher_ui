@@ -10,12 +10,14 @@ import GroupTree from './GroupTree.jsx'
 import validate from './validate';
 import ActionButton from '../../common/ActionButtonNew.jsx';
 
+import Label from '../../common/Lable.jsx';
 
-const FormSection1 = ({ error, initialValues, updateState, state }) => {
+const FormSection1 = ({ error, initialValues, updateState, state, useCases }) => {
     let grpType = [
         { value: "UI", label: "UI" },
         { value: "API", label: "API" },
     ];
+    
     function updateGroupType(e) {
         updateState({ type: e.target.value });
 
@@ -27,27 +29,56 @@ const FormSection1 = ({ error, initialValues, updateState, state }) => {
         else
             initialValues.nodes = [];
     }
+    function updateUseCases(e) {
+        updateState({ usecase: e.target.value });
+
+    }
     return (
         <div className="row">
-            <div className="col-md-4">
-                <TextInput
-                    name="name"
-                    label="Group Name"
-                    type="text"
-                />
+            <div className="col-md-6">
+
+                <div className="row">
+                    <Label text="Group Name" columns='6' divStyle={{ width: '20%', paddingTop: '5px' }} />
+                    <div className="col-md-6">
+                        <TextInput
+                            name="name"
+                            type="text"
+                        />
+                    </div>
+                </div>
+
+                <div className="row">
+                    <Label text="Description" columns='6' divStyle={{ width: '20%', paddingTop: '5px' }} />
+                    <div className="col-md-6">
+                        <TextInput
+                            name="description"
+                            type="text"
+                        />
+                    </div>
+                </div>
+
             </div>
-            <div className="col-md-4">
-                <TextInput
-                    name="description"
-                    label="Description"
-                    type="text"
-                />
+
+            <div className="col-md-6">
+
+                <div className="row">
+                    <Label text="Group Type" columns='6' divStyle={{ width: '20%', paddingTop: '5px' }} />
+                    <div className="col-md-6">
+                        <DropdownInput name="type" options={grpType} onChange={updateGroupType} excludeSelectOption={true}
+                        />
+                    </div>
+                </div>
+
+                <div className="row">
+                    <Label text="Use Case" columns='6' divStyle={{ width: '20%', paddingTop: '5px' }} />
+                    <div className="col-md-6">
+                        <DropdownInput name="usecase" options={useCases} onChange={updateUseCases} excludeSelectOption={true}
+                        />
+                    </div>
+                </div>
+                
             </div>
-            <div className="col-md-4">
-                <DropdownInput name="type" options={grpType} onChange={updateGroupType} excludeSelectOption={true}
-                    label="Group Type"
-                />
-            </div>
+
         </div>
     )
 };
@@ -92,21 +123,21 @@ class GroupSetupForm extends React.Component {
     }
 
     render() {
-        const { error, handleSubmit, pristine, reset, submitting, initialValues, pageActions, checked, expanded } = this.props;
+        const { error, handleSubmit, pristine, reset, submitting, initialValues, pageActions, checked, expanded, useCases } = this.props;
         return (
             <div>
+                <form>
+                </form>
                 <form role="form" onSubmit={handleSubmit(this.submit)}>
-                    <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state} />
-                    <div className="col-md-12">
-                        <GroupTree updateState={this.updateState} state={this.state} initialValues={initialValues} />
+                    <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state} useCases={useCases} />
+                    <hr></hr>
+                    <GroupTree updateState={this.updateState} state={this.state} initialValues={initialValues} />
+                    <div className="clearfix">
+                        <ActionButton actionList={pageActions}
+                            performAction={this.performAction}
+                            submitting={submitting} pristine={pristine} />
                     </div>
-                    <div className="col-md-12">
-                        <div className="clearfix">
-                            <ActionButton actionList={pageActions}
-                                performAction={this.performAction}
-                                submitting={submitting} pristine={pristine} />
-                        </div>
-                    </div>
+
                 </form>
             </div>
         );
