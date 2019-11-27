@@ -5108,14 +5108,14 @@ ul.stats-overview li:last-child {
     padding: 0;
 }
 .tab_active {
-    background-color: #1e2c188a;
+    background-color: #2c2c188a;
     padding: 6px 12px;
     border-radius: 10px !important;
     -webkit-box-shadow: inset 0px 0px 41px -9px rgba(0,0,0,0.7);
     -moz-box-shadow: inset 0px 0px 41px -9px rgba(0,0,0,0.7);
     box-shadow: inset 0px 0px 41px -9px rgba(0,0,0,0.4);
     margin-right: 15px;
-    border: 2px solid #28491d9e;
+    border: 2px solid #ffcc00;
     height: fit-content;
 }
 .tab_notactive{
