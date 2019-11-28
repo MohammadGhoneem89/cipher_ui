@@ -248,7 +248,7 @@ class OrderViaContract extends React.Component {
         cartItem.leadTime = this.state.itemCatalogue[i].leadTime
         cartItem.printTime = this.state.itemCatalogue[i].printTime
         cartItem.material =  this.state.itemCatalogue[i].material
-        cartItem.batchSize = this.state.getItemCatalogue.searchResult[i].batchSize ? this.state.getItemCatalogue.searchResult[i].batchSize : 1
+        cartItem.batchSize = (this.state.getItemCatalogue && this.state.getItemCatalogue.searchResult[i].batchSize) ? this.state.getItemCatalogue.searchResult[i].batchSize : 1
         break
       }
     }
