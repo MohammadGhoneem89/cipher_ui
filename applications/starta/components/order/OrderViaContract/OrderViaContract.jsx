@@ -91,7 +91,7 @@ class OrderViaContract extends React.Component {
     let totalLeadTime = 0;
     let calculateLeadTime = 1;
     let firstTerm = 1.0;
-    
+
     let items = [...this.state.cartItems];
 
     for (let i = 0; i < items.length; i++) {
@@ -103,8 +103,18 @@ class OrderViaContract extends React.Component {
       }
       totalLeadTime += calculateLeadTime;
     }
-    
-    return  totalLeadTime
+
+    return totalLeadTime
+  }
+
+  getTotalUnits = () => {
+    let items = [...this.state.cartItems];
+    let totalUnit=0;
+    for (let i = 0; i < items.length; i++) {
+      totalUnit += items[i].batchSize * items[i].quantity 
+    }
+    console.log("totalunit >> ",totalUnit)
+    return totalUnit;
   }
 
 
@@ -143,7 +153,7 @@ class OrderViaContract extends React.Component {
     };
     if (this.state.cartItems && this.state.cartItems.length > 0) {
       this.setState({
-        isLoading:true
+        isLoading: true
       })
       this.props.actions.generalAjxProcess(constants.createOrder,
         request).then(result => {
@@ -156,10 +166,10 @@ class OrderViaContract extends React.Component {
       return false;
     }
   }
-  
+
   successAction = (orderID) => {
     browserHistory.push({
-      pathname : '/strata/orderList',
+      pathname: '/strata/orderList',
       state: { orderID }
     })
     toaster.showToast("Order Created successfully!");
@@ -240,14 +250,14 @@ class OrderViaContract extends React.Component {
     });
 
 
-    console.log(cartItem,'cart item')
+    console.log(cartItem, 'cart item')
     let material = ''
-    for (let i=0;i<_.get(this.state,'itemCatalogue',[]).length;i++){
-      if (this.state.itemCatalogue[i].itemCode===cartItem.itemCode){
-        console.log(this.state.itemCatalogue[i],'found')
+    for (let i = 0; i < _.get(this.state, 'itemCatalogue', []).length; i++) {
+      if (this.state.itemCatalogue[i].itemCode === cartItem.itemCode) {
+        console.log(this.state.itemCatalogue[i], 'found')
         cartItem.leadTime = this.state.itemCatalogue[i].leadTime
         cartItem.printTime = this.state.itemCatalogue[i].printTime
-        cartItem.material =  this.state.itemCatalogue[i].material
+        cartItem.material = this.state.itemCatalogue[i].material
         cartItem.batchSize = (this.state.getItemCatalogue && this.state.getItemCatalogue.searchResult[i].batchSize) ? this.state.getItemCatalogue.searchResult[i].batchSize : 1
         break
       }
@@ -312,15 +322,17 @@ class OrderViaContract extends React.Component {
     cart.forEach(element => {
       totalBatchSize += element.batchSize * element.quantity;
     });
-    console.log(totalBatchSize,"++totalBatchSize")
+    console.log(totalBatchSize, "++totalBatchSize")
     this.setState({
       cartItems: cart,
       grandTotal: grandTotal,
       itemAddedToCart: true,
-      totalBatchSize:totalBatchSize
+      totalBatchSize: totalBatchSize
     });
     e.target.reset();
     // console.log('cart', cart);
+
+
   }
 
   handlePageChange(pageNumber) {
@@ -355,7 +367,7 @@ class OrderViaContract extends React.Component {
       _contractID: document.getElementById('contractID').value,
       cartItems: [],
       grandTotal: 0,
-      totalBatchSize:0
+      totalBatchSize: 0
     })
   }
 
@@ -475,6 +487,15 @@ class OrderViaContract extends React.Component {
               </div>
             </div>
           </div>}
+
+          {(!this.state.createOrder && this.state.cartItems.length > 0 && this.state.itemAddedToCart)
+            && <div>
+              <div className="alert alert-dark" style={{ textAlign: "center", backgroundColor: "#D6D8D9" }}>
+               Item added to cart successfully.
+              </div>
+            </div>
+          }
+
           <br />
           {this.state.isLoading2 && <div className="loader">{utils.getLabelByID("Loading")}</div>}
           {this.state.contractState && !this.state.createOrder && !this.state.isLoading2
@@ -564,7 +585,8 @@ class OrderViaContract extends React.Component {
               setState={(data) => {
                 this.setState(data)
               }}
-              getLeadTime= {this.getLeadTime}
+              getTotalUnits={this.getTotalUnits}
+              getLeadTime={this.getLeadTime}
               placeOrder={this.placeOrder}
             />
           }

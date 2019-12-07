@@ -14,28 +14,23 @@ import * as requestCreator from '../../../../core/common/request.js';
 const statusList = [
     {
         "label": "Sub Order",
-        "status": true,
         "value": "001"
     },
     {
         "label": "Dispatched",
-        "status": false,
-        "value": "002",
+        "value": "002"
     },
     {
         "label": "Received",
-        "value": "003",
-        "status": false
+        "value": "003"
     },
     {
         "label": "Payment Order",
-        "value": "004",
-        "status": false
+        "value": "004"
     },
     {
         "label": "Paid",
-        "value": "005",
-        "status": false
+        "value": "005"
     }
 ]
 class SubOrderList extends React.Component {
@@ -176,8 +171,6 @@ class SubOrderList extends React.Component {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="form-group col-md-12">
-
-
                                 <div className="btn-toolbar pull-right">
                                     <button type="submit" className="btn green" onClick={this.formSubmit}>
                                         {utils.getLabelByID("Search")}

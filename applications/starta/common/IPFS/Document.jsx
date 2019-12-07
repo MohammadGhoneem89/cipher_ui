@@ -1,7 +1,8 @@
 import FileUploader from './FileUploader.jsx'
 import React, { PropTypes } from 'react';
 
-const Document = ({ updateState, initState, getParentState, allowedFileType, acceptedFiles, fileUploadURL }) => {
+const Document = ({ updateState, initState, getParentState, allowedFileType, acceptedFiles, fileUploadURL,showDropzone,showUpZone }) => 
+{
   function getUploadResponse(data) {
     //let document = [];
     // for (let i = 0; i < data.contextData.length; i++) {
@@ -14,7 +15,7 @@ const Document = ({ updateState, initState, getParentState, allowedFileType, acc
     //     "actions": data.contextData[i].actions
     //   };
     // }
-    console.log('datatattatt', data)
+   
     // document = {
     //   "fileDetail": {name: data.name, UUID: data.cipherMessageId},
     //   "documentName": data.name,
@@ -55,12 +56,12 @@ const Document = ({ updateState, initState, getParentState, allowedFileType, acc
           docs.splice(i, 1)
         }
       }
-      //console.log("docsAfter-->", docs)
+     
       //let doc = initState.documents.pop();
       updateState({ documents: docs });
     }
   }
-
+  console.log('showDropzone ...', showDropzone)
   return (<div className="row">
     <div className="col-centered col-md-12">
       <div className="col-centered col-md-12">
@@ -72,9 +73,10 @@ const Document = ({ updateState, initState, getParentState, allowedFileType, acc
             getUploadResponse={getUploadResponse}
             getRemoveResponse={getRemoveResponse}
             maxFiles={null}
-            showDropzone={!initState.readOnly}
+            showDropzone={showDropzone}
             showAttachementGrid={true}
             fileUploadURL={fileUploadURL}
+            showUpZone={showUpZone}
           />
         </div>
       </div>

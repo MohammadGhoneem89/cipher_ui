@@ -133,8 +133,10 @@ class SubOrder extends React.Component {
         const suborder = this.state.suborderDetail ? this.state.suborderDetail : {}
         console.log('suborder', suborder)
 
-
-        if (!this.state.isLoading)
+        if (this.state.isLoading) {
+            return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
+        }
+        if (!this.state.isLoading && this.state.suborderDetail)
             return (
                 <div>
 

@@ -1,19 +1,17 @@
-import React from 'react';
-import * as constants from '../../../../core/constants/Communication.js';
-import { baseUrl } from '../../../../core/constants/Communication.js';
-import { browserHistory } from 'react-router';
-import * as utils from '../../../../core/common/utils';
-import * as dates from '../../../../core/common/dates.js';
-
+import React from "react";
+import * as constants from "../../../../core/constants/Communication.js";
+import { baseUrl } from "../../../../core/constants/Communication.js";
+import { browserHistory } from "react-router";
+import * as utils from "../../../../core/common/utils";
+import * as dates from "../../../../core/common/dates.js";
 
 class TableCell extends React.Component {
   constructor() {
     super();
-
+    this.download;
   }
 
   getClassForStatus(type) {
-
     switch (type) {
       case "INFO":
         return "badge badge-primary badge-roundless";
@@ -22,14 +20,12 @@ class TableCell extends React.Component {
       case "WARNING":
         return " badge badge-warning badge-roundless";
 
-
       default:
         return "badge badge-success badge-roundless";
     }
   }
 
   getClassForStatusBig(type) {
-
     switch (type) {
       case "INFO":
         return "label label-primary";
@@ -42,9 +38,7 @@ class TableCell extends React.Component {
     }
   }
 
-
   getClassForOverdue(type) {
-
     switch (type) {
       case "INFO":
         return "info";
@@ -52,7 +46,6 @@ class TableCell extends React.Component {
         return "danger";
       case "WARNING":
         return "warning";
-
 
       default:
         return "success";
@@ -85,98 +78,130 @@ class TableCell extends React.Component {
             <i className="fa fa-bell-o" />
           </span>
         );
-
     }
-
-
   }
 
   renderActionButton(cellData) {
-
-    if (cellData == null)
-      return ''
+    if (cellData == null) return "";
 
     if (cellData && cellData.actionType === "modal") {
-      return (<a href="javascript:;" data-toggle="modal" data-target={cellData.URI[0]}
-        data-id={this.props.rowData[this.props.recordID]}
-        onClick={this.renderPopupBody.bind(this, this.props.rowData[this.props.recordID])}>
-        <i className={cellData.iconName} /> {cellData.label} </a>);
-    }
-    else if (cellData && cellData.actionType === "COMPONENT_FUNCTION") {
-
-      return (<a href="javascript:;"
-        onClick={this.props.componentFunction && this.props.componentFunction.bind(this, {
-          index: this.props.rowIndex,
-          actionName: cellData.label
-        })}>
-        <i className={cellData.iconName} /> {cellData.label} </a>);
-    }
-    else {
-      let url = cellData.URI[0] + '/' + this.props.rowData[this.props.recordID];
-      url = url.replace('//', '/');//to avoid double slash
+      return (
+        <a
+          href="javascript:;"
+          data-toggle="modal"
+          data-target={cellData.URI[0]}
+          data-id={this.props.rowData[this.props.recordID]}
+          onClick={this.renderPopupBody.bind(
+            this,
+            this.props.rowData[this.props.recordID]
+          )}
+        >
+          <i className={cellData.iconName} /> {cellData.label}{" "}
+        </a>
+      );
+    } else if (cellData && cellData.actionType === "COMPONENT_FUNCTION") {
+      return (
+        <a
+          href="javascript:;"
+          onClick={
+            this.props.componentFunction &&
+            this.props.componentFunction.bind(this, {
+              index: this.props.rowIndex,
+              actionName: cellData.label
+            })
+          }
+        >
+          <i className={cellData.iconName} /> {cellData.label}{" "}
+        </a>
+      );
+    } else {
+      let url = cellData.URI[0] + "/" + this.props.rowData[this.props.recordID];
+      url = url.replace("//", "/"); //to avoid double slash
       // return (<a href="javascript:;" onClick={this.getMenuitem.bind(this,  cellData.actionURI + this.props.rowData[this.props.recordID])}>
-      return (<a href="javascript:"
-        onClick={this.getMenuitem.bind(this, url)}>
-        <i className={cellData.iconName} /> {cellData.label} </a>);
-
-
+      return (
+        <a href="javascript:" onClick={this.getMenuitem.bind(this, url)}>
+          <i className={cellData.iconName} /> {cellData.label}{" "}
+        </a>
+      );
     }
   }
 
   redirectAnchor(address) {
-    browserHistory.push(address)
+    browserHistory.push(address);
   }
   openInNewTab(url) {
-    var win = window.open(url, '_blank');
+    var win = window.open(url, "_blank");
     win.focus();
   }
   renderHyperLinkFieldNewTab(cellData) {
     //console.log(this.props.url + "/" + cellData);
-    return (<a href='javascript:void(0)' onClick={this.openInNewTab.bind(this, this.props.url + "/" + cellData)}>
-      {cellData} </a>);
+    return (
+      <a
+        href="javascript:void(0)"
+        onClick={this.openInNewTab.bind(this, this.props.url + "/" + cellData)}
+      >
+        {cellData}{" "}
+      </a>
+    );
   }
   renderHyperLinkField(cellData) {
     //console.log(this.props.url + "/" + cellData);
-    return (<a href='javascript:void(0)' onClick={this.redirectAnchor.bind(this, this.props.url + "/" + cellData)}>
-      {cellData} </a>);
+    return (
+      <a
+        href="javascript:void(0)"
+        onClick={this.redirectAnchor.bind(
+          this,
+          this.props.url + "/" + cellData
+        )}
+      >
+        {cellData}{" "}
+      </a>
+    );
   }
 
   renderPopupBody(dataID) {
-
     this.props.renderPopupBody(dataID);
 
-
     //$(".modal-body #hiddenValue").val(modalDataID);
-
   }
 
   getCheckedItems(element) {
-    this.props.getCheckedItems(element.ID, element.checked)
+    this.props.getCheckedItems(element.ID, element.checked);
   }
-
 
   renderDownloadAttachement(name, UUID) {
-
-    return (<a href={constants.getUploadedFile + "/" + UUID + "?JWT=" + sessionStorage.token} download>
-      {name} </a>);
-
+    return (
+      <a
+        href={
+          constants.getUploadedFile +
+          "/" +
+          UUID +
+          "?JWT=" +
+          sessionStorage.token
+        }
+        download
+      >
+        {name}{" "}
+      </a>
+    );
   }
-
   renderDownloadAttachementIPFS(downloadPath, name) {
-
-    return (<a href={constants.baseUrl + downloadPath } download>
-      {name} </a>);
-
+    this.download = this.props.showUpZone
+      ? constants.baseUrl + downloadPath : null;
+    return (
+      <a href={this.download} download>
+        {name}{" "}
+      </a>
+    );
   }
-
 
   getMenuitem(index) {
     browserHistory.push(index);
   }
 
-  onChangeEditColumn(index,e) {
-    alert(index)
-    alert(e.target.value)
+  onChangeEditColumn(index, e) {
+    alert(index);
+    alert(e.target.value);
   }
   processRowData(columnElement, type) {
     console.log("columnElement:" + columnElement);
@@ -189,8 +214,6 @@ class TableCell extends React.Component {
         return columnElement.value;
       default:
         return columnElement;
-
-
     }
   }
 
@@ -200,37 +223,42 @@ class TableCell extends React.Component {
         <td>
           <div className="actions">
             <div className="btn-group">
-              <a className="btn white btn-circle btn-sm" href="javascript:;" data-toggle="dropdown"
-                data-hover="dropdown" data-close-others="true" aria-expanded="false">
-                <i className="fa fa-ellipsis-h"
-                  aria-hidden="true" /> </a>
+              <a
+                className="btn white btn-circle btn-sm"
+                href="javascript:;"
+                data-toggle="dropdown"
+                data-hover="dropdown"
+                data-close-others="true"
+                aria-expanded="false"
+              >
+                <i className="fa fa-ellipsis-h" aria-hidden="true" />{" "}
+              </a>
 
               <ul className="dropdown-menu pull-right" role="menu">
-
-                {
-                  cellData.map((cellData, index) => (
-                    <li key={index.toString()}>
-                      {this.renderActionButton(cellData)}
-                    </li>
-                  ))}
-
+                {cellData.map((cellData, index) => (
+                  <li key={index.toString()}>
+                    {this.renderActionButton(cellData)}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
         </td>
-      )
-    }
-    else
-      return (<td>N/A</td>)
+      );
+    } else return <td>N/A</td>;
   }
 
   render() {
+    console.log(
+      "thos.props.showupzone from table cell --- ",
+      this.props.showUpZone
+    );
     function text_truncate(str, length, ending) {
       if (length == null) {
         length = 100;
       }
       if (ending == null) {
-        ending = '...';
+        ending = "...";
       }
       if (str.length > length) {
         return str.substring(0, length - ending.length) + ending;
@@ -239,143 +267,271 @@ class TableCell extends React.Component {
       }
     }
 
-
     let cellData;
-    let fontWeightStyle = this.props.footerRow ? 'bold' : 'normal'
+    let fontWeightStyle = this.props.footerRow ? "bold" : "normal";
     switch (this.props.type) {
-
       case "action":
         cellData = this.props.cellData ? this.props.cellData : [];
-        return (this.renderActions(cellData));
+        return this.renderActions(cellData);
       case "dateTime":
         let fullDate = new Date(this.props.cellData);
         let dd = fullDate.getDate();
         let mm = fullDate.getMonth() + 1; //January is 0!
         let yyyy = fullDate.getFullYear();
         if (dd < 10) {
-          dd = '0' + dd;
+          dd = "0" + dd;
         }
         if (mm < 10) {
-          mm = '0' + mm;
+          mm = "0" + mm;
         }
-        let today = dd + '/' + mm + '/' + yyyy;
-        return (<td>{today}</td>);
+        let today = dd + "/" + mm + "/" + yyyy;
+        return <td>{today}</td>;
       case "statusLabel":
-        return (<td><span
-          className={this.getClassForStatus(this.props.cellData.type)}
-          style={{ fontSize: "13px!important", height: "16x" }}>{this.props.cellData.value}</span></td>);
+        return (
+          <td>
+            <span
+              className={this.getClassForStatus(this.props.cellData.type)}
+              style={{ fontSize: "13px!important", height: "16x" }}
+            >
+              {this.props.cellData.value}
+            </span>
+          </td>
+        );
       case "overDueLabel":
-        return (<td className={this.getClassForOverdue(this.props.cellData.type)}><span
-          style={{ fontSize: "15px!important" }}>{this.props.cellData.value}</span></td>);
+        return (
+          <td className={this.getClassForOverdue(this.props.cellData.type)}>
+            <span style={{ fontSize: "15px!important" }}>
+              {this.props.cellData.value}
+            </span>
+          </td>
+        );
       case "image":
         if (this.props.url) {
-          return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
-            width="28px" height="28px"
-            src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
-              href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
-          </td>);
-        }
-        else {
-          return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
-            width="28px" height="28px"
-            src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
-          </td>);
+          return (
+            <td className="ent_nme" style={{ width: this.props.columnWidth }}>
+              <img
+                width="28px"
+                height="28px"
+                src={
+                  baseUrl +
+                  (this.props.cellData.imageURL || "/images/blank.png")
+                }
+              />{" "}
+              &nbsp;&nbsp;{" "}
+              <a
+                href={
+                  this.props.url + "/" + this.props.rowData[this.props.recordID]
+                }
+              >
+                {"   " + this.props.cellData.name}
+              </a>
+            </td>
+          );
+        } else {
+          return (
+            <td className="ent_nme" style={{ width: this.props.columnWidth }}>
+              <img
+                width="28px"
+                height="28px"
+                src={
+                  baseUrl +
+                  (this.props.cellData.imageURL || "/images/blank.png")
+                }
+              />{" "}
+              &nbsp;&nbsp; {"   " + this.props.cellData.name}
+            </td>
+          );
         }
       case "statusLabelBig":
-        return (<td><h3><span className={this.getClassForStatusBig(this.props.cellData.type)}
-          style={{ height: "20px" }}>{this.props.cellData.value}</span></h3></td>);
+        return (
+          <td>
+            <h3>
+              <span
+                className={this.getClassForStatusBig(this.props.cellData.type)}
+                style={{ height: "20px" }}
+              >
+                {this.props.cellData.value}
+              </span>
+            </h3>
+          </td>
+        );
       case "editableColumn":
-        return (<td><input type="text" className="form-control" value={this.props.cellData.value} onChange={this.onChangeEditColumn.bind(this,this.props.searialNo)} /></td>);
+        return (
+          <td>
+            <input
+              type="text"
+              className="form-control"
+              value={this.props.cellData.value}
+              onChange={this.onChangeEditColumn.bind(
+                this,
+                this.props.searialNo
+              )}
+            />
+          </td>
+        );
       case "imageBig":
-        return (<td className="ent_nme" align="center" style={{ width: this.props.columnWidth, paddingLeft: "50%" }}><img
-          width="50px" height="50px" style={{ width: "50px", height: "50px" }}
-          src={baseUrl + this.props.cellData.imageURL} /> &nbsp;&nbsp; <b> {"   " + this.props.cellData.name} </b>
-        </td>);
+        return (
+          <td
+            className="ent_nme"
+            align="center"
+            style={{ width: this.props.columnWidth, paddingLeft: "50%" }}
+          >
+            <img
+              width="50px"
+              height="50px"
+              style={{ width: "50px", height: "50px" }}
+              src={baseUrl + this.props.cellData.imageURL}
+            />{" "}
+            &nbsp;&nbsp; <b> {"   " + this.props.cellData.name} </b>
+          </td>
+        );
       case "stringBig":
-        return (<td className="ent_nme caption-subject font-black bold ">
-          <h4> {utils.getLabelByID(this.props.cellData) || this.props.cellData}</h4></td>);
+        return (
+          <td className="ent_nme caption-subject font-black bold ">
+            <h4>
+              {" "}
+              {utils.getLabelByID(this.props.cellData) || this.props.cellData}
+            </h4>
+          </td>
+        );
       case "icon":
-        return (<td>{this.renderIcon(this.props.cellData)}</td>);
+        return <td>{this.renderIcon(this.props.cellData)}</td>;
       case "cb":
-        return (<td><label
-          className="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox"
-            className="checkboxes"
-            value={this.props.rowData[this.props.recordID]} /><span /></label>
-        </td>);
+        return (
+          <td>
+            <label className="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+              <input
+                type="checkbox"
+                className="checkboxes"
+                value={this.props.rowData[this.props.recordID]}
+              />
+              <span />
+            </label>
+          </td>
+        );
       case "cbDisabled":
-        return (<td><label
-          className="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox" disabled
-            className="checkboxes"
-            checked={this.props.cellData} /><span /></label>
-        </td>);
+        return (
+          <td>
+            <label className="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+              <input
+                type="checkbox"
+                disabled
+                className="checkboxes"
+                checked={this.props.cellData}
+              />
+              <span />
+            </label>
+          </td>
+        );
       case "downloadAttachement":
         cellData = this.props.cellData ? this.props.cellData : {};
-        console.log('cellData inside ', cellData)
+        console.log("cellData inside ", cellData);
         return (
           <td className="text-center">
             {/* {this.renderDownloadAttachement(cellData.name, cellData.UUID)} */}
-            {this.renderDownloadAttachementIPFS(cellData.retreivalPath, cellData.documentName)}
+            {this.renderDownloadAttachementIPFS(
+              cellData.retreivalPath,
+              cellData.documentName
+            )}
           </td>
         );
-        case "downloadAttachementIPFS":
+      case "downloadAttachementIPFS":
         cellData = this.props.cellData ? this.props.cellData : {};
-        console.log('cellData inside ', cellData)
+        console.log("cellData inside ", cellData);
         return (
           <td className="text-center">
-            {this.renderDownloadAttachementIPFS(cellData.retreivalPath, cellData.UUID)}
+            {this.renderDownloadAttachementIPFS(
+              cellData.retreivalPath,
+              cellData.UUID
+            )}
           </td>
         );
       case "array":
         return (
-          <td className="text-center">
-            {this.props.cellData.toString()}
-          </td>
+          <td className="text-center">{this.props.cellData.toString()}</td>
         );
       case "hiddenID":
         return null;
       case "amount":
-        return (<td style={{
-          textAlign: "right",
-          fontWeight: fontWeightStyle
-        }}> {utils.formatAmountField(this.props.cellData)}</td>);
+        return (
+          <td
+            style={{
+              textAlign: "right",
+              fontWeight: fontWeightStyle
+            }}
+          >
+            {" "}
+            {utils.formatAmountField(this.props.cellData)}
+          </td>
+        );
       case "rightAlign":
-        return (<td style={{ textAlign: "right" }}> {this.props.cellData}</td>);
+        return <td style={{ textAlign: "right" }}> {this.props.cellData}</td>;
       case "leftAlign":
-        return (<td style={{ textAlign: "left" }}> {this.props.cellData}</td>);
+        return <td style={{ textAlign: "left" }}> {this.props.cellData}</td>;
       case "serialNo":
-        return (<td> {parseInt(this.props.searialNo) + "."}</td>);
+        return <td> {parseInt(this.props.searialNo) + "."}</td>;
       case "epochDate":
-        return (<td> {utils.UNIXConvertToDate(this.props.cellData)}</td>);
+        return <td> {utils.UNIXConvertToDate(this.props.cellData)}</td>;
       case "epochDate1":
-        return (<td> {dates.MSddMMyyyy(this.props.cellData)}</td>);
+        return <td> {dates.MSddMMyyyy(this.props.cellData)}</td>;
       case "clpVal":
-        return (<td><span className="clp_val">{this.props.cellData}</span></td>)
+        return (
+          <td>
+            <span className="clp_val">{this.props.cellData}</span>
+          </td>
+        );
       case "hyperlink":
-        return (<td><span>{this.renderHyperLinkField(this.props.cellData)}</span></td>)
+        return (
+          <td>
+            <span>{this.renderHyperLinkField(this.props.cellData)}</span>
+          </td>
+        );
       case "hyperlinkNewTab":
-        return (<td><span>{this.renderHyperLinkFieldNewTab(this.props.cellData)}</span></td>)
+        return (
+          <td>
+            <span>{this.renderHyperLinkFieldNewTab(this.props.cellData)}</span>
+          </td>
+        );
       case "orgType":
-        return (<td> {this.props.cellData === "E" ? "Entity" : "Acquirer"} </td>);
+        return <td> {this.props.cellData === "E" ? "Entity" : "Acquirer"} </td>;
       case "errors":
-        let cellData = this.props.cellData.toString().replace(/ *, */g, '\n').split('\n').map((item, i) => {
-          return (<span key={i}>{item}<br /></span>);
-        });
+        let cellData = this.props.cellData
+          .toString()
+          .replace(/ *, */g, "\n")
+          .split("\n")
+          .map((item, i) => {
+            return (
+              <span key={i}>
+                {item}
+                <br />
+              </span>
+            );
+          });
 
-        return (<td style={{fontWeight: fontWeightStyle}}> {cellData} </td>);
-        case "longString":
-            let temp = text_truncate(this.props.cellData, 100);
-            return <td style={{fontWeight: fontWeightStyle}}>
-              <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
-            </td>;
-
+        return <td style={{ fontWeight: fontWeightStyle }}> {cellData} </td>;
+      case "longString":
+        let temp = text_truncate(this.props.cellData, 100);
+        return (
+          <td style={{ fontWeight: fontWeightStyle }}>
+            <a
+              href="javascript:"
+              onClick={this.renderPopupBody.bind(this, this.props.cellData)}
+            >
+              {" "}
+              {temp}
+            </a>
+          </td>
+        );
 
       default:
-        return (<td style={{ fontWeight: fontWeightStyle }}> {this.props.cellData} </td>);
-
+        return (
+          <td style={{ fontWeight: fontWeightStyle }}>
+            {" "}
+            {this.props.cellData}{" "}
+          </td>
+        );
     }
-
   }
 }
 
 export default TableCell;
-

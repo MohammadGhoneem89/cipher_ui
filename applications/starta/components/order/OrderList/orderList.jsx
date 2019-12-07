@@ -119,10 +119,10 @@ class OrderList extends React.Component {
 
   getRequest = (isFormSubmit, orderIDarg) => {
 
-    if (!(typeof (orderIDarg) === "string")){
+    if (!(typeof (orderIDarg) === "string")) {
       orderIDarg = ''
     }
-    
+
     let fromDate = this.state.fromDate,
       toDate = this.state.toDate,
       contractID = this.state.orderSearch.contractID || '',
@@ -159,60 +159,55 @@ class OrderList extends React.Component {
     return request;
   };
 
-  formSubmit = (orderID= undefined) => {
+  formSubmit = (orderID = undefined) => {
     this.props.actions.generalProcess(constants.getOrderList, this.getRequest(true, orderID));
   };
 
 
 
   componentWillReceiveProps(nextProps) {
- 
+
     if (nextProps.getOrderList && nextProps.typeData) {
 
       console.log(nextProps.getOrderList, "nextProps.getOrderList")
       this.setState({
+        typeData: nextProps.typeData,
         gridData: this.formatData(nextProps.getOrderList),
         page: nextProps.getPage,
-        typeData: nextProps.typeData,
-        isLoading: false
+        isLoading: false,
+
       });
 
-      if (this.props.location.state){
-          if (!(this.props.location.state.orderID === _.get(this.state,'orderSearch.orderID',''))){
-            this.setState({
-              orderIDhistory: false
-            })
-          }
+      if (this.props.location.state) {
+        if (!(this.props.location.state.orderID === _.get(this.state, 'orderSearch.orderID', ''))) {
+          this.setState({
+            orderIDhistory: false
+          })
+        }
       }
 
     }
   }
 
-  getStatusLabel = status => {
-    let Orderstatus = this.props.typeData ? this.props.typeData.orderStatus:[]
-    for (let i in Orderstatus) {
-      if (Orderstatus[i].value == status) {
-        return Orderstatus[i].label;
-      }
-    }
-  }
   formatData = (gridData) => {
     for (let i in gridData) {
-      let status = gridData[i].status;
-      if (status) {
-        gridData[i].status = this.getStatusLabel(status);
+      if (gridData[i].status) {
+        for (let j in orderStatus) {
+          if (gridData[i].status == orderStatus[j].value) {
+            gridData[i].status = orderStatus[j].label;
+          }
+        }
       }
-
     }
     return gridData;
   }
   componentDidMount() {
     window.scrollTo(0, 0);
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['orderStatus']));
-    
+
 
     console.log(this.props.location.state, 'PROPSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS')
-    if ( this.props.location.state && this.state.orderIDhistory ) {
+    if (this.props.location.state && this.state.orderIDhistory) {
       this.setState({
         orderSearch: {
           ...this.state.orderSearch,
@@ -224,7 +219,7 @@ class OrderList extends React.Component {
       this.formSubmit(this.props.location.state.orderID)
     } else {
       this.props.actions.generalProcess(constants.getOrderList, this.getRequest());
-    } 
+    }
   }
 
   componentWillUnmount() {
@@ -267,118 +262,119 @@ class OrderList extends React.Component {
   render() {
     if (this.state.isLoading) {
       return <div className="loader"> {utils.getLabelByID('loading')}</div>;
-    }
-    return (
-      <div>
-        <Portlet title={utils.getLabelByID('Order List Filter(s)')}>
-          <Row>
-            <Col col="6">
-              <Label text={utils.getLabelByID('From Date')} columns="4" />
-              <div className="form-group col-md-8" id="OrderSearch">
-                <DateControl id="fromDate" dateChange={this.onFromDateChange} />
-              </div>
-            </Col>
-            <Col col="6">
-              <Label text={utils.getLabelByID('To Date')} columns="4" />
-              <div className="form-group col-md-8">
-                <DateControl id="toDate" dateChange={this.onToDateChange} />
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col col="6">
-              <Label text={utils.getLabelByID('Contract ID')} columns="4" />
-              <Input fieldname="contractID" formname="orderSearch" columns="8" state={this.state}
-                actionHandler={this.generalHandler} className="form-control" />
-            </Col>
-            <Col col="6">
-              <Label text={utils.getLabelByID('Order ID')} columns="4" />
-              <Input id="orderID" fieldname="orderID" formname="orderSearch" columns="8" state={this.state}
-                actionHandler={this.generalHandler} className="form-control" />
-            </Col>
-          </Row>
-          <Row>
-            <Col col="6">
-              <Label text={utils.getLabelByID('Order Status')} columns="4" />
-              <div className="col-md-8">
-                <select id="orderStatus" name="orderStatus" className="form-control" value={this.state.orderStatus} onChange={this.onChange} >
-                  <option key="-1" value="">Select</option>
-                  {
-                    orderStatus.map((option, index) => {
-                      return (
-                        <option key={index} value={option.value}>{option.label}</option>
-                      );
-                    })
-                  }
-                </select>
-              </div>
+    } 
+      return (
+        <div>
+          <Portlet title={utils.getLabelByID('Order List Filter(s)')}>
+            <Row>
+              <Col col="6">
+                <Label text={utils.getLabelByID('From Date')} columns="4" />
+                <div className="form-group col-md-8" id="OrderSearch">
+                  <DateControl id="fromDate" dateChange={this.onFromDateChange} />
+                </div>
+              </Col>
+              <Col col="6">
+                <Label text={utils.getLabelByID('To Date')} columns="4" />
+                <div className="form-group col-md-8">
+                  <DateControl id="toDate" dateChange={this.onToDateChange} />
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col col="6">
+                <Label text={utils.getLabelByID('Contract ID')} columns="4" />
+                <Input fieldname="contractID" formname="orderSearch" columns="8" state={this.state}
+                  actionHandler={this.generalHandler} className="form-control" />
+              </Col>
+              <Col col="6">
+                <Label text={utils.getLabelByID('Order ID')} columns="4" />
+                <Input id="orderID" fieldname="orderID" formname="orderSearch" columns="8" state={this.state}
+                  actionHandler={this.generalHandler} className="form-control" />
+              </Col>
+            </Row>
+            <Row>
+              <Col col="6">
+                <Label text={utils.getLabelByID('Order Status')} columns="4" />
+                <div className="col-md-8">
+                  <select id="orderStatus" name="orderStatus" className="form-control" value={this.state.orderStatus} onChange={this.onChange} >
+                    <option key="-1" value="">Select</option>
+                    {
+                      orderStatus.map((option, index) => {
+                        return (
+                          <option key={index} value={option.value}>{option.label}</option>
+                        );
+                      })
+                    }
+                  </select>
+                </div>
 
-              {/* 
+                {/* 
               <Combobox fieldname="orderStatus" formname="orderSearch" columns="8" state={this.state} typeName="Status"
                 dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" /> 
               */}
 
 
-            </Col>
-          </Row>
+              </Col>
+            </Row>
 
-          <div className="row">
-            <div className="col-md-12">
-              <div className="form-group col-md-12">
-                <div className="btn-toolbar pull-right">
-                  <button type="submit" className="btn green" onClick={this.formSubmit}>
-                    {utils.getLabelByID('Search')}
-                  </button>
-                  {/* <button type="button" className="btn btn-grey" onClick={this.clearFields}>
+            <div className="row">
+              <div className="col-md-12">
+                <div className="form-group col-md-12">
+                  <div className="btn-toolbar pull-right">
+                    <button type="submit" className="btn green" onClick={this.formSubmit}>
+                      {utils.getLabelByID('Search')}
+                    </button>
+                    {/* <button type="button" className="btn btn-grey" onClick={this.clearFields}>
                                         {utils.getLabelByID('Clear')}
                                     </button> */}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {
-            ( this.props.location.state && this.state.orderIDhistory ) && 
+            {
+              (this.props.location.state && this.state.orderIDhistory) &&
               <div>
-                
-                <div className="alert alert-dark" style={{ textAlign: "center",backgroundColor:"#D6D8D9" }}>
+
+                <div className="alert alert-dark" style={{ textAlign: "center", backgroundColor: "#D6D8D9" }}>
                   Order Created Successfully with order id : <strong>{this.props.location.state.orderID}</strong>
                 </div>
-               
-                
+
+
               </div>
-            
-          }
+
+            }
 
 
 
-        </Portlet>
-        <Portlet title={'Orders'} actions={this.state.actions} isPermissioned={true}>
-          {this.state.gridData.map(obj => {
-            obj.action = [
-              {
-                label: 'View',
-                URI: ['/strata/viewOrder'],
-                params: '_id',
-                iconName: 'icon-docs'
-              }
-            ];
-          })}
-          <Table
-            gridColumns={utils.getGridColumnByName('orderList')}
-            gridData={this.state.gridData}
-            totalRecords={this.props.getPage.totalRecords}
-            pageChanged={this.pageChanged}
-            pageSize={10}
-            pagination={true}
-            searchCallBack={this.searchCallBack}
-            export={false}
-            search={true}
-            activePage={this.state.page.currentPageNo}
-          />
-        </Portlet>
-      </div>
-    );
+          </Portlet>
+          <Portlet title={'Orders'} actions={this.state.actions} isPermissioned={true}>
+            {this.state.gridData.map(obj => {
+              obj.action = [
+                {
+                  label: 'View',
+                  URI: ['/strata/viewOrder'],
+                  params: '_id',
+                  iconName: 'icon-docs'
+                }
+              ];
+            })}
+            <Table
+              gridColumns={utils.getGridColumnByName('orderList')}
+              gridData={this.state.gridData}
+              totalRecords={this.props.getPage.totalRecords}
+              pageChanged={this.pageChanged}
+              pageSize={10}
+              pagination={true}
+              searchCallBack={this.searchCallBack}
+              export={false}
+              search={true}
+              activePage={this.state.page.currentPageNo}
+            />
+          </Portlet>
+        </div>
+      );
+    
   }
 }
 

@@ -9,13 +9,18 @@ import * as constants from '../../../../core/constants/Communication.js';
 import Portlet from '../../../../core/common/Portlet.jsx';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 import _ from 'lodash';
+import { Alert } from 'antd';
 
 class ProductCatalogueList extends React.Component {
 
     constructor(props) {
         super(props);
+        this.mode='';
         this.state = {
             actions: [],
+            upload: false,
+            download: false,
+            editURL: "",
             searchCriteria: {},
             disabledPagging: true,
             page: {
@@ -31,6 +36,7 @@ class ProductCatalogueList extends React.Component {
         this.item = '';
         this.formSubmit = this.formSubmit.bind(this);
         this.pageChanged = this.pageChanged.bind(this);
+        this.updateURL=this.updateURL.bind(this)
     }
 
     getRequest = () => {
@@ -62,28 +68,49 @@ class ProductCatalogueList extends React.Component {
         return request
     }
     formSubmit = () => {
-
         this.props.actions.generalProcess(constants.getItemCatalogue, this.getRequest());
-
     }
 
-
+    updateURL(){
+        console.log(this.upload , this.download)
+        if (this.download && !this.upload) {
+            // this.mode = "EDITONLY"
+            this.mode = "DOWNLOAD"
+        }
+         if (this.upload && !this.download) {
+            // this.mode = "EDIT"
+            this.mode = "UPLOAD"
+        }
+        if (this.upload && this.download) {
+            this.mode = "UPSERT"
+        }
+        if(!this.upload && !this.download){
+            this.mode = "DISABLE"
+        }
+    }
     componentWillReceiveProps(nextProps) {
-        // console.log("nextProps", nextProps.getItemCatalogue)
-        if (nextProps.getItemCatalogue) {
-
+        if (nextProps.getItemCatalogue && nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
+            console.log("nextProps.gridActions", nextProps.gridActions[0])
+            let pageActions = nextProps.gridActions[0].pageActions;
+            pageActions.forEach(element => {
+                if (nextProps.gridActions[0].upload == element.value) {
+                    this.upload = true
+                }
+                if (nextProps.gridActions[0].download == element.value) {
+                    this.download=true
+                }
+            });
             this.setState({
                 gridData: nextProps.getItemCatalogue,
                 page: nextProps.getPage,
                 isLoading: false
             });
+            this.updateURL();
         }
+
     }
 
     componentDidMount() {
-        // this.timerID = setInterval(() =>
-        //     this.props.actions.generalProcess(constants.getItemCatalogue, this.getRequest())
-        //     , 1000);
         this.props.actions.generalProcess(constants.getItemCatalogue, this.getRequest());
         window.scrollTo(0, 0);
 
@@ -97,7 +124,7 @@ class ProductCatalogueList extends React.Component {
                         "labelName": "COM_AB_Add",
                         "actionType": "PORTLET_LINK",
                         "iconName": "fa fa-plus",
-                        "URI": "/strata/ProductCatalogue",
+                        "URI": "/strata/ProductCatalogue/ADD/UPSERT",
                         "children": []
                     }]
             }
@@ -120,7 +147,10 @@ class ProductCatalogueList extends React.Component {
     updateState = (data) => {
         this.setState(data);
     }
+    
     render() {
+        console.log("DOWNLOAD >> ", this.download ? this.download : false)
+        console.log("upload >> ", this.upload ? this.upload : false)
         let modalAction = [
             {
                 type: "modal",
@@ -174,7 +204,7 @@ class ProductCatalogueList extends React.Component {
                                 <input type="text" className="form-control" name="ItemDescription" id="itemDescription" />
                             </div>
                         </div>
-                        
+
                     </div>
 
                     <div className="row">
@@ -202,7 +232,7 @@ class ProductCatalogueList extends React.Component {
                             obj.action = [
                                 {
                                     "label": "Edit",
-                                    "URI": ["/strata/ProductCatalogue"],
+                                    "URI": [`/strata/ProductCatalogue/EDIT/${this.mode}`],
                                     "params": "_id",
                                     "iconName": "icon-docs"
                                 }
@@ -236,13 +266,14 @@ class ProductCatalogueList extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         getItemCatalogue: _.get(state.app, 'getItemCatalogue.searchResult', []),
-        getPage: _.get(state.app, 'getItemCatalogue.pageData', {})
+        gridActions: _.get(state.app, 'getItemCatalogue.actions', []),
+        getPage: _.get(state.app, 'getItemCatalogue.pageData', {}),
+
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
-
 }
 ProductCatalogueList.displayName = "ITEM CATALOGUE";
 export default connect(mapStateToProps, mapDispatchToProps)(ProductCatalogueList);

@@ -28,7 +28,14 @@ const CreateOrder = props => {
     <label className='caption-subject' style={{ marginLeft: "10px" }}>
       {props.getLeadTime()}
     </label>
-    <hr />
+    {/* {"  "}
+    <label >
+      <b>Total Unit : </b>
+    </label>
+    <label className='caption-subject' style={{ marginLeft: "10px" }}>
+      {props.getTotalUnits()}
+    </label> */}
+    <hr/>
     <table id="fieldTable" className="table table-bordered table-striped table-responsive ordertable">
       <thead>
         <tr>
@@ -82,7 +89,7 @@ const CreateOrder = props => {
           </tr>;
         })}
         <tr>
-          <td className="text-right" colSpan="5"><b style={{ fontSize: '14px' }}>Total Batch Size :</b></td>
+          <td className="text-right" colSpan="5"><b style={{ fontSize: '14px' }}>Total Units :</b></td>
           <td colSpan="3" className="moveRight">
             <spans style={{ color: "#c20c35", fontWeight: 625, textAlign: "right", fontSize: '16px' }}>
               {"AED " + utils.formatAmountField(state.totalBatchSize)}

@@ -13,6 +13,7 @@ class Checklist extends React.Component {
                     <input type="checkbox" className="PostCSS"
                      name={`${this.props.fieldname}-${index}`}
                       value={list.value}
+                      disabled={this.props.disabled}
                         id={`${this.props.fieldname}-${index}`}
                         checked={this.props.state? _.get(this.props.state, `${this.props.formname}.${this.props.fieldname}`, []).indexOf(list.value) > -1 ? true : false
                         : this.props.checked.indexOf(list.value) > -1 ? true : false}
@@ -27,6 +28,7 @@ class Checklist extends React.Component {
     };
 
     render() {
+        console.log(this.props.disabled,"this.props.disabled")
         return (
             <div className={`et-chckbox col-md-${this.props.columns}`}>
                 <div className="checkbox-wrapper">

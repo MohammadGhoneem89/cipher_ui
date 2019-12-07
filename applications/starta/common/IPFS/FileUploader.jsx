@@ -101,14 +101,19 @@ class FileUploader extends React.Component {
             
             console.log('this.state.gridData.contextData', this.state.gridData.contextData);
             return (
-                    <InnerGrid TableClass="portlet light bordered sdg_portlet bg-default bg-font-default" fontclass="font-dark" title="Attachments"
+                    <InnerGrid TableClass="portlet light bordered sdg_portlet bg-default bg-font-default" 
+                    fontclass="font-dark" title="Attachments"
                         gridColumns={utils.getGridColumnByName("downloadFileList")}
-                        gridData={this.state.gridData.contextData} />
+                        gridData={this.state.gridData.contextData}
+                        showUpZone={this.props.showUpZone} />
                 
             );
         }
     }
     render() {
+        console.log("this.props.showDropzone-->", this.props.showDropzone)
+        console.log("this.props.showUpZone-->", this.props.showUpZone)
+        console.log("this.props.showAttachementGrid -- >> ",this.props.showAttachementGrid)
         const config = this.componentConfig;
         const djsConfig = this.djsConfig;
 
@@ -117,13 +122,11 @@ class FileUploader extends React.Component {
             removedfile: this.removedfile.bind(this)
         };
         return (
-
             <div>
                 {this.getAttachementGrid(this.props.showAttachementGrid)}
                
                 {this.props.showDropzone &&
                     <div>
-
                         <div className="alert alert-info">
                             <strong> {"Allowed Files: "}</strong> {this.props.acceptedFiles || configTag.allowedUploadFilesMessage}
                         </div>

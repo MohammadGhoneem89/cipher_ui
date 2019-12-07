@@ -21,29 +21,69 @@ import CustomerDashboard from "./components/customerDashboard.jsx";
 import Cipher from "./components/Cipher.jsx";
 import Suborder from "./components/suborder/SubOrderDetail.jsx";
 import SuborderList from "./components/suborder/SubOrderList.jsx";
-let authRoutes = <div>
-  <Route path="/strata/oneTimeOrder" component={OneTimeOrder} />
-  <Route path="/customer" component={CustomerDashboard} />
-  <Route path="/supplier" component={SupplierDashboard} />
-  <Route path="strata/ProductCatalogue" component={ProductCatalogue} />
-  <Route path="/strata/ProductCatalogue/:id" component={ProductCatalogue} />
-  <Route path="/strata/itemCatalogueList" component={ItemCatalogueList} />
-  <Route path="/strata/MasterAgreementList" component={MasterAgreementList} />
-  <Route path="/strata/AddMasterAgreement" component={AddMasterAgreement} />
-  <Route path="/strata/AddMasterAgreement/:contractID/:customerID" component={AddMasterAgreement} />
-  <Route path="/strata/ViewMasterAgreement/:contractID/:customerID" component={ViewMasterAgreement}/>
-  <Route path="/strata/customerAssociation" component={CustomerAssociation} />
-  <Route path="/strata/orderList" component={OrderList} />
-  <Route path="/strata/OrderViaContract" component={OrderViaContract} />
-  <Route path="/strata/viewOrder/:id/:customerId" component={OrderDetails} />
-  <Route path="/strata/subOrder/:id" component={Suborder} />
-  <Route path="/strata/subOrderList" component={SuborderList} />
-</div>;
-
-let unAuthRoutes = <div>
-  <Route path="/strata/Locked" component={Locked} />
-  <Route path="/strata/login" component={Login} />
-  <Route path="/cipher" component={Cipher} />
-</div>;
-
-export default { authRoutes, unAuthRoutes };
+let authRoutes = < div >
+    <
+        Route path="/strata/oneTimeOrder"
+        component={OneTimeOrder}
+    /> <
+        Route path="/customer"
+        component={CustomerDashboard}
+    /> <
+        Route path="/supplier"
+        component={SupplierDashboard}
+    /> <
+        Route path="strata/ProductCatalogue/ADD/:mode"
+        component={ProductCatalogue}
+    /> <
+        Route path="/strata/ProductCatalogue/EDIT/:mode/:id"
+        component={ProductCatalogue}
+    /> <
+        Route path="/strata/itemCatalogueList"
+        component={ItemCatalogueList}
+    /> <
+        Route path="/strata/MasterAgreementList"
+        component={MasterAgreementList}
+    /> <
+        Route path="/strata/AddMasterAgreement"
+        component={AddMasterAgreement}
+    /> <
+        Route path="/strata/AddMasterAgreement/:contractID/:customerID"
+        component={AddMasterAgreement}
+    /> <
+        Route path="/strata/ViewMasterAgreement/:contractID/:customerID"
+        component={ViewMasterAgreement}
+    /> <
+        Route path="/strata/customerAssociation"
+        component={CustomerAssociation}
+    /> <
+        Route path="/strata/orderList"
+        component={OrderList}
+    /> <
+        Route path="/strata/OrderViaContract"
+        component={OrderViaContract}
+    /> <
+        Route path="/strata/viewOrder/:id/:customerId"
+        component={OrderDetails}
+    /> <
+        Route path="/strata/subOrder/:id"
+        component={Suborder}
+    /> <
+        Route path="/strata/subOrderList"
+        component={SuborderList}
+    /> < /
+div > ;
+    
+let unAuthRoutes = < div >
+        <
+            Route path="/strata/Locked"
+            component={Locked}
+        /> <
+            Route path="/strata/login"
+            component={Login}
+        /> <
+            Route path="/cipher"
+            component={Cipher}
+        /> < /
+div > ;
+        
+export default {authRoutes, unAuthRoutes};

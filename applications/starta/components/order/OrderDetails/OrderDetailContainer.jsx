@@ -94,10 +94,7 @@ class OrderDetailContainer extends React.Component {
       let recList = [];
       let orderDetail = nextProps.orderDetail
       orderDetail.items && orderDetail.items.forEach((elem) => {
-
-        console.log(elem, "elem")
         elem.itemReceipts && elem.itemReceipts.forEach((recItm) => {
-          console.log(recItm, "recItm")
           let item = {
             itemCode: elem.itemCode,
             receiptNo: recItm.receiptNo,
@@ -107,16 +104,12 @@ class OrderDetailContainer extends React.Component {
           }
           console.log(item, "item")
           recList.push(item)
-
-
         })
-      });//getStatusLabel
-
-
+      });
       console.log(recList, "recList")
       this.setState({
         orderDetail: {
-          ...nextProps.orderDetail,
+          ...orderDetail,
           transactionID: '92217a5a5cfa4e704df5e6cf464ea7c4da3030d75b2a07e1def291f9b90c5fe9'
         },
         isLoading: false,

@@ -95,7 +95,15 @@ class OneTimeOrder extends React.Component {
     this.props.actions.generalProcess(constants.getItemCatalogue, request);
     this.setState({ currentPageNo, searchCriteria: request.body.searchCriteria, isLoading2: true })
   };
-
+  getTotalUnits = () => {
+    let items = [...this.state.cartItems];
+    let totalUnit=0;
+    for (let i = 0; i < items.length; i++) {
+      totalUnit += items[i].batchSize * items[i].quantity 
+    }
+    console.log("totalunit >> ",totalUnit)
+    return totalUnit;
+  }
   placeOrder() {
     let totalLeadTime = 0;
     let calculateLeadTime = 1;
@@ -267,6 +275,8 @@ class OneTimeOrder extends React.Component {
     });
     e.target.reset();
     console.log('cart', cart);
+
+
   }
 
   handlePageChange(pageNumber) {
@@ -354,7 +364,13 @@ class OneTimeOrder extends React.Component {
               </div>
             </div>
           </div>}
-
+          {(!this.state.createOrder && this.state.cartItems.length > 0 && this.state.itemAddedToCart)
+            && <div>
+              <div className="alert alert-dark" style={{ textAlign: "center", backgroundColor: "#D6D8D9" }}>
+               Item added to cart successfully.
+              </div>
+            </div>
+          }
 
           {this.state.isLoading2 && <div className="loader">{utils.getLabelByID("Loading")}</div>}
           {!this.state.createOrder && !this.state.isLoading2 && <Portlet title="Product Catalogue">
@@ -391,6 +407,7 @@ class OneTimeOrder extends React.Component {
             setState={(data) => {
               this.setState(data)
             }}
+            getTotalUnits={this.getTotalUnits}
             getLeadTime={this.getLeadTime}
             placeOrder={this.placeOrder}
           />}

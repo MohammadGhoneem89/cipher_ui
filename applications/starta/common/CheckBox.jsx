@@ -5,6 +5,7 @@ import * as utils from './utils';
 class Checkbox extends React.Component {
 
     render() {
+        console.log("this.props.disabled",this.props.disabled)
         return (
 
             <div className={`col-md-${this.props.columns}`}>
@@ -14,6 +15,7 @@ class Checkbox extends React.Component {
                     <input type="checkbox" className="form-control"
                         name={this.props.fieldname}
                         checked={this.props.value}
+                        disabled={this.props.disabled}
                         onChange={this.props.actionHandler.bind(this, this.props.formname,
                             this.props.fieldname, 'checkbox')} />
                     <span></span>
