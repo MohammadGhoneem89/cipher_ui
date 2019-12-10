@@ -53,6 +53,7 @@ class OneTimeOrder extends React.Component {
     };
     // this.nameTypeData = [];
     this.total = 0;
+    this.grandTotal = 0;
     this.customerData = {};
     this.generalHandler = gen.generalHandler.bind(this);
     this.addToCart = this.addToCart.bind(this);
@@ -137,7 +138,8 @@ class OneTimeOrder extends React.Component {
         "shipmentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.shipmentType : "",
         "paymentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.paymentType : "",
         "purchaseOrderType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.purchaseOrderType : "",
-        "totalLeadTime": totalLeadTime
+        "totalLeadTime": totalLeadTime,
+        "grandTotal":this.grandTotal
       }
     };
     console.log(request, "request")
@@ -206,8 +208,6 @@ class OneTimeOrder extends React.Component {
       modelBox: true,
       modelItem
     });
-
-
   }
 
   addToCart(e) {
@@ -233,7 +233,8 @@ class OneTimeOrder extends React.Component {
     }
 
 
-    let grandTotal = 0.0;
+    let grandTotal = 0;
+    
     let totalBatchSize = 0;
     let cart = [...this.state.cartItems];
 
@@ -259,8 +260,9 @@ class OneTimeOrder extends React.Component {
       element.total = element.quantity * element.price;
     });
     cart.forEach(element => {
-      grandTotal += element.total
+      this.grandTotal += element.total
     });
+    grandTotal = this.grandTotal;
     console.log(totalBatchSize, "++totalBatchSize")
     cart.forEach(element => {
       console.log(element, "ELEMENT")
