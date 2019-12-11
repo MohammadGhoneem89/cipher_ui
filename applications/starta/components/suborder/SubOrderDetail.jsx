@@ -138,7 +138,7 @@ class SubOrder extends React.Component {
         }
         if (!this.state.isLoading && this.state.suborderDetail)
             return (
-                <div>
+                <div  className="row">
 
                     <div className="col-md-12">
                         <div className="portlet light" style={{ minHeight: "854px" }}>

@@ -13,7 +13,7 @@ module.exports = {
   Notifications_Heading: "Notifications",
   wgt_system: "System",
   takeAction: "Take action",
-  Footer: "2017-18 © Avanza Solutions Private Ltd.",
+  Footer: "2019 © Avanza Innovations LLC.",
   EWB_name: "Organization Name",
   EWB_lastSettlementDate: "Last Settlement Date",
   EWB_overDue: "Over Due",
