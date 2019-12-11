@@ -226,7 +226,7 @@ console.log(route,"++++++++====route\n\n",searchCriteria);
                                                             {"  "}
                                                             <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
                                                             <button type="button" className="btn green" onClick={this.downloadChainCode}>{utils.getLabelByID("Generate_ChainCode")}
-                                                                <i className="fa fa-file-code-o"/>
+                                
                                                             </button>
                                                         </div>
                                                     </div>
