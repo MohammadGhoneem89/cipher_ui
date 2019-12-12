@@ -141,7 +141,6 @@ class Locked extends React.Component {
 
       <div className="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid locked">
         <div className=" login">
-          <div id="particles-js"/>
           <div className="content" style={{marginTop: "0px"}}>
             <div></div>
             <div className="login-form">
@@ -149,8 +148,6 @@ class Locked extends React.Component {
                 <img src="https://admin.qa.dubaipay.gov.ae/assets/layouts/layout2/img/emirates-logo.jpg" alt=""/>
               </div>
               <h3 className="form-title">{brandConfig.projectName}</h3>
-
-
               <h4>
                 {"Your session timeout, please enter password to login!"}
               </h4>
