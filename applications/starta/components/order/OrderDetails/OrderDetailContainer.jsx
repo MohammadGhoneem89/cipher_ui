@@ -2,8 +2,9 @@
 import React, { PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { browserHistory } from "react-router";
 import * as actions from "../../../../../core/actions/generalAction";
-
+import * as toaster from "../../../../../core/common/toaster.js";
 import * as utils from "../../../../../core/common/utils.js";
 import * as constants from "../../../../../core/constants/Communication";
 import * as requestCreator from "../../../../../core/common/request.js";
@@ -135,8 +136,8 @@ class OrderDetailContainer extends React.Component {
         isLoading: false,
         receipt: recList,
         typeData: nextProps.typeData,
-        orderID:nextProps.orderID,
-        customerID:nextProps.customerID
+        orderID: nextProps.orderID,
+        customerID: nextProps.customerID
       });
     }
   }
@@ -161,7 +162,10 @@ class OrderDetailContainer extends React.Component {
     event.target.src =
       "http://localhost:9086/images/1f31e930-e0d5-11e7-88e2-f718f78167e9.png";
   }
-
+  redirectToList = () => {
+    browserHistory.push(`/strata/viewOrder/:${this.props.orderID}/:${this.props.customerID}`);
+    toaster.showToast("Record updated successfully!");
+  };
   statusButtonHandler(element) {
     switch (element.type) {
       case 1:
@@ -178,6 +182,7 @@ class OrderDetailContainer extends React.Component {
           this.setState({
             isLoading: true
           });
+          this.redirectToList();
           window.scrollTo(0, 0);
         } else {
           this.props.actions.generalProcess(
@@ -193,12 +198,14 @@ class OrderDetailContainer extends React.Component {
           this.setState({
             isLoading: true
           });
+          this.redirectToList();
           window.scrollTo(0, 0);
         }
         break;
       case 2: {
         //component manufacture substatus
         this.optionalStatusModalBoxChangeState();
+        // this.redirectToList();
         break;
       }
       case 3: {
@@ -208,6 +215,7 @@ class OrderDetailContainer extends React.Component {
           processor: element.processor
         });
         this.receiptModalBoxChangeState();
+        // this.redirectToList();
         break;
       }
       default:
@@ -286,7 +294,7 @@ class OrderDetailContainer extends React.Component {
       "valueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
     );
     if (this.state.optionalStatusValue === "") {
-      alert("Status must be selected to update.");
+      toaster.showToast("Status must be selected to update");
       return;
     }
     this.props.actions.generalProcess(constants.updateOrderStatus, {
@@ -444,11 +452,18 @@ class OrderDetailContainer extends React.Component {
                       <Row>
                         <Col col="4">
                           <Label
-                            columns="12"
+                            columns="4"
                             style={{ fontSize: 22, marginTop: "10px" }}
                             text={this.state.orderDetail.entityName}
                           ></Label>
+
+                          <Label
+                            columns="8" style={{ marginTop: "18px" }}
+                            text={this.state.orderDetail.orderID}
+                          ></Label>
                         </Col>
+
+
                         <Col
                           col="8"
                           className="pull-right"

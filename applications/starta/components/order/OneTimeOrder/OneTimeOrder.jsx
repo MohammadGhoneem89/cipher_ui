@@ -368,7 +368,7 @@ class OneTimeOrder extends React.Component {
           </div>}
           {(!this.state.createOrder && this.state.cartItems.length > 0 && this.state.itemAddedToCart)
             && <div>
-              <div className="alert alert-dark" style={{ textAlign: "center", backgroundColor: "#D6D8D9" }}>
+              <div className="alert alert-dark" style={{ textAlign: "center", backgroundColor: "green", color: "white" }}>
                Item added to cart successfully.
               </div>
             </div>

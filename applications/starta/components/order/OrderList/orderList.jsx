@@ -336,7 +336,7 @@ class OrderList extends React.Component {
               (this.props.location.state && this.state.orderIDhistory) &&
               <div>
 
-                <div className="alert alert-dark" style={{ textAlign: "center", backgroundColor: "#D6D8D9" }}>
+                <div className="alert alert-dark" style={{ textAlign: "center", backgroundColor: "green",color:"white" }}>
                   Order Created Successfully with order id : <strong>{this.props.location.state.orderID}</strong>
                 </div>
 
