@@ -2,7 +2,7 @@ import * as utils from "../../../../../core/common/utils";
 import Portlet from '../../../../../core/common/Portlet.jsx';
 
 import Table from '../../../../../core/common/Datatable.jsx';
-
+import * as toaster from '../../../../../core/common/toaster.js';
 import React, { Component } from 'react'
 
 import { connect } from "react-redux";
@@ -117,7 +117,7 @@ class Receipt extends Component {
 
         // field validation
         if (this.state.displayItems.length === 0) {
-            alert('Add items to recieve.')
+            toaster.showToast('Add items to recieve.',"ERROR")
             return
         }
 
@@ -160,22 +160,22 @@ class Receipt extends Component {
 
         // field validation
         if (this.state.receiptNum === "") {
-            alert('Please enter Receipt Number for the item.')
+            toaster.showToast('Please enter Receipt Number for the item.',"ERROR")
             return
         }
 
         if (this.state.itemCode === "") {
-            alert('Please select any Item.')
+            toaster.showToast('Please select any Item.',"ERROR")
             return
         }
 
         if (this.state.itemColor === "") {
-            alert('Please select any Color for the selected item.')
+            toaster.showToast('Please select any Color for the selected item.',"ERROR")
             return
         }
 
         if (this.state.quantity === 0 || this.state.quantity < 0) {
-            alert('Please enter a valid Quantity.')
+            toaster.showToast('Please enter a valid Quantity.',"ERROR")
             return
         }
 
@@ -193,7 +193,7 @@ class Receipt extends Component {
                 let remainingQuantity = this.state.items[i].quantity - this.state.items[i].receivedQuantity
                 if (this.state.quantity > remainingQuantity) {
                     let err = this.state.items[i].itemCode + ' of ' + this.state.items[i].color[0] + ' color must not exceed ' + remainingQuantity + ' in quantity.'
-                    alert(err)
+                    toaster.showToast(err,"ERROR")
                     return
                 }
             }
@@ -318,6 +318,7 @@ class Receipt extends Component {
                                         type="number"
                                         className="form-control"
                                         id="quantity"
+                                        min="0"
                                         onChange={this.onChange}
                                         value={this.state.quantity}
                                     />

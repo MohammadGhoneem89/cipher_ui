@@ -26,7 +26,7 @@ class AddMasterAgreement extends React.Component {
         this.state = {
             orderRebate: [],
             itemRebate: [],
-            disabledPagging:true,
+            disabledPagging: true,
             sla: [],
             items: [],
             itemList: [],
@@ -35,8 +35,8 @@ class AddMasterAgreement extends React.Component {
             isLoading: true,
             startDate: "",
             endDate: "",
-            contractID : "",
-            customerID : "",
+            contractID: "",
+            customerID: "",
             paymentType: "",
             days: "",
             shipmentType: ""
@@ -60,7 +60,7 @@ class AddMasterAgreement extends React.Component {
             "currentPageNo": 1,
             "pageSize": 1
         }));
-        
+
         this.state.disabledPagging ? this.props.actions.generalProcess(constants.getItemCatalogue, { "body": {} }) : this.props.actions.generalProcess(constants.getItemCatalogue, {
             "body": {
                 "page": {
@@ -91,31 +91,31 @@ class AddMasterAgreement extends React.Component {
     componentWillReceiveProps(nextProps) {
 
         // -- Edit Master Agreement Page code starts here --
-        if (nextProps.getAgreementDetail && nextProps.params.contractID && nextProps.params.customerID && nextProps.getItemCatalogue && nextProps.typeData && nextProps.entityNames){
-            
-            
+        if (nextProps.getAgreementDetail && nextProps.params.contractID && nextProps.params.customerID && nextProps.getItemCatalogue && nextProps.typeData && nextProps.entityNames) {
+
+
             // Fix json Response and load state from props
             let items = []
-            for (let i=0; i<nextProps.getAgreementDetail.items.length; i++){
+            for (let i = 0; i < nextProps.getAgreementDetail.items.length; i++) {
                 let item = {}
-                item.serial = _.get(nextProps.getAgreementDetail.items[i],"serial", "") 
-                item.itemCode = _.get(nextProps.getAgreementDetail.items[i],"itemCode", "")
-                item.name = _.get(nextProps.getAgreementDetail.items[i],"name", "")
-                item.color = _.get(nextProps.getAgreementDetail.items[i],"color", [])
-                item.material = _.get(nextProps.getAgreementDetail.items[i],"material", "") 
-                item.printTime = _.get(nextProps.getAgreementDetail.items[i],"printTime", "") 
-                item.leadTime = _.get(nextProps.getAgreementDetail.items[i],"leadTime", "") 
-                item.price = _.get(nextProps.getAgreementDetail.items[i],"unitPrice", "") 
-                item.quantity = _.get(nextProps.getAgreementDetail.items[i],"expectedQuantity", "")
-                
+                item.serial = _.get(nextProps.getAgreementDetail.items[i], "serial", "")
+                item.itemCode = _.get(nextProps.getAgreementDetail.items[i], "itemCode", "")
+                item.name = _.get(nextProps.getAgreementDetail.items[i], "name", "")
+                item.color = _.get(nextProps.getAgreementDetail.items[i], "color", [])
+                item.material = _.get(nextProps.getAgreementDetail.items[i], "material", "")
+                item.printTime = _.get(nextProps.getAgreementDetail.items[i], "printTime", "")
+                item.leadTime = _.get(nextProps.getAgreementDetail.items[i], "leadTime", "")
+                item.price = _.get(nextProps.getAgreementDetail.items[i], "unitPrice", "")
+                item.quantity = _.get(nextProps.getAgreementDetail.items[i], "expectedQuantity", "")
+
                 item.rebate = []
-                for(let j=0; j<nextProps.getAgreementDetail.items[i].itemWiseDiscount.length; j++){
+                for (let j = 0; j < nextProps.getAgreementDetail.items[i].itemWiseDiscount.length; j++) {
                     let reb = {}
-                    reb.greaterThan = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j],"greaterThan")
-                    reb.lessThan = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j],"lessThan")
-                    reb.rebate = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j],"discount")
-                    reb.discountType = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j],"discountType")
-                    reb.action= [
+                    reb.greaterThan = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j], "greaterThan")
+                    reb.lessThan = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j], "lessThan")
+                    reb.rebate = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j], "discount")
+                    reb.discountType = _.get(nextProps.getAgreementDetail.items[i].itemWiseDiscount[j], "discountType")
+                    reb.action = [
                         {
                             label: "Delete", iconName: "fa fa-trash",
                             actionType: "COMPONENT_FUNCTION"
@@ -131,40 +131,48 @@ class AddMasterAgreement extends React.Component {
             }
 
             let sla = []
-            for (let i=0; i < nextProps.getAgreementDetail.sla.length; i++){
+            for (let i = 0; i < nextProps.getAgreementDetail.sla.length; i++) {
                 let slaObj = {}
                 slaObj.fromStage = nextProps.getAgreementDetail.sla[i].fromStage
-                slaObj.fromStageLabel = this.mapStatusCodes (nextProps.getAgreementDetail.sla[i].fromStage)
+                slaObj.fromStageLabel = this.mapStatusCodes(nextProps.getAgreementDetail.sla[i].fromStage)
 
-                slaObj.toStage   = nextProps.getAgreementDetail.sla[i].toStage
-                slaObj.toStageLabel =  this.mapStatusCodes (nextProps.getAgreementDetail.sla[i].toStage)
-                slaObj.duration  = nextProps.getAgreementDetail.sla[i].duration
+                slaObj.toStage = nextProps.getAgreementDetail.sla[i].toStage
+                slaObj.toStageLabel = this.mapStatusCodes(nextProps.getAgreementDetail.sla[i].toStage)
+                slaObj.duration = nextProps.getAgreementDetail.sla[i].duration
+
+                slaObj.action = [
+                    { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
+                    { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }]
                 sla.push(slaObj)
             }
 
             let penalties = []
-            for(let i=0; i<nextProps.getAgreementDetail.penalties.length; i++){
+            for (let i = 0; i < nextProps.getAgreementDetail.penalties.length; i++) {
                 let penaltyObj = {}
                 penaltyObj.fromStage = '002'
-                penaltyObj.fromStagePenaltyLabel =  this.mapStatusCodes ( '002' )
+                penaltyObj.fromStagePenaltyLabel = this.mapStatusCodes('002')
                 penaltyObj.tillStage = _.get(nextProps.getAgreementDetail.penalties[i], "tillStage")
-                penaltyObj.tillStageLabel =  this.mapStatusCodes ( _.get(nextProps.getAgreementDetail.penalties[i], "tillStage") )
+                penaltyObj.tillStageLabel = this.mapStatusCodes(_.get(nextProps.getAgreementDetail.penalties[i], "tillStage"))
                 penaltyObj.greaterThan = _.get(nextProps.getAgreementDetail.penalties[i], "greaterThan")
                 penaltyObj.penaltyType = _.get(nextProps.getAgreementDetail.penalties[i], "penaltyType")
                 penaltyObj.penaltyValue = _.get(nextProps.getAgreementDetail.penalties[i], "penaltyValue")
+
+                penaltyObj.action = [
+                    { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
+                    { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }]
                 penalties.push(penaltyObj)
             }
 
             //document.getElementById('contractID').disabled = true
-            
+
             this.setState({
                 items,
                 sla,
                 penalties,
                 contractID: nextProps.getAgreementDetail.contractID,
                 customerID: nextProps.getAgreementDetail.customerID,
-                days: _.get(nextProps.getAgreementDetail, "paymentTerms.days",undefined),
-                paymentType: _.get(nextProps.getAgreementDetail, "paymentTerms.paymentType",undefined) ? nextProps.getAgreementDetail.paymentTerms.paymentType.toUpperCase() : undefined,
+                days: _.get(nextProps.getAgreementDetail, "paymentTerms.days", undefined),
+                paymentType: _.get(nextProps.getAgreementDetail, "paymentTerms.paymentType", undefined) ? nextProps.getAgreementDetail.paymentTerms.paymentType.toUpperCase() : undefined,
                 shipmentType: _.get(nextProps.getAgreementDetail, "shipmentType", undefined) ? nextProps.getAgreementDetail.shipmentType.toUpperCase() : undefined,
                 startDate: nextProps.getAgreementDetail.startDate,
                 endDate: nextProps.getAgreementDetail.endDate,
@@ -176,7 +184,7 @@ class AddMasterAgreement extends React.Component {
                 entityNames: nextProps.entityNames,
                 isLoading: false
             })
-            
+
 
         }
         // -- Ends --
@@ -223,19 +231,19 @@ class AddMasterAgreement extends React.Component {
         let data = [...this.state.orderRebate];
 
         if (orderGreaterThan < 0) {
-            alert("From should be zero or greater")
+            toaster.showToast("From should be zero or greater", "ERROR")
             return false;
         }
         if (orderLessThan < orderGreaterThan) {
-            alert("To should be greater than From!")
+            toaster.showToast("To should be greater than From!", "ERROR")
             return false;
         }
         if (!rebateType) {
-            alert("Rebate Type is required!")
+            toaster.showToast("Rebate Type is required!", "ERROR")
             return false;
         }
         if (rebate <= 0) {
-            alert("Rebate should be greater than zero!")
+            toaster.showToast("Rebate should be greater than zero!", "ERROR")
             return false;
         }
         let newtupple = {
@@ -317,15 +325,15 @@ class AddMasterAgreement extends React.Component {
 
         let data = this.state.sla;
         if (!this.fromStage) {
-            alert("From Stage is required!")
+            toaster.showToast("From Stage is required!", "ERROR")
             return false;
         }
         if (!this.toStage) {
-            alert("To Stage is required!")
+            toaster.showToast("To Stage is required!", "ERROR")
             return false;
         }
         if (duration <= 0) {
-            alert("Duration should be greater than zero!")
+            toaster.showToast("Duration should be greater than zero!", "ERROR")
             return false;
         }
         let fromStageLabel = this.getStatusLabel(this.fromStage);
@@ -363,15 +371,15 @@ class AddMasterAgreement extends React.Component {
 
 
         if (greaterThan <= 0) {
-            alert("Greater Than Time should be greater than zero!")
+            toaster.showToast("Greater Than Time should be greater than zero!", "ERROR")
             return false;
         }
         if (!penaltyType) {
-            alert("Penalty Type is required!")
+            toaster.showToast("Penalty Type is required!", "ERROR")
             return false;
         }
         if (penaltyValue <= 0) {
-            alert("Penalty Value should be greater than zero!")
+            toaster.showToast("Penalty Value should be greater than zero!", "ERROR")
             return false;
         }
 
@@ -395,6 +403,7 @@ class AddMasterAgreement extends React.Component {
     }
 
     addItem = () => {
+        let isSameItem = false;
         let item = document.getElementById('item') == null ? "" : document.getElementById('item').value;
         let unitPrice = document.getElementById('unitPrice') == null ? "" : document.getElementById('unitPrice').value;
         let expectedQuantity = document.getElementById('expectedQuantity') == null ? "" : document.getElementById('expectedQuantity').value;
@@ -402,17 +411,17 @@ class AddMasterAgreement extends React.Component {
 
 
         if (!item.trim()) {
-            alert("item id and name is required!")
+            toaster.showToast("item id and name is required!", "ERROR")
             return false;
         }
 
         if (expectedQuantity <= 0) {
-            alert("expectedQuantity should be greater than zero!")
+            toaster.showToast("expectedQuantity should be greater than zero!", "ERROR")
             return false;
         }
 
         if (unitPrice <= 0) {
-            alert("unitPrice should be greater than zero!")
+            toaster.showToast("unitPrice should be greater than zero!", "ERROR")
             return false;
         }
         let result = this.state.itemList.filter(obj => {
@@ -428,28 +437,39 @@ class AddMasterAgreement extends React.Component {
             partNumber: result[0].partNumber,
             rebate: this.state.orderRebate,
             //rebate: this.state.itemRebate,
-
             price: unitPrice,
             quantity: expectedQuantity,
-            action: [{ label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }, { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }],
+            action: [{ label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
+            { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }],
         }
 
-        console.log("===" + JSON.stringify(newtupple))
+        console.log("===" + JSON.stringify(newtupple));
 
         if (expectedQuantity <= 0) {
-            alert("Expected Quantity should be greater than zero!")
+            toaster.showToast("Expected Quantity should be greater than zero!", "ERROR")
             return false;
         }
         if (unitPrice <= 0) {
-            alert("Unit Price should be greater than zero!")
+            toaster.showToast("Unit Price should be greater than zero!", "ERROR")
             return false;
         }
 
-        this.clearFieldsItem();
-        data.push(newtupple);
-        this.setState({ items: data });
+        for (let i = 0; i < data.length; i++) {
+            if (newtupple.itemCode == data[i].itemCode) {
+                isSameItem = true
+                toaster.showToast(`${data[i].itemCode} is already present in item list.
+                Kindly edit or delete the item and add again.`,"ERROR");
+                break;
+            }
+        }
+        if (!isSameItem) {
+            this.clearFieldsItem();
+            data.push(newtupple);
+            console.log(data, ">>>>>>> DATA");
+            this.setState({ items: data });
+        }
     }
-    
+
     addContract = () => {
         let contractID = document.getElementById('contractID') == null ? "" : document.getElementById('contractID').value;
         let startDate = this.state.startDate;
@@ -460,32 +480,36 @@ class AddMasterAgreement extends React.Component {
         let days = document.getElementById('days') == null ? "" : document.getElementById('days').value;
 
         if (!contractID.trim()) {
-            alert("Contract ID is required!")
+            toaster.showToast("Contract ID is required!", "ERROR")
             return false;
         }
         if (!customerID) {
-            alert("Customer ID is required!")
+            toaster.showToast("Customer ID is required!", "ERROR")
             return false;
         }
         if (!startDate) {
-            alert("Start Date is required!")
+            toaster.showToast("Start Date is required!", "ERROR")
             return false;
         }
         if (!endDate) {
-            alert("End Date is required!")
+            toaster.showToast("End Date is required!", "ERROR")
+            return false;
+        }
+        if (endDate < startDate) {
+            toaster.showToast("End Date cannot be less than Start Date", "ERROR")
             return false;
         }
         if (!paymentType) {
-            alert("payment Type is required!")
+            toaster.showToast("payment Type is required!", "ERROR")
             return false;
         }
         if (!shipmentType) {
-            alert("shipment Type is required!")
+            toaster.showToast("shipment Type is required!", "ERROR")
             return false;
         }
 
         if (!days || days.trim() == "") {
-            alert("Days are required!")
+            toaster.showToast("Days are required!", "ERROR")
             return false;
         }
 
@@ -558,18 +582,18 @@ class AddMasterAgreement extends React.Component {
             sla,
             penalties
         }
-        if (!this.props.params.contractID){
+        if (!this.props.params.contractID) {
             this.props.actions.generalAjxProcess(constants.addMasterContract, { "body": _.cloneDeep(contract) })
-            .then(result => {
-                console.log(result, "result")
-                result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
-            });
+                .then(result => {
+                    console.log(result, "result")
+                    result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : this.redirectToList()
+                });
         } else {
             this.props.actions.generalAjxProcess(constants.updateMasterContract, { "body": _.cloneDeep(contract) })
-            .then(result => {
-                console.log(result, "result")
-                result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.redirectToList()
-            });
+                .then(result => {
+                    console.log(result, "result")
+                    result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : this.redirectToList()
+                });
         }
         this.clearFields();
     }
@@ -609,7 +633,65 @@ class AddMasterAgreement extends React.Component {
         $('').find('input').val(0);
         $('').find('input:text').val('');
     }
+    ActionHandlersPenalty = ({ actionName, index }) => {
+        switch (actionName) {
+            case "Edit":
+                if (index > -1) {
+                    let a = this.state.penalties[index];
+                    console.log(a, "a")
+                    document.getElementById('fromStage').value = a.fromStage;
+                    document.getElementById('tillStage').value = a.tillStage;
+                    document.getElementById('greaterThan').value = parseInt(a.greaterThan, 10);
+                    document.getElementById('penaltyType').value = a.penaltyType;
+                    document.getElementById('penaltyValue').value = parseInt(a.penaltyValue, 10);
+                    let tempState = [...this.state.penalties];
+                    tempState.splice(index, 1);
+                    this.setState({
+                        penalties: tempState
+                    });
+                }
+                break;
+            case "Delete":
+                if (index > -1) {
+                    let a = this.state.penalties;
+                    a.splice(index, 1);
+                    this.setState({ penalties: a });
+                }
+                break;
 
+            default:
+                break;
+        }
+    }
+    ActionHandlersSLA = ({ actionName, index }) => {
+        switch (actionName) {
+            case "Edit":
+                if (index > -1) {
+                    let a = this.state.sla[index];
+                    console.log(this.state.sla[index], "sla");
+                    console.log(a, "a")
+                    document.getElementById('fromStage').value = a.fromStage;
+                    document.getElementById('toStage').value = a.toStage;
+                    document.getElementById('duration').value = parseInt(a.duration, 10);
+                    let tempState = [...this.state.sla];
+                    tempState.splice(index, 1);
+                    this.setState({
+                        sla: tempState
+                    });
+                }
+                break;
+            case "Delete":
+                if (index > -1) {
+                    let a = this.state.sla;
+                    a.splice(index, 1);
+                    this.setState({ sla: a });
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
     ActionHandlersItem({ actionName, index }) {
         switch (actionName) {
             case "Edit":
@@ -630,14 +712,14 @@ class AddMasterAgreement extends React.Component {
                 }
                 break;
             case "Delete":
-                let result = confirm("Are you sure you want to delete?");
-                if (result) {
-                    if (index > -1) {
-                        let a = this.state.items;
-                        a.splice(index, 1);
-                        this.setState({ items: a });
-                    }
+                // let result = toaster.showToast("Are you sure you want to delete?", "ERROR");
+                // if (result) {
+                if (index > -1) {
+                    let a = this.state.items;
+                    a.splice(index, 1);
+                    this.setState({ items: a });
                 }
+                // }
                 break;
 
             default:
@@ -659,7 +741,7 @@ class AddMasterAgreement extends React.Component {
                 }
                 break;
             case "Delete":
-                let result = confirm("Are you sure you want to delete?");
+                let result = toaster.showToast("Are you sure you want to delete?", "WARNING");
                 if (result) {
                     if (index > -1) {
                         let a = this.state.orderRebate;
@@ -668,12 +750,11 @@ class AddMasterAgreement extends React.Component {
                     }
                 }
                 break;
-
             default:
                 break;
         }
     }
-    onChange = (e) => {this.setState({ [e.target.name]: e.target.value })};
+    onChange = (e) => { this.setState({ [e.target.name]: e.target.value }) };
 
     render() {
         const itemList = this.state.itemList ? this.state.itemList : []
@@ -682,8 +763,8 @@ class AddMasterAgreement extends React.Component {
         const paymentTypess = this.state.typeData ? this.state.typeData.paymentType : []
         let customerList = this.state.typeData ? this.state.entityNames : []
 
-        customerList = customerList.filter(item=>{
-            if (item.orgType === 'CUSTOMER'){
+        customerList = customerList.filter(item => {
+            if (item.orgType === 'CUSTOMER') {
                 return true
             }
             return false
@@ -702,14 +783,14 @@ class AddMasterAgreement extends React.Component {
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Contract ID")}</label>
                                 <div className="form-group col-md-8">
 
-                                    <input 
+                                    <input
                                         name="contractID"
-                                        type="text" 
-                                        className="form-control" 
+                                        type="text"
+                                        className="form-control"
                                         id="contractID"
                                         value={this.state.contractID}
                                         onChange={this.onChange}
-                                        disabled= {this.props.params.customerID ? true : false}
+                                        disabled={this.props.params.customerID ? true : false}
                                     />
 
                                 </div>
@@ -779,9 +860,9 @@ class AddMasterAgreement extends React.Component {
                                 <div className="form-group col-md-8">
                                     <input
                                         name="days"
-                                        type="number" 
+                                        type="number"
                                         min="0"
-                                        className="form-control" 
+                                        className="form-control"
                                         id="days"
                                         onChange={this.onChange}
                                         value={this.state.days}
@@ -868,7 +949,7 @@ class AddMasterAgreement extends React.Component {
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Expected Quantity")}</label>
                                                             <div className="form-group col-md-8">
-                                                                <input type="number"  min="0" className="form-control" id="expectedQuantity" />
+                                                                <input type="number" min="0" className="form-control" id="expectedQuantity" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -876,7 +957,7 @@ class AddMasterAgreement extends React.Component {
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Unit Price")}</label>
                                                             <div className="form-group col-md-8">
-                                                                <input type="number"  min="0" className="form-control" id="unitPrice" />
+                                                                <input type="number" min="0" className="form-control" id="unitPrice" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -918,7 +999,7 @@ class AddMasterAgreement extends React.Component {
                                                                                         <div className="form-group">
                                                                                             <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("To")}</label>
                                                                                             <div className="form-group col-md-9">
-                                                                                                <input type="number"  min="0" className="form-control" id="orderLessThan" />
+                                                                                                <input type="number" min="0" className="form-control" id="orderLessThan" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -943,7 +1024,7 @@ class AddMasterAgreement extends React.Component {
                                                                                         <div className="form-group">
                                                                                             <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("Rebate Value")}</label>
                                                                                             <div className="form-group col-md-9">
-                                                                                                <input type="number"  min="0" className="form-control" id="orderRebate" />
+                                                                                                <input type="number" min="0" className="form-control" id="orderRebate" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -958,7 +1039,7 @@ class AddMasterAgreement extends React.Component {
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>                                                  
+                                                                                </div>
                                                                                 <Table
                                                                                     gridColumns={utils.getGridColumnByName("rebate")}
                                                                                     gridData={this.state.orderRebate}
@@ -1059,7 +1140,7 @@ class AddMasterAgreement extends React.Component {
                                                     gridColumns={utils.getGridColumnByName("SLA")}
                                                     gridData={this.state.sla}
                                                     export={false}
-                                                    componentFunction={this.ActionHandlers}
+                                                    componentFunction={this.ActionHandlersSLA}
                                                     pagination={false} />
 
                                             </div>
@@ -1109,7 +1190,7 @@ class AddMasterAgreement extends React.Component {
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Greater Than ( Days )")}</label>
                                                             <div className="form-group col-md-8">
-                                                                <input type="number"  min="0" className="form-control" id="greaterThan" />
+                                                                <input type="number" min="0" className="form-control" id="greaterThan" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1134,7 +1215,7 @@ class AddMasterAgreement extends React.Component {
                                                         <div className="form-group">
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Penalty Value")}</label>
                                                             <div className="form-group col-md-8">
-                                                                <input type="number"  min="0" className="form-control" id="penaltyValue" />
+                                                                <input type="number" min="0" className="form-control" id="penaltyValue" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1155,7 +1236,7 @@ class AddMasterAgreement extends React.Component {
                                                     gridColumns={utils.getGridColumnByName("Penalties")}
                                                     gridData={this.state.penalties}
                                                     export={false}
-                                                    componentFunction={this.ActionHandlers}
+                                                    componentFunction={this.ActionHandlersPenalty}
                                                     pagination={false} />
 
                                             </div>

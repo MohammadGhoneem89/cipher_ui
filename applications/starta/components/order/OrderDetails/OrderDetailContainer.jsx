@@ -110,11 +110,14 @@ class OrderDetailContainer extends React.Component {
       let recList = [];
 
       let orderDetail = nextProps.orderDetail;
+      // orderDetail.receivedDate = moment(orderDetail.receivedDate, "DD/MM/YYYY").toDate();
+
       orderDetail.items &&
         orderDetail.items.forEach(elem => {
           elem.itemReceipts &&
             elem.itemReceipts.forEach(recItm => {
-              console.log("(recItm.receiptDate  ", recItm.receiptDate);
+              let newdate = new Date(recItm.receiptDate);
+
               let item = {
                 itemCode: elem.itemCode,
                 receiptNo: recItm.receiptNo,
@@ -163,8 +166,8 @@ class OrderDetailContainer extends React.Component {
       "http://localhost:9086/images/1f31e930-e0d5-11e7-88e2-f718f78167e9.png";
   }
   redirectToList = () => {
-    browserHistory.push(`/strata/viewOrder/:${this.props.orderID}/:${this.props.customerID}`);
-    toaster.showToast("Record updated successfully!");
+    browserHistory.push(`/strata/viewOrder/${this.props.orderID}/${this.props.customerID}`);
+    toaster.showToast("Status updated successfully!");
   };
   statusButtonHandler(element) {
     switch (element.type) {
@@ -294,7 +297,7 @@ class OrderDetailContainer extends React.Component {
       "valueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
     );
     if (this.state.optionalStatusValue === "") {
-      toaster.showToast("Status must be selected to update");
+      toaster.showToast("Status must be selected to update","ERROR");
       return;
     }
     this.props.actions.generalProcess(constants.updateOrderStatus, {
@@ -542,7 +545,7 @@ class OrderDetailContainer extends React.Component {
                           <Col col="9">
                             <span>
                               {this.state.orderDetail.orderDate &&
-                                this.state.orderDetail.orderDate.split(" ")[0]}
+                                utils.UNIXConvertToDate(moment(this.state.orderDetail.orderDate * 1000, "DD/MM/YYYY").toDate())}
                             </span>
                           </Col>
                         </Col>
@@ -621,9 +624,11 @@ class OrderDetailContainer extends React.Component {
                           <Label columns="3" text="Credit Note Date:"></Label>
                           <Col col="9">
                             <span>
-                              {_.get(
+
+                            {_.get(
                                 this.state.orderDetail,
-                                "creditNotes.creditNoteDate"
+                                "creditNotes.creditNoteRefNo".split(" ")[0],
+                                ""
                               )}
                             </span>
                           </Col>

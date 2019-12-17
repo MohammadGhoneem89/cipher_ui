@@ -5,12 +5,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 
-
 import * as actions from './actions/generalAction';
 import { Router, Route, Link, browserHistory, IndexRoute } from 'react-router'
 import IdleTimer from 'react-idle-timer';
-
-
 
 
 

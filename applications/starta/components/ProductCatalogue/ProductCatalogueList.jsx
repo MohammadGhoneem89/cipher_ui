@@ -70,6 +70,22 @@ class ProductCatalogueList extends React.Component {
     formSubmit = () => {
         this.props.actions.generalProcess(constants.getItemCatalogue, this.getRequest());
     }
+    reset = () => {
+        document.getElementById('itemID').value = "";
+        document.getElementById('itemDescription').value = "";
+        document.getElementById('name').value = "";
+        let request = {
+            "body": {
+                page: {
+                    currentPageNo: 1,
+                    pageSize: 10
+                },
+                searchCriteria: {}
+            }
+        }
+        this.setState({ searchCriteria: {} });
+        this.props.actions.generalProcess(constants.getItemCatalogue, request);
+    };
 
     updateURL(){
         console.log(this.upload , this.download)
@@ -215,6 +231,10 @@ class ProductCatalogueList extends React.Component {
                                     <button type="submit" className="btn green" onClick={this.formSubmit}
                                     >
                                         {utils.getLabelByID("Search")}
+                                    </button>
+                                    <button type="clear" className="btn green" onClick={this.reset}
+                                    >
+                                        {utils.getLabelByID("Clear")}
                                     </button>
                                 </div>
                             </div>

@@ -90,20 +90,18 @@ class OrderViaContract extends React.Component {
     let items = [...this.state.cartItems];
 
     for (let i = 0; i < items.length; i++) {
-      calculateLeadTime = 1;
-      for (let j = 1; j <= i; j++) {
-        firstTerm = 1.0;
-        if (items[i].quantity != 1) {
-          firstTerm = 0.73 * items[i].quantity * items[i].printTime;
-        }
-        calculateLeadTime *= [firstTerm + items[i].leadTime];
+      firstTerm = 1.0;
+      if (items[i].quantity > 1) {
+        firstTerm = 0.73 * items[i].quantity * items[i].printTime;
       }
-      totalLeadTime += calculateLeadTime;
+      totalLeadTime += Math.pow((firstTerm + items[i].leadTime), i + 1); //Math.pow(2,2)
     }
 
     return totalLeadTime;
   };
 
+
+  //totalUnits = batchSize * quantity
   getTotalUnits = () => {
     let items = [...this.state.cartItems];
     let totalUnit = 0;
@@ -114,7 +112,10 @@ class OrderViaContract extends React.Component {
     return totalUnit;
   };
 
+
+
   placeOrder() {
+    //calculate leadtime
     let totalLeadTime = 0;
     let calculateLeadTime = 1;
     let firstTerm = 1.0;
@@ -158,11 +159,11 @@ class OrderViaContract extends React.Component {
         .generalAjxProcess(constants.createOrder, request)
         .then(result => {
           result.message.status == "ERROR"
-            ? alert(result.message.errorDescription)
+            ? toaster.showToast(result.message.errorDescription)
             : this.successAction(result.orderID);
         });
     } else {
-      alert("Please add atleast one item to place the order!");
+      toaster.showToast("Please add atleast one item to place the order!");
       browserHistory.push("/strata/OrderViaContract");
       toaster.showToast("Failed to place the order!");
       return false;
@@ -176,10 +177,20 @@ class OrderViaContract extends React.Component {
     });
     toaster.showToast("Order Created successfully!");
   };
-
+  activeContracts = contract => {
+    let activeContract = [];
+    let currentDate = (new Date).getTime();
+    for (let i = 0; i < contract.length; i++) {
+      //convert date string "dd/mm/yy" into date object then get epoch time from getTime()
+      let dateObject = moment(contract[i].endDate, "DD/MM/YYYY").toDate();
+      let enddate = dateObject.getTime();
+      if (enddate >= currentDate) {
+        activeContract.push(contract[i]);
+      }
+    }
+    return activeContract;
+  }
   componentWillMount() {
-    // let createOrd = document.getElementById('createOrder');
-    // createOrd.style.visibility = false;
   }
 
   componentDidMount() {
@@ -223,16 +234,16 @@ class OrderViaContract extends React.Component {
     if (nextProps.getMasterAgreement && nextProps.itemCatalogue) {
       this.setState({
         itemCatalogue: nextProps.itemCatalogue,
-        contracts: nextProps.getMasterAgreement,
-        // typeData: nextProps.typeData,
+        contracts: this.activeContracts(nextProps.getMasterAgreement),
         isLoading: false,
         isLoading2: false
       });
     }
   }
 
+
   openModalBox(modelItem) {
-    // console.log('item', modelItem);
+
     this.setState({
       modelBox: true,
       modelItem
@@ -243,36 +254,37 @@ class OrderViaContract extends React.Component {
     e.preventDefault();
     let formData = new FormData(e.target);
     let cartItem = {};
-    formData.forEach(function(value, key) {
+    formData.forEach(function (value, key) {
       cartItem[key] = value;
     });
-
+    if (cartItem.color == "Select" || cartItem.color == "") {
+      toaster.showToast("Item color is required", "ERROR");
+      e.target.reset();
+      return false;
+    }
+    if (cartItem.quantity == 0) {
+      toaster.showToast("Quantity cannot be zero", "ERROR");
+      cartItem.quantity = 0;
+      e.target.reset();
+      return false;
+    }
     console.log(cartItem, "cart item");
     let material = "";
     for (let i = 0; i < _.get(this.state, "itemCatalogue", []).length; i++) {
       if (this.state.itemCatalogue[i].itemCode === cartItem.itemCode) {
         console.log(this.state.itemCatalogue[i], "found");
+
         cartItem.leadTime = this.state.itemCatalogue[i].leadTime;
         cartItem.printTime = this.state.itemCatalogue[i].printTime;
         cartItem.material = this.state.itemCatalogue[i].material;
-        cartItem.batchSize =
-          this.state.getItemCatalogue &&
-          this.state.getItemCatalogue.searchResult[i].batchSize
-            ? this.state.getItemCatalogue.searchResult[i].batchSize
-            : 1;
+        cartItem.batchSize = this.state.itemCatalogue[i].batchSize;
         break;
       }
     }
-
+    let grandTotal = 0;
     let totalBatchSize = 0;
     let cart = [...this.state.cartItems];
 
-    if (cartItem.quantity == 0) {
-      alert("Quantity cannot be zero!");
-      cartItem.quantity = 0;
-      e.target.reset();
-      return false;
-    }
     let itemCat;
     let contractData;
     if (this.state.contracts) {
@@ -286,8 +298,6 @@ class OrderViaContract extends React.Component {
     let result = itemCat.filter(obj => {
       return obj.itemCode == cartItem.itemCode;
     });
-
-    console.log("this.state.cartItems", this.state.cartItems);
     let isNewItem = true;
     cart.map(element => {
       if (
@@ -298,44 +308,27 @@ class OrderViaContract extends React.Component {
         element.quantity =
           parseFloat(parseInt(element.quantity)) +
           parseFloat(parseInt(cartItem.quantity));
-         if (element.quantity > result[0].expectedQuantity) {
-           toaster.showToast("The quantity you ordered for this item is more than expected quantity in master contract","WARNING");
-        //   alert(
-        //     "The quantity you ordered for this item is more than expected quantity in master contract!"
-        //   );
-        //   cartItem.quantity = 0;
-        //   e.target.reset();
-        //   return false;
-         }
+        if (element.quantity > result[0].expectedQuantity) {
+          toaster.showToast("The quantity you ordered for this item is more than expected quantity in master contract", "WARNING");
+        }
       }
     });
     if (isNewItem) {
       if (cartItem.quantity > result[0].expectedQuantity) {
-           toaster.showToast("The quantity you ordered for this item is more than expected quantity in master contract","WARNING");
-        //   alert(
-        //     "The quantity you ordered for this item is more than expected quantity in master contract!"
-        //   );
-        //   cartItem.quantity = 0;
-        //   e.target.reset();
-        //   return false;
-         }
+        toaster.showToast("The quantity you ordered for this item is more than expected quantity in master contract", "WARNING");
+      }
       cart.push(cartItem);
     }
     cart.forEach(element => {
+      console.log(" element.batchSize", element.batchSize, "element.quantity", element.quantity, "element.itemcode", element.itemCode)
       element.quantity = parseFloat(parseInt(element.quantity));
       element.price = parseFloat(element.price);
-      element.total = element.quantity * element.price;
+      grandTotal += element.quantity * element.price;
       element.material = result[0].material;
-    });
-    cart.forEach(element => {
-      this.grandTotal += element.total;
-    });
-    cart.forEach(element => {
       totalBatchSize += element.batchSize * element.quantity;
     });
-    let grandTotal;
-    grandTotal = this.grandTotal;
-    console.log(totalBatchSize, "++totalBatchSize");
+    this.grandTotal = grandTotal;
+    console.log("this.grandTotal ",this.grandTotal)
     this.setState({
       cartItems: cart,
       grandTotal: grandTotal,
@@ -343,6 +336,7 @@ class OrderViaContract extends React.Component {
       totalBatchSize: totalBatchSize
     });
     e.target.reset();
+    window.scrollTo(0, 0);
   }
 
   handlePageChange(pageNumber) {
@@ -355,7 +349,7 @@ class OrderViaContract extends React.Component {
         createOrder: true
       });
     } else {
-      alert("Please add some item to cart!");
+      toaster.showToast("Please add some item to cart", "ERROR");
     }
   };
 
@@ -384,7 +378,7 @@ class OrderViaContract extends React.Component {
     let itemData =
       this.state.itemCatalogue.length > 0
         ? this.state.itemCatalogue
-        : alert("not found itemcat");
+        : [];
     let result = this.state.contracts.filter(obj => {
       return obj.contractID == document.getElementById("contractID").value;
     });
@@ -534,9 +528,11 @@ class OrderViaContract extends React.Component {
               <div>
                 <div
                   className="alert alert-dark"
-                  style={{ textAlign: "center", backgroundColor: "#D6D8D9" }}
+                  style={{ textAlign: "center", backgroundColor: "green", color: "white" }}
                 >
-                  Item added to cart successfully.
+                  Item added to cart successfully
+                  : <strong>{this.state.cartItems[this.state.cartItems.length-1].name}</strong>
+                  
                 </div>
               </div>
             )}

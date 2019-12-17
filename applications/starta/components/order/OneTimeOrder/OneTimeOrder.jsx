@@ -4,12 +4,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../../../core/actions/generalAction";
 import { browserHistory } from 'react-router';
-import * as toaster from '../../../../../core/common/toaster.js';
 import * as utils from "../../../../../core/common/utils.js";
 import * as constants from "../../../../../core/constants/Communication";
 import * as requestCreator from '../../../../../core/common/request.js';
 import * as coreConstants from '../../../../../core/constants/Communication.js'
-
+import * as toaster from '../../../../../core/common/toaster.js';
 //Custom Components
 import Select from "../../../common/Select.jsx";
 import Div from "../../../common/Div.jsx";
@@ -98,11 +97,11 @@ class OneTimeOrder extends React.Component {
   };
   getTotalUnits = () => {
     let items = [...this.state.cartItems];
-    let totalUnit=0;
+    let totalUnit = 0;
     for (let i = 0; i < items.length; i++) {
-      totalUnit += items[i].batchSize * items[i].quantity 
+      totalUnit += items[i].batchSize * items[i].quantity
     }
-    console.log("totalunit >> ",totalUnit)
+    console.log("totalunit >> ", totalUnit)
     return totalUnit;
   }
   placeOrder() {
@@ -139,7 +138,7 @@ class OneTimeOrder extends React.Component {
         "paymentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.paymentType : "",
         "purchaseOrderType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.purchaseOrderType : "",
         "totalLeadTime": totalLeadTime,
-        "grandTotal":this.grandTotal
+        "grandTotal": this.grandTotal
       }
     };
     console.log(request, "request")
@@ -150,7 +149,7 @@ class OneTimeOrder extends React.Component {
       this.props.actions.generalAjxProcess(constants.createOrder,
         request).then(result => {
           console.log(result, "result")
-          result.message.status == 'ERROR' ? alert(result.message.errorDescription) : this.successAction(result.orderID)
+          result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : this.successAction(result.orderID)
         });
     } else {
       toaster.showToast("Please add at least one item to place the order!", "ERROR");
@@ -234,12 +233,12 @@ class OneTimeOrder extends React.Component {
 
 
     let grandTotal = 0;
-    
+
     let totalBatchSize = 0;
     let cart = [...this.state.cartItems];
 
     if (cartItem.quantity == 0) {
-      alert("Quantity cannot be zero!")
+      toaster.showToast("Quantity cannot be zero!", "ERROR")
       cartItem.quantity = 0;
       e.target.reset();
       return false;
@@ -249,6 +248,7 @@ class OneTimeOrder extends React.Component {
       if (element.itemCode === cartItem.itemCode && element.color === cartItem.color) {
         isNewItem = false;
         element.quantity = parseFloat(parseInt(element.quantity)) + parseFloat(parseInt(cartItem.quantity));
+        // this.grandTotal -= element.total;
       }
     });
     if (isNewItem) {
@@ -257,18 +257,13 @@ class OneTimeOrder extends React.Component {
     cart.forEach(element => {
       element.quantity = parseFloat(parseInt(element.quantity));
       element.price = parseFloat(element.price);
-      element.total = element.quantity * element.price;
-    });
-    cart.forEach(element => {
-      this.grandTotal += element.total
-    });
-    grandTotal = this.grandTotal;
-    console.log(totalBatchSize, "++totalBatchSize")
-    cart.forEach(element => {
-      console.log(element, "ELEMENT")
+      grandTotal += (element.quantity * element.price);
       console.log(element.batchSize, element.quantity, element.batchSize * element.quantity, "element.batchSize", "element.quantity")
       totalBatchSize += element.batchSize * element.quantity;
     });
+    this.grandTotal = grandTotal;
+
+    console.log("this.grandTotal ",this.grandTotal)
     this.setState({
       cartItems: cart,
       grandTotal: grandTotal,
@@ -295,7 +290,7 @@ class OneTimeOrder extends React.Component {
       // createOrd.style.visibility = true;
     }
     else {
-      alert("Please add some item to cart!")
+      toaster.showToast("Please add some item to cart!", "ERROR")
     }
   };
 
@@ -369,7 +364,8 @@ class OneTimeOrder extends React.Component {
           {(!this.state.createOrder && this.state.cartItems.length > 0 && this.state.itemAddedToCart)
             && <div>
               <div className="alert alert-dark" style={{ textAlign: "center", backgroundColor: "green", color: "white" }}>
-               Item added to cart successfully.
+              Item added to cart successfully
+                  : <strong>{this.state.cartItems[this.state.cartItems.length-1].name}</strong>
               </div>
             </div>
           }

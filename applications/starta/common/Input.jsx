@@ -26,9 +26,9 @@ class Input extends React.Component {
         return (
 
             <div className={`col-md-${this.props.columns} ${this.getColour(this.props.status)}`}>
-                {/* {console.log(this.props.type,"this.props.type")} */}
                 <input type={this.props.type ? this.props.type : "text"}
                     name={this.props.fieldname}
+                    id={this.props.id}
                     min={this.props.min ? this.props.min : 0}
                     disabled={this.props.disabled || false}
                     value={this.props.value ||

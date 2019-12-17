@@ -135,10 +135,10 @@ class Header extends React.Component {
                                 </li>
 
                                 <li className="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
-                                    <a href="javascript:;" className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    {/* <a href="javascript:;" className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                         <i className="icon-bell" />
                                         <span className="badge badge-default"> {this.getNotificationCount()}  </span>
-                                    </a>
+                                    </a> */}
                                     <ul className="dropdown-menu">
                                         <li className="external">
                                             <h3>

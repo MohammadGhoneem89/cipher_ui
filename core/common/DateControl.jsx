@@ -9,6 +9,7 @@ class DateControl extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.dateChange = this.dateChange.bind(this);
+
     }
     componentDidUpdate() {
 
@@ -17,9 +18,10 @@ class DateControl extends React.Component {
 
     }
     dateChange(value) {
-        // if(value=='Invalid date') { alert(this.props.dateChange(value)) }
-        if (this.props.dateChange)
+
+        if (this.props.dateChange) {
             this.props.dateChange(value);
+        }
     }
     UNIXConvertToDate(UNIXTS) {
         if (UNIXTS == 0)
@@ -45,13 +47,25 @@ class DateControl extends React.Component {
         return (
             <div id={dateControlID}>
                 {
-                this.props.value===undefined ? (
-                    <DatePicker inputFormat={format} name={this.props.name} defaultText={defaultText}
-                        mode={mode} showToday={showToday} readOnly={true} onChange={this.dateChange} />) : (
-                    <DatePicker inputFormat={format} name={this.props.name} inputProps = {{value:this.props.value}} defaultText={defaultText}
-                        mode={mode} showToday={showToday} readOnly={true} onChange={this.dateChange} />)
+                    this.props.value === undefined ? (
+                        <DatePicker inputFormat={format}
+                            name={this.props.name}
+                            defaultText={defaultText}
+                            mode={mode} 
+                            showToday={showToday}
+                            readOnly={true}
+                            onChange={this.dateChange} />) : (
+
+                            <DatePicker inputFormat={format}
+                                name={this.props.name}
+                                inputProps={{ value: this.props.value }}
+                                defaultText={defaultText}
+                                mode={mode}
+                                 showToday={showToday}
+                                readOnly={true}
+                                onChange={this.dateChange} />)
                 }
-                
+
             </div>
         );
     }

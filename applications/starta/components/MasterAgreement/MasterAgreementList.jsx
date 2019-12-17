@@ -32,6 +32,23 @@ class MasterAgreementList extends React.Component {
     formSubmit = () => {
         this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
     }
+    reset = () => {
+        document.getElementById('contractId').value = "";
+        document.getElementById('customer').value = "";
+
+        let request = {
+            "body": {
+                page: {
+                    currentPageNo: 1,
+                    pageSize: 10
+                },
+                searchCriteria: {}
+            }
+        }
+        this.setState({ searchCriteria: {} });
+        this.props.actions.generalProcess(constants.getMasterAgreement, request);
+    };
+
     redirectToAddPage = () => {
         //this.props.actions.generalProcess(constants.getMasterAgreementList, this.getRequest());
     }
@@ -106,7 +123,7 @@ class MasterAgreementList extends React.Component {
             if (status) {
                 gridData[i].status = this.getStatusLabel(status);
             }
-            
+
         }
         return gridData;
     }
@@ -154,7 +171,9 @@ class MasterAgreementList extends React.Component {
                                     <button type="submit" className="btn green" onClick={this.formSubmit}>
                                         {utils.getLabelByID("Search")}
                                     </button>
-
+                                    <button type="clear" className="btn green" onClick={this.reset}>
+                                        {utils.getLabelByID("Clear")}
+                                    </button>
 
                                 </div>
                             </div>

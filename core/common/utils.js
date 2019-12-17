@@ -157,6 +157,12 @@ export function UNIXConvertToDate(UNIXTS) {
 
 }
 
+export function UNIXConvertToDateStrata(UNIXTS) {
+  if (!UNIXTS || UNIXTS == 0)
+    return "";
+    return moment.unix(UNIXTS).format('DD/MM/YYYY')
+
+}
 
 export function getDatesDiff(fromDate, toDate)
 {

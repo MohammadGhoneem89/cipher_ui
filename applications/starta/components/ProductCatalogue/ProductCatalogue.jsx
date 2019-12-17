@@ -158,63 +158,63 @@ class ProductCatalogue extends React.Component {
         this.state.addProduct.itemCode == undefined ||
         this.state.addProduct.itemCode.trim() == ""
       ) {
-        alert("Item Code is required!");
+        toaster.showToast("Item Code is required!","ERROR");
         return;
       }
       if (this.state.addProduct.name.length > 20) {
-        alert("Item name must be less than 20 characters!");
+        toaster.showToast("Item name must be less than 20 characters!","ERROR");
         return;
       }
       if (
         this.state.addProduct.name == undefined ||
         this.state.addProduct.name.trim() == ""
       ) {
-        alert("item name is required!");
+        toaster.showToast("item name is required!","ERROR");
         return;
       }
       if (
         this.state.addProduct.description == undefined ||
         this.state.addProduct.description.trim() == ""
       ) {
-        alert("item description is required!");
+        toaster.showToast("item description is required!","ERROR");
         return;
       }
       if (this.state.addProduct.classification == undefined) {
-        alert("item classification is required!");
+        toaster.showToast("item classification is required!","ERROR");
         return;
       }
       if (this.state.addProduct.material == undefined) {
-        alert("item material is required!");
+        toaster.showToast("item material is required!","ERROR");
         return;
       }
       if (this.state.addProduct.price == undefined) {
-        alert("item price is required!");
+        toaster.showToast("item price is required!","ERROR");
         return;
       }
       if (this.state.addProduct.leadTime == undefined) {
-        alert("item leadTime is required!");
+        toaster.showToast("item leadTime is required!","ERROR");
         return;
       }
       if (this.state.addProduct.printTime == undefined) {
-        alert("item printTime is required!");
+        toaster.showToast("item printTime is required!","ERROR");
         return;
       }
       if (this.state.addProduct.partNumber == undefined) {
-        alert("item partNumber is required!");
+        toaster.showToast("item partNumber is required!","ERROR");
         return;
       }
       if (this.state.addProduct.modelVolume == undefined) {
-        alert("item modelVolume is required!");
+        toaster.showToast("item modelVolume is required!","ERROR");
         return;
       }
       if (this.state.addProduct.supportVolume == undefined) {
-        alert("item supportVolume is required!");
+        toaster.showToast("item supportVolume is required!","ERROR");
         return;
       }
 
       this.validate = true;
     } else {
-      alert("All fields are required!");
+      toaster.showToast("All fields are required!","ERROR");
     }
 
     if (this.validate) {

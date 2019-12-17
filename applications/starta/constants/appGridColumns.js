@@ -28,7 +28,7 @@ module.exports = {
     { alias: "Contract ID", key: "contractID", type: 'string' },
     { alias: "Customer ID", key: "customerID", type: "string" },
     { alias: "Order Amount", key: "orderAmount", type: "amount" },
-    { alias: "Order Date", key: "orderDate", type: "epochDate" },
+    { alias: "Order Date", key: "orderDate", type: "epochDateStrata" },
     { alias: "Stage", key: "status", type: "string" },
     { alias: "Action", key: "action", type: "action" }
   ],
@@ -128,7 +128,8 @@ module.exports = {
     { alias: "TILL STAGE", key: "tillStage", type: "string" },
     { alias: "TIME TAKEN (Days)", key: "greaterThan", type: "string" },
     { alias: "PENALTY TYPE", key: "penaltyType", type: 'string' },
-    { alias: "PENALTY VALUE", key: "penaltyValue", type: 'string' }
+    { alias: "PENALTY VALUE", key: "penaltyValue", type: 'string' },
+   
   ],
 
 
@@ -160,14 +161,16 @@ module.exports = {
   SLA: [
     { alias: "FROM", key: "fromStageLabel", type: 'string' },
     { alias: "TO", key: "toStageLabel", type: "string" },
-    { alias: "DURATION (DAYS)", key: "duration", type: "string" }
+    { alias: "DURATION (DAYS)", key: "duration", type: "string" },
+    { alias: "ACTION", key: "action", type: "action" }
   ],
   Penalties: [
     { alias: "FROM STAGE", key: "fromStagePenaltyLabel", type: 'string' },
     { alias: "TILL STAGE", key: "tillStageLabel", type: "string" },
     { alias: "TIME TAKEN (Days)", key: "greaterThan", type: "string" },
     { alias: "PENALTY TYPE", key: "penaltyType", type: 'string' },
-    { alias: "PENALTY VALUE", key: "penaltyValue", type: 'string' }
+    { alias: "PENALTY VALUE", key: "penaltyValue", type: 'string' },
+    { alias: "ACTION", key: "action", type: "action" }
   ],
   LineItems: [
     { alias: "Item Name", key: "name", type: 'string' },
