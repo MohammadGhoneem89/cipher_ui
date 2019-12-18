@@ -34,7 +34,7 @@ class ViewMasterAgreement extends React.Component {
     }
 
 
- mapSLAResp = (key) => {
+    mapSLAResp = (key) => {
         switch (key) {
             case "001":
                 return "Order Received"
@@ -98,8 +98,8 @@ class ViewMasterAgreement extends React.Component {
             "currentPageNo": 1,
             "pageSize": 10
         }, {
-            "spCode": this.props.params.customerID
-        }));
+                "spCode": this.props.params.customerID
+            }));
 
         window.scrollTo(0, 0);
     }
@@ -134,8 +134,21 @@ class ViewMasterAgreement extends React.Component {
             })
         }
     }
+    approveContract = () => {
 
+        let req = {
+            "body": {
+                "contractID": _.get(this.state.agreementDetail, "contractID", ""),
+                "customerID": _.get(this.state.agreementDetail, "customerID", ""),
+                "approvedBy": sessionStorage.orgCode,
+                "approvedOn": new Date()
+            }
+        }
+        this.props.actions.generalProcess(constants.approvedMasterContract, req);
+    }
     render() {
+
+        console.log("sessionStorage.orgType", sessionStorage.orgType)
         return (
             this.state.isLoading ? <div className="loader"> {utils.getLabelByID("loading")}</div> : (
                 <div>
@@ -161,19 +174,19 @@ class ViewMasterAgreement extends React.Component {
                                                         <div className="form-group col-md-3">
                                                             {
                                                                 this.state.orgName ? (
-                                                                    <label className="control-label" style={{textAlign: "initial", whiteSpace: "nowrap"}} >{this.state.orgName}</label>
+                                                                    <label className="control-label" style={{ textAlign: "initial", whiteSpace: "nowrap" }} >{this.state.orgName}</label>
                                                                 ) : (
-                                                                    <label className="control-label" style={{textAlign: "initial", whiteSpace: "nowrap"}} >{this.state.agreementDetail.customerID}</label>
-                                                                )
+                                                                        <label className="control-label" style={{ textAlign: "initial", whiteSpace: "nowrap" }} >{this.state.agreementDetail.customerID}</label>
+                                                                    )
                                                             }
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <div className="form-group col-md-4"  style={{ paddingLeft: -15 }}>
+                                                        <div className="form-group col-md-4" style={{ paddingLeft: -15 }}>
                                                             <label className="control-label" style={{ fontWeight: "bold", textAlign: 'initial' }}>{"Payment Terms: "}</label>
                                                         </div>
                                                         <div className="form-group col-md-2">
-                                                            {<label className="control-label" style={{wordWrap: 'normal'}} >{this.state.agreementDetail.paymentTerms.paymentType}</label>}
+                                                            {<label className="control-label" style={{ wordWrap: 'normal' }} >{this.state.agreementDetail.paymentTerms.paymentType}</label>}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -190,11 +203,11 @@ class ViewMasterAgreement extends React.Component {
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <div className="form-group col-md-4"  style={{ paddingLeft: -15 }}>
+                                                        <div className="form-group col-md-4" style={{ paddingLeft: -15 }}>
                                                             <label className="control-label" style={{ fontWeight: "bold", textAlign: 'initial' }}>{"End Date:"}</label>
                                                         </div>
                                                         <div className="form-group col-md-2">
-                                                            {<label className="control-label" style={{wordWrap: 'normal'}} >{this.state.agreementDetail.endDate}</label>}
+                                                            {<label className="control-label" style={{ wordWrap: 'normal' }} >{this.state.agreementDetail.endDate}</label>}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -211,11 +224,11 @@ class ViewMasterAgreement extends React.Component {
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <div className="form-group col-md-4"  style={{ paddingLeft: -15 }}>
+                                                        <div className="form-group col-md-4" style={{ paddingLeft: -15 }}>
                                                             <label className="control-label" style={{ fontWeight: "bold", textAlign: 'initial' }}>{"Shipment Type:"}</label>
                                                         </div>
                                                         <div className="form-group col-md-2">
-                                                            {<label className="control-label" style={{wordWrap: 'normal'}} >{this.state.agreementDetail.shipmentType}</label>}
+                                                            {<label className="control-label" style={{ wordWrap: 'normal' }} >{this.state.agreementDetail.shipmentType}</label>}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -360,6 +373,21 @@ class ViewMasterAgreement extends React.Component {
                         <Discount parent={this} />
                     </ModalBox>
 
+
+                    {sessionStorage.orgType == "CUSTOMER" && _.get(this.state.agreementDetail, "status", "") != "APPROVED" && <div className="row">
+                        <div className="col-md-12">
+                            <div className="form-group col-md-12">
+                                <div className="btn-toolbar pull-right">
+
+                                    <button type="submit" className="btn green" onClick={this.approveContract}
+                                    >
+                                        {utils.getLabelByID("APPROVE")}
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>}
 
                 </div>
             )

@@ -140,7 +140,7 @@ class OrderViaContract extends React.Component {
     let request = {
       body: {
         orderType: "MASTER",
-        raisedBy: sessionStorage.userID,
+        raisedBy: sessionStorage.orgCode,
         quoteValidity: "456",
         incoTerms: "EXW",
         items: items,
@@ -328,7 +328,7 @@ class OrderViaContract extends React.Component {
       totalBatchSize += element.batchSize * element.quantity;
     });
     this.grandTotal = grandTotal;
-    console.log("this.grandTotal ",this.grandTotal)
+    console.log("this.grandTotal ", this.grandTotal)
     this.setState({
       cartItems: cart,
       grandTotal: grandTotal,
@@ -460,6 +460,7 @@ class OrderViaContract extends React.Component {
 
   render() {
     let masterContract = this.state.contracts ? this.getContractDetails() : [];
+    console.log("this.state.itemCatalogueUpdated.searchResult", this.state.itemCatalogueUpdated ? this.state.itemCatalogueUpdated.searchResult : "")
     if (!this.state.isLoading)
       return (
         <div>
@@ -531,8 +532,8 @@ class OrderViaContract extends React.Component {
                   style={{ textAlign: "center", backgroundColor: "green", color: "white" }}
                 >
                   Item added to cart successfully
-                  : <strong>{this.state.cartItems[this.state.cartItems.length-1].name}</strong>
-                  
+                  : <strong>{this.state.cartItems[this.state.cartItems.length - 1].name}</strong>
+
                 </div>
               </div>
             )}

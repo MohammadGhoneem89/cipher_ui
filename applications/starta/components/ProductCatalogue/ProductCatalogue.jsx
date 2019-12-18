@@ -417,7 +417,7 @@ class ProductCatalogue extends React.Component {
             />
           </div>
           <Row>
-            <Label text="Item Code:" columns="1" />
+            <Label text="Item Code " columns="1"  required = {true}/>
             <Input
               fieldname="itemCode"
               formname="addProduct"
@@ -427,7 +427,7 @@ class ProductCatalogue extends React.Component {
               className="form-control"
               disabled={this.props.params.id ? "disabled" : ""}
             />
-            <Label text="Name:" columns="1" />
+            <Label text="Name " columns="1" required = {true} />
             <Input
               fieldname="name"
               formname="addProduct"
@@ -440,7 +440,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Lead Time:" columns="1" />
+            <Label text="Lead Time " columns="1" required = {true}/>
             <Input
               fieldname="leadTime"
               formname="addProduct"
@@ -451,7 +451,7 @@ class ProductCatalogue extends React.Component {
               type="number"
               disabled={false}
             />
-            <Label text="Print Time:" columns="1" />
+            <Label text="Print Time " columns="1" required = {true}/>
             <Input
               fieldname="printTime"
               formname="addProduct"
@@ -465,7 +465,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Part Num:" columns="1" />
+            <Label text="Part Num " columns="1" required = {true}/>
             <Input
               fieldname="partNumber"
               formname="addProduct"
@@ -475,7 +475,7 @@ class ProductCatalogue extends React.Component {
               className="form-control"
               disabled={false}
             />
-            <Label text="Classification:" columns="1" />
+            <Label text="Classification " columns="1" required = {true}/>
             <Combobox
               fieldname="classification"
               formname="addProduct"
@@ -492,7 +492,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Material:" columns="1" />
+            <Label text="Material " columns="1" required = {true}/>
             <Combobox
               fieldname="material"
               formname="addProduct"
@@ -506,7 +506,7 @@ class ProductCatalogue extends React.Component {
               className="form-control"
               disabled={false}
             />
-            <Label text="Color:" columns="1" />
+            <Label text="Color " columns="1" />
             <CheckList
               fieldname="color"
               formname="addProduct"
@@ -526,7 +526,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Model Vol:" columns="1" />
+            <Label text="Model Vol " columns="1" required = {true}/>
             <Input
               fieldname="modelVolume"
               formname="addProduct"
@@ -536,7 +536,7 @@ class ProductCatalogue extends React.Component {
               className="form-control"
               disabled={false}
             />
-            <Label text="Support Vol:" columns="1" />
+            <Label text="Support Vol " columns="1" required = {true}/>
             <Input
               fieldname="supportVolume"
               formname="addProduct"
@@ -549,7 +549,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Price:" columns="1" />
+            <Label text="Price  " columns="1" required = {true}/>
             <Input
               fieldname="price"
               formname="addProduct"
@@ -563,7 +563,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Version :" columns="1" />
+            <Label text="Version  " columns="1" />
             <Input
               fieldname="version"
               formname="addProduct"
@@ -575,7 +575,7 @@ class ProductCatalogue extends React.Component {
               disabled={false}
             />
 
-            <Label text="Batch Size :" columns="1" />
+            <Label text="Batch Size  " columns="1" />
 
             <Input
               fieldname="batchSize"
@@ -591,7 +591,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Description :" columns="1" />
+            <Label text="Description  " columns="1" required = {true}/>
             <Textarea
               fieldname="description"
               formname="addProduct"

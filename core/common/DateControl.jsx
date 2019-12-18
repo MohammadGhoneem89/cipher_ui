@@ -18,10 +18,11 @@ class DateControl extends React.Component {
 
     }
     dateChange(value) {
-
-        if (this.props.dateChange) {
-            this.props.dateChange(value);
-        }
+        // if (this.props.dat) {
+            if (this.props.dateChange) {
+                this.props.dateChange(value);
+            }
+        // } else return value = ""
     }
     UNIXConvertToDate(UNIXTS) {
         if (UNIXTS == 0)
@@ -38,6 +39,8 @@ class DateControl extends React.Component {
 
 
     render() {
+
+        console.log("this.props.dat,",this.props.dat)
         const format = this.props.format || "DD/MM/YYYY";
         const mode = this.props.mode || "date";
         const showToday = this.props.showToday || false;
@@ -50,18 +53,18 @@ class DateControl extends React.Component {
                     this.props.value === undefined ? (
                         <DatePicker inputFormat={format}
                             name={this.props.name}
-                            defaultText={defaultText}
-                            mode={mode} 
+                            defaultText={this.props.dat ? defaultText:""}
+                            mode={mode}
                             showToday={showToday}
                             readOnly={true}
                             onChange={this.dateChange} />) : (
 
                             <DatePicker inputFormat={format}
                                 name={this.props.name}
-                                inputProps={{ value: this.props.value }}
-                                defaultText={defaultText}
+                                inputProps={ this.props.dat ?  {value: this.props.value } :{value : ''}}
+                                defaultText={this.props.dat ? defaultText: ""}
                                 mode={mode}
-                                 showToday={showToday}
+                                showToday={showToday}
                                 readOnly={true}
                                 onChange={this.dateChange} />)
                 }

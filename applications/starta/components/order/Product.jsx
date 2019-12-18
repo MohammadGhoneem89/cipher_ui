@@ -8,14 +8,14 @@ const Product = props => {
   };
   let price = details.price ? details.price : details.unitPrice;
   return <div className="procard">
-    {/* {!(details.receivedQuantity === undefined) && <div className="counterbadge">
+    {(details.receivedQuantity == 0 || details.receivedQuantity > 0) && <div className="counterbadge">
       <span>{details.receivedQuantity}
       </span>
-    </div>} */}
+    </div>}
     <div>
 
       <div className="text-center proimg" onClick={onClick.bind(this, details)}>
-        <img src={constants.ipfsGet + details.image.hash} style={{ height: "inherit" }} onError={addDefaultSrc}/>
+        <img src={constants.ipfsGet + details.image.hash} style={{ height: "inherit" }} onError={addDefaultSrc} />
       </div>
       <a><h3>{details.name}</h3></a>
 
@@ -35,17 +35,23 @@ const Product = props => {
     <hr />
     <div className="row">
       <div className="col-md-6">
-        <label className="qty">Color</label>
+        <label className="qty">Color
+        <span style={{ color: 'red', verticalAlign: 'top' }}> *</span>
+        </label>
         <select name="color" className="form-control" >
           <option value="">Select</option>
+
           {details.color.map(item => {
             return <option style={{ backgroundColor: item, color: "white" }}>{item}</option>
           })}
         </select>
       </div>
       <div className="col-md-6">
-        <label className="qty">Qty</label>
-        <input type="number" min="0" name="quantity" defaultValue={0} className="form-control"  />
+        <label className="qty">Qty
+        <span style={{ color: 'red', verticalAlign: 'top' }}> *</span>
+        </label>
+
+        <input type="number" min="0" name="quantity" defaultValue={0} className="form-control" />
         <input type="string" name="itemCode" value={details.itemCode} className="form-control" style={{ display: "none" }} />
         <input type="string" name="price" value={price} className="form-control" style={{ display: "none" }} />
         <input type="string" name="name" value={details.name} className="form-control" style={{ display: "none" }} />

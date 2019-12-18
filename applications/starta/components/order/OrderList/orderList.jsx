@@ -137,8 +137,8 @@ class OrderList extends React.Component {
 
     if (toDate) searchCriteria.toDate = toDate;
 
-    if(fromDate >  toDate){
-      toaster.showToast("To date cannot be less than from date","ERROR");
+    if (fromDate > toDate) {
+      toaster.showToast("To date cannot be less than from date", "ERROR");
       return false;
     }
 
@@ -231,13 +231,13 @@ class OrderList extends React.Component {
   componentWillUnmount() {
   }
 
-  onFromDateChange = value => {
-
+  onFromDateChange = (value) => {
+   
     value == 'Invalid date' ? this.state.fromDate = undefined : this.state.fromDate = value;
   };
 
-  onToDateChange = value => {
-
+  onToDateChange = (value) => {
+   
     value == 'Invalid date' ? this.state.toDate = undefined : this.state.toDate = value;
   };
 
@@ -273,6 +273,7 @@ class OrderList extends React.Component {
       }
 
     });
+    this.isDateVal=false;
     let request = {
       body: {
         page: {
@@ -303,13 +304,17 @@ class OrderList extends React.Component {
             <Col col="6">
               <Label text={utils.getLabelByID('From Date')} columns="4" />
               <div className="form-group col-md-8" id="OrderSearch">
-                <DateControl id="fromDate" dateChange={this.onFromDateChange} />
+               {this.isDateVal ? 
+               <DateControl id="fromDate" dateChange={this.onFromDateChange} dat={true}/> :
+               <DateControl id="fromDate" dateChange={this.onFromDateChange} dat={false}/>} 
               </div>
             </Col>
             <Col col="6">
               <Label text={utils.getLabelByID('To Date')} columns="4" />
               <div className="form-group col-md-8" >
-                <DateControl id="toDate" dateChange={this.onToDateChange} />
+                {this.isDateVal ? 
+               <DateControl id="toDate" dateChange={this.onToDateChange} dat={true}/> :
+               <DateControl id="toDate" dateChange={this.onToDateChange} dat={false}/>}
               </div>
             </Col>
           </Row>
@@ -358,10 +363,10 @@ class OrderList extends React.Component {
                   <button type="submit" className="btn green" onClick={this.formSubmit}>
                     {utils.getLabelByID('Search')}
                   </button>
-                  {/* <button type="clear" className="btn green" onClick={this.reset}
+                  <button type="clear" className="btn green" onClick={this.reset}
                   >
                     {utils.getLabelByID("Clear")}
-                  </button> */}
+                  </button>
                 </div>
               </div>
             </div>

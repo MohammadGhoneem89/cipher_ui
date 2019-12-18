@@ -57,12 +57,15 @@ class MasterAgreementList extends React.Component {
 
         let contractID = document.getElementById('contractId') == null ? "" : document.getElementById('contractId').value;
         let customerID = document.getElementById('customer') == null ? "" : document.getElementById('customer').value;
+        let status = document.getElementById('status') == null ? "" : document.getElementById('status').value;
         let searchCriteria = {}
 
         if (contractID != "")
             searchCriteria.contractID = contractID
         if (customerID != "")
             searchCriteria.customerID = customerID
+        if (status != "")
+            searchCriteria.status = status
 
 
         this.setState({ searchCriteria: searchCriteria })
@@ -83,7 +86,7 @@ class MasterAgreementList extends React.Component {
             console.log(nextProps.getMasterAgreement, "getMasterAgreement")
             this.setState(
                 {
-                    gridData: this.formatContractData(nextProps.getMasterAgreement),
+                    gridData: nextProps.getMasterAgreement,
                     typeData: nextProps.typeData,
                     page: nextProps.getPage,
                     isLoading: false
@@ -117,16 +120,16 @@ class MasterAgreementList extends React.Component {
         }
     }
 
-    formatContractData = (gridData) => {
-        for (let i in gridData) {
-            let status = gridData[i].status;
-            if (status) {
-                gridData[i].status = this.getStatusLabel(status);
-            }
+    // formatContractData = (gridData) => {
+    //     for (let i in gridData) {
+    //         let status = gridData[i].status;
+    //         if (status) {
+    //             gridData[i].status = this.getStatusLabel(status);
+    //         }
 
-        }
-        return gridData;
-    }
+    //     }
+    //     return gridData;
+    // }
     pageChanged = (pageNo) => {
         let page = this.state.page;
         page.currentPageNo = pageNo;
@@ -158,6 +161,16 @@ class MasterAgreementList extends React.Component {
                             </div>
                             <div className="form-group col-md-8">
                                 <input type="text" className="form-control" name="customer" id="customer" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group col-md-4">
+                                <label className="control-label">{utils.getLabelByID("Status")}</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <input type="text" className="form-control" name="status" id="status" />
                             </div>
                         </div>
                     </div>

@@ -93,7 +93,7 @@ class AddMasterAgreement extends React.Component {
         // -- Edit Master Agreement Page code starts here --
         if (nextProps.getAgreementDetail && nextProps.params.contractID && nextProps.params.customerID && nextProps.getItemCatalogue && nextProps.typeData && nextProps.entityNames) {
 
-
+            
             // Fix json Response and load state from props
             let items = []
             for (let i = 0; i < nextProps.getAgreementDetail.items.length; i++) {
@@ -190,6 +190,7 @@ class AddMasterAgreement extends React.Component {
         // -- Ends --
 
         if (nextProps.getItemCatalogue && nextProps.typeData && nextProps.entityNames && !nextProps.params.contractID) {
+            console.log("entityNames", nextProps.entityNames)
             this.setState({
                 itemList: nextProps.getItemCatalogue,
                 typeData: nextProps.typeData,
@@ -458,7 +459,7 @@ class AddMasterAgreement extends React.Component {
             if (newtupple.itemCode == data[i].itemCode) {
                 isSameItem = true
                 toaster.showToast(`${data[i].itemCode} is already present in item list.
-                Kindly edit or delete the item and add again.`,"ERROR");
+                Kindly edit or delete the item and add again.`, "ERROR");
                 break;
             }
         }
@@ -550,7 +551,7 @@ class AddMasterAgreement extends React.Component {
             let slaObj = {}
             slaObj.fromStage = this.state.sla[i].fromStage
             slaObj.toStage = this.state.sla[i].toStage
-            slaObj.duration = parseInt(this.state.sla[i].duration, 10) * 1000
+            slaObj.duration = parseInt(this.state.sla[i].duration, 10)
             console.log(slaObj)
             sla.push(slaObj)
         }
@@ -780,7 +781,10 @@ class AddMasterAgreement extends React.Component {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Contract ID")}</label>
+                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                    {utils.getLabelByID("Contract ID")}
+                                    <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                </label>
                                 <div className="form-group col-md-8">
 
                                     <input
@@ -798,7 +802,10 @@ class AddMasterAgreement extends React.Component {
                         </div>
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Customer")}</label>
+                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                    {utils.getLabelByID("Customer")}
+                                    <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                </label>
                                 <div className="form-group col-md-8" >
                                     <select id="customerID" name="customerID" className="form-control" value={this.state.customerID} onChange={this.onChange} >
                                         <option key="-1">Select</option>
@@ -817,7 +824,10 @@ class AddMasterAgreement extends React.Component {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Start Date")}</label>
+                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                    {utils.getLabelByID("Start Date")}
+                                    <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                </label>
                                 <div className="form-group col-md-8">
                                     <DateControl id="startDate" value={this.state.startDate} dateChange={this.onStartDateChange} />
                                 </div>
@@ -825,7 +835,10 @@ class AddMasterAgreement extends React.Component {
                         </div>
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("End Date")}</label>
+                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                    {utils.getLabelByID("End Date")}
+                                    <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                </label>
                                 <div className="form-group col-md-8">
                                     <DateControl id="endDate" value={this.state.endDate} dateChange={this.onEndDateChange} />
                                 </div>
@@ -839,7 +852,10 @@ class AddMasterAgreement extends React.Component {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Payment Type")}</label>
+                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                    {utils.getLabelByID("Payment Type")}
+                                    <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                </label>
                                 <div className="form-group col-md-8">
                                     <select name="paymentType" id="paymentType" className="form-control" value={this.state.paymentType} onChange={this.onChange}>
                                         <option key="-1" >Select</option>
@@ -856,7 +872,10 @@ class AddMasterAgreement extends React.Component {
                         </div>
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Days")}</label>
+                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                    {utils.getLabelByID("Days")}
+                                    <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                </label>
                                 <div className="form-group col-md-8">
                                     <input
                                         name="days"
@@ -874,7 +893,10 @@ class AddMasterAgreement extends React.Component {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Shipment Type")}</label>
+                                <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                    {utils.getLabelByID("Shipment Type")}
+                                    <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                </label>
                                 <div className="form-group col-md-8">
 
                                     <select id="shipmentType" className="form-control" name="shipmentType" value={this.state.shipmentType} onChange={this.onChange}>
@@ -926,7 +948,10 @@ class AddMasterAgreement extends React.Component {
                                                 <div className="row">
                                                     <div className="col-md-12">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-1" style={{ textAlign: "left" }}>{utils.getLabelByID("Item")}</label>
+                                                            <label className="form-group control-label col-md-1" style={{ textAlign: "left" }}>
+                                                                {utils.getLabelByID("Item")}
+                                                                <span style={{ color: 'red', verticalAlign: 'top' }}> *</span>
+                                                            </label>
                                                             <div className="form-group col-md-7" >
                                                                 {/* {console.log(initialValues)} */}
                                                                 <select id="item" className="form-control">
@@ -947,7 +972,10 @@ class AddMasterAgreement extends React.Component {
                                                 <div className="row">
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Expected Quantity")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                                                {utils.getLabelByID("Expected Quantity")}
+                                                                <span style={{ color: 'red', verticalAlign: 'top' }}> *</span>
+                                                            </label>
                                                             <div className="form-group col-md-8">
                                                                 <input type="number" min="0" className="form-control" id="expectedQuantity" />
                                                             </div>
@@ -955,7 +983,10 @@ class AddMasterAgreement extends React.Component {
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Unit Price")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                                                {utils.getLabelByID("Unit Price")}
+                                                                <span style={{ color: 'red', verticalAlign: 'top' }}> *</span>
+                                                            </label>
                                                             <div className="form-group col-md-8">
                                                                 <input type="number" min="0" className="form-control" id="unitPrice" />
                                                             </div>
@@ -997,7 +1028,10 @@ class AddMasterAgreement extends React.Component {
                                                                                     </div>
                                                                                     <div className="col-md-6">
                                                                                         <div className="form-group">
-                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("To")}</label>
+                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>
+                                                                                                {utils.getLabelByID("To")}
+                                                                                                <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                                                            </label>
                                                                                             <div className="form-group col-md-9">
                                                                                                 <input type="number" min="0" className="form-control" id="orderLessThan" />
                                                                                             </div>
@@ -1008,7 +1042,10 @@ class AddMasterAgreement extends React.Component {
                                                                                 <div className="row">
                                                                                     <div className="col-md-6">
                                                                                         <div className="form-group">
-                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("Rebate Type")}</label>
+                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>
+                                                                                                {utils.getLabelByID("Rebate Type")}
+                                                                                                <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                                                            </label>
                                                                                             <div className="form-group col-md-9">
                                                                                                 <select id="rebateType" className="form-control" >
                                                                                                     <option key="-1" value="">Select</option>
@@ -1022,7 +1059,10 @@ class AddMasterAgreement extends React.Component {
 
                                                                                     <div className="col-md-6">
                                                                                         <div className="form-group">
-                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("Rebate Value")}</label>
+                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>
+                                                                                                {utils.getLabelByID("Rebate Value")}
+                                                                                                <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                                                            </label>
                                                                                             <div className="form-group col-md-9">
                                                                                                 <input type="number" min="0" className="form-control" id="orderRebate" />
                                                                                             </div>
@@ -1082,7 +1122,10 @@ class AddMasterAgreement extends React.Component {
                                                 <div className="row">
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("From Stage")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                                                {utils.getLabelByID("From Stage")}
+                                                                <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                            </label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="fromStage" className="form-control">
                                                                     <option key="-1" value="">Select</option>
@@ -1099,7 +1142,10 @@ class AddMasterAgreement extends React.Component {
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("To Stage")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                                                {utils.getLabelByID("To Stage")}
+                                                                <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                            </label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="toStage" className="form-control">
                                                                     <option key="-1" value="">Select</option>
@@ -1118,7 +1164,10 @@ class AddMasterAgreement extends React.Component {
                                                 <div className="row">
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Duration")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                                                {utils.getLabelByID("Duration (Days)")}
+                                                                <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                            </label>
                                                             <div className="form-group col-md-8">
                                                                 <input type="number" min="0" className="form-control" id="duration" />
                                                             </div>
@@ -1150,7 +1199,10 @@ class AddMasterAgreement extends React.Component {
                                                 <div className="row">
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("From Stage")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                                                {utils.getLabelByID("From Stage")}
+                                                                <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                            </label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="fromStagePenalty" className="form-control" disabled>
                                                                     {/* <option key="-1" value="">Select</option> */}
@@ -1167,7 +1219,10 @@ class AddMasterAgreement extends React.Component {
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Till Stage")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                                                {utils.getLabelByID("Till Stage")}
+                                                                <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                            </label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="tillStage" className="form-control" disabled>
                                                                     {/* <option key="-1" value="">Select</option> */}
@@ -1188,7 +1243,10 @@ class AddMasterAgreement extends React.Component {
                                                 <div className="row">
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Greater Than ( Days )")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                                                {utils.getLabelByID("Greater Than ( Days )")}
+                                                                <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                            </label>
                                                             <div className="form-group col-md-8">
                                                                 <input type="number" min="0" className="form-control" id="greaterThan" />
                                                             </div>
@@ -1200,7 +1258,10 @@ class AddMasterAgreement extends React.Component {
                                                 <div className="row">
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Penalty Type")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                                                {utils.getLabelByID("Penalty Type")}
+                                                                <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                            </label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="penaltyType" className="form-control" >
                                                                     <option key="-1" value="">Select</option>
@@ -1213,7 +1274,10 @@ class AddMasterAgreement extends React.Component {
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="form-group">
-                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("Penalty Value")}</label>
+                                                            <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
+                                                                {utils.getLabelByID("Penalty Value")}
+                                                                <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                            </label>
                                                             <div className="form-group col-md-8">
                                                                 <input type="number" min="0" className="form-control" id="penaltyValue" />
                                                             </div>

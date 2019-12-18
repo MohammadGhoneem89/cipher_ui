@@ -121,7 +121,7 @@ class OrderDetailContainer extends React.Component {
               let item = {
                 itemCode: elem.itemCode,
                 receiptNo: recItm.receiptNo,
-                receiptDate: utils.UNIXConvertToDate(recItm.receiptDate),
+                receiptDate:recItm.receiptDate,
                 receiptQuantity: recItm.quantity,
                 item: elem.name
               };
@@ -170,6 +170,8 @@ class OrderDetailContainer extends React.Component {
     toaster.showToast("Status updated successfully!");
   };
   statusButtonHandler(element) {
+
+    console.log("element.type ",element.type)
     switch (element.type) {
       case 1:
         //send status update request
@@ -439,11 +441,7 @@ class OrderDetailContainer extends React.Component {
                     {
                       <Steps
                         hideNumber={false}
-                        statusList={
-                          this.state.orderDetail.statusList
-                            ? this.state.orderDetail.statusList
-                            : []
-                        }
+                        statusList={_.get(this.state.orderDetail,"statusList",[])}
                       />
                     }
                   </div>

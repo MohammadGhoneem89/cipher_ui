@@ -130,7 +130,7 @@ class OneTimeOrder extends React.Component {
     let request = {
       "body": {
         "orderType": "ONETIME",
-        "raisedBy": sessionStorage.userID,
+        "raisedBy": sessionStorage.orgCode,
         "quoteValidity": "",
         "incoTerms": "EXW",
         "items": items,
@@ -314,7 +314,7 @@ class OneTimeOrder extends React.Component {
 
   render() {
 
-    console.log(" this.customerData", this.customerData)
+    console.log(" this.state.getItemCatalogue.searchResult", this.state.getItemCatalogue ?this.state.getItemCatalogue.searchResult :[])
     let categories = this.state.typeData.classification;
 
     if (!this.state.isLoading)

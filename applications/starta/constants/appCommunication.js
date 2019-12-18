@@ -23,7 +23,7 @@ module.exports = {
     getCustomerAssociation: `${baseUrl}/API/STRATA/getCustomerAssociationDetail`,
     addMasterContract: `${baseUrl}/API/P2P/addMasterContract`,
     updateMasterContract: `${baseUrl}/API/P2P/updateMasterContract`,
-
+    approvedMasterContract: `${baseUrl}/API/P2P/approvedMasterContract`,
     getCustomerShipmentAndPaymentType: `${baseUrl}/API/STRATA/getCustomerShipmentAndPaymentType`,
     customerDashboard: `${baseUrl}/API/STRATA/customerDashboard`,
     supplierDashboardData: `${baseUrl}/API/STRATA/supplierDashboardData`,
