@@ -187,8 +187,7 @@ class OrderDetailContainer extends React.Component {
           this.setState({
             isLoading: true
           });
-          this.redirectToList();
-          window.scrollTo(0, 0);
+          
         } else {
           this.props.actions.generalProcess(
             constants.updateOrderStatusCustomer,
@@ -203,8 +202,7 @@ class OrderDetailContainer extends React.Component {
           this.setState({
             isLoading: true
           });
-          this.redirectToList();
-          window.scrollTo(0, 0);
+         
         }
         break;
       case 2: {

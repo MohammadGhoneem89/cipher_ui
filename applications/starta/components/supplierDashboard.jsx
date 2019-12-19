@@ -311,6 +311,7 @@ class Dashboard extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+    console.log("_.get(state.app,'supplierDashboardData.data',undefined)",_.get(state.app,'supplierDashboardData.data',undefined))
     return {
         data: _.get(state.app,'supplierDashboardData.data',undefined),
         entityNames: _.get(state.app,'entityList.data.typeData.entityNames',undefined)

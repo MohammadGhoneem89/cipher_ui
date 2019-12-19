@@ -93,7 +93,7 @@ class AddMasterAgreement extends React.Component {
         // -- Edit Master Agreement Page code starts here --
         if (nextProps.getAgreementDetail && nextProps.params.contractID && nextProps.params.customerID && nextProps.getItemCatalogue && nextProps.typeData && nextProps.entityNames) {
 
-            
+
             // Fix json Response and load state from props
             let items = []
             for (let i = 0; i < nextProps.getAgreementDetail.items.length; i++) {
@@ -742,14 +742,12 @@ class AddMasterAgreement extends React.Component {
                 }
                 break;
             case "Delete":
-                let result = toaster.showToast("Are you sure you want to delete?", "WARNING");
-                if (result) {
-                    if (index > -1) {
-                        let a = this.state.orderRebate;
-                        a.splice(index, 1);
-                        this.setState({ orderRebate: a });
-                    }
+                if (index > -1) {
+                    let a = this.state.orderRebate;
+                    a.splice(index, 1);
+                    this.setState({ orderRebate: a });
                 }
+
                 break;
             default:
                 break;

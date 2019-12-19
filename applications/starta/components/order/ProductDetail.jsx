@@ -103,7 +103,8 @@ const ProductDetail = props => {
 
       <div className="row">
         <div className="col-md-2">
-          <label className="qty">Color</label>
+          <label className="qty">Color
+          <span style={{ color: 'red', verticalAlign: 'top' }}> *</span></label>
           <select name="color" className="form-control" required>
             <option value="">Select</option>
             {details.color.map(item => {
@@ -113,7 +114,9 @@ const ProductDetail = props => {
         </div>
 
         <div className="col-md-1">
-            <label className="qty">Qty</label>
+            <label className="qty">Qty
+            <span style={{ color: 'red', verticalAlign: 'top' }}> *</span>
+            </label>
             <input type="number" min="0" name="quantity" defaultValue={0} className="form-control" required />
             <input type="string" name="itemCode" value={details.itemCode} className="form-control" style={{ display: "none" }} />
             <input type="string" name="price" value={price} className="form-control" style={{ display: "none" }} />

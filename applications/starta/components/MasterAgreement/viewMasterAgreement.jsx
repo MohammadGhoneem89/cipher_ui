@@ -15,11 +15,12 @@ import Table from '../../../../core/common/Datatable.jsx';
 import Portlet from '../../../../core/common/Portlet.jsx';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 import Discount from './Discount.jsx'
-
+import ProductDetail from "./ProductDetail.jsx";
 class ViewMasterAgreement extends React.Component {
 
     constructor(props) {
         super(props);
+        this.index = 0;
         this.state = {
             isLoading: true,
             agreementDetail: {
@@ -31,6 +32,8 @@ class ViewMasterAgreement extends React.Component {
             selectedIndex: 0,
             orgImgName: ""
         };
+        this.detailsActionHandlers = this.detailsActionHandlers.bind(this);
+        this.closeModalBox = this.closeModalBox.bind(this);
     }
 
 
@@ -80,6 +83,24 @@ class ViewMasterAgreement extends React.Component {
         }
 
     }
+    detailsActionHandlers({ index }) {
+        console.log("INDEX ", index);
+        this.index = index;
+        this.setState({
+            modelBox: true,
+        });
+
+    }
+
+    // openModalBox(itemDetail) {
+    //     this.setState({
+    //         modelBox: true,
+    //     });
+    // }
+    closeModalBox() {
+        this.setState({ modelBox: false });
+    }
+
     componentDidMount() {
         console.log(this.props, "did mount Props");
         const req = {
@@ -134,6 +155,7 @@ class ViewMasterAgreement extends React.Component {
             })
         }
     }
+
     approveContract = () => {
 
         let req = {
@@ -247,7 +269,7 @@ class ViewMasterAgreement extends React.Component {
                     </div>
 
 
-                    <Portlet title={"ITEM DETAILS"}>
+                    <Portlet title={"PRODUCT DETAILS"}>
                         {
                             this.state.agreementDetail.items.map((item) => {
                                 item.action = [
@@ -258,7 +280,8 @@ class ViewMasterAgreement extends React.Component {
                                         actionType: "COMPONENT_FUNCTION"
                                     }
                                 ]
-                                item.rebate = item.itemWiseDiscount.length > 0 ? item.itemWiseDiscount[0].discount : "none"
+                                item.rebate = item.itemWiseDiscount.length > 0 ?
+                                    item.itemWiseDiscount[0].discount : "none"
                                 item.itemImage = {
                                     name: item.name,
                                     imageURL: _.get(item, "image.hash", "")
@@ -373,7 +396,13 @@ class ViewMasterAgreement extends React.Component {
                         <Discount parent={this} />
                     </ModalBox>
 
-
+                    <ModalBox isOpen={this.state.modelBox ? true : false} >
+                        <ProductDetail
+                            details={this.state.agreementDetail.items[this.index]}
+                            state={this.state}
+                            closeModalBox={this.closeModalBox}
+                        />
+                    </ModalBox>
                     {sessionStorage.orgType == "CUSTOMER" && _.get(this.state.agreementDetail, "status", "") != "APPROVED" && <div className="row">
                         <div className="col-md-12">
                             <div className="form-group col-md-12">
@@ -381,7 +410,7 @@ class ViewMasterAgreement extends React.Component {
 
                                     <button type="submit" className="btn green" onClick={this.approveContract}
                                     >
-                                        {utils.getLabelByID("APPROVE")}
+                                        {utils.getLabelByID("APPROVE CONTRACT")}
                                     </button>
 
                                 </div>
