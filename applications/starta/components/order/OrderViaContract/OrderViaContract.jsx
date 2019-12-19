@@ -159,13 +159,13 @@ class OrderViaContract extends React.Component {
         .generalAjxProcess(constants.createOrder, request)
         .then(result => {
           result.message.status == "ERROR"
-            ? toaster.showToast(result.message.errorDescription)
+            ? toaster.showToast(result.message.errorDescription,"ERROR")
             : this.successAction(result.orderID);
         });
     } else {
-      toaster.showToast("Please add atleast one item to place the order!");
+      toaster.showToast("Please add atleast one item to place the order!","ERROR");
       browserHistory.push("/strata/OrderViaContract");
-      toaster.showToast("Failed to place the order!");
+      toaster.showToast("Failed to place the order!","ERROR");
       return false;
     }
   }

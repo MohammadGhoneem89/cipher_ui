@@ -314,6 +314,7 @@ class CreateSmartContract extends React.Component {
           }
           this.props.actions.generalProcess(constants.hyperledgerConnect, data);
         }
+        break;
       case "Deploy":
         if (index > -1) {
           if (this.state.smartContractData.channelName.trim() == '') {

@@ -1018,7 +1018,10 @@ class AddMasterAgreement extends React.Component {
                                                                                 <div className="row">
                                                                                     <div className="col-md-6">
                                                                                         <div className="form-group">
-                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>{utils.getLabelByID("From")}</label>
+                                                                                            <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>
+                                                                                            {utils.getLabelByID("From")}
+                                                                                            <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                                                            </label>
                                                                                             <div className="form-group col-md-9">
                                                                                                 <input type="number" min="0" className="form-control" id="orderGreaterThan" />
                                                                                             </div>
