@@ -53,7 +53,7 @@ class DateControl extends React.Component {
                     this.props.value === undefined ? (
                         <DatePicker inputFormat={format}
                             name={this.props.name}
-                            defaultText={this.props.dat ? defaultText:""}
+                            defaultText={defaultText}
                             mode={mode}
                             showToday={showToday}
                             readOnly={true}
@@ -61,8 +61,8 @@ class DateControl extends React.Component {
 
                             <DatePicker inputFormat={format}
                                 name={this.props.name}
-                                inputProps={ this.props.dat ?  {value: this.props.value } :{value : ''}}
-                                defaultText={this.props.dat ? defaultText: ""}
+                                inputProps={ {value: this.props.value }}
+                                defaultText={defaultText}
                                 mode={mode}
                                 showToday={showToday}
                                 readOnly={true}
