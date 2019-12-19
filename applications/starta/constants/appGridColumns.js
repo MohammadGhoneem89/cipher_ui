@@ -54,7 +54,7 @@ module.exports = {
         { alias: "ORDER ID", key: "orderID", type: "string" },
         { alias: "CUSTOMER ID", key: "customerID", type: "string" },
         { alias: "Amount", key: "amount", type: "amount" },
-        { alias: "PO Date", key: "dateCreated", type: "epochDate" },
+        { alias: "PO Date", key: "dateCreated", type: "epochDateStrata" },
         { alias: "order Type", key: "orderType", type: "string" },
         { alias: "Status", key: "status", type: "status" },
         { alias: "COMPLETED ORDER", key: "actions", type: "action" }
@@ -65,7 +65,7 @@ module.exports = {
         { alias: "ORDER ID", key: "orderID", type: "string" },
         { alias: "CUSTOMER ID", key: "customerID", type: "string" },
         { alias: "Status", key: "status", type: "string" },
-        { alias: "PO Date", key: "dateCreated", type: "epochDate" },
+        { alias: "PO Date", key: "dateCreated", type: "epochDateStrata" },
         { alias: "Amount", key: "amount", type: "amount" },
         { alias: "SETTLE", key: "actions", type: "action" }
     ],
@@ -100,7 +100,7 @@ module.exports = {
         { alias: "ORDER ID", key: "orderID", type: "string" },
         { alias: "CUSTOMER ID", key: "customerID", type: "string" },
         { alias: "Amount", key: "amount", type: "amount" },
-        { alias: "PO Date", key: "dateCreated", type: "epochDate" },
+        { alias: "PO Date", key: "dateCreated", type: "epochDateStrata" },
         { alias: "ORDER TYPE", key: "orderType", type: "string" },
         { alias: "Status", key: "status", type: "string" },
         { alias: "PENDING ORDER", key: "actions", type: "action" }

@@ -600,7 +600,7 @@ class AddMasterAgreement extends React.Component {
     }
     redirectToList = () => {
         browserHistory.push('/strata/MasterAgreementList')
-        toaster.showToast("Record updated successfully!");
+        toaster.showToast("Contract added successfully!");
     }
     clearFieldsOrderRebate() {
         $('#tab_1_1_1').find('input').val(0);
