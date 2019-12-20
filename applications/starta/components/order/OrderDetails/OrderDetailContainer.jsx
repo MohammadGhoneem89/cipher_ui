@@ -171,7 +171,7 @@ class OrderDetailContainer extends React.Component {
   };
   statusButtonHandler(element) {
 
-    console.log("element.type ",element.type)
+    console.log("element ",element)
     switch (element.type) {
       case 1:
         //send status update request

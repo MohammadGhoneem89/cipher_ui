@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form'
 import { bindActionCreators } from 'redux';
+import * as toaster from "../../../../core/common/toaster.js";
 import * as actions from '../../../../core/actions/generalAction';
 import * as constants from '../../../../core/constants/Communication.js';
 import { baseUrl } from '../../../../core/constants/Communication.js';
@@ -157,7 +158,6 @@ class ViewMasterAgreement extends React.Component {
     }
 
     approveContract = () => {
-
         let req = {
             "body": {
                 "contractID": _.get(this.state.agreementDetail, "contractID", ""),
@@ -166,7 +166,19 @@ class ViewMasterAgreement extends React.Component {
                 "approvedOn": new Date()
             }
         }
-        this.props.actions.generalProcess(constants.approvedMasterContract, req);
+        this.props.actions
+            .generalAjxProcess(constants.approvedMasterContract, req)
+            .then(result => {
+                result.message.status == "ERROR"
+                    ? toaster.showToast(result.message.errorDescription, "ERROR")
+                    : this.successAction();
+            });
+
+    }
+
+    successAction = () => {
+        browserHistory.push('/strata/MasterAgreementList')
+        toaster.showToast("Contract status updated successfully!");
     }
     render() {
 

@@ -162,7 +162,10 @@ class SubOrder extends React.Component {
 
                                                 <div className="col-md-12">
                                                     <div className="col-md-4">
-                                                        <Label columns="12" style={{ fontSize: 22, paddingTop: '10px' }} text= {_.get(suborder, "entityName", "Etihad")}></Label>
+                                                        <Label columns="12" style={{ fontSize: 22, paddingTop: '10px' }} 
+                                                        text= {_.get(suborder, "entityName", "Etihad")}>
+                                                        
+                                                        </Label>
                                                     </div>
                                                     <div className="col-md-8" className='pull-right' style={{marginRight:'2%'}}>
                                                         <div className="col-md-4" style={{marginRight: '150px'}}>

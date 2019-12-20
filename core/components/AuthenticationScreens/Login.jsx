@@ -200,10 +200,10 @@ class Login extends React.Component {
                 <ul className="lng">
                   <li id="engAnchor" className="actv"><a href="javascript:;"
                     onClick={this.changLangButton.bind(this, "EN")}>En</a></li>
-                  <li id="arbAnchor"><a href="javascript:;" onClick={this.changLangButton.bind(this, "AR")}>عربى</a>
-                  </li>
+                  {/* <li id="arbAnchor"><a href="javascript:;" onClick={this.changLangButton.bind(this, "AR")}>عربى</a>
+                  </li> */}
                 </ul>
-                <h4><a href="#">Forgot your password ?</a></h4>
+                {/* <h4><a href="#">Forgot your password ?</a></h4> */}
               </div>
             </div>
 

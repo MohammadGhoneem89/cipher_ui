@@ -245,7 +245,7 @@ class ProductCatalogue extends React.Component {
           })
           .then(result => {
             result.message.status == "ERROR"
-              ? toaster.showToast(result.message.errorDescription)
+              ? toaster.showToast(result.message.errorDescription,"ERROR")
               : this.redirectToList();
           });
       } else {
@@ -255,7 +255,7 @@ class ProductCatalogue extends React.Component {
           })
           .then(result => {
             result.message.status == "ERROR"
-              ? toaster.showToast(result.message.errorDescription)
+              ? toaster.showToast(result.message.errorDescription,"ERROR")
               : this.redirectToList();
           });
       }
