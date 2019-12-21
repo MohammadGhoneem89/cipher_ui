@@ -394,7 +394,7 @@ class OrderDetailContainer extends React.Component {
     )
   };
   render() {
-    console.log(this.state.orderDetail.raisedByPic ? baseUrl + this.state.orderDetail.raisedByPic : "")
+    console.log(this.state.orderDetail.invoice ? this.state.orderDetail.invoice : "this.state.orderDetail.invoice")
     if (this.state.isLoading) {
       return <div className="loader">{utils.getLabelByID("Loading")}</div>;
     } else if (!this.state.isLoading && this.state.orderDetail && this.state.typeData)
@@ -596,7 +596,7 @@ class OrderDetailContainer extends React.Component {
                           <Label columns="3" text="Invoice Date:"></Label>
                           <Col col="9">
                             <span>
-                              {this.state.orderDetail.orderDate && this.state.orderDetail.orderDate.invoice && this.state.orderDetail.orderDate.invoiceDate
+                              {this.state.orderDetail && this.state.orderDetail.invoice && this.state.orderDetail.invoice.invoiceDate
                                 && utils.UNIXConvertToDate(moment(this.state.orderDetail.invoice.invoiceDate * 1000, "DD/MM/YYYY").toDate())}
                             </span>
                           </Col>
