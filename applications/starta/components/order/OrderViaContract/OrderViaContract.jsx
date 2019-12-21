@@ -113,27 +113,12 @@ class OrderViaContract extends React.Component {
 
 
   placeOrder() {
-    //calculate leadtime
-    let totalLeadTime = 0;
-    let calculateLeadTime = 1;
-    let firstTerm = 1.0;
+
     let items = [...this.state.cartItems];
 
     items.map(item => {
       item.color = [item.color];
     });
-
-    for (let i = 0; i < items.length; i++) {
-      calculateLeadTime = 1;
-      for (let j = 1; j <= i; j++) {
-        firstTerm = 1.0;
-        if (items[i].quantity != 1) {
-          firstTerm = 0.73 * items[i].quantity * items[i].printTime;
-        }
-        calculateLeadTime *= [firstTerm + items[i].leadTime];
-      }
-      totalLeadTime += calculateLeadTime;
-    }
 
     let request = {
       body: {
@@ -145,10 +130,13 @@ class OrderViaContract extends React.Component {
         contractID: this.contractData.contractID,
         shipmentType: this.contractData.shipmentType,
         paymentType: this.contractData.paymentType,
-        totalLeadTime: totalLeadTime,
+        totalLeadTime: this.getLeadTime(),
         grandTotal: this.grandTotal
       }
     };
+
+
+    console.log("totalLeadTime >>>>> ",this.getLeadTime())
     if (this.state.cartItems && this.state.cartItems.length > 0) {
       this.setState({
         isLoading: true
@@ -157,7 +145,7 @@ class OrderViaContract extends React.Component {
         .generalAjxProcess(constants.createOrder, request)
         .then(result => {
           result.message.status == "ERROR"
-            ? toaster.showToast(result.message.errorDescription, "ERROR")
+            ? this.failureAction(result)
             : this.successAction(result.orderID);
         });
     } else {
@@ -168,6 +156,15 @@ class OrderViaContract extends React.Component {
     }
   }
 
+  failureAction = (result) => {
+    toaster.showToast(result.message.errorDescription, "ERROR");
+    this.setState({
+      cartItems: [],
+      grandTotal: 0,
+      totalBatchSize: 0
+    })
+    return false;
+  }
   successAction = orderID => {
     browserHistory.push({
       pathname: "/strata/orderList",

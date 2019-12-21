@@ -62,7 +62,7 @@ class OneTimeOrder extends React.Component {
     this.searchItem = this.searchItem.bind(this);
     this.placeOrder = this.placeOrder.bind(this);
   }
-  
+
   getLeadTime = () => {
     let totalLeadTime = 0;
     let firstTerm = 1.0;
@@ -102,24 +102,12 @@ class OneTimeOrder extends React.Component {
     return totalUnit;
   }
   placeOrder() {
-    let totalLeadTime = 0;
-    let calculateLeadTime = 1;
-    let firstTerm = 1.0;
-
     let items = [...this.state.cartItems];
     items.map(item => {
       item.color = [item.color];
     });
 
-    for (let i = 0; i < items.length; i++) {
-      calculateLeadTime = 1;
-      for (let j = 1; j <= i; j++) {
-        firstTerm = 1.0;
-        if (items[i].quantity != 1) { firstTerm = 0.73 * items[i].quantity * items[i].printTime }
-        calculateLeadTime *= [firstTerm + items[i].leadTime]
-      }
-      totalLeadTime += calculateLeadTime;
-    }
+
     if (this.state.getCustomerShipmentAndPaymentType)
       console.log(this.state.getCustomerShipmentAndPaymentType, "this.state.getCustomerShipmentAndPaymentType");
 
@@ -134,7 +122,7 @@ class OneTimeOrder extends React.Component {
         "shipmentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.shipmentType : "",
         "paymentType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.paymentType : "",
         "purchaseOrderType": this.state.getCustomerShipmentAndPaymentType ? this.state.getCustomerShipmentAndPaymentType.purchaseOrderType : "",
-        "totalLeadTime": totalLeadTime,
+        "totalLeadTime": this.getLeadTime(),
         "grandTotal": this.grandTotal
       }
     };
@@ -146,12 +134,21 @@ class OneTimeOrder extends React.Component {
       this.props.actions.generalAjxProcess(constants.createOrder,
         request).then(result => {
           console.log(result, "result")
-          result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : this.successAction(result.orderID)
+          result.message.status == 'ERROR' ? this.failureAction(result) : this.successAction(result.orderID)
         });
     } else {
       toaster.showToast("Please add at least one item to place the order!", "ERROR");
       return false;
     }
+  }
+  failureAction = (result) => {
+    toaster.showToast(result.message.errorDescription, "ERROR");
+    this.setState({
+      cartItems: [],
+      grandTotal: 0,
+      totalBatchSize: 0
+    })
+    return false;
   }
   successAction = (orderID) => {
     browserHistory.push({
@@ -260,7 +257,7 @@ class OneTimeOrder extends React.Component {
     });
     this.grandTotal = grandTotal;
 
-    console.log("this.grandTotal ",this.grandTotal)
+    console.log("this.grandTotal ", this.grandTotal)
     this.setState({
       cartItems: cart,
       grandTotal: grandTotal,
@@ -311,7 +308,7 @@ class OneTimeOrder extends React.Component {
 
   render() {
 
-    console.log(" this.state.getItemCatalogue.searchResult", this.state.getItemCatalogue ?sessionStorage.userID :[])
+    console.log(" this.state.getItemCatalogue.searchResult", this.state.getItemCatalogue ? sessionStorage.userID : [])
     let categories = this.state.typeData.classification;
 
     if (!this.state.isLoading)
@@ -361,8 +358,8 @@ class OneTimeOrder extends React.Component {
           {(!this.state.createOrder && this.state.cartItems.length > 0 && this.state.itemAddedToCart)
             && <div>
               <div className="alert alert-dark" style={{ textAlign: "center", backgroundColor: "green", color: "white" }}>
-              Item added to cart successfully
-                  : <strong>{this.state.cartItems[this.state.cartItems.length-1].name}</strong>
+                Item added to cart successfully
+                  : <strong>{this.state.cartItems[this.state.cartItems.length - 1].name}</strong>
               </div>
             </div>
           }

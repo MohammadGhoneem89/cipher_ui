@@ -48,6 +48,9 @@ export default function Timeline(props) {
     ]
 
     const timeLineItems = () => {
+
+
+       
         return (
             imgs.map((elem, index) => {
                 
@@ -58,7 +61,9 @@ export default function Timeline(props) {
 
                 props.activities.forEach(item=>{
                     // check if the current action is marked done
+
                     if (parseInt(item.stage)===parseInt(index+1)){
+                        console.log("item.date ",item.date)
                         badgeClass='timeline-badge green'
                         dateValue = item.date.split(' ')[0]
                         timeValue = item.date.split(' ')[1]

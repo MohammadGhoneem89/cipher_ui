@@ -45,7 +45,7 @@ class OrderDetailContainer extends React.Component {
         receivedDate: undefined
       }
     };
-    
+
   }
 
   componentWillMount() { }
@@ -185,12 +185,14 @@ class OrderDetailContainer extends React.Component {
             }
           }).then(result => {
             console.log(result, "result")
-            result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : this.redirectToList()
+            result.message.status == 'ERROR' ?
+              this.failureAction(result) :
+              this.redirectToList()
           });
           //General process wait load state
-          this.setState({
-            isLoading: true
-          });
+          // this.setState({
+          //   isLoading: true
+          // });
 
         } else {
           this.props.actions.generalAjxProcess(
@@ -202,12 +204,12 @@ class OrderDetailContainer extends React.Component {
               }
             }).then(result => {
               console.log(result, "result")
-              result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : this.redirectToList()
+              result.message.status == 'ERROR' ? this.failureAction(result) : this.redirectToList()
             });
           //General process wait load state
-          this.setState({
-            isLoading: true
-          });
+          // this.setState({
+          //   isLoading: true
+          // });
 
         }
         break;
@@ -231,7 +233,13 @@ class OrderDetailContainer extends React.Component {
         break;
     }
   }
-
+  failureAction = (result) => {
+    toaster.showToast(result.message.errorDescription, "ERROR");
+    this.setState({
+      isLoading: false
+    })
+    return false;
+  }
   receiptModalBoxChangeState = () => {
     this.setState({
       receiptModalBox: !this.state.receiptModalBox
@@ -305,12 +313,17 @@ class OrderDetailContainer extends React.Component {
       toaster.showToast("Status must be selected to update", "ERROR");
       return;
     }
-    this.props.actions.generalProcess(constants.updateOrderStatus, {
+    this.props.actions.generalAjxProcess(constants.updateOrderStatus, {
       body: {
         orderID: this.state.orderID, // Why Props
         customerID: this.state.customerID, // Why Props
         status: this.state.optionalStatusValue
       }
+    }).then(result => {
+      console.log(result, "result")
+      result.message.status == 'ERROR' ?
+        this.failureAction(result) :
+        this.redirectToList()
     });
     // Close the pop up
     this.optionalStatusModalBoxChangeState();
@@ -528,7 +541,7 @@ class OrderDetailContainer extends React.Component {
                               }}
                               onError={this.errorHandler}
                             />
-                            <span>{this.state.orderDetail.raisedByName}</span>
+                            <span>{this.state.orderDetail.raisedByName ? this.state.orderDetail.raisedByName : this.state.orderDetail.customerID}</span>
                           </Col>
                         </Col>
 
@@ -583,14 +596,8 @@ class OrderDetailContainer extends React.Component {
                           <Label columns="3" text="Invoice Date:"></Label>
                           <Col col="9">
                             <span>
-                              {_.get(
-                                this.state.orderDetail,
-                                "invoice.invoiceDate"
-                              ) &&
-                                _.get(
-                                  this.state.orderDetail,
-                                  "invoice.invoiceDate"
-                                ).split(" ")[0]}
+                              {this.state.orderDetail.orderDate && this.state.orderDetail.orderDate.invoice && this.state.orderDetail.orderDate.invoiceDate
+                                && utils.UNIXConvertToDate(moment(this.state.orderDetail.invoice.invoiceDate * 1000, "DD/MM/YYYY").toDate())}
                             </span>
                           </Col>
                         </Col>

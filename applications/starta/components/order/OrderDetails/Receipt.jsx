@@ -1,6 +1,6 @@
 import * as utils from "../../../../../core/common/utils";
 import Portlet from '../../../../../core/common/Portlet.jsx';
-
+import { browserHistory } from "react-router";
 import Table from '../../../../../core/common/Datatable.jsx';
 import * as toaster from '../../../../../core/common/toaster.js';
 import React, { Component } from 'react'
@@ -124,23 +124,32 @@ class Receipt extends Component {
         console.log(this.props.processor, ' : Form submit')
 
         if (this.props.processor === 'SUPPLIER') {
-
-            this.props.actions.generalProcess(constants.updateOrderStatus, {
-                "body": {
+            this.props.actions.generalAjxProcess(constants.updateOrderStatus, {
+                body: {
                     "orderID": this.props.orderID,
                     "customerID": this.props.customerID,
                     "status": "011",// Recieved Status
                     itemReceipts: this.state.displayItems
                 }
+            }).then(result => {
+                console.log(result, "result")
+                result.message.status == 'ERROR' ?
+                    this.failureAction(result) :
+                    this.redirectToList()
             });
 
         } else {
-            this.props.actions.generalProcess(constants.updateOrderStatusCustomer, {
-                "body": {
+            this.props.actions.generalAjxProcess(constants.updateOrderStatusCustomer, {
+                body: {
                     "orderID": this.props.orderID,
                     "status": "011",// Recieved Status
                     itemReceipts: this.state.displayItems
                 }
+            }).then(result => {
+                console.log(result, "result")
+                result.message.status == 'ERROR' ?
+                    this.failureAction(result) :
+                    this.redirectToList()
             });
         }
 
@@ -153,7 +162,17 @@ class Receipt extends Component {
         // Remove this line if want to recieve and stay on this pop up  
         this.state.closePortlet();
     }
-
+    failureAction = (result) => {
+        toaster.showToast(result.message.errorDescription, "ERROR");
+        this.setState({
+            isLoading: false
+        })
+        return false;
+    }
+    redirectToList = () => {
+        browserHistory.push(`/strata/viewOrder/${this.props.orderID}/${this.props.customerID}`);
+        toaster.showToast("Status updated successfully!");
+    };
     addItem = (e) => {
         // Form Submit Action disable
         e.preventDefault();

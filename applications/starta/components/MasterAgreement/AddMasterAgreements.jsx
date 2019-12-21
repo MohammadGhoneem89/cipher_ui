@@ -58,7 +58,7 @@ class AddMasterAgreement extends React.Component {
     componentDidMount() {
         this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({
             "currentPageNo": 1,
-            "pageSize": 1
+            "pageSize": 10
         }));
 
         this.state.disabledPagging ? this.props.actions.generalProcess(constants.getItemCatalogue, { "body": {} }) : this.props.actions.generalProcess(constants.getItemCatalogue, {
