@@ -42,9 +42,10 @@ class ProductCatalogue extends React.Component {
     this.stringToOtherTypes = this.stringToOtherTypes.bind(this);
     this.upload = false;
     this.download = false;
+    this.document = true;
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.typeData && !nextProps.params.id && nextProps.upsert) {
@@ -65,20 +66,21 @@ class ProductCatalogue extends React.Component {
       nextProps.typeData &&
       nextProps.params.id && (nextProps.upload || nextProps.download || nextProps.upsert || nextProps.disable)
     ) {
-      console.log(nextProps.upload , nextProps.download , nextProps.upsert , nextProps.disable, "props recieved");
+      console.log(nextProps.upload, nextProps.download, nextProps.upsert, nextProps.disable, "props recieved");
       if ((nextProps.upload || nextProps.upsert) && !nextProps.download) {
         this.upload = true;
       }
-      if ((nextProps.download || nextProps.upsert) && !nextProps.upload ) {
+      if ((nextProps.download || nextProps.upsert) && !nextProps.upload) {
         this.download = true;
       }
-      if (nextProps.disable && !nextProps.upload && !nextProps.download &&  !nextProps.upsert) {
+      if (nextProps.disable && !nextProps.upload && !nextProps.download && !nextProps.upsert) {
         this.upload = false;
         this.download = false;
       }
-      if (!nextProps.upload && !nextProps.disable && !nextProps.upsert &&  !nextProps.download) {
+      if (!nextProps.upload && !nextProps.disable && !nextProps.upsert && !nextProps.download) {
         this.upload = false;
         this.download = false;
+        this.document = false;
       }
       // Insert Attachments into documents
       let documents = [];
@@ -158,63 +160,63 @@ class ProductCatalogue extends React.Component {
         this.state.addProduct.itemCode == undefined ||
         this.state.addProduct.itemCode.trim() == ""
       ) {
-        toaster.showToast("Item Code is required!","ERROR");
+        toaster.showToast("Item Code is required!", "ERROR");
         return;
       }
       if (this.state.addProduct.name.length > 20) {
-        toaster.showToast("Item name must be less than 20 characters!","ERROR");
+        toaster.showToast("Item name must be less than 20 characters!", "ERROR");
         return;
       }
       if (
         this.state.addProduct.name == undefined ||
         this.state.addProduct.name.trim() == ""
       ) {
-        toaster.showToast("item name is required!","ERROR");
+        toaster.showToast("item name is required!", "ERROR");
         return;
       }
       if (
         this.state.addProduct.description == undefined ||
         this.state.addProduct.description.trim() == ""
       ) {
-        toaster.showToast("item description is required!","ERROR");
+        toaster.showToast("item description is required!", "ERROR");
         return;
       }
       if (this.state.addProduct.classification == undefined) {
-        toaster.showToast("item classification is required!","ERROR");
+        toaster.showToast("item classification is required!", "ERROR");
         return;
       }
       if (this.state.addProduct.material == undefined) {
-        toaster.showToast("item material is required!","ERROR");
+        toaster.showToast("item material is required!", "ERROR");
         return;
       }
       if (this.state.addProduct.price == undefined) {
-        toaster.showToast("item price is required!","ERROR");
+        toaster.showToast("item price is required!", "ERROR");
         return;
       }
       if (this.state.addProduct.leadTime == undefined) {
-        toaster.showToast("item leadTime is required!","ERROR");
+        toaster.showToast("item leadTime is required!", "ERROR");
         return;
       }
       if (this.state.addProduct.printTime == undefined) {
-        toaster.showToast("item printTime is required!","ERROR");
+        toaster.showToast("item printTime is required!", "ERROR");
         return;
       }
       if (this.state.addProduct.partNumber == undefined) {
-        toaster.showToast("item partNumber is required!","ERROR");
+        toaster.showToast("item partNumber is required!", "ERROR");
         return;
       }
       if (this.state.addProduct.modelVolume == undefined) {
-        toaster.showToast("item modelVolume is required!","ERROR");
+        toaster.showToast("item modelVolume is required!", "ERROR");
         return;
       }
       if (this.state.addProduct.supportVolume == undefined) {
-        toaster.showToast("item supportVolume is required!","ERROR");
+        toaster.showToast("item supportVolume is required!", "ERROR");
         return;
       }
 
       this.validate = true;
     } else {
-      toaster.showToast("All fields are required!","ERROR");
+      toaster.showToast("All fields are required!", "ERROR");
     }
 
     if (this.validate) {
@@ -245,7 +247,7 @@ class ProductCatalogue extends React.Component {
           })
           .then(result => {
             result.message.status == "ERROR"
-              ? toaster.showToast(result.message.errorDescription,"ERROR")
+              ? toaster.showToast(result.message.errorDescription, "ERROR")
               : this.redirectToList();
           });
       } else {
@@ -255,7 +257,7 @@ class ProductCatalogue extends React.Component {
           })
           .then(result => {
             result.message.status == "ERROR"
-              ? toaster.showToast(result.message.errorDescription,"ERROR")
+              ? toaster.showToast(result.message.errorDescription, "ERROR")
               : this.redirectToList();
           });
       }
@@ -321,9 +323,9 @@ class ProductCatalogue extends React.Component {
       }
     };
     if (!this.state.isLoading) {
-      console.log("this.props.upload ", this.props.upload,"this.upload",this.upload);
-      console.log("this.props.download ", this.props.download,"this.download",this.download);
-      console.log("this.props.disable ", this.props.disable,"this.disable",this.disable);
+      console.log("this.props.upload ", this.props.upload, "this.upload", this.upload);
+      console.log("this.props.download ", this.props.download, "this.download", this.download);
+      console.log("this.props.disable ", this.props.disable, "this.disable", this.disable);
       return (
         <Portlet title={utils.getLabelByID("Product Catalogue")}>
           <div
@@ -361,7 +363,7 @@ class ProductCatalogue extends React.Component {
                 let files = e.target.files;
                 let _this = this;
                 if (files && files[0]) {
-                  reader.onload = function(fileReader) {
+                  reader.onload = function (fileReader) {
                     _this.productImage.setAttribute(
                       "src",
                       fileReader.target.result
@@ -392,7 +394,7 @@ class ProductCatalogue extends React.Component {
                           item
                         );
                       })
-                      .catch(function(error) {
+                      .catch(function (error) {
                         console.log("request failed", error);
                       });
                   };
@@ -417,7 +419,7 @@ class ProductCatalogue extends React.Component {
             />
           </div>
           <Row>
-            <Label text="Item Code " columns="1"  required = {true}/>
+            <Label text="Item Code " columns="1" required={true} />
             <Input
               fieldname="itemCode"
               formname="addProduct"
@@ -427,7 +429,7 @@ class ProductCatalogue extends React.Component {
               className="form-control"
               disabled={this.props.params.id ? "disabled" : ""}
             />
-            <Label text="Name " columns="1" required = {true} />
+            <Label text="Name " columns="1" required={true} />
             <Input
               fieldname="name"
               formname="addProduct"
@@ -440,7 +442,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Lead Time " columns="1" required = {true}/>
+            <Label text="Lead Time " columns="1" required={true} />
             <Input
               fieldname="leadTime"
               formname="addProduct"
@@ -451,7 +453,7 @@ class ProductCatalogue extends React.Component {
               type="number"
               disabled={false}
             />
-            <Label text="Print Time " columns="1" required = {true}/>
+            <Label text="Print Time " columns="1" required={true} />
             <Input
               fieldname="printTime"
               formname="addProduct"
@@ -465,7 +467,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Part Num " columns="1" required = {true}/>
+            <Label text="Part Num " columns="1" required={true} />
             <Input
               fieldname="partNumber"
               formname="addProduct"
@@ -475,7 +477,7 @@ class ProductCatalogue extends React.Component {
               className="form-control"
               disabled={false}
             />
-            <Label text="Classification " columns="1" required = {true}/>
+            <Label text="Classification " columns="1" required={true} />
             <Combobox
               fieldname="classification"
               formname="addProduct"
@@ -492,7 +494,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Material " columns="1" required = {true}/>
+            <Label text="Material " columns="1" required={true} />
             <Combobox
               fieldname="material"
               formname="addProduct"
@@ -526,7 +528,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Model Vol " columns="1" required = {true}/>
+            <Label text="Model Vol " columns="1" required={true} />
             <Input
               fieldname="modelVolume"
               formname="addProduct"
@@ -536,7 +538,7 @@ class ProductCatalogue extends React.Component {
               className="form-control"
               disabled={false}
             />
-            <Label text="Support Vol " columns="1" required = {true}/>
+            <Label text="Support Vol " columns="1" required={true} />
             <Input
               fieldname="supportVolume"
               formname="addProduct"
@@ -549,7 +551,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Price  " columns="1" required = {true}/>
+            <Label text="Price  " columns="1" required={true} />
             <Input
               fieldname="price"
               formname="addProduct"
@@ -591,7 +593,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Label text="Description  " columns="1" required = {true}/>
+            <Label text="Description  " columns="1" required={true} />
             <Textarea
               fieldname="description"
               formname="addProduct"
@@ -615,7 +617,7 @@ class ProductCatalogue extends React.Component {
           </Row>
           <br />
           <Row>
-            <Document
+             <Document
               initState={this.state}
               updateState={this.updateState}
               showDropzone={this.upload}

@@ -84,7 +84,6 @@ class OrderViaContract extends React.Component {
 
   getLeadTime = () => {
     let totalLeadTime = 0;
-    let calculateLeadTime = 1;
     let firstTerm = 1.0;
 
     let items = [...this.state.cartItems];
@@ -94,9 +93,8 @@ class OrderViaContract extends React.Component {
       if (items[i].quantity > 1) {
         firstTerm = 0.73 * items[i].quantity * items[i].printTime;
       }
-      totalLeadTime += Math.pow((firstTerm + items[i].leadTime), i + 1); //Math.pow(2,2)
+      totalLeadTime += Math.ceil(Math.pow((firstTerm + items[i].leadTime), i + 1)); //Math.pow(2,2)
     }
-
     return totalLeadTime;
   };
 
@@ -140,7 +138,7 @@ class OrderViaContract extends React.Component {
     let request = {
       body: {
         orderType: "MASTER",
-        raisedBy: sessionStorage.orgCode,
+        raisedBy: sessionStorage.userID,
         quoteValidity: "456",
         incoTerms: "EXW",
         items: items,
@@ -159,13 +157,13 @@ class OrderViaContract extends React.Component {
         .generalAjxProcess(constants.createOrder, request)
         .then(result => {
           result.message.status == "ERROR"
-            ? toaster.showToast(result.message.errorDescription,"ERROR")
+            ? toaster.showToast(result.message.errorDescription, "ERROR")
             : this.successAction(result.orderID);
         });
     } else {
-      toaster.showToast("Please add atleast one item to place the order!","ERROR");
+      toaster.showToast("Please add atleast one item to place the order!", "ERROR");
       browserHistory.push("/strata/OrderViaContract");
-      toaster.showToast("Failed to place the order!","ERROR");
+      toaster.showToast("Failed to place the order!", "ERROR");
       return false;
     }
   }
@@ -357,10 +355,13 @@ class OrderViaContract extends React.Component {
     this.setState({ modelBox: false });
   }
   handleOnChange(e) {
+    console.log("handelonchange");
+    this.setState({ itemCatalogueUpdated: [], contractState: false })
     if (e.target.value == "") {
       this.setState({
         contractState: false,
         _contractID
+
       });
     }
     this.setState({

@@ -120,7 +120,7 @@ class SubOrder extends React.Component {
         this.props.actions.generalProcess(constants.getSubOrderList, this.getRequest());
     }
     errorHandler(event) {
-        event.target.src = "http://localhost:9086/images/1f31e930-e0d5-11e7-88e2-f718f78167e9.png"
+        event.target.src = "http://localhost:9086/images/NES.jpg"
     }
 
     generateQRCode = (BlockChainAddress) => {
@@ -131,8 +131,7 @@ class SubOrder extends React.Component {
 
     render() {
         const suborder = this.state.suborderDetail ? this.state.suborderDetail : {}
-        console.log('suborder', suborder)
-
+       
         if (this.state.isLoading) {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         }
@@ -163,10 +162,11 @@ class SubOrder extends React.Component {
                                                 <div className="col-md-12">
                                                     <div className="col-md-4">
                                                         <Label columns="12" style={{ fontSize: 22, paddingTop: '10px' }} 
-                                                        text= {_.get(suborder, "entityName", "Etihad")}>
-                                                        
-                                                        </Label>
+                                                        text= {"Suborder ID : " + _.get(this.state.suborderDetail, "subOrderID", "")}> </Label>
+                                                        <Col col="9">
+                                                    </Col>
                                                     </div>
+                                                    
                                                     <div className="col-md-8" className='pull-right' style={{marginRight:'2%'}}>
                                                         <div className="col-md-4" style={{marginRight: '150px'}}>
                                                             <img className='img-thumbnail img-rounded' src={baseUrl + suborder.entityLogo}
@@ -196,7 +196,7 @@ class SubOrder extends React.Component {
                                                 <Col col="6">
                                                     <Label columns="3" style={{marginLeft: "19px"}} text="Supplier ID :"></Label>
                                                     <Col col="9">
-                                                        <span> {_.get(suborder, "entityName", "Etihad")} </span>
+                                                        <span> {_.get(this.state.suborderDetail, "supplierID", "")} </span>
                                                     </Col>
                                                 </Col>
                                             </Row>

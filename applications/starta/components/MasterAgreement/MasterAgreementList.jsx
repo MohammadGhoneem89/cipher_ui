@@ -84,15 +84,49 @@ class MasterAgreementList extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.getMasterAgreement && nextProps.typeData) {
             console.log(nextProps.getMasterAgreement, "getMasterAgreement")
+
             this.setState(
                 {
-                    gridData: nextProps.getMasterAgreement,
+                    gridData: this.mapActionsOnGrid(nextProps.getMasterAgreement),
                     typeData: nextProps.typeData,
                     page: nextProps.getPage,
                     isLoading: false
                 }
             )
         }
+    }
+
+    mapActionsOnGrid = (gridData) => {
+        if (sessionStorage.orgType == "SUPPLIER") {
+            gridData.map((obj) => {
+                obj.action = [
+                    {
+                        "label": "View",
+                        "URI": ["/strata/ViewMasterAgreement"],
+                        "params": "_id",
+                        "iconName": "icon-docs"
+                    },
+                    {
+                        "label": "Edit",
+                        "URI": ["/strata/AddMasterAgreement/"],
+                        "params": "_id",
+                        "iconName": "icon-docs"
+                    }
+                ]
+            })
+        } else {
+            gridData.map((obj) => {
+                obj.action = [
+                    {
+                        "label": "View",
+                        "URI": ["/strata/ViewMasterAgreement"],
+                        "params": "_id",
+                        "iconName": "icon-docs"
+                    }
+                ]
+            })
+        }
+        return gridData;
     }
 
     componentDidMount() {
@@ -194,26 +228,7 @@ class MasterAgreementList extends React.Component {
                     </div>
 
                     <Portlet title={"Master Agreement"} actions={this.state.actions} isPermissioned={true}>
-                        {
-                            this.state.gridData.map((obj) => {
 
-                                obj.action = [
-                                    {
-                                        "label": "View",
-                                        "URI": ["/strata/ViewMasterAgreement"],
-                                        "params": "_id",
-                                        "iconName": "icon-docs"
-                                    },
-                                    {
-                                        "label": "Edit",
-                                        "URI": ["/strata/AddMasterAgreement/"],
-                                        "params": "_id",
-                                        "iconName": "icon-docs"
-                                    }
-                                ]
-                            })
-
-                        }
 
                         <Table
                             gridColumns={utils.getGridColumnByName("masterAgreement")}

@@ -26,7 +26,7 @@ const CreateOrder = props => {
       <b>Lead Time : </b>
     </label>
     <label className='caption-subject' style={{ marginLeft: "10px" }}>
-      {props.getLeadTime()}
+      {props.getLeadTime() + ' hrs '}
     </label>
     <hr/>
     <table id="fieldTable" className="table table-bordered table-striped table-responsive ordertable">

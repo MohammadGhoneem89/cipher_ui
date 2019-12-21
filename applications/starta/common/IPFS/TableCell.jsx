@@ -9,6 +9,7 @@ class TableCell extends React.Component {
   constructor() {
     super();
     this.download;
+    this.enableGrid = true;
   }
 
   getClassForStatus(type) {
@@ -186,12 +187,13 @@ class TableCell extends React.Component {
     );
   }
   renderDownloadAttachementIPFS(downloadPath, name) {
+
     this.download = this.props.showUpZone
       ? constants.baseUrl + downloadPath : null;
     return (
-      <a href={this.download} download>
+      this.props.showUpZone ? <a href={this.download} download>
         {name}{" "}
-      </a>
+      </a> : <div></div>
     );
   }
 

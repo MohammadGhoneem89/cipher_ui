@@ -75,8 +75,9 @@ class CommonBarChart extends React.Component {
 
             datasets: []
         };
-        console.log(this.props.chartData.firstBar,"FIRSTBAR ---")
+        
         if(this.props.legends[0]){
+            console.log(this.props.legends[0],"this.props.legends[0] ---")
             dta.datasets.push({
                 backgroundColor: 'rgba(0, 87, 0, 1)',
                 borderColor: 'rgba(0, 87, 0, 1)',

@@ -113,7 +113,7 @@ class Dashboard extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.data.dashboardPendingGridData) {
-            console.log(nextProps.data, "&&&&&&&&&&&&&&&&&")
+            console.log(nextProps.data.graphData, "&&&&&&&&&&&&&&&&&")
             this.setState({
                 getSuppliersList: nextProps.suppliers,
                 getPendingOrders: nextProps.data.dashboardPendingGridData.pendingOrderRows,

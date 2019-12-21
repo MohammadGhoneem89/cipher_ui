@@ -10,7 +10,7 @@ import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import * as toaster from '../../common/toaster.js';
-let isLocked=false;
+let isLocked = false;
 
 class Login extends React.Component {
 
@@ -18,7 +18,7 @@ class Login extends React.Component {
   constructor() {
 
     super();
-   
+
     this.handleKeyPress = this.handleKeyPress.bind(this);
     sessionStorage.lang = "EN";
 
@@ -161,74 +161,47 @@ class Login extends React.Component {
 
     return (
 
-      <div>
+      <div className="row">
         <div className="login">
-          {/*<div id="particles-js"></div>*/}
-          <div className="content" style={{ marginTop: "0px" }}>
+          <div style={{}}>
+            {/*<div id="particles-js"></div>*/}
+            <div className="content" style={{ height: '430px', marginTop: '10px' }}>
+              <br /><br />
+              {this.getLogosbyUserType()}
+              <div className="login-form">
+                {this.getLogosForSDGUser()}
+                <h3 className="form-title">{brandConfig.projectName}</h3>
+                <div className="alert alert-danger display-hide">
+                  <button className="close" data-close="alert" />
+                  <span> Enter any username and password. </span>
+                </div>
+                <br />
+                <div className="form-group">
+                  <label className="control-label visible-ie8 visible-ie9">Username</label>
+                  <div className="input-icon">
+                    <i className="fa fa-user"></i>
+                    <input className="form-control placeholder-no-fix" type="text" id="username" autoComplete="off"
+                      placeholder="Username" name="username" /></div>
+                </div>
+                <div className="form-group">
+                  <label className="control-label visible-ie8 visible-ie9">Password</label>
+                  <div className="input-icon"><i className="fa fa-lock"></i>
 
-            {this.getLogosbyUserType()}
-
-            <div className="login-form">
-              {this.getLogosForSDGUser()}
-              <h3 className="form-title">{brandConfig.projectName}</h3>
-              <div className="alert alert-danger display-hide">
-                <button className="close" data-close="alert" />
-                <span> Enter any username and password. </span>
-              </div>
-              <div className="form-group">
-                <label className="control-label visible-ie8 visible-ie9">Username</label>
-                <div className="input-icon">
-                  <i className="fa fa-user"></i>
-                  <input className="form-control placeholder-no-fix" type="text" id="username" autoComplete="off"
-                    placeholder="Username" name="username" /></div>
-              </div>
-              <div className="form-group">
-                <label className="control-label visible-ie8 visible-ie9">Password</label>
-                <div className="input-icon"><i className="fa fa-lock"></i>
-
-                  <i className="fa fa-eye" aria-hidden="true"></i>
-                  <input type="password" className="form-control placeholder-no-fix" id="password" autoComplete="off"
-                    placeholder="Password" name="password" />
+                    <i className="fa fa-eye" aria-hidden="true"></i>
+                    <input type="password" className="form-control placeholder-no-fix" id="password" autoComplete="off"
+                      placeholder="Password" name="password" />
+                  </div>
+                </div>
+                <div className="form-actions"><a href="javascript:;" onClick={this.check.bind(this)}
+                  className="btn green btn-block uppercase" disabled={isLocked} > Login </a>
                 </div>
               </div>
-
-
-              <div className="form-actions"><a href="javascript:;" onClick={this.check.bind(this)}
-                className="btn green btn-block uppercase" disabled={isLocked} > Login </a></div>
-
-              <div className="forget-password">
-                <ul className="lng">
-                  <li id="engAnchor" className="actv"><a href="javascript:;"
-                    onClick={this.changLangButton.bind(this, "EN")}>En</a></li>
-                  {/* <li id="arbAnchor"><a href="javascript:;" onClick={this.changLangButton.bind(this, "AR")}>عربى</a>
-                  </li> */}
-                </ul>
-                {/* <h4><a href="#">Forgot your password ?</a></h4> */}
-              </div>
             </div>
-
-            <div className="forget-form">
-              <h3>Forget Password ?</h3>
-              <p> Enter your e-mail address below to reset your password. </p>
-              <div className="form-group">
-                <div className="input-icon">
-                  <i className="fa fa-envelope"></i>
-                  <input className="form-control placeholder-no-fix" type="text" autoComplete="off" placeholder="Email"
-                    name="email" /></div>
-              </div>
-              <div className="form-actions">
-                <button type="button" id="back-btn" className="btn grey-salsa btn-outline"> Back</button>
-                <button type="submit" className="btn green pull-right"> Submit</button>
-              </div>
-            </div>
-
-
+            <br /><br />
+            <div className="copyright">{brandConfig.footer}</div>
           </div>
-
-          <div className="copyright">{brandConfig.footer}</div>
         </div>
       </div>
-
 
     );
   }
@@ -256,3 +229,31 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 //export default Login;
+
+
+
+{/* <div className="forget-password">
+                <ul className="lng">
+                  <li id="engAnchor" className="actv"><a href="javascript:;"
+                    onClick={this.changLangButton.bind(this, "EN")}>En</a></li> */}
+{/* <li id="arbAnchor"><a href="javascript:;" onClick={this.changLangButton.bind(this, "AR")}>عربى</a>
+                  </li> */}
+{/* </ul> */ }
+{/* <h4><a href="#">Forgot your password ?</a></h4> */ }
+{/* </div> */ }
+// </div >
+
+{/* <div className="forget-form">
+                <h3>Forget Password ?</h3>
+                <p> Enter your e-mail address below to reset your password. </p>
+                <div className="form-group">
+                  <div className="input-icon">
+                    <i className="fa fa-envelope"></i>
+                    <input className="form-control placeholder-no-fix" type="text" autoComplete="off" placeholder="Email"
+                      name="email" /></div>
+                </div>
+                <div className="form-actions">
+                  <button type="button" id="back-btn" className="btn grey-salsa btn-outline"> Back</button>
+                  <button type="submit" className="btn green pull-right"> Submit</button>
+                </div>
+              </div> */}

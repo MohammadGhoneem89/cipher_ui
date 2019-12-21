@@ -45,6 +45,7 @@ class OrderDetailContainer extends React.Component {
         receivedDate: undefined
       }
     };
+    
   }
 
   componentWillMount() { }
@@ -121,7 +122,7 @@ class OrderDetailContainer extends React.Component {
               let item = {
                 itemCode: elem.itemCode,
                 receiptNo: recItm.receiptNo,
-                receiptDate:recItm.receiptDate,
+                receiptDate: recItm.receiptDate,
                 receiptQuantity: recItm.quantity,
                 item: elem.name
               };
@@ -170,39 +171,44 @@ class OrderDetailContainer extends React.Component {
     toaster.showToast("Status updated successfully!");
   };
   statusButtonHandler(element) {
-
-    console.log("element ",element)
+    window.scrollTo(0, 0);
+    console.log("element ", element)
     switch (element.type) {
       case 1:
         //send status update request
         if (element.processor === "SUPPLIER") {
-          this.props.actions.generalProcess(constants.updateOrderStatus, {
+          this.props.actions.generalAjxProcess(constants.updateOrderStatus, {
             body: {
               orderID: this.props.orderID,
               customerID: this.props.customerID,
               status: element.status
             }
+          }).then(result => {
+            console.log(result, "result")
+            result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : this.redirectToList()
           });
           //General process wait load state
           this.setState({
             isLoading: true
           });
-          
+
         } else {
-          this.props.actions.generalProcess(
+          this.props.actions.generalAjxProcess(
             constants.updateOrderStatusCustomer,
             {
               body: {
                 orderID: this.props.orderID,
                 status: element.status
               }
-            }
-          );
+            }).then(result => {
+              console.log(result, "result")
+              result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : this.redirectToList()
+            });
           //General process wait load state
           this.setState({
             isLoading: true
           });
-         
+
         }
         break;
       case 2: {
@@ -286,7 +292,6 @@ class OrderDetailContainer extends React.Component {
         break;
       }
     }
-
     return constants;
   };
 
@@ -297,7 +302,7 @@ class OrderDetailContainer extends React.Component {
       "valueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
     );
     if (this.state.optionalStatusValue === "") {
-      toaster.showToast("Status must be selected to update","ERROR");
+      toaster.showToast("Status must be selected to update", "ERROR");
       return;
     }
     this.props.actions.generalProcess(constants.updateOrderStatus, {
@@ -362,6 +367,7 @@ class OrderDetailContainer extends React.Component {
   };
 
   optionalStatusModalBoxItem = () => {
+
     return (
       <div>
         <OptionalStatus
@@ -372,9 +378,10 @@ class OrderDetailContainer extends React.Component {
           options={this.getOptionalOptions()}
         />
       </div>
-    );
+    )
   };
   render() {
+    console.log(this.state.orderDetail.raisedByPic ? baseUrl + this.state.orderDetail.raisedByPic : "")
     if (this.state.isLoading) {
       return <div className="loader">{utils.getLabelByID("Loading")}</div>;
     } else if (!this.state.isLoading && this.state.orderDetail && this.state.typeData)
@@ -386,9 +393,11 @@ class OrderDetailContainer extends React.Component {
                 this.timeLineViewModalBoxItem()}
             </div>
 
-            <ModalBox isOpen={this.state.optionalStatusModalBox}>
+            < ModalBox isOpen={this.state.optionalStatusModalBox}>
               {this.optionalStatusModalBoxItem()}
+
             </ModalBox>
+
 
             <ModalBox isOpen={this.state.receiptModalBox}>
               {this.receiptModalBoxItem()}
@@ -439,7 +448,7 @@ class OrderDetailContainer extends React.Component {
                     {
                       <Steps
                         hideNumber={false}
-                        statusList={_.get(this.state.orderDetail,"statusList",[])}
+                        statusList={_.get(this.state.orderDetail, "statusList", [])}
                       />
                     }
                   </div>
@@ -621,7 +630,7 @@ class OrderDetailContainer extends React.Component {
                           <Col col="9">
                             <span>
 
-                            {_.get(
+                              {_.get(
                                 this.state.orderDetail,
                                 "creditNotes.creditNoteRefNo".split(" ")[0],
                                 ""
@@ -762,7 +771,7 @@ class OrderDetailContainer extends React.Component {
             </div>
           </div>
 
-        </div>
+        </div >
       );
   }
 }

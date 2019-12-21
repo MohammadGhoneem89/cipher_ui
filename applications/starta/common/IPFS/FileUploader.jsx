@@ -123,7 +123,7 @@ class FileUploader extends React.Component {
         };
         return (
             <div>
-                {this.getAttachementGrid(this.props.showAttachementGrid)}
+                {this.props.showUpZone && this.getAttachementGrid(this.props.showAttachementGrid)}
                
                 {this.props.showDropzone &&
                     <div>

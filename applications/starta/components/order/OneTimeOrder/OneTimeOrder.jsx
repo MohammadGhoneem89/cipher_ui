@@ -62,25 +62,22 @@ class OneTimeOrder extends React.Component {
     this.searchItem = this.searchItem.bind(this);
     this.placeOrder = this.placeOrder.bind(this);
   }
+  
   getLeadTime = () => {
     let totalLeadTime = 0;
-    let calculateLeadTime = 1;
     let firstTerm = 1.0;
 
     let items = [...this.state.cartItems];
 
     for (let i = 0; i < items.length; i++) {
-      calculateLeadTime = 1;
-      for (let j = 1; j <= i; j++) {
-        firstTerm = 1.0;
-        if (items[i].quantity != 1) { firstTerm = 0.73 * items[i].quantity * items[i].printTime }
-        calculateLeadTime *= [firstTerm + items[i].leadTime]
+      firstTerm = 1.0;
+      if (items[i].quantity > 1) {
+        firstTerm = 0.73 * items[i].quantity * items[i].printTime;
       }
-      totalLeadTime += calculateLeadTime;
+      totalLeadTime += Math.ceil(Math.pow((firstTerm + items[i].leadTime), i + 1)); //Math.pow(2,2)
     }
-
-    return totalLeadTime
-  }
+    return totalLeadTime;
+  };
   getRequest = (currentPageNo, searchCriteria) => {
     // this.setState({searchCriteria: searchCriteria});
     let request = {
@@ -130,7 +127,7 @@ class OneTimeOrder extends React.Component {
     let request = {
       "body": {
         "orderType": "ONETIME",
-        "raisedBy": sessionStorage.orgCode,
+        "raisedBy": sessionStorage.userID,
         "quoteValidity": "",
         "incoTerms": "EXW",
         "items": items,
@@ -272,7 +269,7 @@ class OneTimeOrder extends React.Component {
     });
     e.target.reset();
     console.log('cart', cart);
-
+    window.scrollTo(0, 0);
 
   }
 
@@ -314,7 +311,7 @@ class OneTimeOrder extends React.Component {
 
   render() {
 
-    console.log(" this.state.getItemCatalogue.searchResult", this.state.getItemCatalogue ?this.state.getItemCatalogue.searchResult :[])
+    console.log(" this.state.getItemCatalogue.searchResult", this.state.getItemCatalogue ?sessionStorage.userID :[])
     let categories = this.state.typeData.classification;
 
     if (!this.state.isLoading)

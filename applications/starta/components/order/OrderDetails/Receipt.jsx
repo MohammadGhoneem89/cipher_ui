@@ -117,38 +117,38 @@ class Receipt extends Component {
 
         // field validation
         if (this.state.displayItems.length === 0) {
-            toaster.showToast('Add items to recieve.',"ERROR")
+            toaster.showToast('Add items to recieve.', "ERROR")
             return
         }
 
         console.log(this.props.processor, ' : Form submit')
-        
-        if (this.props.processor==='SUPPLIER'){
+
+        if (this.props.processor === 'SUPPLIER') {
 
             this.props.actions.generalProcess(constants.updateOrderStatus, {
                 "body": {
-                  "orderID": this.props.orderID,
-                  "customerID": this.props.customerID,
-                  "status": "011",// Recieved Status
-                  itemReceipts: this.state.displayItems
+                    "orderID": this.props.orderID,
+                    "customerID": this.props.customerID,
+                    "status": "011",// Recieved Status
+                    itemReceipts: this.state.displayItems
                 }
-              });
+            });
 
         } else {
             this.props.actions.generalProcess(constants.updateOrderStatusCustomer, {
                 "body": {
-                  "orderID": this.props.orderID,
-                  "status": "011",// Recieved Status
-                  itemReceipts: this.state.displayItems
+                    "orderID": this.props.orderID,
+                    "status": "011",// Recieved Status
+                    itemReceipts: this.state.displayItems
                 }
-              });
+            });
         }
-        
+
 
         //General process wait load state
-        this.props.parent.setState ({
-            isLoading:true
-        }) 
+        this.props.parent.setState({
+            isLoading: true
+        })
         window.scrollTo(0, 0);
         // Remove this line if want to recieve and stay on this pop up  
         this.state.closePortlet();
@@ -160,22 +160,22 @@ class Receipt extends Component {
 
         // field validation
         if (this.state.receiptNum === "") {
-            toaster.showToast('Please enter Receipt Number for the item.',"ERROR")
+            toaster.showToast('Please enter Receipt Number for the item.', "ERROR")
             return
         }
 
         if (this.state.itemCode === "") {
-            toaster.showToast('Please select any Item.',"ERROR")
+            toaster.showToast('Please select any Item.', "ERROR")
             return
         }
 
         if (this.state.itemColor === "") {
-            toaster.showToast('Please select any Color for the selected item.',"ERROR")
+            toaster.showToast('Please select any Color for the selected item.', "ERROR")
             return
         }
 
         if (this.state.quantity === 0 || this.state.quantity < 0) {
-            toaster.showToast('Please enter a valid Quantity.',"ERROR")
+            toaster.showToast('Please enter a valid Quantity.', "ERROR")
             return
         }
 
@@ -193,7 +193,7 @@ class Receipt extends Component {
                 let remainingQuantity = this.state.items[i].quantity - this.state.items[i].receivedQuantity
                 if (this.state.quantity > remainingQuantity) {
                     let err = this.state.items[i].itemCode + ' of ' + this.state.items[i].color[0] + ' color must not exceed ' + remainingQuantity + ' in quantity.'
-                    toaster.showToast(err,"ERROR")
+                    toaster.showToast(err, "ERROR")
                     return
                 }
             }
@@ -207,7 +207,8 @@ class Receipt extends Component {
         let items = [...this.state.items]
         let found = false
         for (let i = 0; i < displayItems.length; i++) {
-            if (displayItems[i].itemCode === this.state.itemCode && displayItems[i].color === this.state.itemColor) {
+            if (displayItems[i].itemCode === this.state.itemCode &&
+                displayItems[i].color === this.state.itemColor) {
                 // update quantity of already present display item
                 displayItems[i].quantity = parseInt(displayItems[i].quantity) + parseInt(this.state.quantity)
                 found = true
@@ -256,7 +257,8 @@ class Receipt extends Component {
             itemColors: [],
             itemCode: "",
             itemColor: "",
-            quantity: 0
+            quantity: 0,
+            receiptNum: ""
         })
     }
 
