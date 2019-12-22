@@ -49,8 +49,6 @@ export default function Timeline(props) {
 
     const timeLineItems = () => {
 
-
-       
         return (
             imgs.map((elem, index) => {
                 

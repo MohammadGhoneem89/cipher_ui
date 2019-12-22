@@ -51,12 +51,18 @@ class OrderDetailContainer extends React.Component {
   componentWillMount() { }
 
   componentDidMount() {
-    this.props.actions.generalProcess(constants.getOrderDetail, {
+
+    this.props.actions.generalAjxProcess(constants.getOrderDetail, {
       body: {
         orderID: this.props.orderID,
         customerID: this.props.customerID
       }
+    }).then(result => {
+      console.log(result, "result")
+      if (result.message.status == 'ERROR')
+        this.failureAction(result);
     });
+
     this.props.actions.generalProcess(
       constants.getTypeData,
       requestCreator.createTypeDataRequest(["SubOrder_Status"])
@@ -134,8 +140,6 @@ class OrderDetailContainer extends React.Component {
       this.setState({
         orderDetail: {
           ...orderDetail,
-          transactionID:
-            "92217a5a5cfa4e704df5e6cf464ea7c4da3030d75b2a07e1def291f9b90c5fe9"
         },
         isLoading: false,
         receipt: recList,
@@ -394,7 +398,11 @@ class OrderDetailContainer extends React.Component {
     )
   };
   render() {
-    console.log(this.state.orderDetail.invoice ? this.state.orderDetail.invoice : "this.state.orderDetail.invoice")
+    if (this.state.orderDetail && this.state.orderDetail.invoice && this.state.orderDetail.invoice.invoiceDate) {
+      console.log("order invoice", this.state.orderDetail.invoice);
+      console.log(utils.UNIXConvertToDate(moment(this.state.orderDetail.invoice.invoiceDate * 1000), "DD/MM/YYYY"));
+    }
+    else { console.log("waiting for invoice") }
     if (this.state.isLoading) {
       return <div className="loader">{utils.getLabelByID("Loading")}</div>;
     } else if (!this.state.isLoading && this.state.orderDetail && this.state.typeData)
@@ -499,20 +507,20 @@ class OrderDetailContainer extends React.Component {
                             />
                           </Col>
                           <Col col="4">
-                            {this.state.orderDetail.transactionID &&
+                            {this.state.orderDetail.tranxID &&
                               this.generateQRCode(
-                                this.state.orderDetail.transactionID
+                                this.state.orderDetail.tranxID
                               )}
                           </Col>
                         </Col>
                       </Row>
                       <Row>
                         <Col col="12">
-                          {this.state.orderDetail.transactionID ? (
+                          {this.state.orderDetail.tranxID ? (
                             <Label
                               columns="12"
                               className="hashno"
-                              text={this.state.orderDetail.transactionID}
+                              text={this.state.orderDetail.tranxID}
                               style={{ marginTop: "-8%" }}
                             ></Label>
                           ) : (
@@ -549,10 +557,10 @@ class OrderDetailContainer extends React.Component {
                           <Label columns="3" text="Amount:"></Label>
                           <Col col="9">
                             <span>
-                              AED{" "}
-                              {utils.formatAmountField(
+                              AED{" "} {this.state.orderDetail.orderAmount || 0}
+                              {/* {utils.formatAmountField(
                                 this.state.orderDetail.orderAmount || 0
-                              )}
+                              )} */}
                             </span>
                           </Col>
                         </Col>
@@ -596,8 +604,8 @@ class OrderDetailContainer extends React.Component {
                           <Label columns="3" text="Invoice Date:"></Label>
                           <Col col="9">
                             <span>
-                              {this.state.orderDetail && this.state.orderDetail.invoice && this.state.orderDetail.invoice.invoiceDate
-                                && utils.UNIXConvertToDate(moment(this.state.orderDetail.invoice.invoiceDate * 1000, "DD/MM/YYYY").toDate())}
+                              {this.state.orderDetail.invoice && this.state.orderDetail.invoice.invoiceDate
+                                && utils.UNIXConvertToDate(moment(this.state.orderDetail.invoice.invoiceDate * 1000), "DD/MM/YYYY")}
                             </span>
                           </Col>
                         </Col>
