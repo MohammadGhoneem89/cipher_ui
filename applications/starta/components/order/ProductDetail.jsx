@@ -7,6 +7,8 @@ import Input from "../../common/Input.jsx";
 import * as constants from "../../../../core/constants/Communication";
 import * as utils from '../../../../core/common/utils.js';
 const ProductDetail = props => {
+
+  console.log("PROPS >>> ",props)
   const addDefaultSrc = (e) => {
     e.target.src = "/assets/Resources/images/default.png"
   }

@@ -87,7 +87,7 @@ class OrgSearchContainer extends React.Component {
                     <Portlet title={utils.getLabelByID("List")} isPermissioned={true} actions={this.state.entityList.data.actions}>
                         <Table
                             pagination={true}
-                             export={true}
+                             
                             search={false}
                             gridType={"entity"}
                             gridColumns={utils.getGridColumnByName("entitySearch")}

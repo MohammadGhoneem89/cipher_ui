@@ -395,7 +395,7 @@ class OrderList extends React.Component {
                 label: 'View',
                 URI: ['/strata/viewOrder'],
                 params: '_id',
-                iconName: 'icon-docs'
+                iconName: "fa fa-eye"
               }
             ];
           })}

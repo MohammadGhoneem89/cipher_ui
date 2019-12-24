@@ -160,6 +160,13 @@ module.exports = {
         { alias: "REBATE", key: "rebate", type: "string" },
         { alias: "Action", key: "action", type: 'action' }
     ],
+    rebateBox: [
+        { alias: "greater Than", key: "greaterThan", type: 'string' },
+        { alias: "less Than", key: "lessThan", type: "string" },
+        { alias: "REBATE type", key: "discountType", type: "string" },
+        { alias: "REBATE", key: "discount", type: "string" }
+
+    ],
     SLA: [
         { alias: "FROM", key: "fromStageLabel", type: 'string' },
         { alias: "TO", key: "toStageLabel", type: "string" },

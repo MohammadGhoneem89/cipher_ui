@@ -191,7 +191,7 @@ class SubOrderList extends React.Component {
                                         "label": "View",
                                         "URI": ["/strata/subOrder"],
                                         "params": "_id",
-                                        "iconName": "icon-docs"
+                                        iconName: "fa fa-eye"
                                     }
                                 ]
                             })

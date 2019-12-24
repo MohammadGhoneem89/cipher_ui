@@ -105,6 +105,9 @@ class OrderDetailContainer extends React.Component {
     return gridData;
   };
   componentWillReceiveProps(nextProps) {
+    sessionStorage.selectedChannel="stratachannel"
+    sessionStorage.selectedNetwork= "strata"
+    console.log("sessionStorage ",sessionStorage)
     if (nextProps.orderDetail && nextProps.orderDetail.subOrder && nextProps.typeData) {
       this.setState({
         subOrder: this.formatData(nextProps.orderDetail.subOrder)
@@ -515,27 +518,32 @@ class OrderDetailContainer extends React.Component {
                         </Col>
                       </Row>
                       <Row>
-                        <Col col="12">
+                        <Col col="6">
+                          <Label
+                            columns="3" 
+                            text="Order Hash :"
+                          ></Label>
+                       
                           {this.state.orderDetail.tranxID ? (
                             <Label
-                              columns="12"
+                              columns="9"
                               className="hashno"
                               text={this.state.orderDetail.tranxID}
-                              style={{ marginTop: "-8%" }}
+                              
                             ></Label>
                           ) : (
                               <Label
-                                columns="12"
+                                columns="9"
                                 className="hashno"
                                 text={this.state.orderDetail.orderID}
-                                style={{ marginTop: "-8%" }}
+                                
                               ></Label>
                             )}
                         </Col>
                       </Row>
                     </div>
 
-                    <div className="form-group" style={{ marginTop: "0px" }}>
+                    <div className="form-group" style={{ marginTop: "20px" }}>
                       <Row>
                         <Col col="6">
                           <Label columns="3" text="Order Raised By:"></Label>
@@ -549,7 +557,8 @@ class OrderDetailContainer extends React.Component {
                               }}
                               onError={this.errorHandler}
                             />
-                            <span>{this.state.orderDetail.raisedByName ? this.state.orderDetail.raisedByName : this.state.orderDetail.customerID}</span>
+                            <span >{this.state.orderDetail.raisedByName ? this.state.orderDetail.raisedByName :
+                               this.state.orderDetail.customerID}</span>
                           </Col>
                         </Col>
 
@@ -616,13 +625,13 @@ class OrderDetailContainer extends React.Component {
                           <Col col="9">
                             <span>
                               AED{" "}
-                              {utils.formatAmountField(
+                              {
                                 _.get(
                                   this.state.orderDetail,
                                   "invoice.amount",
                                   0
                                 )
-                              )}
+                              }
                             </span>
                           </Col>
                         </Col>
@@ -647,7 +656,7 @@ class OrderDetailContainer extends React.Component {
 
                               {_.get(
                                 this.state.orderDetail,
-                                "creditNotes.creditNoteRefNo".split(" ")[0],
+                                "creditNotes.creditNoteDate".split(" ")[0],
                                 ""
                               )}
                             </span>
@@ -657,14 +666,31 @@ class OrderDetailContainer extends React.Component {
                           <Label columns="4" text="Credit Note Amount:"></Label>
                           <Col col="5">
                             <span style={{ marginLeft: "-53px" }}>
-                              AED{" "}
-                              {utils.formatAmountField(
+                              AED{" "}  
+                              {
                                 _.get(
                                   this.state.orderDetail,
                                   "creditNotes.creditNoteAmount",
                                   0
                                 )
-                              )}
+                              }
+                            </span>
+                          </Col>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col col="6">
+                          <Label columns="3" text="Total Amount Payable:"></Label>
+                          <Col col="9">
+                            <span >
+                              AED{" "}
+                              {
+                                _.get(
+                                  this.state.orderDetail,
+                                  "amountPayable",
+                                  0
+                                )
+                              }
                             </span>
                           </Col>
                         </Col>

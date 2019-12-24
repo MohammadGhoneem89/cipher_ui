@@ -65,6 +65,7 @@ export default function Timeline(props) {
                         badgeClass='timeline-badge green'
                         dateValue = item.date.split(' ')[0]
                         timeValue = item.date.split(' ')[1]
+                         console.log("item.date 2",timeValue)
                         actionBy = item.actionBy
                     }
                 })

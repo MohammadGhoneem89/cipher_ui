@@ -190,6 +190,7 @@ export default function UserSetupForm(props) {
                         <div className="col-md-5" style={{ width: '23%' }}>
                             <Label text="Password" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }} />
                             <Label text="*" style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
+                            
                         </div>
                         <Input
                             status={(containerState.errors && containerState.errors.password) ? "ERROR" : undefined}
@@ -208,6 +209,10 @@ export default function UserSetupForm(props) {
                             actionHandler={generalHandler}
                             className="form-control"
                             disabled={false} />
+
+                            <span style={{color:'red',fontStyle: 'italic'}}>
+                            Password must contain atleast 1 digit , 1 upper case character and 1 special character (Max length: 15 , Min length: 8)
+                            </span>
 
                     </Row>}
 
