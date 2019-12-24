@@ -3947,6 +3947,14 @@ label.errorcolr {
     color: white;
 }
 
+input.form-control+.user-pwd {
+    display: none;
+}
+
+input.form-control.pwd-input+.user-pwd {
+    display: block;
+}
+
 
 /* end setp screen css */
 
