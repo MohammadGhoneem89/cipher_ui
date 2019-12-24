@@ -83,7 +83,7 @@ module.exports = {
 
   // getReportFilters: baseUrl + "/API/UI/getFilter",
 
-  passwordChange: baseUrl + "/API/UI/passwordChange",
+  passwordChange: baseUrl + "/API/UI/setPassword",
   passwordReset: baseUrl + "/API/UI/passwordReset",
 
   getAPIPayLoadListData: baseUrl + "/API/UI/APIPayLoadList",

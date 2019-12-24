@@ -5,7 +5,7 @@ var config = {
     path: './',
     filename: 'index.js',
   },
-
+  devtool: 'inline-source-map',
   devServer: {
     inline: true,
     port: 3000,

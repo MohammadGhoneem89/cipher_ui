@@ -5,6 +5,8 @@ import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
+import  EN from '../../constants/resources_EN';
+import  AR from '../../constants/resources_AR';
 
 
 import * as constants from '../../constants/Communication.js';
@@ -20,9 +22,7 @@ class Login extends React.Component {
     super();
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    sessionStorage.lang = "EN";
-
-
+    sessionStorage.lang = EN;
   }
 
   check(form) {
@@ -30,46 +30,87 @@ class Login extends React.Component {
     if (isLocked === false) {
 
       sessionStorage.setItem('lastRequestTime', new Date());
-      var Userid = $('#username').val();
+      var userId = $('#username').val();
       var password = $('#password').val();
+
       console.log(sessionStorage.lang)
       var lang = sessionStorage.lang;
-      if (Userid === "" && password === "") {
+      if (userId === "" && password === "") {
         toaster.showToast("Username, Password fields must not be empty please enter username or password.", "INFO");
         //alert("Username, Password are required.");
       } else {
         isLocked = true
-        this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(Userid, password, lang));
+        this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(userId, password, lang));
 
       }
     }
   }
 
 
-  changLangButton(langaugeTag) {
+  // changLangButton(langaugeTag) {
+  //   console.log(langaugeTag);
+  //   console.log(sessionStorage);
+  //   switch (langaugeTag) {
+  //     case "AR":
+  //       var eng = $('#engAnchor').removeClass('actv');
+  //       var arb = $('#arbAnchor').addClass('actv');
+  //       sessionStorage.lang = "AR";
+  //       break;
+  //     case "EN":
+  //       var eng = $('#arbAnchor').removeClass('actv');
+  //       var arb = $('#engAnchor').addClass('actv');
+  //       sessionStorage.lang = "EN";
+  //       break;
+
+  //   }
 
 
-    switch (langaugeTag) {
-      case "AR":
-        var eng = $('#engAnchor').removeClass('actv');
-        var arb = $('#arbAnchor').addClass('actv');
-        sessionStorage.lang = "AR";
-        break;
-      case "EN":
-        var eng = $('#arbAnchor').removeClass('actv');
-        var arb = $('#engAnchor').addClass('actv');
-        sessionStorage.lang = "EN";
-        break;
+  // }
+  checkForgot(from){
+    let userId = $('#usernameForgot').val();
+    let email = $('#emailForgot').val();
+
+    console.log(userId);
+    console.log(email);
+
+    let obj = {
+      userID: userId,
+      email
+    }
+    let lang = sessionStorage.lang;
+
+    if (userId === "" && email === "") {
+        toaster.showToast("Username and email fields must not be empty.", "INFO");
+    } else {
+        this.props.actions.generalProcess(constants.passwordReset, obj);
 
     }
-
-
-  }
+}
 
   componentDidMount() {
     document.getElementById("username").addEventListener("keyup", this.handleKeyPress);
     document.getElementById("password").addEventListener("keyup", this.handleKeyPress);
   }
+
+  changLangButton(langaugeTag) {
+    console.log(langaugeTag);
+    console.log(sessionStorage);
+    switch (langaugeTag) {
+        case "AR":
+            var eng = $('#engAnchor').removeClass('actv');
+            var arb = $('#arbAnchor').addClass('actv');
+            sessionStorage.lang = AR;
+            break;
+        case "EN":
+            var eng = $('#arbAnchor').removeClass('actv');
+            var arb = $('#engAnchor').addClass('actv');
+            sessionStorage.lang = EN;
+            break;
+
+    }
+
+
+}
 
   componentDidUpdate() {
     isLocked = false
@@ -108,6 +149,12 @@ class Login extends React.Component {
       this.check();
     }
   }
+
+  handleKeyPressForgot(e){
+    if (e.which === 13) {
+        this.checkForgot();
+    }
+}
 
   getLogosbyUserType() {
 
@@ -161,7 +208,7 @@ class Login extends React.Component {
 
     return (
 
-      <div className="row">
+      <div>
         <div className="login">
           <div style={{}}>
             {/*<div id="particles-js"></div>*/}
@@ -176,7 +223,74 @@ class Login extends React.Component {
                   <span> Enter any username and password. </span>
                 </div>
                 <br />
-                <div className="form-group">
+                <div id="loginCarousel" className="carousel slide" data-ride="carousel"  data-interval="false">
+                                    <div className="carousel-inner">
+                                        <div className="item active">
+                                            <div className="form-group">
+                                                <label className="control-label visible-ie8 visible-ie9">Username</label>
+                                                <div className="input-icon">
+                                                    <i className="fa fa-user"/>
+                                                    <input className="form-control placeholder-no-fix" type="text" id="username"
+                                                           autoComplete="off" placeholder="Username" name="username"/></div>
+                                            </div>
+                                            <div className="form-group">
+                                                <label className="control-label visible-ie8 visible-ie9">Password</label>
+                                                <div className="input-icon"><i className="fa fa-lock"/>
+
+                                                    <i className="fa fa-eye" aria-hidden="true"/>
+                                                    <input type="password" className="form-control placeholder-no-fix" id="password"
+                                                           autoComplete="off" placeholder="Password" name="password"/>
+                                                </div>
+                                            </div>
+
+                                            {console.log()}
+                                            <div className="form-actions"><a href="javascript:;" onClick={this.check.bind(this)}
+                                                                             className="btn green btn-block uppercase"> LOG IN </a></div>
+
+                                            <div className="forget-password">
+                                                <ul className="lng">
+                                                    <li id="engAnchor" className="actv"><a href="javascript:;"
+                                                                                           onClick={this.changLangButton.bind(this, "EN")}>En</a>
+                                                    </li>
+                                                    <li id="arbAnchor"><a href="javascript:;"
+                                                                          onClick={this.changLangButton.bind(this, "AR")}>عربى</a></li>
+                                                    <li data-target="#loginCarousel" data-slide-to="1"><a href="javascript:">Forgot your password ?</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div className="item">
+                                            <div className="form-group">
+                                                <label className="control-label visible-ie8 visible-ie9">Username:</label>
+                                                <div className="input-icon">
+                                                    <i className="fa fa-user"/>
+                                                    <input className="form-control placeholder-no-fix" type="text" id="usernameForgot"
+                                                           autoComplete="off" placeholder="Username" name="username"/></div>
+                                            </div>
+                                            <div className="form-group">
+                                                <label className="control-label visible-ie8 visible-ie9">Email</label>
+                                                <div className="input-icon"><i className="fa fa-envelope"/>
+                                                    <input type="email" className="form-control placeholder-no-fix" id="emailForgot"
+                                                           autoComplete="off" placeholder="Email" name="password"/>
+                                                </div>
+                                            </div>
+                                            <div className="form-actions"><a href="javascript:" onClick={this.checkForgot.bind(this)}
+                                                                             className="btn green btn-block uppercase"> Submit </a></div>
+
+                                            <div className="login-password">
+                                                <ul className="lng">
+                                                    <li id="engAnchor" className="actv"><a href="javascript:"
+                                                                                           onClick={this.changLangButton.bind(this, "EN")}>En</a>
+                                                    </li>
+                                                    <li id="arbAnchor"><a href="javascript:;"
+                                                                          onClick={this.changLangButton.bind(this, "AR")}>عربى</a></li>
+                                                    <li data-target="#loginCarousel" data-slide-to="0"><a href="javascript:">Remember your password ?</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                {/* <div className="form-group">
                   <label className="control-label visible-ie8 visible-ie9">Username</label>
                   <div className="input-icon">
                     <i className="fa fa-user"></i>
@@ -194,7 +308,7 @@ class Login extends React.Component {
                 </div>
                 <div className="form-actions"><a href="javascript:;" onClick={this.check.bind(this)}
                   className="btn green btn-block uppercase" disabled={isLocked} > Login </a>
-                </div>
+                </div> */}
               </div>
             </div>
             <br /><br />
