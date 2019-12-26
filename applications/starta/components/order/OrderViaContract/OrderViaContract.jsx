@@ -179,7 +179,7 @@ class OrderViaContract extends React.Component {
       //convert date string "dd/mm/yy" into date object then get epoch time from getTime()
       let dateObject = moment(contract[i].endDate, "DD/MM/YYYY").toDate();
       let enddate = dateObject.getTime();
-      if (enddate >= currentDate) {
+      if (enddate >= currentDate && contract[i].status == "APPROVED") {
         activeContract.push(contract[i]);
       }
     }
@@ -328,8 +328,10 @@ class OrderViaContract extends React.Component {
       cartItems: cart,
       grandTotal: grandTotal,
       itemAddedToCart: true,
-      totalBatchSize: totalBatchSize
+      totalBatchSize: totalBatchSize,
+      modelBox: false
     });
+
     e.target.reset();
     window.scrollTo(0, 0);
   }

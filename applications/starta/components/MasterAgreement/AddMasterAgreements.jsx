@@ -794,11 +794,12 @@ class AddMasterAgreement extends React.Component {
                                         onChange={this.onChange}
                                         disabled={this.props.params.customerID ? true : false}
                                     />
+                                     
 
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <div className="form-group">
                                 <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>
                                     {utils.getLabelByID("Customer")}
@@ -817,7 +818,7 @@ class AddMasterAgreement extends React.Component {
                                     </select>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="row">
                         <div className="col-md-6">

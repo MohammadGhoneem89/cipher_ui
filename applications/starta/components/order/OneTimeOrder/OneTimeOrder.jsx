@@ -262,7 +262,8 @@ class OneTimeOrder extends React.Component {
       cartItems: cart,
       grandTotal: grandTotal,
       itemAddedToCart: true,
-      totalBatchSize: totalBatchSize
+      totalBatchSize: totalBatchSize,
+      modelBox: false
     });
     e.target.reset();
     console.log('cart', cart);

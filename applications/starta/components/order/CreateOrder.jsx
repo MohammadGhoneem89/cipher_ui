@@ -63,7 +63,8 @@ const CreateOrder = props => {
               setState({
                 cartItems: cart, 
                 grandTotal,
-                totalBatchSize
+                totalBatchSize,
+                itemAddedToCart:false
               });
             }} /></td>
             <td><img src={item.image} onError={addDefaultSrc} width="40px" /> <span

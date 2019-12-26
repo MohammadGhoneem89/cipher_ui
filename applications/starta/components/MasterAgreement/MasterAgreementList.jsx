@@ -35,6 +35,7 @@ class MasterAgreementList extends React.Component {
     reset = () => {
         document.getElementById('contractId').value = "";
         document.getElementById('customer').value = "";
+        document.getElementById('status').value = "";
 
         let request = {
             "body": {
@@ -104,13 +105,13 @@ class MasterAgreementList extends React.Component {
                         "label": "View",
                         "URI": ["/strata/ViewMasterAgreement"],
                         "params": "_id",
-                        "iconName": "icon-docs"
+                        "iconName": "fa fa-eye"
                     },
                     {
                         "label": "Edit",
                         "URI": ["/strata/AddMasterAgreement/"],
                         "params": "_id",
-                        "iconName": "icon-docs"
+                        "iconName": "fa fa-edit"
                     }
                 ]
             })
@@ -121,7 +122,7 @@ class MasterAgreementList extends React.Component {
                         "label": "View",
                         "URI": ["/strata/ViewMasterAgreement"],
                         "params": "_id",
-                        "iconName": "icon-docs"
+                        "iconName": "fa fa-eye"
                     }
                 ]
             })
@@ -204,7 +205,16 @@ class MasterAgreementList extends React.Component {
                                 <label className="control-label">{utils.getLabelByID("Status")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="status" id="status" />
+                                {/* <input type="text" className="form-control" name="status" id="status" /> */}
+
+
+                                <select id="status" name="status" className="form-control" >
+                                    <option key="-1" value="">Select</option>
+
+                                    <option key="0" value="INITIATED">INITIATED</option>
+                                    <option key="1" value="APPROVED">APPROVED</option>
+
+                                </select>
                             </div>
                         </div>
                     </div>

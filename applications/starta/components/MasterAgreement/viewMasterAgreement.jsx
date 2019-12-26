@@ -16,7 +16,7 @@ import Table from '../../../../core/common/Datatable.jsx';
 import Portlet from '../../../../core/common/Portlet.jsx';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 import Discount from './Discount.jsx'
-import ProductDetail from "./ProductDetail.jsx";
+import Rebate from "./rebate.jsx";
 class ViewMasterAgreement extends React.Component {
 
     constructor(props) {
@@ -287,7 +287,7 @@ class ViewMasterAgreement extends React.Component {
                                 item.action = [
                                     {
                                         label: utils.getLabelByID("View"),
-                                        "iconName": "icon-docs",
+                                        "iconName": "fa fa-eye",
                                         "params": "_id",
                                         actionType: "COMPONENT_FUNCTION"
                                     }
@@ -409,9 +409,8 @@ class ViewMasterAgreement extends React.Component {
                     </ModalBox>
 
                     <ModalBox isOpen={this.state.modelBox ? true : false} >
-                        <ProductDetail
-                            details={this.state.agreementDetail.items[this.index]}
-                            state={this.state}
+                        <Rebate
+                            details={this.state.agreementDetail.items[this.index].itemWiseDiscount}
                             closeModalBox={this.closeModalBox}
                         />
                     </ModalBox>

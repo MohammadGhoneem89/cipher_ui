@@ -190,7 +190,9 @@ export default function UserSetupForm(props) {
                         <div className="col-md-5" style={{ width: '23%' }}>
                             <Label text="Password" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }} />
                             <Label text="*" style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
+
                         </div>
+
                         <Input
                             status={(containerState.errors && containerState.errors.password) ? "ERROR" : undefined}
                             errorIconStyle={{
@@ -206,21 +208,19 @@ export default function UserSetupForm(props) {
                             state={containerState}
                             type='password'
                             actionHandler={generalHandler}
-                            className="form-control"
+                            className="form-control pwd-input"
                             disabled={false} />
+
 
                     </Row>}
 
-
+                   
                 </div>
-
-
-
-
-
 
             </Row>
 
+
+            <br />
             <Row>
                 <div className="col-md-6">
                     <Row>

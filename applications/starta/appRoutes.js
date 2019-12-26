@@ -36,7 +36,7 @@ let authRoutes = < div >
         Route path="strata/ProductCatalogue/ADD/:mode"
         component={ProductCatalogue}
     /> <
-        Route path="/strata/ProductCatalogue/EDIT/:mode/:id"
+        Route path="/strata/ProductCatalogue/VIEW/:mode/:id"
         component={ProductCatalogue}
     /> <
         Route path="/strata/itemCatalogueList"
@@ -65,13 +65,19 @@ let authRoutes = < div >
     /> <
         Route path="/strata/viewOrder/:id/:customerId"
         component={OrderDetails}
-    /> <
+    />
+    <
+        Route path="/strata/changePassword/:orgType"
+        component={changePassword}
+    />
+    <
         Route path="/strata/subOrder/:id"
         component={Suborder}
     /> <
         Route path="/strata/subOrderList"
         component={SuborderList}
-    /> < /div > ;
+    /> < /
+div > ;
     
 let unAuthRoutes = < div >
         <
@@ -80,9 +86,6 @@ let unAuthRoutes = < div >
         /> <
             Route path="/strata/login"
             component={Login}
-        /> <
-            Route path="/strata/changePassword/:orgType"
-            component={changePassword}
         /> <
             Route path="/cipher"
             component={Cipher}

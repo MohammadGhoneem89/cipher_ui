@@ -69,7 +69,7 @@ const OrgContactsForm = ({handleSubmit, updateState, pristine, reset, submitting
             </button>
             <button type="button" className="pull-right btn default" disabled={pristine || submitting}
                     onClick={reset}>
-              {utils.getLabelByID("RestValues")}
+              {utils.getLabelByID("Clear")}
             </button>
           </div>
         </div>

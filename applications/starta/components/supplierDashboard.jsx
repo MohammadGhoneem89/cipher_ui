@@ -68,7 +68,7 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        
+        this.getDashboardData();
         this.props.actions.generalProcess(url.getEntityList, requestCreator.createEntityListRequest({
             "currentPageNo": 1,
             "pageSize": 1
@@ -81,10 +81,10 @@ class Dashboard extends React.Component {
 
     componentWillReceiveProps(nextProps) {
 
-        if (nextProps.entityNames){
+        if (nextProps.entityNames) {
             let entityNames = [...nextProps.entityNames]
-            entityNames = entityNames.filter((item)=> {
-                if (item.orgType==='CUSTOMER'){
+            entityNames = entityNames.filter((item) => {
+                if (item.orgType === 'CUSTOMER') {
                     return true
                 } else {
                     return false
@@ -93,26 +93,27 @@ class Dashboard extends React.Component {
             this.setState({
                 entityNames: [...entityNames]
             })
-            
+
         }
 
         // get dashboard data from first entityName for initial load
-        if (this.state.isLoading===true){
-            this.getDashboardData();
-        }
+        // if (this.state.isLoading===true){
+        //     this.getDashboardData();
+        // }
 
-        if (nextProps.data.dashboardPendingGridData) {
-            
-            console.log(nextProps.data, "DATA")
+        if (nextProps.data && nextProps.data.dashboardPendingGridData && nextProps.data.graphData) {
+
+            console.log(nextProps.data.graphData, "DATA")
             this.setState({
                 getPendingOrders: nextProps.data.dashboardPendingGridData.pendingOrderRows,
+                graphData: nextProps.data.graphData,
                 getCompletedOrders: nextProps.data.dashboardCompletedGridData.completedOrderRows,
                 settlement: nextProps.data.dashboardSettlementGridData.settlementsRows,
                 customerWiseSettlement: nextProps.data.dashboardCustomerSettlement.customerWiseSettlement,
                 setPagingForSupplier: nextProps.supplierPageDate,
-                isLoading:false
+                isLoading: false
             });
-            
+
         }
     }
     updateState = (e) => {
@@ -132,19 +133,19 @@ class Dashboard extends React.Component {
         this.props.actions.generalProcess(url.supplierDashboardData, {
             dashboardPendingGridData: {
                 ...this.state.dashboardPendingGridData,
-                customerID: this.state.dashboardPendingGridData.customerID || _.get(this.state,'entityNames[0].value','')
+                customerID: this.state.dashboardPendingGridData.customerID || _.get(this.state, 'entityNames[0].value', '')
             },
             dashboardCompletedGridData: {
                 ...this.state.dashboardCompletedGridData,
-                customerID: this.state.dashboardPendingGridData.customerID || _.get(this.state,'entityNames[0].value','')
+                customerID: this.state.dashboardPendingGridData.customerID || _.get(this.state, 'entityNames[0].value', '')
             },
             dashboardSettlementGridData: {
                 ...this.state.dashboardSettlementGridData,
-                customerID: this.state.dashboardPendingGridData.customerID || _.get(this.state,'entityNames[0].value','')
+                customerID: this.state.dashboardPendingGridData.customerID || _.get(this.state, 'entityNames[0].value', '')
             },
             dashboardCustomerSettlement: {
                 ...this.state.dashboardCustomerSettlement,
-                customerID: this.state.dashboardPendingGridData.customerID || _.get(this.state,'entityNames[0].value','')
+                customerID: this.state.dashboardPendingGridData.customerID || _.get(this.state, 'entityNames[0].value', '')
             }
         });
 
@@ -159,7 +160,7 @@ class Dashboard extends React.Component {
     };
 
     render() {
-        // console.log(this.state.getPendingOrders, "getPendingOrders")
+        console.log(this.state.graphData ? this.state.graphData : "graphData?this.state.graphData")
         const customerList = this.state.entityNames ? this.state.entityNames : [];
         if (this.state.isLoading)
             return (<div className="loader">{utils.getLabelByID("Loading")}</div>);
@@ -215,16 +216,16 @@ class Dashboard extends React.Component {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    {this.props.data.graphData.labels && this.props.data.graphData.legends &&
+                                    {this.state.graphData.labels && this.state.graphData.legends &&
 
                                         <CommonBarChart toDate={this.state.toDate}
                                             fromDate={this.state.fromDate}
                                             graphLabels={this.state.graphLabels}
-                                            labels={this.props.data.graphData.labels}
-                                            chartData={this.props.data.graphData.chartData}
-                                            legends={this.props.data.graphData.legends}
-                                            firstBarData={this.props.data.graphData.chartData.firstBar}
-                                            secondBarData={this.props.data.graphData.chartData.secondBar}
+                                            labels={_.get(this.state.graphData, "labels", undefined)}
+                                            chartData={_.get(this.state.graphData, "chartData", undefined)}
+                                            legends={_.get(this.state.graphData, "legends", undefined)}
+                                            firstBarData={_.get(this.state.graphData, "chartData.firstBar", undefined)}
+                                            secondBarData={_.get(this.state.graphData, "chartData.secondBar", undefined)}
 
                                         />
                                     }
@@ -311,10 +312,10 @@ class Dashboard extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log("_.get(state.app,'supplierDashboardData.data',undefined)",_.get(state.app,'supplierDashboardData.data',undefined))
+    console.log("_.get(state.app,'supplierDashboardData.data',undefined)", _.get(state.app, 'supplierDashboardData.data', undefined))
     return {
-        data: _.get(state.app,'supplierDashboardData.data',undefined),
-        entityNames: _.get(state.app,'entityList.data.typeData.entityNames',undefined)
+        data: _.get(state.app, 'supplierDashboardData.data', undefined),
+        entityNames: _.get(state.app, 'entityList.data.typeData.entityNames', undefined)
     };
 }
 

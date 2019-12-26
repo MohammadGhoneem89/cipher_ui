@@ -19,9 +19,12 @@ class CustomerAssociation extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false,
-            customerAssociation: {}
+            isLoading: true,
+            customerAssociation: undefined,
+            typeData: undefined
         };
+        this.newProps = false;
+
         this.formSubmitted = false;
         this.generalHandler = gen.generalHandler.bind(this);
     }
@@ -33,14 +36,19 @@ class CustomerAssociation extends React.Component {
             return;
         }
 
-        this.props.actions.generalProcess(constants.saveCustomerAssociation, { data: this.state.customerAssociation });
+        this.props.actions.generalProcess(constants.saveCustomerAssociation, {
+            data:
+                this.state.customerAssociation
+        });
+
         this.formSubmitted = true;
+        this.newProps = false;
+        this.setState({ customerAssociation: undefined })
     };
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            typeData: nextProps.typeData,
-            isLoading: false
+            typeData: nextProps.typeData
         });
 
         if (nextProps.userList.length && this.state.typeData && !_.has(this.state.typeData, 'userList')) {
@@ -48,28 +56,34 @@ class CustomerAssociation extends React.Component {
             typeData.userList = nextProps.userList.map(user => {
                 return { label: user.userID, value: user._id };
             });
-            this.setState({ typeData });
+            this.setState({
+                typeData, isLoading: false
+            });
         }
 
         if (this.formSubmitted) {
             if (nextProps.saveCustomerAssociation && nextProps.saveCustomerAssociation.message.status == 'SUCCESS') {
-                this.setState({ customerAssociation: {} });
+                this.setState({ customerAssociation: {} })
             }
             this.formSubmitted = false;
         } else {
-            if (nextProps.customerAssociation) {
-                let customerAssociation = _.pick(nextProps.customerAssociation, ['userId', '_id', 'customerType', 'paymentType', 'shipmentType','purchaseOrderType']);
+            if (this.newProps && nextProps.customerAssociation) {
+                let customerAssociation = _.pick(nextProps.customerAssociation, ['userId', '_id', 'customerType', 'paymentType', 'shipmentType', 'purchaseOrderType']);
                 this.setState({ customerAssociation });
             } else if (this.state.customerAssociation && this.state.customerAssociation._id) {
-                let customerAssociation = _.omit(this.state.customerAssociation, ['_id', 'customerType', 'paymentType', 'shipmentType','purchaseOrderType']);
+                let customerAssociation = _.omit(this.state.customerAssociation, ['_id', 'customerType', 'paymentType', 'shipmentType', 'purchaseOrderType']);
                 this.setState({ customerAssociation });
             }
         }
-    }
 
+    }
+    componentWillMount() {
+
+    }
     componentDidMount() {
+
         window.scrollTo(0, 0);
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['customerType', 'paymentType', 'shipmentType','purchaseOrderType']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['customerType', 'paymentType', 'shipmentType', 'purchaseOrderType']));
         this.props.actions.generalProcess(
             constants.getUserList,
             requestCreator.createUserListRequest(
@@ -81,9 +95,12 @@ class CustomerAssociation extends React.Component {
             )
         );
     }
-    componentWillUnmount() {}
+    componentWillUnmount() {
+
+    }
 
     userSelectHandler = (formname, fieldname, type, e) => {
+
         let value = e.target.value;
         let formdata = _.get(this.state, formname, {});
         _.set(formdata, e.target.name, value);
@@ -94,13 +111,13 @@ class CustomerAssociation extends React.Component {
         if (value) {
             this.props.actions.generalProcess(constants.getCustomerAssociation, { data: { userId: value } });
         }
+        this.newProps = true;
     };
 
     render() {
         if (this.state.isLoading) {
             return <div className="loader"> {utils.getLabelByID('loading')}</div>;
-        }
-        return (
+        } else if (!this.state.isLoading) return (
             <div>
                 <Portlet title={utils.getLabelByID('Customer Association Detail(s)')}>
                     <Row>
@@ -111,23 +128,23 @@ class CustomerAssociation extends React.Component {
                         <Col col="6">
                             <Label text={utils.getLabelByID('Customer Type')} columns="4" />
 
-                            <Combobox fieldname="customerType" formname="customerAssociation" columns="8" state={this.state} typeName="customerType" dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" />
+                            <Combobox fieldname="customerType" formname="customerAssociation" columns="8" state={this.state} typeName="customerType" dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" disabled={this.newProps ? false : true} />
                         </Col>
                     </Row>
                     <Row>
                         <Col col="6">
                             <Label text={utils.getLabelByID('Payment Type')} columns="4" />
-                            <Combobox fieldname="paymentType" formname="customerAssociation" columns="8" state={this.state} typeName="paymentType" dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" />
+                            <Combobox fieldname="paymentType" formname="customerAssociation" columns="8" state={this.state} typeName="paymentType" dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" disabled={this.newProps ? false : true}/>
                         </Col>
                         <Col col="6">
                             <Label text={utils.getLabelByID('Shipment Type')} columns="4" />
-                            <Combobox fieldname="shipmentType" formname="customerAssociation" columns="8" state={this.state} typeName="shipmentType" dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" />
+                            <Combobox fieldname="shipmentType" formname="customerAssociation" columns="8" state={this.state} typeName="shipmentType" dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" disabled={this.newProps ? false : true}/>
                         </Col>
                     </Row>
                     <Row>
                         <Col col="6">
                             <Label text={utils.getLabelByID('Purchase Order Type')} columns="4" />
-                            <Combobox fieldname="purchaseOrderType" formname="customerAssociation" columns="8" state={this.state} typeName="purchaseOrderType" dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" />
+                            <Combobox fieldname="purchaseOrderType" formname="customerAssociation" columns="8" state={this.state} typeName="purchaseOrderType" dataSource={this.state.typeData} actionHandler={this.generalHandler} className="form-control" disabled={this.newProps ? false : true}/>
                         </Col>
                     </Row>
                     <br />

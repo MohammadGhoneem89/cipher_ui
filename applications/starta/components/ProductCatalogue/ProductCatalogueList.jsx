@@ -251,10 +251,10 @@ class ProductCatalogueList extends React.Component {
 
                             obj.action = [
                                 {
-                                    "label": "Edit",
-                                    "URI": [`/strata/ProductCatalogue/EDIT/${this.mode}`],
+                                    "label": "View",
+                                    "URI": [`/strata/ProductCatalogue/VIEW/${this.mode}`],
                                     "params": "_id",
-                                    "iconName": "icon-docs"
+                                    iconName: "fa fa-eye"
                                 }
                             ]
 
