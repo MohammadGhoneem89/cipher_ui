@@ -61,10 +61,10 @@ export default function Timeline(props) {
                     // check if the current action is marked done
 
                     if (parseInt(item.stage)===parseInt(index+1)){
-                        console.log("item.date ",item.date)
+                        console.log("item.date ",item)
                         badgeClass='timeline-badge green'
-                        dateValue = item.date.split(' ')[0]
-                        timeValue = item.date.split(' ')[1]
+                        // dateValue = item.date.split(' ')[0]
+                        timeValue = item.date
                          console.log("item.date 2",timeValue)
                         actionBy = item.actionBy
                     }

@@ -304,17 +304,14 @@ class OrderList extends React.Component {
             <Col col="6">
               <Label text={utils.getLabelByID('From Date')} columns="4" />
               <div className="form-group col-md-8" id="OrderSearch">
-               {this.isDateVal ? 
-               <DateControl id="fromDate" dateChange={this.onFromDateChange} dat={true}/> :
-               <DateControl id="fromDate" dateChange={this.onFromDateChange} dat={false}/>} 
+              
+               <DateControl id="fromDate" dateChange={this.onFromDateChange} fromDate={this.state.fromDate}/> 
               </div>
             </Col>
             <Col col="6">
               <Label text={utils.getLabelByID('To Date')} columns="4" />
               <div className="form-group col-md-8" >
-                {this.isDateVal ? 
-               <DateControl id="toDate" dateChange={this.onToDateChange} dat={true}/> :
-               <DateControl id="toDate" dateChange={this.onToDateChange} dat={false}/>}
+               <DateControl id="toDate" dateChange={this.onToDateChange} toDate={this.state.toDate}/>
               </div>
             </Col>
           </Row>

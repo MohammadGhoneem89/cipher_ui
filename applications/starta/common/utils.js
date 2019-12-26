@@ -152,7 +152,7 @@ export function formatAmountField(val) {
 
   }
 
-  let nStr = parseFloat(val).toFixed(2);
+  let nStr = parseFloat(val).toFixed(4);
   var x = nStr.split('.');
   var x1 = x[0];
   var x2 = x.length > 1 ? '.' + x[1] : '';

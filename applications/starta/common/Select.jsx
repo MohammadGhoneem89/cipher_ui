@@ -26,19 +26,18 @@ class Combobox extends React.Component {
     render() {
         return (
             <div className={`col-md-${this.props.columns} ${this.getColour(this.props.status)}`}>
-
-
                 <input
                     id={this.props.fieldname} name={this.props.fieldname}
-                    onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'combobox')}
                     className="form-control"
                     disabled={this.props.disabled ? true : false}
                     value={this.props.selected || _.get(this.props.state, `${this.props.formname}.${this.props.fieldname}`, "")}
-                    type="text" list={`id_${this.props.fieldname}`}
+                    type="text"
+                    list={`id_${this.props.fieldname}`}
                     autoComplete={'off'}
                     style={this.props.style ? this.props.style : {}}
                     className={this.props.className ? this.props.className : ''}
                     placeholder={this.props.placeholder ? this.props.placeholder : ''}
+                    onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'combobox', this.props.dataSource[this.props.typeName])}
                 />
                 {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <span className="help-block">{this.props.state.errors[this.props.fieldname]}</span>}
                 {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />

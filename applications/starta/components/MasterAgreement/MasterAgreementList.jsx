@@ -80,7 +80,7 @@ class MasterAgreementList extends React.Component {
             }
 
         };
-        return request
+        return request;
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.getMasterAgreement && nextProps.typeData) {
@@ -177,7 +177,7 @@ class MasterAgreementList extends React.Component {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         }
         return (
-            <div>
+            <div className="row">
 
                 <Portlet title={utils.getLabelByID("Master Agreement")}>
 
@@ -190,16 +190,7 @@ class MasterAgreementList extends React.Component {
                                 <input type="text" className="form-control" name="contractId" id="contractId" />
                             </div>
                         </div>
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Customer")}</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="customer" id="customer" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
+
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
                                 <label className="control-label">{utils.getLabelByID("Status")}</label>
@@ -218,39 +209,22 @@ class MasterAgreementList extends React.Component {
                             </div>
                         </div>
                     </div>
-
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="form-group col-md-12">
+                </Portlet>
+                <Portlet title={"Master Agreement"} actions={this.state.actions} isPermissioned={true}>
 
 
-                                <div className="btn-toolbar pull-right">
-                                    <button type="submit" className="btn green" onClick={this.formSubmit}>
-                                        {utils.getLabelByID("Search")}
-                                    </button>
-                                    <button type="clear" className="btn green" onClick={this.reset}>
-                                        {utils.getLabelByID("Clear")}
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <Portlet title={"Master Agreement"} actions={this.state.actions} isPermissioned={true}>
+                    <Table
+                        gridColumns={utils.getGridColumnByName("masterAgreement")}
+                        gridData={this.state.gridData}
+                        fontclass=""
+                        totalRecords={this.props.getPage.totalRecords}
+                        pageSize={10}
+                        pageChanged={this.pageChanged}
+                        pagination={true}
+                        activePage={this.state.page.currentPageNo}
+                    />
 
 
-                        <Table
-                            gridColumns={utils.getGridColumnByName("masterAgreement")}
-                            gridData={this.state.gridData}
-                            fontclass=""
-                            totalRecords={this.props.getPage.totalRecords}
-                            pageSize={10}
-                            pageChanged={this.pageChanged}
-                            pagination={true}
-                            activePage={this.state.page.currentPageNo}
-                        />
-                    </Portlet>
                 </Portlet>
             </div>
         );

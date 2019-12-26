@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import Label from '../../common/Lable.jsx';
 import ActionButton from '../../common/ActionButtonNew.jsx';
-import Combobox from '../../common/Select.jsx';
+import Combobox from '../../../applications/starta/common/Select.jsx';
 import CheckBox from '../../common/CheckBox.jsx';
 
 import Row from '../../common/Row.jsx';
@@ -23,9 +23,10 @@ export default function UserSetupForm(props) {
         onError,
         //changePassword, 
         containerState,
-        typeData,
-        generalHandler,
         customHandler,
+        typeData,
+        comboBoxHandler,
+        inputHandler,
         userTypeHandler,
         onChangeHandler,
         onSubmit,
@@ -88,7 +89,7 @@ export default function UserSetupForm(props) {
                             typeName="authenticationType"
                             dataSource={typeData}
                             multiple={false}
-                            actionHandler={generalHandler}
+                            actionHandler={comboBoxHandler}
                             className="form-control"
                             disabled={false}
                         />
@@ -146,7 +147,7 @@ export default function UserSetupForm(props) {
                             typeName={"entityNamesFiltered"}
                             dataSource={typeData}
                             multiple={false}
-                            actionHandler={generalHandler}
+                            actionHandler={comboBoxHandler}
                             className="form-control"
                             disabled={false}
                         />
@@ -158,7 +159,7 @@ export default function UserSetupForm(props) {
 
                 </div>
             </Row>
-
+<br/>
             <Row>
                 <div className="col-md-6">
                     <Row>
@@ -179,7 +180,7 @@ export default function UserSetupForm(props) {
                             columns='7'
                             placeholder='john.doe'
                             state={containerState}
-                            actionHandler={generalHandler}
+                            actionHandler={inputHandler}
                             className="form-control"
                             disabled={containerState.id ? true : false} />
                     </Row>
@@ -194,7 +195,7 @@ export default function UserSetupForm(props) {
                         </div>
 
                         <Input
-                            status={(containerState.errors && containerState.errors.password) ? "ERROR" : undefined}
+                         status={(containerState.errors && containerState.errors.password) ? "ERROR" : undefined}
                             errorIconStyle={{
                                 left: '365px',
                                 top: '10px',
@@ -207,7 +208,7 @@ export default function UserSetupForm(props) {
                             placeholder='Secret Key'
                             state={containerState}
                             type='password'
-                            actionHandler={generalHandler}
+                            actionHandler={inputHandler}
                             className="form-control pwd-input"
                             disabled={false} />
 
@@ -241,7 +242,7 @@ export default function UserSetupForm(props) {
                             columns='7'
                             placeholder='John'
                             state={containerState}
-                            actionHandler={generalHandler}
+                            actionHandler={inputHandler}
                             className="form-control"
                             disabled={false} />
                     </Row>
@@ -265,7 +266,7 @@ export default function UserSetupForm(props) {
                             columns='7'
                             placeholder='Doe'
                             state={containerState}
-                            actionHandler={generalHandler}
+                            actionHandler={inputHandler}
                             className="form-control"
                             disabled={false} />
                     </Row>
@@ -298,7 +299,7 @@ export default function UserSetupForm(props) {
                             columns='7'
                             placeholder='sample@org.com'
                             state={containerState}
-                            actionHandler={generalHandler}
+                            actionHandler={inputHandler}
                             className="form-control"
                             disabled={false} />
                     </Row>
@@ -322,7 +323,7 @@ export default function UserSetupForm(props) {
                             columns='7'
                             placeholder='xxx.xxx.xxx.xx'
                             state={containerState}
-                            actionHandler={generalHandler}
+                            actionHandler={inputHandler}
                             className="form-control"
                             disabled={false} />
                     </Row>
@@ -357,7 +358,7 @@ export default function UserSetupForm(props) {
                             typeName="firstScreens"
                             dataSource={typeData}
                             multiple={false}
-                            actionHandler={generalHandler}
+                            actionHandler={comboBoxHandler}
                             className="form-control"
                             disabled={false}
                         />
@@ -371,7 +372,7 @@ export default function UserSetupForm(props) {
                         value={_.get(containerState, 'userDetail.isActive', false)}
                         columns='1'
                         style={{}}
-                        actionHandler={generalHandler}
+                        actionHandler={inputHandler}
                         disabled={false}
                     />
                 </div>
@@ -471,7 +472,7 @@ export default function UserSetupForm(props) {
                                     }
                                 }
                                 multiple={false}
-                                actionHandler={generalHandler}
+                                actionHandler={comboBoxHandler}
                                 className="form-control"
                                 disabled={false}
                             />
@@ -493,7 +494,7 @@ export default function UserSetupForm(props) {
                                 typeName={"quorrumData"}
                                 dataSource={typeData}
                                 multiple={false}
-                                actionHandler={generalHandler}
+                                actionHandler={comboBoxHandler}
                                 className="form-control"
                                 disabled={false}
                             />

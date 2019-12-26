@@ -107,8 +107,9 @@ class OrderDetailContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     sessionStorage.selectedChannel="stratachannel"
     sessionStorage.selectedNetwork= "strata"
-    console.log("sessionStorage ",sessionStorage)
+    
     if (nextProps.orderDetail && nextProps.orderDetail.subOrder && nextProps.typeData) {
+      console.log("activities ",nextProps.orderDetail.activities)
       this.setState({
         subOrder: this.formatData(nextProps.orderDetail.subOrder)
       });
@@ -171,7 +172,9 @@ class OrderDetailContainer extends React.Component {
   };
   errorHandler(event) {
     event.target.src =
-      "http://localhost:9086/images/1f31e930-e0d5-11e7-88e2-f718f78167e9.png";
+      // "http://localhost:9086/images/1f31e930-e0d5-11e7-88e2-f718f78167e9.png";
+      constants.baseUrl + "/images/image-user.png";
+      
   }
   redirectToList = () => {
     browserHistory.push(`/strata/viewOrder/${this.props.orderID}/${this.props.customerID}`);

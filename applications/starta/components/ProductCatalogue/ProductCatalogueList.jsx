@@ -15,7 +15,7 @@ class ProductCatalogueList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.mode='';
+        this.mode = '';
         this.state = {
             actions: [],
             upload: false,
@@ -36,7 +36,7 @@ class ProductCatalogueList extends React.Component {
         this.item = '';
         this.formSubmit = this.formSubmit.bind(this);
         this.pageChanged = this.pageChanged.bind(this);
-        this.updateURL=this.updateURL.bind(this)
+        this.updateURL = this.updateURL.bind(this)
     }
 
     getRequest = () => {
@@ -87,20 +87,20 @@ class ProductCatalogueList extends React.Component {
         this.props.actions.generalProcess(constants.getItemCatalogue, request);
     };
 
-    updateURL(){
-        console.log(this.upload , this.download)
+    updateURL() {
+        console.log(this.upload, this.download)
         if (this.download && !this.upload) {
             // this.mode = "EDITONLY"
             this.mode = "DOWNLOAD"
         }
-         if (this.upload && !this.download) {
+        if (this.upload && !this.download) {
             // this.mode = "EDIT"
             this.mode = "UPLOAD"
         }
         if (this.upload && this.download) {
             this.mode = "UPSERT"
         }
-        if(!this.upload && !this.download){
+        if (!this.upload && !this.download) {
             this.mode = "DISABLE"
         }
     }
@@ -113,7 +113,7 @@ class ProductCatalogueList extends React.Component {
                     this.upload = true
                 }
                 if (nextProps.gridActions[0].download == element.value) {
-                    this.download=true
+                    this.download = true
                 }
             });
             this.setState({
@@ -163,7 +163,7 @@ class ProductCatalogueList extends React.Component {
     updateState = (data) => {
         this.setState(data);
     }
-    
+
     render() {
         console.log("DOWNLOAD >> ", this.download ? this.download : false)
         console.log("upload >> ", this.upload ? this.upload : false)
@@ -247,12 +247,25 @@ class ProductCatalogueList extends React.Component {
 
                     isPermissioned={true}>
                     {
-                        this.state.gridData.map((obj) => {
+                        sessionStorage.orgType == 'CUSTOMER' && this.state.gridData.map((obj) => {
 
                             obj.action = [
                                 {
                                     "label": "View",
                                     "URI": [`/strata/ProductCatalogue/VIEW/${this.mode}`],
+                                    "params": "_id",
+                                    iconName: "fa fa-eye"
+                                }
+                            ]
+
+                        })
+                    }{
+                        sessionStorage.orgType == 'SUPPLIER' && this.state.gridData.map((obj) => {
+
+                            obj.action = [
+                                {
+                                    "label": "Edit",
+                                    "URI": [`/strata/ProductCatalogue/EDIT/${this.mode}`],
                                     "params": "_id",
                                     iconName: "fa fa-eye"
                                 }

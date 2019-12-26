@@ -7,7 +7,7 @@ import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import _ from 'lodash';
-
+import * as toaster from "../../common/toaster.js";
 import UserSetupForm from './UserSetupForm.jsx'
 import Portlet from '../../common/Portlet.jsx';
 
@@ -26,23 +26,24 @@ class UserSetupContainer extends Component {
             errors: {},
             groupIndex: 0
         };
+        this.IsValid = true;
     }
 
-    addDefaultSrc = e => e.target.src = "/assets/Resources/images/default.png";
+    addDefaultSrc = e => e.target.src = constants.baseUrl + "/images/image-user.png";
 
     imgDiv() {
         return (
             <div className="col-md-12" style={{ textAlign: "center" }}>
                 <img
                     id="UserProfilePic"
-                    src={this.state.userDetail.profilePic ? constants.baseUrl + this.state.userDetail.profilePic : "/assets/Resources/images/default.png"}
+                    src={this.state.userDetail.profilePic ? constants.baseUrl + this.state.userDetail.profilePic : constants.baseUrl + "/images/image-user.png"}
                     onError={this.addDefaultSrc}
                     className="img-responsive img-thumbnail" alt="Profile Image" width='190px'
                     height='190px'
                     ref={input => this.profilePic = input}
                 />
                 <br />
-                <span
+                {/* <span
                     className="label label-primary"
                     style={{ cursor: "pointer" }}
                     onClick={() => {
@@ -51,7 +52,17 @@ class UserSetupContainer extends Component {
                     }}
                 >
                     {"Upload Image"}
-                </span>
+                </span> */}
+
+                <button
+                    className="btn green"
+                    style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
+                    onClick={() => {
+                        this.profilePicUploader.click();
+                    }}
+                >
+                    {"Upload Image"}
+                </button>
 
                 <input
                     name="profilePicUploader"
@@ -130,17 +141,17 @@ class UserSetupContainer extends Component {
                 ];
             }
             let firstScreen = ''
-            if (nextProps.firstScreens){
+            if (nextProps.firstScreens) {
                 nextProps.firstScreens.forEach(obj => {
                     if (obj.url === nextProps.userDetail.firstScreen) {
                         firstScreen = obj.value
                     }
                 });
             }
-            
+
 
             let groups = [...nextProps.userDetail.groups]
-            
+
             console.log(this.props.params.userID, ' : User ID')
 
             let hypUser = nextProps.userDetail.hypUser
@@ -218,6 +229,10 @@ class UserSetupContainer extends Component {
 
         // Validation Input
         let errors = {}
+        if (!this.IsValid) {
+            toaster.showToast('Invalid value', 'ERROR');
+            return;
+        }
         if (!this.state.userDetail.userType) {
             errors.userType = 'Field is Required'
         }
@@ -254,7 +269,7 @@ class UserSetupContainer extends Component {
         if (this.state.userDetail.userType === 'Human' && !this.state.userDetail.firstScreen) {
             errors.firstScreen = 'Field is Required'
         }
-
+        
         if (Object.keys(errors).length > 0) {
             console.log(errors, ' errors found')
             window.scrollTo(0, 0);
@@ -263,6 +278,7 @@ class UserSetupContainer extends Component {
             })
             return
         }
+       
 
 
         let firstScreen = ''
@@ -279,21 +295,21 @@ class UserSetupContainer extends Component {
         let network = hypUserArray && hypUserArray.length ? hypUserArray.join('-') : hypUserArray[0];
 
         if (this.props.params.userID) {
-            this.setState({
-                isLoading: true
-            })
+            // this.setState({
+            //     isLoading: true
+            // })
             window.scrollTo(0, 0);
-            const checkedGroups =  this.state.userDetail.groups.filter((group,index)=>{
+            const checkedGroups = this.state.userDetail.groups.filter((group, index) => {
                 if (this.state.userDetail.userType === 'Human' && group.type != 'API') {
                     return true
                 } else if (this.state.userDetail.userType === 'API' && group.type === 'API') {
                     return true
                 }
                 return false
-            }).filter((group,index) => {
-                return index===this.state.groupIndex
+            }).filter((group, index) => {
+                return index === this.state.groupIndex
             })
-            
+
             this.props.actions.generalAjxProcess(constants.userUpdate,
                 requestCreator.createUserInsertRequest({
                     ...this.state.userDetail,
@@ -312,26 +328,26 @@ class UserSetupContainer extends Component {
                         },
                         isLoading: false
                     })
-                    console.log(err, ' :err')
+                    console.log(err, ' :err PARAMS USERID')
                     window.scrollTo(0, 0);
                 })
 
         } else {
-            this.setState({
-                isLoading: true
-            })
+            // this.setState({
+            //     isLoading: true
+            // })
             window.scrollTo(0, 0);
-            const checkedGroups =  this.state.userDetail.groups.filter((group,index)=>{
+            const checkedGroups = this.state.userDetail.groups.filter((group, index) => {
                 if (this.state.userDetail.userType === 'Human' && group.type != 'API') {
                     return true
                 } else if (this.state.userDetail.userType === 'API' && group.type === 'API') {
                     return true
                 }
                 return false
-            }).filter((group,index) => {
-                return index===this.state.groupIndex
+            }).filter((group, index) => {
+                return index === this.state.groupIndex
             })
-            
+
             this.props.actions.generalAjxProcess(constants.userInsert,
                 requestCreator.createUserInsertRequest({
                     ...this.state.userDetail,
@@ -350,7 +366,7 @@ class UserSetupContainer extends Component {
                         },
                         isLoading: false
                     })
-                    console.log(err, ' :err')
+                    console.log(err, ' :err NEW USER')
                     window.scrollTo(0, 0);
                 })
 
@@ -389,19 +405,8 @@ class UserSetupContainer extends Component {
         }
         return arr;
     };
-
-    userTypeHandler(formname, fieldname, type, e) {
-        let value = e.target.value;
-        let formdata = _.get(this.state, formname, {});
-        _.set(formdata, e.target.name, value);
-
-        this.setState({
-            [formname]: formdata,
-            groupIndex: 0
-        });
-    };
-
-    customHandler(formname, fieldname, type, e) {
+    customHandler(formname, fieldname, type, typedata, e) {
+        console.log("customHandler")
         let value = e.target.value;
         let formdata = _.get(this.state, formname, {});
         _.set(formdata, e.target.name, value);
@@ -422,12 +427,78 @@ class UserSetupContainer extends Component {
             [formname]: formdata
         }
         );
+
+        let typeList = typedata ? typedata : [{ label: "", value: "" }];
+        const typeValue = typeList.map(data => data.value);
+        if (value) {
+            if (!typeValue.includes(value)) {
+                toaster.showToast(`Invalid value`, "ERROR");
+                this.IsValid = false;
+                return;
+            }
+        }
+        this.IsValid = true;
     };
+    userTypeHandler(formname, fieldname, type, typedata, e) {
+        console.log("formname, fieldname, type, typedata, e", formname, fieldname, type, typedata, e)
+        let value = e.target.value;
+        let formdata = _.get(this.state, formname, {});
+        _.set(formdata, e.target.name, value);
+
+        this.setState({
+            [formname]: formdata,
+            groupIndex: 0
+        });
+        let typeList = typedata ? typedata : [{ label: "", value: "" }];
+        const typeValue = typeList.map(data => data.value);
+        if (value) {
+            if (!typeValue.includes(value)) {
+                toaster.showToast(`Invalid value`, "ERROR");
+                this.IsValid = false;
+                return;
+            }
+        }
+        this.IsValid = true;
+    };
+
+
+
+
+    comboBoxHandler = (formname, fieldname, type, typedata, e) => {
+        console.log("formname, fieldname, type, typedata, e", formname, fieldname, type, typedata, e)
+        let value = e.target.value;
+        let formdata = _.get(this.state, formname, {});
+        _.set(formdata, e.target.name, value);
+        this.setState({
+            [formname]: formdata
+        });
+
+        let typeList = typedata ? typedata : [{ label: "", value: "" }];
+        const typeValue = typeList.map(data => data.value);
+        if (value) {
+            if (!typeValue.includes(value)) {
+                toaster.showToast(`Invalid value`, "ERROR");
+                this.IsValid = false;
+                return;
+            }
+        }
+        this.IsValid = true;
+    }
+
+    inputHandler = (formname, fieldname, type, e) => {
+        console.log("formname, fieldname, type, e", formname, fieldname, type, e)
+        let value = e.target.value;
+        let formdata = _.get(this.state, formname, {});
+        _.set(formdata, e.target.name, value);
+        this.setState({
+            [formname]: formdata
+        });
+    }
 
     onChange(e) {
 
         let groups = [...this.state.userDetail.groups]
-        
+
         // clear all groups if a new is going to be selected to make it a combo box instead of checkbox
         groups.map(item => {
             item.isAssigned = false
@@ -437,7 +508,7 @@ class UserSetupContainer extends Component {
 
         let groupIndex = -1;
 
-        
+
         groups.filter((item, index) => {
             if (this.state.userDetail.userType === 'Human' && item.type != 'API') {
                 return true
@@ -445,8 +516,8 @@ class UserSetupContainer extends Component {
                 return true
             }
             return false
-        }).forEach((item,index)=>{
-            if (parseInt(e.target.name)===index){
+        }).forEach((item, index) => {
+            if (parseInt(e.target.name) === index) {
                 groupIndex = index
             }
         })
@@ -512,8 +583,9 @@ class UserSetupContainer extends Component {
                         onError={this.addDefaultSrc}
                         typeData={this.state.typeData}
                         containerState={this.state}
-                        generalHandler={gen.generalHandler.bind(this)}
                         customHandler={this.customHandler.bind(this)}
+                        comboBoxHandler={this.comboBoxHandler.bind(this)}
+                        inputHandler={this.inputHandler.bind(this)}
                         userTypeHandler={this.userTypeHandler.bind(this)}
                         onChangeHandler={this.onChange.bind(this)}
                         onSubmit={this.onSubmit.bind(this)}
