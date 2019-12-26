@@ -21,7 +21,7 @@ import CustomerDashboard from "./components/customerDashboard.jsx";
 import Cipher from "./components/Cipher.jsx";
 import Suborder from "./components/suborder/SubOrderDetail.jsx";
 import SuborderList from "./components/suborder/SubOrderList.jsx";
-import changePassword from '../../core/components/AuthenticationScreens/changePassword.jsx';
+import ChangePassword from '../../core/components/AuthenticationScreens/changePassword.jsx';
 let authRoutes = < div >
     <
         Route path="/strata/oneTimeOrder"
@@ -32,7 +32,8 @@ let authRoutes = < div >
     /> <
         Route path="/supplier"
         component={SupplierDashboard}
-    /> <
+    /> 
+    <
         Route path="strata/ProductCatalogue/ADD/:mode"
         component={ProductCatalogue}
     /> <
@@ -67,23 +68,24 @@ let authRoutes = < div >
         component={OrderDetails}
     />
     <
-        Route path="/strata/changePassword/:orgType"
-        component={changePassword}
-    />
-    <
         Route path="/strata/subOrder/:id"
         component={Suborder}
     /> <
         Route path="/strata/subOrderList"
         component={SuborderList}
-    /> < /
-div > ;
+    />
+    < /div > ;
     
 let unAuthRoutes = < div >
         <
             Route path="/strata/Locked"
             component={Locked}
-        /> <
+        />
+        <
+        Route path="/strata/changePassword/:orgType"
+        component={ChangePassword}
+    />  
+        <
             Route path="/strata/login"
             component={Login}
         /> <

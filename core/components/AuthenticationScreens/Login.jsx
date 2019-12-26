@@ -22,7 +22,7 @@ class Login extends React.Component {
     super();
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    sessionStorage.lang = EN;
+    sessionStorage.lang = "EN";
   }
 
   check(form) {
@@ -99,12 +99,12 @@ class Login extends React.Component {
         case "AR":
             var eng = $('#engAnchor').removeClass('actv');
             var arb = $('#arbAnchor').addClass('actv');
-            sessionStorage.lang = AR;
+            sessionStorage.lang = "AR";
             break;
         case "EN":
             var eng = $('#arbAnchor').removeClass('actv');
             var arb = $('#engAnchor').addClass('actv');
-            sessionStorage.lang = EN;
+            sessionStorage.lang = "EN";
             break;
 
     }
@@ -290,25 +290,6 @@ class Login extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                {/* <div className="form-group">
-                  <label className="control-label visible-ie8 visible-ie9">Username</label>
-                  <div className="input-icon">
-                    <i className="fa fa-user"></i>
-                    <input className="form-control placeholder-no-fix" type="text" id="username" autoComplete="off"
-                      placeholder="Username" name="username" /></div>
-                </div>
-                <div className="form-group">
-                  <label className="control-label visible-ie8 visible-ie9">Password</label>
-                  <div className="input-icon"><i className="fa fa-lock"></i>
-
-                    <i className="fa fa-eye" aria-hidden="true"></i>
-                    <input type="password" className="form-control placeholder-no-fix" id="password" autoComplete="off"
-                      placeholder="Password" name="password" />
-                  </div>
-                </div>
-                <div className="form-actions"><a href="javascript:;" onClick={this.check.bind(this)}
-                  className="btn green btn-block uppercase" disabled={isLocked} > Login </a>
-                </div> */}
               </div>
             </div>
             <br /><br />
