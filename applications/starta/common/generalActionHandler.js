@@ -1,4 +1,4 @@
-export function generalHandler(formname, fieldname, type, typedata, e) {
+export function generalHandler(formname, fieldname, type, e) {
     // console.log('type', type, e);
     if (type == "textbox" || type == "radiolist" || type == "combobox" || type == "textarea") {
         let value = e.target.value;

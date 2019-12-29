@@ -38,6 +38,7 @@ class ProductCatalogue extends React.Component {
       readOnly: false
     };
     this.validate = false;
+    this.IsValid = true;
     this.generalHandler = gen.generalHandler.bind(this);
     this.insertJson = this.insertJson.bind(this);
     this.stringToOtherTypes = this.stringToOtherTypes.bind(this);
@@ -142,7 +143,25 @@ class ProductCatalogue extends React.Component {
     );
     window.scrollTo(0, 0);
   }
+  generalHandlerDropdown = (formname, fieldname, type, typedata, e) => {
+    let value = e.target.value;
+    let formdata = _.get(this.state, formname, {});
+    _.set(formdata, e.target.name, value);
+    this.setState({
+      [formname]: formdata
+    });
 
+    let typeList = typedata ? typedata : [{ label: "", value: "" }];
+    const typeValue = typeList.map(data => data.value);
+    if (value) {
+      if (!typeValue.includes(value)) {
+        toaster.showToast(`Invalid value`, "ERROR");
+        this.IsValid = false;
+        return;
+      }
+    }
+    this.IsValid = true;
+  }
   getItemDetail = id => {
     this.props.actions.generalProcess(constants.getItemCatalogue, {
       body: {
@@ -231,7 +250,7 @@ class ProductCatalogue extends React.Component {
       return;
     }
 
-    if (this.validate) {
+    if (this.validate && this.IsValid) {
       // load until redirection
       this.setState({
         isLoading: true
@@ -273,6 +292,9 @@ class ProductCatalogue extends React.Component {
               : this.redirectToList();
           });
       }
+    } else {
+      toaster.showToast("Invalid value", "ERROR");
+      return;
     }
   }
 
@@ -511,7 +533,7 @@ class ProductCatalogue extends React.Component {
               typeName="classification"
               dataSource={this.state.typeData}
               multiple={false}
-              actionHandler={this.generalHandler}
+              actionHandler={this.generalHandlerDropdown}
               className="form-control"
               disabled={false}
             />
@@ -528,7 +550,7 @@ class ProductCatalogue extends React.Component {
               typeName="material"
               dataSource={this.state.typeData}
               multiple={false}
-              actionHandler={this.generalHandler}
+              actionHandler={this.generalHandlerDropdown}
               className="form-control"
               disabled={false}
             />
