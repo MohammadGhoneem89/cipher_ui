@@ -34,7 +34,8 @@ class ProductCatalogue extends React.Component {
       addProduct: {},
       productImage: {},
       documents: [],
-      typeData: {}
+      typeData: {},
+      readOnly: false
     };
     this.validate = false;
     this.generalHandler = gen.generalHandler.bind(this);
@@ -64,23 +65,32 @@ class ProductCatalogue extends React.Component {
     if (
       nextProps.getItemCatalogue.length > 0 &&
       nextProps.typeData &&
-      nextProps.params.id && (nextProps.upload || nextProps.download || nextProps.upsert || nextProps.disable)
+      nextProps.params.id
     ) {
-      console.log(nextProps.upload, nextProps.download, nextProps.upsert, nextProps.disable, "props recieved");
-      if ((nextProps.upload || nextProps.upsert) && !nextProps.download) {
-        this.upload = true;
-      }
-      if ((nextProps.download || nextProps.upsert) && !nextProps.upload) {
+      //&& (nextProps.upload || nextProps.download || nextProps.upsert || nextProps.disable)
+      if (nextProps.actionURI === 'EDIT') {
+        console.log(nextProps.upload, nextProps.download, nextProps.upsert, nextProps.disable, nextProps.actionURI, "props recieved");
+        if ((nextProps.upload || nextProps.upsert) && !nextProps.download) {
+          this.upload = true;
+        }
+        if ((nextProps.download || nextProps.upsert) && !nextProps.upload) {
+          this.download = true;
+        }
+        if (nextProps.disable && !nextProps.upload && !nextProps.download && !nextProps.upsert) {
+          this.upload = false;
+          this.download = false;
+        }
+        if (!nextProps.upload && !nextProps.disable && !nextProps.upsert && !nextProps.download) {
+          this.upload = false;
+          this.download = false;
+          this.document = false;
+        }
+
+      } else if (nextProps.actionURI === 'VIEW') {
         this.download = true;
-      }
-      if (nextProps.disable && !nextProps.upload && !nextProps.download && !nextProps.upsert) {
-        this.upload = false;
-        this.download = false;
-      }
-      if (!nextProps.upload && !nextProps.disable && !nextProps.upsert && !nextProps.download) {
-        this.upload = false;
-        this.download = false;
-        this.document = false;
+        this.setState({
+          readOnly: true
+        });
       }
       // Insert Attachments into documents
       let documents = [];
@@ -111,6 +121,7 @@ class ProductCatalogue extends React.Component {
         documents: [...documents],
         addProduct: nextProps.getItemCatalogue[0],
         typeData: nextProps.typeData,
+
         isLoading: false
       });
     }
@@ -357,302 +368,302 @@ class ProductCatalogue extends React.Component {
 
             <button
               className="btn green"
-              style={{ cursor: "pointer", padding:'7px',fontSize:'12px',borderRadius:'0'}}
+              style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
               onClick={() => {
-              this.ProductImgUploader.click();
+                this.ProductImgUploader.click();
 
-            }} disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
+              }} disabled={false}
             >
               {utils.getLabelByID("Upload Image")}
             </button>
 
-          <input
-            name="ProductImgUploader"
-            id="ProductImgUploader"
-            type="file"
-            ref={input => (this.ProductImgUploader = input)}
-            onChange={e => {
-              let reader = new FileReader();
-              let files = e.target.files;
-              let _this = this;
-              if (files && files[0]) {
-                reader.onload = function (fileReader) {
-                  _this.productImage.setAttribute(
-                    "src",
-                    fileReader.target.result
-                  );
+            <input
+              name="ProductImgUploader"
+              id="ProductImgUploader"
+              type="file"
+              ref={input => (this.ProductImgUploader = input)}
+              onChange={e => {
+                let reader = new FileReader();
+                let files = e.target.files;
+                let _this = this;
+                if (files && files[0]) {
+                  reader.onload = function (fileReader) {
+                    _this.productImage.setAttribute(
+                      "src",
+                      fileReader.target.result
+                    );
 
-                  let data = new FormData();
-                  data.append("file", files[0]);
+                    let data = new FormData();
+                    data.append("file", files[0]);
 
-                  window
-                    .fetch(coreConstants.ipfs, {
-                      method: "POST",
-                      body: data
-                    })
-                    .then(checkStatus)
-                    .then(parseJSON)
-                    .then(item => {
-                      _this.setState({
-                        productImage: {
-                          name: item.name,
-                          type: item.type,
-                          hash: item.hash,
-                          path: item.path
-                        }
+                    window
+                      .fetch(coreConstants.ipfs, {
+                        method: "POST",
+                        body: data
+                      })
+                      .then(checkStatus)
+                      .then(parseJSON)
+                      .then(item => {
+                        _this.setState({
+                          productImage: {
+                            name: item.name,
+                            type: item.type,
+                            hash: item.hash,
+                            path: item.path
+                          }
+                        });
+
+                        console.log(
+                          "request succeeded with JSON response",
+                          item
+                        );
+                      })
+                      .catch(function (error) {
+                        console.log("request failed", error);
                       });
+                  };
 
-                      console.log(
-                        "request succeeded with JSON response",
-                        item
-                      );
-                    })
-                    .catch(function (error) {
-                      console.log("request failed", error);
-                    });
-                };
+                  reader.readAsDataURL(files[0]);
 
-                reader.readAsDataURL(files[0]);
+                  function checkStatus(response) {
+                    if (response.status >= 200 && response.status < 300) {
+                      return response;
+                    } else {
+                      let error = new Error(response.statusText);
+                      error.response = response;
+                      throw error;
+                    }
+                  }
 
-                function checkStatus(response) {
-                  if (response.status >= 200 && response.status < 300) {
-                    return response;
-                  } else {
-                    let error = new Error(response.statusText);
-                    error.response = response;
-                    throw error;
+                  function parseJSON(response) {
+                    return response.json();
                   }
                 }
-
-                function parseJSON(response) {
-                  return response.json();
-                }
-              }
-            }}
-          />
+              }}
+            />
           </div>
-        <Row>
-          <Label text="Item Code " columns="1" required={true} />
-          <Input
-            fieldname="itemCode"
-            formname="addProduct"
-            columns="5"
-            state={this.state}
-            actionHandler={this.generalHandler}
-            className="form-control"
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-          <Label text="Name " columns="1" required={true} />
-          <Input
-            fieldname="name"
-            formname="addProduct"
-            columns="5"
-            state={this.state}
-            actionHandler={this.generalHandler}
-            className="form-control"
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-        </Row>
-        <br />
-        <Row>
-          <Label text="Lead Time " columns="1" required={true} />
-          <Input
-            fieldname="leadTime"
-            formname="addProduct"
-            columns="5"
-            state={this.state}
-            actionHandler={this.generalHandler}
-            className="form-control"
-            type="number"
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-          <Label text="Print Time " columns="1" required={true} />
-          <Input
-            fieldname="printTime"
-            formname="addProduct"
-            columns="5"
-            state={this.state}
-            actionHandler={this.generalHandler}
-            className="form-control"
-            type="number"
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-        </Row>
-        <br />
-        <Row>
-          <Label text="Part Num " columns="1" required={true} />
-          <Input
-            fieldname="partNumber"
-            formname="addProduct"
-            columns="5"
-            state={this.state}
-            actionHandler={this.generalHandler}
-            className="form-control"
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-          <Label text="Classification " columns="1" required={true} />
-          <Combobox
-            fieldname="classification"
-            formname="addProduct"
-            columns="5"
-            style={{}}
-            state={this.state}
-            typeName="classification"
-            dataSource={this.state.typeData}
-            multiple={false}
-            actionHandler={this.generalHandler}
-            className="form-control"
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-        </Row>
-        <br />
-        <Row>
-          <Label text="Material " columns="1" required={true} />
-          <Combobox
-            fieldname="material"
-            formname="addProduct"
-            columns="5"
-            style={{}}
-            state={this.state}
-            typeName="material"
-            dataSource={this.state.typeData}
-            multiple={false}
-            actionHandler={this.generalHandler}
-            className="form-control"
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-          <Label text="Color " columns="1" />
-          <CheckList
-            fieldname="color"
-            formname="addProduct"
-            columns="5"
-            style={{}}
-            state={this.state}
-            typeName="color"
-            dataSource={this.state.typeData}
-            checked={
-              Object.keys(this.state.addProduct).length > 0
-                ? this.state.addProduct.color
-                : this.state
-            }
-            actionHandler={this.onWorkOnDataChange}
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />{" "}
-        </Row>
-        <br />
-        <Row>
-          <Label text="Model Vol " columns="1" required={true} />
-          <Input
-            fieldname="modelVolume"
-            formname="addProduct"
-            columns="5"
-            state={this.state}
-            actionHandler={this.generalHandler}
-            className="form-control"
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-          <Label text="Support Vol " columns="1" required={true} />
-          <Input
-            fieldname="supportVolume"
-            formname="addProduct"
-            columns="5"
-            state={this.state}
-            actionHandler={this.generalHandler}
-            className="form-control"
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-        </Row>
-        <br />
-        <Row>
-          <Label text="Price  " columns="1" required={true} />
-          <Input
-            fieldname="price"
-            formname="addProduct"
-            columns="5"
-            state={this.state}
-            actionHandler={this.generalHandler}
-            className="form-control"
-            type="number"
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-        </Row>
-        <br />
-        <Row>
-          <Label text="Version  " columns="1" />
-          <Input
-            fieldname="version"
-            formname="addProduct"
-            columns="5"
-            state={this.state}
-            actionHandler={this.generalHandler}
-            className="form-control"
-            type="text"
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
+          <Row>
+            <Label text="Item Code " columns="1" required={true} />
+            <Input
+              fieldname="itemCode"
+              formname="addProduct"
+              columns="5"
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              disabled={false}
+            />
+            <Label text="Name " columns="1" required={true} />
+            <Input
+              fieldname="name"
+              formname="addProduct"
+              columns="5"
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              disabled={false}
+            />
+          </Row>
+          <br />
+          <Row>
+            <Label text="Lead Time " columns="1" required={true} />
+            <Input
+              fieldname="leadTime"
+              formname="addProduct"
+              columns="5"
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              type="number"
+              disabled={false}
+            />
+            <Label text="Print Time " columns="1" required={true} />
+            <Input
+              fieldname="printTime"
+              formname="addProduct"
+              columns="5"
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              type="number"
+              disabled={false}
+            />
+          </Row>
+          <br />
+          <Row>
+            <Label text="Part Num " columns="1" required={true} />
+            <Input
+              fieldname="partNumber"
+              formname="addProduct"
+              columns="5"
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              disabled={false}
+            />
+            <Label text="Classification " columns="1" required={true} />
+            <Combobox
+              fieldname="classification"
+              formname="addProduct"
+              columns="5"
+              style={{}}
+              state={this.state}
+              typeName="classification"
+              dataSource={this.state.typeData}
+              multiple={false}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              disabled={false}
+            />
+          </Row>
+          <br />
+          <Row>
+            <Label text="Material " columns="1" required={true} />
+            <Combobox
+              fieldname="material"
+              formname="addProduct"
+              columns="5"
+              style={{}}
+              state={this.state}
+              typeName="material"
+              dataSource={this.state.typeData}
+              multiple={false}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              disabled={false}
+            />
+            <Label text="Color " columns="1" />
+            <CheckList
+              fieldname="color"
+              formname="addProduct"
+              columns="5"
+              style={{}}
+              state={this.state}
+              typeName="color"
+              dataSource={this.state.typeData}
+              checked={
+                Object.keys(this.state.addProduct).length > 0
+                  ? this.state.addProduct.color
+                  : this.state
+              }
+              actionHandler={this.onWorkOnDataChange}
+              disabled={false}
+            />{" "}
+          </Row>
+          <br />
+          <Row>
+            <Label text="Model Vol " columns="1" required={true} />
+            <Input
+              fieldname="modelVolume"
+              formname="addProduct"
+              columns="5"
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              disabled={false}
+            />
+            <Label text="Support Vol " columns="1" required={true} />
+            <Input
+              fieldname="supportVolume"
+              formname="addProduct"
+              columns="5"
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              disabled={false}
+            />
+          </Row>
+          <br />
+          <Row>
+            <Label text="Price  " columns="1" required={true} />
+            <Input
+              fieldname="price"
+              formname="addProduct"
+              columns="5"
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              type="number"
+              disabled={false}
+            />
+          </Row>
+          <br />
+          <Row>
+            <Label text="Version  " columns="1" />
+            <Input
+              fieldname="version"
+              formname="addProduct"
+              columns="5"
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              type="text"
+              disabled={false}
+            />
 
-          <Label text="Batch Size  " columns="1" />
+            <Label text="Batch Size  " columns="1" />
 
-          <Input
-            fieldname="batchSize"
-            formname="addProduct"
-            columns="5"
-            state={this.state}
-            actionHandler={this.generalHandler}
-            className="form-control"
-            type="number"
-            min="1"
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-        </Row>
-        <br />
-        <Row>
-          <Label text="Description  " columns="1" required={true} />
-          <Textarea
-            fieldname="description"
-            formname="addProduct"
-            rows="5"
-            state={this.state}
-            columns="7"
-            style={{ color: "blue" }}
-            actionHandler={this.generalHandler}
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-          <Label text="Is Active" columns="1" />
-          <CheckBox
-            fieldname="itemStatus"
-            formname="addProduct"
-            value={this.state.addProduct && this.state.addProduct.itemStatus}
-            columns="3"
-            style={{}}
-            actionHandler={this.generalHandler}
-            disabled={sessionStorage.orgType == 'CUSTOMER' ? true : false}
-          />
-        </Row>
-        <br />
-        <Row>
-          <Document
-            initState={this.state}
-            updateState={this.updateState}
-            showDropzone={this.upload}
-            getParentState={this.getParentState}
-            allowedFileType=".jpg, .jpeg, .png, .bmp, .tiff, .svg, .gif, .pdf, .docx, .doc, .xlsb, .cmb, .stl, .xml , .csv , .xls , .xlsx"
-            acceptedFiles="Files to be uploaded with any image extension or *.pdf, *.docx, *.doc, *.xlsb, *.cmb, *.stl, *.xml , *.csv , *.xls , *.xlsx"
-            fileUploadURL={constants.ipfs}
-            showUpZone={this.download}
-          />
-        </Row>
-        <br />
-        <button
-          type="submit"
-          className="btn green"
-          style={{ float: "right" }}
-          onClick={this.insertJson}
-        >
-          {utils.getLabelByID("Save")}
-        </button>
-          { "  " }
-      <br />
-        <br />
+            <Input
+              fieldname="batchSize"
+              formname="addProduct"
+              columns="5"
+              state={this.state}
+              actionHandler={this.generalHandler}
+              className="form-control"
+              type="number"
+              min="1"
+              disabled={false}
+            />
+          </Row>
+          <br />
+          <Row>
+            <Label text="Description  " columns="1" required={true} />
+            <Textarea
+              fieldname="description"
+              formname="addProduct"
+              rows="5"
+              state={this.state}
+              columns="7"
+              style={{ color: "blue" }}
+              actionHandler={this.generalHandler}
+              disabled={false}
+            />
+            <Label text="Is Active" columns="1" />
+            <CheckBox
+              fieldname="itemStatus"
+              formname="addProduct"
+              value={this.state.addProduct && this.state.addProduct.itemStatus}
+              columns="3"
+              style={{}}
+              actionHandler={this.generalHandler}
+              disabled={false}
+            />
+          </Row>
+          <br />
+          <Row>
+            <Document
+              initState={this.state}
+              updateState={this.updateState}
+              showDropzone={this.upload}
+              getParentState={this.getParentState}
+              allowedFileType=".jpg, .jpeg, .png, .bmp, .tiff, .svg, .gif, .pdf, .docx, .doc, .xlsb, .cmb, .stl, .xml , .csv , .xls , .xlsx"
+              acceptedFiles="Files to be uploaded with any image extension or *.pdf, *.docx, *.doc, *.xlsb, *.cmb, *.stl, *.xml , *.csv , *.xls , *.xlsx"
+              fileUploadURL={constants.ipfs}
+              showUpZone={this.download}
+            />
+          </Row>
+          <br />
+          {!this.state.readOnly && <button
+            type="submit"
+            className="btn green"
+            style={{ float: "right" }}
+            onClick={this.insertJson}
+          >
+            {utils.getLabelByID("Save")}
+          </button>}
+          {"  "}
+          <br />
+          <br />
         </Portlet >
       );
     } else return <div className="loader">{utils.getLabelByID("Loading")}</div>;
@@ -670,10 +681,11 @@ function mapStateToProps(state, ownProps) {
       []
     ),
     typeData: state.app.typeData.data,
-    upload: ownProps.params.mode === "UPLOAD",
-    download: ownProps.params.mode === "DOWNLOAD",
-    upsert: ownProps.params.mode === "UPSERT",
-    disable: ownProps.params.mode === "DISABLE"
+    actionURI: ownProps.params.action === "VIEW" ? "VIEW" : "EDIT",
+    upload: ownProps.params.mode === "UPLOAD" ? "UPLOAD" : "",
+    download: ownProps.params.mode === "DOWNLOAD" ? "DOWNLOAD" : "",
+    upsert: ownProps.params.mode === "UPSERT" ? "UPSERT" : "",
+    disable: ownProps.params.mode === "DISABLE" ? "DISABLED" : ""
   };
 }
 

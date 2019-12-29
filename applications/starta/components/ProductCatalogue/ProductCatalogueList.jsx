@@ -36,7 +36,9 @@ class ProductCatalogueList extends React.Component {
         this.item = '';
         this.formSubmit = this.formSubmit.bind(this);
         this.pageChanged = this.pageChanged.bind(this);
-        this.updateURL = this.updateURL.bind(this)
+        this.updateMode = this.updateMode.bind(this);
+        this.upload = false;
+        this.download = false;
     }
 
     getRequest = () => {
@@ -87,41 +89,58 @@ class ProductCatalogueList extends React.Component {
         this.props.actions.generalProcess(constants.getItemCatalogue, request);
     };
 
-    updateURL() {
-        console.log(this.upload, this.download)
+    updateMode() {
+        console.log("this.upload , this.download >> ", this.upload, this.download);
         if (this.download && !this.upload) {
             // this.mode = "EDITONLY"
-            this.mode = "DOWNLOAD"
+            this.mode = "DOWNLOAD";
         }
         if (this.upload && !this.download) {
             // this.mode = "EDIT"
-            this.mode = "UPLOAD"
+            this.mode = "UPLOAD";
         }
         if (this.upload && this.download) {
-            this.mode = "UPSERT"
+            this.mode = "UPSERT";
         }
         if (!this.upload && !this.download) {
-            this.mode = "DISABLE"
+            this.mode = "DISABLE";
         }
+    }
+
+    updateActionURI = (products) => {
+        for (let i in products) {
+            for (let j in products[i].actions) {
+                if (products[i].actions[j].label === 'Edit') {
+                    products[i].actions[j].URI[0] = products[i].actions[j].URI[0] + "/" + this.mode;
+                }
+            }
+        }
+        console.log("products", products);
+        return products;
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.getItemCatalogue && nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
-            console.log("nextProps.gridActions", nextProps.gridActions[0])
+
             let pageActions = nextProps.gridActions[0].pageActions;
-            pageActions.forEach(element => {
-                if (nextProps.gridActions[0].upload == element.value) {
-                    this.upload = true
+            console.log("pageActions", pageActions);
+            for (let i = 0; i < pageActions.length; i++) {
+                if (nextProps.gridActions[0].upload == pageActions[i].value) {
+                    this.upload = true;
+                    pageActions.splice(i, 1);
                 }
-                if (nextProps.gridActions[0].download == element.value) {
-                    this.download = true
+                if (nextProps.gridActions[0].download == pageActions[i].value) {
+                    this.download = true;
+                    pageActions.splice(i, 1);
                 }
-            });
+            }
+            this.updateMode();
             this.setState({
-                gridData: nextProps.getItemCatalogue,
+                gridData: this.updateActionURI(nextProps.getItemCatalogue),
                 page: nextProps.getPage,
-                isLoading: false
+                isLoading: false,
+                actions: pageActions
             });
-            this.updateURL();
+
         }
 
     }
@@ -129,30 +148,11 @@ class ProductCatalogueList extends React.Component {
     componentDidMount() {
         this.props.actions.generalProcess(constants.getItemCatalogue, this.getRequest());
         window.scrollTo(0, 0);
-
-        this.setState(
-            {
-                actions: [
-                    {
-                        "value": "1002",
-                        "type": "pageAction",
-                        "label": "ADD",
-                        "labelName": "COM_AB_Add",
-                        "actionType": "PORTLET_LINK",
-                        "iconName": "fa fa-plus",
-                        "URI": "/strata/ProductCatalogue/ADD/UPSERT",
-                        "children": []
-                    }]
-            }
-        )
-
     }
     componentWillUnmount() {
-        //clearInterval(this.timerID);
     }
 
     searchCallBack = (keyWord) => {
-
     }
     pageChanged = (pageNo) => {
         let page = this.state.page;
@@ -246,7 +246,7 @@ class ProductCatalogueList extends React.Component {
                 <Portlet title={"Item catalogue"} actions={this.state.actions}
 
                     isPermissioned={true}>
-                    {
+                    {/* {
                         sessionStorage.orgType == 'CUSTOMER' && this.state.gridData.map((obj) => {
 
                             obj.action = [
@@ -260,7 +260,7 @@ class ProductCatalogueList extends React.Component {
 
                         })
                     }{
-                        sessionStorage.orgType == 'SUPPLIER' && this.state.gridData.map((obj) => {
+                        sessionStorage.orgType != 'CUSTOMER' && this.state.gridData.map((obj) => {
 
                             obj.action = [
                                 {
@@ -274,7 +274,7 @@ class ProductCatalogueList extends React.Component {
                         })
 
 
-                    }
+                    } */}
                     <Table
                         gridColumns={utils.getGridColumnByName("itemCatalogue")}
                         gridData={this.state.gridData}

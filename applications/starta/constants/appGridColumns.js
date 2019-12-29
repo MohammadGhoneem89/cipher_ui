@@ -20,7 +20,7 @@ module.exports = {
         { alias: "Item ID", key: "itemCode", type: 'string' },
         { alias: " ITEM Description", key: "description", type: "longString" },
         { alias: "Unit Price", key: "price", type: "amount" },
-        { alias: "Action", key: "action", type: "action" }
+        { alias: "Action", key: "actions", type: "action" }
     ],
     orderList: [
         { alias: "", key: "gridKey", type: "hiddenID" },
@@ -39,7 +39,7 @@ module.exports = {
         { alias: "End Date", key: "endDate", type: "string" },
         { alias: "Customer", key: "customerID", type: 'string' },
         { alias: "Status", key: "status", type: 'string' },
-        { alias: "Action", key: "action", type: "action" }
+        { alias: "Action", key: "actions", type: "action" }
     ],
     supplierMasterList: [
         { alias: "", key: "supplierID", type: "hiddenID" },

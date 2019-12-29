@@ -83,65 +83,28 @@ class MasterAgreementList extends React.Component {
         return request;
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.getMasterAgreement && nextProps.typeData) {
-            console.log(nextProps.getMasterAgreement, "getMasterAgreement")
-
+        if (nextProps.getMasterAgreement && nextProps.typeData &&  nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
+            console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions")
+            let pageActions = nextProps.gridActions[0].pageActions;
             this.setState(
                 {
-                    gridData: this.mapActionsOnGrid(nextProps.getMasterAgreement),
+                    gridData: nextProps.getMasterAgreement,
+                    pageActions: nextProps.gridActions,
                     typeData: nextProps.typeData,
                     page: nextProps.getPage,
+                    actions:pageActions,
                     isLoading: false
                 }
             )
         }
     }
 
-    mapActionsOnGrid = (gridData) => {
-        if (sessionStorage.orgType == "SUPPLIER") {
-            gridData.map((obj) => {
-                obj.action = [
-                    {
-                        "label": "View",
-                        "URI": ["/strata/ViewMasterAgreement"],
-                        "params": "_id",
-                        "iconName": "fa fa-eye"
-                    },
-                    {
-                        "label": "Edit",
-                        "URI": ["/strata/AddMasterAgreement/"],
-                        "params": "_id",
-                        "iconName": "fa fa-edit"
-                    }
-                ]
-            })
-        } else {
-            gridData.map((obj) => {
-                obj.action = [
-                    {
-                        "label": "View",
-                        "URI": ["/strata/ViewMasterAgreement"],
-                        "params": "_id",
-                        "iconName": "fa fa-eye"
-                    }
-                ]
-            })
-        }
-        return gridData;
-    }
+    
 
     componentDidMount() {
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['orderStatus']));
         this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
-        this.setState({
-            actions:
-                [{
-                    "value": "1002", "type": "pageAction",
-                    "label": "ADD", "labelName": "COM_AB_Add",
-                    "actionType": "PORTLET_LINK", "iconName": "fa fa-plus",
-                    "URI": "/strata/AddMasterAgreement", "children": []
-                }]
-        })
+
         window.scrollTo(0, 0);
     }
     getStatusLabel = status => {
@@ -154,17 +117,6 @@ class MasterAgreementList extends React.Component {
             }
         }
     }
-
-    // formatContractData = (gridData) => {
-    //     for (let i in gridData) {
-    //         let status = gridData[i].status;
-    //         if (status) {
-    //             gridData[i].status = this.getStatusLabel(status);
-    //         }
-
-    //     }
-    //     return gridData;
-    // }
     pageChanged = (pageNo) => {
         let page = this.state.page;
         page.currentPageNo = pageNo;
@@ -232,9 +184,9 @@ class MasterAgreementList extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    console.log(state.app.getMasterAgreement, "state.app.getMasterAgreement")
     return {
         typeData: state.app.typeData.data,
+        gridActions: _.get(state.app, 'getMasterAgreement.actions', []),
         getMasterAgreement: _.get(state.app, "getMasterAgreement.searchResult", []),
         getPage: _.get(state.app, "getMasterAgreement.pageData", [])
     };
@@ -246,6 +198,44 @@ function mapDispatchToProps(dispatch) {
 }
 MasterAgreementList.displayName = "MASTER AGREEMENT";
 export default connect(mapStateToProps, mapDispatchToProps)(MasterAgreementList);
+
+
+
+
+
+/*mapActionsOnGrid = (gridData) => {
+        if (sessionStorage.orgType == "SUPPLIER") {
+            gridData.map((obj) => {
+                obj.action = [
+                    {
+                        "label": "View",
+                        "URI": ["/strata/ViewMasterAgreement"],
+                        "params": "_id",
+                        "iconName": "fa fa-eye"
+                    },
+                    {
+                        "label": "Edit",
+                        "URI": ["/strata/AddMasterAgreement/"],
+                        "params": "_id",
+                        "iconName": "fa fa-edit"
+                    }
+                ]
+            })
+        } else {
+            gridData.map((obj) => {
+                obj.action = [
+                    {
+                        "label": "View",
+                        "URI": ["/strata/ViewMasterAgreement"],
+                        "params": "_id",
+                        "iconName": "fa fa-eye"
+                    }
+                ]
+            })
+        }
+        return gridData;
+    }
+    */
 
 
 

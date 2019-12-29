@@ -36,10 +36,10 @@ let authRoutes = < div >
         Route path="strata/ProductCatalogue/ADD/:mode"
         component={ProductCatalogue}
     /> <
-        Route path="/strata/ProductCatalogue/VIEW/:mode/:id"
+        Route path="/strata/ProductCatalogue/:action/:id"
         component={ProductCatalogue}
     /> <
-        Route path="/strata/ProductCatalogue/EDIT/:mode/:id"
+        Route path="/strata/ProductCatalogue/:action/:mode/:id"
         component={ProductCatalogue}
     /> <
         Route path="/strata/itemCatalogueList"

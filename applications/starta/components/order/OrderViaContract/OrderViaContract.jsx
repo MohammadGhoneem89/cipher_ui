@@ -161,7 +161,8 @@ class OrderViaContract extends React.Component {
     this.setState({
       cartItems: [],
       grandTotal: 0,
-      totalBatchSize: 0
+      totalBatchSize: 0,
+      itemAddedToCart:false
     })
     return false;
   }
