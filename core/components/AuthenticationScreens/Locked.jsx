@@ -140,9 +140,7 @@ class Locked extends React.Component {
     return (
 
       <div className="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid locked">
-        <a href="#">
-          <img src="/assets/Resources/lock.png" />
-        </a>
+
         <div className=" login">
           <div className="content" style={{ marginTop: "0px" }}>
             <div></div>
@@ -154,9 +152,9 @@ class Locked extends React.Component {
               <h4>
                 {"Your session timeout, please enter password to login!"}
               </h4>
-
+              
               <div className="lock-body">
-
+              <i className="fa fa-lock" aria-hidden="true"></i>
                 <div className="pull-left lock-avatar-block">
                   <img src={baseUrl + sessionStorage.profilePic} className="lock-avatar" /> {sessionStorage.firstName}
                   <br />
