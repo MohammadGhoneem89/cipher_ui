@@ -249,14 +249,14 @@ class Login extends React.Component {
 
                       <div className="forget-password">
                         <ul className="lng">
-                          <li id="engAnchor" className="actv"><a href="javascript:;"
+                          {/* <li id="engAnchor" className="actv"><a href="javascript:;"
                             onClick={this.changLangButton.bind(this, "EN")}>En</a>
-                          </li>
+                          </li> */}
                           {/* <li id="arbAnchor"><a href="javascript:;"
                                                      
                                                                        onClick={this.changLangButton.bind(this, "AR")}>عربى</a></li> */}
                         </ul> <ul className="lng">
-                          <li data-target="#loginCarousel" data-slide-to="1" style={{ float: 'right' }}>
+                          <li data-target="#loginCarousel" data-slide-to="1" >
                             <a href="javascript:">Forgot your password ?</a></li>
                         </ul>
                       </div>
@@ -282,12 +282,12 @@ class Login extends React.Component {
 
                       <div className="login-password">
                         <ul className="lng">
-                          <li id="engAnchor" className="actv"><a href="javascript:"
+                          {/* <li id="engAnchor" className="actv"><a href="javascript:"
                             onClick={this.changLangButton.bind(this, "EN")}>En</a>
-                          </li>
+                          </li> */}
                           {/* <li id="arbAnchor"><a href="javascript:;"
                             onClick={this.changLangButton.bind(this, "AR")}>عربى</a></li> */}
-                          <li data-target="#loginCarousel" data-slide-to="0" style={{ float: 'right' }}>
+                          <li data-target="#loginCarousel" data-slide-to="0" >
                             <a href="javascript:">Remember your password ?</a></li>
                         </ul>
                       </div>
