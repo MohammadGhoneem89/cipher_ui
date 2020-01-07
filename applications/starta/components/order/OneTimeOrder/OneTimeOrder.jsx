@@ -147,7 +147,7 @@ class OneTimeOrder extends React.Component {
       cartItems: [],
       grandTotal: 0,
       totalBatchSize: 0,
-      itemAddedToCart:false
+      itemAddedToCart: false
     })
     return false;
   }
@@ -225,10 +225,7 @@ class OneTimeOrder extends React.Component {
         break
       }
     }
-
-
     let grandTotal = 0;
-
     let totalBatchSize = 0;
     let cart = [...this.state.cartItems];
 
@@ -266,6 +263,7 @@ class OneTimeOrder extends React.Component {
       totalBatchSize: totalBatchSize,
       modelBox: false
     });
+    toaster.showToast(`Item '${cart[cart.length - 1].name}' added to cart successfully`);
     e.target.reset();
     console.log('cart', cart);
     window.scrollTo(0, 0);
@@ -323,7 +321,7 @@ class OneTimeOrder extends React.Component {
                 <form className="navbar-search" method="get" autoComplete="off" onSubmit={this.searchItem}>
                   <label className="sr-only screen-reader-text" htmlFor="search">Search for:</label>
                   <div className="input-group">
-                    <div className="input-search-field">
+                    {/* <div className="input-search-field">
                       <input type="text" id="search" className="form-control search-field product-search-field"
                         dir="ltr" name="find" placeholder="Search for Products" autoComplete="off" />
                     </div>
@@ -334,7 +332,7 @@ class OneTimeOrder extends React.Component {
                         <option className="level-0" value="description">Description</option>
                         <option className="level-0" value="material">Material</option>
                       </select>
-                    </div>
+                    </div> */}
                     <div className="input-group-addon search-categories">
                       <select name="classification" id="product_cat" className="postform resizeselect"
                         style={{ width: "143px", webkitAppearance: "menulist" }}>
@@ -345,8 +343,9 @@ class OneTimeOrder extends React.Component {
                       </select>
                     </div>
                     <div className="input-group-btn">
-                      <button type="submit" className="btn btn-secondary"><i className="fa fa-search"
-                        aria-hidden="true" /></button>
+                      <button type="submit" className="btn btn-secondary">
+                        <i className="fa fa-search"
+                          aria-hidden="true" /></button>
                     </div>
                   </div>
                 </form>
@@ -357,14 +356,14 @@ class OneTimeOrder extends React.Component {
               </div>
             </div>
           </div>}
-          {(!this.state.createOrder && this.state.cartItems.length > 0 && this.state.itemAddedToCart)
+          {/* {(!this.state.createOrder && this.state.cartItems.length > 0 && this.state.itemAddedToCart)
             && <div>
               <div className="alert alert-dark" style={{ textAlign: "center", backgroundColor: "green", color: "white" }}>
                 Item added to cart successfully
                   : <strong>{this.state.cartItems[this.state.cartItems.length - 1].name}</strong>
               </div>
             </div>
-          }
+          } */}
 
           {this.state.isLoading2 && <div className="loader">{utils.getLabelByID("Loading")}</div>}
           {!this.state.createOrder && !this.state.isLoading2 && <Portlet title="Product Catalogue">

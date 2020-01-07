@@ -84,7 +84,7 @@ export default function Timeline(props) {
                                 </div>
                             </div>
                             <div className="timeline-body-content">
-                                
+
                                 {dateValue && <span className="trckdate">{dateValue} </span>}
                                 {timeValue && <span className="trcktime">{timeValue}</span>}
 

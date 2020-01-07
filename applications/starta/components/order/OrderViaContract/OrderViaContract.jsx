@@ -136,7 +136,7 @@ class OrderViaContract extends React.Component {
     };
 
 
-    console.log("totalLeadTime >>>>> ",this.getLeadTime())
+    console.log("totalLeadTime >>>>> ", this.getLeadTime())
     if (this.state.cartItems && this.state.cartItems.length > 0) {
       this.setState({
         isLoading: true
@@ -160,10 +160,13 @@ class OrderViaContract extends React.Component {
     toaster.showToast(result.message.errorDescription, "ERROR");
     this.setState({
       cartItems: [],
+      itemCatalogueUpdated: [],
+      contractState: false,
       grandTotal: 0,
+      _contractID: '',
       totalBatchSize: 0,
-      itemAddedToCart:false
-    })
+      itemAddedToCart: false
+    });
     return false;
   }
   successAction = orderID => {
@@ -332,7 +335,7 @@ class OrderViaContract extends React.Component {
       totalBatchSize: totalBatchSize,
       modelBox: false
     });
-
+    toaster.showToast(`Item '${cart[cart.length - 1].name}' added to cart successfully`);
     e.target.reset();
     window.scrollTo(0, 0);
   }
@@ -366,9 +369,9 @@ class OrderViaContract extends React.Component {
     }
     this.setState({
       _contractID: document.getElementById("contractID").value,
-      cartItems: [],
-      grandTotal: 0,
-      totalBatchSize: 0
+      // cartItems: [],
+      // grandTotal: 0,
+      // totalBatchSize: 0
     });
   }
 
@@ -461,7 +464,10 @@ class OrderViaContract extends React.Component {
 
   render() {
     let masterContract = this.state.contracts ? this.getContractDetails() : [];
-    console.log("this.state.itemCatalogueUpdated.searchResult", this.state.itemCatalogueUpdated ? this.state.itemCatalogueUpdated.searchResult : "")
+
+    console.log("this.state.itemCatalogueUpdated.searchResult", this.state.itemCatalogueUpdated ? this.state.itemCatalogueUpdated.searchResult : "");
+    console.log("this.state.contractState", this.state.contractState);
+    console.log("this.state.grandTotal", this.state.grandTotal)
     if (!this.state.isLoading)
       return (
         <div>
@@ -524,7 +530,7 @@ class OrderViaContract extends React.Component {
             </div>
           )}
 
-          {!this.state.createOrder &&
+          {/* {!this.state.createOrder &&
             this.state.cartItems.length > 0 &&
             this.state.itemAddedToCart && (
               <div>
@@ -537,7 +543,7 @@ class OrderViaContract extends React.Component {
 
                 </div>
               </div>
-            )}
+            )} */}
 
           <br />
           {this.state.isLoading2 && (

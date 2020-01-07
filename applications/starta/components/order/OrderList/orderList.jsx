@@ -168,6 +168,8 @@ class OrderList extends React.Component {
 
   formSubmit = (orderID = undefined) => {
     this.props.actions.generalProcess(constants.getOrderList, this.getRequest(true, orderID));
+
+
   };
 
 
@@ -222,7 +224,7 @@ class OrderList extends React.Component {
         }
       })
       console.log('submitting Form');
-      this.formSubmit(this.props.location.state.orderID)
+      this.formSubmit(this.props.location.state.orderID);
     } else {
       this.props.actions.generalProcess(constants.getOrderList, this.getRequest());
     }
@@ -232,12 +234,12 @@ class OrderList extends React.Component {
   }
 
   onFromDateChange = (value) => {
-   
+
     value == 'Invalid date' ? this.state.fromDate = undefined : this.state.fromDate = value;
   };
 
   onToDateChange = (value) => {
-   
+
     value == 'Invalid date' ? this.state.toDate = undefined : this.state.toDate = value;
   };
 
@@ -300,18 +302,17 @@ class OrderList extends React.Component {
     return (
       <div>
         <Portlet title={utils.getLabelByID('Order List Filter(s)')}>
-          <Row>
+          <Row >
             <Col col="6">
               <Label text={utils.getLabelByID('From Date')} columns="4" />
               <div className="form-group col-md-8" id="OrderSearch">
-              
-               <DateControl id="fromDate" dateChange={this.onFromDateChange} fromDate={this.state.fromDate}/> 
+                <DateControl id="fromDate" dateChange={this.onFromDateChange} defaultValue={this.state.fromDate ? utils.UNIXConvertToDate(this.state.fromDate) : ''} />
               </div>
             </Col>
             <Col col="6">
               <Label text={utils.getLabelByID('To Date')} columns="4" />
-              <div className="form-group col-md-8" >
-               <DateControl id="toDate" dateChange={this.onToDateChange} toDate={this.state.toDate}/>
+              <div className="form-group col-md-8" id="OrderSearch">
+                <DateControl id="toDate" dateChange={this.onToDateChange} defaultValue={this.state.toDate ? utils.UNIXConvertToDate(this.state.toDate) : ''} />
               </div>
             </Col>
           </Row>

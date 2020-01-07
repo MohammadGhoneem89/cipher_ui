@@ -340,7 +340,7 @@ class ProductCatalogue extends React.Component {
 
   render() {
     let _this = this;
-
+    console.log("this.state.readOnly >> ", this.state ? this.state.readOnly : "")
     const addDefaultSrc = e =>
       (e.target.src = "/assets/Resources/images/dummy-image.jpg");
 

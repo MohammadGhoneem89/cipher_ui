@@ -497,6 +497,8 @@ class AddMasterAgreement extends React.Component {
             return false;
         }
         if (endDate < startDate) {
+            console.log("endDate >> ", endDate);
+            console.log("startDate >> ", startDate);
             toaster.showToast("End Date cannot be less than Start Date", "ERROR")
             return false;
         }
@@ -533,7 +535,7 @@ class AddMasterAgreement extends React.Component {
                 product.leadTime = this.state.items[i].leadTime,
                 product.unitPrice = parseFloat(this.state.items[i].price, 10),
                 product.expectedQuantity = parseInt(this.state.items[i].quantity, 10)
-            product.itemWiseDiscount = []
+                 product.itemWiseDiscount = []
 
             for (let j = 0; j < this.state.items[i].rebate.length; j++) {
                 let rebate = {}
@@ -794,7 +796,7 @@ class AddMasterAgreement extends React.Component {
                                         onChange={this.onChange}
                                         disabled={this.props.params.customerID ? true : false}
                                     />
-                                     
+
 
                                 </div>
                             </div>
@@ -1020,8 +1022,8 @@ class AddMasterAgreement extends React.Component {
                                                                                     <div className="col-md-6">
                                                                                         <div className="form-group">
                                                                                             <label className="form-group control-label col-md-3" style={{ textAlign: "left" }}>
-                                                                                            {utils.getLabelByID("From")}
-                                                                                            <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
+                                                                                                {utils.getLabelByID("From")}
+                                                                                                <span style={{ color: 'red', verticalAlign: 'top' }}>  *</span>
                                                                                             </label>
                                                                                             <div className="form-group col-md-9">
                                                                                                 <input type="number" min="0" className="form-control" id="orderGreaterThan" />

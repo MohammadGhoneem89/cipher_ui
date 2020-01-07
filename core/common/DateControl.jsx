@@ -58,6 +58,7 @@ class DateControl extends React.Component {
                         <DatePicker inputFormat={format}
                             name={this.props.name}
                             defaultText={defaultText}
+                            key={defaultText}
                             mode={mode}
                             showToday={showToday}
                             readOnly={true}
@@ -68,6 +69,7 @@ class DateControl extends React.Component {
                                 inputProps={ { value: this.props.value } }
                                 defaultText={defaultText}
                                 mode={mode}
+                                key={defaultText}
                                 showToday={showToday}
                                 readOnly={true}
                                 onChange={this.dateChange} />)

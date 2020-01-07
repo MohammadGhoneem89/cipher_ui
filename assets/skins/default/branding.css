@@ -3951,7 +3951,7 @@ input.form-control+.user-pwd {
     display: none;
 }
 
-input.form-control.pwd-input+.user-pwd {
+input.form-control.pwd-input[type="password"]+.user-pwd {
     display: block;
 }
 

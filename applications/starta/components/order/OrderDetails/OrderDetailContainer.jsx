@@ -105,11 +105,11 @@ class OrderDetailContainer extends React.Component {
     return gridData;
   };
   componentWillReceiveProps(nextProps) {
-    sessionStorage.selectedChannel="stratachannel"
-    sessionStorage.selectedNetwork= "strata"
-    
+    sessionStorage.selectedChannel = "stratachannel"
+    sessionStorage.selectedNetwork = "strata"
+
     if (nextProps.orderDetail && nextProps.orderDetail.subOrder && nextProps.typeData) {
-      console.log("activities ",nextProps.orderDetail.activities)
+      console.log("activities ", nextProps.orderDetail.activities)
       this.setState({
         subOrder: this.formatData(nextProps.orderDetail.subOrder)
       });
@@ -174,7 +174,7 @@ class OrderDetailContainer extends React.Component {
     event.target.src =
       // "http://localhost:9086/images/1f31e930-e0d5-11e7-88e2-f718f78167e9.png";
       constants.baseUrl + "/images/image-user.png";
-      
+
   }
   redirectToList = () => {
     browserHistory.push(`/strata/viewOrder/${this.props.orderID}/${this.props.customerID}`);
@@ -352,20 +352,48 @@ class OrderDetailContainer extends React.Component {
         actionBy: ""
       }
     ];
-    this.state.orderDetail.activities.forEach(activity => {
-      if (activity.toStage == "018") {
-        activities.push({
-          stage: "013",
-          date: activity.date,
-          actionBy: activity.actionBy
-        });
+    // this.state.orderDetail.activities.forEach(activity => {
+    //   if (activity.toStage == "018") {
+    //     //check prior stage if its 16 then concession else if 13 then accepted
+
+    //     activities.push({
+    //       stage: "013",
+    //       date: activity.date,
+    //       actionBy: activity.actionBy
+    //     });
+    //   }
+    //   activities.push({
+    //     stage: activity.toStage,
+    //     date: activity.date,
+    //     actionBy: activity.actionBy
+    //   });
+    // });
+
+    let originalActivities = this.state.orderDetail.activities;
+
+    for (let activity = 0; activity < originalActivities.length; activity++) {
+      if (originalActivities[activity].toStage == "018") {
+        //check prior stage if 12 then accepted else concession
+        if (originalActivities[activity - 1].toStage == "012") {
+          activities.push({
+            stage: "013",
+            date: originalActivities[activity].date,
+            actionBy: originalActivities[activity].actionBy
+          });
+        } else {
+          activities.push({
+            stage: "016",
+            date: originalActivities[activity].date,
+            actionBy: originalActivities[activity].actionBy
+          });
+        }
       }
       activities.push({
-        stage: activity.toStage,
-        date: activity.date,
-        actionBy: activity.actionBy
+        stage: originalActivities[activity].toStage,
+        date: originalActivities[activity].date,
+        actionBy: originalActivities[activity].actionBy
       });
-    });
+    }
     return (
       <Timeline
         activities={activities}
@@ -523,23 +551,23 @@ class OrderDetailContainer extends React.Component {
                       <Row>
                         <Col col="6">
                           <Label
-                            columns="3" 
+                            columns="3"
                             text="Order Hash :"
                           ></Label>
-                       
+
                           {this.state.orderDetail.tranxID ? (
                             <Label
                               columns="9"
                               className="hashno"
                               text={this.state.orderDetail.tranxID}
-                              
+
                             ></Label>
                           ) : (
                               <Label
                                 columns="9"
                                 className="hashno"
                                 text={this.state.orderDetail.orderID}
-                                
+
                               ></Label>
                             )}
                         </Col>
@@ -561,7 +589,7 @@ class OrderDetailContainer extends React.Component {
                               onError={this.errorHandler}
                             />
                             <span >{this.state.orderDetail.raisedByName ? this.state.orderDetail.raisedByName :
-                               this.state.orderDetail.customerID}</span>
+                              this.state.orderDetail.customerID}</span>
                           </Col>
                         </Col>
 
@@ -669,7 +697,7 @@ class OrderDetailContainer extends React.Component {
                           <Label columns="4" text="Credit Note Amount:"></Label>
                           <Col col="5">
                             <span style={{ marginLeft: "-53px" }}>
-                              AED{" "}  
+                              AED{" "}
                               {
                                 _.get(
                                   this.state.orderDetail,

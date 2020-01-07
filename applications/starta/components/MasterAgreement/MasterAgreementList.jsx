@@ -34,7 +34,7 @@ class MasterAgreementList extends React.Component {
     }
     reset = () => {
         document.getElementById('contractId').value = "";
-        document.getElementById('customer').value = "";
+        // document.getElementById('customer').value = "";
         document.getElementById('status').value = "";
 
         let request = {
@@ -57,14 +57,14 @@ class MasterAgreementList extends React.Component {
     getRequest = () => {
 
         let contractID = document.getElementById('contractId') == null ? "" : document.getElementById('contractId').value;
-        let customerID = document.getElementById('customer') == null ? "" : document.getElementById('customer').value;
+        // let customerID = document.getElementById('customer') == null ? "" : document.getElementById('customer').value;
         let status = document.getElementById('status') == null ? "" : document.getElementById('status').value;
         let searchCriteria = {}
 
         if (contractID != "")
             searchCriteria.contractID = contractID
-        if (customerID != "")
-            searchCriteria.customerID = customerID
+        // if (customerID != "")
+        //     searchCriteria.customerID = customerID
         if (status != "")
             searchCriteria.status = status
 
@@ -83,7 +83,7 @@ class MasterAgreementList extends React.Component {
         return request;
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.getMasterAgreement && nextProps.typeData &&  nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
+        if (nextProps.getMasterAgreement && nextProps.typeData && nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
             console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions")
             let pageActions = nextProps.gridActions[0].pageActions;
             this.setState(
@@ -92,14 +92,14 @@ class MasterAgreementList extends React.Component {
                     pageActions: nextProps.gridActions,
                     typeData: nextProps.typeData,
                     page: nextProps.getPage,
-                    actions:pageActions,
+                    actions: pageActions,
                     isLoading: false
                 }
             )
         }
     }
 
-    
+
 
     componentDidMount() {
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['orderStatus']));
@@ -158,6 +158,23 @@ class MasterAgreementList extends React.Component {
                                     <option key="1" value="APPROVED">APPROVED</option>
 
                                 </select>
+                            </div>
+                        </div>
+
+
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="form-group col-md-12">
+                                    <div className="btn-toolbar pull-right">
+                                        <button type="submit" className="btn green" onClick={this.formSubmit}>
+                                            {utils.getLabelByID('Search')}
+                                        </button>
+                                        <button type="clear" className="btn green" onClick={this.reset}
+                                        >
+                                            {utils.getLabelByID("Clear")}
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
