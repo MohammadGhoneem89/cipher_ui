@@ -106,12 +106,8 @@ class OneTimeOrder extends React.Component {
     items.map(item => {
       item.color = [item.color];
     });
-
-
     if (this.state.getCustomerShipmentAndPaymentType)
       console.log(this.state.getCustomerShipmentAndPaymentType, "this.state.getCustomerShipmentAndPaymentType");
-
-
     let request = {
       "body": {
         "orderType": "ONETIME",
@@ -230,7 +226,7 @@ class OneTimeOrder extends React.Component {
     let cart = [...this.state.cartItems];
 
     if (cartItem.quantity == 0) {
-      toaster.showToast("Quantity cannot be zero!", "ERROR")
+      toaster.showToast("Quantity cannot be zero!", "ERROR");
       cartItem.quantity = 0;
       e.target.reset();
       return false;
@@ -305,7 +301,21 @@ class OneTimeOrder extends React.Component {
     delete data.find;
     this.getRequest(1, data);
   }
-
+  cancelOrder=()=>{
+    console.log("testttttttttt cancel order ##################")
+    this.setState({
+      createOrder:false,
+      isLoading2:false,
+      isLoading:false,
+      cartItems: [],
+      contractState: false,
+      grandTotal: 0,
+      _contractID: '',
+      totalBatchSize: 0,
+      itemAddedToCart: false
+    });
+    window.scrollTo(0, 0);
+  }
   render() {
 
     console.log(" this.state.getItemCatalogue.searchResult", this.state.getItemCatalogue ? sessionStorage.userID : [])
@@ -318,7 +328,7 @@ class OneTimeOrder extends React.Component {
           {!this.state.createOrder && <div className="row">
             <div className="col-md-8 col-md-offset-2">
               <div className="masthead">
-                <form className="navbar-search" method="get" autoComplete="off" onSubmit={this.searchItem}>
+                <form className="navbar-search" method="get" autoComplete="off"  onSubmit={this.searchItem}>
                   <label className="sr-only screen-reader-text" htmlFor="search">Search for:</label>
                   <div className="input-group">
                     {/* <div className="input-search-field">
@@ -335,7 +345,7 @@ class OneTimeOrder extends React.Component {
                     </div> */}
                     <div className="input-group-addon search-categories">
                       <select name="classification" id="product_cat" className="postform resizeselect"
-                        style={{ width: "143px", webkitAppearance: "menulist" }}>
+                        style={{webkitAppearance: "menulist" }}>
                         <option value="">All Categories</option>
                         {categories.map((item, index) => {
                           return <option key={index} className="level-0" value={item.value}>{item.label}</option>;
@@ -403,6 +413,7 @@ class OneTimeOrder extends React.Component {
             getTotalUnits={this.getTotalUnits}
             getLeadTime={this.getLeadTime}
             placeOrder={this.placeOrder}
+            cancelOrder={this.cancelOrder}
           />}
         </div>
       );

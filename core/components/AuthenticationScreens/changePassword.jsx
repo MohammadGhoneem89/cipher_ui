@@ -18,7 +18,9 @@ class ChangePassword extends React.Component {
         sessionStorage.lang = "EN";
 
         this.state = {
-            isLocked: false
+            isLocked: false,
+            type: "password",
+            type2: "password"
         }
     }
     componentWillMount() {
@@ -31,20 +33,20 @@ class ChangePassword extends React.Component {
     imageExists(image_url) {
 
         var http = new XMLHttpRequest();
-    
+
         http.open('HEAD', image_url, false);
         http.send();
-    
+
         return http.status != 404;
-    
-      }
-      handleKeyPress(e) {
+
+    }
+    handleKeyPress(e) {
         if (e.which === 13) {
-          this.check();
+            this.check();
         }
-      }
-    
-      handleKeyPressForgot(e){
+    }
+
+    handleKeyPressForgot(e) {
         if (e.which === 13) {
             this.checkForgot();
         }
@@ -53,35 +55,35 @@ class ChangePassword extends React.Component {
 
         let imgSDG = "../assets/pages/img/organization/DP.png";
         let imgURLOtherOrg = "../assets/pages/img/organization/" + this.props.orgType + ".png"
-    
+
         if (this.props.orgType && this.props.orgType.toString().toUpperCase() == 'DP') {
-          return (<div></div>)
+            return (<div></div>)
         }
         else if (this.imageExists(imgURLOtherOrg)) {
-          return (<div>
-            <div style={{ marginTop: "60px", paddingTop: "80px" }}>
-              <div className="row" style={{ marginLeft: "-20" }}>
-                <div className="col-md-6 pull-left">
-                  <img src={imgSDG} alt="" />
+            return (<div>
+                <div style={{ marginTop: "60px", paddingTop: "80px" }}>
+                    <div className="row" style={{ marginLeft: "-20" }}>
+                        <div className="col-md-6 pull-left">
+                            <img src={imgSDG} alt="" />
+                        </div>
+                        <div className="col-md-6 pull-right">
+                            <img src={imgURLOtherOrg} alt="" style={{ width: "152px" }} />
+                        </div>
+                    </div>
+
                 </div>
-                <div className="col-md-6 pull-right">
-                  <img src={imgURLOtherOrg} alt="" style={{ width: "152px" }} />
-                </div>
-              </div>
-    
+                <br />
+                <br />
             </div>
-            <br />
-            <br />
-          </div>
-          )
+            )
         }
         else {
-          return (<div></div>)
+            return (<div></div>)
         }
-    
-      }
 
-      changLangButton(langaugeTag) {
+    }
+
+    changLangButton(langaugeTag) {
 
         switch (langaugeTag) {
             case "AR":
@@ -94,17 +96,17 @@ class ChangePassword extends React.Component {
                 var arb = $('#engAnchor').addClass('actv');
                 sessionStorage.lang = "EN";
                 break;
-    
+
         }
-    
-    
+
+
     }
 
     // formSubmit() {
-        
+
     //     let newPassword = (document.getElementById('newPassword') == null || document.getElementById('newPassword') == undefined) ? "" : document.getElementById('newPassword').value;
     //     let confirmPassword = (document.getElementById('confirmPassword') == null || document.getElementById('confirmPassword') == undefined) ? "" : document.getElementById('confirmPassword').value;
-        
+
     //     console.log(this.props);
     //     console.log(newPassword);
     //     console.log(confirmPassword);
@@ -113,14 +115,14 @@ class ChangePassword extends React.Component {
     //     {
 
     //         let request  = {
-                
-                
+
+
     //                 "data": {
     //                     "passwordToken": this.props.passwordToken,
     //                     "newPassword": newPassword
     //                 }
     //            }
-               
+
     //         this.props.actions.generalProcess(constants.passwordChange, request);   
     //     }
     //     else
@@ -132,7 +134,7 @@ class ChangePassword extends React.Component {
 
 
 
-            
+
     // }
 
     check(form) {
@@ -155,10 +157,15 @@ class ChangePassword extends React.Component {
         document.getElementById('newPassword').value = '';
         document.getElementById('confirmPassword').value = '';
     }
-
+    handleClick = () => this.setState(({ type }) => ({
+        type: type === 'text' ? 'password' : 'text'
+    }))
+    handleClickConfirmPasswd = () => this.setState(({ type2 }) => ({
+        type2: type2 === 'text' ? 'password' : 'text'
+    }))
     getLogosForSDGUser() {
         return (<div className="logo" />);
-      }
+    }
     render() {
 
         return (
@@ -166,7 +173,7 @@ class ChangePassword extends React.Component {
             <div>
 
                 <div className="login">
-                    <div className="content" style={{marginTop: "0px"}}>
+                    <div className="content" style={{ marginTop: "0px" }}>
 
                         {this.getLogosbyUserType()}
 
@@ -174,32 +181,51 @@ class ChangePassword extends React.Component {
                             {this.getLogosForSDGUser()}
                             <h3 className="form-title">{brandConfig.projectName}</h3>
                             <div className="alert alert-danger display-hide">
-                                <button className="close" data-close="alert"/>
+                                <button className="close" data-close="alert" />
                                 <span> Enter any username and password. </span>
                             </div>
+
+
 
                             <div className="form-group">
                                 <label className="control-label visible-ie8 visible-ie9">Password</label>
                                 <div className="input-icon">
-                                    <i className="fa fa-lock"/>
-                                    <i className="fa fa-eye" aria-hidden="true"/>
-                                    <input type="password" className="form-control" name="newPassword"
-                                           id="newPassword" placeholder="New Password"/>
+                                    <i className="fa fa-lock" />
+                                    <i className="fa fa-eye" aria-hidden="true" onClick={this.handleClick}></i>
+                                    <input type={this.state.type} className="form-control placeholder-no-fix" id="newPassword" placeholder="New Password"
+                                        autoComplete="off" placeholder="Password" name="password" />
+
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label className="control-label visible-ie8 visible-ie9">Password</label>
-                                <div className="input-icon"><i className="fa fa-lock"/>
-
-                                    <i className="fa fa-eye" aria-hidden="true"/>
-                                    <input type="password" className="form-control" name="confirmPassword"
-                                           id="confirmPassword" placeholder="Confirm Password"/>
+                                <div className="input-icon"><i className="fa fa-lock" />
+                                    <i className="fa fa-eye" aria-hidden="true" onClick={this.handleClickConfirmPasswd}></i>
+                                    <input type={this.state.type2} className="form-control placeholder-no-fix" id="confirmPassword" placeholder="Confirm Password"
+                                        autoComplete="off" placeholder="Confirm Password" name="password" />
                                 </div>
                             </div>
+
+
                             <div className="form-actions"><a href="javascript:" onClick={this.check.bind(this)}
-                                                             className="btn green btn-block uppercase"> Submit </a>
+                                className="btn green btn-block uppercase"> Submit </a>
                             </div>
-                            <div className="login-password">
+                        </div>
+                       
+                    </div>
+
+                    <div className="copyright">2019 © Avanza Innovations LLC.</div>
+                </div>
+            </div>
+
+
+        );
+
+
+
+
+
+        {/* <div className="login-password">
                                 <ul className="lng">
                                     <li id="engAnchor" className="actv"><a href="javascript:"
                                                                            onClick={this.changLangButton.bind(this, "EN")}>En</a>
@@ -207,17 +233,7 @@ class ChangePassword extends React.Component {
                                     <li id="arbAnchor"><a href="javascript:"
                                                           onClick={this.changLangButton.bind(this, "AR")}>عربى</a></li>
                                 </ul>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div className="copyright">Copyright &copy; 2000-2018 Smart Dubai. All Rights Reserved.</div>
-                </div>
-            </div>
-
-
-        );
+                            </div> */}
         // return (
 
         //     <div>

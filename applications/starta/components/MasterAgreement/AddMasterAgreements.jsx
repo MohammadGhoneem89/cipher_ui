@@ -235,7 +235,7 @@ class AddMasterAgreement extends React.Component {
             toaster.showToast("From should be zero or greater", "ERROR")
             return false;
         }
-        if (orderLessThan < orderGreaterThan) {
+        if (orderGreaterThan < orderLessThan) {
             toaster.showToast("To should be greater than From!", "ERROR")
             return false;
         }
@@ -535,7 +535,7 @@ class AddMasterAgreement extends React.Component {
                 product.leadTime = this.state.items[i].leadTime,
                 product.unitPrice = parseFloat(this.state.items[i].price, 10),
                 product.expectedQuantity = parseInt(this.state.items[i].quantity, 10)
-                 product.itemWiseDiscount = []
+            product.itemWiseDiscount = []
 
             for (let j = 0; j < this.state.items[i].rebate.length; j++) {
                 let rebate = {}

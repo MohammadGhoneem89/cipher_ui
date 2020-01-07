@@ -263,7 +263,14 @@ class OrderList extends React.Component {
       toDate: ''
     });
   };
+  clear = () => {
+    $('#tranSearchFilters').find('input:text').val('');
+    $('#tranSearchFilters').find('select').each(function () {
+      $(this)[0].selectedIndex = 0;
+    });
+  }
   reset = () => {
+    this.clear();
     this.setState({
       searchCriteria: {},
       fromDate: undefined,
@@ -275,7 +282,7 @@ class OrderList extends React.Component {
       }
 
     });
-    this.isDateVal=false;
+    this.isDateVal = false;
     let request = {
       body: {
         page: {
@@ -286,7 +293,7 @@ class OrderList extends React.Component {
       }
     };
 
-    this.props.actions.generalProcess(constants.getOrderList, request);
+    // this.props.actions.generalProcess(constants.getOrderList, request);
     console.log("RESET", this.state.fromDate, this.state.toDate)
   };
   onChange = (e) => {
@@ -305,13 +312,13 @@ class OrderList extends React.Component {
           <Row >
             <Col col="6">
               <Label text={utils.getLabelByID('From Date')} columns="4" />
-              <div className="form-group col-md-8" id="OrderSearch">
+              <div className="form-group col-md-8" name="tranSearchFilters" id="tranSearchFilters">
                 <DateControl id="fromDate" dateChange={this.onFromDateChange} defaultValue={this.state.fromDate ? utils.UNIXConvertToDate(this.state.fromDate) : ''} />
               </div>
             </Col>
             <Col col="6">
               <Label text={utils.getLabelByID('To Date')} columns="4" />
-              <div className="form-group col-md-8" id="OrderSearch">
+              <div className="form-group col-md-8" name="tranSearchFilters" id="tranSearchFilters">
                 <DateControl id="toDate" dateChange={this.onToDateChange} defaultValue={this.state.toDate ? utils.UNIXConvertToDate(this.state.toDate) : ''} />
               </div>
             </Col>
