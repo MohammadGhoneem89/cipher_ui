@@ -13,7 +13,7 @@ module.exports = {
   baseUrl,
   reportUrl,
   getPermission: baseUrl + "/API/UI/permission",
-  getUserData: baseUrl + "/API/UI/user",
+  getUserData: `${baseUrl}/API/UI/user`,
   getNotificationData: baseUrl + "/API/UI/notificationList",
   getBatchById: baseUrl + "/SIMU/getBatchById",
   getError: baseUrl + "/SIMU/error",

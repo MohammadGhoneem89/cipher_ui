@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
 import EN from '../../constants/resources_EN';
 import AR from '../../constants/resources_AR';
+import * as utils from '../../common/utils.js';
 
 
 import * as constants from '../../constants/Communication.js';
@@ -20,6 +21,11 @@ class Login extends React.Component {
   constructor() {
 
     super();
+
+    this.state = {
+      isLoading: false,
+      emailError: false,
+    }
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
     sessionStorage.lang = "EN";
@@ -41,7 +47,9 @@ class Login extends React.Component {
       } else {
         isLocked = true
         this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(userId, password, lang));
-
+        this.setState({
+          isLoading: true,
+        })
       }
     }
   }
@@ -70,8 +78,16 @@ class Login extends React.Component {
     let userId = $('#usernameForgot').val();
     let email = $('#emailForgot').val();
 
-    console.log(userId);
-    console.log(email);
+    if (!this.validateEmail(email)) {
+      this.setState({
+        emailError: true,
+      })
+      return;
+    } else {
+      this.setState({
+        emailError: false,
+      })
+    }
 
     let obj = {
       userID: userId,
@@ -83,10 +99,12 @@ class Login extends React.Component {
       toaster.showToast("Username and email fields must not be empty.", "INFO");
     } else {
       this.props.actions.generalProcess(constants.passwordReset, obj);
+      this.setState({
+        isLoading: true,
+      })
 
     }
   }
-
   componentDidMount() {
     document.getElementById("username").addEventListener("keyup", this.handleKeyPress);
     document.getElementById("password").addEventListener("keyup", this.handleKeyPress);
@@ -113,6 +131,7 @@ class Login extends React.Component {
   }
 
   componentDidUpdate() {
+    console.log(this.props);
     isLocked = false
     if (this.props.LoginResult) {
 
@@ -140,6 +159,11 @@ class Login extends React.Component {
       }
 
     }
+    if (this.props.passwordReset !== undefined && this.state.isLoading === true) {
+        this.setState({
+          isLoading: false,
+        })
+    }
 
 
   }
@@ -155,6 +179,11 @@ class Login extends React.Component {
       this.checkForgot();
     }
   }
+
+  validateEmail = (email) => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 
   getLogosbyUserType() {
 
@@ -204,117 +233,126 @@ class Login extends React.Component {
   }
 
   render() {
-    sessionStorage.loginOrgType = this.props.orgType;
+    console.log(this.props);
+    if (!this.state.isLoading) {
+      sessionStorage.loginOrgType = this.props.orgType;
 
-    return (
-
-      <div>
-        <div className="login">
-          <div style={{}}>
-            {/*<div id="particles-js"></div>*/}
-            <div className="content" style={{ height: '430px', marginTop: '10px' }}>
-              <br /><br />
-              {this.getLogosbyUserType()}
-              <div className="login-form">
-                {this.getLogosForSDGUser()}
-                <h3 className="form-title">{brandConfig.projectName}</h3>
-                <div className="alert alert-danger display-hide">
-                  <button className="close" data-close="alert" />
-                  <span> Enter any username and password. </span>
-                </div>
-                <br />
-                <div id="loginCarousel" className="carousel slide" data-ride="carousel" data-interval="false">
-                  <div className="carousel-inner">
-                    <div className="item active">
-                      <div className="form-group">
-                        <label className="control-label visible-ie8 visible-ie9">Username</label>
-                        <div className="input-icon">
-                          <i className="fa fa-user" />
-                          <input className="form-control placeholder-no-fix" type="text" id="username"
-                            autoComplete="off" placeholder="Username" name="username" /></div>
-                      </div>
-                      <div className="form-group">
-                        <label className="control-label visible-ie8 visible-ie9">Password</label>
-                        <div className="input-icon"><i className="fa fa-lock" />
-
-                          <i className="fa fa-eye" aria-hidden="true" />
-                          <input type="password" className="form-control placeholder-no-fix" id="password"
-                            autoComplete="off" placeholder="Password" name="password" />
+      return (
+  
+        <div>
+          <div className="login">
+            <div style={{}}>
+              {/*<div id="particles-js"></div>*/}
+              <div className="content" style={{ height: 'auto', marginTop: '10px' }}>
+                <br /><br />
+                {this.getLogosbyUserType()}
+                <div className="login-form">
+                  {this.getLogosForSDGUser()}
+                  <h3 className="form-title">{brandConfig.projectName}</h3>
+                  <div className="alert alert-danger display-hide">
+                    <button className="close" data-close="alert" />
+                    <span> Enter any username and password. </span>
+                  </div>
+                  <br />
+                  <div id="loginCarousel" className="carousel slide" data-ride="carousel" data-interval="false">
+                    <div className="carousel-inner">
+                      <div className="item active">
+                        <div className="form-group">
+                          <label className="control-label visible-ie8 visible-ie9">Username</label>
+                          <div className="input-icon">
+                            <i className="fa fa-user" />
+                            <input className="form-control placeholder-no-fix" type="text" id="username"
+                              autoComplete="off" placeholder="Username" name="username" /></div>
+                        </div>
+                        <div className="form-group">
+                          <label className="control-label visible-ie8 visible-ie9">Password</label>
+                          <div className="input-icon"><i className="fa fa-lock" />
+  
+                            <i className="fa fa-eye" aria-hidden="true" />
+                            <input type="password" className="form-control placeholder-no-fix" id="password"
+                              autoComplete="off" placeholder="Password" name="password" />
+                          </div>
+                        </div>
+  
+                        {console.log()}
+                        <div className="form-actions"><a href="javascript:;" onClick={this.check.bind(this)}
+                          className="btn green btn-block uppercase"> LOG IN </a></div>
+  
+                        <div className="forget-password">
+                          <ul className="lng">
+                            {/* <li id="engAnchor" className="actv"><a href="javascript:;"
+                              onClick={this.changLangButton.bind(this, "EN")}>En</a>
+                            </li> */}
+                            {/* <li id="arbAnchor"><a href="javascript:;"
+                                                       
+                                                                         onClick={this.changLangButton.bind(this, "AR")}>عربى</a></li> */}
+                          </ul> <ul className="lng">
+                            <li data-target="#loginCarousel" data-slide-to="1" >
+                              <a href="javascript:">Forgot your password ?</a></li>
+                          </ul>
                         </div>
                       </div>
-
-                      {console.log()}
-                      <div className="form-actions"><a href="javascript:;" onClick={this.check.bind(this)}
-                        className="btn green btn-block uppercase"> LOG IN </a></div>
-
-                      <div className="forget-password">
-                        <ul className="lng">
-                          {/* <li id="engAnchor" className="actv"><a href="javascript:;"
-                            onClick={this.changLangButton.bind(this, "EN")}>En</a>
-                          </li> */}
-                          {/* <li id="arbAnchor"><a href="javascript:;"
-                                                     
-                                                                       onClick={this.changLangButton.bind(this, "AR")}>عربى</a></li> */}
-                        </ul> <ul className="lng">
-                          <li data-target="#loginCarousel" data-slide-to="1" >
-                            <a href="javascript:">Forgot your password ?</a></li>
-                        </ul>
-                      </div>
-                    </div>
-
-                    <div className="item">
-                      <div className="form-group">
-                        <label className="control-label visible-ie8 visible-ie9">Username:</label>
-                        <div className="input-icon">
-                          <i className="fa fa-user" />
-                          <input className="form-control placeholder-no-fix" type="text" id="usernameForgot"
-                            autoComplete="off" placeholder="Username" name="username" /></div>
-                      </div>
-                      <div className="form-group">
-                        <label className="control-label visible-ie8 visible-ie9">Email</label>
-                        <div className="input-icon"><i className="fa fa-envelope" />
-                          <input type="email" className="form-control placeholder-no-fix" id="emailForgot"
-                            autoComplete="off" placeholder="Email" name="password" />
+  
+                      <div className="item">
+                        <div className="form-group">
+                          <label className="control-label visible-ie8 visible-ie9">Username:</label>
+                          <div className="input-icon">
+                            <i className="fa fa-user" />
+                            <input className="form-control placeholder-no-fix" type="text" id="usernameForgot"
+                              autoComplete="off" placeholder="Username" name="username" /></div>
                         </div>
-                      </div>
-                      <div className="form-actions"><a href="javascript:" onClick={this.checkForgot.bind(this)}
-                        className="btn green btn-block uppercase"> Submit </a></div>
-
-                      <div className="login-password">
-                        <ul className="lng">
-                          {/* <li id="engAnchor" className="actv"><a href="javascript:"
-                            onClick={this.changLangButton.bind(this, "EN")}>En</a>
-                          </li> */}
-                          {/* <li id="arbAnchor"><a href="javascript:;"
-                            onClick={this.changLangButton.bind(this, "AR")}>عربى</a></li> */}
-                          <li data-target="#loginCarousel" data-slide-to="0" >
-                            <a href="javascript:">Remember your password ?</a></li>
-                        </ul>
+                        <div className="form-group">
+                          <label className="control-label visible-ie8 visible-ie9">Email</label>
+                          <div className="input-icon"><i className="fa fa-envelope" />
+                            <input type="email" className="form-control placeholder-no-fix" id="emailForgot"
+                              autoComplete="off" placeholder="Email" name="password" />
+                          </div>
+                          {this.state.emailError ? <span style={{color: 'red', position: 'relative', top: '2px'}}>
+                            Not a Valid Email</span> : ''}
+                        </div>
+                        <div className="form-actions"><a onClick={this.checkForgot.bind(this)}
+                          className="btn green btn-block uppercase"> Submit </a></div>
+  
+                        <div className="login-password">
+                          <ul className="lng">
+                            {/* <li id="engAnchor" className="actv"><a href="javascript:"
+                              onClick={this.changLangButton.bind(this, "EN")}>En</a>
+                            </li> */}
+                            {/* <li id="arbAnchor"><a href="javascript:;"
+                              onClick={this.changLangButton.bind(this, "AR")}>عربى</a></li> */}
+                            <li data-target="#loginCarousel" data-slide-to="0" >
+                              <a href="javascript:">Remember your password ?</a></li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <br /><br />
+              <div className="copyright">{brandConfig.footer}</div>
             </div>
-            <br /><br />
-            <div className="copyright">{brandConfig.footer}</div>
           </div>
         </div>
-      </div>
-
-    );
+  
+      );
+    }  else {
+      return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
+  }
   }
 
 }
 
 Login.propTypes = {
   LoginResult: PropTypes.object,
+  passwordReset: undefined,
   children: PropTypes.object
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     LoginResult: state.app.loginResponse.data,
+    passwordReset: state.app.responseMessage.data,
     orgType: ownProps.params.orgType
   };
 }
@@ -326,33 +364,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
-
-//export default Login;
-
-
-
-{/* <div className="forget-password">
-                <ul className="lng">
-                  <li id="engAnchor" className="actv"><a href="javascript:;"
-                    onClick={this.changLangButton.bind(this, "EN")}>En</a></li> */}
-{/* <li id="arbAnchor"><a href="javascript:;" onClick={this.changLangButton.bind(this, "AR")}>عربى</a>
-                  </li> */}
-{/* </ul> */ }
-{/* <h4><a href="#">Forgot your password ?</a></h4> */ }
-{/* </div> */ }
-// </div >
-
-{/* <div className="forget-form">
-                <h3>Forget Password ?</h3>
-                <p> Enter your e-mail address below to reset your password. </p>
-                <div className="form-group">
-                  <div className="input-icon">
-                    <i className="fa fa-envelope"></i>
-                    <input className="form-control placeholder-no-fix" type="text" autoComplete="off" placeholder="Email"
-                      name="email" /></div>
-                </div>
-                <div className="form-actions">
-                  <button type="button" id="back-btn" className="btn grey-salsa btn-outline"> Back</button>
-                  <button type="submit" className="btn green pull-right"> Submit</button>
-                </div>
-              </div> */}

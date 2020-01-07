@@ -126,11 +126,12 @@ export default {
   notificationList: {},
   notificationDetailList: { action: "", data: { "pageData": { "totalRecords": 0 } } },
   containerData: { action: "", data: {} },
-  responseMessage: {
-    action: "",
-    data: { status: "ERROR", errorDescription: "I am the problem", routeTo: "success", displayToUser: false }
-  },
+  // responseMessage: {
+  //   action: "",
+  //   data: { status: "ERROR", errorDescription: "I am the problem", routeTo: "success", displayToUser: false }
+  // },
   loginResponse: { action: "", data: {} },
+  responseMessage: { action: "", data: undefined },
   entityDashboardData: {
     action: "", data: {
       "dashboardTiles": [], "workboardData": { "pageData": {} }, "exceptionData": {
