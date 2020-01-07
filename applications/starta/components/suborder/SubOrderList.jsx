@@ -119,7 +119,7 @@ class SubOrderList extends React.Component {
                 searchCriteria: {}
             }
         };
-        this.props.actions.generalProcess(constants.getSubOrderList, request);
+        // this.props.actions.generalProcess(constants.getSubOrderList, request);
     }
     formatData = (gridData) => {
         for (let i in gridData) {

@@ -11,7 +11,7 @@ const CreateOrder = props => {
   const addDefaultSrc = (e) => {
     e.target.src = "/assets/Resources/images/default.png"
   }
-  const { onClick, cartItems, state, setState, placeOrder } = props;
+  const { onClick, cartItems, state, setState, placeOrder ,cancelOrder} = props;
 
   return <Portlet title="Create Order" noCollapse={true}>
     <a
@@ -28,7 +28,7 @@ const CreateOrder = props => {
     <label className='caption-subject' style={{ marginLeft: "10px" }}>
       {props.getLeadTime() + ' hrs '}
     </label>
-    <hr/>
+    <hr />
     <table id="fieldTable" className="table table-bordered table-striped table-responsive ordertable">
       <thead>
         <tr>
@@ -53,18 +53,18 @@ const CreateOrder = props => {
               let totalBatchSize = 0;
               cart.forEach(element => {
                 element.total = parseFloat(parseInt(element.quantity)) * parseFloat(element.price),
-                element.units = (element.batchSize) * (element.quantity)
+                  element.units = (element.batchSize) * (element.quantity)
               });
               cart.forEach(element => {
                 grandTotal += element.total,
-                totalBatchSize +=element.units
+                  totalBatchSize += element.units
               });
-              
+
               setState({
-                cartItems: cart, 
+                cartItems: cart,
                 grandTotal,
                 totalBatchSize,
-                itemAddedToCart:false
+                itemAddedToCart: false
               });
             }} /></td>
             <td><img src={item.image} onError={addDefaultSrc} width="40px" /> <span
@@ -91,7 +91,7 @@ const CreateOrder = props => {
           <td className="text-right" colSpan="5"><b style={{ fontSize: '14px' }}>Total Units :</b></td>
           <td colSpan="3" className="moveRight">
             <spans style={{ color: "#c20c35", fontWeight: 625, textAlign: "right", fontSize: '16px' }}>
-              { utils.formatAmountField(state.totalBatchSize)}
+              {utils.formatAmountField(state.totalBatchSize)}
             </spans>
           </td>
         </tr>
@@ -104,13 +104,23 @@ const CreateOrder = props => {
         </tr>
       </tbody>
     </table>
-    <a
-      href="#"
-      className="btn stratabtnstyle pull-right"
-      onClick={() => {
-        placeOrder();
-      }}>
-      Create Order </a>
+
+
+    <div className="btn-toolbar pull-right">
+      <button type="submit" className="btn stratabtnstyle pull-right"
+        onClick={() => {
+          placeOrder();
+        }}>
+        {utils.getLabelByID('Create Order')}
+      </button>
+      <button type="clear" className="btn stratabtnstyle pull-right"
+        onClick={() => {
+          cancelOrder();
+        }}>
+
+        {utils.getLabelByID("Cancel Order")}
+      </button>
+    </div>
   </Portlet>;
 };
 

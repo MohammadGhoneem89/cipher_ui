@@ -136,7 +136,7 @@ class OrderViaContract extends React.Component {
     };
 
 
-    console.log("totalLeadTime >>>>> ", this.getLeadTime())
+    console.log("this.grandTotal >>>>> ", this.grandTotal)
     if (this.state.cartItems && this.state.cartItems.length > 0) {
       this.setState({
         isLoading: true
@@ -369,9 +369,9 @@ class OrderViaContract extends React.Component {
     }
     this.setState({
       _contractID: document.getElementById("contractID").value,
-      // cartItems: [],
-      // grandTotal: 0,
-      // totalBatchSize: 0
+      cartItems: [],
+      grandTotal: 0,
+      totalBatchSize: 0
     });
   }
 
@@ -461,7 +461,21 @@ class OrderViaContract extends React.Component {
       currentPageNo
     });
   };
-
+  cancelOrder = () => {
+    this.setState({
+      createOrder: false,
+      isLoading2: false,
+      isLoading: false,
+      cartItems: [],
+      itemCatalogueUpdated: [],
+      contractState: false,
+      grandTotal: 0,
+      _contractID: '',
+      totalBatchSize: 0,
+      itemAddedToCart: false
+    });
+    window.scrollTo(0, 0);
+  }
   render() {
     let masterContract = this.state.contracts ? this.getContractDetails() : [];
 
@@ -672,6 +686,7 @@ class OrderViaContract extends React.Component {
               getTotalUnits={this.getTotalUnits}
               getLeadTime={this.getLeadTime}
               placeOrder={this.placeOrder}
+              cancelOrder={this.cancelOrder}
             />
           )}
         </div>
