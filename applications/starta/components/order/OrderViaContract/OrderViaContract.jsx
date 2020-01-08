@@ -134,26 +134,32 @@ class OrderViaContract extends React.Component {
         grandTotal: this.grandTotal
       }
     };
-
-
-    console.log("this.grandTotal >>>>> ", this.grandTotal)
-    if (this.state.cartItems && this.state.cartItems.length > 0) {
-      this.setState({
-        isLoading: true
-      });
-      this.props.actions
-        .generalAjxProcess(constants.createOrder, request)
-        .then(result => {
-          result.message.status == "ERROR"
-            ? this.failureAction(result)
-            : this.successAction(result.orderID);
+    console.log("this.grandTotal >>>>> ", this.grandTotal);
+    let confirmPlaceOrder = confirm("Do you want to continue to place an order ?");
+    if (confirmPlaceOrder == true) {
+      console.log("okay was pressed.");
+      if (this.state.cartItems && this.state.cartItems.length > 0) {
+        this.setState({
+          isLoading: true
         });
+        this.props.actions
+          .generalAjxProcess(constants.createOrder, request)
+          .then(result => {
+            result.message.status == "ERROR"
+              ? this.failureAction(result)
+              : this.successAction(result.orderID);
+          });
+      } else {
+        toaster.showToast("Please add atleast one item to place the order!", "ERROR");
+        browserHistory.push("/strata/OrderViaContract");
+        toaster.showToast("Failed to place the order!", "ERROR");
+        return false;
+      }
     } else {
-      toaster.showToast("Please add atleast one item to place the order!", "ERROR");
-      browserHistory.push("/strata/OrderViaContract");
-      toaster.showToast("Failed to place the order!", "ERROR");
+      console.log("Cancel was pressed.")
       return false;
     }
+
   }
 
   failureAction = (result) => {
@@ -462,19 +468,28 @@ class OrderViaContract extends React.Component {
     });
   };
   cancelOrder = () => {
-    this.setState({
-      createOrder: false,
-      isLoading2: false,
-      isLoading: false,
-      cartItems: [],
-      itemCatalogueUpdated: [],
-      contractState: false,
-      grandTotal: 0,
-      _contractID: '',
-      totalBatchSize: 0,
-      itemAddedToCart: false
-    });
-    window.scrollTo(0, 0);
+    console.log("testttttttttt cancel order ##################");
+    let cancelOrderConfirm = confirm("Are you sure you want to cancel this order ?");
+    if (cancelOrderConfirm == true) {
+      console.log("OK was pressed.");
+      this.setState({
+        createOrder: false,
+        isLoading2: false,
+        isLoading: false,
+        cartItems: [],
+        itemCatalogueUpdated: [],
+        contractState: false,
+        grandTotal: 0,
+        _contractID: '',
+        totalBatchSize: 0,
+        itemAddedToCart: false
+      });
+      window.scrollTo(0, 0);
+    } else {
+      console.log("Cancel was pressed.");
+      return;
+    }
+
   }
   render() {
     let masterContract = this.state.contracts ? this.getContractDetails() : [];

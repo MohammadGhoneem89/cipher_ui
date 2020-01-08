@@ -196,20 +196,21 @@ class ProductCatalogueList extends React.Component {
                 <Portlet title={utils.getLabelByID("ITEM catalogue")}>
 
                     <div className="row">
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Item ID")}</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="itemID" id="itemID" />
-                            </div>
-                        </div>
+
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
                                 <label className="control-label">{utils.getLabelByID("Item Name")}</label>
                             </div>
                             <div className="form-group col-md-8">
                                 <input type="text" className="form-control" name="name" id="name" />
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="form-group col-md-4">
+                                <label className="control-label">{utils.getLabelByID("Item ID")}</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <input type="text" className="form-control" name="itemID" id="itemID" />
                             </div>
                         </div>
                         <div className="col-md-6">

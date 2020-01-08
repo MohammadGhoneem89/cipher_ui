@@ -122,18 +122,26 @@ class OneTimeOrder extends React.Component {
         "grandTotal": this.grandTotal
       }
     };
-    console.log(request, "request")
-    if (this.state.cartItems && this.state.cartItems.length > 0) {
-      this.setState({
-        isLoading: true
-      })
-      this.props.actions.generalAjxProcess(constants.createOrder,
-        request).then(result => {
-          console.log(result, "result")
-          result.message.status == 'ERROR' ? this.failureAction(result) : this.successAction(result.orderID)
-        });
+    console.log(request, "request");
+    let confirmPlaceOrder = confirm("Do you want to continue to place an order ?");
+    if (confirmPlaceOrder == true) {
+      console.log("okay was pressed.")
+      if (this.state.cartItems && this.state.cartItems.length > 0) {
+        this.setState({
+          isLoading: true
+        })
+        this.props.actions.generalAjxProcess(constants.createOrder,
+          request).then(result => {
+            console.log(result, "result")
+            result.message.status == 'ERROR' ? this.failureAction(result) : this.successAction(result.orderID)
+          });
+      }
+      else {
+        toaster.showToast("Please add at least one item to place the order!", "ERROR");
+        return false;
+      }
     } else {
-      toaster.showToast("Please add at least one item to place the order!", "ERROR");
+      console.log("Cancel was pressed.")
       return false;
     }
   }
@@ -301,20 +309,28 @@ class OneTimeOrder extends React.Component {
     delete data.find;
     this.getRequest(1, data);
   }
-  cancelOrder=()=>{
-    console.log("testttttttttt cancel order ##################")
-    this.setState({
-      createOrder:false,
-      isLoading2:false,
-      isLoading:false,
-      cartItems: [],
-      contractState: false,
-      grandTotal: 0,
-      _contractID: '',
-      totalBatchSize: 0,
-      itemAddedToCart: false
-    });
-    window.scrollTo(0, 0);
+  cancelOrder = () => {
+    console.log("testttttttttt cancel order ##################");
+    let cancelOrderConfirm = confirm("Are you sure you want to cancel this order ?");
+    if (cancelOrderConfirm == true) {
+      console.log("OK was pressed.");
+      this.setState({
+        createOrder: false,
+        isLoading2: false,
+        isLoading: false,
+        cartItems: [],
+        contractState: false,
+        grandTotal: 0,
+        _contractID: '',
+        totalBatchSize: 0,
+        itemAddedToCart: false
+      });
+      window.scrollTo(0, 0);
+    } else {
+      console.log("Cancel was pressed.");
+      return;
+    }
+
   }
   render() {
 
@@ -328,24 +344,24 @@ class OneTimeOrder extends React.Component {
           {!this.state.createOrder && <div className="row">
             <div className="col-md-8 col-md-offset-2">
               <div className="masthead">
-                <form className="navbar-search" method="get" autoComplete="off"  onSubmit={this.searchItem}>
+                <form className="navbar-search" method="get" autoComplete="off" onSubmit={this.searchItem}>
                   <label className="sr-only screen-reader-text" htmlFor="search">Search for:</label>
                   <div className="input-group">
                     {/* <div className="input-search-field">
                       <input type="text" id="search" className="form-control search-field product-search-field"
                         dir="ltr" name="find" placeholder="Search for Products" autoComplete="off" />
-                    </div>
+      </div>*/}
                     <div className="input-group-addon search-categories">
                       <select name="searchType" id="productCategory" className="postform resizeselect"
-                        style={{ width: "143px", webkitAppearance: "menulist" }}>
+                        style={{ webkitAppearance: "menulist" }}>
                         <option value="name">Name</option>
                         <option className="level-0" value="description">Description</option>
                         <option className="level-0" value="material">Material</option>
                       </select>
-                    </div> */}
-                    <div className="input-group-addon search-categories">
+                    </div>
+                    <div className="input-group-addon search-categories catname">
                       <select name="classification" id="product_cat" className="postform resizeselect"
-                        style={{webkitAppearance: "menulist" }}>
+                        style={{ webkitAppearance: "menulist" }}>
                         <option value="">All Categories</option>
                         {categories.map((item, index) => {
                           return <option key={index} className="level-0" value={item.value}>{item.label}</option>;

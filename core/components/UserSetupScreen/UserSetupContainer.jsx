@@ -24,9 +24,11 @@ class UserSetupContainer extends Component {
             typeData: {},
             userDetail: {},
             errors: {},
-            groupIndex: 0
+            groupIndex: 0,
+            isLocked: false
         };
         this.IsValid = true;
+        this.generalHandler = gen.generalHandler.bind(this);
     }
 
     addDefaultSrc = e => e.target.src = constants.baseUrl + "/images/image-user.png";
@@ -108,7 +110,7 @@ class UserSetupContainer extends Component {
 
         this.props.actions.generalProcess(constants.getBlkUserList); // Hyperledger/quorum etc blckchain users (peer admins)
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES', 'CALLER_TYPES', 'First_Screens'])); // Org types (entities)
-
+        this.props.actions.generalProcess(constants.passwordPolicyDetail, { "action": "typeDataDetail" });
         this.props.actions.generalProcess(constants.getUserDetail, {    // user detail + groups list
             "action": "userDetails",
             "id": this.props.params.userID
@@ -122,13 +124,24 @@ class UserSetupContainer extends Component {
         window.scrollTo(0, 0);
     }
 
+    checkLockedAccount = (allowIncorrectLoginAttempts, passwordRetries) => {
+        if (passwordRetries > allowIncorrectLoginAttempts) {
+            return true;
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
-        let perTypeData = this.getPermissionTypeData(nextProps.permission)
-        if (nextProps.userDetail && nextProps.userDetail.groups && nextProps.entityNames && (nextProps.orgTypes || nextProps.callerTypes || nextProps.firstScreens) && nextProps.hyperledgerData && nextProps.quorrumData) {
+        let perTypeData = this.getPermissionTypeData(nextProps.permission);
+        if (nextProps.userDetail && nextProps.userDetail.groups && nextProps.passwordPolicyDetail && nextProps.entityNames && (nextProps.orgTypes || nextProps.callerTypes || nextProps.firstScreens) && nextProps.hyperledgerData && nextProps.quorrumData) {
+
+            //allowIncorrectLoginAttempts from passwordPolicy
+            const passwordPolicy = nextProps.passwordPolicyDetail;
+            const allowIncorrectLoginAttempts = passwordPolicy.passwordPolicy[0].allowIncorrectLoginAttempts;
+            const passwordRetries = nextProps.userDetail.passwordRetries;
+
 
             let userType = sessionStorage.orgType;
             let authenticationType = [];
-
             if (userType !== 'Entity' && userType !== 'Acquirer') {
                 authenticationType = [
                     { value: "System", label: "System" },
@@ -160,6 +173,12 @@ class UserSetupContainer extends Component {
             }
 
             if (this.props.params.userID && nextProps.userDetail.userID) {
+                const checkLocked = this.checkLockedAccount(allowIncorrectLoginAttempts, passwordRetries);
+                let isActive = true;
+                if (checkLocked) {
+                    isActive = false;
+                }
+                console.log(isActive);
                 this.setState({
                     id: this.props.params.userID,
                     isLoading: false,
@@ -167,7 +186,8 @@ class UserSetupContainer extends Component {
                         ...nextProps.userDetail,
                         firstScreen,
                         groups,
-                        hypUser
+                        hypUser,
+                        isActive
                     },
                     typeData: {
                         ...this.state.typeData,
@@ -183,6 +203,9 @@ class UserSetupContainer extends Component {
                     actions: [...nextProps.userDetailActions]
 
                 })
+                // if(nextProps.userDetail.passwordRetries){
+
+                // }
             } else {
                 this.setState({
                     id: undefined,
@@ -224,7 +247,7 @@ class UserSetupContainer extends Component {
     }
     onSubmit = (e) => {
         e.preventDefault()
-        console.log(this.state.userDetail)
+
         console.log('Form Submits')
 
         // Validation Input
@@ -269,7 +292,11 @@ class UserSetupContainer extends Component {
         if (this.state.userDetail.userType === 'Human' && !this.state.userDetail.firstScreen) {
             errors.firstScreen = 'Field is Required'
         }
-        
+        if (this.state.userDetail.isActive) {
+            this.state.userDetail.passwordRetries = 0
+        }
+
+        console.log(this.state.userDetail, "updated user details");
         if (Object.keys(errors).length > 0) {
             console.log(errors, ' errors found')
             window.scrollTo(0, 0);
@@ -278,7 +305,7 @@ class UserSetupContainer extends Component {
             })
             return
         }
-       
+
 
 
         let firstScreen = ''
@@ -391,7 +418,6 @@ class UserSetupContainer extends Component {
 
     // Helper
     getPermissionTypeData = (permission) => {
-
         let arr = [];
         for (let obj of permission) {
             if (obj.label == "Dashboard") {
@@ -587,6 +613,7 @@ class UserSetupContainer extends Component {
                         comboBoxHandler={this.comboBoxHandler.bind(this)}
                         inputHandler={this.inputHandler.bind(this)}
                         userTypeHandler={this.userTypeHandler.bind(this)}
+                        generalHandler={this.generalHandler}
                         onChangeHandler={this.onChange.bind(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         imgDiv={this.imgDiv.bind(this)}
@@ -605,6 +632,7 @@ function mapStateToProps(state, ownProps) {
         // User Data
         userDetail: _.get(state.app, 'userDetails.data.searchResult', undefined),
         userDetailActions: _.get(state.app, 'userDetails.data.actions', undefined),
+        passwordPolicyDetail: state.app.fetchPasswordPolicy.data,
         // Type Data
         entityNames: _.get(state.app, 'entityList.data.typeData.entityNames', undefined),
         orgTypes: _.get(state.app, 'typeData.data.ORG_TYPES', undefined),

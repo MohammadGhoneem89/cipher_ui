@@ -18,10 +18,9 @@ import Input from '../../common/Input.jsx';
 
 export default function UserSetupForm(props) {
 
-
     const {
         onError,
-        //changePassword, 
+        generalHandler, 
         containerState,
         customHandler,
         typeData,
@@ -159,7 +158,7 @@ export default function UserSetupForm(props) {
 
                 </div>
             </Row>
-<br/>
+            <br />
             <Row>
                 <div className="col-md-6">
                     <Row>
@@ -195,7 +194,7 @@ export default function UserSetupForm(props) {
                         </div>
 
                         <Input
-                         status={(containerState.errors && containerState.errors.password) ? "ERROR" : undefined}
+                            status={(containerState.errors && containerState.errors.password) ? "ERROR" : undefined}
                             errorIconStyle={{
                                 left: '365px',
                                 top: '10px',
@@ -215,7 +214,7 @@ export default function UserSetupForm(props) {
 
                     </Row>}
 
-                   
+
                 </div>
 
             </Row>
@@ -372,7 +371,7 @@ export default function UserSetupForm(props) {
                         value={_.get(containerState, 'userDetail.isActive', false)}
                         columns='1'
                         style={{}}
-                        actionHandler={inputHandler}
+                        actionHandler={generalHandler}
                         disabled={false}
                     />
                 </div>
@@ -511,10 +510,10 @@ export default function UserSetupForm(props) {
 
             {/* <div className="clearfix">
                 <div className="btn-toolbar pull-right">
-
-                    <button type="submit" className="btn green">
-                        Save
-                    </button>
+                
+                <ActionButton actionList={containerState.actions}
+                />
+                    
 
                 </div>
             </div> */}

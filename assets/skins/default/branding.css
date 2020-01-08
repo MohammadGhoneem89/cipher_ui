@@ -3971,6 +3971,11 @@ input.form-control.pwd-input[type="password"]+.user-pwd {
 }
 
 
+.input-group-addon.search-categories.catname {
+    border-top-left-radius: 0!important;
+    border-bottom-left-radius: 0!important;
+}
+
 /* end setp screen css */
 
 @media (max-width: 768px) {

@@ -47,7 +47,7 @@ class MasterAgreementList extends React.Component {
             }
         }
         this.setState({ searchCriteria: {} });
-        this.props.actions.generalProcess(constants.getMasterAgreement, request);
+        // this.props.actions.generalProcess(constants.getMasterAgreement, request);
     };
 
     redirectToAddPage = () => {

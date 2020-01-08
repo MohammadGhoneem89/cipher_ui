@@ -3,10 +3,30 @@ import * as constants from "../../../../core/constants/Communication";
 import * as utils from '../../../../core/common/utils.js';
 const Product = props => {
   const { onClick, details } = props;
+
   const addDefaultSrc = (e) => {
     e.target.src = "/assets/Resources/images/default.png"
   };
   let price = details.price ? details.price : details.unitPrice;
+  let colors = details.color;
+  let colorObj = [];
+
+  for (let i = 0; i < colors.length; i++) {
+    let label = colors[i];
+    let value = colors[i];
+    if (colors[i] == 'Natural') {
+      value = 'Black'
+    }
+    else if (colors[i] == 'Ivory') {
+      value = 'Black'
+    }
+    else value = 'white'
+    let obj = {
+      label, value
+    }
+    colorObj.push(obj)
+  }
+  console.log("colorObj >>> ", colorObj);
   return <div className="procard">
     {(details.receivedQuantity == 0 || details.receivedQuantity > 0) && <div className="counterbadge">
       <span>{details.receivedQuantity}
@@ -41,8 +61,9 @@ const Product = props => {
         <select name="color" className="form-control" >
           <option value="">Select</option>
 
-          {details.color.map(item => {
-            return <option style={{ backgroundColor: item, color: "white" }}>{item}</option>
+          {colorObj.map((obj) => {
+            return <option style={{ backgroundColor: obj.label, color: obj.value }}>{obj.label}
+            </option>
           })}
         </select>
       </div>
