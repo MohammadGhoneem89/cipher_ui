@@ -3263,7 +3263,9 @@ label {
     border-left: 0;
     border-right: 0;
 }
-
+ul.switchScreen li:first-child ul.sub-menu li:first-child {
+    margin-top: 14px!important;
+}
 .navbar-search .search-categories>select {
     color: #6b6b6b;
     font-size: .938em;

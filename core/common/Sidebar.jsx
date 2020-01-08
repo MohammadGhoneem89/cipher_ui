@@ -79,7 +79,7 @@ class Sidebar extends React.Component {
                     <div className="menu-toggler sidebar-toggler">
                         <img src="/assets/layouts/layout2/img/expand.png" className="expandImg" />
                     </div>
-                    <ul id="SideMenuIcons" className="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu "
+                    <ul id="SideMenuIcons" className="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu switchScreen"
                         data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
 
 
