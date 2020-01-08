@@ -8,7 +8,7 @@ import * as actions from '../../../../core/actions/generalAction';
 import _ from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import * as requestCreator from '../../../../core/common/request.js';
-
+import * as gen from "../../common/generalActionHandler";
 import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
@@ -45,7 +45,7 @@ class AddMasterAgreement extends React.Component {
         this.toStage = undefined;
         this.fromStagePenalty = undefined;
         this.tillStage = undefined;
-
+        this.generalHandler = gen.generalHandler.bind(this);
         this.addOrderRebate = this.addOrderRebate.bind(this);
         this.ActionHandlers = this.ActionHandlers.bind(this);
         this.ActionHandlersItem = this.ActionHandlersItem.bind(this)
@@ -496,9 +496,9 @@ class AddMasterAgreement extends React.Component {
             toaster.showToast("End Date is required!", "ERROR")
             return false;
         }
-        if (endDate < startDate) {
-            console.log("endDate >> ", endDate);
-            console.log("startDate >> ", startDate);
+        if (utils.UNIXConvertToDate(startDate) > utils.UNIXConvertToDate(endDate)) {
+            console.log("startDate >> ", utils.UNIXConvertToDate(startDate));
+            console.log("endDate >> ", utils.UNIXConvertToDate(endDate));
             toaster.showToast("End Date cannot be less than Start Date", "ERROR")
             return false;
         }
@@ -729,6 +729,13 @@ class AddMasterAgreement extends React.Component {
                 break;
         }
     }
+    prepareOptions = (selectObject) => {
+        let options = [];
+        for (let [index, optionValue] of selectObject.entries()) {
+            options.push(<option key={"item" + index} value={optionValue.value}>{optionValue.label}</option>)
+        }
+        return options;
+    }
     ActionHandlers({ actionName, index }) {
         switch (actionName) {
             case "Edit":
@@ -953,10 +960,10 @@ class AddMasterAgreement extends React.Component {
                                                                 {utils.getLabelByID("Item")}
                                                                 <span style={{ color: 'red', verticalAlign: 'top' }}> *</span>
                                                             </label>
-                                                            <div className="form-group col-md-7" >
-                                                                {/* {console.log(initialValues)} */}
 
-                                                                <select id="item" className="form-control">
+                                                            {/* {console.log(initialValues)} */}
+
+                                                            {/* <select id="item" className="form-control">
                                                                     <option key="-1" value="">Select</option>
                                                                     {
                                                                         itemList.map((option) => {
@@ -966,23 +973,30 @@ class AddMasterAgreement extends React.Component {
                                                                             );
                                                                         })
                                                                     }
-                                                                </select>
+                                                                </select> */}
 
 
-                                                                {/* <div className="form-group col-md-7">
-                                                                    <input
-                                                                        id={this.props.fieldname} name={this.props.fieldname}
-                                                                        className="form-control"
-                                                                        disabled={this.props.disabled ? true : false}
-                                                                        value={this.props.selected || _.get(this.props.state, `${this.props.formname}.${this.props.fieldname}`, "")}
-                                                                        type="text"
-                                                                        list={`id_${this.props.fieldname}`}
-                                                                        onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'combobox')}
-                                                                    />
-                                                                    <datalist id={`id_${this.props.fieldname}`}>
-                                                                        {this.prepareOptions(_.get(this.props.dataSource, this.props.typeName, []))}
-                                                                    </datalist >
-                                                                </div> */}
+                                                            <div className="form-group col-md-7">
+                                                                <input     
+                                                                    name="item"
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    id="item"
+                                                                    onChange={this.onChange}
+                                                                    value={this.state.item}
+                                                                    autoComplete={'on'}
+                                                                    list={`id_item`}
+                                                                    onChange={this.value}
+                                                                />
+                                                                <datalist id={`id_item`} >
+                                                                    {/* {this.prepareOptions(_.get(this.props.dataSource, this.props.typeName, []))}*/}
+                                                                    {itemList.map((option) => {
+                                                                        return (
+                                                                            <option key={option.itemCode} value={option.itemCode}>
+                                                                                {option.itemCode + " | " + option.name}</option>
+                                                                        );
+                                                                    })}         
+                                                                </datalist>
                                                             </div>
                                                         </div>
                                                     </div>

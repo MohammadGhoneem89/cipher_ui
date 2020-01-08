@@ -84,7 +84,7 @@ class MasterAgreementList extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.getMasterAgreement && nextProps.typeData && nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
-            console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions")
+            console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions");
             let pageActions = nextProps.gridActions[0].pageActions;
             this.setState(
                 {

@@ -26,7 +26,7 @@ const Product = props => {
     }
     colorObj.push(obj)
   }
-  console.log("colorObj >>> ", colorObj);
+  console.log("colorObj ::  ", colorObj);
   return <div className="procard">
     {(details.receivedQuantity == 0 || details.receivedQuantity > 0) && <div className="counterbadge">
       <span>{details.receivedQuantity}
@@ -62,7 +62,7 @@ const Product = props => {
           <option value="">Select</option>
 
           {colorObj.map((obj) => {
-            return <option style={{ backgroundColor: obj.label, color: obj.value }}>{obj.label}
+            return <option style={{ backgroundColor: obj.label, color: obj.value }} >{obj.label}
             </option>
           })}
         </select>

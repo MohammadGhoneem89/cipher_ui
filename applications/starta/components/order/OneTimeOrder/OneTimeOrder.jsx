@@ -347,21 +347,21 @@ class OneTimeOrder extends React.Component {
                 <form className="navbar-search" method="get" autoComplete="off" onSubmit={this.searchItem}>
                   <label className="sr-only screen-reader-text" htmlFor="search">Search for:</label>
                   <div className="input-group">
-                    {/* <div className="input-search-field">
+                    <div className="input-search-field">
                       <input type="text" id="search" className="form-control search-field product-search-field"
                         dir="ltr" name="find" placeholder="Search for Products" autoComplete="off" />
-      </div>*/}
-                    <div className="input-group-addon search-categories">
+      </div>
+                    {/* <div className="input-group-addon search-categories">
                       <select name="searchType" id="productCategory" className="postform resizeselect"
                         style={{ webkitAppearance: "menulist" }}>
                         <option value="name">Name</option>
                         <option className="level-0" value="description">Description</option>
                         <option className="level-0" value="material">Material</option>
                       </select>
-                    </div>
-                    <div className="input-group-addon search-categories catname">
+                    </div> */}
+                    <div className="input-group-addon search-categories catname" style={{float: 'right'}}>
                       <select name="classification" id="product_cat" className="postform resizeselect"
-                        style={{ webkitAppearance: "menulist" }}>
+                        style={{webkitAppearance: "menulist" }}>
                         <option value="">All Categories</option>
                         {categories.map((item, index) => {
                           return <option key={index} className="level-0" value={item.value}>{item.label}</option>;

@@ -3271,7 +3271,7 @@ ul.switchScreen li:first-child ul.sub-menu li:first-child {
     font-size: .938em;
     line-height: 1.4em;
     display: inline-block;
-    width: 97%;
+    width: 90%;
     padding: 0 1.75rem 0 .75rem;
     vertical-align: middle;
     background: #fff url(../imgs/down-arrow.png) no-repeat right .75rem center;
@@ -3330,7 +3330,7 @@ form::after {
 }
 
 .navbar-search>.input-group .search-categories {
-    width: 100%;
+    width: 40%;
     /* height: 50px; */
     border-color: #c20c35;
     border-width: 2px;
