@@ -131,7 +131,7 @@ export default {
   //   data: { status: "ERROR", errorDescription: "I am the problem", routeTo: "success", displayToUser: false }
   // },
   loginResponse: { action: "", data: {} },
-  responseMessage: { action: "", data: undefined },
+  responseMessage: { action: "", data: "" },
   entityDashboardData: {
     action: "", data: {
       "dashboardTiles": [], "workboardData": { "pageData": {} }, "exceptionData": {

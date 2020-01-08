@@ -159,7 +159,7 @@ class Login extends React.Component {
       }
 
     }
-    if (this.props.passwordReset !== undefined && this.state.isLoading === true) {
+    if (this.props.passwordReset !== '' && this.state.isLoading === true) {
         this.setState({
           isLoading: false,
         })
@@ -345,7 +345,7 @@ class Login extends React.Component {
 
 Login.propTypes = {
   LoginResult: PropTypes.object,
-  passwordReset: undefined,
+  passwordReset: '',
   children: PropTypes.object
 };
 
