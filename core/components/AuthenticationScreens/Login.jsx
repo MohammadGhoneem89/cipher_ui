@@ -25,10 +25,12 @@ class Login extends React.Component {
     this.state = {
       isLoading: false,
       emailError: false,
+      // loginAgain: false
     }
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
     sessionStorage.lang = "EN";
+    // this.state = { accountIsLocked: false }
   }
 
   check(form) {
@@ -39,21 +41,20 @@ class Login extends React.Component {
       var userId = $('#username').val();
       var password = $('#password').val();
 
-      console.log(sessionStorage.lang)
+      console.log("Language : ", sessionStorage.lang)
       var lang = sessionStorage.lang;
       if (userId === "" && password === "") {
         toaster.showToast("Username, Password fields must not be empty please enter username or password.", "INFO");
         //alert("Username, Password are required.");
       } else {
         isLocked = true
-        this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(userId, password, lang));
-        this.setState({
-          isLoading: true,
-        })
+        this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(userId, password,
+          lang));
+
       }
     }
-  }
 
+  }
 
   // changLangButton(langaugeTag) {
   //   console.log(langaugeTag);
@@ -105,6 +106,27 @@ class Login extends React.Component {
 
     }
   }
+
+  //Unlock user account
+  // unlockUser = () => {
+  //   console.log("Unlock user account :: ");
+  //   isLocked = false;
+  //   let userId = $('#unlockUserid').val();
+  //   let resetPwdRetry = true;
+  //   var password = $('#password').val();
+  //   var lang = sessionStorage.lang;
+  //   if (userId === "") {
+  //     toaster.showToast("Username field must not be empty.", "INFO");
+  //   } else {
+  //     this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(userId,
+  //       password, lang, resetPwdRetry));
+  //     this.setState({
+  //       loginAgain: true,
+  //       accountIsLocked: false
+  //     });
+  //   }
+  // }
+
   componentDidMount() {
     document.getElementById("username").addEventListener("keyup", this.handleKeyPress);
     document.getElementById("password").addEventListener("keyup", this.handleKeyPress);
@@ -126,21 +148,13 @@ class Login extends React.Component {
         break;
 
     }
-
-
   }
 
   componentDidUpdate() {
-    console.log(this.props);
     isLocked = false
     if (this.props.LoginResult) {
-
-
-
-      //alert(sessionStorage.loginTime)
-
+      console.log("LoginResult from props ::: ", this.props.LoginResult);
       var firstPage = this.props.LoginResult.firstScreen;
-
       sessionStorage.setItem('firstScreen', firstPage)
       if (firstPage != undefined) {
         firstPage = firstPage.replace("/", "");
@@ -150,14 +164,14 @@ class Login extends React.Component {
         if (firstPage != undefined && this.props.LoginResult.firstScreen != "")
           browserHistory.push(this.props.LoginResult.firstScreen);
         else
-          browserHistory.push("/home")
+          browserHistory.push("/home");
         sessionStorage.setItem('token', this.props.LoginResult.token);
-        console.log("TEST" + this.props.LoginResult.token)
+        console.log("token" + this.props.LoginResult.token)
 
-      } else {
-        //alert("wrong Username or Password");
       }
-
+      // if (this.props.LoginResult.passwordRetriesExceed === false) {
+      //   this.setState({ loginAgain: false, accountIsLocked: false })
+      // }
     }
     if (this.props.passwordReset !== '' && this.state.isLoading === true) {
         this.setState({
@@ -166,6 +180,18 @@ class Login extends React.Component {
     }
 
 
+  }
+  componentWillReceiveProps(nextProps) {
+    // if (nextProps.LoginResult && nextProps.LoginResult.success === false && nextProps.LoginResult.passwordRetriesExceed === true) {
+    //   this.setState({
+    //     accountIsLocked: true
+    //   })
+    // }
+    // if(this.state{
+    //   this.setState({
+    //     accountIsLocked: false
+    //   })
+    // }
   }
 
   handleKeyPress(e) {
@@ -183,7 +209,7 @@ class Login extends React.Component {
   validateEmail = (email) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
-}
+  }
 
   getLogosbyUserType() {
 
@@ -231,14 +257,18 @@ class Login extends React.Component {
   getLogosForSDGUser() {
     return (<div className="logo" />);
   }
-
+  loginAgainFalse = () => {
+    this.setState({
+      accountIsLocked: false
+    })
+  }
   render() {
-    console.log(this.props);
+
+    
     if (!this.state.isLoading) {
       sessionStorage.loginOrgType = this.props.orgType;
 
       return (
-  
         <div>
           <div className="login">
             <div style={{}}>
@@ -267,32 +297,41 @@ class Login extends React.Component {
                         <div className="form-group">
                           <label className="control-label visible-ie8 visible-ie9">Password</label>
                           <div className="input-icon"><i className="fa fa-lock" />
-  
+
                             <i className="fa fa-eye" aria-hidden="true" />
                             <input type="password" className="form-control placeholder-no-fix" id="password"
                               autoComplete="off" placeholder="Password" name="password" />
                           </div>
                         </div>
-  
-                        {console.log()}
-                        <div className="form-actions"><a href="javascript:;" onClick={this.check.bind(this)}
-                          className="btn green btn-block uppercase"> LOG IN </a></div>
-  
+
+                        <div className="form-actions">
+                          <div>
+                            <button type="submit" className="btn green btn-block uppercase"
+                              onClick={this.check.bind(this)}>
+                              LOGIN
+                        </button>
+                          </div>
+                        </div>
+
                         <div className="forget-password">
                           <ul className="lng">
-                            {/* <li id="engAnchor" className="actv"><a href="javascript:;"
-                              onClick={this.changLangButton.bind(this, "EN")}>En</a>
-                            </li> */}
-                            {/* <li id="arbAnchor"><a href="javascript:;"
-                                                       
-                                                                         onClick={this.changLangButton.bind(this, "AR")}>عربى</a></li> */}
                           </ul> <ul className="lng">
                             <li data-target="#loginCarousel" data-slide-to="1" >
-                              <a href="javascript:">Forgot your password ?</a></li>
+                              <a href="javascript:" >Forgot your password ?</a></li>
                           </ul>
                         </div>
+                        <br />
+                        {/* {this.state.accountIsLocked &&
+                          <div className="forget-password">
+                            <ul className="lng">
+                            </ul> <ul className="lng">
+                              <li data-target="#loginCarousel" data-slide-to="2">
+                                <a href="javascript:" style={{ textDecoration: 'underline' }}>Unlock your account </a></li>
+                            </ul>
+                          </div>} */}
                       </div>
-  
+
+
                       <div className="item">
                         <div className="form-group">
                           <label className="control-label visible-ie8 visible-ie9">Username:</label>
@@ -307,38 +346,58 @@ class Login extends React.Component {
                             <input type="email" className="form-control placeholder-no-fix" id="emailForgot"
                               autoComplete="off" placeholder="Email" name="password" />
                           </div>
-                          {this.state.emailError ? <span style={{color: 'red', position: 'relative', top: '2px'}}>
+                          {this.state.emailError ? <span style={{ color: 'red', position: 'relative', top: '2px' }}>
                             Not a Valid Email</span> : ''}
                         </div>
                         <div className="form-actions"><a onClick={this.checkForgot.bind(this)}
                           className="btn green btn-block uppercase"> Submit </a></div>
-  
+
                         <div className="login-password">
                           <ul className="lng">
-                            {/* <li id="engAnchor" className="actv"><a href="javascript:"
-                              onClick={this.changLangButton.bind(this, "EN")}>En</a>
-                            </li> */}
-                            {/* <li id="arbAnchor"><a href="javascript:;"
-                              onClick={this.changLangButton.bind(this, "AR")}>عربى</a></li> */}
                             <li data-target="#loginCarousel" data-slide-to="0" >
                               <a href="javascript:">Remember your password ?</a></li>
                           </ul>
                         </div>
                       </div>
+
+
+                      {/* Unlock your account form
+                      <div className="item">
+                        <div className="form-group">
+                          <div className="input-icon">
+                            <i className="fa fa-user" />
+                            <input className="form-control placeholder-no-fix" type="text" id="unlockUserid"
+                              autoComplete="off" placeholder="UserID" name="username" />
+
+                          </div>
+                        </div>
+
+                        <div className="form-actions"><a href="javascript:" onClick={this.unlockUser.bind(this)}
+                          className="btn green btn-block uppercase"> UNLOCK ACCOUNT </a></div>
+
+                        {
+                          this.state.loginAgain && <div className="login-password">
+                            <ul className="lng">
+                              <li data-target="#loginCarousel" data-slide-to="0" >
+                                <a href="javascript:" onClick={this.loginAgainFalse}>Login</a></li>
+                            </ul>
+                          </div>
+                        }
+                      </div> */}
                     </div>
+
                   </div>
                 </div>
+
               </div>
-              <br /><br />
               <div className="copyright">{brandConfig.footer}</div>
             </div>
           </div>
         </div>
-  
       );
-    }  else {
+    } else {
       return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
-  }
+    }
   }
 
 }
