@@ -118,7 +118,7 @@ class CustomerAssociation extends React.Component {
         const typeValue = typeList.map(data => data.value);
         if (value) {
             if (!typeValue.includes(value)) {
-                toaster.showToast(`Invalid value`, "ERROR");
+                // toaster.showToast(`Invalid value`, "ERROR");
                 this.IsValid = false;
                 return;
             }
@@ -136,7 +136,7 @@ class CustomerAssociation extends React.Component {
         const typeValue = typeList.map(data => data.value);
         if (value) {
             if (!typeValue.includes(value)) {
-                toaster.showToast(`Invalid value`, "ERROR");
+                // toaster.showToast(`Invalid value`, "ERROR");
                 this.IsValid = false;
                 return;
             }

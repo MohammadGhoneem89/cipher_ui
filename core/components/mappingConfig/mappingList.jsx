@@ -29,7 +29,7 @@ class MappingList extends React.Component {
         this.getRequest = this.getRequest.bind(this);
         this.renderPopupBody = this.renderPopupBody.bind(this);
         this.downloadStruct = this.downloadStruct.bind(this);
-        this.getStructRequest = this.getStructRequest.bind(this)
+        // this.getStructRequest = this.getStructRequest.bind(this)
 
     }
     renderPopupBody(dataID) {
@@ -64,36 +64,36 @@ class MappingList extends React.Component {
         this.setState({ currentPageNo: 1 })
         return request;
     }
-    getStructRequest(){
-        console.log("downloadStruct---------------------------------")
-        let searchCriteria = {};
-        let mappingName = document.getElementById('mappingName') == null ? "" : document.getElementById('mappingName').value;
+    // getStructRequest(){
+    //     console.log("downloadStruct---------------------------------")
+    //     let searchCriteria = {};
+    //     let mappingName = document.getElementById('mappingName') == null ? "" : document.getElementById('mappingName').value;
        
-                searchCriteria.mappingName = mappingName;
+    //             searchCriteria.mappingName = mappingName;
 
-            this.setState({ searchFilters: searchCriteria })
+    //         this.setState({ searchFilters: searchCriteria })
 
-            let  request = {
-                "action": "mappingData",
-                searchCriteria,
-                "page": {
-                    "currentPageNo": 1,
-                    "pageSize": 10
-                }
-            }
-            console.log("sending request downloadStruct---------------------------------")
-            return request;
+    //         let  request = {
+    //             "action": "mappingData",
+    //             searchCriteria,
+    //             "page": {
+    //                 "currentPageNo": 1,
+    //                 "pageSize": 10
+    //             }
+    //         }
+    //         console.log("sending request downloadStruct---------------------------------")
+    //         return request;
         
-    }
-    downloadStruct() {
-        if (document.getElementById('mappingName').value == "") {
-            alert("mappingName Required !")
-        }
-        else {
-            this.props.actions.generalProcess(constants.createDynamicStruct,
-                 this.getStructRequest());
-        }
-    }
+    // }
+    // downloadStruct() {
+    //     if (document.getElementById('mappingName').value == "") {
+    //         alert("mappingName Required !")
+    //     }
+    //     else {
+    //         this.props.actions.generalProcess(constants.createDynamicStruct,
+    //              this.getStructRequest());
+    //     }
+    // }
     componentWillReceiveProps(nextProps) {
         
         if (nextProps.typeData && nextProps.createDynamicStruct) {
@@ -217,7 +217,7 @@ class MappingList extends React.Component {
                                                             <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
                                                             {"  "}
                                                             <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
-                                                            <button type="button" className="btn green" onClick={this.downloadStruct} >{utils.getLabelByID("GetStruct")} </button>
+                                                            {/* <button type="button" className="btn green" onClick={this.downloadStruct} >{utils.getLabelByID("GetStruct")} </button> */}
                                                             
                                                         </div>
                                                     </div>

@@ -263,14 +263,14 @@ class OrderList extends React.Component {
       toDate: ''
     });
   };
-  clear = () => {
-    $('#tranSearchFilters').find('input:text').val('');
-    $('#tranSearchFilters').find('select').each(function () {
-      $(this)[0].selectedIndex = 0;
-    });
-  }
+  // clear = () => {
+  //   $('#tranSearchFilters').find('input:text').val('');
+  //   $('#tranSearchFilters').find('select').each(function () {
+  //     $(this)[0].selectedIndex = 0;
+  //   });
+  // }
   reset = () => {
-    this.clear();
+    // this.clear();
     this.setState({
       searchCriteria: {},
       fromDate: undefined,
