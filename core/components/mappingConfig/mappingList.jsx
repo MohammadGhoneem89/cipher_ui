@@ -28,7 +28,7 @@ class MappingList extends React.Component {
         this.formSubmit = this.formSubmit.bind(this);
         this.getRequest = this.getRequest.bind(this);
         this.renderPopupBody = this.renderPopupBody.bind(this);
-        this.downloadStruct = this.downloadStruct.bind(this);
+        // this.downloadStruct = this.downloadStruct.bind(this);
         // this.getStructRequest = this.getStructRequest.bind(this)
 
     }
