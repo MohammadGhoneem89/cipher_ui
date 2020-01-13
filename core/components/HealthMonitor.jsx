@@ -1,6 +1,6 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import * as actions from '../actions/generalAction';
 import * as constants from '../constants/Communication.js';
 import * as requestCreator from '../common/request.js';
@@ -21,7 +21,8 @@ class HealthMonitorContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.serviceList){
+
+        if (nextProps.serviceList.cipherSvc) {
             this.setState({
                 serviceList: nextProps.serviceList,
                 isLoading: nextProps.isLoading
@@ -31,50 +32,92 @@ class HealthMonitorContainer extends React.Component {
 
     componentDidMount() {
         let _this = this;
-        this.timeoutHandler = setInterval(()=>{
+        this.timeoutHandler = setInterval(() => {
             _this.props.actions.generalProcess(constants.getHealthData, {});
-        },3000);
+        }, 30000);
         this.props.actions.generalProcess(constants.getHealthData, {});
-        this.setState({isLoading: true});
+        this.setState({ isLoading: true });
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         clearTimeout(this.timeoutHandler);
     }
 
     render() {
-        if (!this.state.isLoading){
+        if (!this.state.isLoading) {
             return (
+                // cipherSvc
                 <div>
-                    <Portlet title={utils.getLabelByID("HML_servicesName")} isPermissioned={true}>
+                    <Portlet title={utils.getLabelByID("Cipher Services")} isPermissioned={true}>
                         <Table
                             pagination={false}
                             export={false}
                             search={false}
-                            gridType={"healthMonitor"}
-                            gridColumns={utils.getGridColumnByName("healthMonitorList")}
-                            gridData={this.state.serviceList}
-                            // totalRecords={10}
-                            // activePage={1}
-                            // pageSize={10}
+                            gridColumns={utils.getGridColumnByName("cipherSvc")}
+                            gridData={this.state.serviceList.cipherSvc}
                         />
                     </Portlet>
+                    {/* // clientList data base */}
+                    <Portlet title={utils.getLabelByID("Postgress Client List")} isPermissioned={true}>
+                        <Table
+                            pagination={false}
+                            export={false}
+                            search={false}
+                            gridColumns={utils.getGridColumnByName("pgClientList")}
+                            gridData={this.state.serviceList.clientList}
+                        />
+                    </Portlet>
+                    {/* // Rabbit MQ data base */}
+                    <Portlet title={utils.getLabelByID("Rabbit MQ Status")} isPermissioned={true}>
+                        <Table
+                            pagination={false}
+                            export={false}
+                            search={false}
+                            gridColumns={utils.getGridColumnByName("rmqStatus")}
+                            gridData={this.state.serviceList.rabbitMQ}
+                        />
+                    </Portlet>
+                    {/* // orderer  */}
+                    <Portlet title={utils.getLabelByID("Orderer List")} isPermissioned={true}>
+                        <Table
+                            pagination={false}
+                            export={false}
+                            search={false}
+                            gridColumns={utils.getGridColumnByName("ordererList")}
+                            gridData={this.state.serviceList.ordererList}
+                        />
+                    </Portlet>
+                    {/* // peerList  */}
+                    <Portlet title={utils.getLabelByID("Peer List")} isPermissioned={true}>
+                        <Table
+                            pagination={false}
+                            export={false}
+                            search={false}
+                            gridColumns={utils.getGridColumnByName("peerListHealth")}
+                            gridData={this.state.serviceList.peerList}
+                        />
+                    </Portlet>
+                    {/* // peerList  */}
+                    <Portlet title={utils.getLabelByID("Endpoint List")} isPermissioned={true}>
+                        <Table
+                            pagination={false}
+                            export={false}
+                            search={false}
+                            gridColumns={utils.getGridColumnByName("endpointListHealth")}
+                            gridData={this.state.serviceList.endpointList}
+                        />
+                    </Portlet>
+
                 </div>
+
             );
         }
-        else{
+        else {
             return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
         }
     }
 }
 
 function mapStateToProps(state, ownProps) {
-    // let serviceList = [
-    //     {serviceName: "MQRECON", containerID: "1",  dockerIP: "192.168.1.111", status: {type: "OK", value: "HEALTHY"}, lastTime: 1520680937709},
-    //     {serviceName: "MQBLA", containerID: "2",  dockerIP: "192.168.1.112", status: {type: "OK", value: "HEALTHY"}, lastTime: 1520680937709},
-    //     {serviceName: "MQGRPC", containerID: "3",  dockerIP: "192.168.1.113", status: {type: "OK", value: "HEALTHY"}, lastTime: 1520680937709},
-    //     {serviceName: "RI", containerID: "4",  dockerIP: "192.168.1.114", status: {type: "OK", value: "HEALTHY"}, lastTime: 1520680937709},
-    //     {serviceName: "SFTP", containerID: "5",  dockerIP: "192.168.1.115", status: {type: "OK", value: "HEALTHY"}, lastTime: 1520680937709}
-    //     ];
     return {
         serviceList: state.app.health.data || [],
         isLoading: false

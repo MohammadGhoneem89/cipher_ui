@@ -888,7 +888,55 @@ viewTranxList: [
   {alias: "TRANS Date", key: "date", type: "string"},
   {alias: "Status", key: "status", type: "string"},
   {alias: "Partner", key: "partner", type: "string"}
-]
+],
+  // HLTH CHK
+
+  pgClientList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "host", key: "host", type: 'string' },
+    { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
+    { alias: "status", key: "connected", type: "statusBox" }
+   
+  ],
+  rmqStatus: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "cluster name", key: "cluster_name", type: 'string' },
+    { alias: "publish", key: "publish", type: 'string' },
+    { alias: "publish_details_rate", key: "publish_details_rate", type: "string" },
+    { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
+    { alias: "message", key: "message", type: "string" },
+    { alias: "status", key: "status", type: "statusBox" }
+  ],
+  peerListHealth: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "Peer Name", key: "peerName", type: 'string' },
+    { alias: "Peer Address", key: "peerAddress", type: 'string' },
+    { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
+    { alias: "status", key: "status", type: "statusBox" }
+  ],
+  
+  ordererList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "Orderer Name", key: "ordererName", type: 'string' },
+    { alias: "Orderer Address", key: "ordererAddress", type: 'string' },
+    { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
+    { alias: "status", key: "status", type: "statusBox" }
+  ],
+  endpointListHealth: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "host", key: "host", type: 'string' },
+    { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
+    { alias: "status", key: "status", type: "statusBox" }
+  ],
+  cipherSvc:[
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "env", key: "env", type: 'string' },
+    { alias: "pid", key: "pid", type: 'string' },
+    { alias: "hostname", key: "hostname", type: 'string' },
+    { alias: "ip", key: "ip", type: 'string' },
+    { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
+    { alias: "status", key: "status", type: "statusBox" }
+  ]
 };
 
 
