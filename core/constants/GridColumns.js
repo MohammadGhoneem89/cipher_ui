@@ -889,6 +889,22 @@ viewTranxList: [
   {alias: "Status", key: "status", type: "string"},
   {alias: "Partner", key: "partner", type: "string"}
 ],
+FTEMP_MappRules: [
+  { alias: "COM_SerialNo", key: "", type: "serialNo" },
+  { alias: "incomming", key: "incomming", type: 'string' },
+  { alias: "mapped", key: "mapped", type: 'string' },
+  { alias: "action", key: "actions", type: "action" }
+],
+FTEMP_FilterRules: [
+  { alias: "COM_SerialNo", key: "", type: "serialNo" },
+  { alias: "ruleName", key: "ruleName", type: 'string' },
+  { alias: "field", key: "field", type: 'string' },
+  { alias: "option", key: "option", type: "string" },
+  { alias: "value", key: "value", type: "string" },
+  { alias: "API", key: "API", type: "string" },
+  { alias: "FTEMP_transformFuc", key: "transformFunction", type: "string" },
+  { alias: "Action", key: "actions", type: "action" }
+],
   // HLTH CHK
 
   pgClientList: [

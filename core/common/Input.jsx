@@ -42,14 +42,13 @@ class Input extends React.Component {
                 />
 
                 <div id="passwd" className="user-pwd" style={{ color: 'red', fontStyle: 'italic', width: 'auto', fontSize: '12px', position: 'absolute' }}>
-                    Password must contain atleast 1 digit , 1 upper case character and 1 special character (Max length: 15 , Min length: 8)
-                 </div>
-                {this.props.fieldname != "password" && (this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <span className="help-block">{this.props.state.errors[this.props.fieldname]}</span>}
-                {this.props.fieldname != "password" && (this.props.state.errors && this.props.state.errors.errors && this.props.state.errors.errors[this.props.fieldname]) && <span className="help-block">{this.props.state.errors.errors[this.props.fieldname].message}</span>}
 
-                {this.props.fieldname != "password" && (this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />}
-                {this.props.fieldname != "password" && (this.props.state.errors && this.props.state.errors.errors && this.props.state.errors.errors[this.props.fieldname]) && <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />}
+                    {this.props.fieldname != "password" && (this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <span className="help-block">{this.props.state.errors[this.props.fieldname]}</span>}
+                    {this.props.fieldname != "password" && (this.props.state.errors && this.props.state.errors.errors && this.props.state.errors.errors[this.props.fieldname]) && <span className="help-block">{this.props.state.errors.errors[this.props.fieldname].message}</span>}
 
+                    {this.props.fieldname != "password" && (this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />}
+                    {this.props.fieldname != "password" && (this.props.state.errors && this.props.state.errors.errors && this.props.state.errors.errors[this.props.fieldname]) && <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />}
+                </div>
 
             </div>
         );

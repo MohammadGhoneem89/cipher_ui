@@ -4,7 +4,7 @@ import { baseUrl } from '../constants/Communication.js';
 import { browserHistory } from 'react-router';
 import * as utils from './utils.js';
 import * as dates from './dates.js';
-import _ from 'lodash';
+
 
 class TableCell extends React.Component {
   constructor() {
@@ -162,12 +162,16 @@ class TableCell extends React.Component {
 
   }
 
+  renderDownload(name, url) {
+    return (<a href={url} download>{name || "Download"}</a>);
+  }
+
 
   getMenuitem(index) {
     browserHistory.push(index);
   }
 
-  onChangeEditColumn(index,e) {
+  onChangeEditColumn(index, e) {
     alert(index)
     alert(e.target.value)
   }
@@ -217,6 +221,21 @@ class TableCell extends React.Component {
       return (<td>N/A</td>)
   }
 
+  getClassForStatusLabel(type) {
+    switch (type) {
+      case "Alive" :
+        return " badge badge-success badge-roundless";
+      case "Reachable":
+        return " badge badge-success badge-roundless";
+      case "LINK UP":
+        return " badge badge-success badge-roundless";
+     
+
+      default:
+        return " badge badge-danger badge-roundless";
+
+    }
+  }
   render() {
     function text_truncate(str, length, ending) {
       if (length == null) {
@@ -261,56 +280,27 @@ class TableCell extends React.Component {
         return (<td className={this.getClassForOverdue(this.props.cellData.type)}><span
           style={{ fontSize: "15px!important" }}>{this.props.cellData.value}</span></td>);
       case "image":
-        
         if (this.props.url) {
-          if (_.get(this.props,'rowData.image.type','')==='IPFS'){
-              return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
-              width="28px" height="28px"
-              src={constants.ipfsGet + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
-                href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
-            </td>);
-          }else {
-              return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
-              width="28px" height="28px"
-              src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
-                href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
-            </td>);
-          }
+          return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+            width="28px" height="28px"
+            src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+              href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+          </td>);
         }
         else {
-          if (_.get(this.props,'rowData.image.type','')==='IPFS'){
-            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
-            width="28px" height="28px"
-            src={constants.ipfsGet + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
-          </td>);
-          } else{
-            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+          return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
             width="28px" height="28px"
             src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
           </td>);
-          }
-          
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       case "statusLabelBig":
         return (<td><h3><span className={this.getClassForStatusBig(this.props.cellData.type)}
           style={{ height: "20px" }}>{this.props.cellData.value}</span></h3></td>);
+      case "statusBox":
+        return (<td><span className={this.getClassForStatusLabel(this.props.cellData)}
+        >{this.props.cellData}</span></td>);
       case "editableColumn":
-        return (<td><input type="text" className="form-control" value={this.props.cellData.value} onChange={this.onChangeEditColumn.bind(this,this.props.searialNo)} /></td>);
+        return (<td><input type="text" className="form-control" value={this.props.cellData.value} onChange={this.onChangeEditColumn.bind(this, this.props.searialNo)} /></td>);
       case "imageBig":
         return (<td className="ent_nme" align="center" style={{ width: this.props.columnWidth, paddingLeft: "50%" }}><img
           width="50px" height="50px" style={{ width: "50px", height: "50px" }}
@@ -340,6 +330,13 @@ class TableCell extends React.Component {
             {this.renderDownloadAttachement(cellData.name, cellData.UUID)}
           </td>
         );
+      case "download":
+        cellData = this.props.cellData ? this.props.cellData : {};
+        return (
+          <td>
+            {this.renderDownload(cellData.label, cellData.url)}
+          </td>
+        );
       case "array":
         return (
           <td className="text-center">
@@ -361,8 +358,6 @@ class TableCell extends React.Component {
         return (<td> {parseInt(this.props.searialNo) + "."}</td>);
       case "epochDate":
         return (<td> {utils.UNIXConvertToDate(this.props.cellData)}</td>);
-        case "epochDateStrata":
-        return (<td> {utils.UNIXConvertToDateStrata(this.props.cellData)}</td>);
       case "epochDate1":
         return (<td> {dates.MSddMMyyyy(this.props.cellData)}</td>);
       case "clpVal":
@@ -378,12 +373,12 @@ class TableCell extends React.Component {
           return (<span key={i}>{item}<br /></span>);
         });
 
-        return (<td style={{fontWeight: fontWeightStyle}}> {cellData} </td>);
-        case "longString":
-            let temp = text_truncate(this.props.cellData, 100);
-            return <td style={{fontWeight: fontWeightStyle}}>
-              <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
-            </td>;
+        return (<td style={{ fontWeight: fontWeightStyle }}> {cellData} </td>);
+      case "longString":
+        let temp = text_truncate(this.props.cellData, 100);
+        return <td style={{ fontWeight: fontWeightStyle }}>
+          <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
+        </td>;
 
 
       default:
@@ -395,4 +390,3 @@ class TableCell extends React.Component {
 }
 
 export default TableCell;
-
