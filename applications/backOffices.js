@@ -10,11 +10,11 @@ const backOffices = {
 */
 
 const backOffices = {
-  baseUrl: "http://127.0.0.1:9081",
-  blockChainURL: "http://127.0.0.1:9081",
-  webSocketURL: "http://127.0.0.1:9081",
-  repostActionURL: "http://127.0.0.1:9081/API",
-  blockChainViewerURL: "http://127.0.0.1:9081"
+  baseUrl: "http://127.0.0.1:9082",
+  blockChainURL: "http://127.0.0.1:9082",
+  webSocketURL: "http://127.0.0.1:9082",
+  repostActionURL: "http://127.0.0.1:9082/API",
+  blockChainViewerURL: "http://127.0.0.1:9082"
 };
 
 //  backOffices = {

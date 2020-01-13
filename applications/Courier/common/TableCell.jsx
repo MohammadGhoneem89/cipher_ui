@@ -31,6 +31,8 @@ class TableCell extends React.Component {
 
   getClassForStatusLabel(type) {
     switch (type) {
+      case "Alive" || "Reachable" || "LINK UP":
+        return " badge badge-success badge-roundless";
       case "INITIATED":
         return "badge badge-info badge-roundless";
       case "REJECTED":
@@ -51,8 +53,6 @@ class TableCell extends React.Component {
         return "badge badge-danger badge-roundless";
       case "Inactive":
         return "badge badge-danger badge-roundless";
-      default:
-        return "badge badge-secondary badge-roundless";
       case "Reconciled":
         return " badge badge-success badge-roundless";
       case "Not Reconciled":
@@ -75,6 +75,9 @@ class TableCell extends React.Component {
         return " badge badge-success badge-roundless";
       case "FULL RETURN":
         return " badge badge-success badge-roundless";
+      default:
+        return " badge badge-danger badge-roundless";
+
     }
   }
   // Reconciled

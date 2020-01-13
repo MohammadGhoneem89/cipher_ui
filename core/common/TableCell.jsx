@@ -162,7 +162,7 @@ class TableCell extends React.Component {
 
   }
 
-  renderDownload(name, url){
+  renderDownload(name, url) {
     return (<a href={url} download>{name || "Download"}</a>);
   }
 
@@ -171,7 +171,7 @@ class TableCell extends React.Component {
     browserHistory.push(index);
   }
 
-  onChangeEditColumn(index,e) {
+  onChangeEditColumn(index, e) {
     alert(index)
     alert(e.target.value)
   }
@@ -221,6 +221,21 @@ class TableCell extends React.Component {
       return (<td>N/A</td>)
   }
 
+  getClassForStatusLabel(type) {
+    switch (type) {
+      case "Alive" :
+        return " badge badge-success badge-roundless";
+      case "Reachable":
+        return " badge badge-success badge-roundless";
+      case "LINK UP":
+        return " badge badge-success badge-roundless";
+     
+
+      default:
+        return " badge badge-danger badge-roundless";
+
+    }
+  }
   render() {
     function text_truncate(str, length, ending) {
       if (length == null) {
@@ -281,8 +296,11 @@ class TableCell extends React.Component {
       case "statusLabelBig":
         return (<td><h3><span className={this.getClassForStatusBig(this.props.cellData.type)}
           style={{ height: "20px" }}>{this.props.cellData.value}</span></h3></td>);
+      case "statusBox":
+        return (<td><span className={this.getClassForStatusLabel(this.props.cellData)}
+        >{this.props.cellData}</span></td>);
       case "editableColumn":
-        return (<td><input type="text" className="form-control" value={this.props.cellData.value} onChange={this.onChangeEditColumn.bind(this,this.props.searialNo)} /></td>);
+        return (<td><input type="text" className="form-control" value={this.props.cellData.value} onChange={this.onChangeEditColumn.bind(this, this.props.searialNo)} /></td>);
       case "imageBig":
         return (<td className="ent_nme" align="center" style={{ width: this.props.columnWidth, paddingLeft: "50%" }}><img
           width="50px" height="50px" style={{ width: "50px", height: "50px" }}
@@ -312,7 +330,7 @@ class TableCell extends React.Component {
             {this.renderDownloadAttachement(cellData.name, cellData.UUID)}
           </td>
         );
-      case  "download":
+      case "download":
         cellData = this.props.cellData ? this.props.cellData : {};
         return (
           <td>
@@ -355,12 +373,12 @@ class TableCell extends React.Component {
           return (<span key={i}>{item}<br /></span>);
         });
 
-        return (<td style={{fontWeight: fontWeightStyle}}> {cellData} </td>);
-        case "longString":
-            let temp = text_truncate(this.props.cellData, 100);
-            return <td style={{fontWeight: fontWeightStyle}}>
-              <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
-            </td>;
+        return (<td style={{ fontWeight: fontWeightStyle }}> {cellData} </td>);
+      case "longString":
+        let temp = text_truncate(this.props.cellData, 100);
+        return <td style={{ fontWeight: fontWeightStyle }}>
+          <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
+        </td>;
 
 
       default:
