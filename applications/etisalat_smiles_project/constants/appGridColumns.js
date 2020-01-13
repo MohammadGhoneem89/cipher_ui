@@ -219,4 +219,17 @@ module.exports = {
         { alias: "Receipt Date", key: "receiptDate", type: "epochDateStrata" },
         { alias: "Receipt Quantity", key: "receiptQuantity", type: "string" },
     ],
+    /// Smiles 
+// viewTranxList: [
+//     {alias: "", key: "_id", type: "hiddenID"},
+//     {alias: "S.No", key: "serial_no", type: 'string'},
+//     {alias: "Transaction", key: "trans", type: "string"},
+//     {alias: "Account#", key: "acc", type: "string"},
+//     {alias: "TRANS TYPE", key: "transc_type", type: "string"},
+//     {alias: "Amount", key: "amount", type: "string"},
+//     {alias: "Points", key: "points", type: "string"},
+//     {alias: "TRANS Date", key: "date", type: "string"},
+//     {alias: "Status", key: "status", type: "string"},
+//     {alias: "Partner", key: "partner", type: "string"}
+//   ]
 };

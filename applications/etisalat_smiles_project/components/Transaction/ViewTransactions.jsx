@@ -10,13 +10,12 @@ import Portlet from '../../../../core/common/Portlet.jsx';
 import _ from 'lodash';
 import * as requestCreator from '../../../../core/common/request.js';
 
-class MasterAgreementList extends React.Component {
-
+class ViewTransactions extends React.Component {
     constructor(props) {
-        console.log("constructor")
+        console.log("View Transaction")
         super(props);
         this.state = {
-            searchCriteria: {},
+            viewCriteria: {},
             page: {
                 pageSize: 10,
                 currentPageNo: 1
@@ -30,7 +29,7 @@ class MasterAgreementList extends React.Component {
     }
 
     formSubmit = () => {
-        this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
+        // this.props.actions.generalProcess(constants.getViewTransactions, this.getRequest());
     }
     reset = () => {
         document.getElementById('contractId').value = "";
@@ -83,27 +82,22 @@ class MasterAgreementList extends React.Component {
         return request;
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.getMasterAgreement && nextProps.typeData && nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
-            console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions");
-            let pageActions = nextProps.gridActions[0].pageActions;
+        // if (nextProps.getViewTransactions && nextProps.typeData && nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
+            // console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions");
+            // let pageActions = nextProps.gridActions[0].pageActions;
             this.setState(
                 {
-                    gridData: nextProps.getMasterAgreement,
-                    pageActions: nextProps.gridActions,
-                    typeData: nextProps.typeData,
-                    page: nextProps.getPage,
-                    actions: pageActions,
                     isLoading: false
                 }
             )
-        }
+        // }
     }
 
 
 
     componentDidMount() {
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['orderStatus']));
-        this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
+        // this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['orderStatus']));
+        // this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
 
         window.scrollTo(0, 0);
     }
@@ -131,12 +125,20 @@ class MasterAgreementList extends React.Component {
         return (
             <div className="row">
 
-                <Portlet title={utils.getLabelByID("Master Agreement")}>
-
+                <Portlet title={utils.getLabelByID("TRANSACTIONS")}>
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Contract ID")}</label>
+                                <label className="control-label">{utils.getLabelByID("Start Date")}</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                <input type="text" className="form-control" name="contractId" id="contractId" />
+                            </div>
+                        </div>
+                        
+                        <div className="col-md-6">
+                            <div className="form-group col-md-4">
+                                <label className="control-label">{utils.getLabelByID("End Date")}</label>
                             </div>
                             <div className="form-group col-md-8">
                                 <input type="text" className="form-control" name="contractId" id="contractId" />
@@ -152,10 +154,46 @@ class MasterAgreementList extends React.Component {
 
 
                                 <select id="status" name="status" className="form-control" >
-                                    <option key="-1" value="">Select</option>
+                                    <option key="-1" value=""></option>
 
-                                    <option key="0" value="INITIATED">INITIATED</option>
+                                    <option key="0" value="INITIATED">ACCURAL</option>
                                     <option key="1" value="APPROVED">APPROVED</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="col-md-6">
+                            <div className="form-group col-md-4">
+                                <label className="control-label">{utils.getLabelByID("Direction")}</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                {/* <input type="text" className="form-control" name="status" id="status" /> */}
+
+
+                                <select id="status" name="status" className="form-control" >
+                                    <option key="-1" value="">RECEIVABLES</option>
+
+                                    <option key="0" value="INITIATED">OPTION 1</option>
+                                    <option key="1" value="APPROVED">OPTION 2</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div className="col-md-6">
+                            <div className="form-group col-md-4">
+                                <label className="control-label">{utils.getLabelByID("Partner")}</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                                {/* <input type="text" className="form-control" name="status" id="status" /> */}
+
+
+                                <select id="status" name="status" className="form-control" >
+                                    <option key="-1" value=""> </option>
+
+                                    <option key="0" value="INITIATED">OPTION 1</option>
+                                    <option key="1" value="APPROVED">OPTION 2</option>
 
                                 </select>
                             </div>
@@ -169,22 +207,21 @@ class MasterAgreementList extends React.Component {
                                         <button type="submit" className="btn green" onClick={this.formSubmit}>
                                             {utils.getLabelByID('Search')}
                                         </button>
-                                        <button type="clear" className="btn green" onClick={this.reset}
+                                        {/* <button type="clear" className="btn green" onClick={this.reset}
                                         >
                                             {utils.getLabelByID("Clear")}
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </Portlet>
-                <Portlet title={"Master Agreement"} actions={this.state.actions} isPermissioned={true}>
-
-
+                 {/* </Portlet>
+                 <Portlet  actions={this.state.actions} isPermissioned={true}> */}
+                   {/* UTS */}
                     <Table
-                        gridColumns={utils.getGridColumnByName("masterAgreement")}
-                        gridData={this.state.gridData}
+                        gridColumns={utils.getGridColumnByName("viewTranxList")}
+                        gridData={[{"no": "1","tranx": "12212222","acc": "555222","ttype": "ACCURAL","amount": "100045","points": "12220211","date": "01/12/2020","status": "APPROVED","partner": "ETIHAD"}]}
                         fontclass=""
                         totalRecords={this.props.getPage.totalRecords}
                         pageSize={10}
@@ -206,6 +243,7 @@ function mapStateToProps(state, ownProps) {
         gridActions: _.get(state.app, 'getMasterAgreement.actions', []),
         getMasterAgreement: _.get(state.app, "getMasterAgreement.searchResult", []),
         getPage: _.get(state.app, "getMasterAgreement.pageData", [])
+        
     };
 }
 
@@ -213,67 +251,8 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-MasterAgreementList.displayName = "MASTER AGREEMENT";
-export default connect(mapStateToProps, mapDispatchToProps)(MasterAgreementList);
-
-
-
-
-
-/*mapActionsOnGrid = (gridData) => {
-        if (sessionStorage.orgType == "SUPPLIER") {
-            gridData.map((obj) => {
-                obj.action = [
-                    {
-                        "label": "View",
-                        "URI": ["/strata/ViewMasterAgreement"],
-                        "params": "_id",
-                        "iconName": "fa fa-eye"
-                    },
-                    {
-                        "label": "Edit",
-                        "URI": ["/strata/AddMasterAgreement/"],
-                        "params": "_id",
-                        "iconName": "fa fa-edit"
-                    }
-                ]
-            })
-        } else {
-            gridData.map((obj) => {
-                obj.action = [
-                    {
-                        "label": "View",
-                        "URI": ["/strata/ViewMasterAgreement"],
-                        "params": "_id",
-                        "iconName": "fa fa-eye"
-                    }
-                ]
-            })
-        }
-        return gridData;
-    }
-    */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ViewTransactions.displayName = "Transaction List";
+export default connect(mapStateToProps, mapDispatchToProps)(ViewTransactions);
 
 
 
