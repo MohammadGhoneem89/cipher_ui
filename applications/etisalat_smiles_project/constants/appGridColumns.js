@@ -1,9 +1,48 @@
 module.exports = {
+    ERPsettings: [
+        { alias: "Vendor Code", key: "vendorCode", type: "string" },
+        { alias: "Vendor Site ID", key: "vendorSiteID", type: "string" },
+        { alias: "Billing Account", key: "billingAccount", type: "string" },
+        { alias: "GL Code", key: "glcode", type: "string" }
+
+    ],
+    subsidaryPartner: [
+        { alias: "S.NO", key: "", type: "serialNo" },
+        { alias: "Code", key: "partnerCode", type: "string" },
+        { alias: "Action", key: "action", type: "action" }
+    ],
+    settlement: [
+        { alias: "S.NO", key: "", type: "serialNo" },
+        { alias: "Settle As", key: "settleAs", type: "string" },
+        { alias: "Frequency", key: "frequency", type: "string" },
+        { alias: "Start On", key: "startOn", type: "epochDate" }
+    ],
+    pointCreditRules: [
+        { alias: "S.NO", key: "", type: "serialNo" },
+        { alias: "Rule", key: "ruleType", type: "string" },
+        { alias: "Max Unsettled (AED)", key: "maxUnsettled", type: "string" }
+    ],
     paymentSearch: [
         { alias: "", key: "_id", type: "hiddenID" },
         { alias: "BankCode", key: "bankCode", type: 'string' },
         { alias: "Name", key: "name", type: 'string' },
         { alias: "Code", key: "code", type: "string" },
+        { alias: "Action", key: "action", type: "action" }
+    ],
+    contactInfo: [
+        { alias: "S.NO", key: "", type: "serialNo" },
+        { alias: "Name", key: "name", type: "string" },
+        { alias: "Email", key: "email", type: "string" },
+        { alias: "Phone", key: "phone", type: "string" },
+        { alias: "Mobile", key: "mobile", type: "string" },
+        { alias: "Address", key: "address", type: "string" },
+        { alias: "Action", key: "action", type: "action" }
+    ],
+    accrualTerms: [
+        { alias: "S.NO", key: "", type: "serialNo" },
+        { alias: "Start Date", key: "startDate", type: "epochDate" },
+        { alias: "End Date", key: "endDate", type: "epochDate" },
+        { alias: "Selling Rate", key: "sellingRate", type: "string" },
         { alias: "Action", key: "action", type: "action" }
     ],
     itemMaster: [
@@ -220,16 +259,16 @@ module.exports = {
         { alias: "Receipt Quantity", key: "receiptQuantity", type: "string" },
     ],
     /// Smiles 
-// viewTranxList: [
-//     {alias: "", key: "_id", type: "hiddenID"},
-//     {alias: "S.No", key: "serial_no", type: 'string'},
-//     {alias: "Transaction", key: "trans", type: "string"},
-//     {alias: "Account#", key: "acc", type: "string"},
-//     {alias: "TRANS TYPE", key: "transc_type", type: "string"},
-//     {alias: "Amount", key: "amount", type: "string"},
-//     {alias: "Points", key: "points", type: "string"},
-//     {alias: "TRANS Date", key: "date", type: "string"},
-//     {alias: "Status", key: "status", type: "string"},
-//     {alias: "Partner", key: "partner", type: "string"}
-//   ]
+    // viewTranxList: [
+    //     {alias: "", key: "_id", type: "hiddenID"},
+    //     {alias: "S.No", key: "serial_no", type: 'string'},
+    //     {alias: "Transaction", key: "trans", type: "string"},
+    //     {alias: "Account#", key: "acc", type: "string"},
+    //     {alias: "TRANS TYPE", key: "transc_type", type: "string"},
+    //     {alias: "Amount", key: "amount", type: "string"},
+    //     {alias: "Points", key: "points", type: "string"},
+    //     {alias: "TRANS Date", key: "date", type: "string"},
+    //     {alias: "Status", key: "status", type: "string"},
+    //     {alias: "Partner", key: "partner", type: "string"}
+    //   ]
 };

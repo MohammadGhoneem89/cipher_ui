@@ -236,6 +236,25 @@ a:hover {
 	border-radius: 4px !important;
 }
 
+.btn.blue:not(.btn-outline),
+.btn-success {
+	background-color: #3598dc !important;
+	border-color: #3598dc !important;
+	-webkit-border-radius: 4px !important;
+	-moz-border-radius: 4px !important;
+	border-radius: 4px !important;
+}
+
+.btn.blue:not(.btn-outline):hover,
+.btn-success.active,
+.btn-success:active,
+.btn-success:hover,
+.open>.btn-success.dropdown-toggle {
+	background-color: #555 !important;
+	border-color: #666 !important;
+}
+
+
 .btn.green:not(.btn-outline):hover,
 .btn-success.active,
 .btn-success:active,
@@ -3040,4 +3059,15 @@ a.btn.btnclear {
 }
 a.btn.btnclear:hover {
 	color: black!important;
+}
+
+
+.voucherBox {
+    border: 1px solid #cecece;
+    padding: 40px 0;
+}
+.icheck-list {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-33%);
 }
