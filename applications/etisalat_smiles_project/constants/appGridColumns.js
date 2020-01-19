@@ -1,4 +1,16 @@
 module.exports = {
+    rates: [
+        { alias: "Start Date", key: "startDate", type: "epochDate" },
+        { alias: "End Date", key: "endDate", type: "epochDate" },
+        { alias: "Rate", key: "rate", type: "string" },
+        { alias: "Conversion Factor", key: "conversionFactor", type: "string" },
+        { alias: "Status", key: "status", type: "string" }
+    ],
+    pointConversion: [
+        { alias: "Program Code", key: "programCode", type: "string" },
+        { alias: "Program Name", key: "programName", type: "string" },
+        { alias: "Logo", key: "logo", type: "string" }
+    ],
     ERPsettings: [
         { alias: "Vendor Code", key: "vendorCode", type: "string" },
         { alias: "Vendor Site ID", key: "vendorSiteID", type: "string" },

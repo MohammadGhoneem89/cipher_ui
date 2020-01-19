@@ -27,8 +27,8 @@ class AddPartner extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
+            body: {},
             isLoading: true,
-            userDetail: {},
             subsidaryPartnerBool: false,
             subsidaryPartners: [],
             contactInformationArr: [],
@@ -45,9 +45,13 @@ class AddPartner extends Component {
             pointCreditRules: {},
             settlementArr: [],
             settlement: {},
+            pointConversionArr: [],
+            pointConversion: {},
             checkbox_pointConversion: false,
             checkbox_accural: false,
-            checkbox_redemption: false
+            checkbox_redemption: false,
+            ratesArr: [],
+            rates: {}
 
         };
         this.generalHandler = gen.generalHandler.bind(this)
@@ -65,7 +69,7 @@ class AddPartner extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
 
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status']));
 
     }
 
@@ -108,16 +112,17 @@ class AddPartner extends Component {
 
     addDefaultSrc = e => e.target.src = constants.baseUrl + "/images/image-user.png";
 
-    imgDiv() {
+    imgDiv(formname, imgStyle) {
         return (
             <div className="col-md-12" style={{ textAlign: "center" }}>
                 <img
                     id="UserProfilePic"
-                    src={this.state.userDetail.profilePic ? constants.baseUrl + this.state.userDetail.profilePic : constants.baseUrl + "/images/image-user.png"}
+                    src={_.get(this.state, `${formname}.logo`, undefined) ? constants.baseUrl + _.get(this.state, `${formname}.logo`, undefined) : constants.baseUrl + "/images/image-user.png"}
                     onError={this.addDefaultSrc}
-                    className="img-responsive img-thumbnail" alt="Profile Image" width='160px'
-                    height='160px'
-                    ref={input => this.profilePic = input}
+                    className="img-responsive img-thumbnail" alt="Profile Image" width='150px'
+                    height='150px'
+                    style={{ ...imgStyle }}
+                    ref={input => this.logo = input}
                 />
                 <br />
 
@@ -146,7 +151,7 @@ class AddPartner extends Component {
                         if (files && files[0]) {
 
                             reader.onload = function (fileReader) {
-                                _this.profilePic.setAttribute('src', fileReader.target.result);
+                                _this.logo.setAttribute('src', fileReader.target.result);
 
                                 _this.props.actions.generalAjxProcess(constants.uploadImg, requestCreator.createImgUploadRequest({
                                     byteData: fileReader.target.result,
@@ -157,9 +162,9 @@ class AddPartner extends Component {
                                     }
                                 })).then(result => {
                                     _this.setState({
-                                        userDetail: {
-                                            ..._this.state.userDetail,
-                                            profilePic: result.entityLogo.sizeSmall
+                                        [formname]: {
+                                            ..._.get(this.state, `${formname}.logo`, {}),
+                                            logo: result.entityLogo.sizeSmall
                                         }
                                     })
                                 });
@@ -175,6 +180,31 @@ class AddPartner extends Component {
 
         let contractParams = { ...this.state.contractParams };
         let contractParamsArr = [...this.state.subsidaryPartners];
+        let erpSettingsFrom = { ...this.state.erpSettingsFrom }
+        //let erpSettingsFromArr = [...this.state.erpSettingsFromArr]
+
+        let erpSettingsTo = { ...this.state.erpSettingsTo }
+
+
+        let settlement = { ...this.state.settlement }
+        if (this.state.settlementStartOn) {
+            settlement.startOn = this.state.settlementStartOn
+        }
+
+        if (Object.keys(settlement).length == 0) {
+            toaster.showToast("Settlement not defined", "ERROR");
+            return;
+        }
+
+        if (Object.keys(erpSettingsTo).length == 0) {
+            toaster.showToast("Please provide an ERP To Setting.", "ERROR");
+            return;
+        }
+
+        if (Object.keys(erpSettingsFrom).length == 0) {
+            toaster.showToast("Please provide an ERP from Setting.", "ERROR");
+            return;
+        }
 
         if (contractParams == undefined) {
             toaster.showToast('Subsidary Partner Details not added.', 'ERROR');
@@ -186,20 +216,28 @@ class AddPartner extends Component {
         }
         // contractParams accrualTerms pointCreditRules settlement
 
-        contractParams.settlement = [...this.state.settlementArr]
-        contractParams.erpSettingsTo = [...this.state.erpSettingsToArr]
-        contractParams.erpSettingsFrom = [...this.state.erpSettingsFromArr]
 
-        contractParams.accrualTerms = [...this.state.accrualTermsArr]
-        contractParams.pointCreditRules = [...this.state.pointCreditRulesArr]
+        //contractParams.erpSettingsFrom = [...this.state.erpSettingsFromArr]
+        contractParams.erpSettingsFrom = { ...erpSettingsFrom }
+        contractParams.erpSettingsTo = { ...erpSettingsTo }
+        //contractParams.settlement = [...this.state.settlementArr]
+        //contractParams.erpSettingsTo = [...this.state.erpSettingsToArr]
+
+        contractParams.accrualPartner = {
+            accrualTerms: [...this.state.accrualTermsArr],
+            pointCreditRules: [...this.state.pointCreditRulesArr]
+        }
+        // contractParams.accrualTerms = [...this.state.accrualTermsArr]
+        // contractParams.pointCreditRules = [...this.state.pointCreditRulesArr]
 
         contractParamsArr.push({ ...contractParams });
 
         this.setState({
             contractParamsArr,
+            erpSettingsFrom: {},
             contractParams: {},
-            erpSettingsToArr: [],
-            settlementArr: [],
+            settlement: {},
+            erpSettingsTo: {},
             accrualTermsArr: [],
             pointCreditRulesArr: []
 
@@ -250,125 +288,314 @@ class AddPartner extends Component {
         this.setState({ settlementArr, settlement: undefined })
     }
 
+    addPointConversion = () => {
+        let pointConversion = { ...this.state.pointConversion }
+        let pointConversionArr = [...this.state.pointConversionArr]
+        if (Object.keys(pointConversion).length == 0) {
+            toaster.showToast("Point Conversion not defined", "ERROR");
+            return;
+        }
+        pointConversionArr.push({ ...pointConversion })
+        this.setState({ pointConversionArr, pointConversion: undefined })
+    }
+
+    addRates = () => {
+        let rates = { ...this.state.rates }
+        let ratesArr = [...this.state.ratesArr]
+
+        if (this.state.pointConversionStartDate) {
+            rates.startDate = this.state.pointConversionStartDate
+        }
+        if (this.state.pointConversionEndDate) {
+            rates.endDate = this.state.pointConversionEndDate
+        }
+
+
+        if (Object.keys(rates).length == 0) {
+            toaster.showToast("Rate not defined", "ERROR");
+            return;
+        }
+        ratesArr.push({ ...rates })
+        this.setState({ ratesArr, rates: undefined, pointConversionStartDate: undefined, pointConversionEndDate: undefined })
+    }
+
+    pointConversionStartDateChange = (value) => {
+        console.log(value)
+        if (value == 'Invalid date') {
+            this.setState({ pointConversionStartDate: undefined })
+        } else {
+            this.setState({ pointConversionStartDate: value })
+        }
+    }
+
+    pointConversionEndDateChange = (value) => {
+        console.log(value)
+        if (value == 'Invalid date') {
+            this.setState({ pointConversionEndDate: undefined })
+        } else {
+            this.setState({ pointConversionEndDate: value })
+        }
+    }
+
     subsidaryPartner() {
         return (
 
             <Portlet title={"SUBSIDARY PARTNER"}>
-                <div className="row">
-                    <div className="col-md-6">
-                        <Label text="Code" columns='4' style={{ padding: "0 0 0 30" }} />
-                        <Input
-                            fieldname='partnerCode'
-                            formname='contractParams'
-                            columns='7'
-                            placeholder=''
-                            state={this.state}
-                            actionHandler={this.generalHandler}
-                            className="form-control"
-                        />
-                    </div>
+                {
+                    this.state.contractType == "pointConverstion" && (
+                        <div>
+                            <Portlet title={"POINT CONVERSION"}>
+                                <div className="row">
 
-                </div>
+                                    <div className="col-md-6">
+                                        <div className="row">
+                                            <Label text="Program Name" columns='4' style={{ padding: "0 0 0 30" }} />
+                                            <Input
+                                                fieldname='programName'
+                                                formname='pointConversion'
+                                                columns='7'
+                                                placeholder=''
+                                                state={this.state}
+                                                actionHandler={this.generalHandler}
+                                                className="form-control"
+                                            />
+                                        </div>
+                                        <div className="row">
+                                            <Label text="Program Code" columns='4' style={{ padding: "0 0 0 30" }} />
+                                            <Input
+                                                fieldname='programCode'
+                                                formname='pointConversion'
+                                                columns='7'
+                                                placeholder=''
+                                                state={this.state}
+                                                actionHandler={this.generalHandler}
+                                                className="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        {this.imgDiv('pointConversion', { width: '100px', height: '100px', marginBottom: '-35px' })}
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="btn-toolbar pull-right">
+                                            <button onClick={this.addPointConversion} type="submit" className="pull-right btn green">
+                                                {utils.getLabelByID("Add")}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Table
+                                    gridColumns={utils.getGridColumnByName('pointConversion')}
+                                    gridData={this.state.pointConversionArr || []}
+                                />
 
-                <Portlet title={"ACCURAL TERMS"}>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <Label text="Start Date" columns='4' />
-                            <div className="col-md-7">
-                                <DateControl id="accuralStartDate" dateChange={this.accuralTermStartDateChange} />
+                            </Portlet>
+                            <Portlet title={"RATES"}>
+                                {/* "startDate": 44444,
+                                    "endDate": 55555,
+                                    "rate": 100,
+                                    "conversionFactor": 1.5,
+                                    "status": "Pending" */}
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Label text="Start Date" columns='4' />
+                                        <div className="col-md-7">
+                                            <DateControl id="pointConversionStartDate" dateChange={this.pointConversionStartDateChange} />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <Label text="End Date" columns='4' />
+                                        <div className="col-md-7">
+                                            <DateControl id="pointConversionEndDate" dateChange={this.pointConversionEndDateChange} />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br></br>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Label text="Rate" columns='4' />
+                                        <Input
+                                            fieldname='rate'
+                                            formname='rates'
+                                            columns='7'
+                                            placeholder=''
+                                            state={this.state}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <Label text="Conversion Factor" columns='4' />
+                                        <Input
+                                            fieldname='conversionFactor'
+                                            formname='rates'
+                                            columns='7'
+                                            placeholder=''
+                                            state={this.state}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Label text="Status" columns='4' />
+                                        <Combobox
+                                            fieldname='status'
+                                            formname='rates'
+                                            columns='7'
+                                            placeholder='Select'
+                                            style={{}}
+                                            state={this.state}
+                                            typeName="status"
+                                            dataSource={_.get(this.state, 'typeData', {})}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="btn-toolbar pull-right">
+                                            <button onClick={this.addRates} type="submit" className="pull-right btn green">
+                                                {utils.getLabelByID("Add")}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Table
+                                    gridColumns={utils.getGridColumnByName('rates')}
+                                    gridData={this.state.ratesArr || []}
+                                />
+                            </Portlet>
+                        </div>
+
+                    )
+                }
+                {
+                    this.state.contractType == "Accrual" && (
+                        <div>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <Label text="Code" columns='4' style={{ padding: "0 0 0 30" }} />
+                                    <Input
+                                        fieldname='partnerCode'
+                                        formname='contractParams'
+                                        columns='7'
+                                        placeholder=''
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </div>
+
                             </div>
-                        </div>
-                        <div className="col-md-6">
-                            <Label text="End Date" columns='4' />
-                            <div className="col-md-7">
-                                <DateControl id="accuralEndDate" dateChange={this.accuralTermEndDateChange} />
-                            </div>
-                        </div>
-                    </div>
-                    <br></br>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <Label text="Selling Rate" columns='4' />
-                            <Input
-                                fieldname='sellingRate'
-                                formname='accrualTerms'
-                                columns='7'
-                                placeholder=''
-                                state={this.state}
-                                actionHandler={this.generalHandler}
-                                className="form-control"
-                            />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="btn-toolbar pull-right">
-                                <button onClick={this.addAccuralTerm} type="submit" className="pull-right btn green">
-                                    {utils.getLabelByID("Add")}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <Table
-                        gridColumns={utils.getGridColumnByName('accrualTerms')}
-                        gridData={this.state.accrualTermsArr || []}
-                    />
-                </Portlet>
-                <Portlet title={"ACCURAL POINT CREDIT RULES"}>
+                            <Portlet title={"ACCURAL TERMS"}>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Label text="Start Date" columns='4' />
+                                        <div className="col-md-7">
+                                            <DateControl id="accuralStartDate" dateChange={this.accuralTermStartDateChange} />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <Label text="End Date" columns='4' />
+                                        <div className="col-md-7">
+                                            <DateControl id="accuralEndDate" dateChange={this.accuralTermEndDateChange} />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br></br>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Label text="Selling Rate" columns='4' />
+                                        <Input
+                                            fieldname='sellingRate'
+                                            formname='accrualTerms'
+                                            columns='7'
+                                            placeholder=''
+                                            state={this.state}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="btn-toolbar pull-right">
+                                            <button onClick={this.addAccuralTerm} type="submit" className="pull-right btn green">
+                                                {utils.getLabelByID("Add")}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Table
+                                    gridColumns={utils.getGridColumnByName('accrualTerms')}
+                                    gridData={this.state.accrualTermsArr || []}
+                                />
+                            </Portlet>
+                            <Portlet title={"ACCURAL POINT CREDIT RULES"}>
 
-                    <div className="row">
-                        <div className="col-md-6">
-                            <Label text="Rule" columns='4' />
-                            <Combobox
-                                fieldname='ruleType'
-                                formname='pointCreditRules'
-                                columns='7'
-                                placeholder='Select'
-                                style={{}}
-                                state={this.state}
-                                typeName="rule"
-                                dataSource={_.get(this.state, 'typeData', {})}
-                                actionHandler={this.generalHandler}
-                                className="form-control"
-                            />
-                        </div>
-                        <div className="col-md-6">
-                            <Label text="Max Unsettled(AED)" columns='4' />
-                            <Input
-                                fieldname='maxUnsettled'
-                                formname='pointCreditRules'
-                                columns='7'
-                                placeholder=''
-                                state={this.state}
-                                actionHandler={this.generalHandler}
-                                className="form-control"
-                            />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <Label text="Allow" columns='4' />
-                        </div>
-                    </div>
-
-
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="btn-toolbar pull-right">
-                                <button onClick={this.addPointCreditRules} type="submit" className="pull-right btn green">
-                                    {utils.getLabelByID("Add")}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <Table
-                        gridColumns={utils.getGridColumnByName('pointCreditRules')}
-                        gridData={this.state.pointCreditRulesArr || []}
-                    />
-                </Portlet>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Label text="Rule" columns='4' />
+                                        <Combobox
+                                            fieldname='ruleType'
+                                            formname='pointCreditRules'
+                                            columns='7'
+                                            placeholder='Select'
+                                            style={{}}
+                                            state={this.state}
+                                            typeName="rule"
+                                            dataSource={_.get(this.state, 'typeData', {})}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <Label text="Max Unsettled(AED)" columns='4' />
+                                        <Input
+                                            fieldname='maxUnsettled'
+                                            formname='pointCreditRules'
+                                            columns='7'
+                                            placeholder=''
+                                            state={this.state}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Label text="Allow" columns='4' />
+                                    </div>
+                                </div>
 
 
-                <Portlet title={"SETTLEMENTS"}>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="btn-toolbar pull-right">
+                                            <button onClick={this.addPointCreditRules} type="submit" className="pull-right btn green">
+                                                {utils.getLabelByID("Add")}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Table
+                                    gridColumns={utils.getGridColumnByName('pointCreditRules')}
+                                    gridData={this.state.pointCreditRulesArr || []}
+                                />
+                            </Portlet>
+                        </div>
+                    )
+                }
+
+
+
+                <Portlet title={"SETTLEMENT"}>
                     <div className="row">
                         <div className="col-md-6">
                             <Label text="Settle As" columns='4' />
@@ -419,7 +646,7 @@ class AddPartner extends Component {
                         </div>
                     </div>
 
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col-md-12">
                             <div className="btn-toolbar pull-right">
                                 <button onClick={this.addSettlement} type="submit" className="pull-right btn green">
@@ -431,7 +658,7 @@ class AddPartner extends Component {
                     <Table
                         gridColumns={utils.getGridColumnByName('settlement')}
                         gridData={this.state.settlementArr || []}
-                    />
+                    /> */}
                 </Portlet>
                 <Portlet title={"TERMS & CONDITIONS"} style={{ height: '140px' }}>
                     <Textarea
@@ -499,7 +726,7 @@ class AddPartner extends Component {
                         </div>
                     </div>
 
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col-md-12">
                             <div className="btn-toolbar pull-right">
                                 <button onClick={this.adderpSettingsTo} type="submit" className="pull-right btn green">
@@ -511,7 +738,7 @@ class AddPartner extends Component {
                     <Table
                         gridColumns={utils.getGridColumnByName('ERPsettings')}
                         gridData={this.state.erpSettingsToArr || []}
-                    />
+                    /> */}
                 </Portlet>
 
 
@@ -672,7 +899,7 @@ class AddPartner extends Component {
                     </div>
 
                     <div className="col-md-6">
-                        {this.imgDiv()}
+                        {this.imgDiv('body')}
                     </div>
                 </div>
                 <br></br>
@@ -871,7 +1098,7 @@ class AddPartner extends Component {
                             />
                         </div>
                     </div>
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col-md-12">
                             <div className="btn-toolbar pull-right">
                                 <button onClick={this.adderpSettingsFrom} type="submit" className="pull-right btn green">
@@ -883,7 +1110,7 @@ class AddPartner extends Component {
                     <Table
                         gridColumns={utils.getGridColumnByName('ERPsettings')}
                         gridData={this.state.erpSettingsFromArr || []}
-                    />
+                    /> */}
 
                 </Portlet>
 
@@ -897,7 +1124,7 @@ class AddPartner extends Component {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="btn-toolbar pull-right">
-                                <button onClick={this.stateChangeSubsidaryPartnerBool} type="submit" className="pull-right btn green">
+                                <button disabled={this.state.contractType == undefined ? true : false} onClick={this.stateChangeSubsidaryPartnerBool} type="submit" className="pull-right btn green">
                                     {utils.getLabelByID("Add Subsidary Partner")}
                                 </button>
                             </div>
