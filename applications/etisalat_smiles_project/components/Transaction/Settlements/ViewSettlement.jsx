@@ -1,18 +1,22 @@
-/*standard imports*/
+
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as utils from '../../../../core/common/utils.js';
-import Table from '../../../../core/common/Datatable.jsx';
-import * as actions from '../../../../core/actions/generalAction';
-import * as constants from '../../../../core/constants/Communication.js';
-import Portlet from '../../../../core/common/Portlet.jsx';
+import * as utils from '../../../../../core/common/utils.js';
+import Table from '../../../../../core/common/Datatable.jsx';
+import * as actions from '../../../../../core/actions/generalAction';
+import * as constants from '../../../../../core/constants/Communication.js';
+import Portlet from '../../../../../core/common/Portlet.jsx';
+import Col from '../../../../../core/common/Col.jsx';
+import Row from '../../../../../core/common/Row.jsx';
+import TileUnit from '../../../../../core/common/tileUnit.jsx';
 import _ from 'lodash';
-import * as requestCreator from '../../../../core/common/request.js';
+import * as requestCreator from '../../../../../core/common/request.js';
+import Label from '../../../../../core/common/Lable.jsx';
 
-class ViewTransactions extends React.Component {
+class ViewSettlement extends React.Component {
     constructor(props) {
-        console.log("View Transaction")
+        console.log("View Settlements")
         super(props);
         this.state = {
             viewCriteria: {},
@@ -22,10 +26,18 @@ class ViewTransactions extends React.Component {
             },
             isLoading: true,
             gridData: [],
-            actions: []
+            actions: [],
+
+            dashboardTiles: [{
+                title: "Amount",
+                value: "445",
+                percentageTag: false
+            }]
+
         };
         this.data = [];
         this.pageChanged = this.pageChanged.bind(this);
+
     }
 
     formSubmit = () => {
@@ -83,13 +95,13 @@ class ViewTransactions extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         // if (nextProps.getViewTransactions && nextProps.typeData && nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
-            // console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions");
-            // let pageActions = nextProps.gridActions[0].pageActions;
-            this.setState(
-                {
-                    isLoading: false
-                }
-            )
+        // console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions");
+        // let pageActions = nextProps.gridActions[0].pageActions;
+        this.setState(
+            {
+                isLoading: false
+            }
+        )
         // }
     }
 
@@ -111,6 +123,7 @@ class ViewTransactions extends React.Component {
             }
         }
     }
+
     pageChanged = (pageNo) => {
         let page = this.state.page;
         page.currentPageNo = pageNo;
@@ -118,12 +131,62 @@ class ViewTransactions extends React.Component {
         this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
     }
 
+
     render() {
         if (this.state.isLoading) {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         }
         return (
-            <div className="row">
+            <div className="form" style={{ marginBottom: '3%' }}>
+                <div className="row">
+                    <div className="col-md-5">
+                        <label style={{ 'fontSize': '20px' }}> COMMERCIAL BANK OF DUBAI</label>
+                    </div>
+                </div>
+
+
+                <div className="row">
+                    <div className="col-md-1">
+                        <label style={{ 'fontSize': '10px' }} className="control-label">{utils.getLabelByID("ACCURAL PARTNER")}</label>
+                    </div>
+                    <div className="col-md-1">
+                        <label style={{ 'fontSize': '10px' }} className="control-label">{utils.getLabelByID("REDEMPTION PARTNER")}</label>
+                    </div>
+                    <div className="col-md-1">
+                        <label style={{ 'fontSize': '10px' }} className="control-label">{utils.getLabelByID("CONVERSION PARTNER")}</label>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-2">
+                        <label className="control-label">{utils.getLabelByID("Last Settlemenet Date")}</label>
+                    </div>
+                    <div className="col-md-4" style={{ backgroundColor: "grey" }}>
+                        <label className="control-label">{utils.getLabelByID("01/01/2019")}</label>
+                    </div>
+                    <div className="col-md-2">
+                        <label className="control-label">{utils.getLabelByID("End Date")}</label>
+                    </div>
+                    <div className="col-md-4" style={{ border: "1px solid grey" }}>
+                        <label className="control-label">{utils.getLabelByID("01/01/2019")}</label>
+                    </div>
+                </div>
+                <br />
+                < br/>
+                
+                <div className="row">
+                    
+                        <TileUnit data={[{
+                            title: "COMMISSION",
+                            value: "445",
+                            percentageTag: false
+                        }]} />
+                    
+                        <TileUnit data={this.state.dashboardTiles} />
+                    
+                        <TileUnit data={this.state.dashboardTiles} />
+                    
+                </div>
+                <br />
 
                 <Portlet title={utils.getLabelByID("TRANSACTIONS")}>
                     <div className="row">
@@ -135,7 +198,7 @@ class ViewTransactions extends React.Component {
                                 <input type="text" className="form-control" name="contractId" id="contractId" />
                             </div>
                         </div>
-                        
+
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
                                 <label className="control-label">{utils.getLabelByID("End Date")}</label>
@@ -145,61 +208,6 @@ class ViewTransactions extends React.Component {
                             </div>
                         </div>
 
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Status")}</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                {/* <input type="text" className="form-control" name="status" id="status" /> */}
-
-
-                                <select id="status" name="status" className="form-control" >
-                                    <option key="-1" value=""></option>
-
-                                    <option key="0" value="INITIATED">ACCURAL</option>
-                                    <option key="1" value="APPROVED">APPROVED</option>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Direction")}</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                {/* <input type="text" className="form-control" name="status" id="status" /> */}
-
-
-                                <select id="status" name="status" className="form-control" >
-                                    <option key="-1" value="">RECEIVABLES</option>
-
-                                    <option key="0" value="INITIATED">OPTION 1</option>
-                                    <option key="1" value="APPROVED">OPTION 2</option>
-
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Partner")}</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                {/* <input type="text" className="form-control" name="status" id="status" /> */}
-
-
-                                <select id="status" name="status" className="form-control" >
-                                    <option key="-1" value=""> </option>
-
-                                    <option key="0" value="INITIATED">OPTION 1</option>
-                                    <option key="1" value="APPROVED">OPTION 2</option>
-
-                                </select>
-                            </div>
-                        </div>
-
-
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="form-group col-md-12">
@@ -207,21 +215,16 @@ class ViewTransactions extends React.Component {
                                         <button type="submit" className="btn green" onClick={this.formSubmit}>
                                             {utils.getLabelByID('Search')}
                                         </button>
-                                        {/* <button type="clear" className="btn green" onClick={this.reset}
-                                        >
-                                            {utils.getLabelByID("Clear")}
-                                        </button> */}
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
-                 {/* </Portlet>
-                 <Portlet  actions={this.state.actions} isPermissioned={true}> */}
-                   {/* UTS */}
+
                     <Table
                         gridColumns={utils.getGridColumnByName("viewTranxList")}
-                        gridData={[{"no": "1","tranx": "12212222","acc": "555222","ttype": "ACCURAL","amount": "100045","points": "12220211","date": "01/12/2020","status": "APPROVED","partner": "ETIHAD"}]}
+                        gridData={[{ "no": "1", "tranx": "12212222", "acc": "555222", "ttype": "ACCURAL", "amount": "100045", "points": "12220211", "date": "01/12/2020", "status": "APPROVED", "partner": "ETIHAD" }]}
                         fontclass=""
                         totalRecords={this.props.getPage.totalRecords}
                         pageSize={10}
@@ -229,10 +232,8 @@ class ViewTransactions extends React.Component {
                         pagination={true}
                         activePage={this.state.page.currentPageNo}
                     />
-
-
                 </Portlet>
-            </div>
+            </div >
         );
     }
 }
@@ -243,15 +244,16 @@ function mapStateToProps(state, ownProps) {
         gridActions: _.get(state.app, 'getMasterAgreement.actions', []),
         getMasterAgreement: _.get(state.app, "getMasterAgreement.searchResult", []),
         getPage: _.get(state.app, "getMasterAgreement.pageData", [])
-        
+
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
+
 }
-ViewTransactions.displayName = "Transaction List";
-export default connect(mapStateToProps, mapDispatchToProps)(ViewTransactions);
+ViewSettlement.displayName = "View Settlement";
+export default connect(mapStateToProps, mapDispatchToProps)(ViewSettlement);
 
 
 
