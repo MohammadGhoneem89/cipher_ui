@@ -33,14 +33,12 @@ const config = {
         loader: 'css-loader'
       }
 
-    ],
-    plugins: [
-      // minify output
-      new webpack.optimize.UglifyJsPlugin()
     ]
-
-
-  }
+  },
+  plugins: [
+    // minify output
+    new webpack.optimize.UglifyJsPlugin()
+  ]
 };
 
 
