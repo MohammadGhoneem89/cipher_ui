@@ -10,7 +10,7 @@ import TransactionDetail from './components/Transaction/TransactionDetail.jsx';
 // import Cipher from "./components/Cipher.jsx";
 import ChangePassword from '../../core/components/AuthenticationScreens/changePassword.jsx';
 // import TransactionDetail from './components/Transaction/TransactionDetail.jsx';
-import AddPartner from './components/PartnerSetup/addPartner.jsx'
+import AddPartner from './components/PartnerSetup/AddPartner.jsx'
 let authRoutes = <div>
     <Route path="/smiles/View/Transaction" component={ViewTransactions} />
     <Route path="/smiles/Detail/Transaction" component={TransactionDetail} />
