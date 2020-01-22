@@ -32,7 +32,7 @@ module.exports = {
     pointCreditRules: [
         { alias: "S.NO", key: "", type: "serialNo" },
         { alias: "Rule", key: "ruleType", type: "string" },
-        { alias: "Max Unsettled (AED)", key: "maxUnsettled", type: "string" }
+        { alias: "Max Unsettled (AED)", key: "maxUnSettledAmount", type: "string" }
     ],
     paymentSearch: [
         { alias: "", key: "_id", type: "hiddenID" },
@@ -43,11 +43,13 @@ module.exports = {
     ],
     contactInfo: [
         { alias: "S.NO", key: "", type: "serialNo" },
-        { alias: "Name", key: "name", type: "string" },
+        { alias: "First Name", key: "firstName", type: "string" },
+        { alias: "Last Name", key: "lastName", type: "string" },
         { alias: "Email", key: "email", type: "string" },
         { alias: "Phone", key: "phone", type: "string" },
         { alias: "Mobile", key: "mobile", type: "string" },
         { alias: "Address", key: "address", type: "string" },
+        { alias: "Mode", key: "mode", type: "string" },
         { alias: "Action", key: "action", type: "action" }
     ],
     accrualTerms: [
