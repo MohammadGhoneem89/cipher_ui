@@ -7,8 +7,13 @@ import Table from '../../../../core/common/Datatable.jsx';
 import * as actions from '../../../../core/actions/generalAction';
 import * as constants from '../../../../core/constants/Communication.js';
 import Portlet from '../../../../core/common/Portlet.jsx';
+import Label from '../../../../core/common/Lable.jsx';
+import Input from '../../../../core/common/Input.jsx'
 import _ from 'lodash';
 import * as requestCreator from '../../../../core/common/request.js';
+import DateControl from '../../../../core/common/DateControl.jsx';
+import Combobox from '../../../../core/common/Select.jsx';
+import * as gen from '../../../../core/common/generalActionHandler';
 
 class ViewTransactions extends React.Component {
     constructor(props) {
@@ -22,20 +27,22 @@ class ViewTransactions extends React.Component {
             },
             isLoading: true,
             gridData: [],
+            Transaction: {},
             actions: []
         };
         this.data = [];
         this.pageChanged = this.pageChanged.bind(this);
+        this.generalHandler = gen.generalHandler.bind(this)
     }
 
     formSubmit = () => {
         // this.props.actions.generalProcess(constants.getViewTransactions, this.getRequest());
+        this.props.actions.generalProcess(constants.getViewTransactions, this.getRequest());
     }
     reset = () => {
         document.getElementById('contractId').value = "";
         // document.getElementById('customer').value = "";
         document.getElementById('status').value = "";
-
         let request = {
             "body": {
                 page: {
@@ -54,11 +61,12 @@ class ViewTransactions extends React.Component {
     }
 
     getRequest = () => {
-
-        let contractID = document.getElementById('contractId') == null ? "" : document.getElementById('contractId').value;
+        //let contractID = document.getElementById('contractId') == null ? "" : document.getElementById('contractId').value;
         // let customerID = document.getElementById('customer') == null ? "" : document.getElementById('customer').value;
         let status = document.getElementById('status') == null ? "" : document.getElementById('status').value;
         let searchCriteria = {}
+        let startDate = this.state.startDate;
+
 
         if (contractID != "")
             searchCriteria.contractID = contractID
@@ -66,14 +74,14 @@ class ViewTransactions extends React.Component {
         //     searchCriteria.customerID = customerID
         if (status != "")
             searchCriteria.status = status
-
+        
 
         this.setState({ searchCriteria: searchCriteria })
         let request = {
             "body": {
                 "page": {
                     "currentPageNo": this.state.page.currentPageNo,
-                    "pageSize": this.state.page.pageSize
+                    "pageSize": this.state.page.pageSize,
                 },
                 searchCriteria
             }
@@ -83,13 +91,13 @@ class ViewTransactions extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         // if (nextProps.getViewTransactions && nextProps.typeData && nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
-            // console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions");
-            // let pageActions = nextProps.gridActions[0].pageActions;
-            this.setState(
-                {
-                    isLoading: false
-                }
-            )
+        // console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions");
+        // let pageActions = nextProps.gridActions[0].pageActions;
+        this.setState(
+            {
+                isLoading: false
+            }
+        )
         // }
     }
 
@@ -124,78 +132,93 @@ class ViewTransactions extends React.Component {
         }
         return (
             <div className="row">
-
                 <Portlet title={utils.getLabelByID("TRANSACTIONS")}>
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Start Date")}</label>
+                                <Label text="Start Date" />
                             </div>
                             <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="contractId" id="contractId" />
-                            </div>
-                        </div>
-                        
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("End Date")}</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="contractId" id="contractId" />
+                                <DateControl
+                                    id='startDate'
+                                    dateChange={this.dateChange}
+                                />
                             </div>
                         </div>
 
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Status")}</label>
+                                <Label text="End Date" />
+                            </div>
+                            <div className="form-group col-md-8">
+                                <DateControl
+                                    id='End Date'
+                                    dateChange={this.dateChange}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="col-md-6">
+                            <div className="form-group col-md-4">
+                                <Label text="Status" />
                             </div>
                             <div className="form-group col-md-8">
                                 {/* <input type="text" className="form-control" name="status" id="status" /> */}
 
-
-                                <select id="status" name="status" className="form-control" >
-                                    <option key="-1" value=""></option>
-
-                                    <option key="0" value="INITIATED">ACCURAL</option>
-                                    <option key="1" value="APPROVED">APPROVED</option>
-
-                                </select>
+                                <Combobox
+                                    fieldname='Status'
+                                    formname='Transaction'
+                                    placeholder='Select'
+                                    style={{}}
+                                    state={this.state}
+                                    typeData="rule"
+                                    dataSource={_.get(this.state, 'typeData', {})}
+                                    actionHandler={this.generalHandler}
+                                    className="form-control"
+                                />
                             </div>
                         </div>
 
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Direction")}</label>
+                                <Label text="Direction" />
                             </div>
                             <div className="form-group col-md-8">
                                 {/* <input type="text" className="form-control" name="status" id="status" /> */}
 
-
-                                <select id="status" name="status" className="form-control" >
-                                    <option key="-1" value="">RECEIVABLES</option>
-
-                                    <option key="0" value="INITIATED">OPTION 1</option>
-                                    <option key="1" value="APPROVED">OPTION 2</option>
-
-                                </select>
+                                <Combobox
+                                    fieldname='Direction'
+                                    formname='Transaction'
+                                    placeholder='Select'
+                                    style={{}}
+                                    state={this.state}
+                                    typeData="rule"
+                                    dataSource={_.get(this.state, 'typeData', {})}
+                                    actionHandler={this.generalHandler}
+                                    className="form-control"
+                                />
                             </div>
                         </div>
-                        
+
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Partner")}</label>
+                                <Label text="Partner" />
                             </div>
                             <div className="form-group col-md-8">
                                 {/* <input type="text" className="form-control" name="status" id="status" /> */}
 
+                                <Combobox
+                                    fieldname='Partner'
+                                    formname='Transaction'
+                                    placeholder='Select'
+                                    style={{}}
+                                    state={this.state}
+                                    typeData="rule"
+                                    dataSource={_.get(this.state, 'typeData', {})}
+                                    actionHandler={this.generalHandler}
+                                    className="form-control"
+                                />
 
-                                <select id="status" name="status" className="form-control" >
-                                    <option key="-1" value=""> </option>
-
-                                    <option key="0" value="INITIATED">OPTION 1</option>
-                                    <option key="1" value="APPROVED">OPTION 2</option>
-
-                                </select>
                             </div>
                         </div>
 
@@ -215,13 +238,14 @@ class ViewTransactions extends React.Component {
                                 </div>
                             </div>
                         </div>
+
                     </div>
-                 {/* </Portlet>
+                    {/* </Portlet>
                  <Portlet  actions={this.state.actions} isPermissioned={true}> */}
-                   {/* UTS */}
+                    {/* UTS */}
                     <Table
                         gridColumns={utils.getGridColumnByName("viewTranxList")}
-                        gridData={[{"no": "1","tranx": "12212222","acc": "555222","ttype": "ACCURAL","amount": "100045","points": "12220211","date": "01/12/2020","status": "APPROVED","partner": "ETIHAD"}]}
+                        gridData={[{ "no": "1", "tranx": "12212222", "acc": "555222", "ttype": "ACCURAL", "amount": "100045", "points": "12220211", "date": "01/12/2020", "status": "APPROVED", "partner": "ETIHAD" }]}
                         fontclass=""
                         totalRecords={this.props.getPage.totalRecords}
                         pageSize={10}
@@ -243,7 +267,7 @@ function mapStateToProps(state, ownProps) {
         gridActions: _.get(state.app, 'getMasterAgreement.actions', []),
         getMasterAgreement: _.get(state.app, "getMasterAgreement.searchResult", []),
         getPage: _.get(state.app, "getMasterAgreement.pageData", [])
-        
+
     };
 }
 

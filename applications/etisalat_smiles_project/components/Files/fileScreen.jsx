@@ -13,6 +13,7 @@ import TileUnit from '../../../../core/common/tileUnit.jsx';
 import _ from 'lodash';
 import * as requestCreator from '../../../../core/common/request.js';
 import Label from '../../../../core/common/Lable.jsx';
+import DateControl from '../../../../core/common/DateControl.jsx';
 
 class fileScreen extends React.Component {
     constructor(props) {
@@ -147,19 +148,25 @@ class fileScreen extends React.Component {
                 <div className="row">
                     <div className="col-md-6">
                         <div className="form-group col-md-4">
-                            <label className="control-label">{utils.getLabelByID("From Date:")}</label>
+                            <Label text="From Date:" />
                         </div>
                         <div className="form-group col-md-8">
-                            <input type="text" className="form-control" name="contractId" id="contractId" />
+                            <DateControl
+                                id='fromDate'
+                                dateChange={this.dateChange}
+                            />
                         </div>
                     </div>
 
                     <div className="col-md-6">
                         <div className="form-group col-md-4">
-                            <label className="control-label">{utils.getLabelByID("To Date:")}</label>
+                            <Label text="To Date:" />
                         </div>
                         <div className="form-group col-md-8">
-                            <input type="text" className="form-control" name="contractId" id="contractId" />
+                            <DateControl
+                                id='toDate'
+                                dateChange={this.dateChange}
+                            />
                         </div>
                     </div>
                 </div>
@@ -167,7 +174,7 @@ class fileScreen extends React.Component {
                 <div className="row">
                     <div className="col-md-6">
                         <div className="form-group col-md-4">
-                            <label className="control-label">{utils.getLabelByID("File Name:")}</label>
+                            <Label text="File Name:" />
                         </div>
 
                         <div className="form-group col-md-8">
@@ -188,7 +195,7 @@ class fileScreen extends React.Component {
 
                 <br />
                 < br />
-        
+
                 <Table
                     gridColumns={utils.getGridColumnByName("viewTranxList")}
                     gridData={[{ "no": "1", "tranx": "12212222", "acc": "555222", "ttype": "ACCURAL", "amount": "100045", "points": "12220211", "date": "01/12/2020", "status": "APPROVED", "partner": "ETIHAD" }]}
@@ -199,7 +206,7 @@ class fileScreen extends React.Component {
                     pagination={true}
                     activePage={this.state.page.currentPageNo}
                 />
-                
+
                 <Portlet title={utils.getLabelByID("UPLOAD FILES")}>
 
                     {/* <div className="row" style={{ border: "1px solid grey" }}>

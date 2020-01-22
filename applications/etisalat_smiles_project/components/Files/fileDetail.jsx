@@ -78,8 +78,7 @@ class fileDetail extends React.Component {
         //     searchCriteria.customerID = customerID
         if (status != "")
             searchCriteria.status = status
-
-
+            
         this.setState({ searchCriteria: searchCriteria })
         let request = {
             "body": {

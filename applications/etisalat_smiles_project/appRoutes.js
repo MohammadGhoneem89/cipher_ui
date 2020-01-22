@@ -16,13 +16,15 @@ import fileDetail from './components/Files/fileDetail.jsx';
 
 
 // import TransactionDetail from './components/Transaction/TransactionDetail.jsx';
-import AddPartner from './components/PartnerSetup/AddPartner.jsx'
+import AddPartner from './components/PartnerSetup/addPartner.jsx'
+import dashboard from './components/Dashboard/dashboard.jsx';
 let authRoutes = <div>
     <Route path="/smiles/View/Transaction" component={ViewTransactions} />
     <Route path="/smiles/Detail/Transaction" component={TransactionDetail} />
     <Route path="/smiles/partnerSetup/addPartner" component={AddPartner} />
     <Route path="/smiles/View/Settlements" component={ViewSettlement} />
     <Route path="/smiles/Submit/Settlements" component={SubmitSettlement} />
+    <Route path="/smiles/View/dashboard" component={dashboard} />
     <Route path="/smiles/View/FileScreen" component={fileScreen} />//rm
     <Route path="/smiles/View/FileDetails" component={fileDetail} />//rm
 </div>;
