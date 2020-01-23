@@ -20,7 +20,8 @@ import moment from 'moment';
 //import image from "../../../assets/imgs/courier.jpg";
 import _ from 'lodash';
 import DateControl from "../../../core/common/DateControl.jsx"
-import TileUnit from '../../../core/common/tileUnit.jsx';
+//import TileUnit from '../../../core/common/tileUnit.jsx';
+import TileUnit from '../common/tileUnit.jsx';
 
 class VoucherList extends React.Component {
 

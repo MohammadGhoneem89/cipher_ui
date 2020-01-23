@@ -1,4 +1,4 @@
-/*standard imports*/
+
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -7,17 +7,16 @@ import Table from '../../../../core/common/Datatable.jsx';
 import * as actions from '../../../../core/actions/generalAction';
 import * as constants from '../../../../core/constants/Communication.js';
 import Portlet from '../../../../core/common/Portlet.jsx';
-import Label from '../../../../core/common/Lable.jsx';
-import Input from '../../../../core/common/Input.jsx'
+import Col from '../../../../core/common/Col.jsx';
+import Row from '../../../../core/common/Row.jsx';
+import TileUnit from '../../../../core/common/tileUnit.jsx';
 import _ from 'lodash';
 import * as requestCreator from '../../../../core/common/request.js';
-import DateControl from '../../../../core/common/DateControl.jsx';
-import Combobox from '../../../../core/common/Select.jsx';
-import * as gen from '../../../../core/common/generalActionHandler';
+import Label from '../../../../core/common/Lable.jsx';
 
-class ViewTransactions extends React.Component {
+class fileDetail extends React.Component {
     constructor(props) {
-        console.log("View Transaction")
+        console.log("View Settlements")
         super(props);
         this.state = {
             viewCriteria: {},
@@ -27,22 +26,28 @@ class ViewTransactions extends React.Component {
             },
             isLoading: true,
             gridData: [],
-            Transaction: {},
-            actions: []
+            actions: [],
+
+            dashboardTiles: [{
+                title: "Amount",
+                value: "445",
+                percentageTag: false
+            }]
+
         };
         this.data = [];
         this.pageChanged = this.pageChanged.bind(this);
-        this.generalHandler = gen.generalHandler.bind(this)
+
     }
 
     formSubmit = () => {
         // this.props.actions.generalProcess(constants.getViewTransactions, this.getRequest());
-        this.props.actions.generalProcess(constants.getViewTransactions, this.getRequest());
     }
     reset = () => {
         document.getElementById('contractId').value = "";
         // document.getElementById('customer').value = "";
         document.getElementById('status').value = "";
+
         let request = {
             "body": {
                 page: {
@@ -61,12 +66,11 @@ class ViewTransactions extends React.Component {
     }
 
     getRequest = () => {
-        //let contractID = document.getElementById('contractId') == null ? "" : document.getElementById('contractId').value;
+
+        let contractID = document.getElementById('contractId') == null ? "" : document.getElementById('contractId').value;
         // let customerID = document.getElementById('customer') == null ? "" : document.getElementById('customer').value;
         let status = document.getElementById('status') == null ? "" : document.getElementById('status').value;
         let searchCriteria = {}
-        let startDate = this.state.startDate;
-
 
         if (contractID != "")
             searchCriteria.contractID = contractID
@@ -74,14 +78,13 @@ class ViewTransactions extends React.Component {
         //     searchCriteria.customerID = customerID
         if (status != "")
             searchCriteria.status = status
-        
-
+            
         this.setState({ searchCriteria: searchCriteria })
         let request = {
             "body": {
                 "page": {
                     "currentPageNo": this.state.page.currentPageNo,
-                    "pageSize": this.state.page.pageSize,
+                    "pageSize": this.state.page.pageSize
                 },
                 searchCriteria
             }
@@ -119,6 +122,7 @@ class ViewTransactions extends React.Component {
             }
         }
     }
+
     pageChanged = (pageNo) => {
         let page = this.state.page;
         page.currentPageNo = pageNo;
@@ -126,102 +130,56 @@ class ViewTransactions extends React.Component {
         this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
     }
 
+
     render() {
         if (this.state.isLoading) {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         }
         return (
-            <div className="row">
-                <Portlet title={utils.getLabelByID("TRANSACTIONS")}>
+            <div className="form" style={{ marginBottom: '3%' }}>
+                <div className="row">
+
+                    <div className="col-md-4 " style={{ backgroundColor: "green" }}>
+                        <label style={{ 'fontSize': '15px', color:"white" }} className="control-label">{utils.getLabelByID("changes2019_2020.txt")}</label>
+                    </div>
+
+                </div>
+
+                <br />
+                < br />
+
+                <div className="row">
+                    {/* need to modify tileunit not to floor the values */}
+                    <TileUnit data={[{
+                        title: "COMMISSION",
+                        value: "445",
+                        percentageTag: false
+                    }]} />
+                    <TileUnit data={this.state.dashboardTiles} />
+                    <TileUnit data={this.state.dashboardTiles} />
+                    <TileUnit data={this.state.dashboardTiles} />
+                </div>
+
+
+                <Portlet title={utils.getLabelByID("DATA")}>
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <Label text="Start Date" />
+                                <label className="control-label">{utils.getLabelByID("Status")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <DateControl
-                                    id='startDate'
-                                    dateChange={this.dateChange}
-                                />
+                                <input type="text" className="form-control" name="contractId" id="contractId" />
                             </div>
                         </div>
 
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <Label text="End Date" />
+                                <label className="control-label">{utils.getLabelByID("Rule Name")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <DateControl
-                                    id='End Date'
-                                    dateChange={this.dateChange}
-                                />
+                                <input type="text" className="form-control" name="contractId" id="contractId" />
                             </div>
                         </div>
-
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <Label text="Status" />
-                            </div>
-                            <div className="form-group col-md-8">
-                                {/* <input type="text" className="form-control" name="status" id="status" /> */}
-
-                                <Combobox
-                                    fieldname='Status'
-                                    formname='Transaction'
-                                    placeholder='Select'
-                                    style={{}}
-                                    state={this.state}
-                                    typeData="rule"
-                                    dataSource={_.get(this.state, 'typeData', {})}
-                                    actionHandler={this.generalHandler}
-                                    className="form-control"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <Label text="Direction" />
-                            </div>
-                            <div className="form-group col-md-8">
-                                {/* <input type="text" className="form-control" name="status" id="status" /> */}
-
-                                <Combobox
-                                    fieldname='Direction'
-                                    formname='Transaction'
-                                    placeholder='Select'
-                                    style={{}}
-                                    state={this.state}
-                                    typeData="rule"
-                                    dataSource={_.get(this.state, 'typeData', {})}
-                                    actionHandler={this.generalHandler}
-                                    className="form-control"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <Label text="Partner" />
-                            </div>
-                            <div className="form-group col-md-8">
-                                {/* <input type="text" className="form-control" name="status" id="status" /> */}
-
-                                <Combobox
-                                    fieldname='Partner'
-                                    formname='Transaction'
-                                    placeholder='Select'
-                                    style={{}}
-                                    state={this.state}
-                                    typeData="rule"
-                                    dataSource={_.get(this.state, 'typeData', {})}
-                                    actionHandler={this.generalHandler}
-                                    className="form-control"
-                                />
-
-                            </div>
-                        </div>
-
 
                         <div className="row">
                             <div className="col-md-12">
@@ -230,19 +188,12 @@ class ViewTransactions extends React.Component {
                                         <button type="submit" className="btn green" onClick={this.formSubmit}>
                                             {utils.getLabelByID('Search')}
                                         </button>
-                                        {/* <button type="clear" className="btn green" onClick={this.reset}
-                                        >
-                                            {utils.getLabelByID("Clear")}
-                                        </button> */}
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    {/* </Portlet>
-                 <Portlet  actions={this.state.actions} isPermissioned={true}> */}
-                    {/* UTS */}
+
                     <Table
                         gridColumns={utils.getGridColumnByName("viewTranxList")}
                         gridData={[{ "no": "1", "tranx": "12212222", "acc": "555222", "ttype": "ACCURAL", "amount": "100045", "points": "12220211", "date": "01/12/2020", "status": "APPROVED", "partner": "ETIHAD" }]}
@@ -253,10 +204,8 @@ class ViewTransactions extends React.Component {
                         pagination={true}
                         activePage={this.state.page.currentPageNo}
                     />
-
-
                 </Portlet>
-            </div>
+            </div >
         );
     }
 }
@@ -274,18 +223,6 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 }
-ViewTransactions.displayName = "Transaction List";
-export default connect(mapStateToProps, mapDispatchToProps)(ViewTransactions);
 
-
-
-
-
-
-
-
-
-
-
-
-
+fileDetail.displayName = "FILE DETAILS";
+export default connect(mapStateToProps, mapDispatchToProps)(fileDetail);

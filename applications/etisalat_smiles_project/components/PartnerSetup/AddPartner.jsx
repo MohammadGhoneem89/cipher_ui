@@ -40,6 +40,7 @@ class AddPartner extends Component {
             contractParams: {},
             contractParamsArr: [],
             accrualTermsArr: [],
+            pointCreditRules: {},
             accrualTerms: {},
             pointCreditRulesArr: [],
             pointCreditRules: {},
@@ -47,9 +48,9 @@ class AddPartner extends Component {
             settlement: {},
             pointConversionArr: [],
             pointConversion: {},
-            checkbox_pointConversion: false,
-            checkbox_accural: false,
-            checkbox_redemption: false,
+            isPointConversionPartner: false,
+            isAccrualPartner: false,
+            isRedemptionPartner: false,
             ratesArr: [],
             rates: {}
 
@@ -69,7 +70,7 @@ class AddPartner extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
 
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', 'contactMode']));
 
     }
 
@@ -185,11 +186,15 @@ class AddPartner extends Component {
 
         let erpSettingsTo = { ...this.state.erpSettingsTo }
 
+        contractParams.isAccrualPartner = this.state.isAccrualPartner
+        contractParams.isRedemptionPartner = this.state.isRedemptionPartner
+        contractParams.isPointConversionPartner = this.state.isPointConversionPartner
 
         let settlement = { ...this.state.settlement }
         if (this.state.settlementStartOn) {
-            settlement.startOn = this.state.settlementStartOn
+            settlement.startsOn = this.state.settlementStartOn
         }
+        settlement.currency = "AED"
 
         if (Object.keys(settlement).length == 0) {
             toaster.showToast("Settlement not defined", "ERROR");
@@ -210,23 +215,25 @@ class AddPartner extends Component {
             toaster.showToast('Subsidary Partner Details not added.', 'ERROR');
             return;
         }
-        if (contractParams.partnerCode == undefined) {
+    
+        if (contractParams.withPartnerCode == undefined) {
             toaster.showToast('Subsidary Partner code not present.', 'ERROR');
             return;
         }
         // contractParams accrualTerms pointCreditRules settlement
 
-
+        contractParams.settlements = contractParams.settlements
         //contractParams.erpSettingsFrom = [...this.state.erpSettingsFromArr]
         contractParams.erpSettingsFrom = { ...erpSettingsFrom }
         contractParams.erpSettingsTo = { ...erpSettingsTo }
         //contractParams.settlement = [...this.state.settlementArr]
         //contractParams.erpSettingsTo = [...this.state.erpSettingsToArr]
 
-        contractParams.accrualPartner = {
-            accrualTerms: [...this.state.accrualTermsArr],
-            pointCreditRules: [...this.state.pointCreditRulesArr]
-        }
+        contractParams.accrualBillingRates = [...this.state.accrualTermsArr]
+        contractParams.conversionBillingRates = [...this.state.pointCreditRulesArr]
+
+        contractParams.pointCreditRules = { ...this.state.pointCreditRules }
+
         // contractParams.accrualTerms = [...this.state.accrualTermsArr]
         // contractParams.pointCreditRules = [...this.state.pointCreditRulesArr]
 
@@ -239,7 +246,8 @@ class AddPartner extends Component {
             settlement: {},
             erpSettingsTo: {},
             accrualTermsArr: [],
-            pointCreditRulesArr: []
+            pointCreditRulesArr: [],
+            pointCreditRules: {}
 
         })
         this.stateChangeSubsidaryPartnerBool();
@@ -342,7 +350,7 @@ class AddPartner extends Component {
 
             <Portlet title={"SUBSIDARY PARTNER"}>
                 {
-                    this.state.contractType == "pointConverstion" && (
+                    this.state.isPointConversionPartner && (
                         <div>
                             <Portlet title={"POINT CONVERSION"}>
                                 <div className="row">
@@ -351,7 +359,7 @@ class AddPartner extends Component {
                                         <div className="row">
                                             <Label text="Program Name" columns='4' style={{ padding: "0 0 0 30" }} />
                                             <Input
-                                                fieldname='programName'
+                                                fieldname='conversionPartnerProgramName'
                                                 formname='pointConversion'
                                                 columns='7'
                                                 placeholder=''
@@ -476,13 +484,13 @@ class AddPartner extends Component {
                     )
                 }
                 {
-                    this.state.contractType == "Accrual" && (
+                    this.state.isAccrualPartner && (
                         <div>
                             <div className="row">
                                 <div className="col-md-6">
                                     <Label text="Code" columns='4' style={{ padding: "0 0 0 30" }} />
                                     <Input
-                                        fieldname='partnerCode'
+                                        fieldname='withPartnerCode'
                                         formname='contractParams'
                                         columns='7'
                                         placeholder=''
@@ -493,7 +501,7 @@ class AddPartner extends Component {
                                 </div>
 
                             </div>
-                            <Portlet title={"ACCURAL TERMS"}>
+                            <Portlet title={"ACCURAL BILLING RATES"}>
                                 <div className="row">
                                     <div className="col-md-6">
                                         <Label text="Start Date" columns='4' />
@@ -522,6 +530,23 @@ class AddPartner extends Component {
                                             className="form-control"
                                         />
                                     </div>
+
+                                    <div className="col-md-6">
+                                        <Label text="Mode" columns='4' />
+                                        <Combobox
+                                            fieldname='mode'
+                                            formname='accrualTerms'
+                                            columns='7'
+                                            placeholder='Select'
+                                            style={{}}
+                                            state={this.state}
+                                            typeName="contactMode"
+                                            dataSource={_.get(this.state, 'typeData', {})}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+
                                 </div>
                                 <div className="row">
                                     <div className="col-md-12">
@@ -558,7 +583,7 @@ class AddPartner extends Component {
                                     <div className="col-md-6">
                                         <Label text="Max Unsettled(AED)" columns='4' />
                                         <Input
-                                            fieldname='maxUnsettled'
+                                            fieldname='maxUnSettledAmount'
                                             formname='pointCreditRules'
                                             columns='7'
                                             placeholder=''
@@ -568,26 +593,6 @@ class AddPartner extends Component {
                                         />
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <Label text="Allow" columns='4' />
-                                    </div>
-                                </div>
-
-
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <div className="btn-toolbar pull-right">
-                                            <button onClick={this.addPointCreditRules} type="submit" className="pull-right btn green">
-                                                {utils.getLabelByID("Add")}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <Table
-                                    gridColumns={utils.getGridColumnByName('pointCreditRules')}
-                                    gridData={this.state.pointCreditRulesArr || []}
-                                />
                             </Portlet>
                         </div>
                     )
@@ -600,7 +605,7 @@ class AddPartner extends Component {
                         <div className="col-md-6">
                             <Label text="Settle As" columns='4' />
                             <Combobox
-                                fieldname='settleAs'
+                                fieldname='creationAutoOrManual'
                                 formname='settlement'
                                 columns='7'
                                 placeholder='Select'
@@ -761,10 +766,7 @@ class AddPartner extends Component {
     addContactInformation = () => {
         let contactInformationArr = [...this.state.contactInformationArr]
         let contactInformation = { ...this.state.contactInformation }
-        if (contactInformation.name == undefined || contactInformation.name == "") {
-            toaster.showToast("Please provide name for the Contact.", "ERROR");
-            return;
-        }
+
         if ((contactInformation.email == undefined || contactInformation.email == "") &
             (contactInformation.mobile == undefined || contactInformation.mobile == "") &
             (contactInformation.phone == undefined || contactInformation.phone == "") &
@@ -804,26 +806,23 @@ class AddPartner extends Component {
 
         if (e.target.name == 'Redemption') {
             this.setState({
-                checkbox_pointConversion: false,
-                checkbox_accural: false,
-                checkbox_redemption: !this.state.checkbox_redemption,
-                contractType: "Redemption"
+                isPointConversionPartner: false,
+                isAccrualPartner: false,
+                isRedemptionPartner: !this.state.isRedemptionPartner
 
             });
         } else if (e.target.name == 'Accrual') {
             this.setState({
-                checkbox_pointConversion: false,
-                checkbox_accural: !this.state.checkbox_accural,
-                checkbox_redemption: false,
-                contractType: "Accrual"
+                isPointConversionPartner: false,
+                isAccrualPartner: !this.state.isAccrualPartner,
+                isRedemptionPartner: false
 
             });
         } else if (e.target.name == 'pointConverstion') {
             this.setState({
-                checkbox_pointConversion: !this.state.checkbox_pointConversion,
-                checkbox_accural: false,
-                checkbox_redemption: false,
-                contractType: "pointConverstion"
+                isPointConversionPartner: !this.state.isPointConversionPartner,
+                isAccrualPartner: false,
+                isRedemptionPartner: false
             });
         }
 
@@ -831,9 +830,10 @@ class AddPartner extends Component {
 
     setPartner = () => {
         let body = { ...this.state.body }
-        if (this.state.contactInformationArr.length) { body.contactInformation = [...this.state.contactInformationArr] }
+        if (this.state.contactInformationArr.length) { body.contacts = [...this.state.contactInformationArr] }
         if (this.state.contractParamsArr.length) { body.contractParams = [...this.state.contractParamsArr] }
         if (this.state.contractType) { body.contractType = this.state.contractType }
+        if (this.state.erpSettingsTo) { body.erpSettingsTo = { ...this.state.erpSettingsTo } }
         if (Object.keys(body).length == 0) {
             toaster.showToast("No Fields Defined", "ERROR");
             return
@@ -844,10 +844,10 @@ class AddPartner extends Component {
         //DUMMY
         this.setState({ isLoading: true })
         window.scrollTo(0, 0)
-        setTimeout(() => {
-            this.setState({ isLoading: false })
-            toaster.showToast("Processed OK!");
-        }, 5000)
+
+        this.props.actions.generalAjxProcess(constants.addEditPartner, { ...this.state.body }).then(res => {
+            alert(JSON.stringify(res))
+        })
 
 
     }
@@ -858,9 +858,9 @@ class AddPartner extends Component {
                 <div className="row">
                     <div className="col-md-6" style={{ padding: "20 0 0 0" }}>
                         <div className="row">
-                            <Label text="Name" columns='4' style={{ padding: "0 0 0 30" }} />
+                            <Label text="Partner Name" columns='4' style={{ padding: "0 0 0 30" }} />
                             <Input
-                                fieldname='name'
+                                fieldname='partnerNameEn'
                                 formname='body'
                                 columns='7'
                                 placeholder='Name'
@@ -870,7 +870,7 @@ class AddPartner extends Component {
                             />
                         </div>
                         <div className="row">
-                            <Label text="Code" columns='4' style={{ padding: "0 0 0 30" }} />
+                            <Label text="Partner Code" columns='4' style={{ padding: "0 0 0 30" }} />
                             <Input
                                 fieldname='code'
                                 formname='body'
@@ -882,9 +882,9 @@ class AddPartner extends Component {
                             />
                         </div>
                         <div className="row">
-                            <Label text="Category" columns='4' style={{ padding: "0 0 0 30" }} />
+                            <Label text="Partner Category" columns='4' style={{ padding: "0 0 0 30" }} />
                             <Combobox
-                                fieldname='category'
+                                fieldname='partnerCategory'
                                 formname='body'
                                 columns='7'
                                 placeholder='Select'
@@ -920,7 +920,7 @@ class AddPartner extends Component {
                                                     <div className="icheck-list">
                                                         <label className="mt-checkbox mt-checkbox-outline">
                                                             <label></label>
-                                                            <input onChange={this.typeSelected} type="checkbox" name="Redemption" value="" checked={this.state.checkbox_redemption} className="form-control" />
+                                                            <input onChange={this.typeSelected} type="checkbox" name="Redemption" value="" checked={this.state.isRedemptionPartner} className="form-control" />
                                                             <span></span></label>
                                                     </div>
                                                 </div>
@@ -933,7 +933,7 @@ class AddPartner extends Component {
                                                     <div className="icheck-list">
                                                         <label className="mt-checkbox mt-checkbox-outline">
                                                             <label></label>
-                                                            <input onChange={this.typeSelected} type="checkbox" name="Accrual" checked={this.state.checkbox_accural} value="" className="form-control" />
+                                                            <input onChange={this.typeSelected} type="checkbox" name="Accrual" checked={this.state.isAccrualPartner} value="" className="form-control" />
                                                             <span></span></label>
                                                     </div>
                                                 </div>
@@ -946,7 +946,7 @@ class AddPartner extends Component {
                                                     <div className="icheck-list">
                                                         <label className="mt-checkbox mt-checkbox-outline">
                                                             <label></label>
-                                                            <input onChange={this.typeSelected} type="checkbox" name="pointConverstion" checked={this.state.checkbox_pointConversion} className="form-control" />
+                                                            <input onChange={this.typeSelected} type="checkbox" name="pointConverstion" checked={this.state.isPointConversionPartner} className="form-control" />
                                                             <span></span></label>
                                                     </div>
                                                 </div>
@@ -963,9 +963,9 @@ class AddPartner extends Component {
                 <Portlet title={"CONTACT"}>
                     <div className="row">
                         <div className="col-md-6">
-                            <Label text="Name" columns='4' />
+                            <Label text="First Name" columns='4' />
                             <Input
-                                fieldname='name'
+                                fieldname='firstName'
                                 formname='contactInformation'
                                 columns='7'
                                 placeholder=''
@@ -975,9 +975,9 @@ class AddPartner extends Component {
                             />
                         </div>
                         <div className="col-md-6">
-                            <Label text="Email" columns='4' />
+                            <Label text="Last Name" columns='4' />
                             <Input
-                                fieldname='email'
+                                fieldname='lastName'
                                 formname='contactInformation'
                                 columns='7'
                                 placeholder=''
@@ -1015,6 +1015,40 @@ class AddPartner extends Component {
                     </div>
                     <div className="row">
                         <div className="col-md-6">
+
+
+
+                            <Label text="Mode" columns='4' />
+                            <Combobox
+                                fieldname='mode'
+                                formname='contactInformation'
+                                columns='7'
+                                placeholder='Select'
+                                style={{}}
+                                state={this.state}
+                                typeName="contactMode"
+                                dataSource={_.get(this.state, 'typeData', {})}
+                                actionHandler={this.generalHandler}
+                                className="form-control"
+                            />
+
+
+                        </div>
+                        <div className="col-md-6">
+                            <Label text="Email" columns='4' />
+                            <Input
+                                fieldname='email'
+                                formname='contactInformation'
+                                columns='7'
+                                placeholder=''
+                                state={this.state}
+                                actionHandler={this.generalHandler}
+                                className="form-control"
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6">
                             <Label text="Address" columns='4' />
                             <Textarea
                                 style={{ height: '60px' }}
@@ -1027,7 +1061,6 @@ class AddPartner extends Component {
                                 className="form-control"
                             />
                         </div>
-
                     </div>
 
                     <div className="row">
@@ -1124,7 +1157,7 @@ class AddPartner extends Component {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="btn-toolbar pull-right">
-                                <button disabled={this.state.contractType == undefined ? true : false} onClick={this.stateChangeSubsidaryPartnerBool} type="submit" className="pull-right btn green">
+                                <button disabled={(this.state.isAccrualPartner || this.state.isPointConversionPartner) ? false : true} onClick={this.stateChangeSubsidaryPartnerBool} type="submit" className="pull-right btn green">
                                     {utils.getLabelByID("Add Subsidary Partner")}
                                 </button>
                             </div>

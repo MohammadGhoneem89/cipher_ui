@@ -887,7 +887,8 @@ viewTranxList: [
   {alias: "Points", key: "points", type: "string"},
   {alias: "TRANS Date", key: "date", type: "string"},
   {alias: "Status", key: "status", type: "string"},
-  {alias: "Partner", key: "partner", type: "string"}
+  {alias: "Partner", key: "partner", type: "string"},
+  {alias: "action", key: "actions", type: "action" }
 ],
 ListOffers: [
   {alias: "", key: "_id", type: "hiddenID"},
