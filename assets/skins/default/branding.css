@@ -3071,3 +3071,57 @@ a.btn.btnclear:hover {
     left: 50%;
     transform: translateX(-33%);
 }
+/*Add Shop*/
+/*
+border-top: 10px;
+	border-left: 5px;
+	border-right: 5px;
+	border-bottom: 5px;
+*/
+.addShopBox{
+	margin-top: 50px;
+	padding:30px 0px 30px 0px;
+	border-top-color: #66cc00;
+	border-bottom-color: #E0E0E0;  
+	border-right-color: #E0E0E0;
+	border-left-color: #E0E0E0;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+}
+.addShopBoxText{
+	font-size: 20px;
+	padding: 0px 0px 20px 15px
+}
+
+.MapAxis{
+	margin:110px 0px 0px 0px;
+}
+
+/*Voucher Management*/
+.utc-file-upload {
+	display: flex;
+    justify-content: center;
+    flex-direction: column;
+	align-items: center;
+}
+.utc-uploader {
+	/* border: 2px dashed #eadddd; */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.utc-uploader-disabled {
+	/* border: 2px dashed #eadddd; */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+	justify-content: center;
+	opacity: 0.4;
+}
+.uploader-div {
+	height: 510px;
+	border: 2px dashed #719e19
+}

@@ -19,6 +19,7 @@ import Label from '../common/Lable.jsx';
 import moment from 'moment';
 //import image from "../../../assets/imgs/courier.jpg";
 import _ from 'lodash';
+import Map from "./Charts/Map.jsx"
 
 class AddShop extends React.Component {
 
@@ -44,15 +45,15 @@ class AddShop extends React.Component {
     componentWillReceiveProps(nextProps) {
            
     }
+    updateState = (data) => {
+        this.setState(data);
+    }
 
 
-
-    render() {
-       
-
-        
+    render() {       
         return (
             <div className="row">
+             
                 <Portlet >
                     <div >
                     <div className="row">
@@ -64,13 +65,74 @@ class AddShop extends React.Component {
                                 <input type="text" className="form-control" name="contractId" id="contractId" />
                             </div>
                         </div>
-                        
-                        
-
                     </div>
 
+                   {/*Map */}
+                  
+
+                     
+                   <div className="row">
+                       <div className="col-md-8">
+                       <Map
+                        googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJn2Pqx6Pe_faA0DLLWUkHo1iXEOBXBvs"
+                        loadingElement={<div style={{ height: `100%` }} />}
+                        containerElement={<div style={{ height: `400px` }} />}
+                        mapElement={<div style={{ height: `100%` }} />}
+                        center={{ lat: parseFloat(-34.397), lng: parseFloat(150.64) }}
+                        zoom={3}
+                        disabled={true}
+                         prelocation={[{
+                            id: 0,
+                            lat: parseFloat(-34.397),
+                            lng: parseFloat(150.644)
+                        },
+                        {
+                            id: 1,
+                            lat: parseFloat(-40.397),
+                            lng: parseFloat(160.644)
+
+                        },
+                        {
+                            id: 2,
+                            lat: parseFloat(-50.397),
+                            lng: parseFloat(177.644)
+
+                        }
+                        ]}
+
+                            
+                         updateState={this.updateState}
+                                    />
+                       </div>
+                       <div className="col-md-2 MapAxis">
+                           <div className="row">
+                                <div className="form-group col-md-2">
+                                   <label className="control-label">X</label>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <input type="text" className="form-control" name="contractId" id="contractId" />
+                                </div>
+                           </div>
+                           <div className="row">
+                                <div className="form-group col-md-2">
+                                   <label className="control-label">Y</label>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <input type="text" className="form-control" name="contractId" id="contractId" />
+                                </div>
+                           </div>
+
+
+                       </div>
+                   </div>
+
+
+
+                  {/*Map */}
+
+
                     <div className="row addShopBox" >
-                     <div style={{ color: "#089729"  }}><b>OPENING HOURS</b></div>
+                     <div className="addShopBoxText" style={{ color: "#089729"  }}><b>OPENING HOURS</b></div>
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
@@ -93,41 +155,51 @@ class AddShop extends React.Component {
 
 
 
-                        <div className="row addShopBox">
-                     <div >Contact</div>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Contact</label>
+                    <div className="row addShopBox">
+                       <div className="addShopBoxText" style={{ color: "#089729"  }}><b>Contact</b></div>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="form-group col-md-4">
+                                    <label className="control-label">Contact</label>
+                                </div>
+                                <div className="form-group col-md-8">
+                                    <input type="text" className="form-control" name="contractId" id="contractId" />
+                                </div>
                             </div>
-                            <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="contractId" id="contractId" />
+                            <div className="col-md-6">
+                                <div className="form-group col-md-4">
+                                    <label className="control-label">Email</label>
+                                </div>
+                                <div className="form-group col-md-8">
+                                    <input type="text" className="form-control" name="contractId" id="contractId" />
+                                </div>
                             </div>
                         </div>
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Email</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="contractId" id="contractId" />
-                            </div>
-                        </div>
-                    </div>
 
+                        <div className="row">
+                           <div className="col-md-6">
+                                <div className="form-group col-md-4">
+                                    <label className="control-label">Address</label>
+                                </div>
+                                <div className="form-group col-md-8">
+                                    <input type="text" className="form-control" name="contractId" id="contractId" />
+                                </div>
+                            </div>
+                        </div>
+                     
+                        </div>
                     <div className="row">
-                    <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Address</label>
+                       <div className="clearfix pull-right">
+                              <div className="col-md-2"></div>
+                            <div className="col-md-3" style={{ paddingRight: '50px', marginTop:"30px"}}>
+                             <button type="submit" className="btn green">Save</button>
                             </div>
-                            <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="contractId" id="contractId" />
-                            </div>
-                        </div>
+                       </div>
                     </div>
-                        </div>
-                   
 
                   </div>
+
+                  
                 </Portlet>
                    
             </div>

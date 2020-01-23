@@ -889,6 +889,27 @@ viewTranxList: [
   {alias: "Status", key: "status", type: "string"},
   {alias: "Partner", key: "partner", type: "string"}
 ],
+ListOffers: [
+  {alias: "", key: "_id", type: "hiddenID"},
+  {alias: "S.No", key: "serial_no", type: 'string'},
+  { alias: "Offer ID", key: "offerId", type: "string"},
+  { alias: "Partner", key: "partner", type: "string" },
+  { alias: "Merchant", key: "merchant", type: "string" },
+  { alias: "Description", key: "description", type: "string" },
+  { alias: "Action", key: "actions", type: "action" },
+],
+
+VoucherList:[
+  {alias: "", key: "_id", type: "hiddenID"},
+  {alias: "S.No", key: "serial_no", type: 'string'},
+  {alias: "MERCHANT", key: "merchant", type: 'string'},
+  { alias: "Offer ID", key: "offerId", type: "string"},
+  {alias: "CODE", key: "code", type: 'string'},
+  {alias: "CREATED ON", key: "createdon", type: 'epochDate'},
+  {alias: "STATUS", key: "status", type: 'string'},
+  {alias: "EXPIRES ON", key: "expireson", type: 'string'},
+  {alias: "Action", key: "actions", type: "action" }
+],
 FTEMP_MappRules: [
   { alias: "COM_SerialNo", key: "", type: "serialNo" },
   { alias: "incomming", key: "incomming", type: 'string' },

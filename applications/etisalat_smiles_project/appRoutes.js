@@ -13,16 +13,20 @@ import ChangePassword from '../../core/components/AuthenticationScreens/changePa
 import AddPartner from './components/PartnerSetup/AddPartner.jsx'
 import AddShop from './components/AddShop.jsx'
 import ListOffers from './components/ListOffers.jsx'
+import VoucherList from './components/VoucherList.jsx'
+import VoucherManagement from './components/VoucherManagement.jsx'
 let authRoutes = <div>
     <Route path="/smiles/View/Transaction" component={ViewTransactions} />
     <Route path="/smiles/Detail/Transaction" component={TransactionDetail} />
     <Route path="/smiles/partnerSetup/addPartner" component={AddPartner} />
     <Route path="/smiles/addShop" component={AddShop}/>
     <Route path="/smiles/listOffers" component={ListOffers}/>
+    <Route path="/smiles/voucherList" component={VoucherList}/>
+    <Route path="/smiles/voucherManagement" component={VoucherManagement}/>
 </div>;
 
 let unAuthRoutes =
-    <div>
+    <div>``
         <Route path="/smiles/Locked" component={Locked} />
         <Route path="/smiles/changePassword/:orgType" component={ChangePassword} />
         <Route path="/smiles/login" component={Login} />
