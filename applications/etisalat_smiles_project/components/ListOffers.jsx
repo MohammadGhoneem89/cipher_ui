@@ -126,8 +126,8 @@ class ListOffers extends React.Component {
                                 </button>
                                 </div>
                             </div>
-                              <br/><br/>
-                              <div className="row">
+                             
+                             
                     
                              <Table
                                gridColumns={utils.getGridColumnByName("ListOffers")}
@@ -138,7 +138,7 @@ class ListOffers extends React.Component {
                             pagination={true}
                              activePage={this.state.currentPageNo}
                                />
-                             </div>
+                             
 
                 </div>
 
