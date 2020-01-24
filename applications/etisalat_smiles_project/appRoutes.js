@@ -23,23 +23,48 @@ import VoucherList from './components/VoucherList.jsx'
 import VoucherManagement from './components/VoucherManagement.jsx'
 import AddPartner from './components/PartnerSetup/addPartner.jsx'
 import dashboard from './components/Dashboard/dashboard.jsx';
+
+import MerchantList from './components/MerchantList.jsx';
+import ProductList from "./components/ListProducts.jsx";
+import InventoryManagement from "./components/InventoryManagement.jsx"
+import OrderManagement from "./components/OrderManagement.jsx"
+import InitiateSettlementPartner from "./components/InitiateSettlementPartner.jsx"
+import InitiateSettlementEtisalat from "./components/InitiateSettlementEtisalat.jsx"
+import AddNewMerchant from "./components/AddNewMerchant.jsx";
+import OfferManagement from "./components/OfferManagement.jsx"
+
 let authRoutes = <div>
     <Route path="/smiles/View/Transaction" component={ViewTransactions} />
     <Route path="/smiles/Detail/Transaction" component={TransactionDetail} />
-    <Route path="/smiles/partnerSetup/addPartner" component={AddPartner} />
-    <Route path="/smiles/addShop" component={AddShop}/>
-    <Route path="/smiles/listOffers" component={ListOffers}/>
-    <Route path="/smiles/voucherList" component={VoucherList}/>
-    <Route path="/smiles/voucherManagement" component={VoucherManagement}/>
+ 
     <Route path="/smiles/View/Settlements" component={ViewSettlement} />
     <Route path="/smiles/Submit/Settlements" component={SubmitSettlement} />
     <Route path="/smiles/View/dashboard" component={dashboard} />
     <Route path="/smiles/View/FileScreen" component={fileScreen} />//rm
     <Route path="/smiles/View/FileDetails" component={fileDetail} />//rm
+    <Route path="/smiles/partnerSetup/addPartner" component={AddPartner} />
+
+    <Route path="/smiles/addShop" component={AddShop}/>
+    <Route path="/smiles/listOffers" component={ListOffers}/>
+    <Route path="/smiles/voucherList" component={VoucherList}/>
+    <Route path="/smiles/voucherManagement" component={VoucherManagement}/>
+
+    <Route path="/smiles/merchantList" component={MerchantList}/>
+    <Route path="smiles/productList" component={ProductList}/>
+    <Route path="/smiles/inventoryManagement"  component={InventoryManagement}/>
+    <Route path="/smiles/orderManagement" component={OrderManagement}/>
+
+       <Route path="/smiles/initiateSettlementPartner" component={InitiateSettlementPartner}/>
+        <Route path="/smiles/initiateSettlementEtisalat" component={InitiateSettlementEtisalat}/>
+        <Route path="/smiles/addNewMerchant" component={AddNewMerchant}/>
+        <Route path="/smiles/offerManagement" component={OfferManagement}/>
+    
+
 </div>;
 
 let unAuthRoutes =
     <div>``
+       
         <Route path="/smiles/Locked" component={Locked} />
         <Route path="/smiles/changePassword/:orgType" component={ChangePassword} />
         <Route path="/smiles/login" component={Login} />
