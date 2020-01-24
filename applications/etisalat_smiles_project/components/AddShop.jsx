@@ -9,26 +9,27 @@ import * as actions from "../../../core/actions/generalAction";
 
 import * as requestCreator from '../../../core/common/request.js';
 import * as coreConstants from '../../../core/constants/Communication.js'
-
+import * as gen from '../common/generalActionHandler'
 
 import * as utils from '../common/utils.js';
 
 import Portlet from '../../../core/common/Portlet.jsx';
-import Label from '../common/Lable.jsx';
 //import Portlet from '../common/Portlet.jsx';
 import moment from 'moment';
 //import image from "../../../assets/imgs/courier.jpg";
 import _ from 'lodash';
-import Map from "./Charts/Map.jsx"
+import Map from "./Charts/Map.jsx";
+import Input from '../../../core/common/Input.jsx';
 
 class AddShop extends React.Component {
 
     constructor(props, context) {
         super(props, context);
         this.state = {
-            
+            valid: true,
+            addShop:{}
         }
-        
+        this.generalHandler = gen.generalHandler.bind(this);
     }
    
 
@@ -139,7 +140,17 @@ class AddShop extends React.Component {
                                 <label className="control-label">From</label>
                             </div>
                             <div className="form-group col-md-8">
+                                {/*
                                 <input type="text" className="form-control" name="contractId" id="contractId" />
+                                */}
+                                <Input 
+                          isValid={this.state.valid}
+                       //validationChecker={this.validationHandler} 
+                         required={true} 
+                          fieldname="fromOpeningHours" formname="addShop" state={this.state}
+                         //errorMessage={'This field is required'}
+                         actionHandler={this.generalHandler } className="form-control"  />
+                                
                             </div>
                         </div>
                         <div className="col-md-6">
@@ -147,7 +158,14 @@ class AddShop extends React.Component {
                                 <label className="control-label">To</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="contractId" id="contractId" />
+                                
+                                <Input 
+                          isValid={this.state.valid}
+                       //validationChecker={this.validationHandler} 
+                         required={true} 
+                          fieldname="toOpeningHours" formname="addShop" state={this.state}
+                         //errorMessage={'This field is required'}
+                         actionHandler={this.generalHandler } className="form-control"  />
                             </div>
                         </div>
                     </div>
@@ -163,7 +181,14 @@ class AddShop extends React.Component {
                                     <label className="control-label">Contact</label>
                                 </div>
                                 <div className="form-group col-md-8">
-                                    <input type="text" className="form-control" name="contractId" id="contractId" />
+                                    
+                                    <Input 
+                          isValid={this.state.valid}
+                       //validationChecker={this.validationHandler} 
+                         required={true} 
+                          fieldname="contact" formname="addShop" state={this.state}
+                         //errorMessage={'This field is required'}
+                         actionHandler={this.generalHandler } className="form-control"  />
                                 </div>
                             </div>
                             <div className="col-md-6">
@@ -171,7 +196,13 @@ class AddShop extends React.Component {
                                     <label className="control-label">Email</label>
                                 </div>
                                 <div className="form-group col-md-8">
-                                    <input type="text" className="form-control" name="contractId" id="contractId" />
+                                <Input 
+                          isValid={this.state.valid}
+                       //validationChecker={this.validationHandler} 
+                         required={true} 
+                          fieldname="email" formname="addShop" state={this.state}
+                         //errorMessage={'This field is required'}
+                         actionHandler={this.generalHandler } className="form-control"  />
                                 </div>
                             </div>
                         </div>
@@ -182,7 +213,13 @@ class AddShop extends React.Component {
                                     <label className="control-label">Address</label>
                                 </div>
                                 <div className="form-group col-md-8">
-                                    <input type="text" className="form-control" name="contractId" id="contractId" />
+                                <Input 
+                          isValid={this.state.valid}
+                       //validationChecker={this.validationHandler} 
+                         required={true} 
+                          fieldname="address" formname="addShop" state={this.state}
+                         //errorMessage={'This field is required'}
+                         actionHandler={this.generalHandler } className="form-control"  />
                                 </div>
                             </div>
                         </div>

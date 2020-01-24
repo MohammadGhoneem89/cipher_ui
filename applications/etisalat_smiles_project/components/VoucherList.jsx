@@ -12,16 +12,19 @@ import * as utils from '../../../core/common/utils.js';
 //import * as utils from '../common/utils.js';
 //import { DropdownInput } from '../common/FormControls.jsx';
 
-import Combobox from '../common/Select.jsx';
+//import Combobox from '../common/Select.jsx';
+import Combobox from '../../../core/common/Select.jsx';
 import * as gen from '../common/generalActionHandler'
-import Label from '../common/Lable.jsx';
+
 import Portlet from '../common/Portlet.jsx';
-import moment from 'moment';
-//import image from "../../../assets/imgs/courier.jpg";
+
 import _ from 'lodash';
 import DateControl from "../../../core/common/DateControl.jsx"
 //import TileUnit from '../../../core/common/tileUnit.jsx';
 import TileUnit from '../common/tileUnit.jsx';
+import * as requestCreator from '../../../core/common/request.js';
+import * as coreConstants from '../../../core/constants/Communication.js'
+import Input from '../../../core/common/Input.jsx';
 
 class VoucherList extends React.Component {
 
@@ -31,7 +34,15 @@ class VoucherList extends React.Component {
             totalRecords:10,
             pageSize: 5,
             currentPageNo: 1,
-            gridData:[],
+            searchCriteria: {},
+            valid: true,
+            gridData:[
+                {"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"},
+                {"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"},
+                {"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"},
+                {"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"},
+                {"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"}
+            ],
             tiles:[
                 {id: 1, title: "INITIATED", value: 2, actionURI: "", overDue: "", fontClass: "green-steel"},
                 {id: 2, title: "REDEEMED", value: 7, actionURI: "", overDue: "", fontClass: "green-turquoise"},
@@ -46,18 +57,26 @@ class VoucherList extends React.Component {
     }
 
     componentDidMount() {
+        this.props.actions.generalProcess(coreConstants.getTypeData,
+            requestCreator.createTypeDataRequest([
+                'listOfferStatus',
+            ]));
+           
        
     }
 
     componentWillReceiveProps(nextProps) {
+        this.setState({
+            typeData: nextProps.typeData
+        })
         
+        console.log("DDDDDDDDDDD",nextProps.typeData)
         
     }
 
     render() {
-        
-
-        
+      
+        //console.log("MMM",this.state.searchCriteria.merchant)
         return (
            
             <div className="row">
@@ -73,14 +92,17 @@ class VoucherList extends React.Component {
                             <label className="control-label">Merchant</label>
                         </div>
                         <div className="form-group col-md-8">
-                            
-                            <select id="status" name="status" className="form-control" >
-                                    <option key="-1" value=""></option>
-
-                                    <option key="0" value="Merchant">Merchant 1</option>
-                                    <option key="1" value="merchant2">merchant 2</option>
-
-                                </select>
+                            {/*
+                            <input type="text" className="form-control" name="contractId" id="contractId" />
+                            */}
+                        
+                        <Input 
+                       isValid={this.state.valid}
+                       //validationChecker={this.validationHandler} 
+                         required={true} 
+                          fieldname="merchant" formname="searchCriteria" state={this.state}
+                         //errorMessage={'This field is required'}
+                         actionHandler={this.generalHandler }className="form-control"  />
                         </div>
                     </div>
                     
@@ -90,7 +112,15 @@ class VoucherList extends React.Component {
                         </div>
                         <div className="form-group col-md-8">
                            
-                          <input type="text" className="form-control" name="contractId" id="contractId" />
+                          
+                          <Input 
+                       isValid={this.state.valid}
+                       //validationChecker={this.validationHandler} 
+                         required={true} 
+                          fieldname="orderId" formname="searchCriteria" state={this.state}
+                         //errorMessage={'This field is required'}
+                         actionHandler={this.generalHandler }className="form-control"  />
+                       
                         
                         </div>
                     </div>
@@ -100,7 +130,15 @@ class VoucherList extends React.Component {
                             <label className="control-label">Code</label>
                         </div>
                         <div className="form-group col-md-8">
-                        <input type="text" className="form-control" name="contractId" id="contractId" />
+                        
+                        <Input 
+                       isValid={this.state.valid}
+                       //validationChecker={this.validationHandler} 
+                         required={true} 
+                          fieldname="code" formname="searchCriteria" state={this.state}
+                         //errorMessage={'This field is required'}
+                         actionHandler={this.generalHandler }className="form-control"  />
+                        
                         </div>
                     </div>
                     <div className="col-md-6">
@@ -108,13 +146,25 @@ class VoucherList extends React.Component {
                             <label className="control-label">Status</label>
                         </div>
                         <div className="form-group col-md-8">
-                        <select id="status" name="status" className="form-control" >
+                            {/*
+                            <select id="status" name="status" className="form-control" >
                                     <option key="-1" value=""></option>
 
                                     <option key="0" value="success">Success</option>
                                     <option key="1" value="pending">Pending</option>
 
                                 </select>
+                            */}
+                             <Combobox 
+                         fieldname='status' 
+                         formname='searchCriteria'
+                         state={this.state} //typeName="storeAs"
+                         typeName="listOfferStatus"
+                         dataSource={this.state.typeData} 
+                         multiple={false} 
+                         actionHandler={this.generalHandler} 
+                         style={{width:"430px",height:"35px"}}
+                         />
                         
                         </div>
                      </div>
@@ -153,7 +203,8 @@ class VoucherList extends React.Component {
                     
                              <Table
                         gridColumns={utils.getGridColumnByName("VoucherList")}
-                        gridData={[{"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"}]}
+                        //gridData={[{"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"}]}
+                        gridData={this.state.gridData}
                         //totalRecords={this.state.totalRecords}
                         pageSize={10}
                         //pageChanged={this.pageChanged}
