@@ -3090,6 +3090,20 @@ border-top: 10px;
 	border-right-style: solid;
 	border-left-style: solid;
 }
+.AddMerchantUpload{
+	width: 1400px;
+	margin: 50px 0px 0px 30px; 
+	height: 600px;
+	padding:0px 40px 0px 40px;
+	border-top-color: #66cc00;
+	border-bottom-color: #E0E0E0;  
+	border-right-color: #E0E0E0;
+	border-left-color: #E0E0E0;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+}
 .addShopBoxText{
 	font-size: 20px;
 	padding: 0px 0px 20px 15px
@@ -3128,9 +3142,94 @@ border-top: 10px;
 
 /*initiate Settlement */
 .smilesImage{
-	height:150px;
-	width:150px;
-	margin:0px 0px 0px 300px;
+	height:100px;
+	width:200px;
+	
+}
+.smilesImageText{
+	color: #089729;
+	margin: 10px 0px 20px 50px;
+}
+.OfferManagementText{
+	margin: 50px 0px 20px 50px;
+}
+.imageDiv{
+	width: 1400px;
+	padding:0px 0px 0px 0px;
+	margin:0px 30px 30px 30px;
+	height: 300px;
+	border-top-color: #089729;
+	border-bottom-color: #E0E0E0;  
+	border-right-color: #E0E0E0;
+	border-left-color: #E0E0E0;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+	font-size: 15px;
+}
+
+
+.OfferManagementDiv{
+	width: 1400px;
+	padding:0px 0px 0px 0px;
+	margin:0px 30px 0px 30px;
+	height: 250px;
+	border-top-color: #089729;
+	border-bottom-color: #E0E0E0;  
+	border-right-color: #E0E0E0;
+	border-left-color: #E0E0E0;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+	font-size: 15px;
+}
+.OfferManagementSpecDiv{
+	width: 1400px;
+	padding:0px 0px 0px 0px;
+	margin:0px 30px 0px 30px;
+	height: 500px;
+	border-top-color: #089729;
+	border-bottom-color: #E0E0E0;  
+	border-right-color: #E0E0E0;
+	border-left-color: #E0E0E0;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+	font-size: 15px;
+}
+.OfferManagementShowSectionDiv{
+	width: 1400px;
+	padding:0px 0px 0px 0px;
+	margin:0px 30px 0px 30px;
+	height: 200px;
+	border-top-color: #089729;
+	border-bottom-color: #E0E0E0;  
+	border-right-color: #E0E0E0;
+	border-left-color: #E0E0E0;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+	font-size: 15px;
+}
+
+.newMerchantDiv{
+	width: 1400px;
+	padding:20px 0px 20px 0px;
+	margin:0px 30px 0px 30px;
+	height: 100px;
+	border-top-color: #089729;
+	border-bottom-color: #E0E0E0;  
+	border-right-color: #E0E0E0;
+	border-left-color: #E0E0E0;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+	font-size: 15px;
 }
 
 /*Initiate Settlement Etisalat*/
@@ -3157,3 +3256,4 @@ border-top: 10px;
 	height: 30px;
 	padding:0px 20px 5px 0px;
 }
+/*addNewMerchant*/

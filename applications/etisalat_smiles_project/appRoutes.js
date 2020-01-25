@@ -31,7 +31,11 @@ import OrderManagement from "./components/OrderManagement.jsx"
 import InitiateSettlementPartner from "./components/InitiateSettlementPartner.jsx"
 import InitiateSettlementEtisalat from "./components/InitiateSettlementEtisalat.jsx"
 import AddNewMerchant from "./components/AddNewMerchant.jsx";
-import OfferManagement from "./components/OfferManagement.jsx"
+import OfferManagement from "./components/OfferManagement.jsx";
+//import Productmanagement from "./components/ProductManagement.jsx";
+import ProductManagement from './components/ProductManagement.jsx';
+import ApproveRedemtionContract from "./components/ApproveRedemptionContract.jsx"
+import DashboardEtisalat from "./components/DashboardEtisalat.jsx";
 
 let authRoutes = <div>
     <Route path="/smiles/View/Transaction" component={ViewTransactions} />
@@ -58,6 +62,9 @@ let authRoutes = <div>
         <Route path="/smiles/initiateSettlementEtisalat" component={InitiateSettlementEtisalat}/>
         <Route path="/smiles/addNewMerchant" component={AddNewMerchant}/>
         <Route path="/smiles/offerManagement" component={OfferManagement}/>
+        <Route path="/smiles/productManagement"  component={ProductManagement}/>
+        <Route path="/smiles/approveRedemptionContract" component={ApproveRedemtionContract}/>
+        <Route path="/smiles/dashboardEtisalat" component={DashboardEtisalat}/>
     
 
 </div>;

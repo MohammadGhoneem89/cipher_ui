@@ -76,41 +76,43 @@ class AddNewMerchant extends React.Component {
              
                 <Portlet >
                     <div>
-                        <div className="row" style={{marginBottom:"20px"}}>
-                            <div className="col-md-2 ">Partner Code</div>
-                            <div className="col-md-2">YGAG</div>
-                        </div>
 
                     <div className="row">
                     
                         <div className="row">
 
-                            <div className="col-md-7" >
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="form-group col-md-4">
-                                        <label className="control-label">Merchant Code</label>
-                                    </div>
-                                    <div className="form-group col-md-8">
-                                        <input type="text" className="form-control" name="contractId" id="contractId" />
-                                    </div>
-                                </div>
-                            </div>
+                            <div className="col-md-8" >
 
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="form-group col-md-4">
-                                        <label className="control-label">Merchant Rank</label>
-                                    </div>
-                                    <div className="form-group col-md-8">
-                                        <input type="text" className="form-control" name="contractId" id="contractId" />
+                                    <div className="row" style={{marginBottom:"20px",marginLeft:"10px"}}>
+                                        <div className="col-md-2 ">Partner Code</div>
+                                        <div className="col-md-2">YGAG</div>
+                                   </div>
+
+                                <div className="row">
+                                    <div className="col-md-8">
+                                        <div className="form-group col-md-4">
+                                            <label className="control-label">Merchant Code</label>
+                                        </div>
+                                        <div className="form-group col-md-8">
+                                            <input type="text" className="form-control" name="contractId" id="contractId" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+
+                                <div className="row">
+                                    <div className="col-md-8">
+                                        <div className="form-group col-md-4">
+                                            <label className="control-label">Merchant Rank</label>
+                                        </div>
+                                        <div className="form-group col-md-8">
+                                            <input type="text" className="form-control" name="contractId" id="contractId" />
+                                        </div>
+                                    </div>
+                                </div>
                            </div>
 
-                           <div className="col-md-5">
-                            <img src="/assets/imgs/smiles.jpg" className="smilesImage"/>
+                           <div className="col-md-4">
+                            <img src="/assets/imgs/palceholder.jpg" />
                             </div>
 
 
@@ -419,30 +421,45 @@ class AddNewMerchant extends React.Component {
                         <div className="row">
                         <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>OFFERS</b></div>
                         </div>
-                        <div className="row addShopBox">
-                            <div className="row" style={{color: "#089729", marginLeft:"20px"  }}>VOUCHER CODE GENERATION</div>
-                            <div className="row">
-                                <div className="col-md-3"><img src="/assets/imgs/smiles.jpg" className="smilesImage"/></div>
-                                <div className="col-md-3"><img src="/assets/imgs/smiles.jpg" className="smilesImage"/></div>
-                                <div className="col-md-3"><img src="/assets/imgs/smiles.jpg" className="smilesImage"/></div>
-                                <div className="col-md-3"><img src="/assets/imgs/smiles.jpg" className="smilesImage"/></div>
+                        <div className="row imageDiv">
+                            <div className="row smilesImageText" ><b>VOUCHER CODE GENERATION</b></div>
+                            <div className="row" style={{marginLeft:"50px"  }}>
+                                <div className="col-md-3"><img src="/assets/imgs/partnerdynamic.jpg" className="smilesImage"/></div>
+                                <div className="col-md-3"><img src="/assets/imgs/etisalat.jpg" className="smilesImage"/></div>
+                                <div className="col-md-3"><img src="/assets/imgs/partnerdynamic.jpg" className="smilesImage"/></div>
+                                <div className="col-md-3"><img src="/assets/imgs/clockchain.jpg" className="smilesImage"/></div>
                                 
                             </div>
                         </div>
 
-                        <div className="row addShopBox">
-                        <div className="row" style={{color: "#089729", marginLeft:"20px"  }}>BARCODE TYPE</div>
-                            <div className="row">
-                                
+                        <div className="row imageDiv">
+                        <div className="row smilesImageText" ><b>BARCODE TYPE</b></div>
+                            <div className="row" style={{marginLeft:"50px"  }}>
+                                <div className="col-md-3">
+                                    <div className="row" style={{marginLeft:"50px", color:"#E0E0E0" }}><b>CODE 123</b></div> 
+                                    <div className="row"> <img src="/assets/imgs/barcode.jpg" className="smilesImage"/></div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div className="row" style={{marginLeft:"50px", color:"#E0E0E0"}}><b>CODE 123</b></div> 
+                                    <div className="row"> <img src="/assets/imgs/barcode.jpg" className="smilesImage"/></div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div className="row" style={{marginLeft:"50px", color:"#E0E0E0" }}><b>CODE 123</b></div> 
+                                    <div className="row"> <img src="/assets/imgs/barcode.jpg" className="smilesImage"/></div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div className="row" style={{marginLeft:"50px", color:"#E0E0E0" }}><b>CODE 123</b></div> 
+                                    <div className="row"> <img src="/assets/imgs/barcode.jpg" className="smilesImage"/></div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
 
                     <div className="row addShopBox">
-                        <div className="row">PRODUCTS</div>
-                        <div className="row addShopBox">
-                            <div className="row">Allow Catalog upload</div>
+                        <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>PRODUCTS</b></div>
+                        <div className="row newMerchantDiv">
+                        <div className="row" style={{marginLeft:"50px", color:"#E0E0E0", marginBottom:"20px" }}><b>Allow Catalog upload</b></div>
                                <div className="row">
                                 <div className="col-md-6">
                                     <Checkbox
@@ -496,14 +513,11 @@ class AddNewMerchant extends React.Component {
                                 </div>                       
                     </div>
 
-                    <div className="row addShopBox">
-                        <div className="row">
-                            <div>SHOP</div>
+                    <div className="row clearfix addShopBox">
+                           <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>SHOP</b></div>
                             <div className="pull-right">
-                              <button type="submit" className="btn green">
-                                    Add
-                                </button>
-                            </div>
+                                <div className="col-md-2"></div>
+                                <div className="col-md-6"><button type="submit" className="btn green">Add </button></div>
                         </div>
                         
                         <Table
@@ -518,13 +532,14 @@ class AddNewMerchant extends React.Component {
                                />
                     </div>
 
-                    <div className="pull-right">
-                              <button type="submit" className="btn green">
+                    <div className="row clearfix pull-right" style={{marginTop:"30px"}}>
+                                <div className="col-md-4">
+                                <button type="button" className="btn default" >
                                     Save
                                 </button>
+                                </div>
                             </div>
-
-
+                             
 
 
                   </div>

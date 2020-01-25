@@ -26,7 +26,7 @@ import DateControl from "../../../core/common/DateControl.jsx";
 import Map from "./Charts/Map.jsx";
 import FileUploader from '../../../core/common/FileUploader.jsx';
 
-class OfferManagement extends React.Component {
+class ProductManagement extends React.Component {
 
     constructor(props, context) {
         super(props, context);
@@ -105,7 +105,7 @@ class OfferManagement extends React.Component {
                                 <div className="row">
                                     <div className="col-md-8">
                                         <div className="form-group col-md-4">
-                                            <label className="control-label">Merchant Rank</label>
+                                            <label className="control-label">Product Code</label>
                                         </div>
                                         <div className="form-group col-md-8">
                                             <input type="text" className="form-control" name="contractId" id="contractId" />
@@ -131,18 +131,12 @@ class OfferManagement extends React.Component {
 
        {/** <div className="addShopBoxText" style={{ color: "#089729"  }}><b>OPENING HOURS</b></div> */}
                     <div className="row addShopBox" >
-                        <div className="row imageDiv">
-                          <div className="row smilesImageText" ><b>OFFER TYPE</b></div>
-                            <div className="row" style={{marginLeft:"50px"  }}>
-                                <div className="col-md-4"><img src="/assets/imgs/partnerdynamic.jpg" className="smilesImage"/></div>
-                                <div className="col-md-4"><img src="/assets/imgs/etisalat.jpg" className="smilesImage"/></div>
-                                <div className="col-md-4"><img src="/assets/imgs/partnerdynamic.jpg" className="smilesImage"/></div>
-                            </div></div>
+                        
 
                     <div className="row" style={{marginTop:"50px"}}>
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">Offer Title En</label>
+                                <label className="control-label">Title En</label>
                             </div>
                             <div className="form-group col-md-8">
                                 <Input 
@@ -173,7 +167,7 @@ class OfferManagement extends React.Component {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">Offer Description</label>
+                                <label className="control-label">Description</label>
                             </div>
                             <div className="form-group col-md-8">
                                 <Input 
@@ -304,23 +298,28 @@ class OfferManagement extends React.Component {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">Tag name</label>
+                                <label className="control-label">Tag Name</label>
                             </div>
-                            <div className="form-group col-md-8">
+                            <div className="form-group col-md-6">
                                 <Input 
                                     isValid={this.state.valid}
                                 //validationChecker={this.validationHandler} 
                                     required={true} 
                                     fieldname="fromOpeningHours" formname="addShop" state={this.state}
                                     //errorMessage={'This field is required'}
-                                    actionHandler={this.generalHandler } className="form-control"  />                  
+                                    actionHandler={this.generalHandler } className="form-control"  />               
                             </div>
+                              <div className="col-md-2">
+                                        <button type="button" className="btn default" >
+                                            Add
+                                        </button>
+                                    </div>
                         </div>
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
                                 <label className="control-label">Ar</label>
                             </div>
-                            <div className="form-group col-md-8">
+                            <div className="form-group col-md-6">
                                 <Input 
                                     isValid={this.state.valid}
                                 //validationChecker={this.validationHandler} 
@@ -329,6 +328,11 @@ class OfferManagement extends React.Component {
                                     //errorMessage={'This field is required'}
                                     actionHandler={this.generalHandler } className="form-control"  />                  
                             </div>
+                            <div className="col-md-2">
+                                        <button type="button" className="btn default" >
+                                            Add
+                                        </button>
+                                    </div>
                         </div>
                     </div>
 
@@ -418,15 +422,19 @@ class OfferManagement extends React.Component {
                     </div>
 
 
+
+                   
+
+                   
                     
                    
                   
-                   <div className="row OfferManagementDiv" style={{marginTop:"50px"}}>
-                       <div className="row smilesImageText" ><b>EXPIRE</b></div>
+                   <div className="row OfferManagementSpecDiv" style={{marginTop:"50px"}}>
+                       <div className="row smilesImageText" ><b>SPECS</b></div>
                            <div className="row" style={{marginLeft:"50px"  }}>
                                 <div className="col-md-6">
                                         <div className="form-group col-md-4">
-                                            <label className="control-label">Expire In</label>
+                                            <label className="control-label">Type</label>
                                         </div>
                                         <div className="form-group col-md-8">
                                             <Input 
@@ -443,7 +451,22 @@ class OfferManagement extends React.Component {
                            <div className="row" style={{marginLeft:"50px"  }}>
                                 <div className="col-md-6">
                                         <div className="form-group col-md-4">
-                                            <label className="control-label">Expires On</label>
+                                            <label className="control-label">Name En</label>
+                                        </div>
+                                        <div className="form-group col-md-8">
+                                            <Input 
+                                                isValid={this.state.valid}
+                                            //validationChecker={this.validationHandler} 
+                                                required={true} 
+                                                fieldname="fromOpeningHours" formname="addShop" state={this.state}
+                                                //errorMessage={'This field is required'}
+                                                actionHandler={this.generalHandler } className="form-control"  />                  
+                                        </div>
+                                </div>
+
+                                <div className="col-md-6">
+                                        <div className="form-group col-md-4">
+                                            <label className="control-label">Ar</label>
                                         </div>
                                         <div className="form-group col-md-8">
                                             <Input 
@@ -457,9 +480,62 @@ class OfferManagement extends React.Component {
                                 </div>
                            </div>
                            <div className="row" style={{marginLeft:"50px"  }}>
-                                <div className="col-md-6">
+                                 <div className="col-md-6">
                                         <div className="form-group col-md-4">
-                                            <label className="control-label">Expires In</label>
+                                            <label className="control-label">Variation En</label>
+                                        </div>
+                                        <div className="form-group col-md-6">
+                                            <Input 
+                                                isValid={this.state.valid}
+                                            //validationChecker={this.validationHandler} 
+                                                required={true} 
+                                                fieldname="fromOpeningHours" formname="addShop" state={this.state}
+                                                //errorMessage={'This field is required'}
+                                                actionHandler={this.generalHandler } className="form-control"  />               
+                                        </div>
+                                        <div className="col-md-2">
+                                                    <button type="button" className="btn default" >
+                                                        Add
+                                                    </button>
+                                                </div>
+                                    </div>
+                                 <div className="col-md-6">
+                                        <div className="form-group col-md-4">
+                                            <label className="control-label">Ar</label>
+                                        </div>
+                                        <div className="form-group col-md-6">
+                                            <Input 
+                                                isValid={this.state.valid}
+                                            //validationChecker={this.validationHandler} 
+                                                required={true} 
+                                                fieldname="fromOpeningHours" formname="addShop" state={this.state}
+                                                //errorMessage={'This field is required'}
+                                                actionHandler={this.generalHandler } className="form-control"  />                  
+                                        </div>
+                                        <div className="col-md-2">
+                                                    <button type="button" className="btn default" >
+                                                        Add
+                                                    </button>
+                                        </div>
+                                    </div>
+                                 </div>
+
+                                 <div className="row" style={{marginLeft:"50px"  }}>
+                                    <div className="col-md-6">
+                                        <div className="form-group col-md-4"></div>
+                                        <div className="form-group col-md-8">
+                                            <Input 
+                                                isValid={this.state.valid}
+                                            //validationChecker={this.validationHandler} 
+                                                required={true} 
+                                                fieldname="fromOpeningHours" formname="addShop" state={this.state}
+                                                //errorMessage={'This field is required'}
+                                                actionHandler={this.generalHandler } className="form-control"  />                  
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group col-md-4">
+                                            <label className="control-label">Ar</label>
                                         </div>
                                         <div className="form-group col-md-8">
                                             <Input 
@@ -468,11 +544,27 @@ class OfferManagement extends React.Component {
                                                 required={true} 
                                                 fieldname="fromOpeningHours" formname="addShop" state={this.state}
                                                 //errorMessage={'This field is required'}
-                                                actionHandler={this.generalHandler } className="form-control"  /> 
-                
+                                                actionHandler={this.generalHandler } className="form-control"  />                  
                                         </div>
-                                </div>
-                           </div>
+                                    </div>
+                               </div>
+
+
+                               <Table
+                                    gridColumns={utils.getGridColumnByName("ListOffers")}
+                                    //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
+                                    gridData={this.state.gridData}
+                                    //totalRecords={this.state.totalRecords}
+                                    pageSize={10}
+                                //pageChanged={this.pageChanged}
+                                    pagination={true}
+                                    activePage={this.state.currentPageNo}
+                                    />
+
+
+
+
+
                    </div>
 
 
@@ -583,25 +675,6 @@ class OfferManagement extends React.Component {
                                         
                                     </div>
                      </div>
-
-
-
-                     <div className="row newMerchantDiv">
-                        <div className="row" style={{marginLeft:"50px", color:"#E0E0E0", marginBottom:"10px" }}><b>DISCOUNT COUPON</b></div>
-                                       <div className="form-group col-md-4" style={{marginLeft:"40px" }}>
-                                            <label className="control-label">Discount Percentage</label>
-                                        </div>
-                                        <div className="form-group col-md-6">
-                                            <Input 
-                                                isValid={this.state.valid}
-                                            //validationChecker={this.validationHandler} 
-                                                required={true} 
-                                                fieldname="fromOpeningHours" formname="addShop" state={this.state}
-                                                //errorMessage={'This field is required'}
-                                                actionHandler={this.generalHandler } className="form-control"  /> 
-                                        </div>
-                        </div>
-
 
 
 
@@ -841,118 +914,7 @@ class OfferManagement extends React.Component {
 
 
 
-                    <div className="row clearfix addShopBox">
-                           <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>CASH VOUCHERS</b></div>
-                           <div className="row"><div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}>DENOMINATION TYPE</div></div>
-                             
-                             <div className="row">
-                                         <div className="col-md-4">
-                                                    <Checkbox
-                                                        fieldname='isActive'
-                                                        formname='addShop'
-                                                        value={this.state.checked}
-                                                        columns='1'
-                                                        style={{}}
-                                                        actionHandler={this.onChangeCheckbox}
-                                                        disabled={false}
-                                                        />
-                                                        <label className="control-label">Static</label>
-                                            </div>
-                                            <div className="col-md-4">
-                                                    <Checkbox
-                                                        fieldname='isActive'
-                                                        formname='addShop'
-                                                        value={this.state.checked}
-                                                        columns='1'
-                                                        style={{}}
-                                                        actionHandler={this.onChangeCheckbox}
-                                                        disabled={false}
-                                                        />
-                                                        <label className="control-label">Dynamic</label>
-                                            </div>
-                             </div>
-
-                           <div className="row" style={{marginTop:"50px"}}>
-                            <div className="col-md-4">
-                                    <div className="form-group col-md-4">
-                                        <label className="control-label">Min Demomination</label>
-                                    </div>
-                                    <div className="form-group col-md-8">
-                                        <Input 
-                                            isValid={this.state.valid}
-                                        //validationChecker={this.validationHandler} 
-                                            required={true} 
-                                            fieldname="fromOpeningHours" formname="addShop" state={this.state}
-                                            //errorMessage={'This field is required'}
-                                            actionHandler={this.generalHandler } className="form-control"  />                  
-                                    </div>
-                            </div>
-                        <div className="col-md-4">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Max Denomination</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                    <Input 
-                                    isValid={this.state.valid}
-                                //validationChecker={this.validationHandler} 
-                                    required={true} 
-                                    fieldname="toOpeningHours" formname="addShop" state={this.state}
-                                    //errorMessage={'This field is required'}
-                                    actionHandler={this.generalHandler } className="form-control"  />
-                            </div>
-                        </div>
-
-                        <div className="col-md-4">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Incremental</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                    <Input 
-                                    isValid={this.state.valid}
-                                //validationChecker={this.validationHandler} 
-                                    required={true} 
-                                    fieldname="toOpeningHours" formname="addShop" state={this.state}
-                                    //errorMessage={'This field is required'}
-                                    actionHandler={this.generalHandler } className="form-control"  />
-                            </div>
-                        </div>
-                    </div>
-
-
-                        <div className="row" style={{marginTop:"30px"}}>
-                                <div className="col-md-4">
-                                        <div className="form-group col-md-4">
-                                            <label className="control-label">Demomination</label>
-                                        </div>
-                                        <div className="form-group col-md-8">
-                                            <Input 
-                                                isValid={this.state.valid}
-                                            //validationChecker={this.validationHandler} 
-                                                required={true} 
-                                                fieldname="fromOpeningHours" formname="addShop" state={this.state}
-                                                //errorMessage={'This field is required'}
-                                                actionHandler={this.generalHandler } className="form-control"  />                  
-                                        </div>
-                                </div>
-                            </div>
-
-                           
-                            <div className="pull-right">
-                                <div className="col-md-2"></div>
-                                <div className="col-md-6"><button type="submit" className="btn green">Add </button></div>
-                            </div>
-                        
-                        <Table
-                               gridColumns={utils.getGridColumnByName("ListOffers")}
-                            //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
-                            gridData={this.state.gridData}
-                            //totalRecords={this.state.totalRecords}
-                            pageSize={10}
-                           //pageChanged={this.pageChanged}
-                            pagination={true}
-                             activePage={this.state.currentPageNo}
-                               />
-                    </div>
+                 
 
 
 
@@ -1005,9 +967,7 @@ class OfferManagement extends React.Component {
                     <div className="row addShopBox " >
                         <div className="row" style={{marginBottom:"30px"}}>
                             <div className="row smilesImageText" ><b>FILES [OFFER IMAGES]</b></div>
-                               
-
-                                <div className="row clearfix pull-right">
+                               <div className="row clearfix pull-right">
                                 <div className="col-md-2"></div>
                                 <div className="col-md-4" style={{ paddingRight: '50px'}}>
                                 <button type="submit" className="btn green">
@@ -1021,14 +981,17 @@ class OfferManagement extends React.Component {
                                 </button>
                                 </div>
                             </div>
-
-
-
-
-
-
-
+                             
                             </div>
+
+
+                          
+
+
+
+
+
+
                     
                     <div className="row AddMerchantUpload " >
                                 <div className="row smilesImageText" ><b>WEB SIZE</b></div>
@@ -1230,9 +1193,9 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) };
 }
 
-OfferManagement.displayName = "Add Offer";
+ProductManagement.displayName = "Add Product";
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(OfferManagement);
+)(ProductManagement);
 

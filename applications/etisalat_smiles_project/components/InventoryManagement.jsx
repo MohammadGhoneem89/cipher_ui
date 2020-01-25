@@ -60,20 +60,20 @@ class InventoryManagement extends React.Component {
                         <div className="col-md-1"></div>
                         <div className="col-md-5 uploader-div">
                             <div className="utc-uploader">
-                             <div className="utc-file-upload">
-                             <h3>UPLOAD PRODUCT INVENTORY</h3>
-                             <img src="/assets/imgs/upload-icon.png" />
-                             <FileUploader
-                              type="Document" source="" title={"Upload Invoice"}
-                              allowedFileType="image/jpeg,image/png,image/gif,pdf,csv,xls"
-                              maxFiles="10"
-                              showDropzone={true}
-                              initialValues={[]}
-                              getUploadResponse={this.getCSVresponse}
-                              getRemoveResponse={this.getCSVRemoveResponse}
-                              showAttachementGrid={false} />
-                          
-                              </div>
+                                 <div className="utc-file-upload">
+                                    <h3>UPLOAD PRODUCT INVENTORY</h3>
+                                    <img src="/assets/imgs/upload-icon.png" />
+                                    <FileUploader
+                                    type="Document" source="" title={"Upload Invoice"}
+                                    allowedFileType="image/jpeg,image/png,image/gif,pdf,csv,xls"
+                                    maxFiles="10"
+                                    showDropzone={true}
+                                    initialValues={[]}
+                                    getUploadResponse={this.getCSVresponse}
+                                    getRemoveResponse={this.getCSVRemoveResponse}
+                                    showAttachementGrid={false} />
+                            
+                                 </div>
                              </div>
                         </div>       
                  </div>
