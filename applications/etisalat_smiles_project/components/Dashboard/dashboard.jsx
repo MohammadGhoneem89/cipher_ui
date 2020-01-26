@@ -165,16 +165,14 @@ class dashboard extends React.Component {
                         <div className="col-md-4" style={{ "display": "table-cell", "vertical-align": "middle", "text-align": "center", "height": "128px" }}>
                             <img style={{ "height": "129px" }} src="/assets/Resources/CBD_l.png" />
                         </div>
-                        <div className="col-md-2">
-                            <label align='center' style={{ 'fontSize': '10px' }}> COMMERCIAL BANK OF DUBAI</label>
-                        </div>
+                        
                     </div>
 
                 </div>
                 < br />
                 <Portlet title={utils.getLabelByID("SETTLEMENTS")}>
                     <div className="row">
-                        <div className="row">''
+                        <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group col-md-4">
                                     <Label text="Start Date" />

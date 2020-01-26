@@ -27,17 +27,14 @@ class ViewSettlement extends React.Component {
             isLoading: true,
             gridData: [],
             actions: [],
-
             dashboardTiles: [{
                 title: "Amount",
                 value: "445",
                 percentageTag: false
             }]
-
         };
         this.data = [];
         this.pageChanged = this.pageChanged.bind(this);
-
     }
 
     formSubmit = () => {
@@ -139,13 +136,16 @@ class ViewSettlement extends React.Component {
         return (
             <div className="form" style={{ marginBottom: '3%' }}>
                 <div className="row">
-                    <div className="col-md-5">
-                        <label style={{ 'fontSize': '20px' }}> COMMERCIAL BANK OF DUBAI</label>
+                    <div className="col-2">
+                    <div className="col-md-12" style={{ "display": "table-cell", "vertical-align": "middle", "text-align": "center", "height": "128px" }}>
+                            <img style={{ "height": "129px" }} src="/assets/Resources/CBD_l.png" />
+                        </div>
                     </div>
+                    
                 </div>
 
 
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-md-1">
                         <label style={{ 'fontSize': '10px' }} className="control-label">{utils.getLabelByID("ACCURAL PARTNER")}</label>
                     </div>
@@ -155,7 +155,7 @@ class ViewSettlement extends React.Component {
                     <div className="col-md-1">
                         <label style={{ 'fontSize': '10px' }} className="control-label">{utils.getLabelByID("CONVERSION PARTNER")}</label>
                     </div>
-                </div>
+                </div> */}
                 <div className="row">
                     <div className="col-md-2">
                         <label className="control-label">{utils.getLabelByID("Last Settlemenet Date")}</label>
@@ -171,20 +171,23 @@ class ViewSettlement extends React.Component {
                     </div>
                 </div>
                 <br />
-                < br/>
+                < br />
+
                 
                 <div className="row">
-                    
+                    <div className="col-3">
                         <TileUnit data={[{
                             title: "COMMISSION",
                             value: "445",
                             percentageTag: false
                         }]} />
-                    
+                    </div>
+                    <div className="col-3">
                         <TileUnit data={this.state.dashboardTiles} />
-                    
+                    </div>
+                    <div className="col-3">
                         <TileUnit data={this.state.dashboardTiles} />
-                    
+                    </div>
                 </div>
                 <br />
 
