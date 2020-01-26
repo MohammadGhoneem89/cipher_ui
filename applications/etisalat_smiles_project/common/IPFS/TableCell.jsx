@@ -472,6 +472,8 @@ class TableCell extends React.Component {
         return <td style={{ textAlign: "left" }}> {this.props.cellData}</td>;
       case "serialNo":
         return <td> {parseInt(this.props.searialNo) + "."}</td>;
+      case "epochDateShort":
+        return <td> {utils.UNIXConvertToDate(parseInt(this.props.cellData) * 1000)}</td>;
       case "epochDate":
         return <td> {utils.UNIXConvertToDate(this.props.cellData)}</td>;
       case "epochDate1":

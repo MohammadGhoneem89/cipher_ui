@@ -85,18 +85,20 @@ let authRoutes = <div>
     <Route path="/smiles/orderManagementDetail" component={OrderManagementDetails} />
     <Route path="/smiles/View/FileScreen" component={fileScreen} />//rm
     <Route path="/smiles/View/FileDetails" component={fileDetail} />//rm
+    {/* accruals */}
+    <Route path="/smiles/partnerSetup/addPartner" component={AddPartner} />
     <Route path="/smiles/View/Transaction" component={ViewTransactions} />
     <Route path="/smiles/Detail/Transaction" component={TransactionDetail} />
     <Route path="/smiles/View/Settlements" component={ViewSettlement} />
     <Route path="/smiles/Submit/Settlements" component={SubmitSettlement} />
     <Route path="/smiles/View/dashboard" component={dashboard} />
-    <Route path="/smiles/View/FileScreen" component={fileScreen} />//rm
-    <Route path="/smiles/View/FileDetails" component={fileDetail} />//rm
-    <Route path="/smiles/partnerSetup/addPartner" component={AddPartner} />
-    <Route path="/smiles/addShop" component={AddShop} />
+    {/* --accruals */}
+
+
+    {/* redemption */}
+
     <Route path="/smiles/listOffers" component={ListOffers} />
     <Route path="/smiles/voucherList" component={VoucherList} />
-    <Route path="/smiles/voucherManagement" component={VoucherManagement} />
     <Route path="/smiles/merchantList" component={MerchantList} />
     <Route path="/smiles/productList" component={ProductList} />
     <Route path="/smiles/inventoryManagement" component={InventoryManagement} />
@@ -116,24 +118,38 @@ let authRoutes = <div>
     <Route path="/smiles/voucherManagement" component={VoucherManagement} />
     <Route path="/smiles/merchantList" component={MerchantList} />
     <Route path="smiles/productList" component={ProductList} />
-    <Route path="/smiles/inventoryManagement" component={InventoryManagement} />
-    <Route path="/smiles/orderManagement" component={OrderManagement} />
+    <Route path="/smiles/listShops" component={ShopList} />
+
+    {/* duplicate */}
+
     <Route path="/smiles/initiateSettlementPartner" component={InitiateSettlementPartner} />
     <Route path="/smiles/initiateSettlementEtisalat" component={InitiateSettlementEtisalat} />
-    <Route path="/smiles/addNewMerchant" component={AddNewMerchant} />
-    <Route path="/smiles/offerManagement" component={OfferManagement} />
-    <Route path="/smiles/productManagement" component={ProductManagement} />
-    <Route path="/smiles/approveRedemptionContract" component={ApproveRedemtionContract} />
-    <Route path="/smiles/dashboardEtisalat" component={DashboardEtisalat} />
-    <Route path="/smiles/partnerSetup/addPartner" component={AddPartner} />
-    <Route path="/smiles/addShop" component={AddShop} />
     <Route path="/smiles/listOffers" component={ListOffers} />
     <Route path="/smiles/voucherList" component={VoucherList} />
-    <Route path="/smiles/listShops" component={ShopList} />
-    <Route path="/smiles/voucherManagement" component={VoucherManagement} />
+    <Route path="/smiles/partnerSetup/addPartner" component={AddPartner} />
+    <Route path="/smiles/approveRedemptionContract" component={ApproveRedemtionContract} />
+    <Route path="/smiles/dashboardEtisalat" component={DashboardEtisalat} />
     <Route path="/smiles/View/Settlements" component={ViewSettlement} />
     <Route path="/smiles/Submit/Settlements" component={SubmitSettlement} />
     <Route path="/smiles/View/dashboard" component={dashboard} />
+
+
+    {/* --end duplicates */}
+
+
+    <Route path="/smiles/addShop" component={AddShop} />
+    <Route path="/smiles/voucherManagement" component={VoucherManagement} />
+    <Route path="/smiles/inventoryManagement" component={InventoryManagement} />
+    <Route path="/smiles/orderManagement" component={OrderManagement} />
+
+    <Route path="/smiles/addNewMerchant" component={AddNewMerchant} />
+    <Route path="/smiles/offerManagement" component={OfferManagement} />
+    <Route path="/smiles/productManagement" component={ProductManagement} />
+
+
+
+
+
 
 
     {/* <Route path="/smiles/View/FileScreen" component={fileScreen} />//rm

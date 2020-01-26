@@ -361,6 +361,8 @@ class TableCell extends React.Component {
         return (<td> {parseInt(this.props.searialNo) + "."}</td>);
       case "epochDate":
         return (<td> {utils.UNIXConvertToDate(this.props.cellData)}</td>);
+      case "epochDateShort":
+        return <td> {utils.UNIXConvertToDate(parseInt(this.props.cellData) * 1000)}</td>;
       case "epochDate1":
         return (<td> {dates.MSddMMyyyy(this.props.cellData)}</td>);
       case "clpVal":

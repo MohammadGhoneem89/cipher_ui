@@ -14,9 +14,12 @@ import * as requestCreator from '../../../../core/common/request.js';
 import DateControl from '../../../../core/common/DateControl.jsx';
 import Combobox from '../../../../core/common/Select.jsx';
 import * as gen from '../../../../core/common/generalActionHandler';
-import Row from '../../../../core/common/Row.jsx';
 
-class TransactionList extends React.Component {
+
+import { Row, Col } from '../../common/index.jsx';
+
+
+class ViewTransactions extends React.Component {
     constructor(props) {
         
         super(props);
@@ -76,15 +79,15 @@ class TransactionList extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.transData)
+        if (nextProps.transData) {
+            // alert(JSON.stringify(nextProps.transData))
             this.setState({ gridData: nextProps.transData })
-        if (nextProps.records)
-            this.setState({ totalRecords: nextProps.records })
-        this.setState(
-            {
-                isLoading: false
-            }
-        )
+            this.setState(
+                {
+                    isLoading: false
+                }
+            )
+        }
     }
 
     componentDidMount() {
@@ -109,18 +112,18 @@ class TransactionList extends React.Component {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         }
         return (
-            <div className="row">
-                <Portlet title={utils.getLabelByID("TRANSACTIONS")}>
-                    <div className="row">
-                        <Row>
+            <Row>
+                <Col>
+                    <Portlet title={utils.getLabelByID("TRANSACTIONS")}>
+                        <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group col-md-4">
                                     <Label text="Start Date" />
                                 </div>
                                 <div className="form-group col-md-8">
                                     <DateControl
-                                        id='startDate'
-                                        dateChange={this.onStartDateChange}
+                                        id='transStartDate'
+                                        dateChange={this.transStartDateChange}
                                     />
                                 </div>
                             </div>
@@ -131,14 +134,12 @@ class TransactionList extends React.Component {
                                 </div>
                                 <div className="form-group col-md-8">
                                     <DateControl
-                                        id='endDate'
-                                        dateChange={this.onEndDateChange}
+                                        id='transEndDate'
+                                        dateChange={this.transEndDateChange}
                                     />
                                 </div>
                             </div>
-                        </Row>
 
-                        <Row>
                             <div className="col-md-6">
                                 <div className="form-group col-md-4">
                                     <Label text="Status" />
@@ -178,9 +179,6 @@ class TransactionList extends React.Component {
                                     />
                                 </div>
                             </div>
-                        </Row>
-
-                        <Row>
                             <div className="col-md-6">
                                 <div className="form-group col-md-4">
                                     <Label text="Partner" />
@@ -216,25 +214,25 @@ class TransactionList extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                        </Row>
-                    </div>
-                    {/* </Portlet>
-                 <Portlet  actions={this.state.actions} isPermissioned={true}> */}
-                    {/* UTS */}
+                        </div>
+                    </Portlet>
+                    <Portlet isPermissioned={true}>
+                        {/* UTS */}
 
-                    <Table
-                        gridColumns={utils.getGridColumnByName("viewTranxList")}
-                        gridData={this.state.gridData}
-                        fontclass=""
-                        totalRecords={this.state.totalRecords}
-                        pageSize={10}
-                        pageChanged={this.pageChanged}
-                        pagination={true}
-                        search={true}
-                        activePage={this.state.page.currentPageNo}
-                    />
-                </Portlet>
-            </div>
+                        <Table
+                            gridColumns={utils.getGridColumnByName("viewTranxListNew")}
+                            gridData={this.state.gridData}
+                            fontclass=""
+                            totalRecords={40}
+                            pageSize={10}
+                            pageChanged={this.pageChanged}
+                            pagination={true}
+                            search={true}
+                            activePage={this.state.page.currentPageNo}
+                        />
+                    </Portlet>
+                </Col>
+            </Row>
         );
     }
 }

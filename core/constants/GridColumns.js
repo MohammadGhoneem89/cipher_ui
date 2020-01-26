@@ -877,6 +877,19 @@ module.exports = {
     {alias: "Action", key: "action", type: "action"}
 ],
 /// Smiles 
+// viewTranxList: [
+//   {alias: "", key: "_id", type: "hiddenID"},
+//   {alias: "S.No", key: "no", type: 'string'},
+//   {alias: "Transaction", key: "tranx", type: "string"},
+//   {alias: "Account#", key: "acc", type: "string"},
+//   {alias: "TRANS TYPE", key: "ttype", type: "string"},
+//   {alias: "Amount", key: "amount", type: "string"},
+//   {alias: "Points", key: "points", type: "string"},
+//   {alias: "TRANS Date", key: "date", type: "string"},
+//   {alias: "Status", key: "status", type: "string"},
+//   {alias: "Partner", key: "partner", type: "string"},
+//   {alias: "action", key: "actions", type: "action" }
+// ],
 ListOffers: [
   {alias: "", key: "_id", type: "hiddenID"},
   {alias: "S.No", key: "serial_no", type: 'string'},

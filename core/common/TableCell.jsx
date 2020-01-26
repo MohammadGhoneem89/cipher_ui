@@ -223,13 +223,13 @@ class TableCell extends React.Component {
 
   getClassForStatusLabel(type) {
     switch (type) {
-      case "Alive" :
+      case "Alive":
         return " badge badge-success badge-roundless";
       case "Reachable":
         return " badge badge-success badge-roundless";
       case "LINK UP":
         return " badge badge-success badge-roundless";
-     
+
 
       default:
         return " badge badge-danger badge-roundless";
@@ -356,6 +356,8 @@ class TableCell extends React.Component {
         return (<td style={{ textAlign: "left" }}> {this.props.cellData}</td>);
       case "serialNo":
         return (<td> {parseInt(this.props.searialNo) + "."}</td>);
+      case "epochDateShort":
+        return <td> {utils.UNIXConvertToDate(parseInt(this.props.cellData) * 1000)}</td>;
       case "epochDate":
         return (<td> {utils.UNIXConvertToDate(this.props.cellData)}</td>);
       case "epochDate1":
