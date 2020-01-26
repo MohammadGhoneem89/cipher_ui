@@ -26,7 +26,7 @@ import * as requestCreator from '../../../core/common/request.js';
 import * as coreConstants from '../../../core/constants/Communication.js'
 import Input from '../../../core/common/Input.jsx';
 
-class DashboardEtisalat extends React.Component {
+class DashboardPartner extends React.Component {
 
     constructor(props, context) {
         super(props, context);
@@ -83,18 +83,6 @@ class DashboardEtisalat extends React.Component {
                 <div className="row">
 
                 <TileUnit data={this.state.tiles} />
-             </div>
-
-             <div className="row">
-                         <div className="col-md-2"></div>
-                                <div className="col-md-1">
-                                    <img src="/assets/imgs/gift.jpg" style={{height:"150px"}}/>
-                                </div>
-                                <div className="col-md-1"></div>
-                                <div className="col-md-8" >
-                                    <div style={{fontSize:"20px",marginTop:"30px"}}>YOU GOT A GIFT</div>
-                                    <div className="row" style={{marginTop:"30px"}}>ACCURAL PARTNER  |<b> REDEMPTION PARTNER </b> | CONVERSION PARTNER</div>
-                            </div>
              </div>
 
             <Portlet title={"SETTLEMENTS"}>
@@ -201,8 +189,8 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) };
 }
 
-DashboardEtisalat.displayName = "Dashboard Etisalat";
+DashboardPartner.displayName = "Dashboard Partner";
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(DashboardEtisalat);
+)(DashboardPartner);

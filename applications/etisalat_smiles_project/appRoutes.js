@@ -36,6 +36,8 @@ import OfferManagement from "./components/OfferManagement.jsx";
 import ProductManagement from './components/ProductManagement.jsx';
 import ApproveRedemtionContract from "./components/ApproveRedemptionContract.jsx"
 import DashboardEtisalat from "./components/DashboardEtisalat.jsx";
+import DashboardPartner from "./components/DashboardPartner.jsx";
+import CreateAmendRedemption from "./components/CreateAmendRedemption.jsx"
 
 let authRoutes = <div>
     <Route path="/smiles/View/Transaction" component={ViewTransactions} />
@@ -54,17 +56,19 @@ let authRoutes = <div>
     <Route path="/smiles/voucherManagement" component={VoucherManagement}/>
 
     <Route path="/smiles/merchantList" component={MerchantList}/>
-    <Route path="smiles/productList" component={ProductList}/>
+    <Route path="/smiles/productList" component={ProductList}/>
     <Route path="/smiles/inventoryManagement"  component={InventoryManagement}/>
     <Route path="/smiles/orderManagement" component={OrderManagement}/>
 
-       <Route path="/smiles/initiateSettlementPartner" component={InitiateSettlementPartner}/>
+        <Route path="/smiles/initiateSettlementPartner" component={InitiateSettlementPartner}/>
         <Route path="/smiles/initiateSettlementEtisalat" component={InitiateSettlementEtisalat}/>
         <Route path="/smiles/addNewMerchant" component={AddNewMerchant}/>
         <Route path="/smiles/offerManagement" component={OfferManagement}/>
         <Route path="/smiles/productManagement"  component={ProductManagement}/>
         <Route path="/smiles/approveRedemptionContract" component={ApproveRedemtionContract}/>
         <Route path="/smiles/dashboardEtisalat" component={DashboardEtisalat}/>
+        <Route path="/smiles/dashboardPartner" component={DashboardPartner}/>
+        <Route path="/smiles/createAmendRedemption" component={CreateAmendRedemption}/>
     
 
 </div>;

@@ -90,10 +90,11 @@ class InitiateSettlementPartner extends React.Component {
                     </div>
 
                     <div className="row">
-                        <div className="col-md-4">
-                    <img src="/assets/imgs/smiles.jpg" className="smilesImage"/>
+                        <div className="col-md-2"></div>
+                        <div className="col-md-1">
+                          <img src="/assets/imgs/smiles.jpg" style={{height:"100px"}}/>  
                     </div>
-                    <div className="col-md-2" style={{fontSize:"20px"}}>Etisalat</div>
+                    <div className="col-md-2" style={{fontSize:"20px"}} >ETISALAT</div>
                     </div>
                      
                     <br />
