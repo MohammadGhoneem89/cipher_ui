@@ -319,7 +319,7 @@ class Datatable extends React.Component {
                                 <TableCell key={index2.toString()}
                                   recordID={recordID}
                                   rowData={rowData}
-                                  cellData={colData.type === "object" ? (rowData[colData.key] !== null ? rowData[colData.key][colData.property] : "") : rowData[colData.key]}
+                                  cellData={_.get(rowData,colData.key,"")}
                                   type={colData.type}
                                   rowIndex={index}
                                   componentFunction={this.props.componentFunction}

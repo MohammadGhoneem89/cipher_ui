@@ -215,7 +215,7 @@ class AddPartner extends Component {
             toaster.showToast('Subsidary Partner Details not added.', 'ERROR');
             return;
         }
-    
+
         if (contractParams.withPartnerCode == undefined) {
             toaster.showToast('Subsidary Partner code not present.', 'ERROR');
             return;
@@ -858,12 +858,25 @@ class AddPartner extends Component {
                 <div className="row">
                     <div className="col-md-6" style={{ padding: "20 0 0 0" }}>
                         <div className="row">
-                            <Label text="Partner Name" columns='4' style={{ padding: "0 0 0 30" }} />
+                            <Label text="Partner Name En" columns='4' style={{ padding: "0 0 0 30" }} />
                             <Input
                                 fieldname='partnerNameEn'
                                 formname='body'
                                 columns='7'
                                 placeholder='Name'
+                                state={this.state}
+                                actionHandler={this.generalHandler}
+                                className="form-control"
+                            />
+                        </div>
+                        <div className="row">
+                            <Label text="Partner Name Ar" columns='4' style={{ padding: "0 0 0 30" }} />
+                            <Input
+                                fieldname='partnerNameAr'
+                                formname='body'
+                                columns='7'
+                                placeholder=' شَريك اسم '
+                                style={{ textAlign: "right" }}
                                 state={this.state}
                                 actionHandler={this.generalHandler}
                                 className="form-control"
@@ -896,10 +909,44 @@ class AddPartner extends Component {
                                 className="form-control"
                             />
                         </div>
+
+
                     </div>
 
                     <div className="col-md-6">
                         {this.imgDiv('body')}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-6">
+
+                        <Label text="Partner Description En" columns='4' style={{ padding: "0 0 0 30" }} />
+                        <Textarea
+                            style={{ height: '60px' }}
+                            fieldname='address'
+                            formname='contactInformation'
+                            columns='7'
+                            placeholder=''
+                            state={this.state}
+                            actionHandler={this.generalHandler}
+                            className="form-control"
+                        />
+
+                    </div>
+                    <div className="col-md-6">
+
+                        <Label text="Partner Description Ar" columns='4' style={{ padding: "0 0 0 30" }} />
+                        <Textarea
+                            style={{ height: '60px' }}
+                            fieldname='address'
+                            formname='contactInformation'
+                            columns='7'
+                            placeholder=''
+                            state={this.state}
+                            actionHandler={this.generalHandler}
+                            className="form-control"
+                        />
+
                     </div>
                 </div>
                 <br></br>

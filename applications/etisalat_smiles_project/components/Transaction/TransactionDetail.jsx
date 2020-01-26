@@ -15,7 +15,8 @@ import Col from '../../../../core/common/Col.jsx';
 import Row from '../../../../core/common/Row.jsx';
 import _ from 'lodash';
 import * as requestCreator from '../../../../core/common/request.js';
-//import { Row } from 'antd';
+import { Card } from 'antd';
+
 
 class TransactionDetail extends React.Component {
     constructor(props) {
@@ -38,7 +39,7 @@ class TransactionDetail extends React.Component {
                 percentageTag: false
             }],
 
-            
+
         };
         this.data = [];
         this.pageChanged = this.pageChanged.bind(this);
@@ -141,19 +142,30 @@ class TransactionDetail extends React.Component {
 
         return (
             <div className="row">
-                <Portlet>
-                    
-                    <div className="col-md-12">
-                        <div className="col-md-5">
+                <Portlet title=''>
+                    <Row>
+                        <div className="col-md-12">
+                            <div className="col-md-5">
+                            </div>
+                            <div >
+                                <label>COMMERCIAL BANK OF DUBAI</label>
+                            </div>
+                        </div>
+                    </Row>
 
-                        </div>
-                        <div >
-                            <label>COMMERCIAL BANK OF DUBAI</label>
-                        </div>
-                    </div>
 
                     {/* <img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png" className="tablogo" />
                     <h1 style={{ color: 'grey' }}>COMMERCIAL BANK OF DUBAI</h1> */}
+                    <div className="row">
+                        <div className="col-md-3" style={{ 'border': '2px solid','padding': '5px','margin-left': '10px' }}  >
+                            <div class="card" style={{ 'display': 'flex', 'justify-content': 'center', 'flex-direction': 'column', 'align-items': 'center'}}>
+                                <div class="card-body">
+                                    <p class="card-text">Amount Spent</p>
+                                    <h4 class="card-title">500 AED</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
                     <div className="row">
@@ -164,8 +176,10 @@ class TransactionDetail extends React.Component {
                             <div className="form-group col-md-4" >
                                 <label className="control-label">111111 </label>
                             </div>
-
                         </div>
+
+
+
 
                         <div className="col-md-5">
                             <div className="form-group col-md-6">
@@ -257,9 +271,6 @@ class TransactionDetail extends React.Component {
                             </div>
                         </div>
 
-
-
-
                     </div>
                     {/* </Portlet>
                  <Portlet  actions={this.state.actions} isPermissioned={true}> */}
@@ -287,7 +298,7 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-TransactionDetail.displayName = "Transaction List";
+TransactionDetail.displayName = "Transaction Detail ";
 export default connect(mapStateToProps, mapDispatchToProps)(TransactionDetail);
 
 

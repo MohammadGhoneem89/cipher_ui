@@ -952,6 +952,8 @@ VoucherList:[
   {alias: "EXPIRES ON", key: "expireson", type: 'string'},
   {alias: "Action", key: "actions", type: "action" }
 ],
+
+
 FTEMP_MappRules: [
   { alias: "COM_SerialNo", key: "", type: "serialNo" },
   { alias: "incomming", key: "incomming", type: 'string' },
