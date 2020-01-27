@@ -74,48 +74,22 @@ class AddPartner extends Component {
 
     }
 
-    accuralTermStartDateChange = value => {
+
+
+    dateChange = (fieldName, value) => {
         console.log(value)
         if (value == 'Invalid date') {
-            this.setState({ accuralStartDate: undefined })
+            this.setState({ [fieldName]: undefined })
         } else {
-            this.setState({ accuralStartDate: value })
+            this.setState({ [fieldName]: value })
         }
     }
-
-    settlementStartOnDateChange = value => {
-        console.log(value)
-        if (value == 'Invalid date') {
-            this.setState({ settlementStartOn: undefined })
-        } else {
-            this.setState({ settlementStartOn: value })
-        }
-    }
-
-    accuralTermEndDateChange = value => {
-        console.log(value)
-        if (value == 'Invalid date') {
-            this.setState({ accuralEndDate: undefined })
-        } else {
-            this.setState({ accuralEndDate: value })
-        }
-    }
-
-    onStartDateChange = value => {
-        console.log(value)
-        value == 'Invalid date' ? this.setState({ startDate: undefined }) : this.setState({ startDate: value });
-    };
-
-    onEndDateChange = value => {
-        console.log(value)
-        value == 'Invalid date' ? this.setState({ endDate: undefined }) : this.setState({ endDate: value });
-    };
 
     addDefaultSrc = e => e.target.src = constants.baseUrl + "/images/image-user.png";
 
-    imgDiv(formname, imgStyle) {
+    imgDiv(formname, imgStyle = {}, divStyle = {}) {
         return (
-            <div className="col-md-12" style={{ textAlign: "center" }}>
+            <div className="col-md-12" style={{ textAlign: "center", ...divStyle }}>
                 <img
                     id="UserProfilePic"
                     src={_.get(this.state, `${formname}.logo`, undefined) ? constants.baseUrl + _.get(this.state, `${formname}.logo`, undefined) : constants.baseUrl + "/images/image-user.png"}
@@ -184,6 +158,7 @@ class AddPartner extends Component {
         let settlement = { ...this.state.settlement };
         let accrualterms = this.state.accrualTermsArr;
         let erpSettingsTo = { ...this.state.erpSettingsTo }
+        let erpSettingsFrom = { ...this.state.erpSettingsFrom }
         let pointRule = { ...this.state.pointCreditRules }
 
         contractParams.isAccrualPartner = this.state.isAccrualPartner;
@@ -268,9 +243,11 @@ class AddPartner extends Component {
         let accrualTerms = { ...this.state.accrualTerms }
         if (this.state.accuralStartDate) {
             accrualTerms.startDate = this.state.accuralStartDate
+            accrualTerms.accuralStartDate = this.state.accuralStartDate
         }
         if (this.state.accuralEndDate) {
             accrualTerms.endDate = this.state.accuralEndDate
+            accrualTerms.accuralEndDate = this.state.accuralEndDate
         }
 
         if (!accrualTerms.startDate || !accrualTerms.endDate || !accrualTerms.sellingRate || !accrualTerms.mode) {
@@ -286,7 +263,7 @@ class AddPartner extends Component {
             return;
         }
         accrualTermsArr.push({ ...accrualTerms })
-        this.setState({ accrualTermsArr, accrualTerms: undefined, accuralStartDate: undefined })
+        this.setState({ accrualTermsArr, accrualTerms: undefined, accuralStartDate: undefined, accuralEndDate: undefined })
     }
 
     addPointCreditRules = () => {
@@ -345,23 +322,6 @@ class AddPartner extends Component {
         this.setState({ ratesArr, rates: undefined, pointConversionStartDate: undefined, pointConversionEndDate: undefined })
     }
 
-    pointConversionStartDateChange = (value) => {
-        console.log(value)
-        if (value == 'Invalid date') {
-            this.setState({ pointConversionStartDate: undefined })
-        } else {
-            this.setState({ pointConversionStartDate: value })
-        }
-    }
-
-    pointConversionEndDateChange = (value) => {
-        console.log(value)
-        if (value == 'Invalid date') {
-            this.setState({ pointConversionEndDate: undefined })
-        } else {
-            this.setState({ pointConversionEndDate: value })
-        }
-    }
 
     subsidaryPartner() {
         return (
@@ -429,13 +389,13 @@ class AddPartner extends Component {
                                     <div className="col-md-6">
                                         <Label text="Start Date" columns='4' />
                                         <div className="col-md-7">
-                                            <DateControl id="pointConversionStartDate" dateChange={this.pointConversionStartDateChange} />
+                                            <DateControl id="pointConversionStartDate" dateChange={this.dateChange.bind(this, 'pointConversionStartDate')} />
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <Label text="End Date" columns='4' />
                                         <div className="col-md-7">
-                                            <DateControl id="pointConversionEndDate" dateChange={this.pointConversionEndDateChange} />
+                                            <DateControl id="pointConversionEndDate" dateChange={this.dateChange.bind(this, 'pointConversionEndDate')} />
                                         </div>
                                     </div>
                                 </div>
@@ -526,13 +486,13 @@ class AddPartner extends Component {
                                     <div className="col-md-6">
                                         <Label text="Start Date" columns='4' />
                                         <div className="col-md-7">
-                                            <DateControl id="accuralStartDate" dateChange={this.accuralTermStartDateChange} />
+                                            <DateControl id="accuralStartDate" defaultValue={utils.UNIXConvertToDate(this.state.accuralStartDate)} dateChange={this.dateChange.bind(this, 'accuralStartDate')} />
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <Label text="End Date" columns='4' />
                                         <div className="col-md-7">
-                                            <DateControl id="accuralEndDate" dateChange={this.accuralTermEndDateChange} />
+                                            <DateControl id="accuralEndDate" defaultValue={utils.UNIXConvertToDate(this.state.accuralEndDate)} dateChange={this.dateChange.bind(this, 'accuralEndDate')} />
                                         </div>
                                     </div>
                                 </div>
@@ -661,7 +621,7 @@ class AddPartner extends Component {
                         <div className="col-md-6">
                             <Label text="Start On" columns='4' />
                             <div className="col-md-7">
-                                <DateControl id="settlementStartOn" dateChange={this.settlementStartOnDateChange} />
+                                <DateControl id="settlementStartOn" dateChange={this.dateChange.bind(this, 'settlementStartOn')} />
                             </div>
                         </div>
                     </div>
@@ -854,13 +814,13 @@ class AddPartner extends Component {
             case "Edit":
                 if (index > -1) {
                     let accrualTerms = this.state.accrualTermsArr[index];
-                    this.setState({
-                        accrualTerms: accrualTerms
-                    });
                     let tempState = [...this.state.accrualTermsArr];
                     tempState.splice(index, 1);
                     this.setState({
-                        accrualTermsArr: tempState
+                        accrualTermsArr: tempState,
+                        accrualTerms: accrualTerms,
+                        accuralStartDate: accrualTerms.accuralStartDate,
+                        accuralEndDate: accrualTerms.accuralEndDate
                     });
                 }
                 break;
@@ -1091,17 +1051,18 @@ class AddPartner extends Component {
                     </div>
 
                     <div className="col-md-6">
-                        {this.imgDiv('body')}
+                        {this.imgDiv('body', undefined, { paddingLeft: "195px" })}
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-6">
 
-                        <Label text="Partner Description En" columns='4' style={{ padding: "0 0 0 30" }} />
+                        <Label text="Partner Description En" columns='4' />
                         <Textarea
-                            style={{ height: '60px' }}
-                            fieldname='address'
-                            formname='contactInformation'
+                            divStyle={{ padding: "0 0 0 5" }}
+                            style={{ height: '60px', width: "102%" }}
+                            fieldname='partnerDescriptionEn'
+                            formname='body'
                             columns='7'
                             placeholder=''
                             state={this.state}
@@ -1115,8 +1076,8 @@ class AddPartner extends Component {
                         <Label text="Partner Description Ar" columns='4' style={{ padding: "0 0 0 30" }} />
                         <Textarea
                             style={{ height: '60px' }}
-                            fieldname='address'
-                            formname='contactInformation'
+                            fieldname='partnerDescriptionAr'
+                            formname='body'
                             columns='7'
                             placeholder=''
                             state={this.state}

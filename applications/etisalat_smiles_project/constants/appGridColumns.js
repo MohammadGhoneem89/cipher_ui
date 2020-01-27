@@ -4,12 +4,14 @@ module.exports = {
         { alias: "End Date", key: "endDate", type: "epochDate" },
         { alias: "Rate", key: "rate", type: "string" },
         { alias: "Conversion Factor", key: "conversionFactor", type: "string" },
-        { alias: "Status", key: "status", type: "string" }
+        { alias: "Status", key: "status", type: "string" },
+        { alias: "Action", key: "action", type: "action" }
     ],
     pointConversion: [
         { alias: "Program Code", key: "programCode", type: "string" },
         { alias: "Program Name", key: "conversionPartnerProgramName", type: "string" },
-        { alias: "Logo", key: "logo", type: "string" }
+        { alias: "Logo", key: "logo", type: "string" },
+        { alias: "Action", key: "action", type: "action" }
     ],
     ERPsettings: [
         { alias: "Vendor Code", key: "vendorCode", type: "string" },
@@ -27,7 +29,8 @@ module.exports = {
         { alias: "S.NO", key: "", type: "serialNo" },
         { alias: "Settle As", key: "settleAs", type: "string" },
         { alias: "Frequency", key: "frequency", type: "string" },
-        { alias: "Start On", key: "startOn", type: "epochDate" }
+        { alias: "Start On", key: "startOn", type: "epochDate" },
+        { alias: "Action", key: "action", type: "action" }
     ],
     pointCreditRules: [
         { alias: "S.NO", key: "", type: "serialNo" },

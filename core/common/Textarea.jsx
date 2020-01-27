@@ -3,7 +3,7 @@ import React from 'react';
 class Input extends React.Component {
     render() {
         return (
-            <div className={`col-md-${this.props.columns}`}>
+            <div className={`col-md-${this.props.columns}`} style={this.props.divStyle ? this.props.divStyle : {}}>
                 <textarea style={{ ...this.props.style }} id={this.props.fieldname} name={this.props.fieldname} rows={this.props.rows}
                     cols={this.props.cols}
                     className={'form-control'}
