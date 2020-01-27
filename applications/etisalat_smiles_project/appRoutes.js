@@ -49,7 +49,7 @@ let authRoutes = <div>
     <Route path="/smiles/View/dashboard" component={dashboard} />
     <Route path="/smiles/View/FileScreen" component={fileScreen} />//rm
     <Route path="/smiles/View/FileDetails" component={fileDetail} />//rm
-    <Route path="/smiles/partnerSetup/addPartner" component={AddPartner} />
+    <Route path="/smiles/addPartner" component={AddPartner} />
 
     <Route path="/smiles/addShop" component={AddShop}/>
     <Route path="/smiles/listOffers" component={ListOffers}/>

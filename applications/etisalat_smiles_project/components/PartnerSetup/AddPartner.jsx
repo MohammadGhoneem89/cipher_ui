@@ -22,7 +22,7 @@ import * as gen from '../../../../core/common/generalActionHandler';
 import * as requestCreator from '../../../../core/common/request.js';
 import * as constants from '../../../../core/constants/Communication.js';
 
-
+import { browserHistory } from 'react-router';
 class AddPartner extends Component {
     constructor(props, context) {
         super(props, context);
@@ -40,7 +40,6 @@ class AddPartner extends Component {
             contractParams: {},
             contractParamsArr: [],
             accrualTermsArr: [],
-            pointCreditRules: {},
             accrualTerms: {},
             pointCreditRulesArr: [],
             pointCreditRules: {},
@@ -52,7 +51,8 @@ class AddPartner extends Component {
             isAccrualPartner: false,
             isRedemptionPartner: false,
             ratesArr: [],
-            rates: {}
+            rates: {},
+            isEdited: false
 
         };
         this.generalHandler = gen.generalHandler.bind(this)
@@ -181,28 +181,26 @@ class AddPartner extends Component {
 
         let contractParams = { ...this.state.contractParams };
         let contractParamsArr = [...this.state.subsidaryPartners];
-        let erpSettingsFrom = { ...this.state.erpSettingsFrom }
-        //let erpSettingsFromArr = [...this.state.erpSettingsFromArr]
-
+        let settlement = { ...this.state.settlement };
+        let accrualterms = this.state.accrualTermsArr;
         let erpSettingsTo = { ...this.state.erpSettingsTo }
+        let pointRule = { ...this.state.pointCreditRules }
 
-        contractParams.isAccrualPartner = this.state.isAccrualPartner
-        contractParams.isRedemptionPartner = this.state.isRedemptionPartner
-        contractParams.isPointConversionPartner = this.state.isPointConversionPartner
+        contractParams.isAccrualPartner = this.state.isAccrualPartner;
+        contractParams.isRedemptionPartner = this.state.isRedemptionPartner;
+        contractParams.isPointConversionPartner = this.state.isPointConversionPartner;
 
-        let settlement = { ...this.state.settlement }
         if (this.state.settlementStartOn) {
-            settlement.startsOn = this.state.settlementStartOn
+            settlement.startsOn = this.state.settlementStartOn;
         }
-        settlement.currency = "AED"
+        settlement.currency = "AED";
 
-        if (Object.keys(settlement).length == 0) {
-            toaster.showToast("Settlement not defined", "ERROR");
+        if (!contractParams.withPartnerCode) {
+            toaster.showToast('Subsidary Partner code is required', 'ERROR');
             return;
         }
-
-        if (Object.keys(erpSettingsTo).length == 0) {
-            toaster.showToast("Please provide an ERP To Setting.", "ERROR");
+        if (accrualterms.length == 0) {
+            toaster.showToast("Accrual Terms are required", "ERROR");
             return;
         }
 
@@ -211,49 +209,62 @@ class AddPartner extends Component {
             return;
         }
 
-        if (contractParams == undefined) {
+        console.log("settlement >>> ", settlement)
+        if (!settlement.startsOn || !settlement.settleAs || !settlement.frequency) {
+            toaster.showToast("All fields are required for Settlement", "ERROR");
+            return;
+        }
+
+        if (!erpSettingsTo.vendorCode || !erpSettingsTo.glcode || !erpSettingsTo.billingAccount || !erpSettingsTo.vendorSiteID) {
+            toaster.showToast("Please provide an ERP To Settings", "ERROR");
+            return;
+        }
+
+        if (!contractParams) {
             toaster.showToast('Subsidary Partner Details not added.', 'ERROR');
             return;
         }
 
-        if (contractParams.withPartnerCode == undefined) {
-            toaster.showToast('Subsidary Partner code not present.', 'ERROR');
-            return;
-        }
-        // contractParams accrualTerms pointCreditRules settlement
 
-        contractParams.settlements = contractParams.settlements
-        //contractParams.erpSettingsFrom = [...this.state.erpSettingsFromArr]
-        contractParams.erpSettingsFrom = { ...erpSettingsFrom }
+        contractParams.settlements = settlement
         contractParams.erpSettingsTo = { ...erpSettingsTo }
-        //contractParams.settlement = [...this.state.settlementArr]
-        //contractParams.erpSettingsTo = [...this.state.erpSettingsToArr]
-
         contractParams.accrualBillingRates = [...this.state.accrualTermsArr]
+
+        for (let i in contractParams.accrualBillingRates) {
+            let sellingrate = parseFloat(contractParams.accrualBillingRates[i].sellingRate)
+            contractParams.accrualBillingRates[i].startDate = parseInt(contractParams.accrualBillingRates[i].startDate)
+            contractParams.accrualBillingRates[i].endDate = parseInt(contractParams.accrualBillingRates[i].endDate)
+            contractParams.accrualBillingRates[i].sellingRate = sellingrate
+            contractParams.accrualBillingRates[i].serialNo = parseInt(i + 1)
+        }
         contractParams.conversionBillingRates = [...this.state.pointCreditRulesArr]
 
-        contractParams.pointCreditRules = { ...this.state.pointCreditRules }
+        //let pointRule = { ...this.state.pointCreditRules }
+        pointRule.maxUnSettledAmount = parseInt(pointRule.maxUnSettledAmount)
+        contractParams.pointCreditRules = { ...pointRule }
 
-        // contractParams.accrualTerms = [...this.state.accrualTermsArr]
-        // contractParams.pointCreditRules = [...this.state.pointCreditRulesArr]
-
+        contractParams.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
         contractParamsArr.push({ ...contractParams });
 
+
+        console.log("contactParams >>>> ", contractParams)
         this.setState({
             contractParamsArr,
-            erpSettingsFrom: {},
             contractParams: {},
             settlement: {},
             erpSettingsTo: {},
             accrualTermsArr: [],
             pointCreditRulesArr: [],
-            pointCreditRules: {}
-
+            pointCreditRules: {},
+            settlementStartOn: undefined,
+            isEdited: false
         })
         this.stateChangeSubsidaryPartnerBool();
     }
 
     addAccuralTerm = () => {
+        let accrualTermsArr = [...this.state.accrualTermsArr]
         let accrualTerms = { ...this.state.accrualTerms }
         if (this.state.accuralStartDate) {
             accrualTerms.startDate = this.state.accuralStartDate
@@ -261,7 +272,14 @@ class AddPartner extends Component {
         if (this.state.accuralEndDate) {
             accrualTerms.endDate = this.state.accuralEndDate
         }
-        let accrualTermsArr = [...this.state.accrualTermsArr]
+
+        if (!accrualTerms.startDate || !accrualTerms.endDate || !accrualTerms.sellingRate || !accrualTerms.mode) {
+            toaster.showToast("All fields are required for accrual terms", "ERROR");
+            return;
+        }
+        accrualTerms.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+
 
         if (Object.keys(accrualTerms).length == 0) {
             toaster.showToast("Please add Accural Term", "ERROR");
@@ -397,6 +415,7 @@ class AddPartner extends Component {
                                 <Table
                                     gridColumns={utils.getGridColumnByName('pointConversion')}
                                     gridData={this.state.pointConversionArr || []}
+                                    componentFunction={this.contactInfoActionHandler}
                                 />
 
                             </Portlet>
@@ -477,6 +496,7 @@ class AddPartner extends Component {
                                 <Table
                                     gridColumns={utils.getGridColumnByName('rates')}
                                     gridData={this.state.ratesArr || []}
+                                    componentFunction={this.contactInfoActionHandler}
                                 />
                             </Portlet>
                         </div>
@@ -560,6 +580,7 @@ class AddPartner extends Component {
                                 <Table
                                     gridColumns={utils.getGridColumnByName('accrualTerms')}
                                     gridData={this.state.accrualTermsArr || []}
+                                    componentFunction={this.accrualTermsActionHandler}
                                 />
                             </Portlet>
                             <Portlet title={"ACCURAL POINT CREDIT RULES"}>
@@ -605,7 +626,7 @@ class AddPartner extends Component {
                         <div className="col-md-6">
                             <Label text="Settle As" columns='4' />
                             <Combobox
-                                fieldname='creationAutoOrManual'
+                                fieldname='settleAs'
                                 formname='settlement'
                                 columns='7'
                                 placeholder='Select'
@@ -668,7 +689,7 @@ class AddPartner extends Component {
                 <Portlet title={"TERMS & CONDITIONS"} style={{ height: '140px' }}>
                     <Textarea
                         style={{ height: '120px' }}
-                        fieldname='termsAndConditions'
+                        fieldname='termsandConditionsEn'
                         formname='contractParams'
                         columns='12'
                         placeholder=''
@@ -677,7 +698,7 @@ class AddPartner extends Component {
                         className="form-control"
                     />
                 </Portlet>
-                <Portlet title={"ERP SETTINGS"}>
+                <Portlet title={"ERP SETTINGS TO"}>
                     <div className="row">
                         <div className="col-md-6">
                             <Label text="Vendor Code" columns='4' />
@@ -753,7 +774,7 @@ class AddPartner extends Component {
                             <button onClick={this.addSubsidaryPartner} type="submit" className="pull-right btn green">
                                 {utils.getLabelByID("Add")}
                             </button>
-                            <button onClick={this.stateChangeSubsidaryPartnerBool} type="submit" className="pull-right btn blue">
+                            <button onClick={this.handleOnBack} type="submit" className="pull-right btn green">
                                 {utils.getLabelByID("Back")}
                             </button>
                         </div>
@@ -763,31 +784,127 @@ class AddPartner extends Component {
         )
     }
 
+
+    contactInfoActionHandler = ({ actionName, index }) => {
+        switch (actionName) {
+            case "Edit":
+                if (index > -1) {
+                    let contactInfo = this.state.contactInformationArr[index];
+                    this.setState({
+                        contactInformation: contactInfo
+                    });
+                    let tempState = [...this.state.contactInformationArr];
+                    tempState.splice(index, 1);
+                    this.setState({
+                        contactInformationArr: tempState
+                    });
+                }
+                break;
+            case "Delete":
+                if (index > -1) {
+                    let contactInfo = this.state.contactInformationArr;
+                    contactInfo.splice(index, 1);
+                    this.setState({ contactInformationArr: contactInfo });
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    subsidiaryPartnerActionHandler = ({ actionName, index }) => {
+        switch (actionName) {
+            case "Edit":
+                if (index > -1) {
+                    this.setState({
+                        isEdited: true
+                    });
+                    this.stateChangeSubsidaryPartnerBool();
+                    let contractParams = this.state.contractParamsArr[index];
+                    console.log("contractParams from subsidiaryPartnerActionHandler", contractParams)
+                    this.setState({
+                        contractParams: contractParams,
+                        settlement: contractParams.settlements,
+                        pointCreditRules: contractParams.pointCreditRules,
+                        erpSettingsTo: contractParams.erpSettingsTo,
+                        accrualTermsArr: contractParams.accrualBillingRates
+                    });
+                    let tempState = [...this.state.contractParamsArr];
+                    tempState.splice(index, 1);
+                    this.setState({
+                        contractParamsArr: tempState
+                    });
+                }
+                break;
+            case "Delete":
+                if (index > -1) {
+                    let contractParamsArray = this.state.contractParamsArr;
+                    contractParamsArray.splice(index, 1);
+                    this.setState({ contractParamsArr: contractParamsArray });
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+    accrualTermsActionHandler = ({ actionName, index }) => {
+        switch (actionName) {
+            case "Edit":
+                if (index > -1) {
+                    let accrualTerms = this.state.accrualTermsArr[index];
+                    this.setState({
+                        accrualTerms: accrualTerms
+                    });
+                    let tempState = [...this.state.accrualTermsArr];
+                    tempState.splice(index, 1);
+                    this.setState({
+                        accrualTermsArr: tempState
+                    });
+                }
+                break;
+            case "Delete":
+                if (index > -1) {
+                    let accrualterms = this.state.accrualTermsArr;
+                    accrualterms.splice(index, 1);
+                    this.setState({ accrualTermsArr: accrualterms });
+                }
+                break;
+            default:
+                break;
+        }
+    }
     addContactInformation = () => {
         let contactInformationArr = [...this.state.contactInformationArr]
         let contactInformation = { ...this.state.contactInformation }
 
-        if ((contactInformation.email == undefined || contactInformation.email == "") &
-            (contactInformation.mobile == undefined || contactInformation.mobile == "") &
-            (contactInformation.phone == undefined || contactInformation.phone == "") &
-            (contactInformation.address == undefined || contactInformation.address == "")) {
-            toaster.showToast("Please provide atleast one of the Contact Information.", "ERROR");
+        if (!contactInformation.email || !contactInformation.firstName || !contactInformation.lastName || !contactInformation.mobile || !contactInformation.phone || !contactInformation.address || !contactInformation.mode) {
+            toaster.showToast("All fields are required for contact information", "ERROR");
             return;
         }
+        contactInformation.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
 
+        /* check if contact already added */
+        if (contactInformationArr.some(e => e.mobile === contactInformation.mobile) || contactInformationArr.some(e => e.email === contactInformation.email)) {
+            toaster.showToast('Contact information already added', "ERROR")
+            return;
+        }
         contactInformationArr.push({ ...contactInformation })
+        console.log("this.state.contactInformationArr >>> ", contactInformationArr)
         this.setState({ contactInformationArr, contactInformation: undefined })
     }
 
     adderpSettingsFrom = () => {
         let erpSettingsFrom = { ...this.state.erpSettingsFrom }
-        let erpSettingsFromArr = [...this.state.erpSettingsFromArr]
-        if (Object.keys(erpSettingsFrom).length == 0) {
-            toaster.showToast("Please provide an ERP Setting.", "ERROR");
+        // let erpSettingsFromArr = [...this.state.erpSettingsFromArr]
+        if (!erpSettingsFrom.vendorCode || !erpSettingsFrom.glcode || !erpSettingsFrom.billingAccount || !erpSettingsFrom.vendorSiteID) {
+            toaster.showToast("Please provide  ERP From Settings", "ERROR");
             return;
         }
-        erpSettingsFromArr.push({ ...erpSettingsFrom })
-        this.setState({ erpSettingsFromArr, erpSettingsFrom: undefined })
+        // erpSettingsFromArr.push({ ...erpSettingsFrom })
+        this.setState({ erpSettingsFrom })
     }
 
     adderpSettingsTo = () => {
@@ -830,28 +947,88 @@ class AddPartner extends Component {
 
     setPartner = () => {
         let body = { ...this.state.body }
-        if (this.state.contactInformationArr.length) { body.contacts = [...this.state.contactInformationArr] }
-        if (this.state.contractParamsArr.length) { body.contractParams = [...this.state.contractParamsArr] }
-        if (this.state.contractType) { body.contractType = this.state.contractType }
-        if (this.state.erpSettingsTo) { body.erpSettingsTo = { ...this.state.erpSettingsTo } }
+
+        console.log("body :::: ", body)
         if (Object.keys(body).length == 0) {
-            toaster.showToast("No Fields Defined", "ERROR");
-            return
+            toaster.showToast("All fields are required", "ERROR");
+            return;
+        }
+        if (!body.partnerNameEn) {
+            toaster.showToast("Partner name is required", "ERROR");
+            return;
+        }
+        if (!body.partnerCode) {
+            toaster.showToast("Partner code is required", "ERROR");
+            return;
+        }
+        if (!body.partnerCategory) {
+            toaster.showToast("Partner category is required", "ERROR");
+            return;
+        } else {
+            let partnerCategory = [];
+            partnerCategory.push(body.partnerCategory); // -- this should be multi select dropdown--already an array
+            body.partnerCategory = partnerCategory;
+        }
+        if (!this.state.isAccrualPartner && !this.state.isPointConversionPartner && !this.state.isRedemptionPartner) {
+            toaster.showToast("Partner type is required", "ERROR");
+            return;
+        }
+        if (!this.state.erpSettingsFrom.vendorCode || !this.state.erpSettingsFrom.glcode || !this.state.erpSettingsFrom.billingAccount || !this.state.erpSettingsFrom.vendorSiteID) {
+            toaster.showToast("All fields are required for ERP From Settings", "ERROR");
+            return;
+        } else {
+            body.erpSettingsFrom = { ...this.state.erpSettingsFrom };
+        }
+        if (!this.state.contactInformationArr.length) {
+            toaster.showToast("Contact Information is required", "ERROR");
+            return;
+        } else {
+            body.contacts = [...this.state.contactInformationArr]
         }
 
+        if (!this.state.contractParamsArr.length) {
+            toaster.showToast("Contract Parameters are required", "ERROR");
+            return;
+        } else {
+            body.contractParams = [...this.state.contractParamsArr]
+        }
+        let request = {
+            body: { ...body }
+        }
         console.log(`\n\n\n${JSON.stringify({ ...body })}\n\n\n`)
 
         //DUMMY
         this.setState({ isLoading: true })
         window.scrollTo(0, 0)
 
-        this.props.actions.generalAjxProcess(constants.addEditPartner, { ...this.state.body }).then(res => {
-            alert(JSON.stringify(res))
-        })
-
-
+        this.props.actions.generalAjxProcess(constants.addEditPartner, request)
+            .then(result => {
+                console.log(result, "result")
+                this.evaluateResult(result);
+            })
+            .catch(err => {
+                console.log(err);
+                toaster.showToast(err, "ERROR");
+                this.setState({ isLoading: false });
+                return;
+            });
+    }
+    redirectToList = () => {
+        browserHistory.push('/hyperledger/workboard')
+        toaster.showToast("Partner created successfully!");
     }
 
+    evaluateResult = (result) => {
+        if (result.message.status == 'ERROR') {
+            this.setState({ isLoading: false });
+            toaster.showToast(result.message.errorDescription, "ERROR");
+            return;
+        } else {
+            this.setState({ isLoading: false });
+            this.redirectToList();
+        }
+
+    }
     partnerFields() {
         return (
             <div>
@@ -885,7 +1062,7 @@ class AddPartner extends Component {
                         <div className="row">
                             <Label text="Partner Code" columns='4' style={{ padding: "0 0 0 30" }} />
                             <Input
-                                fieldname='code'
+                                fieldname='partnerCode'
                                 formname='body'
                                 columns='7'
                                 placeholder=''
@@ -1120,12 +1297,14 @@ class AddPartner extends Component {
                         </div>
                     </div>
                     <Table
+
                         gridColumns={utils.getGridColumnByName('contactInfo')}
                         gridData={this.state.contactInformationArr || []}
+                        componentFunction={this.contactInfoActionHandler}
                     />
                 </Portlet>
 
-                <Portlet title={"ERP SETTINGS"}>
+                <Portlet title={"ERP SETTINGS FROM"}>
                     <div className="row">
                         <div className="col-md-6">
                             <Label text="Vendor Code" columns='4' />
@@ -1200,11 +1379,13 @@ class AddPartner extends Component {
                     <Table
                         gridColumns={utils.getGridColumnByName('subsidaryPartner')}
                         gridData={this.state.contractParamsArr || []}
+                        componentFunction={this.subsidiaryPartnerActionHandler}
                     />
                     <div className="row">
                         <div className="col-md-12">
                             <div className="btn-toolbar pull-right">
-                                <button disabled={(this.state.isAccrualPartner || this.state.isPointConversionPartner) ? false : true} onClick={this.stateChangeSubsidaryPartnerBool} type="submit" className="pull-right btn green">
+                                <button disabled={(this.state.isAccrualPartner || this.state.isPointConversionPartner) ? false : true}
+                                    onClick={this.stateChangeSubsidaryPartnerBool} type="submit" className="pull-right btn green">
                                     {utils.getLabelByID("Add Subsidary Partner")}
                                 </button>
                             </div>
@@ -1224,6 +1405,18 @@ class AddPartner extends Component {
             </div>
         )
     }
+
+
+    handleOnBack = () => {
+        if (this.state.isEdited) {
+            this.addSubsidaryPartner()
+        }
+        this.setState({
+            isEdited: false
+        });
+        this.stateChangeSubsidaryPartnerBool();
+
+    }
     stateChangeSubsidaryPartnerBool = () => {
         window.scroll(0, 0)
         this.setState({
@@ -1236,14 +1429,7 @@ class AddPartner extends Component {
         } else {
             return (
                 <div className="row">
-
-
                     {!this.state.subsidaryPartnerBool && this.partnerFields()}
-
-
-
-
-
                     {this.state.subsidaryPartnerBool && this.subsidaryPartner()}
                 </div>
             );

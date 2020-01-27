@@ -20,7 +20,7 @@ module.exports = {
     ],
     subsidaryPartner: [
         { alias: "S.NO", key: "", type: "serialNo" },
-        { alias: "Code", key: "partnerCode", type: "string" },
+        { alias: "Partner Code", key: "withPartnerCode", type: "string" },
         { alias: "Action", key: "action", type: "action" }
     ],
     settlement: [
