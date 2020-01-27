@@ -8,7 +8,7 @@ module.exports = {
     ],
     pointConversion: [
         { alias: "Program Code", key: "programCode", type: "string" },
-        { alias: "Program Name", key: "programName", type: "string" },
+        { alias: "Program Name", key: "conversionPartnerProgramName", type: "string" },
         { alias: "Logo", key: "logo", type: "string" }
     ],
     ERPsettings: [
