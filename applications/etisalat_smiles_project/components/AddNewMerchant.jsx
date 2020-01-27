@@ -416,24 +416,97 @@ class AddNewMerchant extends React.Component {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
                     <div className="row addShopBox">
+                    <div className="row">
+                              <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>OFFERS</b></div>
+                        </div>
                    
-                        <div className="row">
-                        <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>OFFERS</b></div>
-                        </div>
-                        <div className="row imageDiv">
-                            <div className="row smilesImageText" ><b>VOUCHER CODE GENERATION</b></div>
-                            <div className="row" style={{marginLeft:"50px"  }}>
-                                <div className="col-md-3"><img src="/assets/imgs/partnerdynamic.jpg" className="smilesImage"/></div>
-                                <div className="col-md-3"><img src="/assets/imgs/etisalat.jpg" className="smilesImage"/></div>
-                                <div className="col-md-3"><img src="/assets/imgs/partnerdynamic.jpg" className="smilesImage"/></div>
-                                <div className="col-md-3"><img src="/assets/imgs/clockchain.jpg" className="smilesImage"/></div>
-                                
-                            </div>
-                        </div>
+                    <Portlet title={"TYPE"}>
+
+                                                <div className="row">
+                                                    <div className="col-md-12">
+                                                        <div className="" style={{ opacity: '1' }}>
+                                                            <div className="portlet-body flip-scroll">
+                                                                <div className="row">
+                                                                    <div className="col-md-10 col-md-offset-1">
+
+                                                                        <div className="col-md-3 text-center">
+                                                                            <div className="voucherBox">
+                                                                                <img src="/assets/Resources/Redemption.png" width="20%" />
+                                                                                <h5><strong>Redemption</strong></h5>
+                                                                                <div className="icheck-list">
+                                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                                        <label></label>
+                                                                                        <input  type="checkbox" name="Redemption" value=""  className="form-control" />
+                                                                                        <span></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className="col-md-3 text-center">
+                                                                            <div className="voucherBox">
+                                                                                <img src="/assets/Resources/Accrual.png" width="20%" />
+                                                                                <h5><strong>Accural</strong></h5>
+                                                                                <div className="icheck-list">
+                                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                                        <label></label>
+                                                                                        <input  type="checkbox" name="Accrual"  value="" className="form-control" />
+                                                                                        <span></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className="col-md-3 text-center">
+                                                                            <div className="voucherBox">
+                                                                                <img src="/assets/Resources/pointConverstion.png" width="20%" />
+                                                                                <h5><strong>Point Conversion</strong></h5>
+                                                                                <div className="icheck-list">
+                                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                                        <label></label>
+                                                                                        <input  type="checkbox" name="pointConverstion"  className="form-control" />
+                                                                                        <span></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className="col-md-3 text-center">
+                                                                            <div className="voucherBox">
+                                                                                <img src="/assets/Resources/pointConverstion.png" width="20%" />
+                                                                                <h5><strong>Point Conversion</strong></h5>
+                                                                                <div className="icheck-list">
+                                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                                        <label></label>
+                                                                                        <input  type="checkbox" name="pointConverstion"  className="form-control" />
+                                                                                        <span></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                </Portlet>
+
+
 
                         <div className="row imageDiv">
-                        <div className="row smilesImageText" ><b>BARCODE TYPE</b></div>
+                         <div className="row smilesImageText" ><b>BARCODE TYPE</b></div>
                             <div className="row" style={{marginLeft:"50px"  }}>
                                 <div className="col-md-3">
                                     <div className="row" style={{marginLeft:"50px", color:"#E0E0E0" }}><b>CODE 123</b></div> 
@@ -461,32 +534,32 @@ class AddNewMerchant extends React.Component {
                         <div className="row newMerchantDiv">
                         <div className="row" style={{marginLeft:"50px", color:"#E0E0E0", marginBottom:"20px" }}><b>Allow Catalog upload</b></div>
                                <div className="row">
-                                <div className="col-md-6">
-                                    <Checkbox
-                                    fieldname='isActive'
-                                    formname='addShop'
-                                    value={this.state.checked}
-                                    columns='1'
-                                    style={{}}
-                                    actionHandler={this.onChangeCheckbox}
-                                    disabled={false}
-                                    />
-                                    {/** <label htmlFor="checkbox">is Active</label>*/}
-                                    <label htmlFor="checkbox">User Interface</label>
-                                </div>
-                                <div className="col-md-6">
-                                    <Checkbox
-                                    fieldname='isActive'
-                                    formname='addShop'
-                                    value={this.state.checked}
-                                    columns='1'
-                                    style={{}}
-                                    actionHandler={this.onChangeCheckbox}
-                                    disabled={false}
-                                    />
-                                    {/** <label htmlFor="checkbox">is Active</label>*/}
-                                    <label htmlFor="checkbox">Listner</label>
-                                </div>
+                                    <div className="col-md-6">
+                                        <Checkbox
+                                        fieldname='isActive'
+                                        formname='addShop'
+                                        value={this.state.checked}
+                                        columns='1'
+                                        style={{}}
+                                        actionHandler={this.onChangeCheckbox}
+                                        disabled={false}
+                                        />
+                                        {/** <label htmlFor="checkbox">is Active</label>*/}
+                                        <label htmlFor="checkbox">User Interface</label>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <Checkbox
+                                        fieldname='isActive'
+                                        formname='addShop'
+                                        value={this.state.checked}
+                                        columns='1'
+                                        style={{}}
+                                        actionHandler={this.onChangeCheckbox}
+                                        disabled={false}
+                                        />
+                                        {/** <label htmlFor="checkbox">is Active</label>*/}
+                                        <label htmlFor="checkbox">Listner</label>
+                                    </div>
                                 </div>
                         </div>
                     </div>
@@ -495,23 +568,23 @@ class AddNewMerchant extends React.Component {
 
 
 
-                    <div className="row addShopBox">
-                               <div className="row">
-                                <div className="col-md-6">
-                                    <Checkbox
-                                    fieldname='isActive'
-                                    formname='addShop'
-                                    value={this.state.checked}
-                                    columns='1'
-                                    style={{}}
-                                    actionHandler={this.onChangeCheckbox}
-                                    disabled={false}
-                                    />
-                                    {/** <label htmlFor="checkbox">is Active</label>*/}
-                                    <label htmlFor="checkbox">Escrow Purchase</label>
-                                </div>
-                                </div>                       
-                    </div>
+                        <div className="row addShopBox">
+                                    <div className="row">
+                                            <div className="col-md-6">
+                                                <Checkbox
+                                                fieldname='isActive'
+                                                formname='addShop'
+                                                value={this.state.checked}
+                                                columns='1'
+                                                style={{}}
+                                                actionHandler={this.onChangeCheckbox}
+                                                disabled={false}
+                                                />
+                                                {/** <label htmlFor="checkbox">is Active</label>*/}
+                                                <label htmlFor="checkbox">Escrow Purchase</label>
+                                            </div>
+                                        </div>                       
+                        </div>
 
                     <div className="row clearfix addShopBox">
                            <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>SHOP</b></div>
@@ -521,7 +594,7 @@ class AddNewMerchant extends React.Component {
                         </div>
                         
                         <Table
-                               gridColumns={utils.getGridColumnByName("ListOffers")}
+                               gridColumns={utils.getGridColumnByName("AddNewMerchant")}
                             //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
                             gridData={this.state.gridData}
                             //totalRecords={this.state.totalRecords}
@@ -569,3 +642,22 @@ export default connect(
     mapDispatchToProps
 )(AddNewMerchant);
 
+
+
+
+
+/**
+ * <div className="row">
+                              <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>OFFERS</b></div>
+                        </div>
+                            <div className="row imageDiv">
+                                    <div className="row smilesImageText" ><b>VOUCHER CODE GENERATION</b></div>
+                                    <div className="row" style={{marginLeft:"50px"  }}>
+                                        <div className="col-md-3"><img src="/assets/imgs/partnerdynamic.jpg" className="smilesImage"/></div>
+                                        <div className="col-md-3"><img src="/assets/imgs/etisalat.jpg" className="smilesImage"/></div>
+                                        <div className="col-md-3"><img src="/assets/imgs/partnerdynamic.jpg" className="smilesImage"/></div>
+                                        <div className="col-md-3"><img src="/assets/imgs/clockchain.jpg" className="smilesImage"/></div>
+                                        
+                                    </div>
+                            </div>
+ */

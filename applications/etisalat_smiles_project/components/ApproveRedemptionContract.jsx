@@ -35,12 +35,20 @@ class ApproveRedemptionContract extends React.Component {
             checked: false,
             valid: true,
             addShop:{},
-            gridData:[
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
+            gridData:[],
+            contact:[
+                {"serial_no": "1","name": "12212222","address": "555222","mobile": "7899","phone":"8087788","email":"mohammdamusa@gmail.com"},
+                {"serial_no": "1","name": "12212222","address": "555222","mobile": "7899","phone":"8087788","email":"mohammdamusa@gmail.com"},
+                {"serial_no": "1","name": "12212222","address": "555222","mobile": "7899","phone":"8087788","email":"mohammdamusa@gmail.com"},
+                {"serial_no": "1","name": "12212222","address": "555222","mobile": "7899","phone":"8087788","email":"mohammdamusa@gmail.com"},
+                {"serial_no": "1","name": "12212222","address": "555222","mobile": "7899","phone":"8087788","email":"mohammdamusa@gmail.com"},                
+            ],
+            redemptionTerm:[
+                {"serial_no": "1","startDate": "12212222","endDate": "555222","paymentMethod": "7899","type":"8087788","value":"133","status":"Success"},
+                {"serial_no": "1","startDate": "12212222","endDate": "555222","paymentMethod": "7899","type":"8087788","value":"133","status":"Success"},
+                {"serial_no": "1","startDate": "12212222","endDate": "555222","paymentMethod": "7899","type":"8087788","value":"133","status":"Success"},
+                {"serial_no": "1","startDate": "12212222","endDate": "555222","paymentMethod": "7899","type":"8087788","value":"133","status":"Success"},
+                {"serial_no": "1","startDate": "12212222","endDate": "555222","paymentMethod": "7899","type":"8087788","value":"133","status":"Success"},
             ]
         }
         this.generalHandler = gen.generalHandler.bind(this);
@@ -129,6 +137,43 @@ class ApproveRedemptionContract extends React.Component {
 
                     </div>
 
+                     <br/>
+
+
+
+
+                    <Portlet title={"TYPE"}>
+
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="" style={{ opacity: '1' }}>
+                                <div className="portlet-body flip-scroll">
+                                    <div className="row">
+                                        <div className="col-md-10 col-md-offset-1">
+
+                                            <div className="col-md-4 text-center">
+                                                <div className="voucherBox">
+                                                    <img src="/assets/Resources/Redemption.png" width="20%" />
+                                                    <h5><strong>Redemption</strong></h5>
+                                                    <div className="icheck-list">
+                                                        <label className="mt-checkbox mt-checkbox-outline">
+                                                            <label></label>
+                                                            <input  type="checkbox" name="Redemption" value=""  className="form-control" />
+                                                            <span></span></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+</Portlet>
 
 
 
@@ -143,9 +188,9 @@ class ApproveRedemptionContract extends React.Component {
                             <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>Contact</b></div>
                                 
                                 <Table
-                                    gridColumns={utils.getGridColumnByName("ListOffers")}
+                                    gridColumns={utils.getGridColumnByName("ApproveredemptionContractContact")}
                                     //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
-                                    gridData={this.state.gridData}
+                                    gridData={this.state.contact}
                                     //totalRecords={this.state.totalRecords}
                                     pageSize={10}
                                 //pageChanged={this.pageChanged}
@@ -159,9 +204,9 @@ class ApproveRedemptionContract extends React.Component {
                             <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>REDEMPTION TERMS</b></div>
                                 
                                 <Table
-                                    gridColumns={utils.getGridColumnByName("ListOffers")}
+                                    gridColumns={utils.getGridColumnByName("ApproveredemptionContractRedemptionTerm")}
                                     //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
-                                    gridData={this.state.gridData}
+                                    gridData={this.state.redemptionTerm}
                                     //totalRecords={this.state.totalRecords}
                                     pageSize={10}
                                 //pageChanged={this.pageChanged}

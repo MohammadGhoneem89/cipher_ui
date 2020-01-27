@@ -23,6 +23,7 @@ import Input from '../../../core/common/Input.jsx';
 import Checkbox from '../../../core/common/CheckBox.jsx';
 import Table from '../../../core/common/Datatable.jsx';
 import Textarea from '../../../core/common/Textarea.jsx';
+import Map from "./Charts/Map.jsx";
 
 class OrderManagementDetail extends React.Component {
 
@@ -36,11 +37,17 @@ class OrderManagementDetail extends React.Component {
             valid: true,
             addShop:{},
             gridData:[
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
+                {"serial_no": "1","attribute": "12212222","value": "555222"},
+                {"serial_no": "1","attribute": "12212222","value": "555222"},
+                {"serial_no": "1","attribute": "12212222","value": "555222"},
+                {"serial_no": "1","attribute": "12212222","value": "555222"},
+            ],
+            tracking:[
+                {"serial_no": "1","dateTime": "12212222","status": "555222"},
+                {"serial_no": "1","dateTime": "12212222","status": "555222"},
+                {"serial_no": "1","dateTime": "12212222","status": "555222"},
+                {"serial_no": "1","dateTime": "12212222","status": "555222"},
+                {"serial_no": "1","dateTime": "12212222","status": "555222"},
             ]
         }
         this.generalHandler = gen.generalHandler.bind(this);
@@ -75,48 +82,63 @@ class OrderManagementDetail extends React.Component {
         return (
             <div className="row">
              
-                <Portlet title={"ORDERT DETAIL"}>
+                <Portlet >
                     <div>
 
                     <div className="row">
+                        
+                   
+                            <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>Order datils</b></div>
                     
                         <div className="row">
 
-                            <div className="col-md-8" >
+                                <div className="col-md-8" >
 
-                                    <div className="row" >
-                                    <div className="col-md-8">
-                                        <div className="form-group col-md-4">
-                                            <label className="control-label">Name</label>
+                                            <div className="row" >
+                                            <div className="col-md-8">
+                                                <div className="form-group col-md-4">
+                                                    <label className="control-label">Title</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                <label className="control-label">Extra Large shoes</label>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="form-group col-md-8">
-                                        <input type="text" className="form-control" name="contractId" id="contractId" />
-                                        </div>
-                                    </div>
-                                   </div>
 
-                                <div className="row">
-                                    <div className="col-md-8">
-                                        <div className="form-group col-md-4">
-                                            <label className="control-label">Code</label>
+                                        <div className="row">
+                                            <div className="col-md-8">
+                                                <div className="form-group col-md-4">
+                                                    <label className="control-label">Description</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                <label className="control-label">Large size</label>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="form-group col-md-8">
-                                        <input type="text" className="form-control" name="contractId" id="contractId" />
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div className="row">
-                                    <div className="col-md-8">
-                                        <div className="form-group col-md-4">
-                                            <label className="control-label">Category</label>
+                                        <div className="row">
+                                            <div className="col-md-8">
+                                                <div className="form-group col-md-4">
+                                                    <label className="control-label">Quantity</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                <label className="control-label">7</label>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="form-group col-md-8">
-                                            <input type="text" className="form-control" name="contractId" id="contractId" />
+
+                                        <div className="row" >
+                                            <div className="col-md-8">
+                                                <div className="form-group col-md-4">
+                                                    <label className="control-label">Total Amount</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                <label className="control-label">300 ADE</label>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                           </div>
+
+                            </div>
 
                            <div className="col-md-4">
                             <img src="/assets/imgs/palceholder.jpg" />
@@ -126,8 +148,22 @@ class OrderManagementDetail extends React.Component {
                         </div>
 
                         
+                        <Table
+                                    gridColumns={utils.getGridColumnByName("OderManagementDetails")}
+                                    //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
+                                    gridData={this.state.gridData}
+                                    //totalRecords={this.state.totalRecords}
+                                    pageSize={10}
+                                //pageChanged={this.pageChanged}
+                                    pagination={true}
+                                    activePage={this.state.currentPageNo}
+                                    />
 
                     </div>
+
+                        
+
+                    
 
 
 
@@ -140,12 +176,12 @@ class OrderManagementDetail extends React.Component {
 
 
                             <div className="row clearfix addShopBox">
-                            <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>Contact</b></div>
+                            <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>Tracking</b></div>
                                 
                                 <Table
-                                    gridColumns={utils.getGridColumnByName("ListOffers")}
+                                    gridColumns={utils.getGridColumnByName("OderManagementDetailsTracking")}
                                     //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
-                                    gridData={this.state.gridData}
+                                    gridData={this.state.tracking}
                                     //totalRecords={this.state.totalRecords}
                                     pageSize={10}
                                 //pageChanged={this.pageChanged}
@@ -156,46 +192,80 @@ class OrderManagementDetail extends React.Component {
 
 
                             <div className="row clearfix addShopBox">
-                            <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>REDEMPTION TERMS</b></div>
-                                
-                                <Table
-                                    gridColumns={utils.getGridColumnByName("ListOffers")}
-                                    //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
-                                    gridData={this.state.gridData}
-                                    //totalRecords={this.state.totalRecords}
-                                    pageSize={10}
-                                //pageChanged={this.pageChanged}
-                                    pagination={true}
-                                    activePage={this.state.currentPageNo}
+                            <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>DILIVERY TERMS</b></div>
+
+                              {/*Map */}
+                  
+
+                     
+                   <div className="row">
+                       <div className="col-md-8">
+                       <Map
+                        googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJn2Pqx6Pe_faA0DLLWUkHo1iXEOBXBvs"
+                        loadingElement={<div style={{ height: `100%` }} />}
+                        containerElement={<div style={{ height: `400px` }} />}
+                        mapElement={<div style={{ height: `100%` }} />}
+                        center={{ lat: parseFloat(-34.397), lng: parseFloat(150.64) }}
+                        zoom={3}
+                        disabled={true}
+                         prelocation={[{
+                            id: 0,
+                            lat: parseFloat(-34.397),
+                            lng: parseFloat(150.644)
+                        },
+                        {
+                            id: 1,
+                            lat: parseFloat(-40.397),
+                            lng: parseFloat(160.644)
+
+                        },
+                        {
+                            id: 2,
+                            lat: parseFloat(-50.397),
+                            lng: parseFloat(177.644)
+
+                        }
+                        ]}
+
+                            
+                         updateState={this.updateState}
                                     />
+                       </div>
+                       <div className="col-md-4 MapAxis">
+                           <div className="row">
+                                          <div className="col-md-4" style={{width:"300px",marginBottom:"10px" }}>
+                                             <label className="control-label">{utils.getLabelByID("burg tower Near metro station")}</label>
+                                           </div>                 
+                           </div>
+                           <div className="row">
+                                           <div className="col-md-4" style={{width:"300px",marginBottom:"10px" }}>
+                                              <label className="control-label">{utils.getLabelByID("Phone Number# 00")}</label>
+                                         </div>
+                           </div>
+                           <div className="row">
+                                          <div className="col-md-4" style={{width:"300px",marginBottom:"10px" }}>
+                                             <label className="control-label">{utils.getLabelByID("Email: mohammadMusach@gmail.com")}</label>
+                                           </div>                  
+                           </div>
+
+                       </div>
+                   </div>
+
+
+
+                  {/*Map */}
+                        <div className="row clearfix pull-right" style={{marginTop:"30px"}}>
+                                        <div className="col-md-4" style={{ paddingRight: '50px'}}>
+                                        <button type="button" className="btn default" >
+                                            Approve
+                                        </button>
+                                        </div>
+                                    </div>
+                               
+
+
                             </div>
 
-
-                            <div className="row clearfix addShopBox">
-                            <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>TERMS AND CONDITION</b></div>  
-                                
-                                    <Textarea
-                                style={{ height: '120px' }}
-                                fieldname='termsAndConditions'
-                               // formname='contractParams'
-                                columns='12'
-                                placeholder=''
-                                state={this.state}
-                                actionHandler={this.generalHandler}
-                                className="form-control"
-                                    />
-                            </div>
-
-
-     
-
-                    <div className="row clearfix pull-right" style={{marginTop:"30px"}}>
-                                <div className="col-md-4">
-                                <button type="button" className="btn default" >
-                                    Approve
-                                </button>
-                                </div>
-                            </div>
                              
 
 

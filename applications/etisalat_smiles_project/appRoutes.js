@@ -38,6 +38,7 @@ import ApproveRedemtionContract from "./components/ApproveRedemptionContract.jsx
 import DashboardEtisalat from "./components/DashboardEtisalat.jsx";
 import DashboardPartner from "./components/DashboardPartner.jsx";
 import CreateAmendRedemption from "./components/CreateAmendRedemption.jsx"
+import OrderManagementDetails from "./components/OrderManagementDetail.jsx"
 
 let authRoutes = <div>
     <Route path="/smiles/View/Transaction" component={ViewTransactions} />
@@ -69,10 +70,11 @@ let authRoutes = <div>
         <Route path="/smiles/dashboardEtisalat" component={DashboardEtisalat}/>
         <Route path="/smiles/dashboardPartner" component={DashboardPartner}/>
         <Route path="/smiles/createAmendRedemption" component={CreateAmendRedemption}/>
-    
+        <Route path="/smiles/orderManagementDetail" component={OrderManagementDetails}/>
+       
 
 </div>;
-
+    
 let unAuthRoutes =
     <div>``
        

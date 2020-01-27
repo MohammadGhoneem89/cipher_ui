@@ -937,8 +937,85 @@ AddNewMerchant : [
   {alias: "S.No", key: "serial_no", type: 'string'},
   { alias: "SHOP CODE", key: "shopCode", type: "string"},
   { alias: "LOCATION X", key: "locationX", type: "string" },
-  { alias: "LOCATION Y", key: "LocationY", type: "string" },
+  { alias: "LOCATION Y", key: "locationY", type: "string" },
   { alias: "Action", key: "actions", type: "action" },
+],
+OfferManagementSharingBonus: [
+  {alias: "", key: "_id", type: "hiddenID"},
+  {alias: "S.No", key: "serial_no", type: 'string'},
+  { alias: "CHANNEL", key: "channel", type: "string"},
+  { alias: "POINTS", key: "points", type: "string" },
+  { alias: "Action", key: "actions", type: "action" },
+],
+OfferManagementCashVoucher: [
+  {alias: "", key: "_id", type: "hiddenID"},
+  {alias: "S.No", key: "serial_no", type: 'string'},
+  { alias: "Type", key: "type", type: "string"},
+  { alias: "Denomination", key: "denomination", type: "string" },
+  { alias: "Action", key: "actions", type: "action" },
+],
+
+OfferManagementCategories: [
+  {alias: "", key: "_id", type: "hiddenID"},
+  {alias: "S.No", key: "serial_no", type: 'string'},
+  { alias: "CATEGORY", key: "category", type: "string"},
+  { alias: "SUB CATEGORY", key: "subCategory", type: "string" },
+  { alias: "Action", key: "actions", type: "action" },
+],
+ApproveredemptionContractContact:[
+  {alias: "", key: "_id", type: "hiddenID"},
+  {alias: "S.No", key: "serial_no", type: 'string'},
+  {alias: "NAME", key: "name", type: 'string'},
+  { alias: "ADDRESS", key: "address", type: "string"},
+  {alias: "MOBILE", key: "mobile", type: 'string'},
+  {alias: "PHONE", key: "phone", type: 'string'},
+  {alias: "EMAIL", key: "email", type: 'string'},
+  {alias: "Action", key: "actions", type: "action" }
+],
+ApproveredemptionContractRedemptionTerm:[
+  {alias: "", key: "_id", type: "hiddenID"},
+  {alias: "S.No", key: "serial_no", type: 'string'},
+  {alias: "START DATE", key: "startDate", type: 'epochDate'},
+  {alias: "END DATE", key: "endDate", type: "epochDate"},
+  {alias: "PAYMENT METHOD", key: "paymentMethod", type: 'string'},
+  {alias: "TYPE", key: "type", type: 'string'},
+  {alias: "VALUE", key: "value", type: 'string'},
+  {alias: "STATUS", key: "status", type: 'string'},
+  {alias: "Action", key: "actions", type: "action" }
+],
+DashboadrEtisalat:[
+  {alias: "", key: "_id", type: "hiddenID"},
+  {alias: "S.No", key: "serial_no", type: 'string'},
+  {alias: "BATCH#", key: "batch", type: 'string'},
+  {alias: "INVOICE#", key: "invoice", type: "string"},
+  {alias: "TO", key: "to", type: 'string'},
+  {alias: "AMMOUNT", key: "ammount", type: 'string'},
+  {alias: "COMISSION", key: "comission", type: 'string'},
+  {alias: "SETTLEMENT PERIOD", key: "settlementperiod", type: 'string'},
+  {alias: "STATUS", key: "status", type: 'string'},
+  {alias: "View", key: "actions", type: "action" }
+],
+CreateAmendRedemption:[
+  {alias: "", key: "_id", type: "hiddenID"},
+  {alias: "S.No", key: "serial_no", type: 'string'},
+  {alias: "START DATE", key: "startDate", type: 'epochDate'},
+  {alias: "END DATE", key: "endDate", type: "epochDate"},
+  {alias: "PAYMENT METHOD", key: "paymentMethod", type: 'string'},
+  {alias: "TYPE", key: "type", type: 'string'},
+  {alias: "VALUE", key: "value", type: 'string'},
+  {alias: "Action", key: "actions", type: "action" }
+],
+OderManagementDetails:[
+  {alias: "", key: "_id", type: "hiddenID"},
+  {alias: "S.No", key: "serial_no", type: 'string'},
+  {alias: "Attribute", key: "attribute", type: 'string'},
+  {alias: "Value", key: "value", type: "string"},
+],
+OderManagementDetailsTracking:[
+  {alias: "", key: "_id", type: "hiddenID"},
+  {alias: "S.No", key: "serial_no", type: 'string'},
+  {alias: "Date Time", key: "dateTime", type: 'epochDate'},
+  {alias: "Status", key: "status", type: "string"},
 ],
 
 VoucherList:[

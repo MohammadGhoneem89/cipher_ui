@@ -38,11 +38,25 @@ class OfferManagement extends React.Component {
             valid: true,
             addShop:{},
             gridData:[
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
+                {"serial_no": "1","type": "12212222","denomination": "555222"},
+                {"serial_no": "1","type": "12212222","denomination": "555222"},
+                {"serial_no": "1","type": "12212222","denomination": "555222"},
+                {"serial_no": "1","type": "12212222","denomination": "555222"},
+                {"serial_no": "1","type": "12212222","denomination": "555222"},
+            ],
+            sharingBonus:[
+                {"serial_no": "1","channel": "12212222","points": "555222"},
+                {"serial_no": "1","channel": "12212222","points": "555222"},
+                {"serial_no": "1","channel": "12212222","points": "555222"},
+                {"serial_no": "1","channel": "12212222","points": "555222"},
+                {"serial_no": "1","channel": "12212222","points": "555222"},
+            ],
+            category:[
+                {"serial_no": "1","category": "12212222","subCategory": "555222"},
+                {"serial_no": "1","category": "12212222","subCategory": "555222"},
+                {"serial_no": "1","category": "12212222","subCategory": "555222"},
+                {"serial_no": "1","category": "12212222","subCategory": "555222"},
+                {"serial_no": "1","category": "12212222","subCategory": "555222"},
             ]
         }
         this.generalHandler = gen.generalHandler.bind(this);
@@ -652,9 +666,9 @@ class OfferManagement extends React.Component {
                                     </div>
                                 
                                 <Table
-                                    gridColumns={utils.getGridColumnByName("ListOffers")}
+                                    gridColumns={utils.getGridColumnByName("OfferManagementSharingBonus")}
                                     //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
-                                    gridData={this.state.gridData}
+                                    gridData={this.state.sharingBonus}
                                     //totalRecords={this.state.totalRecords}
                                     pageSize={10}
                                 //pageChanged={this.pageChanged}
@@ -827,9 +841,9 @@ class OfferManagement extends React.Component {
                             </div>
                         
                         <Table
-                               gridColumns={utils.getGridColumnByName("ListOffers")}
+                               gridColumns={utils.getGridColumnByName("OfferManagementCategories")}
                             //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
-                            gridData={this.state.gridData}
+                            gridData={this.state.category}
                             //totalRecords={this.state.totalRecords}
                             pageSize={10}
                            //pageChanged={this.pageChanged}
@@ -943,7 +957,7 @@ class OfferManagement extends React.Component {
                             </div>
                         
                         <Table
-                               gridColumns={utils.getGridColumnByName("ListOffers")}
+                               gridColumns={utils.getGridColumnByName("OfferManagementCashVoucher")}
                             //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
                             gridData={this.state.gridData}
                             //totalRecords={this.state.totalRecords}

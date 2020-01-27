@@ -37,11 +37,11 @@ class DashboardPartner extends React.Component {
             searchCriteria: {},
             valid: true,
             gridData:[
-                {"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"},
-                {"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"},
-                {"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"},
-                {"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"},
-                {"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"}
+                {"serial_no": "1","batch": "12212222","invoice": "555222","to": "2n44c","ammount": "33000","comission": "True","settlementperiod": "6000","status":"Success"},
+                {"serial_no": "1","batch": "12212222","invoice": "555222","to": "2n44c","ammount": "33000","comission": "True","settlementperiod": "6000","status":"Success"},
+                {"serial_no": "1","batch": "12212222","invoice": "555222","to": "2n44c","ammount": "33000","comission": "True","settlementperiod": "6000","status":"Success"},
+                {"serial_no": "1","batch": "12212222","invoice": "555222","to": "2n44c","ammount": "33000","comission": "True","settlementperiod": "6000","status":"Success"},
+                {"serial_no": "1","batch": "12212222","invoice": "555222","to": "2n44c","ammount": "33000","comission": "True","settlementperiod": "6000","status":"Success"},
             ],
             tiles:[
                 {id: 1, title: "INITIATED", value: 2, actionURI: "", overDue: "", fontClass: "green-steel"},
@@ -157,7 +157,7 @@ class DashboardPartner extends React.Component {
                </div>
                     
                              <Table
-                        gridColumns={utils.getGridColumnByName("VoucherList")}
+                        gridColumns={utils.getGridColumnByName("DashboadrEtisalat")}
                         //gridData={[{"serial_no": "1","merchant": "12212222","offerId": "555222","code": "2n44c","createdon": "22/1/2020","status": "True","expireson": "6000"}]}
                         gridData={this.state.gridData}
                         //totalRecords={this.state.totalRecords}

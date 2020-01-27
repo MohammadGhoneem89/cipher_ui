@@ -39,11 +39,11 @@ class CreateAmendRedemption extends React.Component {
             addShop:{},
             searchCriteria: {},
             gridData:[
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
-                {"serial_no": "1","shopCode": "12212222","locationX": "555222","locationY": "7899"},
+                {"serial_no": "1","startDate": "12212222","endDate": "555222","paymentMethod": "7899","type":"ads","value":"adff"},
+                {"serial_no": "1","startDate": "12212222","endDate": "555222","paymentMethod": "7899","type":"ads","value":"adff"},
+                {"serial_no": "1","startDate": "12212222","endDate": "555222","paymentMethod": "7899","type":"ads","value":"adff"},
+                {"serial_no": "1","startDate": "12212222","endDate": "555222","paymentMethod": "7899","type":"ads","value":"adff"},
+                {"serial_no": "1","startDate": "12212222","endDate": "555222","paymentMethod": "7899","type":"ads","value":"adff"},
             ]
         }
         this.generalHandler = gen.generalHandler.bind(this);
@@ -134,6 +134,69 @@ class CreateAmendRedemption extends React.Component {
                         
 
                     </div>
+
+
+
+                       <br/>
+
+
+                    
+                <Portlet title={"TYPE"}>
+
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="" style={{ opacity: '1' }}>
+                        <div className="portlet-body flip-scroll">
+                            <div className="row">
+                                <div className="col-md-10 col-md-offset-1">
+
+                                    <div className="col-md-4 text-center">
+                                        <div className="voucherBox">
+                                            <img src="/assets/Resources/Redemption.png" width="20%" />
+                                            <h5><strong>Redemption</strong></h5>
+                                            <div className="icheck-list">
+                                                <label className="mt-checkbox mt-checkbox-outline">
+                                                    <label></label>
+                                                    <input  type="checkbox" name="Redemption" value=""  className="form-control" />
+                                                    <span></span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-4 text-center">
+                                        <div className="voucherBox">
+                                            <img src="/assets/Resources/Accrual.png" width="20%" />
+                                            <h5><strong>Accural</strong></h5>
+                                            <div className="icheck-list">
+                                                <label className="mt-checkbox mt-checkbox-outline">
+                                                    <label></label>
+                                                    <input  type="checkbox" name="Accrual"  value="" className="form-control" />
+                                                    <span></span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-4 text-center">
+                                        <div className="voucherBox">
+                                            <img src="/assets/Resources/pointConverstion.png" width="20%" />
+                                            <h5><strong>Point Conversion</strong></h5>
+                                            <div className="icheck-list">
+                                                <label className="mt-checkbox mt-checkbox-outline">
+                                                    <label></label>
+                                                    <input  type="checkbox" name="pointConverstion"  className="form-control" />
+                                                    <span></span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+</Portlet>
 
 
 
@@ -291,15 +354,15 @@ class CreateAmendRedemption extends React.Component {
                                         </div>
                                         <div className="form-group col-md-8">
                                                         <Combobox 
-                                            fieldname='status' 
-                                            formname='searchCriteria'
-                                            state={this.state} //typeName="storeAs"
-                                            typeName="listOfferStatus"
-                                            dataSource={this.state.typeData} 
-                                            multiple={false} 
-                                            actionHandler={this.generalHandler} 
-                                            style={{width:"430px",height:"35px"}}
-                                            />
+                                                        fieldname='status' 
+                                                        formname='searchCriteria'
+                                                        state={this.state} //typeName="storeAs"
+                                                        typeName="listOfferStatus"
+                                                        dataSource={this.state.typeData} 
+                                                        multiple={false} 
+                                                        actionHandler={this.generalHandler} 
+                                                        style={{width:"430px",height:"35px"}}
+                                                         />
                                          </div>
                                       </div>
                                </div>
@@ -336,7 +399,7 @@ class CreateAmendRedemption extends React.Component {
 
 
                                 <Table
-                                    gridColumns={utils.getGridColumnByName("ListOffers")}
+                                    gridColumns={utils.getGridColumnByName("CreateAmendRedemption")}
                                     //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
                                     gridData={this.state.gridData}
                                     //totalRecords={this.state.totalRecords}
@@ -359,13 +422,16 @@ class CreateAmendRedemption extends React.Component {
                                         <label className="control-label">Settle As</label>
                                     </div>
                                     <div className="form-group col-md-8">
-                                            <Input 
-                                            isValid={this.state.valid}
-                                        //validationChecker={this.validationHandler} 
-                                            required={true} 
-                                            fieldname="toOpeningHours" formname="addShop" state={this.state}
-                                            //errorMessage={'This field is required'}
-                                            actionHandler={this.generalHandler } className="form-control"  />
+                                                        <Combobox 
+                                                        fieldname='status' 
+                                                        formname='searchCriteria'
+                                                        state={this.state} //typeName="storeAs"
+                                                        typeName="listOfferStatus"
+                                                        dataSource={this.state.typeData} 
+                                                        multiple={false} 
+                                                        actionHandler={this.generalHandler} 
+                                                        style={{width:"430px",height:"35px"}}
+                                                        />
                                     </div>
                                  </div>
                                 <div className="col-md-6">
@@ -552,7 +618,7 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) };
 }
 
-CreateAmendRedemption.displayName = "Add Offer";
+CreateAmendRedemption.displayName = "Add Partner";
 export default connect(
     mapStateToProps,
     mapDispatchToProps
