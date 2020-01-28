@@ -214,22 +214,6 @@ class OfferManagement extends React.Component {
                         </div>
                     
                         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        
                             {/**Offer type Image */}
 
                     <div className="row" style={{marginTop:"50px"}}>

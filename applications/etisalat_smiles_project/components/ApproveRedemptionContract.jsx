@@ -6,10 +6,11 @@ import * as actions from "../../../core/actions/generalAction";
 
 // import * as utils from "../../../core/common/utils.js";
 //import * as constants from "../../../core/constants/Communication";
-
+import Combobox from '../../../core/common/Select.jsx';
 import * as requestCreator from '../../../core/common/request.js';
 import * as coreConstants from '../../../core/constants/Communication.js'
 import * as gen from '../common/generalActionHandler'
+
 
 //import * as utils from '../common/utils.js';
 import * as utils from '../../../core/common/utils.js';
@@ -35,6 +36,7 @@ class ApproveRedemptionContract extends React.Component {
             checked: false,
             valid: true,
             addShop:{},
+            searchCriteria:{},
             gridData:[],
             contact:[
                 {"serial_no": "1","name": "12212222","address": "555222","mobile": "7899","phone":"8087788","email":"mohammdamusa@gmail.com"},
@@ -61,9 +63,11 @@ class ApproveRedemptionContract extends React.Component {
     }
 
     componentDidMount() {
-    
+        this.props.actions.generalProcess(coreConstants.getTypeData,
+            requestCreator.createTypeDataRequest([
+                'listOfferStatus',
+            ]));
     }
-
 
 
     componentWillReceiveProps(nextProps) {
@@ -120,7 +124,18 @@ class ApproveRedemptionContract extends React.Component {
                                             <label className="control-label">Category</label>
                                         </div>
                                         <div className="form-group col-md-8">
-                                            <input type="text" className="form-control" name="contractId" id="contractId" />
+                                            {/**<input type="text" className="form-control" name="contractId" id="contractId" />
+                                           */}
+                                            <Combobox 
+                                            fieldname='listOfferStatus' 
+                                            formname='searchCriteria'
+                                            state={this.state} //typeName="storeAs"
+                                            typeName="listOfferStatus"
+                                            dataSource={this.state.typeData} 
+                                            multiple={false} 
+                                            actionHandler={this.generalHandler} 
+                                            style={{width:"400px",height:"35px"}}/>
+
                                         </div>
                                     </div>
                                 </div>
@@ -140,41 +155,47 @@ class ApproveRedemptionContract extends React.Component {
                      <br/>
 
 
+                     {/**Type */}
+                     <div className="row addShopBox">
+                         <div className="row smilesImageText" ><b>TYPE</b></div>
+                         <div className="row">
+                                                    <div className="col-md-12">
+                                                        <div className="" style={{ opacity: '1' }}>
+                                                            <div className="portlet-body flip-scroll">
+                                                                <div className="row">
+                                                                    <div className="col-md-10 col-md-offset-1">
 
+                                                                        <div className="col-md-3 text-center">
+                                                                            <div className="voucherBox">
+                                                                                <img src="/assets/Resources/Redemption.png" width="20%" />
+                                                                                
+                                                                                <h5><strong>DISCOUNT</strong></h5>
+                                                                                <div className="icheck-list">
+                                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                                        <label></label>
+                                                                                        <input  type="checkbox" name="Redemption" value=""  className="form-control" />
+                                                                                        <span></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
 
-                    <Portlet title={"TYPE"}>
+                                                                       
 
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="" style={{ opacity: '1' }}>
-                                <div className="portlet-body flip-scroll">
-                                    <div className="row">
-                                        <div className="col-md-10 col-md-offset-1">
+                                                                        
 
-                                            <div className="col-md-4 text-center">
-                                                <div className="voucherBox">
-                                                    <img src="/assets/Resources/Redemption.png" width="20%" />
-                                                    <h5><strong>Redemption</strong></h5>
-                                                    <div className="icheck-list">
-                                                        <label className="mt-checkbox mt-checkbox-outline">
-                                                            <label></label>
-                                                            <input  type="checkbox" name="Redemption" value=""  className="form-control" />
-                                                            <span></span></label>
+                                                                       
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                        
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-                    </div>
+                    
+                     {/**Type */}
 
-</Portlet>
-
+                   
 
 
 
@@ -257,7 +278,7 @@ class ApproveRedemptionContract extends React.Component {
 function mapStateToProps(state, ownProps) {
     //console.log(state.app)
     return {
-        
+        typeData: _.get(state.app, 'typeData.data', null),
     };
 }
 
@@ -271,3 +292,40 @@ export default connect(
     mapDispatchToProps
 )(ApproveRedemptionContract);
 
+
+
+
+/**
+ *  <Portlet title={"TYPE"}>
+
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="" style={{ opacity: '1' }}>
+                                <div className="portlet-body flip-scroll">
+                                    <div className="row">
+                                        <div className="col-md-10 col-md-offset-1">
+
+                                            <div className="col-md-4 text-center">
+                                                <div className="voucherBox">
+                                                    <img src="/assets/Resources/Redemption.png" width="20%" />
+                                                    <h5><strong>Redemption</strong></h5>
+                                                    <div className="icheck-list">
+                                                        <label className="mt-checkbox mt-checkbox-outline">
+                                                            <label></label>
+                                                            <input  type="checkbox" name="Redemption" value=""  className="form-control" />
+                                                            <span></span></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+</Portlet>
+
+ */
