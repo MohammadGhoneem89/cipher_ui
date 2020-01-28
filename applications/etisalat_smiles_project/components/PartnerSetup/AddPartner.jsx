@@ -1248,7 +1248,7 @@ class AddPartner extends Component {
             });
     }
     redirectToList = () => {
-        browserHistory.push('/hyperledger/workboard')
+        browserHistory.push('/smiles/partnerList')
         toaster.showToast("Partner created successfully!");
     }
 
