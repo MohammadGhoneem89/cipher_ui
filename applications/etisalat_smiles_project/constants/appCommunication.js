@@ -4,6 +4,8 @@ let baseUrl = backOffices.baseUrl;
 
 
 module.exports = {
+    getPartnerByID: `${baseUrl}/API/SMILES/getPartnerByID`,
+    updatePartnerStatus: `${baseUrl}/API/SMILES/updatePartnerStatus`,
     getPartnersList: `${baseUrl}/API/SMILES/getPartnersList`, 
     addEditPartner: `${baseUrl}/API/SMILES/addEditPartner`,
     encrypt: `${baseUrl}/API/STRATA/encryptData`,

@@ -22,6 +22,7 @@ import ListOffers from './components/ListOffers.jsx'
 import VoucherList from './components/VoucherList.jsx'
 import VoucherManagement from './components/VoucherManagement.jsx'
 import AddPartner from './components/PartnerSetup/addPartner.jsx'
+import ApprovePartner from "./components/PartnerSetup/ApprovePartner.jsx"
 import PartnerList from './components/PartnerSetup/PartnerList.jsx'
 import dashboard from './components/Dashboard/dashboard.jsx';
 
@@ -52,6 +53,7 @@ let authRoutes = <div>
     <Route path="/smiles/View/FileDetails" component={fileDetail} />//rm
     <Route path="/smiles/addPartner" component={AddPartner} />
     <Route path="/smiles/partnerList" component={PartnerList} />
+    <Route path="/smiles/ApprovePartner/:partnerCode" component={ApprovePartner} />
 
     <Route path="/smiles/addShop" component={AddShop}/>
     <Route path="/smiles/listOffers" component={ListOffers}/>
