@@ -839,13 +839,25 @@ class AddPartner extends Component {
                         gridData={this.state.settlementArr || []}
                     /> */}
                 </Portlet>
-                <Portlet title={"TERMS & CONDITIONS"} style={{ height: '140px' }}>
+                <Portlet title={"TERMS & CONDITIONS EN"} style={{ height: '140px' }}>
                     <Textarea
                         style={{ height: '120px' }}
                         fieldname='termsandConditionsEn'
                         formname='contractParams'
                         columns='12'
-                        placeholder=''
+                        placeholder='Terms and Conditions'
+                        state={this.state}
+                        actionHandler={this.generalHandler}
+                        className="form-control"
+                    />
+                </Portlet>
+                <Portlet title={"TERMS & CONDITIONS AR"} style={{ height: '140px' }}>
+                    <Textarea
+                        style={{ height: '120px',textAlign: "right" }}
+                        fieldname='termsandConditionsAr'
+                        formname='contractParams'
+                        columns='12'
+                        placeholder='الأحكام والشروط'
                         state={this.state}
                         actionHandler={this.generalHandler}
                         className="form-control"
@@ -1248,7 +1260,7 @@ class AddPartner extends Component {
             });
     }
     redirectToList = () => {
-        browserHistory.push('/hyperledger/workboard')
+        browserHistory.push('/smiles/partnerList')
         toaster.showToast("Partner created successfully!");
     }
 
@@ -1350,7 +1362,7 @@ class AddPartner extends Component {
                             fieldname='partnerDescriptionEn'
                             formname='body'
                             columns='7'
-                            placeholder=''
+                            placeholder='Partner Description'
                             state={this.state}
                             actionHandler={this.generalHandler}
                             className="form-control"
@@ -1361,11 +1373,11 @@ class AddPartner extends Component {
 
                         <Label text="Partner Description Ar" columns='4' style={{ padding: "0 0 0 30" }} />
                         <Textarea
-                            style={{ height: '60px' }}
+                            style={{ height: '60px', textAlign: "right" }}
                             fieldname='partnerDescriptionAr'
                             formname='body'
                             columns='7'
-                            placeholder=''
+                            placeholder='وصف الشريك'
                             state={this.state}
                             actionHandler={this.generalHandler}
                             className="form-control"

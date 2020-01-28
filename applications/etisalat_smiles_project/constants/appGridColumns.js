@@ -7,6 +7,15 @@ module.exports = {
         { alias: "Mode", key: "mode", type: "string" },
         { alias: "Action", key: "action", type: "action" }
     ],
+    partnerlist: [
+        { alias: "", key: "_id", type: "hiddenID" },
+        { alias: "Partner Code", key: "partnerCode", type: "string" },
+        { alias: "Partner Er Code", key: "partnerErCode", type: "string" },
+        { alias: "Approved By", key: "approvedBy", type: "string" },
+        // { alias: "Rejected By", key: "rejectedBy", type: "string" },
+        { alias: "Status", key: "statusObj", type: "statusLabel" },
+        { alias: "Action", key: "action", type: "action" }
+    ],
     pointConversion: [
         { alias: "S.NO", key: "", type: "serialNo" },
         { alias: "Program Code", key: "programCode", type: "string" },
