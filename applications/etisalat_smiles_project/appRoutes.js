@@ -5,7 +5,7 @@ import Locked from "../../core/components/AuthenticationScreens/Locked.jsx";
 import Login from "../../core/components/AuthenticationScreens/Login.jsx";
 
 //App Routes
-import ViewTransactions from "./components/Transaction/ViewTransactions.jsx";
+import TransactionList from "./components/Transaction/TransactionList.jsx";
 import TransactionDetail from './components/Transaction/TransactionDetail.jsx';
 // import Cipher from "./components/Cipher.jsx";
 import ChangePassword from '../../core/components/AuthenticationScreens/changePassword.jsx';
@@ -43,45 +43,57 @@ import CreateAmendRedemption from "./components/CreateAmendRedemption.jsx"
 import OrderManagementDetails from "./components/OrderManagementDetail.jsx"
 
 let authRoutes = <div>
-    <Route path="/smiles/View/Transaction" component={ViewTransactions} />
-    <Route path="/smiles/Detail/Transaction" component={TransactionDetail} />
- 
-    <Route path="/smiles/View/Settlements" component={ViewSettlement} />
-    <Route path="/smiles/Submit/Settlements" component={SubmitSettlement} />
+
+    {/* RECON SCREEN */}
+    <Route path="/smiles/transactionList" component={TransactionList} />
+    <Route path="/smiles/transaction/view" component={TransactionDetail} />
+    <Route path="/smiles/settlementList" component={ViewSettlement} />
+    <Route path="/smiles/settlementDetail" component={SubmitSettlement} />
+    <Route path="/smiles/initiateSettlementPartner" component={InitiateSettlementPartner} />
+    <Route path="/smiles/initiateSettlementEtisalat" component={InitiateSettlementEtisalat} />
+
+    {/* DASHBOARD */}
     <Route path="/smiles/View/dashboard" component={dashboard} />
-    <Route path="/smiles/View/FileScreen" component={fileScreen} />//rm
-    <Route path="/smiles/View/FileDetails" component={fileDetail} />//rm
+
+    <Route path="/smiles/Etisalat" component={DashboardEtisalat} />
+    <Route path="/smiles/Partner" component={DashboardPartner} />
+
+    {/* setup */}
     <Route path="/smiles/addPartner" component={AddPartner} />
     <Route path="/smiles/partnerList" component={PartnerList} />
     <Route path="/smiles/ApprovePartner/:partnerCode" component={ApprovePartner} />
 
-    <Route path="/smiles/addShop" component={AddShop}/>
-    <Route path="/smiles/listOffers" component={ListOffers}/>
-    <Route path="/smiles/voucherList" component={VoucherList}/>
-    <Route path="/smiles/voucherManagement" component={VoucherManagement}/>
+    {/* REDEMPTION */}
+    <Route path="/smiles/addShop" component={AddShop} />
+    <Route path="/smiles/offerManagement" component={OfferManagement} />
+    <Route path="/smiles/listOffers" component={ListOffers} />
+    <Route path="/smiles/voucherList" component={VoucherList} />
+    <Route path="/smiles/voucherManagement" component={VoucherManagement} />
+    <Route path="/smiles/createAmendRedemption" component={CreateAmendRedemption} />
 
-    <Route path="/smiles/merchantList" component={MerchantList}/>
-    <Route path="/smiles/productList" component={ProductList}/>
-    <Route path="/smiles/inventoryManagement"  component={InventoryManagement}/>
-    <Route path="/smiles/orderManagement" component={OrderManagement}/>
 
-        <Route path="/smiles/initiateSettlementPartner" component={InitiateSettlementPartner}/>
-        <Route path="/smiles/initiateSettlementEtisalat" component={InitiateSettlementEtisalat}/>
-        <Route path="/smiles/addNewMerchant" component={AddNewMerchant}/>
-        <Route path="/smiles/offerManagement" component={OfferManagement}/>
-        <Route path="/smiles/productManagement"  component={ProductManagement}/>
-        <Route path="/smiles/approveRedemptionContract" component={ApproveRedemtionContract}/>
-        <Route path="/smiles/dashboardEtisalat" component={DashboardEtisalat}/>
-        <Route path="/smiles/dashboardPartner" component={DashboardPartner}/>
-        <Route path="/smiles/createAmendRedemption" component={CreateAmendRedemption}/>
-        <Route path="/smiles/orderManagementDetail" component={OrderManagementDetails}/>
-       
+    <Route path="/smiles/addNewMerchant" component={AddNewMerchant} />
+    <Route path="/smiles/merchantList" component={MerchantList} />
+    <Route path="/smiles/productList" component={ProductList} />
+    <Route path="/smiles/inventoryManagement" component={InventoryManagement} />
+
+    <Route path="/smiles/productManagement" component={ProductManagement} />
+    <Route path="/smiles/approveRedemptionContract" component={ApproveRedemtionContract} />
+
+    {/* ORDER */}
+    <Route path="/smiles/orderManagement" component={OrderManagement} />--order
+    <Route path="/smiles/orderManagementDetail" component={OrderManagementDetails} />
+
+
+    <Route path="/smiles/View/FileScreen" component={fileScreen} />//rm
+    <Route path="/smiles/View/FileDetails" component={fileDetail} />//rm
+
 
 </div>;
-    
+
 let unAuthRoutes =
     <div>``
-       
+
         <Route path="/smiles/Locked" component={Locked} />
         <Route path="/smiles/changePassword/:orgType" component={ChangePassword} />
         <Route path="/smiles/login" component={Login} />

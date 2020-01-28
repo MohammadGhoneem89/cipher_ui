@@ -26,8 +26,7 @@ module.exports = {
   fileTemplateUpdate: baseUrl + '/API/UI/fileTemplateUpdate',
   fileTemplateInsert: baseUrl + '/API/UI/fileTemplateInsert',
 
-  //SMILES API URLS:
-  getViewTransaction: baseUrl + '/API/SMILES/getPointConversionTransactionLists' ,
+
 
   getCommissionTemplateList: baseUrl + '/API/UI/commissionTemplateList',
   getCommissionTemplateDetails: baseUrl + '/API/UI/commissionTemplateDetail',

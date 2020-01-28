@@ -15,9 +15,9 @@ import DateControl from '../../../../core/common/DateControl.jsx';
 import Combobox from '../../../../core/common/Select.jsx';
 import * as gen from '../../../../core/common/generalActionHandler';
 
-class ViewTransactions extends React.Component {
+class TransactionList extends React.Component {
     constructor(props) {
-        console.log("View Transaction")
+        
         super(props);
         this.state = {
             searchCriteria: {},
@@ -87,7 +87,7 @@ class ViewTransactions extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actions.generalProcess(constants.getViewTransaction, this.getRequest())
+        this.props.actions.generalProcess(constants.getTransactionList, this.getRequest())
         window.scrollTo(0, 0);
     }
 
@@ -114,7 +114,7 @@ class ViewTransactions extends React.Component {
         page.currentPageNo = pageNo;
         this.setState({ page: page });
         // this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
-        this.props.actions.generalProcess(constants.getViewTransaction, this.getRequest())
+        this.props.actions.generalProcess(constants.getTransactionList, this.getRequest())
     }
 
     render() {
@@ -259,7 +259,7 @@ class ViewTransactions extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        transData: _.get(state.app, 'getPointConversionTransactionList.data.searchResult', [])
+        transData: _.get(state.app, 'getTransactionList.data.searchResult', [])
     }
 }
 
@@ -267,8 +267,8 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }   
 }
 
-ViewTransactions.displayName = "Transaction List";
-export default connect(mapStateToProps, mapDispatchToProps)(ViewTransactions);
+TransactionList.displayName = "Transaction List";
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionList);
 
 
 
