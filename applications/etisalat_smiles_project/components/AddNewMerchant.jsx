@@ -83,10 +83,16 @@ class AddNewMerchant extends React.Component {
 
                             <div className="col-md-8" >
 
-                                    <div className="row" style={{marginBottom:"20px",marginLeft:"10px"}}>
-                                        <div className="col-md-2 ">Partner Code</div>
-                                        <div className="col-md-2">YGAG</div>
-                                   </div>
+                            <div className="row">
+                                    <div className="col-md-8">
+                                        <div className="form-group col-md-4">
+                                            <label className="control-label">Partner Code</label>
+                                        </div>
+                                        <div className="form-group col-md-8">
+                                        YGAG
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div className="row">
                                     <div className="col-md-8">

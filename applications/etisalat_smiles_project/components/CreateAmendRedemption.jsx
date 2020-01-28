@@ -65,6 +65,9 @@ class CreateAmendRedemption extends React.Component {
 
 
     componentWillReceiveProps(nextProps) {
+        this.setState({
+            typeData: nextProps.typeData
+        })
            
     }
     onChangeCheckbox() {
@@ -353,16 +356,15 @@ class CreateAmendRedemption extends React.Component {
                                             <label className="control-label">Commision Type</label>
                                         </div>
                                         <div className="form-group col-md-8">
-                                                        <Combobox 
-                                                        fieldname='status' 
-                                                        formname='searchCriteria'
-                                                        state={this.state} //typeName="storeAs"
-                                                        typeName="listOfferStatus"
-                                                        dataSource={this.state.typeData} 
-                                                        multiple={false} 
-                                                        actionHandler={this.generalHandler} 
-                                                        style={{width:"430px",height:"35px"}}
-                                                         />
+                                                                <Combobox 
+                                                fieldname='listOfferStatus' 
+                                                formname='searchCriteria'
+                                                state={this.state} //typeName="storeAs"
+                                                typeName="listOfferStatus"
+                                                dataSource={this.state.typeData} 
+                                                multiple={false} 
+                                                actionHandler={this.generalHandler} 
+                                                style={{width:"430px",height:"35px"}}/>
                                          </div>
                                       </div>
                                </div>
@@ -422,16 +424,15 @@ class CreateAmendRedemption extends React.Component {
                                         <label className="control-label">Settle As</label>
                                     </div>
                                     <div className="form-group col-md-8">
-                                                        <Combobox 
-                                                        fieldname='status' 
-                                                        formname='searchCriteria'
-                                                        state={this.state} //typeName="storeAs"
-                                                        typeName="listOfferStatus"
-                                                        dataSource={this.state.typeData} 
-                                                        multiple={false} 
-                                                        actionHandler={this.generalHandler} 
-                                                        style={{width:"430px",height:"35px"}}
-                                                        />
+                                    <Combobox 
+                                            fieldname='listOfferStatus' 
+                                            formname='searchCriteria'
+                                            state={this.state} //typeName="storeAs"
+                                            typeName="listOfferStatus"
+                                            dataSource={this.state.typeData} 
+                                            multiple={false} 
+                                            actionHandler={this.generalHandler} 
+                                            style={{width:"400px",height:"35px"}}/>
                                     </div>
                                  </div>
                                 <div className="col-md-6">
@@ -439,13 +440,15 @@ class CreateAmendRedemption extends React.Component {
                                         <label className="control-label">Frequency</label>
                                     </div>
                                     <div className="form-group col-md-8">
-                                            <Input 
-                                            isValid={this.state.valid}
-                                        //validationChecker={this.validationHandler} 
-                                            required={true} 
-                                            fieldname="toOpeningHours" formname="addShop" state={this.state}
-                                            //errorMessage={'This field is required'}
-                                            actionHandler={this.generalHandler } className="form-control"  />
+                                    <Combobox 
+                                            fieldname='listOfferStatus' 
+                                            formname='searchCriteria'
+                                            state={this.state} //typeName="storeAs"
+                                            typeName="listOfferStatus"
+                                            dataSource={this.state.typeData} 
+                                            multiple={false} 
+                                            actionHandler={this.generalHandler} 
+                                            style={{width:"400px",height:"35px"}}/>
                                     </div>
                                 </div>
                              </div>
@@ -458,13 +461,15 @@ class CreateAmendRedemption extends React.Component {
                                                         <label className="control-label">Start On</label>
                                                     </div>
                                                     <div className="form-group col-md-8">
-                                                            <Input 
-                                                            isValid={this.state.valid}
-                                                        //validationChecker={this.validationHandler} 
-                                                            required={true} 
-                                                            fieldname="toOpeningHours" formname="addShop" state={this.state}
-                                                            //errorMessage={'This field is required'}
-                                                            actionHandler={this.generalHandler } className="form-control"  />
+                                                                <Combobox 
+                                                                fieldname='listOfferStatus' 
+                                                                formname='searchCriteria'
+                                                                state={this.state} //typeName="storeAs"
+                                                                typeName="listOfferStatus"
+                                                                dataSource={this.state.typeData} 
+                                                                multiple={false} 
+                                                                actionHandler={this.generalHandler} 
+                                                                style={{width:"400px",height:"35px"}}/>
                                                     </div>
                                                 </div>
                                            </div>

@@ -52,6 +52,7 @@ class MerchantList extends React.Component {
         this.props.actions.generalProcess(coreConstants.getTypeData,
             requestCreator.createTypeDataRequest([
                 'listOfferStatus',
+                'InitiateSettlementPartner'
             ]));
        
     }
@@ -88,7 +89,7 @@ class MerchantList extends React.Component {
                          fieldname='listOfferStatus' 
                          formname='searchCriteria'
                          state={this.state} //typeName="storeAs"
-                         typeName="listOfferStatus"
+                         typeName="InitiateSettlementPartner"
                          dataSource={this.state.typeData} 
                          multiple={false} 
                          actionHandler={this.generalHandler} 

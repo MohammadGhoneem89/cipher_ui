@@ -27,13 +27,52 @@ class AddShop extends React.Component {
         super(props, context);
         this.state = {
             valid: true,
-            addShop:{}
+            addShop:{},
+            FromHoursError:"",
+            ToHoursErrors:"",
+            contactErrors:"",
+            emailErrors:"",
+            addressErrors:""
         }
         this.generalHandler = gen.generalHandler.bind(this);
+        this.addShop=this.addShop.bind(this);
     }
    
-
     
+    addShop(){
+        console.log("From :::::",this.state.addShop.fromOpeningHours)
+        if(this.state.addShop.fromOpeningHours==="" || this.state.addShop.fromOpeningHours===undefined){
+            this.setState({FromHoursError:"Field Required"})
+        }
+        else{
+            this.setState({FromHoursError:""})
+        }
+        if(this.state.addShop.toOpeningHours==="" || this.state.addShop.toOpeningHours===undefined){
+            this.setState({ToHoursErrors:"Field Required"})
+        }
+        else{
+            this.setState({ToHoursErrors:""})
+        }
+        if(this.state.addShop.contact==="" || this.state.addShop.contact===undefined){
+            this.setState({contactErrors:"Field Required"})
+        }
+        else{
+            this.setState({contactErrors:""})
+        }
+        if(this.state.addShop.email==="" || this.state.addShop.email===undefined){
+            this.setState({emailErrors:"Field Required"})
+        }
+        else{
+            this.setState({emailErrors:""})
+        }
+        if(this.state.addShop.address==="" || this.state.addShop.address===undefined){
+            this.setState({addressErrors:"Field Required"})
+        }
+        else{
+            this.setState({addressErrors:""})
+        }
+
+    }
     componentWillMount() {
     }
 
@@ -150,6 +189,7 @@ class AddShop extends React.Component {
                           fieldname="fromOpeningHours" formname="addShop" state={this.state}
                          //errorMessage={'This field is required'}
                          actionHandler={this.generalHandler } className="form-control"  />
+                         <p className="text-danger">{this.state.FromHoursError}</p>
                                 
                             </div>
                         </div>
@@ -166,6 +206,7 @@ class AddShop extends React.Component {
                           fieldname="toOpeningHours" formname="addShop" state={this.state}
                          //errorMessage={'This field is required'}
                          actionHandler={this.generalHandler } className="form-control"  />
+                          <p className="text-danger">{this.state.ToHoursErrors}</p>
                             </div>
                         </div>
                     </div>
@@ -189,6 +230,7 @@ class AddShop extends React.Component {
                           fieldname="contact" formname="addShop" state={this.state}
                          //errorMessage={'This field is required'}
                          actionHandler={this.generalHandler } className="form-control"  />
+                          <p className="text-danger">{this.state.contactErrors}</p>
                                 </div>
                             </div>
                             <div className="col-md-6">
@@ -203,6 +245,7 @@ class AddShop extends React.Component {
                           fieldname="email" formname="addShop" state={this.state}
                          //errorMessage={'This field is required'}
                          actionHandler={this.generalHandler } className="form-control"  />
+                          <p className="text-danger">{this.state.emailErrors}</p>
                                 </div>
                             </div>
                         </div>
@@ -220,6 +263,7 @@ class AddShop extends React.Component {
                           fieldname="address" formname="addShop" state={this.state}
                          //errorMessage={'This field is required'}
                          actionHandler={this.generalHandler } className="form-control"  />
+                         <p className="text-danger">{this.state.addressErrors}</p>
                                 </div>
                             </div>
                         </div>
@@ -229,7 +273,7 @@ class AddShop extends React.Component {
                        <div className="clearfix pull-right">
                               <div className="col-md-2"></div>
                             <div className="col-md-3" style={{ paddingRight: '50px', marginTop:"30px"}}>
-                             <button type="submit" className="btn green">Save</button>
+                             <button type="submit" className="btn green" onClick={this.addShop}>Save</button>
                             </div>
                        </div>
                     </div>

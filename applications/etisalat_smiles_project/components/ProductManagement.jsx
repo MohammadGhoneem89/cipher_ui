@@ -71,7 +71,7 @@ class ProductManagement extends React.Component {
     updateState = (data) => {
         this.setState(data);
     }
-
+    
 
     render() {       
         return (
@@ -79,6 +79,30 @@ class ProductManagement extends React.Component {
              
                 <Portlet >
                     <div>
+                    {/**
+                     *  <img
+                    id="UserProfilePic"
+                    src="/assets/imgs/palceholder.jpg"
+                   // onError={this.addDefaultSrc}
+                    className="img-responsive img-thumbnail" alt="Profile Image" width='150px'
+                    height='150px'
+                    style={{ ...imgStyle }}
+                    //ref={input => this.logo = input}
+                />
+                 
+                <br />
+
+                <button
+                    className="btn green"
+                    style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
+                    onClick={() => {
+                        this.profilePicUploader.click();
+                    }}
+                >
+                    {"Upload Image"}
+                </button>
+                     */}
+                   
 
                     <div className="row">
                     

@@ -69,8 +69,10 @@ class ApproveRedemptionContract extends React.Component {
             ]));
     }
 
-
     componentWillReceiveProps(nextProps) {
+        this.setState({
+            typeData: nextProps.typeData
+        })
            
     }
     onChangeCheckbox() {
