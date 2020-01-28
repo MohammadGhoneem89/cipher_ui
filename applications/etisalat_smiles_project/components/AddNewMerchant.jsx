@@ -130,13 +130,13 @@ class AddNewMerchant extends React.Component {
                                 <label className="control-label">Name (En)</label>
                             </div>
                             <div className="form-group col-md-8">
-                                <Input 
+                               <Input 
                                     isValid={this.state.valid}
                                 //validationChecker={this.validationHandler} 
                                     required={true} 
-                                    fieldname="fromOpeningHours" formname="addShop" state={this.state}
+                                    fieldname="toOpeningHours" formname="addShop" state={this.state}
                                     //errorMessage={'This field is required'}
-                                    actionHandler={this.generalHandler } className="form-control"  />                  
+                                    actionHandler={this.generalHandler } className="form-control"  />                 
                             </div>
                         </div>
                         <div className="col-md-6">
@@ -256,27 +256,55 @@ class AddNewMerchant extends React.Component {
 
                         <div className="row">
                         <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Partner Description</label>
-                            </div>
+                                <div className="form-group col-md-4">
+                                    <label className="control-label">Partner Description &nbsp;&nbsp;&nbsp; Er</label>
+                                </div>
                             <div className="form-group col-md-8">
-                                <div className="row">
-                                      <div className="col-md-1">Er</div>
-                                      <div className="col-md-8">
-                                        <Input 
-                                            isValid={this.state.valid}
-                                        //validationChecker={this.validationHandler} 
-                                            required={true} 
-                                            fieldname="fromOpeningHours" formname="addShop" state={this.state}
-                                            //errorMessage={'This field is required'}
-                                            actionHandler={this.generalHandler } className="form-control"  />
-                                        </div>  
-                                </div>                
+                                    <Input 
+                                    isValid={this.state.valid}
+                                //validationChecker={this.validationHandler} 
+                                    required={true} 
+                                    fieldname="toOpeningHours" formname="addShop" state={this.state}
+                                    //errorMessage={'This field is required'}
+                                    actionHandler={this.generalHandler } className="form-control"  />
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                                <div className="form-group col-md-4">
+                                    <label className="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ar</label>
+                                </div>
+                            <div className="form-group col-md-8">
+                                    <Input 
+                                    isValid={this.state.valid}
+                                //validationChecker={this.validationHandler} 
+                                    required={true} 
+                                    fieldname="toOpeningHours" formname="addShop" state={this.state}
+                                    //errorMessage={'This field is required'}
+                                    actionHandler={this.generalHandler } className="form-control"  />
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div className="row">
+                    <div className="col-md-6">
+                                <div className="form-group col-md-4">
+                                    <label className="control-label">Terms and Condition &nbsp;&nbsp;&nbsp;Er</label>
+                                </div>
+                            <div className="form-group col-md-8">
+                                    <Input 
+                                    isValid={this.state.valid}
+                                //validationChecker={this.validationHandler} 
+                                    required={true} 
+                                    fieldname="toOpeningHours" formname="addShop" state={this.state}
+                                    //errorMessage={'This field is required'}
+                                    actionHandler={this.generalHandler } className="form-control"  />
                             </div>
                         </div>
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">Ar</label>
+                                <label className="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ar</label>
                             </div>
                             <div className="form-group col-md-8">
                                     <Input 
@@ -293,29 +321,10 @@ class AddNewMerchant extends React.Component {
 
 
                     <div className="row">
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Terms And Conditions</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <div className="row">
-                                      <div className="col-md-1">Er</div>
-                                      <div className="col-md-8">
-                                        <Input 
-                                            isValid={this.state.valid}
-                                        //validationChecker={this.validationHandler} 
-                                            required={true} 
-                                            fieldname="fromOpeningHours" formname="addShop" state={this.state}
-                                            //errorMessage={'This field is required'}
-                                            actionHandler={this.generalHandler } className="form-control"  />
-                                        </div>  
-                                </div>                
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Ar</label>
-                            </div>
+                    <div className="col-md-6">
+                                <div className="form-group col-md-4">
+                                    <label className="control-label">What you get &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Er</label>
+                                </div>
                             <div className="form-group col-md-8">
                                     <Input 
                                     isValid={this.state.valid}
@@ -326,33 +335,9 @@ class AddNewMerchant extends React.Component {
                                     actionHandler={this.generalHandler } className="form-control"  />
                             </div>
                         </div>
-                    </div>
-
-
-
-                    <div className="row">
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">What you get</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <div className="row">
-                                      <div className="col-md-1">Er</div>
-                                      <div className="col-md-8">
-                                        <Input 
-                                            isValid={this.state.valid}
-                                        //validationChecker={this.validationHandler} 
-                                            required={true} 
-                                            fieldname="fromOpeningHours" formname="addShop" state={this.state}
-                                            //errorMessage={'This field is required'}
-                                            actionHandler={this.generalHandler } className="form-control"  />
-                                        </div>  
-                                </div>                
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Ar</label>
+                                <label className="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ar</label>
                             </div>
                             <div className="form-group col-md-8">
                                     <Input 
@@ -371,28 +356,23 @@ class AddNewMerchant extends React.Component {
 
 
                     <div className="row">
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">What you get Reduced</label>
-                            </div>
+                    <div className="col-md-6">
+                                <div className="form-group col-md-4">
+                                    <label className="control-label">What you get reduced &nbsp;&nbsp;&nbsp; Er </label>
+                                </div>
                             <div className="form-group col-md-8">
-                                <div className="row">
-                                      <div className="col-md-1">Er</div>
-                                      <div className="col-md-8">
-                                        <Input 
-                                            isValid={this.state.valid}
-                                        //validationChecker={this.validationHandler} 
-                                            required={true} 
-                                            fieldname="fromOpeningHours" formname="addShop" state={this.state}
-                                            //errorMessage={'This field is required'}
-                                            actionHandler={this.generalHandler } className="form-control"  />
-                                        </div>  
-                                </div>                
+                                    <Input 
+                                    isValid={this.state.valid}
+                                //validationChecker={this.validationHandler} 
+                                    required={true} 
+                                    fieldname="toOpeningHours" formname="addShop" state={this.state}
+                                    //errorMessage={'This field is required'}
+                                    actionHandler={this.generalHandler } className="form-control"  />
                             </div>
                         </div>
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">Ar</label>
+                                <label className="control-label"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ar</label>
                             </div>
                             <div className="form-group col-md-8">
                                     <Input 
@@ -433,9 +413,11 @@ class AddNewMerchant extends React.Component {
                               <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>OFFERS</b></div>
                         </div>
                    
-                    <Portlet title={"TYPE"}>
 
-                                                <div className="row">
+                       {/**type */}
+                       <div className="row imageDiv">
+                         <div className="row smilesImageText" ><b>TYPE</b></div>
+                                               <div className="row">
                                                     <div className="col-md-12">
                                                         <div className="" style={{ opacity: '1' }}>
                                                             <div className="portlet-body flip-scroll">
@@ -500,34 +482,87 @@ class AddNewMerchant extends React.Component {
                                                         </div>
                                                     </div>
                                                 </div>
+                             </div>
+                       {/**Type */}
 
-                                                </Portlet>
 
 
 
+                       {/*BarCode Start*/}
                         <div className="row imageDiv">
                          <div className="row smilesImageText" ><b>BARCODE TYPE</b></div>
-                            <div className="row" style={{marginLeft:"50px"  }}>
-                                <div className="col-md-3">
-                                    <div className="row" style={{marginLeft:"50px", color:"#E0E0E0" }}><b>CODE 123</b></div> 
-                                    <div className="row"> <img src="/assets/imgs/barcode.jpg" className="smilesImage"/></div>
-                                </div>
-                                <div className="col-md-3">
-                                    <div className="row" style={{marginLeft:"50px", color:"#E0E0E0"}}><b>CODE 123</b></div> 
-                                    <div className="row"> <img src="/assets/imgs/barcode.jpg" className="smilesImage"/></div>
-                                </div>
-                                <div className="col-md-3">
-                                    <div className="row" style={{marginLeft:"50px", color:"#E0E0E0" }}><b>CODE 123</b></div> 
-                                    <div className="row"> <img src="/assets/imgs/barcode.jpg" className="smilesImage"/></div>
-                                </div>
-                                <div className="col-md-3">
-                                    <div className="row" style={{marginLeft:"50px", color:"#E0E0E0" }}><b>CODE 123</b></div> 
-                                    <div className="row"> <img src="/assets/imgs/barcode.jpg" className="smilesImage"/></div>
-                                </div>
-                            </div>
+                         <div className="row">
+                                                    <div className="col-md-12">
+                                                        <div className="" style={{ opacity: '1' }}>
+                                                            <div className="portlet-body flip-scroll">
+                                                                <div className="row">
+                                                                    <div className="col-md-10 col-md-offset-1">
+
+                                                                        <div className="col-md-3 text-center">
+                                                                            <div className="voucherBox">
+                                                                                {/*<img src="/assets/Resources/Redemption.png" width="20%" />*/}
+                                                                                <img src="/assets/imgs/barcode.jpg" className="smilesImage"/>
+                                                                                <h5><strong>A66889257779A</strong></h5>
+                                                                                <div className="icheck-list">
+                                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                                        <label></label>
+                                                                                        <input  type="checkbox" name="Redemption" value=""  className="form-control" />
+                                                                                        <span></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className="col-md-3 text-center">
+                                                                            <div className="voucherBox">
+                                                                                {/*<img src="/assets/Resources/Accrual.png" width="20%" />*/}
+                                                                                <img src="/assets/imgs/barcode.jpg" className="smilesImage"/>
+                                                                                <h5><strong>A66889257779A</strong></h5>
+                                                                                <div className="icheck-list">
+                                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                                        <label></label>
+                                                                                        <input  type="checkbox" name="Accrual"  value="" className="form-control" />
+                                                                                        <span></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className="col-md-3 text-center">
+                                                                            <div className="voucherBox">
+                                                                                {/*<img src="/assets/Resources/pointConverstion.png" width="20%" />*/}
+                                                                                <img src="/assets/imgs/barcode.jpg" className="smilesImage"/>
+                                                                                <h5><strong>A66889257779A</strong></h5>
+                                                                                <div className="icheck-list">
+                                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                                        <label></label>
+                                                                                        <input  type="checkbox" name="pointConverstion"  className="form-control" />
+                                                                                        <span></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className="col-md-3 text-center">
+                                                                            <div className="voucherBox">
+                                                                                {/**<img src="/assets/Resources/pointConverstion.png" width="20%" /> */}
+                                                                                <img src="/assets/imgs/barcode.jpg" className="smilesImage"/>
+                                                                                <h5><strong>A66889257779A</strong></h5>
+                                                                                <div className="icheck-list">
+                                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                                        <label></label>
+                                                                                        <input  type="checkbox" name="pointConverstion"  className="form-control" />
+                                                                                        <span></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                         </div>
                     </div>
-
+                 {/**Barcode end  */}
 
                     <div className="row addShopBox">
                         <div className="addShopBoxText" style={{ color: "#089729", marginLeft:"20px"  }}><b>PRODUCTS</b></div>
@@ -661,3 +696,33 @@ export default connect(
                                     </div>
                             </div>
  */
+
+
+
+ /**
+  *  BarCode Start*
+  <div className="row imageDiv">
+  <div className="row smilesImageText" ><b>BARCODE TYPE</b></div>
+     <div className="row" style={{marginLeft:"50px"  }}>
+         <div className="col-md-3">
+             <div className="row" style={{marginLeft:"50px", color:"#E0E0E0" }}><b>CODE 123</b></div> 
+             <div className="row"> <img src="/assets/imgs/barcode.jpg" className="smilesImage"/></div>
+         </div>
+         <div className="col-md-3">
+             <div className="row" style={{marginLeft:"50px", color:"#E0E0E0"}}><b>CODE 123</b></div> 
+             <div className="row"> <img src="/assets/imgs/barcode.jpg" className="smilesImage"/></div>
+         </div>
+         <div className="col-md-3">
+             <div className="row" style={{marginLeft:"50px", color:"#E0E0E0" }}><b>CODE 123</b></div> 
+             <div className="row"> <img src="/assets/imgs/barcode.jpg" className="smilesImage"/></div>
+         </div>
+         <div className="col-md-3">
+             <div className="row" style={{marginLeft:"50px", color:"#E0E0E0" }}><b>CODE 123</b></div> 
+             <div className="row"> <img src="/assets/imgs/barcode.jpg" className="smilesImage"/></div>
+         </div>
+     </div>
+ </div>
+</div>
+
+
+  */

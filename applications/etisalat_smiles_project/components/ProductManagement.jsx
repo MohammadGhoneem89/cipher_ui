@@ -86,10 +86,17 @@ class ProductManagement extends React.Component {
 
                             <div className="col-md-8" >
 
-                                    <div className="row" style={{marginBottom:"20px",marginLeft:"10px"}}>
-                                        <div className="col-md-2 ">Partner Code</div>
-                                        <div className="col-md-2">YGAG</div>
-                                   </div>
+                                    
+                                   <div className="row">
+                                    <div className="col-md-8">
+                                        <div className="form-group col-md-4">
+                                            <label className="control-label">Partner Code</label>
+                                        </div>
+                                        <div className="form-group col-md-8">
+                                        YGAG
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div className="row">
                                     <div className="col-md-8">
@@ -647,7 +654,7 @@ class ProductManagement extends React.Component {
                                 <div className="row smilesImageText" ><b>PRICE</b></div>
                                     <div className="row" style={{marginLeft:"50px"  }}>
                                         <div className="col-md-6">           
-                                            <div className="row" style={{marginLeft:"100px", marginBottom:"20px" }}> <img src="/assets/imgs/etisalat.jpg" className="smilesImage"/></div>
+                                            <div className="row" style={{marginLeft:"100px", marginBottom:"20px" }}> <img src="/assets/imgs/smiles.jpg" className="smilesImage"/></div>
                                             <div className="row" style={{marginLeft:"100px", width:"200px" }}>
                                                  <Input 
                                                 isValid={this.state.valid}
@@ -659,7 +666,7 @@ class ProductManagement extends React.Component {
                                              </div> 
                                         </div>
                                         <div className="col-md-6"> 
-                                            <div className="row" style={{marginLeft:"100px", marginBottom:"20px" }}> <img src="/assets/imgs/etisalat.jpg" className="smilesImage"/></div>
+                                            <div className="row" style={{marginLeft:"100px", marginBottom:"20px" }}> <img src="/assets/imgs/gift.jpg" className="smilesImage"/></div>
                                             <div className="row" style={{marginLeft:"100px" , width:"200px"}}>
                                             <Input 
                                                 isValid={this.state.valid}

@@ -99,11 +99,16 @@ class OfferManagement extends React.Component {
                         <div className="row">
 
                             <div className="col-md-8" >
-
-                                    <div className="row" style={{marginBottom:"20px",marginLeft:"10px"}}>
-                                        <div className="col-md-2 ">Partner Code</div>
-                                        <div className="col-md-2">YGAG</div>
-                                   </div>
+                            <div className="row">
+                                    <div className="col-md-8">
+                                        <div className="form-group col-md-4">
+                                            <label className="control-label">Partner Code</label>
+                                        </div>
+                                        <div className="form-group col-md-8">
+                                        YGAG
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div className="row">
                                     <div className="col-md-8">
@@ -145,13 +150,87 @@ class OfferManagement extends React.Component {
 
        {/** <div className="addShopBoxText" style={{ color: "#089729"  }}><b>OPENING HOURS</b></div> */}
                     <div className="row addShopBox" >
+                        {/**Offer Type Image */}
+
                         <div className="row imageDiv">
-                          <div className="row smilesImageText" ><b>OFFER TYPE</b></div>
-                            <div className="row" style={{marginLeft:"50px"  }}>
-                                <div className="col-md-4"><img src="/assets/imgs/partnerdynamic.jpg" className="smilesImage"/></div>
-                                <div className="col-md-4"><img src="/assets/imgs/etisalat.jpg" className="smilesImage"/></div>
-                                <div className="col-md-4"><img src="/assets/imgs/partnerdynamic.jpg" className="smilesImage"/></div>
-                            </div></div>
+                         <div className="row smilesImageText" ><b>OFFER TYPE</b></div>
+                         <div className="row">
+                                                    <div className="col-md-12">
+                                                        <div className="" style={{ opacity: '1' }}>
+                                                            <div className="portlet-body flip-scroll">
+                                                                <div className="row">
+                                                                    <div className="col-md-10 col-md-offset-1">
+
+                                                                        <div className="col-md-3 text-center">
+                                                                            <div className="voucherBox">
+                                                                                <img src="/assets/Resources/Redemption.png" width="20%" />
+                                                                                
+                                                                                <h5><strong>DISCOUNT</strong></h5>
+                                                                                <div className="icheck-list">
+                                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                                        <label></label>
+                                                                                        <input  type="checkbox" name="Redemption" value=""  className="form-control" />
+                                                                                        <span></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className="col-md-3 text-center">
+                                                                            <div className="voucherBox">
+                                                                                <img src="/assets/Resources/Accrual.png" width="20%" />
+                                                                              
+                                                                                <h5><strong>VOUCHERS</strong></h5>
+                                                                                <div className="icheck-list">
+                                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                                        <label></label>
+                                                                                        <input  type="checkbox" name="Accrual"  value="" className="form-control" />
+                                                                                        <span></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className="col-md-3 text-center">
+                                                                            <div className="voucherBox">
+                                                                                <img src="/assets/Resources/pointConverstion.png" width="20%" />
+                                                                               
+                                                                                <h5><strong>CASH</strong></h5>
+                                                                                <div className="icheck-list">
+                                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                                        <label></label>
+                                                                                        <input  type="checkbox" name="pointConverstion"  className="form-control" />
+                                                                                        <span></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                       
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                        </div>
+                    
+                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
+                            {/**Offer type Image */}
 
                     <div className="row" style={{marginTop:"50px"}}>
                         <div className="col-md-6">
@@ -569,7 +648,7 @@ class OfferManagement extends React.Component {
                                 <div className="row smilesImageText" ><b>PRICE</b></div>
                                     <div className="row" style={{marginLeft:"50px"  }}>
                                         <div className="col-md-6">           
-                                            <div className="row" style={{marginLeft:"100px", marginBottom:"20px" }}> <img src="/assets/imgs/etisalat.jpg" className="smilesImage"/></div>
+                                            <div className="row" style={{marginLeft:"100px", marginBottom:"20px" }}> <img src="/assets/imgs/gift.jpg" className="smilesImage"/></div>
                                             <div className="row" style={{marginLeft:"100px", width:"200px" }}>
                                                  <Input 
                                                 isValid={this.state.valid}
@@ -581,7 +660,7 @@ class OfferManagement extends React.Component {
                                              </div> 
                                         </div>
                                         <div className="col-md-6"> 
-                                            <div className="row" style={{marginLeft:"100px", marginBottom:"20px" }}> <img src="/assets/imgs/etisalat.jpg" className="smilesImage"/></div>
+                                            <div className="row" style={{marginLeft:"100px", marginBottom:"20px" }}> <img src="/assets/imgs/smiles.jpg" className="smilesImage"/></div>
                                             <div className="row" style={{marginLeft:"100px" , width:"200px"}}>
                                             <Input 
                                                 isValid={this.state.valid}
@@ -1250,3 +1329,15 @@ export default connect(
     mapDispatchToProps
 )(OfferManagement);
 
+
+
+
+/**
+ * <div className="row imageDiv">
+                          <div className="row smilesImageText" ><b>OFFER TYPE</b></div>
+                            <div className="row" style={{marginLeft:"50px"  }}>
+                                <div className="col-md-4"><img src="/assets/imgs/partnerdynamic.jpg" className="smilesImage"/></div>
+                                <div className="col-md-4"><img src="/assets/imgs/etisalat.jpg" className="smilesImage"/></div>
+                                <div className="col-md-4"><img src="/assets/imgs/partnerdynamic.jpg" className="smilesImage"/></div>
+                            </div></div>
+ */
