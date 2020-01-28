@@ -53,8 +53,7 @@ let authRoutes = <div>
     <Route path="/smiles/initiateSettlementEtisalat" component={InitiateSettlementEtisalat} />
 
     {/* DASHBOARD */}
-    <Route path="/smiles/View/dashboard" component={dashboard} />
-
+    <Route path="/smiles/dashboard" component={dashboard} />
     <Route path="/smiles/Etisalat" component={DashboardEtisalat} />
     <Route path="/smiles/Partner" component={DashboardPartner} />
 
