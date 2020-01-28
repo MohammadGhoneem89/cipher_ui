@@ -3,13 +3,16 @@ module.exports = {
         { alias: "Start Date", key: "startDate", type: "epochDate" },
         { alias: "End Date", key: "endDate", type: "epochDate" },
         { alias: "Rate", key: "rate", type: "string" },
-        { alias: "Conversion Factor", key: "conversionFactor", type: "string" },
-        { alias: "Status", key: "status", type: "string" }
+        { alias: "Source Token", key: "sourceToken", type: "string" },
+        { alias: "Mode", key: "mode", type: "string" },
+        { alias: "Action", key: "action", type: "action" }
     ],
     pointConversion: [
+        { alias: "S.NO", key: "", type: "serialNo" },
         { alias: "Program Code", key: "programCode", type: "string" },
-        { alias: "Program Name", key: "programName", type: "string" },
-        { alias: "Logo", key: "logo", type: "string" }
+        { alias: "Program Name", key: "image", type: "image" },
+        { alias: "Logo", key: "logo", type: "string" },
+        { alias: "Action", key: "action", type: "action" }
     ],
     ERPsettings: [
         { alias: "Vendor Code", key: "vendorCode", type: "string" },
@@ -27,7 +30,8 @@ module.exports = {
         { alias: "S.NO", key: "", type: "serialNo" },
         { alias: "Settle As", key: "settleAs", type: "string" },
         { alias: "Frequency", key: "frequency", type: "string" },
-        { alias: "Start On", key: "startOn", type: "epochDate" }
+        { alias: "Start On", key: "startOn", type: "epochDate" },
+        { alias: "Action", key: "action", type: "action" }
     ],
     pointCreditRules: [
         { alias: "S.NO", key: "", type: "serialNo" },
@@ -57,6 +61,16 @@ module.exports = {
         { alias: "Start Date", key: "startDate", type: "epochDate" },
         { alias: "End Date", key: "endDate", type: "epochDate" },
         { alias: "Selling Rate", key: "sellingRate", type: "string" },
+        { alias: "Action", key: "action", type: "action" }
+    ],
+    redemptionTerms: [
+        { alias: "S.NO", key: "", type: "serialNo" },
+        { alias: "Start Date", key: "startDate", type: "epochDate" },
+        { alias: "End Date", key: "endDate", type: "epochDate" },
+        { alias: "Rate Type", key: "rateType", type: "string" },
+        { alias: "Rate", key: "rate", type: "string" },
+        { alias: "Payment Method", key: "paymentMethod", type: "string" },
+        { alias: "Mode", key: "mode", type: "string" },
         { alias: "Action", key: "action", type: "action" }
     ],
     itemMaster: [
