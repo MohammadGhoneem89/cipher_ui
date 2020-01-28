@@ -41,6 +41,8 @@ class AddPartner extends Component {
             contractParamsArr: [],
             accrualTermsArr: [],
             accrualTerms: {},
+            redemptionTermsArr: [],
+            redemptionTerms: {},
             pointCreditRulesArr: [],
             pointCreditRules: {},
             settlementArr: [],
@@ -70,7 +72,7 @@ class AddPartner extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
 
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', 'contactMode']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', 'contactMode', 'rateType', 'paymentMethod']));
 
     }
 
@@ -136,10 +138,13 @@ class AddPartner extends Component {
                                         type: files[0].type
                                     }
                                 })).then(result => {
+
+
                                     _this.setState({
                                         [formname]: {
-                                            ..._.get(this.state, `${formname}.logo`, {}),
-                                            logo: result.entityLogo.sizeSmall
+                                            ..._.get(_this.state, `${formname}.logo`, {}),
+                                            logo: result.entityLogo.sizeSmall,
+                                            ..._.get(_this.state, `${formname}`, {}),
                                         }
                                     })
                                 });
@@ -174,26 +179,26 @@ class AddPartner extends Component {
             toaster.showToast('Subsidary Partner code is required', 'ERROR');
             return;
         }
-        if (accrualterms.length == 0) {
-            toaster.showToast("Accrual Terms are required", "ERROR");
-            return;
-        }
+        // if (accrualterms.length == 0) {
+        //     toaster.showToast("Accrual Terms are required", "ERROR");
+        //     return;
+        // }
 
-        if (Object.keys(erpSettingsFrom).length == 0) {
-            toaster.showToast("Please provide an ERP from Setting.", "ERROR");
-            return;
-        }
+        // if (Object.keys(erpSettingsFrom).length == 0) {
+        //     toaster.showToast("Please provide an ERP from Setting.", "ERROR");
+        //     return;
+        // }
 
-        console.log("settlement >>> ", settlement)
-        if (!settlement.startsOn || !settlement.settleAs || !settlement.frequency) {
-            toaster.showToast("All fields are required for Settlement", "ERROR");
-            return;
-        }
+        // console.log("settlement >>> ", settlement)
+        // if (!settlement.startsOn || !settlement.settleAs || !settlement.frequency) {
+        //     toaster.showToast("All fields are required for Settlement", "ERROR");
+        //     return;
+        // }
 
-        if (!erpSettingsTo.vendorCode || !erpSettingsTo.glcode || !erpSettingsTo.billingAccount || !erpSettingsTo.vendorSiteID) {
-            toaster.showToast("Please provide an ERP To Settings", "ERROR");
-            return;
-        }
+        // if (!erpSettingsTo.vendorCode || !erpSettingsTo.glcode || !erpSettingsTo.billingAccount || !erpSettingsTo.vendorSiteID) {
+        //     toaster.showToast("Please provide an ERP To Settings", "ERROR");
+        //     return;
+        // }
 
         if (!contractParams) {
             toaster.showToast('Subsidary Partner Details not added.', 'ERROR');
@@ -212,10 +217,10 @@ class AddPartner extends Component {
             contractParams.accrualBillingRates[i].sellingRate = sellingrate
             contractParams.accrualBillingRates[i].serialNo = parseInt(i + 1)
         }
-        contractParams.conversionBillingRates = [...this.state.pointCreditRulesArr]
+        contractParams.conversionBillingRates = [...this.state.ratesArr]
 
         //let pointRule = { ...this.state.pointCreditRules }
-        pointRule.maxUnSettledAmount = parseInt(pointRule.maxUnSettledAmount)
+        pointRule.maxUnSettledAmount = parseInt(pointRule.maxUnSettledAmount || -1)
         contractParams.pointCreditRules = { ...pointRule }
 
         contractParams.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
@@ -254,17 +259,49 @@ class AddPartner extends Component {
             toaster.showToast("All fields are required for accrual terms", "ERROR");
             return;
         }
-        accrualTerms.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
-        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
 
 
         if (Object.keys(accrualTerms).length == 0) {
             toaster.showToast("Please add Accural Term", "ERROR");
             return;
         }
+        accrualTerms.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+        accrualTerms.serialNo = accrualTermsArr.length + 1
         accrualTermsArr.push({ ...accrualTerms })
         this.setState({ accrualTermsArr, accrualTerms: undefined, accuralStartDate: undefined, accuralEndDate: undefined })
     }
+
+
+
+    addRedemptionTerm = () => {
+        let redemptionTermsArr = [...this.state.redemptionTermsArr]
+        let redemptionTerms = { ...this.state.redemptionTerms }
+        if (this.state.redemptionStartDate) {
+            redemptionTerms.startDate = this.state.redemptionStartDate
+            redemptionTerms.redemptionStartDate = this.state.redemptionStartDate
+        }
+        if (this.state.redemptionEndDate) {
+            redemptionTerms.endDate = this.state.redemptionEndDate
+            redemptionTerms.redemptionEndDate = this.state.redemptionEndDate
+        }
+
+        if (!redemptionTerms.startDate || !redemptionTerms.endDate || !redemptionTerms.rate || !redemptionTerms.mode) {
+            toaster.showToast("All fields are required for redemption terms", "ERROR");
+            return;
+        }
+        if (Object.keys(redemptionTerms).length == 0) {
+            toaster.showToast("Please add Redemption Term", "ERROR");
+            return;
+        }
+        redemptionTerms.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+        redemptionTerms.serialNo = redemptionTermsArr.length + 1
+        redemptionTermsArr.push({ ...redemptionTerms })
+        this.setState({ redemptionTermsArr, redemptionTerms: undefined, redemptionStartDate: undefined, redemptionEndDate: undefined })
+    }
+
+
 
     addPointCreditRules = () => {
         let pointCreditRules = { ...this.state.pointCreditRules }
@@ -298,6 +335,17 @@ class AddPartner extends Component {
             toaster.showToast("Point Conversion not defined", "ERROR");
             return;
         }
+
+
+        pointConversion.image = {
+            name: pointConversion.conversionPartnerProgramName,
+            imageURL: pointConversion.logo
+        }
+
+        pointConversion.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+        pointConversion.serialNo = pointConversionArr.length + 1
+
         pointConversionArr.push({ ...pointConversion })
         this.setState({ pointConversionArr, pointConversion: undefined })
     }
@@ -318,6 +366,10 @@ class AddPartner extends Component {
             toaster.showToast("Rate not defined", "ERROR");
             return;
         }
+        rates.sourceToken = "SMILES"
+        rates.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+
         ratesArr.push({ ...rates })
         this.setState({ ratesArr, rates: undefined, pointConversionStartDate: undefined, pointConversionEndDate: undefined })
     }
@@ -330,6 +382,21 @@ class AddPartner extends Component {
                 {
                     this.state.isPointConversionPartner && (
                         <div>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <Label text="Code" columns='4' style={{ padding: "0 0 0 30" }} />
+                                    <Input
+                                        fieldname='withPartnerCode'
+                                        formname='contractParams'
+                                        columns='7'
+                                        placeholder=''
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </div>
+
+                            </div>
                             <Portlet title={"POINT CONVERSION"}>
                                 <div className="row">
 
@@ -375,27 +442,23 @@ class AddPartner extends Component {
                                 <Table
                                     gridColumns={utils.getGridColumnByName('pointConversion')}
                                     gridData={this.state.pointConversionArr || []}
-                                    componentFunction={this.contactInfoActionHandler}
+                                    componentFunction={this.pointConversionActionHandler}
                                 />
 
                             </Portlet>
                             <Portlet title={"RATES"}>
-                                {/* "startDate": 44444,
-                                    "endDate": 55555,
-                                    "rate": 100,
-                                    "conversionFactor": 1.5,
-                                    "status": "Pending" */}
+
                                 <div className="row">
                                     <div className="col-md-6">
                                         <Label text="Start Date" columns='4' />
                                         <div className="col-md-7">
-                                            <DateControl id="pointConversionStartDate" dateChange={this.dateChange.bind(this, 'pointConversionStartDate')} />
+                                            <DateControl id="pointConversionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionStartDate)} dateChange={this.dateChange.bind(this, 'pointConversionStartDate')} />
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <Label text="End Date" columns='4' />
                                         <div className="col-md-7">
-                                            <DateControl id="pointConversionEndDate" dateChange={this.dateChange.bind(this, 'pointConversionEndDate')} />
+                                            <DateControl id="pointConversionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionEndDate)} dateChange={this.dateChange.bind(this, 'pointConversionEndDate')} />
                                         </div>
                                     </div>
                                 </div>
@@ -415,11 +478,13 @@ class AddPartner extends Component {
                                         />
                                     </div>
                                     <div className="col-md-6">
-                                        <Label text="Conversion Factor" columns='4' />
+                                        <Label text="Source Token" columns='4' />
                                         <Input
-                                            fieldname='conversionFactor'
+                                            fieldname='sourceToken'
                                             formname='rates'
                                             columns='7'
+                                            disabled={true}
+                                            value={"SMILES"}
                                             placeholder=''
                                             state={this.state}
                                             actionHandler={this.generalHandler}
@@ -429,15 +494,15 @@ class AddPartner extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <Label text="Status" columns='4' />
+                                        <Label text="Mode" columns='4' />
                                         <Combobox
-                                            fieldname='status'
+                                            fieldname='mode'
                                             formname='rates'
                                             columns='7'
                                             placeholder='Select'
                                             style={{}}
                                             state={this.state}
-                                            typeName="status"
+                                            typeName="contactMode"
                                             dataSource={_.get(this.state, 'typeData', {})}
                                             actionHandler={this.generalHandler}
                                             className="form-control"
@@ -456,13 +521,141 @@ class AddPartner extends Component {
                                 <Table
                                     gridColumns={utils.getGridColumnByName('rates')}
                                     gridData={this.state.ratesArr || []}
-                                    componentFunction={this.contactInfoActionHandler}
+                                    componentFunction={this.ratesActionHandler}
                                 />
                             </Portlet>
                         </div>
 
                     )
                 }
+
+                {
+                    this.state.isRedemptionPartner && (
+                        <div>
+                            {/* {
+                                    "serialNo": 1,
+                                    "startDate": 1455236,
+                                    "endDate": 986547,
+                                    "rateType": "",
+                                    "rate": 1.11,
+                                    "paymentMethod": "SMILES",
+                                    "mode": "A"
+                                } 
+                            */}
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <Label text="Code" columns='4' style={{ padding: "0 0 0 30" }} />
+                                    <Input
+                                        fieldname='withPartnerCode'
+                                        formname='contractParams'
+                                        columns='7'
+                                        placeholder=''
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </div>
+
+                            </div>
+                            <Portlet title={"REDEMPTION TERMS"}>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Label text="Start Date" columns='4' />
+                                        <div className="col-md-7">
+                                            <DateControl id="redemptionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.redemptionStartDate)} dateChange={this.dateChange.bind(this, 'redemptionStartDate')} />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <Label text="End Date" columns='4' />
+                                        <div className="col-md-7">
+                                            <DateControl id="redemptionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.redemptionEndDate)} dateChange={this.dateChange.bind(this, 'redemptionEndDate')} />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br></br>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Label text="Payment Method" columns='4' />
+                                        <Combobox
+                                            fieldname='paymentMethod'
+                                            formname='redemptionTerms'
+                                            columns='7'
+                                            placeholder='Select'
+                                            style={{}}
+                                            state={this.state}
+                                            typeName="paymentMethod"
+                                            dataSource={_.get(this.state, 'typeData', {})}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <Label text="Mode" columns='4' />
+                                        <Combobox
+                                            fieldname='mode'
+                                            formname='redemptionTerms'
+                                            columns='7'
+                                            placeholder='Select'
+                                            style={{}}
+                                            state={this.state}
+                                            typeName="contactMode"
+                                            dataSource={_.get(this.state, 'typeData', {})}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <Label text="Rate Type" columns='4' />
+                                        <Combobox
+                                            fieldname='rateType'
+                                            formname='redemptionTerms'
+                                            columns='7'
+                                            placeholder='Select'
+                                            style={{}}
+                                            state={this.state}
+                                            typeName="rateType"
+                                            dataSource={_.get(this.state, 'typeData', {})}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <Label text="Rate" columns='4' />
+                                        <Input
+                                            fieldname='rate'
+                                            formname='redemptionTerms'
+                                            columns='7'
+                                            placeholder=''
+                                            state={this.state}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="btn-toolbar pull-right">
+                                            <button onClick={this.addRedemptionTerm} type="submit" className="pull-right btn green">
+                                                {utils.getLabelByID("Add")}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Table
+                                    gridColumns={utils.getGridColumnByName('redemptionTerms')}
+                                    gridData={this.state.redemptionTermsArr || []}
+                                    componentFunction={this.redemptionTermsActionHandler}
+                                />
+                            </Portlet>
+
+                        </div>
+                    )
+                }
+
                 {
                     this.state.isAccrualPartner && (
                         <div>
@@ -744,18 +937,41 @@ class AddPartner extends Component {
         )
     }
 
+    pointConversionActionHandler = ({ actionName, index }) => {
+        switch (actionName) {
+            case "Edit":
+                if (index > -1) {
+                    let pointConversion = this.state.pointConversionArr[index];
+                    let tempState = [...this.state.pointConversionArr];
+                    tempState.splice(index, 1);
+                    this.setState({
+                        pointConversion,
+                        pointConversionArr: tempState
+                    });
+                }
+                break;
+            case "Delete":
+                if (index > -1) {
+                    let tempState = this.state.pointConversionArr;
+                    tempState.splice(index, 1);
+                    this.setState({ pointConversionArr: tempState });
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
 
     contactInfoActionHandler = ({ actionName, index }) => {
         switch (actionName) {
             case "Edit":
                 if (index > -1) {
                     let contactInfo = this.state.contactInformationArr[index];
-                    this.setState({
-                        contactInformation: contactInfo
-                    });
                     let tempState = [...this.state.contactInformationArr];
                     tempState.splice(index, 1);
                     this.setState({
+                        contactInformation: contactInfo,
                         contactInformationArr: tempState
                     });
                 }
@@ -809,6 +1025,35 @@ class AddPartner extends Component {
                 break;
         }
     }
+
+    redemptionTermsActionHandler = ({ actionName, index }) => {
+        switch (actionName) {
+            case "Edit":
+                if (index > -1) {
+                    let redemptionTerms = this.state.redemptionTermsArr[index];
+                    let tempState = [...this.state.redemptionTermsArr];
+                    tempState.splice(index, 1);
+                    this.setState({
+                        redemptionTermsArr: tempState,
+                        redemptionTerms: redemptionTerms,
+                        redemptionStartDate: redemptionTerms.redemptionStartDate,
+                        redemptionEndDate: redemptionTerms.redemptionEndDate
+                    });
+                }
+                break;
+            case "Delete":
+                if (index > -1) {
+                    let redemptionterms = this.state.redemptionTermsArr;
+                    redemptionterms.splice(index, 1);
+                    this.setState({ redemptionTermsArr: redemptionterms });
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+
     accrualTermsActionHandler = ({ actionName, index }) => {
         switch (actionName) {
             case "Edit":
@@ -835,6 +1080,34 @@ class AddPartner extends Component {
                 break;
         }
     }
+
+    ratesActionHandler = ({ actionName, index }) => {
+        switch (actionName) {
+            case "Edit":
+                if (index > -1) {
+                    let rates = this.state.ratesArr[index];
+                    let tempState = [...this.state.ratesArr];
+                    tempState.splice(index, 1);
+                    this.setState({
+                        rates,
+                        ratesArr: tempState,
+                        pointConversionStartDate: rates.startDate,
+                        pointConversionEndDate: rates.endDate
+                    });
+                }
+                break;
+            case "Delete":
+                if (index > -1) {
+                    let ratesArr = [...this.state.ratesArr];
+                    ratesArr.splice(index, 1);
+                    this.setState({ ratesArr });
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     addContactInformation = () => {
         let contactInformationArr = [...this.state.contactInformationArr]
         let contactInformation = { ...this.state.contactInformation }
@@ -909,8 +1182,14 @@ class AddPartner extends Component {
         let body = { ...this.state.body }
 
         console.log("body :::: ", body)
+        if (Object.keys(_.get(this.state, 'erpSettingsFrom', {})).length != 0 && (!this.state.erpSettingsFrom.vendorCode || !this.state.erpSettingsFrom.glcode || !this.state.erpSettingsFrom.billingAccount || !this.state.erpSettingsFrom.vendorSiteID)) {
+            toaster.showToast("All fields are required for ERP From Settings", "ERROR");
+            return;
+        } else {
+            body.erpSettingsFrom = { ...this.state.erpSettingsFrom };
+        }
         if (Object.keys(body).length == 0) {
-            toaster.showToast("All fields are required", "ERROR");
+            toaster.showToast("Please fill the fields", "ERROR");
             return;
         }
         if (!body.partnerNameEn) {
@@ -933,12 +1212,7 @@ class AddPartner extends Component {
             toaster.showToast("Partner type is required", "ERROR");
             return;
         }
-        if (!this.state.erpSettingsFrom.vendorCode || !this.state.erpSettingsFrom.glcode || !this.state.erpSettingsFrom.billingAccount || !this.state.erpSettingsFrom.vendorSiteID) {
-            toaster.showToast("All fields are required for ERP From Settings", "ERROR");
-            return;
-        } else {
-            body.erpSettingsFrom = { ...this.state.erpSettingsFrom };
-        }
+
         if (!this.state.contactInformationArr.length) {
             toaster.showToast("Contact Information is required", "ERROR");
             return;
@@ -957,7 +1231,7 @@ class AddPartner extends Component {
         }
         console.log(`\n\n\n${JSON.stringify({ ...body })}\n\n\n`)
 
-        //DUMMY
+
         this.setState({ isLoading: true })
         window.scrollTo(0, 0)
 
@@ -1046,12 +1320,24 @@ class AddPartner extends Component {
                                 className="form-control"
                             />
                         </div>
+                        <div className="row">
+                            <Label text="Partner Er Code" columns='4' style={{ padding: "0 0 0 30" }} />
+                            <Input
+                                fieldname='partnerErCode'
+                                formname='body'
+                                columns='7'
+                                placeholder=''
+                                state={this.state}
+                                actionHandler={this.generalHandler}
+                                className="form-control"
+                            />
+                        </div>
 
 
                     </div>
 
                     <div className="col-md-6">
-                        {this.imgDiv('body', undefined, { paddingLeft: "195px" })}
+                        {this.imgDiv('body', { width: "200px", height: "200px" }, { paddingLeft: "195px" })}
                     </div>
                 </div>
                 <div className="row">
@@ -1345,7 +1631,7 @@ class AddPartner extends Component {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="btn-toolbar pull-right">
-                                <button disabled={(this.state.isAccrualPartner || this.state.isPointConversionPartner) ? false : true}
+                                <button disabled={(this.state.isRedemptionPartner || this.state.isAccrualPartner || this.state.isPointConversionPartner) ? false : true}
                                     onClick={this.stateChangeSubsidaryPartnerBool} type="submit" className="pull-right btn green">
                                     {utils.getLabelByID("Add Subsidary Partner")}
                                 </button>
