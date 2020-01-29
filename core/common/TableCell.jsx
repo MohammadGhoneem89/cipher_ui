@@ -230,7 +230,10 @@ class TableCell extends React.Component {
       case "LINK UP":
         return " badge badge-success badge-roundless";
 
-
+      case "UNCONFIRMED":
+        return " badge badge-danger badge-roundless";
+      case "CONFIRMED":
+        return " badge badge-success badge-roundless";
       default:
         return " badge badge-danger badge-roundless";
 

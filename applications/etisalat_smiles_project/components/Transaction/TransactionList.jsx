@@ -14,11 +14,12 @@ import * as requestCreator from '../../../../core/common/request.js';
 import DateControl from '../../../../core/common/DateControl.jsx';
 import Combobox from '../../../../core/common/Select.jsx';
 import * as gen from '../../../../core/common/generalActionHandler';
-import { Row, Col } from '../../common/index.jsx';
+import Row from '../../../../core/common/Row.jsx';
+import Col from '../../../../core/common/Col.jsx';
 
-class ViewTransactions extends React.Component {
+class TransactionList extends React.Component {
     constructor(props) {
-        
+
         super(props);
         this.state = {
             searchCriteria: {},
@@ -50,10 +51,10 @@ class ViewTransactions extends React.Component {
     searchResult = () => {
         this.props.actions.generalProcess(constants.getViewTransaction, this.getRequest());
     }
-    
+
 
     redirectToAddPage = () => {
-        
+
     }
 
     getRequest = () => {
@@ -76,15 +77,15 @@ class ViewTransactions extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.transData) {
-            // alert(JSON.stringify(nextProps.transData))
+        if (nextProps.transData)
             this.setState({ gridData: nextProps.transData })
-            this.setState(
-                {
-                    isLoading: false
-                }
-            )
-        }
+        if (nextProps.records)
+            this.setState({ totalRecords: nextProps.records })
+        this.setState(
+            {
+                isLoading: false
+            }
+        )
     }
 
     componentDidMount() {
@@ -92,7 +93,7 @@ class ViewTransactions extends React.Component {
         window.scrollTo(0, 0);
     }
 
-    
+
 
     pageChanged = (pageNo) => {
         let page = this.state.page;
@@ -113,116 +114,129 @@ class ViewTransactions extends React.Component {
                 <Col>
                     <Portlet title={utils.getLabelByID("TRANSACTIONS")}>
                         <div className="row">
-                            <div className="col-md-6">
-                                <div className="form-group col-md-4">
-                                    <Label text="Start Date" />
+                            <Row>
+                                <div className="col-md-6">
+                                    <div className="form-group col-md-4">
+                                        <Label text="Start Date" />
+                                    </div>
+                                    <div className="form-group col-md-8">
+                                        <DateControl
+                                            id='startDate'
+                                            dateChange={this.onStartDateChange}
+                                        />
+                                    </div>
                                 </div>
-                                <div className="form-group col-md-8">
-                                    <DateControl
-                                        id='transStartDate'
-                                        dateChange={this.transStartDateChange}
-                                    />
-                                </div>
-                            </div>
 
-                            <div className="col-md-6">
-                                <div className="form-group col-md-4">
-                                    <Label text="End Date" />
+                                <div className="col-md-6">
+                                    <div className="form-group col-md-4">
+                                        <Label text="End Date" />
+                                    </div>
+                                    <div className="form-group col-md-8">
+                                        <DateControl
+                                            id='endDate'
+                                            dateChange={this.onEndDateChange}
+                                        />
+                                    </div>
                                 </div>
-                                <div className="form-group col-md-8">
-                                    <DateControl
-                                        id='transEndDate'
-                                        dateChange={this.transEndDateChange}
-                                    />
-                                </div>
-                            </div>
+                            </Row>
 
-                            <div className="col-md-6">
-                                <div className="form-group col-md-4">
-                                    <Label text="Status" />
+                            <Row>
+                                <div className="col-md-6">
+                                    <div className="form-group col-md-4">
+                                        <Label text="Status" />
+                                    </div>
+                                    <div className="form-group col-md-8">
+                                        {/* <input type="text" className="form-control" name="status" id="status" /> */}
+                                        <Combobox
+                                            fieldname='Status'
+                                            formname='searchCriteria'
+                                            placeholder='Select'
+                                            style={{}}
+                                            state={this.state}
+                                            typeData="rule"
+                                            dataSource={_.get(this.state, 'typeData', {})}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
                                 </div>
-                                <div className="form-group col-md-8">
-                                    {/* <input type="text" className="form-control" name="status" id="status" /> */}
-                                    <Combobox
-                                        fieldname='Status'
-                                        formname='searchCriteria'
-                                        placeholder='Select'
-                                        style={{}}
-                                        state={this.state}
-                                        typeData="rule"
-                                        dataSource={_.get(this.state, 'typeData', {})}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
-                            </div>
 
-                            <div className="col-md-6">
-                                <div className="form-group col-md-4">
-                                    <Label text="Direction" />
+                                <div className="col-md-6">
+                                    <div className="form-group col-md-4">
+                                        <Label text="Direction" />
+                                    </div>
+                                    <div className="form-group col-md-8">
+                                        {/* <input type="text" className="form-control" name="status" id="status" /> */}
+                                        <Combobox
+                                            fieldname='direction'
+                                            formname='searchCriteria'
+                                            placeholder='Select'
+                                            style={{}}
+                                            state={this.state}
+                                            typeData="rule"
+                                            dataSource={_.get(this.state, 'typeData', {})}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
                                 </div>
-                                <div className="form-group col-md-8">
-                                    {/* <input type="text" className="form-control" name="status" id="status" /> */}
-                                    <Combobox
-                                        fieldname='direction'
-                                        formname='searchCriteria'
-                                        placeholder='Select'
-                                        style={{}}
-                                        state={this.state}
-                                        typeData="rule"
-                                        dataSource={_.get(this.state, 'typeData', {})}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="form-group col-md-4">
-                                    <Label text="Partner" />
-                                </div>
-                                <div className="form-group col-md-8">
-                                    {/* <input type="text" className="form-control" name="status" id="status" /> */}
-                                    <Combobox
-                                        fieldname='partner'
-                                        formname='searchCriteria'
-                                        placeholder='Select'
-                                        style={{}}
-                                        state={this.state}
-                                        typeData="rule"
-                                        dataSource={_.get(this.state, 'typeData', {})}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
-                            </div>
+                            </Row>
 
-                            <div className="row">
+                            <Row>
+                                <div className="col-md-6">
+                                    <div className="form-group col-md-4">
+                                        <Label text="Partner" />
+                                    </div>
+                                    <div className="form-group col-md-8">
+                                        {/* <input type="text" className="form-control" name="status" id="status" /> */}
+                                        <Combobox
+                                            fieldname='partner'
+                                            formname='searchCriteria'
+                                            placeholder='Select'
+                                            style={{}}
+                                            state={this.state}
+                                            typeData="rule"
+                                            dataSource={_.get(this.state, 'typeData', {})}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                </div>
+
+
                                 <div className="col-md-12">
                                     <div className="form-group col-md-12">
                                         <div className="btn-toolbar pull-right">
                                             <button type="submit" className="btn green" onClick={this.searchResult}>
                                                 {utils.getLabelByID('Search')}
                                             </button>
+                                            <button type="clear" className="btn green" onClick={this.reset}>
+                                                {utils.getLabelByID("Clear")}
+                                            </button>
                                         </div>
+
                                     </div>
                                 </div>
-                            </div>
+                            </Row>
                         </div>
-                    </Portlet>
-                    <Portlet isPermissioned={true}>
-                        {/* UTS */}
+                     
+                        <Row>
+                            <Col>
 
-                        <Table
-                            gridColumns={utils.getGridColumnByName("viewTranxListNew")}
-                            gridData={this.state.gridData}
-                            fontclass=""
-                            totalRecords={40}
-                            pageSize={10}
-                            pageChanged={this.pageChanged}
-                            pagination={true}
-                            search={true}
-                            activePage={this.state.page.currentPageNo}
-                        />
+                                <Table
+                                    gridColumns={utils.getGridColumnByName("viewTranxList")}
+                                    gridData={this.state.gridData}
+                                    fontclass=""
+                                    totalRecords={this.state.totalRecords}
+                                    pageSize={10}
+                                    pageChanged={this.pageChanged}
+                                    pagination={true}
+                                    search={true}
+                                    activePage={this.state.page.currentPageNo}
+                                />
+
+                            </Col>
+                        </Row>
                     </Portlet>
                 </Col>
             </Row>
@@ -243,8 +257,8 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 }
 
-ViewTransactions.displayName = "Transaction List";
-export default connect(mapStateToProps, mapDispatchToProps)(ViewTransactions);
+TransactionList.displayName = "Transaction List";
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionList);
 
 
 

@@ -296,18 +296,19 @@ module.exports = {
         { alias: "Receipt Quantity", key: "receiptQuantity", type: "string" },
     ],
     /// Smiles 
-    // viewTranxList: [
-    //     {alias: "", key: "_id", type: "hiddenID"},
-    //     {alias: "S.No", key: "serial_no", type: 'string'},
-    //     {alias: "Transaction", key: "trans", type: "string"},
-    //     {alias: "Account#", key: "acc", type: "string"},
-    //     {alias: "TRANS TYPE", key: "transc_type", type: "string"},
-    //     {alias: "Amount", key: "amount", type: "string"},
-    //     {alias: "Points", key: "points", type: "string"},
-    //     {alias: "TRANS Date", key: "date", type: "string"},
-    //     {alias: "Status", key: "status", type: "string"},
-    //     {alias: "Partner", key: "partner", type: "string"}
-    //   ]
+    viewTranxList: [
+        { alias: "", key: "key", type: "hiddenID" },
+        { alias: "S.No", key: "", type: 'serialNo' },
+        { alias: "Transaction", key: "tranxData.sourceTransactionId", type: "string" },
+        { alias: "Account#", key: "tranxData.membershipNo", type: "string" },
+        { alias: "TRANS TYPE", key: "tranxData.transactionType", type: "string" },
+        { alias: "Amount", key: "tranxData.accrualParams.amountSpent", type: "string" },
+        { alias: "Points", key: "tranxData.pointsAwarded", type: "string" },
+        { alias: "TRANS Date", key: "tranxData.lastUpdateTimestamp", type: "epochDate" },
+        { alias: "Status", key: "tranxData.internalStatus", type: "statusBox" },
+        { alias: "Partner", key: "tranxData.partnerCode", type: "string" },
+        { alias: "action", key: "actions", type: "action" }
+    ],
     viewTranxListNew: [
         { alias: "", key: "_id", type: "hiddenID" },
         { alias: "S.NO", key: "", type: "serialNo" },
