@@ -352,8 +352,8 @@ a:hover {
 }
 
 .sdg_tbl thead {
-	border-bottom: 2px solid #7aa62d;
-	background: #f9fdf2;
+	border-bottom: 2px solid #333;
+	background: #333;
 }
 
 .page-header.navbar .top-menu .navbar-nav>li.dropdown .dropdown-toggle .badge.badge-default {
@@ -418,7 +418,7 @@ a:hover {
 }
 
 .sdg_tbl thead tr th {
-	color: #666;
+	color: #fff;
 }
 
 .page-sidebar .page-sidebar-menu>li>a,

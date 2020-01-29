@@ -19,7 +19,7 @@ class Combobox extends React.Component {
             case "ERROR":
                 return "form-group has-error"
             default:
-                return "form-group"
+                return "form-group "
         }
     }
 
@@ -28,14 +28,14 @@ class Combobox extends React.Component {
             <div className={`col-md-${this.props.columns} ${this.getColour(this.props.status)}`}>
                 <input
                     id={this.props.fieldname} name={this.props.fieldname}
-                    className="form-control"
+                  
                     disabled={this.props.disabled ? true : false}
                     value={this.props.selected || _.get(this.props.state, `${this.props.formname}.${this.props.fieldname}`, "")}
                     type="text"
                     list={`id_${this.props.fieldname}`}
                     autoComplete={'off'}
                     style={this.props.style ? this.props.style : {}}
-                    className={this.props.className ? this.props.className : ''}
+                    className={this.props.className ? this.props.className : 'form-control'}
                     placeholder={this.props.placeholder ? this.props.placeholder : ''}
                     onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'combobox', this.props.dataSource[this.props.typeName])}
                 />

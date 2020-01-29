@@ -5,7 +5,7 @@ import Locked from "../../core/components/AuthenticationScreens/Locked.jsx";
 import Login from "../../core/components/AuthenticationScreens/Login.jsx";
 
 //App Routes
-import TransactionList from "./components/Transaction/TransactionList.jsx";
+import ViewTransactions from "./components/Transaction/TransactionList.jsx";
 import TransactionDetail from './components/Transaction/TransactionDetail.jsx';
 // import Cipher from "./components/Cipher.jsx";
 import ChangePassword from '../../core/components/AuthenticationScreens/changePassword.jsx';
@@ -45,7 +45,7 @@ import OrderManagementDetails from "./components/OrderManagementDetail.jsx"
 let authRoutes = <div>
 
     {/* RECON SCREEN */}
-    <Route path="/smiles/transactionList" component={TransactionList} />
+    <Route path="/smiles/transactionList" component={ViewTransactions} />
     <Route path="/smiles/transaction/view" component={TransactionDetail} />
     <Route path="/smiles/settlementList" component={ViewSettlement} />
     <Route path="/smiles/settlementDetail" component={SubmitSettlement} />
@@ -89,7 +89,7 @@ let authRoutes = <div>
     <Route path="/smiles/partnerSetup/addPartner" component={AddPartner} />
     <Route path="/smiles/View/Transaction" component={ViewTransactions} />
     <Route path="/smiles/Detail/Transaction" component={TransactionDetail} />
-    <Route path="/smiles/View/Settlements" component={ViewSettlement} />
+    <Route path="/smiles/View/Settlements/:id" component={ViewSettlement} />
     <Route path="/smiles/Submit/Settlements" component={SubmitSettlement} />
     <Route path="/smiles/View/dashboard" component={dashboard} />
     {/* --accruals */}
@@ -118,7 +118,7 @@ let authRoutes = <div>
     <Route path="/smiles/voucherManagement" component={VoucherManagement} />
     <Route path="/smiles/merchantList" component={MerchantList} />
     <Route path="smiles/productList" component={ProductList} />
-    <Route path="/smiles/listShops" component={ShopList} />
+    {/* <Route path="/smiles/listShops" component={ShopList} /> */}
 
     {/* duplicate */}
 

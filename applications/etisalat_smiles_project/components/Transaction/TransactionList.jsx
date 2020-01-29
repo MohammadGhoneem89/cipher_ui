@@ -14,10 +14,7 @@ import * as requestCreator from '../../../../core/common/request.js';
 import DateControl from '../../../../core/common/DateControl.jsx';
 import Combobox from '../../../../core/common/Select.jsx';
 import * as gen from '../../../../core/common/generalActionHandler';
-
-
 import { Row, Col } from '../../common/index.jsx';
-
 
 class ViewTransactions extends React.Component {
     constructor(props) {
@@ -206,10 +203,6 @@ class ViewTransactions extends React.Component {
                                             <button type="submit" className="btn green" onClick={this.searchResult}>
                                                 {utils.getLabelByID('Search')}
                                             </button>
-                                            {/* <button type="clear" className="btn green" onClick={this.reset}
-                                        >
-                                            {utils.getLabelByID("Clear")}
-                                        </button> */}
                                         </div>
                                     </div>
                                 </div>
@@ -250,8 +243,8 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 }
 
-TransactionList.displayName = "Transaction List";
-export default connect(mapStateToProps, mapDispatchToProps)(TransactionList);
+ViewTransactions.displayName = "Transaction List";
+export default connect(mapStateToProps, mapDispatchToProps)(ViewTransactions);
 
 
 

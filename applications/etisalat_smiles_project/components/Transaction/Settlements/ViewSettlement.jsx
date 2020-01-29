@@ -65,14 +65,12 @@ class ViewSettlement extends React.Component {
     getRequest = () => {
 
         let contractID = document.getElementById('contractId') == null ? "" : document.getElementById('contractId').value;
-        // let customerID = document.getElementById('customer') == null ? "" : document.getElementById('customer').value;
         let status = document.getElementById('status') == null ? "" : document.getElementById('status').value;
         let searchCriteria = {}
 
         if (contractID != "")
             searchCriteria.contractID = contractID
-        // if (customerID != "")
-        //     searchCriteria.customerID = customerID
+
         if (status != "")
             searchCriteria.status = status
 
@@ -91,23 +89,16 @@ class ViewSettlement extends React.Component {
         return request;
     }
     componentWillReceiveProps(nextProps) {
-        // if (nextProps.getViewTransactions && nextProps.typeData && nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
-        // console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions");
-        // let pageActions = nextProps.gridActions[0].pageActions;
+
         this.setState(
             {
                 isLoading: false
             }
         )
-        // }
     }
-
-
 
     componentDidMount() {
         // this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['orderStatus']));
-        // this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
-
         window.scrollTo(0, 0);
     }
     getStatusLabel = status => {
@@ -130,112 +121,100 @@ class ViewSettlement extends React.Component {
 
 
     render() {
-        if (this.state.isLoading) {
-            return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
-        }
+
         return (
-            <div className="form" style={{ marginBottom: '3%' }}>
-                <div className="row">
-                    <div className="col-2">
-                    <div className="col-md-12" style={{ "display": "table-cell", "vertical-align": "middle", "text-align": "center", "height": "128px" }}>
-                            <img style={{ "height": "129px" }} src="/assets/Resources/CBD_l.png" />
-                        </div>
-                    </div>
-                </div>
-
-
-                {/* <div className="row">
-                    <div className="col-md-1">
-                        <label style={{ 'fontSize': '10px' }} className="control-label">{utils.getLabelByID("ACCURAL PARTNER")}</label>
-                    </div>
-                    <div className="col-md-1">
-                        <label style={{ 'fontSize': '10px' }} className="control-label">{utils.getLabelByID("REDEMPTION PARTNER")}</label>
-                    </div>
-                    <div className="col-md-1">
-                        <label style={{ 'fontSize': '10px' }} className="control-label">{utils.getLabelByID("CONVERSION PARTNER")}</label>
-                    </div>
-                </div> */}
-                <div className="row">
-                    <div className="col-md-2">
-                        <label className="control-label">{utils.getLabelByID("Last Settlemenet Date")}</label>
-                    </div>
-                    <div className="col-md-4" style={{ backgroundColor: "grey" }}>
-                        <label className="control-label">{utils.getLabelByID("01/01/2019")}</label>
-                    </div>
-                    <div className="col-md-2">
-                        <label className="control-label">{utils.getLabelByID("End Date")}</label>
-                    </div>
-                    <div className="col-md-4" style={{ border: "1px solid grey" }}>
-                        <label className="control-label">{utils.getLabelByID("01/01/2019")}</label>
-                    </div>
-                </div>
-                <br/>
-                <br/>
-
-                
-                <div className="row">
-                    <div className="col-3">
-                        <TileUnit data={[{
-                            title: "COMMISSION",
-                            value: "445",
-                            percentageTag: false
-                        }]} />
-                    </div>
-                    <div className="col-3">
-                        <TileUnit data={this.state.dashboardTiles} />
-                    </div>
-                    <div className="col-3">
-                        <TileUnit data={this.state.dashboardTiles} />
-                    </div>
-                </div>
-                <br />
-
-                <Portlet title={utils.getLabelByID("TRANSACTIONS")}>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("Start Date")}</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="contractId" id="contractId" />
-                            </div>
-                        </div>
-
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">{utils.getLabelByID("End Date")}</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="contractId" id="contractId" />
-                            </div>
-                        </div>
-
+            <Row>
+                <Col>
+                    <div className="form" style={{ marginBottom: '3%' }}>
                         <div className="row">
-                            <div className="col-md-12">
-                                <div className="form-group col-md-12">
-                                    <div className="btn-toolbar pull-right">
-                                        <button type="submit" className="btn green" onClick={this.formSubmit}>
-                                            {utils.getLabelByID('Search')}
-                                        </button>
-                                    </div>
+                            <div className="col-md-offset-4 col-md-12">
+                                <div className="col-md-2">
+                                    <img src="/assets/imgs/gift.jpg" style={{ height: "150px" }} />
+                                </div>
+
+                                <div className="col-md-3 text-center" >
+                                    <div style={{ fontSize: "30px", marginTop: "30px" }}><b>CBD-76545677</b></div>
+                                    <div className="row" style={{ marginTop: "30px" }}>Commercial Bank of Dubai (10/10/2019-20/10/2019)</div>
                                 </div>
                             </div>
                         </div>
 
-                    </div>
 
-                    <Table
-                        gridColumns={utils.getGridColumnByName("viewTranxList")}
-                        gridData={[{ "no": "1", "tranx": "12212222", "acc": "555222", "ttype": "ACCURAL", "amount": "100045", "points": "12220211", "date": "01/12/2020", "status": "APPROVED", "partner": "ETIHAD" }]}
-                        fontclass=""
-                        totalRecords={this.props.getPage.totalRecords}
-                        pageSize={10}
-                        pageChanged={this.pageChanged}
-                        pagination={true}
-                        activePage={this.state.page.currentPageNo}
-                    />
-                </Portlet>
-            </div >
+
+                        <div className="row">
+                            <div className="col-md-offset-2">
+                                <div className="col-3">
+                                    <TileUnit data={[{
+                                        title: "AMOUNT",
+                                        value: "445.00",
+                                        percentageTag: true
+                                    }]} />
+                                </div>
+                                <div className="col-3">
+                                    <TileUnit data={[{
+                                        title: "Commission",
+                                        value: "566.00",
+                                        percentageTag: true
+                                    }]} />
+                                </div>
+                                <div className="col-3">
+                                    <TileUnit data={[{
+                                        title: "POINTS",
+                                        value: "6777",
+                                        percentageTag: true
+                                    }]} />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+
+                        <Portlet title={utils.getLabelByID("TRANSACTIONS")}>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="form-group col-md-4">
+                                        <label className="control-label">{utils.getLabelByID("Start Date")}</label>
+                                    </div>
+                                    <div className="form-group col-md-8">
+                                        <input type="text" className="form-control" name="contractId" id="contractId" />
+                                    </div>
+                                </div>
+
+                                <div className="col-md-6">
+                                    <div className="form-group col-md-4">
+                                        <label className="control-label">{utils.getLabelByID("End Date")}</label>
+                                    </div>
+                                    <div className="form-group col-md-8">
+                                        <input type="text" className="form-control" name="contractId" id="contractId" />
+                                    </div>
+                                </div>
+                                <div className="col-md-12">
+                                    <div className="form-group col-md-12">
+                                        <div className="btn-toolbar pull-right">
+                                            <button type="submit" className="btn green" onClick={this.formSubmit}>
+                                                {utils.getLabelByID('Search')}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <Row>
+                                <Col>
+                                    <Table
+                                        gridColumns={utils.getGridColumnByName("viewTranxListNew")}
+                                        gridData={[{ "no": "1", "tranx": "12212222", "acc": "555222", "ttype": "ACCURAL", "amount": "100045", "points": "12220211", "date": "01/12/2020", "status": "APPROVED", "partner": "ETIHAD" }]}
+                                        fontclass=""
+                                        totalRecords={this.props.getPage.totalRecords}
+                                        pageSize={10}
+                                        pageChanged={this.pageChanged}
+                                        pagination={true}
+                                        activePage={this.state.page.currentPageNo}
+                                    />
+                                </Col>
+                            </Row>
+                        </Portlet>
+                    </div >
+                </Col>
+            </Row>
         );
     }
 }
