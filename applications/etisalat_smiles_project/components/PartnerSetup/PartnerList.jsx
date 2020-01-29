@@ -25,6 +25,7 @@ import * as requestCreator from './../../../../core/common/request.js';
 import * as constants from './../../../../core/constants/Communication.js';
 
 
+import { browserHistory } from 'react-router';
 class PartnerList extends Component {
 
     constructor(props, context) {
@@ -43,8 +44,7 @@ class PartnerList extends Component {
     }
 
     componentDidMount() {
-
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
 
         let request = {
             "body": {
@@ -179,6 +179,11 @@ class PartnerList extends Component {
         console.log('form submitted')
     }
 
+    addPartner = (e) => {
+        e.preventDefault()
+        browserHistory.push('/smiles/addPartner')
+    }
+
     render() {
         if (this.state.isLoading)
             return (<div className="loader">{"Loading"}</div>)
@@ -223,8 +228,11 @@ class PartnerList extends Component {
 
 
                             <div className="row clearfix pull-right">
-                                <button type="submit" className="btn green" style={{ marginRight: '85px' }} onClick={this.formSubmit}>
+                                <button type="submit" className="btn green" style={{ marginRight: '13px' }} onClick={this.formSubmit}>
                                     Search
+                                </button>
+                                <button type="submit" className="btn green" style={{ marginRight: '85px', width: '83px' }} onClick={this.addPartner}>
+                                    Add
                                 </button>
                             </div>
                         </div>

@@ -71,9 +71,17 @@ class AddPartner extends Component {
         }
 
         if (nextProps.getPartnerDataByID) {
-
+            let status = _.get(nextProps, 'getPartnerDataByID.status', '').toUpperCase()
             let erpSettingsFrom = { ..._.get(nextProps, 'getPartnerDataByID.erpSettingsFrom', {}) }
             let contactInformationArr = [..._.get(nextProps, 'getPartnerDataByID.contacts', [])]
+
+            if (status == "APPROVED") {
+                for (let i in contactInformationArr) {
+                    contactInformationArr[i].action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+                    { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+                }
+            }
+
             let contractParamsObj = _.get(nextProps.getPartnerDataByID, 'contractParams', {})
 
             let contractParamsArr = []
@@ -81,7 +89,7 @@ class AddPartner extends Component {
 
                 contractParamsArr.push({
                     withPartnerCode: key,
-                    action: [{ label: "View", iconName: "fa fa-eye", actionType: "COMPONENT_FUNCTION" }],
+                    action: (status == "PENDING" ? [{ label: "View", iconName: "fa fa-eye", actionType: "COMPONENT_FUNCTION" }] : [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }, { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]),
                     ...value
                 })
             }
@@ -94,15 +102,21 @@ class AddPartner extends Component {
                 contactInformationArr,
                 erpSettingsFrom,
                 isLoading: false,
-                status: _.get(nextProps, 'getPartnerDataByID.status', '').toUpperCase()
+                status
             })
         }
 
     }
 
+    componentWillUnmount(){
+        this.props.actions.updateStore({
+            getInterim: undefined,
+            getPartnerDataByID: undefined
+        })
+    }
+
     componentDidMount() {
         window.scrollTo(0, 0);
-
         if (this.props.params.partnerCode) {
             this.props.actions.generalProcess(constants.getInterim, {
                 body: {
@@ -521,12 +535,12 @@ class AddPartner extends Component {
 
 
                                             {
-                                                this.props.params.partnerCode && this.renderTypePortlet()
+                                                this.props.params.partnerCode && this.renderTypePortlet(2)
                                             }
 
 
                                             <Portlet title={"RATES"}>
-                                                {!this.props.params.partnerCode && (<div>
+                                                {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? true : false)) && (<div>
                                                     <div className="row">
                                                         <div className="col-md-6">
                                                             <Label text="Start Date" columns='4' />
@@ -631,11 +645,11 @@ class AddPartner extends Component {
 
                                             </div>
                                             {
-                                                this.props.params.partnerCode && this.renderTypePortlet()
+                                                this.props.params.partnerCode && this.renderTypePortlet(2)
                                             }
 
                                             <Portlet title={"REDEMPTION TERMS"}>
-                                                {!this.props.params.partnerCode && (<div>
+                                                {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? true : false)) && (<div>
                                                     <div className="row">
                                                         <div className="col-md-6">
                                                             <Label text="Start Date" columns='4' />
@@ -756,11 +770,11 @@ class AddPartner extends Component {
 
                                             </div>
                                             {
-                                                this.props.params.partnerCode && this.renderTypePortlet()
+                                                this.props.params.partnerCode && this.renderTypePortlet(2)
                                             }
 
                                             <Portlet title={"ACCURAL BILLING RATES"}>
-                                                {!this.props.params.partnerCode &&
+                                                {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? true : false)) &&
                                                     (<div>
 
                                                         <div className="row">
@@ -1035,7 +1049,7 @@ class AddPartner extends Component {
                                 <div className="row">
                                     <div className="col-md-12">
                                         <div className="btn-toolbar pull-right">
-                                            {!this.props.params.partnerCode && <button onClick={this.addSubsidaryPartner} type="submit" className="pull-right btn green">
+                                            {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? true : false)) && <button onClick={this.addSubsidaryPartner} type="submit" className="pull-right btn green">
                                                 {utils.getLabelByID("Add")}
                                             </button>}
                                             <button onClick={this.handleOnBack} type="submit" className="pull-right btn green">
@@ -1116,20 +1130,37 @@ class AddPartner extends Component {
                     });
                     this.stateChangeSubsidaryPartnerBool();
                     let contractParams = this.state.contractParamsArr[index];
+                    let redemptionTermsArr = [..._.get(contractParams, 'redemptionBillingRates', [])]
+                    for (let i in redemptionTermsArr) {
+                        redemptionTermsArr[i].action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+                        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+                    }
+                    let accrualTermsArr = [..._.get(contractParams, 'accrualBillingRates', [])]
+                    for (let i in accrualTermsArr) {
+                        accrualTermsArr[i].action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+                        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+                    }
+                    let ratesArr = [..._.get(contractParams, 'conversionBillingRates', [])]
+                    for (let i in ratesArr) {
+                        ratesArr[i].action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+                        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+                    }
+
+
                     console.log("contractParams from subsidiaryPartnerActionHandler", contractParams)
                     this.setState({
                         contractParams,
                         isAccrualPartner: contractParams.isAccrualPartner,
                         isRedemptionPartner: contractParams.isRedemptionPartner,
                         isPointConversionPartner: contractParams.isPointConversionPartner,
-                        redemptionTermsArr: [..._.get(contractParams, 'redemptionBillingRates', [])],
-                        accrualTermsArr: [..._.get(contractParams, 'accrualBillingRates', [])],
-                        ratesArr: [..._.get(contractParams, 'conversionBillingRates', [])],
+                        redemptionTermsArr,
+                        accrualTermsArr,
+                        ratesArr,
                         settlementStartOn: _.get(contractParams, 'settlement.startOn', ''),
                         settlement: _.get(contractParams, 'settlement', {}),
                         pointCreditRules: _.get(contractParams, 'pointCreditRules', {}),
-                        erpSettingsTo: _.get(contractParams, 'erpSettingsTo', {}),
-                        accrualTermsArr: _.get(contractParams, 'accrualBillingRates', [])
+                        erpSettingsTo: _.get(contractParams, 'erpSettingsTo', {})
+
                     });
                 }
                 break;
@@ -1139,21 +1170,40 @@ class AddPartner extends Component {
                         isEdited: true
                     });
                     this.stateChangeSubsidaryPartnerBool();
+
+
                     let contractParams = this.state.contractParamsArr[index];
+                    let redemptionTermsArr = [..._.get(contractParams, 'redemptionBillingRates', [])]
+                    for (let i in redemptionTermsArr) {
+                        redemptionTermsArr[i].action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+                        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+                    }
+
+                    let accrualTermsArr = [..._.get(contractParams, 'accrualBillingRates', [])]
+                    for (let i in accrualTermsArr) {
+                        accrualTermsArr[i].action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+                        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+                    }
+                    let ratesArr = [..._.get(contractParams, 'conversionBillingRates', [])]
+                    for (let i in ratesArr) {
+                        ratesArr[i].action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+                        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+                    }
+
+
                     console.log("contractParams from subsidiaryPartnerActionHandler", contractParams)
                     this.setState({
                         contractParams,
                         isAccrualPartner: contractParams.isAccrualPartner,
                         isRedemptionPartner: contractParams.isRedemptionPartner,
                         isPointConversionPartner: contractParams.isPointConversionPartner,
-                        redemptionTermsArr: [..._.get(contractParams, 'redemptionBillingRates', [])],
-                        accrualTermsArr: [..._.get(contractParams, 'accrualBillingRates', [])],
-                        ratesArr: [..._.get(contractParams, 'conversionBillingRates', [])],
+                        redemptionTermsArr,
+                        accrualTermsArr,
+                        ratesArr,
                         settlementStartOn: _.get(contractParams, 'settlements.startsOn', ''),
                         settlement: _.get(contractParams, 'settlements', {}),
                         pointCreditRules: _.get(contractParams, 'pointCreditRules', {}),
-                        erpSettingsTo: _.get(contractParams, 'erpSettingsTo', {}),
-                        accrualTermsArr: _.get(contractParams, 'accrualBillingRates', [])
+                        erpSettingsTo: _.get(contractParams, 'erpSettingsTo', {})
                     });
                     let tempState = [...this.state.contractParamsArr];
                     tempState.splice(index, 1);
@@ -1378,8 +1428,13 @@ class AddPartner extends Component {
             return;
         } else {
             let partnerCategory = [];
-            partnerCategory.push(body.partnerCategory); // -- this should be multi select dropdown--already an array
-            body.partnerCategory = partnerCategory;
+
+            if (!Array.isArray(body.partnerCategory)) {
+                partnerCategory.push(body.partnerCategory); // -- this should be multi select dropdown--already an array
+                body.partnerCategory = partnerCategory;
+            }
+
+
         }
         // if (!this.state.isAccrualPartner && !this.state.isPointConversionPartner && !this.state.isRedemptionPartner) {
         //     toaster.showToast("Partner type is required", "ERROR");
@@ -1433,7 +1488,6 @@ class AddPartner extends Component {
         } else {
             this.redirectToList(msg);
         }
-
     }
     partnerFields() {
         return (
@@ -1557,10 +1611,10 @@ class AddPartner extends Component {
                         </div>
                         <br></br>
 
-                        {!this.props.params.partnerCode && this.renderTypePortlet()}
+                        {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? true : false)) && this.renderTypePortlet()}
                         <Portlet title={"CONTACT"}>
                             {
-                                !this.props.params.partnerCode && (
+                                (!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? true : false)) && (
                                     <div>
                                         <div className="row">
                                             <div className="col-md-6">
@@ -1765,7 +1819,7 @@ class AddPartner extends Component {
                                 gridData={this.state.contractParamsArr || []}
                                 componentFunction={this.subsidiaryPartnerActionHandler}
                             />
-                            {!this.props.params.partnerCode &&
+                            {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? true : false)) &&
                                 <div className="row">
                                     <div className="col-md-12">
                                         <div className="btn-toolbar pull-right">
@@ -1781,8 +1835,8 @@ class AddPartner extends Component {
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="btn-toolbar pull-right">
-                                    <button onClick={!this.props.params.partnerCode ? this.setPartner : this.approvePartner} type="submit" className="pull-right btn green">
-                                        {!this.props.params.partnerCode ? utils.getLabelByID("Submit") : utils.getLabelByID("Approve")}
+                                    <button onClick={(!this.props.params.partnerCode || this.state.status == "APPROVED") ? this.setPartner : this.approvePartner} type="submit" className="pull-right btn green">
+                                        {(!this.props.params.partnerCode || this.state.status == "APPROVED") ? utils.getLabelByID("Submit") : utils.getLabelByID("Approve")}
                                     </button>
                                 </div>
                             </div>
@@ -1812,7 +1866,7 @@ class AddPartner extends Component {
         })
     }
 
-    renderTypePortlet = () => {
+    renderTypePortlet = (place = 1) => {
         return (<Portlet title={"TYPE"}>
 
             <div className="row">
@@ -1823,7 +1877,8 @@ class AddPartner extends Component {
                                 <div className="col-md-10 col-md-offset-1">
 
                                     {
-                                        (this.props.params.partnerCode ? (this.state.isRedemptionPartner) : true) && (
+
+                                        (!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? (place == 1 ? true : this.state.isRedemptionPartner) : this.state.isRedemptionPartner)) && (
                                             <div className="col-md-4 text-center">
                                                 <div className="voucherBox">
                                                     <img src="/assets/Resources/Redemption.png" width="20%" />
@@ -1840,7 +1895,7 @@ class AddPartner extends Component {
                                     }
 
                                     {
-                                        (this.props.params.partnerCode ? (this.state.isAccrualPartner) : true) && (
+                                        (!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? (place == 1 ? true : this.state.isAccrualPartner) : this.state.isAccrualPartner)) && (
                                             <div className="col-md-4 text-center">
                                                 <div className="voucherBox">
                                                     <img src="/assets/Resources/Accrual.png" width="20%" />
@@ -1857,7 +1912,7 @@ class AddPartner extends Component {
                                     }
 
                                     {
-                                        (this.props.params.partnerCode ? (this.state.isPointConversionPartner) : true) && (
+                                        (!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? (place == 1 ? true : this.state.isPointConversionPartner) : this.state.isPointConversionPartner)) && (
                                             <div className="col-md-4 text-center">
                                                 <div className="voucherBox">
                                                     <img src="/assets/Resources/pointConverstion.png" width="20%" />
