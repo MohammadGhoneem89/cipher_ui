@@ -542,16 +542,6 @@ class AddPartner extends Component {
                                     {
                                         this.state.isRedemptionPartner && (
                                             <div>
-                                                {/* {
-                                    "serialNo": 1,
-                                    "startDate": 1455236,
-                                    "endDate": 986547,
-                                    "rateType": "",
-                                    "rate": 1.11,
-                                    "paymentMethod": "SMILES",
-                                    "mode": "A"
-                                } 
-                            */}
                                                 <div className="row">
                                                     <div className="col-md-6">
                                                         <Label text="Code" columns='4'  />
@@ -1653,18 +1643,18 @@ class AddPartner extends Component {
 
 
 
-                        <Portlet title={"Subsidary Partners"}>
+                        <Portlet title={"Related Partners"}>
                             <Table
                                 gridColumns={utils.getGridColumnByName('subsidaryPartner')}
                                 gridData={this.state.contractParamsArr || []}
-                                componentFunction={this.subsidiaryPartnerActionHandler}
+                                // componentFunction={this.subsidiaryPartnerActionHandler}
                             />
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="btn-toolbar pull-right">
                                         <button disabled={(this.state.isRedemptionPartner || this.state.isAccrualPartner || this.state.isPointConversionPartner) ? false : true}
                                             onClick={this.stateChangeSubsidaryPartnerBool} type="submit" className="pull-right btn green">
-                                            {utils.getLabelByID("Add Subsidary Partner")}
+                                            {utils.getLabelByID("Add Related Partner")}
                                         </button>
                                     </div>
                                 </div>
@@ -1689,9 +1679,9 @@ class AddPartner extends Component {
 
 
     handleOnBack = () => {
-        if (this.state.isEdited) {
-            this.addSubsidaryPartner()
-        }
+        // if (this.state.isEdited) {
+        //     this.addSubsidaryPartner()
+        // }
         this.setState({
             isEdited: false
         });
