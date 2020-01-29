@@ -84,7 +84,7 @@ class TransactionDetail extends React.Component {
         // console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions");
         // let pageActions = nextProps.gridActions[0].pageActions;
         if (nextProps.transactionData) {
-          
+
             let transactionData = nextProps.transactionData;
             this.setState(
                 {
@@ -199,6 +199,15 @@ class TransactionDetail extends React.Component {
                                         <Row>
                                             <div className="col-md-6">
                                                 <div className="col-md-4">
+
+                                                    <Label text="Amount Spent:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text={_.get(this.state.transactionData, 'accrualParams.amountSpent', 'N/A')} />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
                                                     <Label text="Settlement Batch No:" />
                                                 </div>
                                                 <div className="col-md-8">
@@ -216,6 +225,7 @@ class TransactionDetail extends React.Component {
                                                     <Label text={_.get(this.state.transactionData, 'accrualParams.mobileNo', 'N/A')} />
                                                 </div>
                                             </div>
+
                                         </Row>
 
 
@@ -236,7 +246,7 @@ class TransactionDetail extends React.Component {
                                             <div className="col-md-offset-1">
                                                 <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px" }}>
                                                     <Label text="Amount" />
-                                                    <Label style={{ "font-size": "30px", "color": "#1d9b1d" }} text={`${_.get(this.state.transactionData, 'accrualParams.amountSpent', '0')} AED`} />
+                                                    <Label style={{ "font-size": "30px", "color": "#1d9b1d" }} text={`${_.get(this.state.transactionData, 'amount', '0')} AED`} />
                                                 </div>
                                                 <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px" }}>
                                                     <Label text="Commission" />
@@ -252,7 +262,7 @@ class TransactionDetail extends React.Component {
                                     <Row>
                                         <Col>
                                             <Col>
-                                                <h1>Transaction Events</h1>
+                                                <h1>Tracking Events</h1>
                                                 <Table
                                                     gridColumns={utils.getGridColumnByName("viewTranxListEvents")}
                                                     gridData={this.state.gridData}
