@@ -161,7 +161,7 @@ class AddPartner extends Component {
     addSubsidaryPartner = () => {
 
         let contractParams = { ...this.state.contractParams };
-        let contractParamsArr = [...this.state.subsidaryPartners];
+        let contractParamsArr = [...this.state.contractParamsArr];
         let settlement = { ...this.state.settlement };
         let accrualterms = this.state.accrualTermsArr;
         let erpSettingsTo = { ...this.state.erpSettingsTo }
@@ -221,6 +221,10 @@ class AddPartner extends Component {
         }
         contractParams.conversionBillingRates = [...this.state.ratesArr]
 
+
+        contractParams.redemptionBillingRates = [..._.get(this.state, 'redemptionTermsArr', [])]
+
+
         //let pointRule = { ...this.state.pointCreditRules }
         pointRule.maxUnSettledAmount = parseInt(pointRule.maxUnSettledAmount || -1)
         contractParams.pointCreditRules = { ...pointRule }
@@ -239,8 +243,14 @@ class AddPartner extends Component {
             accrualTermsArr: [],
             pointCreditRulesArr: [],
             pointCreditRules: {},
+            ratesArr: [],
+            pointConversionArr: [],
             settlementStartOn: undefined,
-            isEdited: false
+            isEdited: false,
+            isAccrualPartner: false,
+            isPointConversionPartner: false,
+            isRedemptionPartner: false,
+            redemptionTermsArr: []
         })
         this.stateChangeSubsidaryPartnerBool();
     }
@@ -383,31 +393,43 @@ class AddPartner extends Component {
 
             <div className="row">
                 <div className="col-md-12" >
-                   
-                        <div className="col-md-12" >
-                            <ROW>
-                                <COL>
+
+                    <div className="col-md-12" >
+                        <ROW>
+                            <COL>
 
 
-                                    {
-                                        this.state.isPointConversionPartner && (
-                                            <div>
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <Label text="Code" columns='4' style={{ padding: "0 0 0 30" }} />
-                                                        <Input
-                                                            fieldname='withPartnerCode'
-                                                            formname='contractParams'
-                                                            columns='7'
-                                                            placeholder=''
-                                                            state={this.state}
-                                                            actionHandler={this.generalHandler}
-                                                            className="form-control"
-                                                        />
-                                                    </div>
-
+                                {
+                                    this.state.isPointConversionPartner && (
+                                        <div>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <Label text="Partner Code" columns='4' style={{ padding: "0 0 0 30" }} />
+                                                    <Input
+                                                        fieldname='withPartnerCode'
+                                                        formname='contractParams'
+                                                        columns='7'
+                                                        placeholder=''
+                                                        state={this.state}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
                                                 </div>
-                                                <Portlet title={"POINT CONVERSION"}>
+                                                <div className="col-md-6">
+                                                    <Label text="Program Name" columns='4' style={{ padding: "0 0 0 30" }} />
+                                                    <Input
+                                                        fieldname='conversionPartnerProgramName'
+                                                        formname='contractParams'
+                                                        columns='7'
+                                                        placeholder=''
+                                                        state={this.state}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+
+                                            </div>
+                                            {/* <Portlet title={"POINT CONVERSION"}>
                                                     <div className="row">
 
                                                         <div className="col-md-6">
@@ -455,99 +477,247 @@ class AddPartner extends Component {
                                                         componentFunction={this.pointConversionActionHandler}
                                                     />
 
-                                                </Portlet>
-                                                <Portlet title={"RATES"}>
+                                                </Portlet> */}
+                                            <Portlet title={"RATES"}>
 
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <Label text="Start Date" columns='4' />
-                                                            <div className="col-md-7">
-                                                                <DateControl id="pointConversionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionStartDate)} dateChange={this.dateChange.bind(this, 'pointConversionStartDate')} />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <Label text="End Date" columns='4' />
-                                                            <div className="col-md-7">
-                                                                <DateControl id="pointConversionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionEndDate)} dateChange={this.dateChange.bind(this, 'pointConversionEndDate')} />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <br></br>
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <Label text="Rate" columns='4' />
-                                                            <Input
-                                                                fieldname='rate'
-                                                                formname='rates'
-                                                                columns='7'
-                                                                placeholder=''
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <Label text="Source Token" columns='4' />
-                                                            <Input
-                                                                fieldname='sourceToken'
-                                                                formname='rates'
-                                                                columns='7'
-                                                                disabled={true}
-                                                                value={"SMILES"}
-                                                                placeholder=''
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <Label text="Mode" columns='4' />
-                                                            <Combobox
-                                                                fieldname='mode'
-                                                                formname='rates'
-                                                                columns='7'
-                                                                placeholder='Select'
-                                                                style={{}}
-                                                                state={this.state}
-                                                                typeName="contactMode"
-                                                                dataSource={_.get(this.state, 'typeData', {})}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col-md-12">
-                                                            <div className="btn-toolbar pull-right">
-                                                                <button onClick={this.addRates} type="submit" className="pull-right btn green">
-                                                                    {utils.getLabelByID("Add")}
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <Table
-                                                        gridColumns={utils.getGridColumnByName('rates')}
-                                                        gridData={this.state.ratesArr || []}
-                                                        componentFunction={this.ratesActionHandler}
-                                                    />
-                                                </Portlet>
-                                            </div>
-
-                                        )
-                                    }
-
-                                    {
-                                        this.state.isRedemptionPartner && (
-                                            <div>
                                                 <div className="row">
                                                     <div className="col-md-6">
-                                                        <Label text="Code" columns='4'  />
+                                                        <Label text="Start Date" columns='4' />
+                                                        <div className="col-md-7">
+                                                            <DateControl id="pointConversionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionStartDate)} dateChange={this.dateChange.bind(this, 'pointConversionStartDate')} />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <Label text="End Date" columns='4' />
+                                                        <div className="col-md-7">
+                                                            <DateControl id="pointConversionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionEndDate)} dateChange={this.dateChange.bind(this, 'pointConversionEndDate')} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <br></br>
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        <Label text="Rate" columns='4' />
                                                         <Input
-                                                            fieldname='withPartnerCode'
-                                                            formname='contractParams'
+                                                            fieldname='rate'
+                                                            formname='rates'
+                                                            columns='7'
+                                                            placeholder=''
+                                                            state={this.state}
+                                                            actionHandler={this.generalHandler}
+                                                            className="form-control"
+                                                        />
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <Label text="Source Token" columns='4' />
+                                                        <Input
+                                                            fieldname='sourceToken'
+                                                            formname='rates'
+                                                            columns='7'
+                                                            disabled={true}
+                                                            value={"SMILES"}
+                                                            placeholder=''
+                                                            state={this.state}
+                                                            actionHandler={this.generalHandler}
+                                                            className="form-control"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        <Label text="Mode" columns='4' />
+                                                        <Combobox
+                                                            fieldname='mode'
+                                                            formname='rates'
+                                                            columns='7'
+                                                            placeholder='Select'
+                                                            style={{}}
+                                                            state={this.state}
+                                                            typeName="contactMode"
+                                                            dataSource={_.get(this.state, 'typeData', {})}
+                                                            actionHandler={this.generalHandler}
+                                                            className="form-control"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-md-12">
+                                                        <div className="btn-toolbar pull-right">
+                                                            <button onClick={this.addRates} type="submit" className="pull-right btn green">
+                                                                {utils.getLabelByID("Add")}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <Table
+                                                    gridColumns={utils.getGridColumnByName('rates')}
+                                                    gridData={this.state.ratesArr || []}
+                                                    componentFunction={this.ratesActionHandler}
+                                                />
+                                            </Portlet>
+                                        </div>
+
+                                    )
+                                }
+
+                                {
+                                    this.state.isRedemptionPartner && (
+                                        <div>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <Label text="Code" columns='4' />
+                                                    <Input
+                                                        fieldname='withPartnerCode'
+                                                        formname='contractParams'
+                                                        columns='7'
+                                                        placeholder=''
+                                                        state={this.state}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+
+                                            </div>
+                                            <Portlet title={"REDEMPTION TERMS"}>
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        <Label text="Start Date" columns='4' />
+                                                        <div className="col-md-7">
+                                                            <DateControl id="redemptionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.redemptionStartDate)} dateChange={this.dateChange.bind(this, 'redemptionStartDate')} />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <Label text="End Date" columns='4' />
+                                                        <div className="col-md-7">
+                                                            <DateControl id="redemptionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.redemptionEndDate)} dateChange={this.dateChange.bind(this, 'redemptionEndDate')} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br></br>
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        <Label text="Payment Method" columns='4' />
+                                                        <Combobox
+                                                            fieldname='paymentMethod'
+                                                            formname='redemptionTerms'
+                                                            columns='7'
+                                                            placeholder='Select'
+                                                            style={{}}
+                                                            state={this.state}
+                                                            typeName="paymentMethod"
+                                                            dataSource={_.get(this.state, 'typeData', {})}
+                                                            actionHandler={this.generalHandler}
+                                                            className="form-control"
+                                                        />
+                                                    </div>
+
+                                                    <div className="col-md-6">
+                                                        <Label text="Mode" columns='4' />
+                                                        <Combobox
+                                                            fieldname='mode'
+                                                            formname='redemptionTerms'
+                                                            columns='7'
+                                                            placeholder='Select'
+                                                            style={{}}
+                                                            state={this.state}
+                                                            typeName="contactMode"
+                                                            dataSource={_.get(this.state, 'typeData', {})}
+                                                            actionHandler={this.generalHandler}
+                                                            className="form-control"
+                                                        />
+                                                    </div>
+
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        <Label text="Rate Type" columns='4' />
+                                                        <Combobox
+                                                            fieldname='rateType'
+                                                            formname='redemptionTerms'
+                                                            columns='7'
+                                                            placeholder='Select'
+                                                            style={{}}
+                                                            state={this.state}
+                                                            typeName="rateType"
+                                                            dataSource={_.get(this.state, 'typeData', {})}
+                                                            actionHandler={this.generalHandler}
+                                                            className="form-control"
+                                                        />
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <Label text="Rate" columns='4' />
+                                                        <Input
+                                                            fieldname='rate'
+                                                            formname='redemptionTerms'
+                                                            columns='7'
+                                                            placeholder=''
+                                                            state={this.state}
+                                                            actionHandler={this.generalHandler}
+                                                            className="form-control"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-md-12">
+                                                        <div className="btn-toolbar pull-right">
+                                                            <button onClick={this.addRedemptionTerm} type="submit" className="pull-right btn green">
+                                                                {utils.getLabelByID("Add")}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <Table
+                                                    gridColumns={utils.getGridColumnByName('redemptionTerms')}
+                                                    gridData={this.state.redemptionTermsArr || []}
+                                                    componentFunction={this.redemptionTermsActionHandler}
+                                                />
+                                            </Portlet>
+
+                                        </div>
+                                    )
+                                }
+
+                                {
+                                    this.state.isAccrualPartner && (
+                                        <div>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <Label text="Code" columns='4' style={{ padding: "0 0 0 30" }} />
+                                                    <Input
+                                                        fieldname='withPartnerCode'
+                                                        formname='contractParams'
+                                                        columns='7'
+                                                        placeholder=''
+                                                        state={this.state}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+
+                                            </div>
+                                            <Portlet title={"ACCURAL BILLING RATES"}>
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        <Label text="Start Date" columns='4' />
+                                                        <div className="col-md-7">
+                                                            <DateControl id="accuralStartDate" defaultValue={utils.UNIXConvertToDate(this.state.accuralStartDate)} dateChange={this.dateChange.bind(this, 'accuralStartDate')} />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <Label text="End Date" columns='4' />
+                                                        <div className="col-md-7">
+                                                            <DateControl id="accuralEndDate" defaultValue={utils.UNIXConvertToDate(this.state.accuralEndDate)} dateChange={this.dateChange.bind(this, 'accuralEndDate')} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br></br>
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        <Label text="Selling Rate" columns='4' />
+                                                        <Input
+                                                            fieldname='sellingRate'
+                                                            formname='accrualTerms'
                                                             columns='7'
                                                             placeholder=''
                                                             state={this.state}
@@ -556,115 +726,61 @@ class AddPartner extends Component {
                                                         />
                                                     </div>
 
+                                                    <div className="col-md-6">
+                                                        <Label text="Mode" columns='4' />
+                                                        <Combobox
+                                                            fieldname='mode'
+                                                            formname='accrualTerms'
+                                                            columns='7'
+                                                            placeholder='Select'
+                                                            style={{}}
+                                                            state={this.state}
+                                                            typeName="contactMode"
+                                                            dataSource={_.get(this.state, 'typeData', {})}
+                                                            actionHandler={this.generalHandler}
+                                                            className="form-control"
+                                                        />
+                                                    </div>
+
                                                 </div>
-                                                <Portlet title={"REDEMPTION TERMS"}>
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <Label text="Start Date" columns='4' />
-                                                            <div className="col-md-7">
-                                                                <DateControl id="redemptionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.redemptionStartDate)} dateChange={this.dateChange.bind(this, 'redemptionStartDate')} />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <Label text="End Date" columns='4' />
-                                                            <div className="col-md-7">
-                                                                <DateControl id="redemptionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.redemptionEndDate)} dateChange={this.dateChange.bind(this, 'redemptionEndDate')} />
-                                                            </div>
+                                                <div className="row">
+                                                    <div className="col-md-12">
+                                                        <div className="btn-toolbar pull-right">
+                                                            <button onClick={this.addAccuralTerm} type="submit" className="pull-right btn green">
+                                                                {utils.getLabelByID("Add")}
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                    <br></br>
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <Label text="Payment Method" columns='4' />
-                                                            <Combobox
-                                                                fieldname='paymentMethod'
-                                                                formname='redemptionTerms'
-                                                                columns='7'
-                                                                placeholder='Select'
-                                                                style={{}}
-                                                                state={this.state}
-                                                                typeName="paymentMethod"
-                                                                dataSource={_.get(this.state, 'typeData', {})}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
+                                                </div>
+                                                <Table
+                                                    gridColumns={utils.getGridColumnByName('accrualTerms')}
+                                                    gridData={this.state.accrualTermsArr || []}
+                                                    componentFunction={this.accrualTermsActionHandler}
+                                                />
+                                            </Portlet>
+                                            <Portlet title={"ACCURAL POINT CREDIT RULES"}>
 
-                                                        <div className="col-md-6">
-                                                            <Label text="Mode" columns='4' />
-                                                            <Combobox
-                                                                fieldname='mode'
-                                                                formname='redemptionTerms'
-                                                                columns='7'
-                                                                placeholder='Select'
-                                                                style={{}}
-                                                                state={this.state}
-                                                                typeName="contactMode"
-                                                                dataSource={_.get(this.state, 'typeData', {})}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <Label text="Rate Type" columns='4' />
-                                                            <Combobox
-                                                                fieldname='rateType'
-                                                                formname='redemptionTerms'
-                                                                columns='7'
-                                                                placeholder='Select'
-                                                                style={{}}
-                                                                state={this.state}
-                                                                typeName="rateType"
-                                                                dataSource={_.get(this.state, 'typeData', {})}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <Label text="Rate" columns='4' />
-                                                            <Input
-                                                                fieldname='rate'
-                                                                formname='redemptionTerms'
-                                                                columns='7'
-                                                                placeholder=''
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col-md-12">
-                                                            <div className="btn-toolbar pull-right">
-                                                                <button onClick={this.addRedemptionTerm} type="submit" className="pull-right btn green">
-                                                                    {utils.getLabelByID("Add")}
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <Table
-                                                        gridColumns={utils.getGridColumnByName('redemptionTerms')}
-                                                        gridData={this.state.redemptionTermsArr || []}
-                                                        componentFunction={this.redemptionTermsActionHandler}
-                                                    />
-                                                </Portlet>
-
-                                            </div>
-                                        )
-                                    }
-
-                                    {
-                                        this.state.isAccrualPartner && (
-                                            <div>
                                                 <div className="row">
                                                     <div className="col-md-6">
-                                                        <Label text="Code" columns='4' style={{ padding: "0 0 0 30" }} />
+                                                        <Label text="Rule" columns='4' />
+                                                        <Combobox
+                                                            fieldname='ruleType'
+                                                            formname='pointCreditRules'
+                                                            columns='7'
+                                                            placeholder='Select'
+                                                            style={{}}
+                                                            state={this.state}
+                                                            typeName="rule"
+                                                            dataSource={_.get(this.state, 'typeData', {})}
+                                                            actionHandler={this.generalHandler}
+                                                            className="form-control"
+                                                        />
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <Label text="Max Unsettled(AED)" columns='4' />
                                                         <Input
-                                                            fieldname='withPartnerCode'
-                                                            formname='contractParams'
+                                                            fieldname='maxUnSettledAmount'
+                                                            formname='pointCreditRules'
                                                             columns='7'
                                                             placeholder=''
                                                             state={this.state}
@@ -672,160 +788,66 @@ class AddPartner extends Component {
                                                             className="form-control"
                                                         />
                                                     </div>
-
                                                 </div>
-                                                <Portlet title={"ACCURAL BILLING RATES"}>
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <Label text="Start Date" columns='4' />
-                                                            <div className="col-md-7">
-                                                                <DateControl id="accuralStartDate" defaultValue={utils.UNIXConvertToDate(this.state.accuralStartDate)} dateChange={this.dateChange.bind(this, 'accuralStartDate')} />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <Label text="End Date" columns='4' />
-                                                            <div className="col-md-7">
-                                                                <DateControl id="accuralEndDate" defaultValue={utils.UNIXConvertToDate(this.state.accuralEndDate)} dateChange={this.dateChange.bind(this, 'accuralEndDate')} />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <br></br>
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <Label text="Selling Rate" columns='4' />
-                                                            <Input
-                                                                fieldname='sellingRate'
-                                                                formname='accrualTerms'
-                                                                columns='7'
-                                                                placeholder=''
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-
-                                                        <div className="col-md-6">
-                                                            <Label text="Mode" columns='4' />
-                                                            <Combobox
-                                                                fieldname='mode'
-                                                                formname='accrualTerms'
-                                                                columns='7'
-                                                                placeholder='Select'
-                                                                style={{}}
-                                                                state={this.state}
-                                                                typeName="contactMode"
-                                                                dataSource={_.get(this.state, 'typeData', {})}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col-md-12">
-                                                            <div className="btn-toolbar pull-right">
-                                                                <button onClick={this.addAccuralTerm} type="submit" className="pull-right btn green">
-                                                                    {utils.getLabelByID("Add")}
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <Table
-                                                        gridColumns={utils.getGridColumnByName('accrualTerms')}
-                                                        gridData={this.state.accrualTermsArr || []}
-                                                        componentFunction={this.accrualTermsActionHandler}
-                                                    />
-                                                </Portlet>
-                                                <Portlet title={"ACCURAL POINT CREDIT RULES"}>
-
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <Label text="Rule" columns='4' />
-                                                            <Combobox
-                                                                fieldname='ruleType'
-                                                                formname='pointCreditRules'
-                                                                columns='7'
-                                                                placeholder='Select'
-                                                                style={{}}
-                                                                state={this.state}
-                                                                typeName="rule"
-                                                                dataSource={_.get(this.state, 'typeData', {})}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <Label text="Max Unsettled(AED)" columns='4' />
-                                                            <Input
-                                                                fieldname='maxUnSettledAmount'
-                                                                formname='pointCreditRules'
-                                                                columns='7'
-                                                                placeholder=''
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </Portlet>
-                                            </div>
-                                        )
-                                    }
-
-
-
-                                    <Portlet title={"SETTLEMENT"}>
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <Label text="Settle As" columns='4' />
-                                                <Combobox
-                                                    fieldname='settleAs'
-                                                    formname='settlement'
-                                                    columns='7'
-                                                    placeholder='Select'
-                                                    style={{}}
-                                                    state={this.state}
-                                                    typeName="settleas"
-                                                    dataSource={_.get(this.state, 'typeData', {})}
-                                                    actionHandler={this.generalHandler}
-                                                    className="form-control"
-                                                />
-                                            </div>
-                                            <div className="col-md-6">
-                                                <Label text="Frequency" columns='4' />
-                                                <Combobox
-                                                    fieldname='frequency'
-                                                    formname='settlement'
-                                                    columns='7'
-                                                    placeholder='Select'
-                                                    style={{}}
-                                                    state={this.state}
-                                                    typeName="frequency"
-                                                    dataSource={_.get(this.state, 'typeData', {})}
-                                                    actionHandler={this.generalHandler}
-                                                    className="form-control"
-                                                />
-                                            </div>
-
+                                            </Portlet>
                                         </div>
-                                        <div className="row">
+                                    )
+                                }
 
 
-                                            <div className="col-md-6">
-                                                <Label text="Start On" columns='4' />
-                                                <div className="col-md-7">
-                                                    <DateControl id="settlementStartOn" dateChange={this.dateChange.bind(this, 'settlementStartOn')} />
-                                                </div>
-                                            </div>
+
+                                <Portlet title={"SETTLEMENT"}>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <Label text="Settle As" columns='4' />
+                                            <Combobox
+                                                fieldname='settleAs'
+                                                formname='settlement'
+                                                columns='7'
+                                                placeholder='Select'
+                                                style={{}}
+                                                state={this.state}
+                                                typeName="settleas"
+                                                dataSource={_.get(this.state, 'typeData', {})}
+                                                actionHandler={this.generalHandler}
+                                                className="form-control"
+                                            />
                                         </div>
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <Label text="" columns='4' />
-
-                                            </div>
+                                        <div className="col-md-6">
+                                            <Label text="Frequency" columns='4' />
+                                            <Combobox
+                                                fieldname='frequency'
+                                                formname='settlement'
+                                                columns='7'
+                                                placeholder='Select'
+                                                style={{}}
+                                                state={this.state}
+                                                typeName="frequency"
+                                                dataSource={_.get(this.state, 'typeData', {})}
+                                                actionHandler={this.generalHandler}
+                                                className="form-control"
+                                            />
                                         </div>
 
-                                        {/* <div className="row">
+                                    </div>
+                                    <div className="row">
+
+
+                                        <div className="col-md-6">
+                                            <Label text="Start On" columns='4' />
+                                            <div className="col-md-7">
+                                                <DateControl id="settlementStartOn" defaultValue={utils.UNIXConvertToDate(this.state.settlementStartOn)} dateChange={this.dateChange.bind(this, 'settlementStartOn')} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <Label text="" columns='4' />
+
+                                        </div>
+                                    </div>
+
+                                    {/* <div className="row">
                         <div className="col-md-12">
                             <div className="btn-toolbar pull-right">
                                 <button onClick={this.addSettlement} type="submit" className="pull-right btn green">
@@ -838,86 +860,86 @@ class AddPartner extends Component {
                         gridColumns={utils.getGridColumnByName('settlement')}
                         gridData={this.state.settlementArr || []}
                     /> */}
-                                    </Portlet>
-                                    <Portlet title={"TERMS & CONDITIONS EN"} style={{ height: '140px' }}>
-                                        <Textarea
-                                            style={{ height: '120px' }}
-                                            fieldname='termsandConditionsEn'
-                                            formname='contractParams'
-                                            columns='12'
-                                            placeholder='Terms and Conditions'
-                                            state={this.state}
-                                            actionHandler={this.generalHandler}
-                                            className="form-control"
-                                        />
-                                    </Portlet>
-                                    <Portlet title={"TERMS & CONDITIONS AR"} style={{ height: '140px' }}>
-                                        <Textarea
-                                            style={{ height: '120px', textAlign: "right" }}
-                                            fieldname='termsandConditionsAr'
-                                            formname='contractParams'
-                                            columns='12'
-                                            placeholder='الأحكام والشروط'
-                                            state={this.state}
-                                            actionHandler={this.generalHandler}
-                                            className="form-control"
-                                        />
-                                    </Portlet>
-                                    <Portlet title={"ERP SETTINGS TO"}>
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <Label text="Vendor Code" columns='4' />
-                                                <Input
-                                                    fieldname='vendorCode'
-                                                    formname='erpSettingsTo'
-                                                    columns='7'
-                                                    placeholder=''
-                                                    state={this.state}
-                                                    actionHandler={this.generalHandler}
-                                                    className="form-control"
-                                                />
-                                            </div>
-                                            <div className="col-md-6">
-                                                <Label text="Vendor Site ID" columns='4' />
-                                                <Input
-                                                    fieldname='vendorSiteID'
-                                                    formname='erpSettingsTo'
-                                                    columns='7'
-                                                    placeholder=''
-                                                    state={this.state}
-                                                    actionHandler={this.generalHandler}
-                                                    className="form-control"
-                                                />
-                                            </div>
+                                </Portlet>
+                                <Portlet title={"TERMS & CONDITIONS EN"} style={{ height: '140px' }}>
+                                    <Textarea
+                                        style={{ height: '120px' }}
+                                        fieldname='termsandConditionsEn'
+                                        formname='contractParams'
+                                        columns='12'
+                                        placeholder='Terms and Conditions'
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </Portlet>
+                                <Portlet title={"TERMS & CONDITIONS AR"} style={{ height: '140px' }}>
+                                    <Textarea
+                                        style={{ height: '120px', textAlign: "right" }}
+                                        fieldname='termsandConditionsAr'
+                                        formname='contractParams'
+                                        columns='12'
+                                        placeholder='الأحكام والشروط'
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </Portlet>
+                                <Portlet title={"ERP SETTINGS TO"}>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <Label text="Vendor Code" columns='4' />
+                                            <Input
+                                                fieldname='vendorCode'
+                                                formname='erpSettingsTo'
+                                                columns='7'
+                                                placeholder=''
+                                                state={this.state}
+                                                actionHandler={this.generalHandler}
+                                                className="form-control"
+                                            />
                                         </div>
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <Label text="GL Codes" columns='4' />
-                                                <Input
-                                                    fieldname='glcode'
-                                                    formname='erpSettingsTo'
-                                                    columns='7'
-                                                    placeholder=''
-                                                    state={this.state}
-                                                    actionHandler={this.generalHandler}
-                                                    className="form-control"
-                                                />
-                                            </div>
-                                            <div className="col-md-6">
-                                                <Label text="Billing Acc#" columns='4' />
-                                                <Input
-                                                    fieldname='billingAccount'
-                                                    formname='erpSettingsTo'
-                                                    columns='7'
-                                                    placeholder=''
-                                                    state={this.state}
-                                                    actionHandler={this.generalHandler}
-                                                    className="form-control"
-                                                />
-                                            </div>
+                                        <div className="col-md-6">
+                                            <Label text="Vendor Site ID" columns='4' />
+                                            <Input
+                                                fieldname='vendorSiteID'
+                                                formname='erpSettingsTo'
+                                                columns='7'
+                                                placeholder=''
+                                                state={this.state}
+                                                actionHandler={this.generalHandler}
+                                                className="form-control"
+                                            />
                                         </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <Label text="GL Codes" columns='4' />
+                                            <Input
+                                                fieldname='glcode'
+                                                formname='erpSettingsTo'
+                                                columns='7'
+                                                placeholder=''
+                                                state={this.state}
+                                                actionHandler={this.generalHandler}
+                                                className="form-control"
+                                            />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <Label text="Billing Acc#" columns='4' />
+                                            <Input
+                                                fieldname='billingAccount'
+                                                formname='erpSettingsTo'
+                                                columns='7'
+                                                placeholder=''
+                                                state={this.state}
+                                                actionHandler={this.generalHandler}
+                                                className="form-control"
+                                            />
+                                        </div>
+                                    </div>
 
-                                        {/* <div className="row">
+                                    {/* <div className="row">
                         <div className="col-md-12">
                             <div className="btn-toolbar pull-right">
                                 <button onClick={this.adderpSettingsTo} type="submit" className="pull-right btn green">
@@ -930,26 +952,26 @@ class AddPartner extends Component {
                         gridColumns={utils.getGridColumnByName('ERPsettings')}
                         gridData={this.state.erpSettingsToArr || []}
                     /> */}
-                                    </Portlet>
+                                </Portlet>
 
 
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="btn-toolbar pull-right">
-                                                <button onClick={this.addSubsidaryPartner} type="submit" className="pull-right btn green">
-                                                    {utils.getLabelByID("Add")}
-                                                </button>
-                                                <button onClick={this.handleOnBack} type="submit" className="pull-right btn green">
-                                                    {utils.getLabelByID("Back")}
-                                                </button>
-                                            </div>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="btn-toolbar pull-right">
+                                            <button onClick={this.addSubsidaryPartner} type="submit" className="pull-right btn green">
+                                                {utils.getLabelByID("Add")}
+                                            </button>
+                                            <button onClick={this.handleOnBack} type="submit" className="pull-right btn green">
+                                                {utils.getLabelByID("Back")}
+                                            </button>
                                         </div>
                                     </div>
+                                </div>
 
-                                </COL>
-                            </ROW>
-                        </div >
-                   
+                            </COL>
+                        </ROW>
+                    </div >
+
                 </div>
             </div>
 
@@ -1019,11 +1041,18 @@ class AddPartner extends Component {
                     let contractParams = this.state.contractParamsArr[index];
                     console.log("contractParams from subsidiaryPartnerActionHandler", contractParams)
                     this.setState({
-                        contractParams: contractParams,
-                        settlement: contractParams.settlements,
-                        pointCreditRules: contractParams.pointCreditRules,
-                        erpSettingsTo: contractParams.erpSettingsTo,
-                        accrualTermsArr: contractParams.accrualBillingRates
+                        contractParams,
+                        isAccrualPartner: contractParams.isAccrualPartner,
+                        isRedemptionPartner: contractParams.isRedemptionPartner,
+                        isPointConversionPartner: contractParams.isPointConversionPartner,
+                        redemptionTermsArr: [... _.get(contractParams, 'redemptionBillingRates', [])],
+                        accrualTermsArr: [... _.get(contractParams, 'accrualBillingRates', [])],
+                        ratesArr: [... _.get(contractParams, 'conversionBillingRates', [])],
+                        settlementStartOn: _.get(contractParams,'settlements.startsOn',''),
+                        settlement: _.get(contractParams, 'settlements', {}),
+                        pointCreditRules: _.get(contractParams, 'pointCreditRules', {}),
+                        erpSettingsTo: _.get(contractParams, 'erpSettingsTo', {}),
+                        accrualTermsArr: _.get(contractParams, 'accrualBillingRates', [])
                     });
                     let tempState = [...this.state.contractParamsArr];
                     tempState.splice(index, 1);
@@ -1227,10 +1256,10 @@ class AddPartner extends Component {
             partnerCategory.push(body.partnerCategory); // -- this should be multi select dropdown--already an array
             body.partnerCategory = partnerCategory;
         }
-        if (!this.state.isAccrualPartner && !this.state.isPointConversionPartner && !this.state.isRedemptionPartner) {
-            toaster.showToast("Partner type is required", "ERROR");
-            return;
-        }
+        // if (!this.state.isAccrualPartner && !this.state.isPointConversionPartner && !this.state.isRedemptionPartner) {
+        //     toaster.showToast("Partner type is required", "ERROR");
+        //     return;
+        // }
 
         if (!this.state.contactInformationArr.length) {
             toaster.showToast("Contact Information is required", "ERROR");
@@ -1647,7 +1676,7 @@ class AddPartner extends Component {
                             <Table
                                 gridColumns={utils.getGridColumnByName('subsidaryPartner')}
                                 gridData={this.state.contractParamsArr || []}
-                                // componentFunction={this.subsidiaryPartnerActionHandler}
+                                componentFunction={this.subsidiaryPartnerActionHandler}
                             />
                             <div className="row">
                                 <div className="col-md-12">
