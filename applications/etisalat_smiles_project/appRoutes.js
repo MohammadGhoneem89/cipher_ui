@@ -58,6 +58,9 @@ let authRoutes = <div>
 
     {/* setup */}
     <Route path="/smiles/addPartner" component={AddPartner} />
+    <Route path="/smiles/approvePartner/:partnerCode" component={AddPartner} />
+    <Route path="/smiles/EditPartner/:partnerCode" component={AddPartner} />
+    
     <Route path="/smiles/partnerList" component={PartnerList} />
 
     {/* REDEMPTION */}

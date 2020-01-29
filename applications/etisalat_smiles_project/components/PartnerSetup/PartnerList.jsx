@@ -44,7 +44,7 @@ class PartnerList extends Component {
 
     componentDidMount() {
 
-
+        window.scrollTo(0,0)
 
         let request = {
             "body": {
@@ -87,21 +87,26 @@ class PartnerList extends Component {
                     value: data.status.toUpperCase()
                 }
 
-                // data.actions = [
-                //     {
-                //         "label": "View",
-                //         "URI": ["/dp/lostPassportRequest"],
-                //         "params": "_id",
-                //         "iconName": "icon-docs"
-                //     }
-                // ]
+                if (data.status.toLowerCase() == 'pending' || data.status.toLowerCase() == 'rejected') {
 
-
-                // data.status = {
-                //     style: { fontWeight: "bold", color: getColor(lostPassportRequest.status) },
-                //     value: mapStatus(lostPassportRequest.status)
-                // }
-
+                    data.actions = [
+                        {
+                            "label": "Approve",
+                            "URI": ["/smiles/ApprovePartner"],
+                            "params": "_id",
+                            "iconName": "fa fa-check"
+                        }
+                    ]
+                } else {
+                    data.actions = [
+                        {
+                            "label": "Edit",
+                            "URI": ["/smiles/EditPartner"],
+                            "params": "_id",
+                            "iconName": "fa fa-Edit"
+                        }
+                    ]
+                }
 
                 gridData.push({
                     ...data

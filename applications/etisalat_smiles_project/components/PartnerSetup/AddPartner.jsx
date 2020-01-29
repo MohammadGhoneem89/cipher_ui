@@ -66,13 +66,50 @@ class AddPartner extends Component {
         if (nextProps.typeData) {
             this.setState({
                 typeData: nextProps.typeData,
-                isLoading: false
+                isLoading: this.props.params.partnerCode ? this.state.isLoading : false
             })
         }
+
+        if (nextProps.getPartnerDataByID) {
+
+            let erpSettingsFrom = { ..._.get(nextProps, 'getPartnerDataByID.erpSettingsFrom', {}) }
+            let contactInformationArr = [..._.get(nextProps, 'getPartnerDataByID.contacts', [])]
+            let contractParamsObj = _.get(nextProps.getPartnerDataByID, 'contractParams', {})
+
+            let contractParamsArr = []
+            for (let [key, value] of Object.entries(contractParamsObj)) {
+
+                contractParamsArr.push({
+                    withPartnerCode: key,
+                    action: [{ label: "View", iconName: "fa fa-eye", actionType: "COMPONENT_FUNCTION" }],
+                    ...value
+                })
+            }
+
+            this.setState({
+                body: {
+                    ...nextProps.getPartnerDataByID
+                },
+                contractParamsArr,
+                contactInformationArr,
+                erpSettingsFrom,
+                isLoading: false,
+                status: _.get(nextProps, 'getPartnerDataByID.status', '').toUpperCase()
+            })
+        }
+
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
+
+        if (this.props.params.partnerCode) {
+            this.props.actions.generalProcess(constants.getInterim, {
+                body: {
+                    partnerCode: this.props.params.partnerCode
+                }
+            });
+        }
 
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', 'contactMode', 'rateType', 'paymentMethod']));
 
@@ -197,7 +234,7 @@ class AddPartner extends Component {
         //     return;
         // }
 
-        // if (!erpSettingsTo.vendorCode || !erpSettingsTo.glcode || !erpSettingsTo.billingAccount || !erpSettingsTo.vendorSiteID) {
+        // if (!erpSettingsTo.vendorCode || !erpSettingsTo.glCode || !erpSettingsTo.billingAccount || !erpSettingsTo.vendorSiteID) {
         //     toaster.showToast("Please provide an ERP To Settings", "ERROR");
         //     return;
         // }
@@ -226,7 +263,7 @@ class AddPartner extends Component {
 
 
         //let pointRule = { ...this.state.pointCreditRules }
-        pointRule.maxUnSettledAmount = parseInt(pointRule.maxUnSettledAmount || -1)
+        pointRule.maxUnsettledAmount = parseInt(pointRule.maxUnsettledAmount || -1)
         contractParams.pointCreditRules = { ...pointRule }
 
         contractParams.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
@@ -290,12 +327,12 @@ class AddPartner extends Component {
         let redemptionTermsArr = [...this.state.redemptionTermsArr]
         let redemptionTerms = { ...this.state.redemptionTerms }
         if (this.state.redemptionStartDate) {
-            redemptionTerms.startDate = this.state.redemptionStartDate
-            redemptionTerms.redemptionStartDate = this.state.redemptionStartDate
+            redemptionTerms.startDate = parseInt(this.state.redemptionStartDate)
+            redemptionTerms.redemptionStartDate = parseInt(this.state.redemptionStartDate)
         }
         if (this.state.redemptionEndDate) {
-            redemptionTerms.endDate = this.state.redemptionEndDate
-            redemptionTerms.redemptionEndDate = this.state.redemptionEndDate
+            redemptionTerms.endDate = parseInt(this.state.redemptionEndDate)
+            redemptionTerms.redemptionEndDate = parseInt(this.state.redemptionEndDate)
         }
 
         if (!redemptionTerms.startDate || !redemptionTerms.endDate || !redemptionTerms.rate || !redemptionTerms.mode) {
@@ -306,6 +343,8 @@ class AddPartner extends Component {
             toaster.showToast("Please add Redemption Term", "ERROR");
             return;
         }
+
+        redemptionTerms.rate = parseFloat(redemptionTerms.rate)
         redemptionTerms.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
         { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
         redemptionTerms.serialNo = redemptionTermsArr.length + 1
@@ -367,17 +406,18 @@ class AddPartner extends Component {
         let ratesArr = [...this.state.ratesArr]
 
         if (this.state.pointConversionStartDate) {
-            rates.startDate = this.state.pointConversionStartDate
+            rates.startDate = parseInt(this.state.pointConversionStartDate)
         }
         if (this.state.pointConversionEndDate) {
-            rates.endDate = this.state.pointConversionEndDate
+            rates.endDate = parseInt(this.state.pointConversionEndDate)
         }
-
+        rates.rate = parseFloat(rates.rate)
 
         if (Object.keys(rates).length == 0) {
             toaster.showToast("Rate not defined", "ERROR");
             return;
         }
+
         rates.sourceToken = "SMILES"
         rates.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
         { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
@@ -397,17 +437,16 @@ class AddPartner extends Component {
                     <div className="col-md-12" >
                         <ROW>
                             <COL>
-
-
                                 {
                                     this.state.isPointConversionPartner && (
                                         <div>
                                             <div className="row">
                                                 <div className="col-md-6">
-                                                    <Label text="Partner Code" columns='4' style={{ padding: "0 0 0 30" }} />
+                                                    <Label text="Partner Code" columns='4' />
                                                     <Input
                                                         fieldname='withPartnerCode'
                                                         formname='contractParams'
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                         columns='7'
                                                         placeholder=''
                                                         state={this.state}
@@ -416,10 +455,11 @@ class AddPartner extends Component {
                                                     />
                                                 </div>
                                                 <div className="col-md-6">
-                                                    <Label text="Program Name" columns='4' style={{ padding: "0 0 0 30" }} />
+                                                    <Label text="Program Name" columns='4' />
                                                     <Input
                                                         fieldname='conversionPartnerProgramName'
                                                         formname='contractParams'
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                         columns='7'
                                                         placeholder=''
                                                         state={this.state}
@@ -478,78 +518,88 @@ class AddPartner extends Component {
                                                     />
 
                                                 </Portlet> */}
+
+
+                                            {
+                                                this.props.params.partnerCode && this.renderTypePortlet()
+                                            }
+
+
                                             <Portlet title={"RATES"}>
+                                                {!this.props.params.partnerCode && (<div>
+                                                    <div className="row">
+                                                        <div className="col-md-6">
+                                                            <Label text="Start Date" columns='4' />
+                                                            <div className="col-md-7">
+                                                                <DateControl id="pointConversionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionStartDate)} dateChange={this.dateChange.bind(this, 'pointConversionStartDate')} />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <Label text="End Date" columns='4' />
+                                                            <div className="col-md-7">
+                                                                <DateControl id="pointConversionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionEndDate)} dateChange={this.dateChange.bind(this, 'pointConversionEndDate')} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <Label text="Start Date" columns='4' />
-                                                        <div className="col-md-7">
-                                                            <DateControl id="pointConversionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionStartDate)} dateChange={this.dateChange.bind(this, 'pointConversionStartDate')} />
+                                                    <br></br>
+                                                    <div className="row">
+                                                        <div className="col-md-6">
+                                                            <Label text="Rate" columns='4' />
+                                                            <Input
+                                                                fieldname='rate'
+                                                                formname='rates'
+                                                                columns='7'
+                                                                placeholder=''
+                                                                state={this.state}
+                                                                actionHandler={this.generalHandler}
+                                                                className="form-control"
+                                                            />
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <Label text="Source Token" columns='4' />
+                                                            <Input
+                                                                fieldname='sourceToken'
+                                                                formname='rates'
+                                                                columns='7'
+                                                                disabled={true}
+                                                                value={"SMILES"}
+                                                                placeholder=''
+                                                                state={this.state}
+                                                                actionHandler={this.generalHandler}
+                                                                className="form-control"
+                                                            />
                                                         </div>
                                                     </div>
-                                                    <div className="col-md-6">
-                                                        <Label text="End Date" columns='4' />
-                                                        <div className="col-md-7">
-                                                            <DateControl id="pointConversionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionEndDate)} dateChange={this.dateChange.bind(this, 'pointConversionEndDate')} />
+                                                    <div className="row">
+                                                        <div className="col-md-6">
+                                                            <Label text="Mode" columns='4' />
+                                                            <Combobox
+                                                                fieldname='mode'
+                                                                formname='rates'
+                                                                columns='7'
+                                                                placeholder='Select'
+                                                                style={{}}
+                                                                state={this.state}
+                                                                typeName="contactMode"
+                                                                dataSource={_.get(this.state, 'typeData', {})}
+                                                                actionHandler={this.generalHandler}
+                                                                className="form-control"
+                                                            />
                                                         </div>
                                                     </div>
-                                                </div>
+                                                    <div className="row">
+                                                        <div className="col-md-12">
+                                                            <div className="btn-toolbar pull-right">
+                                                                <button onClick={this.addRates} type="submit" className="pull-right btn green">
+                                                                    {utils.getLabelByID("Add")}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                <br></br>
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <Label text="Rate" columns='4' />
-                                                        <Input
-                                                            fieldname='rate'
-                                                            formname='rates'
-                                                            columns='7'
-                                                            placeholder=''
-                                                            state={this.state}
-                                                            actionHandler={this.generalHandler}
-                                                            className="form-control"
-                                                        />
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <Label text="Source Token" columns='4' />
-                                                        <Input
-                                                            fieldname='sourceToken'
-                                                            formname='rates'
-                                                            columns='7'
-                                                            disabled={true}
-                                                            value={"SMILES"}
-                                                            placeholder=''
-                                                            state={this.state}
-                                                            actionHandler={this.generalHandler}
-                                                            className="form-control"
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <Label text="Mode" columns='4' />
-                                                        <Combobox
-                                                            fieldname='mode'
-                                                            formname='rates'
-                                                            columns='7'
-                                                            placeholder='Select'
-                                                            style={{}}
-                                                            state={this.state}
-                                                            typeName="contactMode"
-                                                            dataSource={_.get(this.state, 'typeData', {})}
-                                                            actionHandler={this.generalHandler}
-                                                            className="form-control"
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="row">
-                                                    <div className="col-md-12">
-                                                        <div className="btn-toolbar pull-right">
-                                                            <button onClick={this.addRates} type="submit" className="pull-right btn green">
-                                                                {utils.getLabelByID("Add")}
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                </div>)}
+
                                                 <Table
                                                     gridColumns={utils.getGridColumnByName('rates')}
                                                     gridData={this.state.ratesArr || []}
@@ -569,6 +619,7 @@ class AddPartner extends Component {
                                                     <Label text="Code" columns='4' />
                                                     <Input
                                                         fieldname='withPartnerCode'
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                         formname='contractParams'
                                                         columns='7'
                                                         placeholder=''
@@ -579,94 +630,101 @@ class AddPartner extends Component {
                                                 </div>
 
                                             </div>
+                                            {
+                                                this.props.params.partnerCode && this.renderTypePortlet()
+                                            }
+
                                             <Portlet title={"REDEMPTION TERMS"}>
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <Label text="Start Date" columns='4' />
-                                                        <div className="col-md-7">
-                                                            <DateControl id="redemptionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.redemptionStartDate)} dateChange={this.dateChange.bind(this, 'redemptionStartDate')} />
+                                                {!this.props.params.partnerCode && (<div>
+                                                    <div className="row">
+                                                        <div className="col-md-6">
+                                                            <Label text="Start Date" columns='4' />
+                                                            <div className="col-md-7">
+                                                                <DateControl id="redemptionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.redemptionStartDate)} dateChange={this.dateChange.bind(this, 'redemptionStartDate')} />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <Label text="End Date" columns='4' />
+                                                            <div className="col-md-7">
+                                                                <DateControl id="redemptionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.redemptionEndDate)} dateChange={this.dateChange.bind(this, 'redemptionEndDate')} />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-md-6">
-                                                        <Label text="End Date" columns='4' />
-                                                        <div className="col-md-7">
-                                                            <DateControl id="redemptionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.redemptionEndDate)} dateChange={this.dateChange.bind(this, 'redemptionEndDate')} />
+                                                    <br></br>
+                                                    <div className="row">
+                                                        <div className="col-md-6">
+                                                            <Label text="Payment Method" columns='4' />
+                                                            <Combobox
+                                                                fieldname='paymentMethod'
+                                                                formname='redemptionTerms'
+                                                                columns='7'
+                                                                placeholder='Select'
+                                                                style={{}}
+                                                                state={this.state}
+                                                                typeName="paymentMethod"
+                                                                dataSource={_.get(this.state, 'typeData', {})}
+                                                                actionHandler={this.generalHandler}
+                                                                className="form-control"
+                                                            />
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <br></br>
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <Label text="Payment Method" columns='4' />
-                                                        <Combobox
-                                                            fieldname='paymentMethod'
-                                                            formname='redemptionTerms'
-                                                            columns='7'
-                                                            placeholder='Select'
-                                                            style={{}}
-                                                            state={this.state}
-                                                            typeName="paymentMethod"
-                                                            dataSource={_.get(this.state, 'typeData', {})}
-                                                            actionHandler={this.generalHandler}
-                                                            className="form-control"
-                                                        />
-                                                    </div>
 
-                                                    <div className="col-md-6">
-                                                        <Label text="Mode" columns='4' />
-                                                        <Combobox
-                                                            fieldname='mode'
-                                                            formname='redemptionTerms'
-                                                            columns='7'
-                                                            placeholder='Select'
-                                                            style={{}}
-                                                            state={this.state}
-                                                            typeName="contactMode"
-                                                            dataSource={_.get(this.state, 'typeData', {})}
-                                                            actionHandler={this.generalHandler}
-                                                            className="form-control"
-                                                        />
-                                                    </div>
+                                                        <div className="col-md-6">
+                                                            <Label text="Mode" columns='4' />
+                                                            <Combobox
+                                                                fieldname='mode'
+                                                                formname='redemptionTerms'
+                                                                columns='7'
+                                                                placeholder='Select'
+                                                                style={{}}
+                                                                state={this.state}
+                                                                typeName="contactMode"
+                                                                dataSource={_.get(this.state, 'typeData', {})}
+                                                                actionHandler={this.generalHandler}
+                                                                className="form-control"
+                                                            />
+                                                        </div>
 
-                                                </div>
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <Label text="Rate Type" columns='4' />
-                                                        <Combobox
-                                                            fieldname='rateType'
-                                                            formname='redemptionTerms'
-                                                            columns='7'
-                                                            placeholder='Select'
-                                                            style={{}}
-                                                            state={this.state}
-                                                            typeName="rateType"
-                                                            dataSource={_.get(this.state, 'typeData', {})}
-                                                            actionHandler={this.generalHandler}
-                                                            className="form-control"
-                                                        />
                                                     </div>
-                                                    <div className="col-md-6">
-                                                        <Label text="Rate" columns='4' />
-                                                        <Input
-                                                            fieldname='rate'
-                                                            formname='redemptionTerms'
-                                                            columns='7'
-                                                            placeholder=''
-                                                            state={this.state}
-                                                            actionHandler={this.generalHandler}
-                                                            className="form-control"
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="row">
-                                                    <div className="col-md-12">
-                                                        <div className="btn-toolbar pull-right">
-                                                            <button onClick={this.addRedemptionTerm} type="submit" className="pull-right btn green">
-                                                                {utils.getLabelByID("Add")}
-                                                            </button>
+                                                    <div className="row">
+                                                        <div className="col-md-6">
+                                                            <Label text="Rate Type" columns='4' />
+                                                            <Combobox
+                                                                fieldname='rateType'
+                                                                formname='redemptionTerms'
+                                                                columns='7'
+                                                                placeholder='Select'
+                                                                style={{}}
+                                                                state={this.state}
+                                                                typeName="rateType"
+                                                                dataSource={_.get(this.state, 'typeData', {})}
+                                                                actionHandler={this.generalHandler}
+                                                                className="form-control"
+                                                            />
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <Label text="Rate" columns='4' />
+                                                            <Input
+                                                                fieldname='rate'
+                                                                formname='redemptionTerms'
+                                                                columns='7'
+                                                                placeholder=''
+                                                                state={this.state}
+                                                                actionHandler={this.generalHandler}
+                                                                className="form-control"
+                                                            />
                                                         </div>
                                                     </div>
-                                                </div>
+                                                    <div className="row">
+                                                        <div className="col-md-12">
+                                                            <div className="btn-toolbar pull-right">
+                                                                <button onClick={this.addRedemptionTerm} type="submit" className="pull-right btn green">
+                                                                    {utils.getLabelByID("Add")}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>)}
+
                                                 <Table
                                                     gridColumns={utils.getGridColumnByName('redemptionTerms')}
                                                     gridData={this.state.redemptionTermsArr || []}
@@ -683,10 +741,11 @@ class AddPartner extends Component {
                                         <div>
                                             <div className="row">
                                                 <div className="col-md-6">
-                                                    <Label text="Code" columns='4' style={{ padding: "0 0 0 30" }} />
+                                                    <Label text="Code" columns='4' />
                                                     <Input
                                                         fieldname='withPartnerCode'
                                                         formname='contractParams'
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                         columns='7'
                                                         placeholder=''
                                                         state={this.state}
@@ -696,62 +755,70 @@ class AddPartner extends Component {
                                                 </div>
 
                                             </div>
+                                            {
+                                                this.props.params.partnerCode && this.renderTypePortlet()
+                                            }
+
                                             <Portlet title={"ACCURAL BILLING RATES"}>
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <Label text="Start Date" columns='4' />
-                                                        <div className="col-md-7">
-                                                            <DateControl id="accuralStartDate" defaultValue={utils.UNIXConvertToDate(this.state.accuralStartDate)} dateChange={this.dateChange.bind(this, 'accuralStartDate')} />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <Label text="End Date" columns='4' />
-                                                        <div className="col-md-7">
-                                                            <DateControl id="accuralEndDate" defaultValue={utils.UNIXConvertToDate(this.state.accuralEndDate)} dateChange={this.dateChange.bind(this, 'accuralEndDate')} />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <br></br>
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <Label text="Selling Rate" columns='4' />
-                                                        <Input
-                                                            fieldname='sellingRate'
-                                                            formname='accrualTerms'
-                                                            columns='7'
-                                                            placeholder=''
-                                                            state={this.state}
-                                                            actionHandler={this.generalHandler}
-                                                            className="form-control"
-                                                        />
-                                                    </div>
+                                                {!this.props.params.partnerCode &&
+                                                    (<div>
 
-                                                    <div className="col-md-6">
-                                                        <Label text="Mode" columns='4' />
-                                                        <Combobox
-                                                            fieldname='mode'
-                                                            formname='accrualTerms'
-                                                            columns='7'
-                                                            placeholder='Select'
-                                                            style={{}}
-                                                            state={this.state}
-                                                            typeName="contactMode"
-                                                            dataSource={_.get(this.state, 'typeData', {})}
-                                                            actionHandler={this.generalHandler}
-                                                            className="form-control"
-                                                        />
-                                                    </div>
-
-                                                </div>
-                                                <div className="row">
-                                                    <div className="col-md-12">
-                                                        <div className="btn-toolbar pull-right">
-                                                            <button onClick={this.addAccuralTerm} type="submit" className="pull-right btn green">
-                                                                {utils.getLabelByID("Add")}
-                                                            </button>
+                                                        <div className="row">
+                                                            <div className="col-md-6">
+                                                                <Label text="Start Date" columns='4' />
+                                                                <div className="col-md-7">
+                                                                    <DateControl id="accuralStartDate" defaultValue={utils.UNIXConvertToDate(this.state.accuralStartDate)} dateChange={this.dateChange.bind(this, 'accuralStartDate')} />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-6">
+                                                                <Label text="End Date" columns='4' />
+                                                                <div className="col-md-7">
+                                                                    <DateControl id="accuralEndDate" defaultValue={utils.UNIXConvertToDate(this.state.accuralEndDate)} dateChange={this.dateChange.bind(this, 'accuralEndDate')} />
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
+                                                        <br></br>
+                                                        <div className="row">
+                                                            <div className="col-md-6">
+                                                                <Label text="Selling Rate" columns='4' />
+                                                                <Input
+                                                                    fieldname='sellingRate'
+                                                                    formname='accrualTerms'
+                                                                    columns='7'
+                                                                    placeholder=''
+                                                                    state={this.state}
+                                                                    actionHandler={this.generalHandler}
+                                                                    className="form-control"
+                                                                />
+                                                            </div>
+
+                                                            <div className="col-md-6">
+                                                                <Label text="Mode" columns='4' />
+                                                                <Combobox
+                                                                    fieldname='mode'
+                                                                    formname='accrualTerms'
+                                                                    columns='7'
+                                                                    placeholder='Select'
+                                                                    style={{}}
+                                                                    state={this.state}
+                                                                    typeName="contactMode"
+                                                                    dataSource={_.get(this.state, 'typeData', {})}
+                                                                    actionHandler={this.generalHandler}
+                                                                    className="form-control"
+                                                                />
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="row">
+                                                            <div className="col-md-12">
+                                                                <div className="btn-toolbar pull-right">
+                                                                    <button onClick={this.addAccuralTerm} type="submit" className="pull-right btn green">
+                                                                        {utils.getLabelByID("Add")}
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>)}
                                                 <Table
                                                     gridColumns={utils.getGridColumnByName('accrualTerms')}
                                                     gridData={this.state.accrualTermsArr || []}
@@ -768,6 +835,7 @@ class AddPartner extends Component {
                                                             formname='pointCreditRules'
                                                             columns='7'
                                                             placeholder='Select'
+                                                            disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                             style={{}}
                                                             state={this.state}
                                                             typeName="rule"
@@ -779,7 +847,8 @@ class AddPartner extends Component {
                                                     <div className="col-md-6">
                                                         <Label text="Max Unsettled(AED)" columns='4' />
                                                         <Input
-                                                            fieldname='maxUnSettledAmount'
+                                                            fieldname='maxUnsettledAmount'
+                                                            disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                             formname='pointCreditRules'
                                                             columns='7'
                                                             placeholder=''
@@ -803,6 +872,7 @@ class AddPartner extends Component {
                                             <Combobox
                                                 fieldname='settleAs'
                                                 formname='settlement'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                 columns='7'
                                                 placeholder='Select'
                                                 style={{}}
@@ -818,6 +888,7 @@ class AddPartner extends Component {
                                             <Combobox
                                                 fieldname='frequency'
                                                 formname='settlement'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                 columns='7'
                                                 placeholder='Select'
                                                 style={{}}
@@ -836,7 +907,7 @@ class AddPartner extends Component {
                                         <div className="col-md-6">
                                             <Label text="Start On" columns='4' />
                                             <div className="col-md-7">
-                                                <DateControl id="settlementStartOn" defaultValue={utils.UNIXConvertToDate(this.state.settlementStartOn)} dateChange={this.dateChange.bind(this, 'settlementStartOn')} />
+                                                <DateControl disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false} id="settlementStartOn" defaultValue={utils.UNIXConvertToDate(this.state.settlementStartOn)} dateChange={this.dateChange.bind(this, 'settlementStartOn')} />
                                             </div>
                                         </div>
                                     </div>
@@ -866,6 +937,7 @@ class AddPartner extends Component {
                                         style={{ height: '120px' }}
                                         fieldname='termsandConditionsEn'
                                         formname='contractParams'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                         columns='12'
                                         placeholder='Terms and Conditions'
                                         state={this.state}
@@ -878,6 +950,7 @@ class AddPartner extends Component {
                                         style={{ height: '120px', textAlign: "right" }}
                                         fieldname='termsandConditionsAr'
                                         formname='contractParams'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                         columns='12'
                                         placeholder='الأحكام والشروط'
                                         state={this.state}
@@ -893,6 +966,7 @@ class AddPartner extends Component {
                                                 fieldname='vendorCode'
                                                 formname='erpSettingsTo'
                                                 columns='7'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                 placeholder=''
                                                 state={this.state}
                                                 actionHandler={this.generalHandler}
@@ -905,6 +979,7 @@ class AddPartner extends Component {
                                                 fieldname='vendorSiteID'
                                                 formname='erpSettingsTo'
                                                 columns='7'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                 placeholder=''
                                                 state={this.state}
                                                 actionHandler={this.generalHandler}
@@ -916,9 +991,10 @@ class AddPartner extends Component {
                                         <div className="col-md-6">
                                             <Label text="GL Codes" columns='4' />
                                             <Input
-                                                fieldname='glcode'
+                                                fieldname='glCode'
                                                 formname='erpSettingsTo'
                                                 columns='7'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                 placeholder=''
                                                 state={this.state}
                                                 actionHandler={this.generalHandler}
@@ -930,6 +1006,7 @@ class AddPartner extends Component {
                                             <Input
                                                 fieldname='billingAccount'
                                                 formname='erpSettingsTo'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                 columns='7'
                                                 placeholder=''
                                                 state={this.state}
@@ -958,9 +1035,9 @@ class AddPartner extends Component {
                                 <div className="row">
                                     <div className="col-md-12">
                                         <div className="btn-toolbar pull-right">
-                                            <button onClick={this.addSubsidaryPartner} type="submit" className="pull-right btn green">
+                                            {!this.props.params.partnerCode && <button onClick={this.addSubsidaryPartner} type="submit" className="pull-right btn green">
                                                 {utils.getLabelByID("Add")}
-                                            </button>
+                                            </button>}
                                             <button onClick={this.handleOnBack} type="submit" className="pull-right btn green">
                                                 {utils.getLabelByID("Back")}
                                             </button>
@@ -1032,6 +1109,30 @@ class AddPartner extends Component {
 
     subsidiaryPartnerActionHandler = ({ actionName, index }) => {
         switch (actionName) {
+            case "View":
+                if (index > -1) {
+                    this.setState({
+                        isEdited: true
+                    });
+                    this.stateChangeSubsidaryPartnerBool();
+                    let contractParams = this.state.contractParamsArr[index];
+                    console.log("contractParams from subsidiaryPartnerActionHandler", contractParams)
+                    this.setState({
+                        contractParams,
+                        isAccrualPartner: contractParams.isAccrualPartner,
+                        isRedemptionPartner: contractParams.isRedemptionPartner,
+                        isPointConversionPartner: contractParams.isPointConversionPartner,
+                        redemptionTermsArr: [..._.get(contractParams, 'redemptionBillingRates', [])],
+                        accrualTermsArr: [..._.get(contractParams, 'accrualBillingRates', [])],
+                        ratesArr: [..._.get(contractParams, 'conversionBillingRates', [])],
+                        settlementStartOn: _.get(contractParams, 'settlement.startOn', ''),
+                        settlement: _.get(contractParams, 'settlement', {}),
+                        pointCreditRules: _.get(contractParams, 'pointCreditRules', {}),
+                        erpSettingsTo: _.get(contractParams, 'erpSettingsTo', {}),
+                        accrualTermsArr: _.get(contractParams, 'accrualBillingRates', [])
+                    });
+                }
+                break;
             case "Edit":
                 if (index > -1) {
                     this.setState({
@@ -1045,10 +1146,10 @@ class AddPartner extends Component {
                         isAccrualPartner: contractParams.isAccrualPartner,
                         isRedemptionPartner: contractParams.isRedemptionPartner,
                         isPointConversionPartner: contractParams.isPointConversionPartner,
-                        redemptionTermsArr: [... _.get(contractParams, 'redemptionBillingRates', [])],
-                        accrualTermsArr: [... _.get(contractParams, 'accrualBillingRates', [])],
-                        ratesArr: [... _.get(contractParams, 'conversionBillingRates', [])],
-                        settlementStartOn: _.get(contractParams,'settlements.startsOn',''),
+                        redemptionTermsArr: [..._.get(contractParams, 'redemptionBillingRates', [])],
+                        accrualTermsArr: [..._.get(contractParams, 'accrualBillingRates', [])],
+                        ratesArr: [..._.get(contractParams, 'conversionBillingRates', [])],
+                        settlementStartOn: _.get(contractParams, 'settlements.startsOn', ''),
                         settlement: _.get(contractParams, 'settlements', {}),
                         pointCreditRules: _.get(contractParams, 'pointCreditRules', {}),
                         erpSettingsTo: _.get(contractParams, 'erpSettingsTo', {}),
@@ -1180,7 +1281,7 @@ class AddPartner extends Component {
     adderpSettingsFrom = () => {
         let erpSettingsFrom = { ...this.state.erpSettingsFrom }
         // let erpSettingsFromArr = [...this.state.erpSettingsFromArr]
-        if (!erpSettingsFrom.vendorCode || !erpSettingsFrom.glcode || !erpSettingsFrom.billingAccount || !erpSettingsFrom.vendorSiteID) {
+        if (!erpSettingsFrom.vendorCode || !erpSettingsFrom.glCode || !erpSettingsFrom.billingAccount || !erpSettingsFrom.vendorSiteID) {
             toaster.showToast("Please provide  ERP From Settings", "ERROR");
             return;
         }
@@ -1226,11 +1327,35 @@ class AddPartner extends Component {
 
     }
 
+    approvePartner = () => {
+        let body = {
+            "partnerCode": this.props.params.partnerCode,
+            "status": "APPROVED"
+        }
+
+        this.setState({ isLoading: true })
+        window.scrollTo(0, 0)
+
+        this.props.actions.generalAjxProcess(constants.updatePartnerStatus, { body })
+            .then(result => {
+                console.log(result, "result")
+                this.evaluateResult(result, 'Partner Approved successfully!');
+            })
+            .catch(err => {
+                console.log(err);
+                toaster.showToast(err, "ERROR");
+                this.setState({ isLoading: false });
+                return;
+            });
+
+    }
+
+
     setPartner = () => {
         let body = { ...this.state.body }
 
         console.log("body :::: ", body)
-        if (Object.keys(_.get(this.state, 'erpSettingsFrom', {})).length != 0 && (!this.state.erpSettingsFrom.vendorCode || !this.state.erpSettingsFrom.glcode || !this.state.erpSettingsFrom.billingAccount || !this.state.erpSettingsFrom.vendorSiteID)) {
+        if (Object.keys(_.get(this.state, 'erpSettingsFrom', {})).length != 0 && (!this.state.erpSettingsFrom.vendorCode || !this.state.erpSettingsFrom.glCode || !this.state.erpSettingsFrom.billingAccount || !this.state.erpSettingsFrom.vendorSiteID)) {
             toaster.showToast("All fields are required for ERP From Settings", "ERROR");
             return;
         } else {
@@ -1286,7 +1411,7 @@ class AddPartner extends Component {
         this.props.actions.generalAjxProcess(constants.addEditPartner, request)
             .then(result => {
                 console.log(result, "result")
-                this.evaluateResult(result);
+                this.evaluateResult(result, "Partner created successfully!");
             })
             .catch(err => {
                 console.log(err);
@@ -1295,18 +1420,18 @@ class AddPartner extends Component {
                 return;
             });
     }
-    redirectToList = () => {
+    redirectToList = (msg = 'Processed OK!') => {
         browserHistory.push('/smiles/partnerList')
-        toaster.showToast("Partner created successfully!");
+        toaster.showToast(msg);
     }
 
-    evaluateResult = (result) => {
+    evaluateResult = (result, msg = 'Processed OK!') => {
         if (result.message.status == 'ERROR') {
             this.setState({ isLoading: false });
             toaster.showToast(result.message.errorDescription, "ERROR");
             return;
         } else {
-            this.redirectToList();
+            this.redirectToList(msg);
         }
 
     }
@@ -1324,6 +1449,7 @@ class AddPartner extends Component {
                                         fieldname='partnerNameEn'
                                         formname='body'
                                         columns='7'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                         placeholder='Name'
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1336,6 +1462,7 @@ class AddPartner extends Component {
                                         fieldname='partnerNameAr'
                                         formname='body'
                                         columns='7'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                         placeholder=' شَريك اسم '
                                         style={{ textAlign: "right" }}
                                         state={this.state}
@@ -1349,6 +1476,7 @@ class AddPartner extends Component {
                                         fieldname='partnerCode'
                                         formname='body'
                                         columns='7'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                         placeholder=''
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1361,6 +1489,7 @@ class AddPartner extends Component {
                                         fieldname='partnerCategory'
                                         formname='body'
                                         columns='7'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                         placeholder='Select'
                                         style={{}}
                                         state={this.state}
@@ -1376,6 +1505,7 @@ class AddPartner extends Component {
                                         fieldname='partnerErCode'
                                         formname='body'
                                         columns='7'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                         placeholder=''
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1400,6 +1530,7 @@ class AddPartner extends Component {
                                     fieldname='partnerDescriptionEn'
                                     formname='body'
                                     columns='7'
+                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                     placeholder='Partner Description'
                                     state={this.state}
                                     actionHandler={this.generalHandler}
@@ -1415,6 +1546,7 @@ class AddPartner extends Component {
                                     fieldname='partnerDescriptionAr'
                                     formname='body'
                                     columns='7'
+                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                     placeholder='وصف الشريك'
                                     state={this.state}
                                     actionHandler={this.generalHandler}
@@ -1425,176 +1557,127 @@ class AddPartner extends Component {
                         </div>
                         <br></br>
 
-                        <Portlet title={"TYPE"}>
+                        {!this.props.params.partnerCode && this.renderTypePortlet()}
+                        <Portlet title={"CONTACT"}>
+                            {
+                                !this.props.params.partnerCode && (
+                                    <div>
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <Label text="First Name" columns='4' />
+                                                <Input
+                                                    fieldname='firstName'
+                                                    formname='contactInformation'
+                                                    columns='7'
+                                                    placeholder=''
+                                                    state={this.state}
+                                                    actionHandler={this.generalHandler}
+                                                    className="form-control"
+                                                />
+                                            </div>
+                                            <div className="col-md-6">
+                                                <Label text="Last Name" columns='4' />
+                                                <Input
+                                                    fieldname='lastName'
+                                                    formname='contactInformation'
+                                                    columns='7'
+                                                    placeholder=''
+                                                    state={this.state}
+                                                    actionHandler={this.generalHandler}
+                                                    className="form-control"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <Label text="Phone" columns='4' />
+                                                <Input
+                                                    fieldname='phone'
+                                                    formname='contactInformation'
+                                                    columns='7'
+                                                    placeholder=''
+                                                    state={this.state}
+                                                    actionHandler={this.generalHandler}
+                                                    className="form-control"
+                                                />
+                                            </div>
+                                            <div className="col-md-6">
+                                                <Label text="Mobile" columns='4' />
+                                                <Input
+                                                    fieldname='mobile'
+                                                    formname='contactInformation'
+                                                    columns='7'
+                                                    placeholder=''
+                                                    state={this.state}
+                                                    actionHandler={this.generalHandler}
+                                                    className="form-control"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-6">
 
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="" style={{ opacity: '1' }}>
-                                        <div className="portlet-body flip-scroll">
-                                            <div className="row">
-                                                <div className="col-md-10 col-md-offset-1">
 
-                                                    <div className="col-md-4 text-center">
-                                                        <div className="voucherBox">
-                                                            <img src="/assets/Resources/Redemption.png" width="20%" />
-                                                            <h5><strong>Redemption</strong></h5>
-                                                            <div className="icheck-list">
-                                                                <label className="mt-checkbox mt-checkbox-outline">
-                                                                    <label></label>
-                                                                    <input onChange={this.typeSelected} type="checkbox" name="Redemption" value="" checked={this.state.isRedemptionPartner} className="form-control" />
-                                                                    <span></span></label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
 
-                                                    <div className="col-md-4 text-center">
-                                                        <div className="voucherBox">
-                                                            <img src="/assets/Resources/Accrual.png" width="20%" />
-                                                            <h5><strong>Accural</strong></h5>
-                                                            <div className="icheck-list">
-                                                                <label className="mt-checkbox mt-checkbox-outline">
-                                                                    <label></label>
-                                                                    <input onChange={this.typeSelected} type="checkbox" name="Accrual" checked={this.state.isAccrualPartner} value="" className="form-control" />
-                                                                    <span></span></label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <Label text="Mode" columns='4' />
+                                                <Combobox
+                                                    fieldname='mode'
+                                                    formname='contactInformation'
+                                                    columns='7'
+                                                    placeholder='Select'
+                                                    style={{}}
+                                                    state={this.state}
+                                                    typeName="contactMode"
+                                                    dataSource={_.get(this.state, 'typeData', {})}
+                                                    actionHandler={this.generalHandler}
+                                                    className="form-control"
+                                                />
 
-                                                    <div className="col-md-4 text-center">
-                                                        <div className="voucherBox">
-                                                            <img src="/assets/Resources/pointConverstion.png" width="20%" />
-                                                            <h5><strong>Point Conversion</strong></h5>
-                                                            <div className="icheck-list">
-                                                                <label className="mt-checkbox mt-checkbox-outline">
-                                                                    <label></label>
-                                                                    <input onChange={this.typeSelected} type="checkbox" name="pointConverstion" checked={this.state.isPointConversionPartner} className="form-control" />
-                                                                    <span></span></label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
 
+                                            </div>
+                                            <div className="col-md-6">
+                                                <Label text="Email" columns='4' />
+                                                <Input
+                                                    fieldname='email'
+                                                    formname='contactInformation'
+                                                    columns='7'
+                                                    placeholder=''
+                                                    state={this.state}
+                                                    actionHandler={this.generalHandler}
+                                                    className="form-control"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <Label text="Address" columns='4' />
+                                                <Textarea
+                                                    style={{ height: '60px' }}
+                                                    fieldname='address'
+                                                    formname='contactInformation'
+                                                    columns='7'
+                                                    placeholder=''
+                                                    state={this.state}
+                                                    actionHandler={this.generalHandler}
+                                                    className="form-control"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <div className="btn-toolbar pull-right">
+                                                    <button onClick={this.addContactInformation} type="submit" className="pull-right btn green">
+                                                        {utils.getLabelByID("Add")}
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                )
+                            }
 
-                        </Portlet>
-                        <Portlet title={"CONTACT"}>
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <Label text="First Name" columns='4' />
-                                    <Input
-                                        fieldname='firstName'
-                                        formname='contactInformation'
-                                        columns='7'
-                                        placeholder=''
-                                        state={this.state}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
-                                <div className="col-md-6">
-                                    <Label text="Last Name" columns='4' />
-                                    <Input
-                                        fieldname='lastName'
-                                        formname='contactInformation'
-                                        columns='7'
-                                        placeholder=''
-                                        state={this.state}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <Label text="Phone" columns='4' />
-                                    <Input
-                                        fieldname='phone'
-                                        formname='contactInformation'
-                                        columns='7'
-                                        placeholder=''
-                                        state={this.state}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
-                                <div className="col-md-6">
-                                    <Label text="Mobile" columns='4' />
-                                    <Input
-                                        fieldname='mobile'
-                                        formname='contactInformation'
-                                        columns='7'
-                                        placeholder=''
-                                        state={this.state}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-6">
-
-
-
-                                    <Label text="Mode" columns='4' />
-                                    <Combobox
-                                        fieldname='mode'
-                                        formname='contactInformation'
-                                        columns='7'
-                                        placeholder='Select'
-                                        style={{}}
-                                        state={this.state}
-                                        typeName="contactMode"
-                                        dataSource={_.get(this.state, 'typeData', {})}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-
-
-                                </div>
-                                <div className="col-md-6">
-                                    <Label text="Email" columns='4' />
-                                    <Input
-                                        fieldname='email'
-                                        formname='contactInformation'
-                                        columns='7'
-                                        placeholder=''
-                                        state={this.state}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <Label text="Address" columns='4' />
-                                    <Textarea
-                                        style={{ height: '60px' }}
-                                        fieldname='address'
-                                        formname='contactInformation'
-                                        columns='7'
-                                        placeholder=''
-                                        state={this.state}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="btn-toolbar pull-right">
-                                        <button onClick={this.addContactInformation} type="submit" className="pull-right btn green">
-                                            {utils.getLabelByID("Add")}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
                             <Table
-
                                 gridColumns={utils.getGridColumnByName('contactInfo')}
                                 gridData={this.state.contactInformationArr || []}
                                 componentFunction={this.contactInfoActionHandler}
@@ -1609,6 +1692,7 @@ class AddPartner extends Component {
                                         fieldname='vendorCode'
                                         formname='erpSettingsFrom'
                                         columns='7'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                         placeholder=''
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1619,6 +1703,7 @@ class AddPartner extends Component {
                                     <Label text="Vendor Site ID" columns='4' />
                                     <Input
                                         fieldname='vendorSiteID'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                         formname='erpSettingsFrom'
                                         columns='7'
                                         placeholder=''
@@ -1632,9 +1717,10 @@ class AddPartner extends Component {
                                 <div className="col-md-6">
                                     <Label text="GL Codes" columns='4' />
                                     <Input
-                                        fieldname='glcode'
+                                        fieldname='glCode'
                                         formname='erpSettingsFrom'
                                         columns='7'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                         placeholder=''
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1648,6 +1734,7 @@ class AddPartner extends Component {
                                         formname='erpSettingsFrom'
                                         columns='7'
                                         placeholder=''
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                         state={this.state}
                                         actionHandler={this.generalHandler}
                                         className="form-control"
@@ -1678,23 +1765,24 @@ class AddPartner extends Component {
                                 gridData={this.state.contractParamsArr || []}
                                 componentFunction={this.subsidiaryPartnerActionHandler}
                             />
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="btn-toolbar pull-right">
-                                        <button disabled={(this.state.isRedemptionPartner || this.state.isAccrualPartner || this.state.isPointConversionPartner) ? false : true}
-                                            onClick={this.stateChangeSubsidaryPartnerBool} type="submit" className="pull-right btn green">
-                                            {utils.getLabelByID("Add Related Partner")}
-                                        </button>
+                            {!this.props.params.partnerCode &&
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="btn-toolbar pull-right">
+                                            <button disabled={(this.state.isRedemptionPartner || this.state.isAccrualPartner || this.state.isPointConversionPartner) ? false : true}
+                                                onClick={this.stateChangeSubsidaryPartnerBool} type="submit" className="pull-right btn green">
+                                                {utils.getLabelByID("Add Related Partner")}
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </div>}
                         </Portlet>
 
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="btn-toolbar pull-right">
-                                    <button onClick={this.setPartner} type="submit" className="pull-right btn green">
-                                        {utils.getLabelByID("Submit")}
+                                    <button onClick={!this.props.params.partnerCode ? this.setPartner : this.approvePartner} type="submit" className="pull-right btn green">
+                                        {!this.props.params.partnerCode ? utils.getLabelByID("Submit") : utils.getLabelByID("Approve")}
                                     </button>
                                 </div>
                             </div>
@@ -1723,6 +1811,79 @@ class AddPartner extends Component {
             subsidaryPartnerBool: !this.state.subsidaryPartnerBool
         })
     }
+
+    renderTypePortlet = () => {
+        return (<Portlet title={"TYPE"}>
+
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="" style={{ opacity: '1' }}>
+                        <div className="portlet-body flip-scroll">
+                            <div className="row">
+                                <div className="col-md-10 col-md-offset-1">
+
+                                    {
+                                        (this.props.params.partnerCode ? (this.state.isRedemptionPartner) : true) && (
+                                            <div className="col-md-4 text-center">
+                                                <div className="voucherBox">
+                                                    <img src="/assets/Resources/Redemption.png" width="20%" />
+                                                    <h5><strong>Redemption</strong></h5>
+                                                    <div className="icheck-list">
+                                                        <label className="mt-checkbox mt-checkbox-outline">
+                                                            <label></label>
+                                                            <input disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false} onChange={this.typeSelected} type="checkbox" name="Redemption" value="" checked={this.state.isRedemptionPartner} className="form-control" />
+                                                            <span></span></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+
+                                    {
+                                        (this.props.params.partnerCode ? (this.state.isAccrualPartner) : true) && (
+                                            <div className="col-md-4 text-center">
+                                                <div className="voucherBox">
+                                                    <img src="/assets/Resources/Accrual.png" width="20%" />
+                                                    <h5><strong>Accural</strong></h5>
+                                                    <div className="icheck-list">
+                                                        <label className="mt-checkbox mt-checkbox-outline">
+                                                            <label></label>
+                                                            <input disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false} onChange={this.typeSelected} type="checkbox" name="Accrual" checked={this.state.isAccrualPartner} value="" className="form-control" />
+                                                            <span></span></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+
+                                    {
+                                        (this.props.params.partnerCode ? (this.state.isPointConversionPartner) : true) && (
+                                            <div className="col-md-4 text-center">
+                                                <div className="voucherBox">
+                                                    <img src="/assets/Resources/pointConverstion.png" width="20%" />
+                                                    <h5><strong>Point Conversion</strong></h5>
+                                                    <div className="icheck-list">
+                                                        <label className="mt-checkbox mt-checkbox-outline">
+                                                            <label></label>
+                                                            <input disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false} onChange={this.typeSelected} type="checkbox" name="pointConverstion" checked={this.state.isPointConversionPartner} className="form-control" />
+                                                            <span></span></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </Portlet>)
+    }
+
     render() {
 
         this.state.subsidaryPartnerBool ? AddPartner.displayName = "Subsidary Partner" : AddPartner.displayName = "Add Partner";
@@ -1742,8 +1903,7 @@ class AddPartner extends Component {
 function mapStateToProps(state, ownProps) {
     return {
         typeData: state.app.typeData.data,
-
-
+        getPartnerDataByID: _.get(state.app, 'getInterim')
     };
 }
 
