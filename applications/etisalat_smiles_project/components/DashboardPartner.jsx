@@ -89,14 +89,16 @@ class DashboardPartner extends React.Component {
                                 </div>
 
                                 <div className="row">
-                                    <div className="col-md-2"></div>
-                                    <div className="col-md-1">
-                                        <img src="/assets/imgs/gift.jpg" style={{ height: "150px" }} />
-                                    </div>
-                                    <div className="col-md-1"></div>
-                                    <div className="col-md-8" >
-                                        <div style={{ fontSize: "20px", marginTop: "30px" }}>YOU GOT A GIFT</div>
-                                        <div className="row" style={{ marginTop: "30px" }}>ACCURAL PARTNER  |<b> REDEMPTION PARTNER </b> | CONVERSION PARTNER</div>
+                                    <div className="col-md-offset-2">
+                                        <div className="col-md-2"></div>
+                                        <div className="col-md-1">
+                                            <img src="/assets/imgs/gift.jpg" style={{ height: "150px" }} />
+                                        </div>
+                                        <div className="col-md-1"></div>
+                                        <div className="col-md-8 text-center" >
+                                            <div style={{ fontSize: "20px", marginTop: "30px", fontWeight:800 }}>Commercial Bank of Dubai</div>
+                                            <div className="row" style={{ marginTop: "30px" }}>ACCURAL PARTNER  |<b> REDEMPTION PARTNER </b> | CONVERSION PARTNER</div>
+                                        </div>
                                     </div>
                                 </div>
 
