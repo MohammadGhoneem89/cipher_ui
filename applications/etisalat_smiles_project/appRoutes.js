@@ -70,7 +70,6 @@ let authRoutes = <div>
     <Route path="/smiles/voucherManagement" component={VoucherManagement} />
     <Route path="/smiles/createAmendRedemption" component={CreateAmendRedemption} />
 
-
     <Route path="/smiles/addNewMerchant" component={AddNewMerchant} />
     <Route path="/smiles/merchantList" component={MerchantList} />
     <Route path="/smiles/productList" component={ProductList} />
@@ -82,8 +81,6 @@ let authRoutes = <div>
     {/* ORDER */}
     <Route path="/smiles/orderManagement" component={OrderManagement} />--order
     <Route path="/smiles/orderManagementDetail" component={OrderManagementDetails} />
-
-
     <Route path="/smiles/View/FileScreen" component={fileScreen} />//rm
     <Route path="/smiles/View/FileDetails" component={fileDetail} />//rm
 
