@@ -46,7 +46,7 @@ let authRoutes = <div>
 
     {/* RECON SCREEN */}
     <Route path="/smiles/transactionList" component={ViewTransactions} />
-    <Route path="/smiles/transaction/view" component={TransactionDetail} />
+    <Route path="/smiles/transaction/view/:id" component={TransactionDetail} />
     <Route path="/smiles/settlementList" component={ViewSettlement} />
     <Route path="/smiles/settlementDetail" component={SubmitSettlement} />
     <Route path="/smiles/initiateSettlementPartner" component={InitiateSettlementPartner} />

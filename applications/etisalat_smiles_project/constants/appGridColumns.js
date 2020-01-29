@@ -297,7 +297,7 @@ module.exports = {
     ],
     /// Smiles 
     viewTranxList: [
-        { alias: "", key: "key", type: "hiddenID" },
+        { alias: "", key: "transactionId", type: "hiddenID" },
         { alias: "S.No", key: "", type: 'serialNo' },
         { alias: "Transaction", key: "tranxData.sourceTransactionId", type: "string" },
         { alias: "Account#", key: "tranxData.membershipNo", type: "string" },
@@ -324,5 +324,19 @@ module.exports = {
         { alias: "Status", key: "internalStatus", type: "string" },
         { alias: "Partner", key: "partnerCode", type: "string" },
         { alias: "action", key: "actions", type: "action" }
+    ],
+    viewTranxListEvents: [
+        { alias: "", key: "_id", type: "hiddenID" },
+        { alias: "S.NO", key: "", type: "serialNo" },
+        { alias: "From", key: "from", type: "string" },
+        { alias: "To", key: "to", type: "string" },
+        { alias: "Processing Type", key: "processingType", type: "string" },
+      
+        { alias: "Status", key: "internalStatus", type: "statusBox" },
+        { alias: "paymentref", key: "paymentref", type: "string" },
+        
+        { alias: "last Update", key: "lastUpdateTimestamp", type: "epochDateShort" },
+        { alias: "error Reason", key: "errorReason", type: "string" },
+        { alias: "Dependency", key: "Dependency", type: "string" }
     ],
 };

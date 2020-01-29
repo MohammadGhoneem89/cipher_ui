@@ -32,6 +32,7 @@ class TransactionDetail extends React.Component {
             isLoading: true,
             gridData: [],
             actions: [],
+            transactionData: [],
 
             dashboardTiles: [{
                 title: "Amount",
@@ -43,7 +44,6 @@ class TransactionDetail extends React.Component {
 
         };
         this.data = [];
-        this.pageChanged = this.pageChanged.bind(this);
     }
 
     formSubmit = () => {
@@ -73,50 +73,34 @@ class TransactionDetail extends React.Component {
 
     getRequest = () => {
 
-        let contractID = document.getElementById('contractId') == null ? "" : document.getElementById('contractId').value;
-        // let customerID = document.getElementById('customer') == null ? "" : document.getElementById('customer').value;
-        let status = document.getElementById('status') == null ? "" : document.getElementById('status').value;
-        let searchCriteria = {}
-
-        // if (contractID != "")
-        //     searchCriteria.contractID = contractID
-        // // if (customerID != "")
-        // //     searchCriteria.customerID = customerID
-        // if (status != "")
-        //     searchCriteria.status = status
-
-
-        // this.setState({ searchCriteria: searchCriteria })
-        // let request = {
-        //     "body": {
-        //         "page": {
-        //             "currentPageNo": this.state.page.currentPageNo,
-        //             "pageSize": this.state.page.pageSize
-        //         },
-        //         searchCriteria
-        //     }
-
-        // };
-        // return request;
+        return {
+            "body": {
+                "sourceTransactionId": this.props.id
+            }
+        };
     }
     componentWillReceiveProps(nextProps) {
         // if (nextProps.getViewTransactions && nextProps.typeData && nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
         // console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions");
         // let pageActions = nextProps.gridActions[0].pageActions;
-        this.setState(
-            {
-                isLoading: false
-            }
-        )
+        if (nextProps.transactionData) {
+          
+            let transactionData = nextProps.transactionData;
+            this.setState(
+                {
+                    transactionData,
+                    gridData: _.get(transactionData, 'transactionPool', []),
+                    isLoading: false
+                }
+            )
+        }
         // }
     }
 
 
 
     componentDidMount() {
-        // this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['orderStatus']));
-        // this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
-
+        this.props.actions.generalProcess(constants.getTransactionByID, this.getRequest());
         window.scrollTo(0, 0);
     }
     getStatusLabel = status => {
@@ -129,130 +113,165 @@ class TransactionDetail extends React.Component {
             }
         }
     }
-    pageChanged = (pageNo) => {
-        let page = this.state.page;
-        page.currentPageNo = pageNo;
-        this.setState({ page: page });
-        this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
-    }
+
 
     render() {
-        if (this.state.isLoading) {
+        if (this.state.isLoading)
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
-        }
+        else
+            return (
+                <Row>
+                    <Col>
+                        <Col>
+                            <div className="row">
+                                <Portlet title='transaction details'>
+                                    <div className="row">
+                                        <div className="col-md-offset-4 col-md-12">
+                                            <div className="col-md-2">
+                                                <img src="/assets/imgs/gift.jpg" style={{ height: "150px" }} />
+                                            </div>
 
-        return (
-            <div className="row">
-                <Portlet title=''>
-                    <Row>
-                        <div className="col-md-12">
-                            <div className="col-md-5">
-                            </div>
-                            <div >
-                                <label>COMMERCIAL BANK OF DUBAI</label>
-                            </div>
-                        </div>
-                    </Row>
+                                            <div className="col-md-3 text-center" >
+                                                <div style={{ fontSize: "30px", marginTop: "30px" }}><b>CBD-76545677</b></div>
+                                                <div className="row" style={{ marginTop: "30px" }}>Commercial Bank of Dubai (10/10/2019-20/10/2019)</div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                    {/* <img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png" className="tablogo" />
+                                    {/* <img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png" className="tablogo" />
                     <h1 style={{ color: 'grey' }}>COMMERCIAL BANK OF DUBAI</h1> */}
+                                    <div className="col-md-offset-1">
+                                        <Row>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
+                                                    <Label text="Partner Tx. ID:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text={this.state.transactionData.sourceTransactionId} />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
+                                                    <Label text="Submitted By Partner:" />
+                                                </div>
+                                                <div style={{ "padding": "0px" }} className="col-md-8">
+                                                    <Label text={this.state.transactionData.partnerCode} />
+                                                </div>
+                                            </div>
+                                        </Row>
+                                        <Row>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
+                                                    <Label text="Membership Number:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text={this.state.transactionData.membershipNo} />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
+                                                    <Label text="Payment Reference:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text={this.state.transactionData.paymentref} />
+                                                </div>
+                                            </div>
+                                        </Row>
+                                        <Row>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
+                                                    <Label text="Transaction Type:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text={this.state.transactionData.transactionType} />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
+                                                    <Label text="Sub Type:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text={this.state.transactionData.transactionSubType} />
+                                                </div>
+                                            </div>
+                                        </Row>
 
-                    <Row>
-                        <div className="col-md-2">
-                            <Label text="Partner Transaction ID:" />
-                        </div>
-                        <div className="col-md-3">
-                            <Label text="1111111111" />
-                        </div>
-                        <div className="col-md-2">
-                            <Label text="Submitted By Partner:" />
-                        </div>
-                        <div style={{"padding":"0px"}} className="col-md-2">
-                            <Label text="1111111111" />
-                        </div>
+                                        <Row>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
+                                                    <Label text="Settlement Batch No:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text={_.get(this.state.transactionData, 'settlementBatchID', 'N/A')} />
+                                                </div>
+                                            </div>
+                                        </Row>
+                                        <Row>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
 
-                    </Row>
-
-                    <Row>
-                        <div className="col-md-2">
-                            <Label text="Membership Number:" />
-                        </div>
-                        <div className="col-md-3">
-                            <Label text="1111111111" />
-                        </div>
-                    </Row>
-
-                    <Row>
-                        <div className="col-md-2">
-                            <Label text="Mobile Number:" />
-                        </div>
-                        <div className="col-md-3">
-                            <Label text="1111111111" />
-                        </div>
-                    </Row>
-
-                    <Row>
-                        <div className="col-md-2">
-                            <Label text="Transaction Type:" />
-                        </div>
-                        <div className="col-md-3">
-                            <Label text="1111111111" />
-                        </div>
-                    </Row>
-
-                    <Row>
-                        <div className="col-md-2">
-                            <Label text="Sub Type:" />
-                        </div>
-                        <div className="col-md-3">
-                            <Label text="1111111111" />
-                        </div>
-                    </Row>
-
-                    <Row>
-                        <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px" }}>
-                            <Label text="Amount" />
-                            <Label style={{ "font-size":"30px","color":"#1d9b1d"}} text="500 AED" />
-                        </div>
-                        <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px" }}>
-                            <Label text="Points Awarded" />
-                            <Label style={{ "font-size":"30px","color":"#1d9b1d"}} text="500 " />
-                        </div>
-                    </Row>
-                   
-                    <Row>
-                        <div className="col-md-2">
-                            <Label text="Settlement Batch No:" />
-                        </div>
-                        <div className="col-md-3">
-                            <Label text="1111111111" />
-                        </div>
-                    </Row>
-                    <Row>
-                        <div className="col-md-2">
-                            <Label text="File Name:" />
-                        </div>
-                        <div className="col-md-3">
-                            <Label text="1111111111" />
-                        </div>
-                    </Row>
-                    <Row>
-                        <div className="col-md-2">
-                            <Label text="Error:" />
-                        </div>
-                        <div className="col-md-3">
-                            <Label text="1111111111" />
-                        </div>
-                    </Row>
-                    {/* </Portlet>
-                 <Portlet  actions={this.state.actions} isPermissioned={true}> */}
-                    {/* UTS */}
+                                                    <Label text="Mobile No:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text={_.get(this.state.transactionData, 'accrualParams.mobileNo', 'N/A')} />
+                                                </div>
+                                            </div>
+                                        </Row>
 
 
+                                        {/*
+                                        <Row>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
+                                                    <Label text="Error:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text="1111111111" />
+                                                </div>
+                                            </div>
+                                        </Row>
+ */}
 
-                </Portlet>
-            </div>
-        );
+                                        <Row>
+                                            <div className="col-md-offset-1">
+                                                <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px" }}>
+                                                    <Label text="Amount" />
+                                                    <Label style={{ "font-size": "30px", "color": "#1d9b1d" }} text={`${_.get(this.state.transactionData, 'accrualParams.amountSpent', '0')} AED`} />
+                                                </div>
+                                                <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px" }}>
+                                                    <Label text="Commission" />
+                                                    <Label style={{ "font-size": "30px", "color": "#1d9b1d" }} text={`${_.get(this.state.transactionData, 'commissionAmount', '0')} AED`} />
+                                                </div>
+                                                <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px" }}>
+                                                    <Label text="Points Awarded" />
+                                                    <Label style={{ "font-size": "30px", "color": "#1d9b1d" }} text={`${_.get(this.state.transactionData, 'pointsAwarded', '0')} AED`} />
+                                                </div>
+                                            </div>
+                                        </Row>
+                                    </div>
+                                    <Row>
+                                        <Col>
+                                            <Col>
+                                                <h1>Transaction Events</h1>
+                                                <Table
+                                                    gridColumns={utils.getGridColumnByName("viewTranxListEvents")}
+                                                    gridData={this.state.gridData}
+                                                    fontclass=""
+                                                    totalRecords={this.state.totalRecords}
+                                                    pageSize={10}
+                                                    pagination={false}
+                                                    search={true}
+                                                    activePage={this.state.page.currentPageNo}
+                                                />
+                                            </Col>
+                                        </Col>
+                                    </Row>
+                                </Portlet>
+                            </div>
+                        </Col>
+                    </Col>
+                </Row >
+            );
     }
 }
 
@@ -260,8 +279,9 @@ function mapStateToProps(state, ownProps) {
     return {
         typeData: state.app.typeData.data,
         gridActions: _.get(state.app, 'getMasterAgreement.actions', []),
-        getMasterAgreement: _.get(state.app, "getMasterAgreement.searchResult", []),
-        getPage: _.get(state.app, "getMasterAgreement.pageData", [])
+        transactionData: _.get(state.app, "responseMessage.data.getTransactionByID", {}),
+        getPage: _.get(state.app, "getMasterAgreement.pageData", []),
+        id: ownProps.params.id,
 
     };
 }
