@@ -33,8 +33,6 @@ class TransactionList extends React.Component {
             totalRecords: 2
         };
         this.data = [];
-        // this.transStartDateChange = this.transStartDateChange(this)
-        // this.transEndDateChange = this.transEndDateChange(this)
         this.pageChanged = this.pageChanged.bind(this)
         this.searchResult = this.searchResult.bind(this)
         this.generalHandler = gen.generalHandler.bind(this)
@@ -52,25 +50,10 @@ class TransactionList extends React.Component {
     searchResult = () => {
         this.props.actions.generalProcess(constants.getViewTransaction, this.getRequest());
     }
-    // reset = () => {
-    //     document.getElementById('contractId').value = "";
-
-    //     document.getElementById('status').value = "";
-    //     let request = {
-    //         "body": {
-    //             page: {
-    //                 currentPageNo: 1,
-    //                 pageSize: 10
-    //             },
-    //             searchCriteria: {}
-    //         }
-    //     }
-    //     this.setState({ searchCriteria: {} });
-    //     // this.props.actions.generalProcess(constants.getMasterAgreement, request);
-    // };
+    
 
     redirectToAddPage = () => {
-        //this.props.actions.generalProcess(constants.getMasterAgreementList, this.getRequest());
+        
     }
 
     getRequest = () => {
@@ -119,26 +102,7 @@ class TransactionList extends React.Component {
         this.props.actions.generalProcess(constants.getTransactionList, this.getRequest())
     }
 
-    // dateChange = (formName, fieldName, value) => {
-    //     console.log(value)
-    //     if (value == 'Invalid date') {
-    //         this.setState({
-    //             [formName]: {
-    //                 ..._.get(this.state, `${formName}`, {}),
-    //                 [fieldName]: undefined
-    //             }
 
-    //         })
-    //     } else {
-    //         this.setState({
-    //             [formName]: {
-    //                 ..._.get(this.state, `${formName}`, {}),
-    //                 [fieldName]: value
-    //             }
-
-    //         })
-    //     }
-    // }
 
     render() {
         if (this.state.isLoading) {
@@ -275,15 +239,7 @@ class TransactionList extends React.Component {
     }
 }
 
-// function mapStateToProps(state, ownProps) {
-//     return {
-//         typeData: state.app.typeData.data,
-//         gridActions: _.get(state.app, 'getMasterAgreement.actions', []),
-//         getMasterAgreement: _.get(state.app, "getMasterAgreement.searchResult", []),
-//         getPage: _.get(state.app, "getMasterAgreement.pageData", [])
 
-//     };
-// }
 
 function mapStateToProps(state, ownProps) {
     return {
