@@ -252,6 +252,7 @@ console.log(route,"++++++++====route\n\n",searchCriteria);
                                search={true}
                                activePage={this.state.currentPageNo} />
                     </Portlet>
+                    {console.log(this.props.ApiListData.data.searchResult)}
 
 
                 </div>

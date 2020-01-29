@@ -141,7 +141,6 @@ class ViewSettlement extends React.Component {
                             <img style={{ "height": "129px" }} src="/assets/Resources/CBD_l.png" />
                         </div>
                     </div>
-                    
                 </div>
 
 
@@ -170,8 +169,8 @@ class ViewSettlement extends React.Component {
                         <label className="control-label">{utils.getLabelByID("01/01/2019")}</label>
                     </div>
                 </div>
-                <br />
-                < br />
+                <br/>
+                <br/>
 
                 
                 <div className="row">

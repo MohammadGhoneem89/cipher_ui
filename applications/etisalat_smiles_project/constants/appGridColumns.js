@@ -311,13 +311,13 @@ module.exports = {
     viewTranxList: [
         { alias: "", key: "_id", type: "hiddenID" },
         { alias: "S.No", key: "no", type: 'string' },
-        { alias: "Transaction", key: "sourceTransactionId", type: "string" },
+        { alias: "Transaction", key: "tranxData.sourceTransactionId", type: "string" },
         { alias: "Account#", key: "tranxData.accountNo", type: "string" },
-        { alias: "TRANS TYPE", key: "tranxData.transType", type: "string" },
-        { alias: "Amount", key: "tranxData.amount", type: "string" },
-        { alias: "Points", key: "tranx.points", type: "string" },
+        { alias: "TRANS TYPE", key: "tranxData.transactionType", type: "string" },
+        { alias: "Amount", key: "tranxData.accrualParams.amountSpent", type: "string" },
+        { alias: "Points", key: "tranx.accrualParams.points", type: "string" },
         { alias: "TRANS Date", key: "tranxData.transactionDateTime", type: "string" },
-        { alias: "Status", key: "tranxData.status", type: "string" },
+        { alias: "Status", key: "tranxData.internalStatus", type: "string" },
         { alias: "Partner", key: "tranxData.partnerCode", type: "string" },
         { alias: "action", key: "actions", type: "action" }
     ],

@@ -9,6 +9,7 @@ import * as constants from '../../../../core/constants/Communication.js';
 import TileUnit from '../../../../core/common/tileUnit.jsx';
 import Tile from '../../../../core/common/tile.jsx';
 import Header from '../../../../core/common/Header.jsx';
+import Label from '../../../../core/common/Lable.jsx';
 
 import Portlet from '../../../../core/common/Portlet.jsx';
 import Col from '../../../../core/common/Col.jsx';
@@ -153,125 +154,96 @@ class TransactionDetail extends React.Component {
                         </div>
                     </Row>
 
-
                     {/* <img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png" className="tablogo" />
                     <h1 style={{ color: 'grey' }}>COMMERCIAL BANK OF DUBAI</h1> */}
-                    <div className="row">
-                        <div className="col-md-3" style={{ 'border': '2px solid','padding': '5px','margin-left': '10px' }}  >
-                            <div class="card" style={{ 'display': 'flex', 'justify-content': 'center', 'flex-direction': 'column', 'align-items': 'center'}}>
-                                <div class="card-body">
-                                    <p class="card-text">Amount Spent</p>
-                                    <h4 class="card-title">500 AED</h4>
-                                </div>
-                            </div>
+
+                    <Row>
+                        <div className="col-md-2">
+                            <Label text="Partner Transaction ID:" />
                         </div>
-                    </div>
-
-
-                    <div className="row">
-                        <div className="col-md-5">
-                            <div className="form-group col-md-6">
-                                <label className="control-label">{utils.getLabelByID("Partner Transaction Id:")}</label>
-                            </div>
-                            <div className="form-group col-md-4" >
-                                <label className="control-label">111111 </label>
-                            </div>
+                        <div className="col-md-3">
+                            <Label text="1111111111" />
+                        </div>
+                        <div className="col-md-2">
+                            <Label text="Submitted By Partner:" />
+                        </div>
+                        <div style={{"padding":"0px"}} className="col-md-2">
+                            <Label text="1111111111" />
                         </div>
 
+                    </Row>
 
-
-
-                        <div className="col-md-5">
-                            <div className="form-group col-md-6">
-                                <label className="control-label">{utils.getLabelByID("Submitted by Partner")}</label>
-                            </div>
-                            <div className="form-group col-md-4" >
-                                <label className="control-label">111111 </label>
-                            </div>
+                    <Row>
+                        <div className="col-md-2">
+                            <Label text="Membership Number:" />
                         </div>
-
-                        <div className="col-md-5">
-                            <div className="form-group col-md-6">
-                                <label className="control-label">{utils.getLabelByID("membership#")}</label>
-                            </div>
-                            <div className="form-group col-md-4">
-                                <label className="control-label">111111 </label>
-                            </div>
+                        <div className="col-md-3">
+                            <Label text="1111111111" />
                         </div>
+                    </Row>
 
-                        <div className="col-md-5">
-                            <div className="form-group col-md-6">
-                                <label className="control-label">{utils.getLabelByID("Processed By Etisalat:")}</label>
-                            </div>
-                            <div className="form-group col-md-4">
-                                <label className="control-label">111111 </label>
-
-                            </div>
+                    <Row>
+                        <div className="col-md-2">
+                            <Label text="Mobile Number:" />
                         </div>
-
-                        <div className="col-md-12">
-                            <div className="form-group col-md-2">
-                                <label className="control-label">{utils.getLabelByID("Mobile No:")}</label>
-                            </div>
-                            <div className="form-group col-md-4">
-                                <label className="control-label">111111</label>
-                            </div>
+                        <div className="col-md-3">
+                            <Label text="1111111111" />
                         </div>
+                    </Row>
 
-
-                        <div className="col-md-12">
-                            <div className="form-group col-md-2">
-                                <label className="control-label">{utils.getLabelByID("Transaction Type:")}</label>
-                            </div>
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Welcome Bonus</label>
-                            </div>
+                    <Row>
+                        <div className="col-md-2">
+                            <Label text="Transaction Type:" />
                         </div>
-
-                        <div className="col-md-12">
-                            <div className="form-group col-md-2">
-                                <label className="control-label">{utils.getLabelByID("Sub Type:")}</label>
-                            </div>
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Visa</label>
-                            </div>
+                        <div className="col-md-3">
+                            <Label text="1111111111" />
                         </div>
+                    </Row>
 
-                        <Row>
-                            <Col>
-                                <TileUnit data={this.state.dashboardTiles} />
-                                <TileUnit data={this.state.dashboardTiles} />
-                            </Col>
-                        </Row>
-
-                        <div className="col-md-12">
-                            <div className="form-group col-md-2">
-                                <label className="control-label">{utils.getLabelByID("Settlment Batch:")}</label>
-                            </div>
-                            <div className="form-group col-md-4">
-                                <label className="control-label">1111111145</label>
-                            </div>
+                    <Row>
+                        <div className="col-md-2">
+                            <Label text="Sub Type:" />
                         </div>
-
-                        <div className="col-md-12">
-                            <div className="form-group col-md-2">
-                                <label className="control-label">{utils.getLabelByID("File Name:")}</label>
-                            </div>
-                            <div className="form-group col-md-4">
-                                <label className="control-label">1554645</label>
-                            </div>
+                        <div className="col-md-3">
+                            <Label text="1111111111" />
                         </div>
+                    </Row>
 
-                        <div className="col-md-12">
-                            <div className="form-group col-md-12">
-                                <label className="control-label">{utils.getLabelByID("Error:")}</label>
-                            </div>
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Files Not Found</label>
-                            </div>
+                    <Row>
+                        <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px" }}>
+                            <Label text="Amount" />
+                            <Label style={{ "font-size":"30px","color":"#1d9b1d"}} text="500 AED" />
                         </div>
-
-                    </div>
+                        <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px" }}>
+                            <Label text="Points Awarded" />
+                            <Label style={{ "font-size":"30px","color":"#1d9b1d"}} text="500 " />
+                        </div>
+                    </Row>
+                   
+                    <Row>
+                        <div className="col-md-2">
+                            <Label text="Settlement Batch No:" />
+                        </div>
+                        <div className="col-md-3">
+                            <Label text="1111111111" />
+                        </div>
+                    </Row>
+                    <Row>
+                        <div className="col-md-2">
+                            <Label text="File Name:" />
+                        </div>
+                        <div className="col-md-3">
+                            <Label text="1111111111" />
+                        </div>
+                    </Row>
+                    <Row>
+                        <div className="col-md-2">
+                            <Label text="Error:" />
+                        </div>
+                        <div className="col-md-3">
+                            <Label text="1111111111" />
+                        </div>
+                    </Row>
                     {/* </Portlet>
                  <Portlet  actions={this.state.actions} isPermissioned={true}> */}
                     {/* UTS */}

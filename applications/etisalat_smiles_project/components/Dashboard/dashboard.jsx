@@ -33,6 +33,7 @@ class dashboard extends React.Component {
             isLoading: true,
             gridData: [],
             Transaction: {},
+            totalRecords: 2,
             actions: [],
             fromDate: moment().startOf('day'),
             toDate: moment().endOf('day')
@@ -110,9 +111,10 @@ class dashboard extends React.Component {
         return request;
     }
     componentWillReceiveProps(nextProps) {
-        // if (nextProps.getViewTransactions && nextProps.typeData && nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
-        // console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions");
-        // let pageActions = nextProps.gridActions[0].pageActions;
+        if (nextProps.transData)
+            this.setState({ gridData: nextProps.transData })
+        if (nextProps.records)
+            this.setState({ totalRecords: nextProps.records })
         this.setState(
             {
                 isLoading: false
@@ -124,11 +126,10 @@ class dashboard extends React.Component {
 
 
     componentDidMount() {
-        // this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['orderStatus']));
-        // this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
-
+        this.props.actions.generalProcess(constants.getViewTransaction, this.getRequest())
         window.scrollTo(0, 0);
     }
+
     getStatusLabel = status => {
         if (this.state.typeData && this.state.typeData.orderStatus) {
             let orderStatus = this.state.typeData.orderStatus;
@@ -240,7 +241,6 @@ class dashboard extends React.Component {
                             </div>
                         </div>
 
-
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group col-md-4">
@@ -248,7 +248,6 @@ class dashboard extends React.Component {
                                 </div>
                                 <div className="form-group col-md-8">
                                     {/* <input type="text" className="form-control" name="status" id="status" /> */}
-
                                     <Input
                                         fieldname='invoiceNo'
                                         formname='searchCriteria'
@@ -261,7 +260,6 @@ class dashboard extends React.Component {
                                 </div>
                             </div>
                         </div>
-
 
                         <div className="row">
                             <div className="col-md-12">
@@ -278,7 +276,7 @@ class dashboard extends React.Component {
                                 </div>
                             </div>
                         </div>
-
+                        
                     </div>
                     {/* </Portlet>
                  <Portlet  actions={this.state.actions} isPermissioned={true}> */}
@@ -335,9 +333,9 @@ class dashboard extends React.Component {
 
                             <Table
                                 gridColumns={utils.getGridColumnByName("viewTranxList")}
-                                gridData={[{ "no": "1", "tranx": "12212222", "acc": "555222", "ttype": "ACCURAL", "amount": "100045", "points": "12220211", "date": "01/12/2020", "status": "APPROVED", "partner": "ETIHAD", "actions": [{ "value": "1003", "type": "componentAction", "label": "View", "params": "", "iconName": "icon-docs", "URI": [{ "0": "/APIDefScreen/" }] }] }]}
+                                gridData={this.state.gridData}
                                 fontclass=""                                                                                                                                                                                                                                           //
-                                totalRecords={this.props.getPage.totalRecords}
+                                totalRecords={this.state.totalRecords}
                                 pageSize={10}
                                 pageChanged={this.pageChanged}
                                 pagination={true}
@@ -358,11 +356,8 @@ class dashboard extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        typeData: state.app.typeData.data,
-        gridActions: _.get(state.app, 'getMasterAgreement.actions', []),
-        getMasterAgreement: _.get(state.app, "getMasterAgreement.searchResult", []),
-        getPage: _.get(state.app, "getMasterAgreement.pageData", [])
-
+        transData: _.get(state.app, 'getPointConversionTransactionList.data.searchResult.rows', []),
+        records: _.get(state.app, 'getPointConversionTransactionList.data.searchResult.count', '')
     };
 }
 
