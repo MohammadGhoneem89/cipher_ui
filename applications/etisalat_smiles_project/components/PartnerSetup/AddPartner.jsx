@@ -108,7 +108,7 @@ class AddPartner extends Component {
 
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.actions.updateStore({
             getInterim: undefined,
             getPartnerDataByID: undefined
@@ -156,7 +156,7 @@ class AddPartner extends Component {
                 />
                 <br />
 
-                <button
+                {(this.props.params.partnerCode ? (this.state.status == "APPROVED" ? true : false) : true) && <button
                     className="btn green"
                     style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
                     onClick={() => {
@@ -164,7 +164,7 @@ class AddPartner extends Component {
                     }}
                 >
                     {"Upload Image"}
-                </button>
+                </button>}
 
                 <input
                     name="profilePicUploader"
