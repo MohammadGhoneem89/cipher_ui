@@ -33,6 +33,10 @@ class TransactionDetail extends React.Component {
             gridData: [],
             actions: [],
             transactionData: [],
+            englishPartnerName: '',
+            partnerLogo: '',
+            arabicPartnerName: '',
+
 
             dashboardTiles: [{
                 title: "Amount",
@@ -72,19 +76,28 @@ class TransactionDetail extends React.Component {
     }
 
     getRequest = () => {
-
         return {
             "body": {
                 "sourceTransactionId": this.props.id
             }
         };
     }
-    componentWillReceiveProps(nextProps) {
-        // if (nextProps.getViewTransactions && nextProps.typeData && nextProps.gridActions[0] && nextProps.gridActions[0].pageActions) {
-        // console.log(nextProps.gridActions[0].pageActions, "nextProps.gridActions[0].pageActions");
-        // let pageActions = nextProps.gridActions[0].pageActions;
-        if (nextProps.transactionData) {
+     
+    getRequestPartner = () => {
+        
+        let partnerCode= (this.props.id).split("_")
+        console.log('-------PARTNERCODE ',partnerCode[0])
+        return {
+            "body": {
+                "partnerCode": partnerCode[0]
+            }
+        };
+    }
 
+
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.transactionData) {
             let transactionData = nextProps.transactionData;
             this.setState(
                 {
@@ -94,15 +107,27 @@ class TransactionDetail extends React.Component {
                 }
             )
         }
-        // }
+        
+        if(nextProps.getPartnerDataByID){
+            let data= nextProps.getPartnerDataByID;
+            this.setState({
+                englishPartnerName: _.get(data,'partnerNameEn',''), 
+                arabicPartnerName: _.get(data,'partnerNameAr',''),
+                partnerLogo: _.get(data,'logo','')
+            })
+        }
     }
 
 
 
     componentDidMount() {
         this.props.actions.generalProcess(constants.getTransactionByID, this.getRequest());
+        console.log()
+        this.props.actions.generalProcess(constants.getPartnerByID, this.getRequestPartner());
+        
         window.scrollTo(0, 0);
     }
+
     getStatusLabel = status => {
         if (this.state.typeData && this.state.typeData.orderStatus) {
             let orderStatus = this.state.typeData.orderStatus;
@@ -128,18 +153,19 @@ class TransactionDetail extends React.Component {
                                     <div className="row">
                                         <div className="col-md-offset-4 col-md-12">
                                             <div className="col-md-2">
-                                                <img src="/assets/imgs/gift.jpg" style={{ height: "150px" }} />
+                                                <img src={this.state.partnerLogo} style={{ height: "150px" }} />
                                             </div>
 
                                             <div className="col-md-3 text-center" >
                                                 <div style={{ fontSize: "30px", marginTop: "30px" }}><b>CBD-76545677</b></div>
-                                                <div className="row" style={{ marginTop: "30px" }}>Commercial Bank of Dubai (10/10/2019-20/10/2019)</div>
+                                                <div className="row" style={{ marginTop: "30px" }}>{this.state.englishPartnerName ? this.state.englishPartnerName: 'N/A'} &emsp; {this.state.englishPartnerName ? this.state.englishPartnerName: 'غير متاح'}</div>
                                             </div>
                                         </div>
                                     </div>
 
                                     {/* <img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png" className="tablogo" />
                     <h1 style={{ color: 'grey' }}>COMMERCIAL BANK OF DUBAI</h1> */}
+
                                     <div className="col-md-offset-1">
                                         <Row>
                                             <div className="col-md-6">
@@ -288,11 +314,14 @@ class TransactionDetail extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         typeData: state.app.typeData.data,
-        gridActions: _.get(state.app, 'getMasterAgreement.actions', []),
+        // gridActions: _.get(state.app, 'getMasterAgreement.actions', []),
         transactionData: _.get(state.app, "responseMessage.data.getTransactionByID", {}),
-        getPage: _.get(state.app, "getMasterAgreement.pageData", []),
+        // getPage: _.get(state.app, "getMasterAgreement.pageData", []),
         id: ownProps.params.id,
-
+        
+        getPartnerDataByID: _.get(state.app, 'getPartnerDataByID'),
+        
+        
     };
 }
 
