@@ -19,12 +19,17 @@ body,
 .btn.btn-outline.green:focus {
 	background: #333 !important;
 }
-
+.dashboard-stat2 {
+    /* -webkit-box-shadow: -4px 3px 19px -9px rgba(0, 0, 0, 0.3); */
+    /* -moz-box-shadow: -4px 3px 19px -9px rgba(0, 0, 0, 0.3); */
+    /* box-shadow: -4px 3px 19px -9px rgba(0, 0, 0, 0.3); */
+    border: 5px dashed#e7ecf1;
+}
 .dashdate .btn.btn-outline.green:hover {}
 
 a {
 	text-shadow: none;
-	color: #7aa62d;
+	color: #b5b5b5;
 }
 
 .dsh_blued1:hover .dashboard-stat2 .progress,
@@ -326,7 +331,7 @@ a:hover {
 
 a:hover {
 	cursor: pointer;
-	color: #7aa62d !important;
+	color: #b5b5b5 !important;
 }
 
 .login .lng li.actv {
@@ -381,7 +386,8 @@ a:hover {
 .dsh_blued3:hover .dashboard-stat2,
 .dsh_blued4:hover .dashboard-stat2,
 .overDueBlk:hover {
-	background: #7aa62d!important;
+	background: #333!important;
+	border: 5px dashed#333 !important;
 }
 
 .progress-bar.blued1-sharp,

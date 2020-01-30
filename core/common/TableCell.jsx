@@ -367,6 +367,8 @@ class TableCell extends React.Component {
         return <td> {utils.UNIXConvertToDate(parseInt(this.props.cellData) * 1000)}</td>;
       case "epochDate":
         return (<td> {utils.UNIXConvertToDate(this.props.cellData)}</td>);
+      case "epochDateTimeMs":
+        return (<td> {utils.UNIXConvertToDateTimeMs(this.props.cellData)}</td>);
       case "epochDate1":
         return (<td> {dates.MSddMMyyyy(this.props.cellData)}</td>);
       case "clpVal":

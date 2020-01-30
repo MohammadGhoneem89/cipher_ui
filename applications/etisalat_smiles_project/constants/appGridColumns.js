@@ -312,7 +312,7 @@ module.exports = {
         { alias: "TRANS TYPE", key: "tranxData.transactionType", type: "string" },
         { alias: "Amount", key: "tranxData.accrualParams.amountSpent", type: "string" },
         { alias: "Points", key: "tranxData.pointsAwarded", type: "string" },
-        { alias: "TRANS Date", key: "tranxData.lastUpdateTimestamp", type: "epochDate" },
+        { alias: "TRANS Date", key: "tranxData.lastUpdateTimestamp", type: "epochDateTimeMs" },
         { alias: "Status", key: "tranxData.internalStatus", type: "statusBox" },
         { alias: "Partner", key: "tranxData.partnerCode", type: "string" },
         { alias: "action", key: "actions", type: "action" }

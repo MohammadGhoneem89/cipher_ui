@@ -103,28 +103,36 @@ class BarChartExceptions extends React.Component {
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(0, 87, 0, 1)',
                 hoverBorderColor: 'rgba(0, 87, 0, 1)',
-                label: 'Reconciled',
+                label: 'Confirmed',
                 data: this.props.reconciledData
             },
             {
-                backgroundColor: 'rgba(255,1,1,1)',
-                borderColor: 'rgba(255,1,1,1)',
+                backgroundColor: '#FFD54F',
+                borderColor: '#FFD54F',
                 borderWidth: 1,
-                hoverBackgroundColor: 'rgba(255,1,1,0.7)',
-                hoverBorderColor: 'rgba(255,1,1,1)',
-                label: 'Exception',
+                hoverBackgroundColor: '#FFCD2B',
+                hoverBorderColor: '#FFCD2B',
+                label: 'Unconfirmed',
+                data: this.props.pendingTransactions
+            },
+            {
+                backgroundColor: '#083D77',
+                borderColor: '#083D77',
+                borderWidth: 1,
+                hoverBackgroundColor: '#023163',
+                hoverBorderColor: '#023163',
+                label: 'Rejected',
                 data: this.props.exceptionData
             }]
         };
 
         return (
             
-                <div className="col-lg-9 bordered" style={{ paddingLeft: "10px", paddingRight: " 10px" }}>
+                <div className="col-lg-12 bordered" style={{ paddingLeft: "10px", paddingRight: " 10px" }}>
                     <div className="dashboard-stat2 bordered" style={{ minHeight: "310px"}}>
 								
                         <Bar
                             data={dta}
-                            
                             getElementAtEvent={this.checkEvents}
                             options={{
                                 maintainAspectRatio: false,

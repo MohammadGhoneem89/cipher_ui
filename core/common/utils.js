@@ -165,6 +165,11 @@ export function UNIXConvertToDate(UNIXTS) {
     return moment.unix(UNIXTS / 1000).format('DD/MM/YYYY')
 }
 
+export function UNIXConvertToDateTimeMs(UNIXTS) {
+    if (!UNIXTS || UNIXTS == 0)
+      return "";
+    return moment.unix(UNIXTS).format('DD/MM/YYYY')
+}
 export function UNIXConvertToDateStrata(UNIXTS) {
     if (!UNIXTS || UNIXTS == 0)
         return "";
