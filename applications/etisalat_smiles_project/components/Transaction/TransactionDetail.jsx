@@ -280,7 +280,7 @@ class TransactionDetail extends React.Component {
                                                 </div>
                                                 <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px" }}>
                                                     <Label text="Points Awarded" />
-                                                    <Label style={{ "font-size": "30px", "color": "#1d9b1d" }} text={`${_.get(this.state.transactionData, 'pointsAwarded', '0')} AED`} />
+                                                    <Label style={{ "font-size": "30px", "color": "#1d9b1d" }} text={`${_.get(this.state.transactionData, 'pointsAwarded', '0')} `} />
                                                 </div>
                                             </div>
                                         </Row>

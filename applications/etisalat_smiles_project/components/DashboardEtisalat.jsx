@@ -52,6 +52,7 @@ class DashboardEtisalat extends React.Component {
             ]
         }
         this.generalHandler = gen.generalHandler.bind(this);
+        this.partnerChanged = this.partnerChanged.bind(this);
     }
 
     componentWillMount() {
@@ -65,7 +66,7 @@ class DashboardEtisalat extends React.Component {
 
 
     }
-
+    partnerChanged() { }
     componentWillReceiveProps(nextProps) {
         this.setState({
             typeData: nextProps.typeData
@@ -82,7 +83,32 @@ class DashboardEtisalat extends React.Component {
             return (
                 <Row>
                     <Col>
+                        <div className="daterange_con" >
+                            <div className="center-block dashdate" style={{ padding: "12px 20px" }}>
+                                <div className="row">
+                                    <div className="col-md-12 ">
+                                        <div className="col-md-6">  
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="input-group input-large">
+                                                <div className="input-group input-large" >
+                                                    <select id="network" name="Network" className="form-control" onChange={this.partnerChanged} style={{ width: "350px", marginTop: "8px" }}>
+
+                                                        <option value="1">CBD</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
                         <Col>
+
+
                             <div className="row">
                                 <div className="row">
                                     <TileUnit data={this.state.tiles} />
@@ -95,7 +121,7 @@ class DashboardEtisalat extends React.Component {
                                         </div>
                                         <div className="col-md-1"></div>
                                         <div className="col-md-6 text-center" >
-                                            <div style={{ fontSize: "20px", marginTop: "30px", fontWeight:800 }}>Commercial Bank of Dubai</div>
+                                            <div style={{ fontSize: "20px", marginTop: "30px", fontWeight: 800 }}>Commercial Bank of Dubai</div>
                                             <div className="row" style={{ marginTop: "30px" }}>ACCURAL PARTNER  |<b> REDEMPTION PARTNER </b> | CONVERSION PARTNER</div>
                                         </div>
                                     </div>
@@ -196,7 +222,7 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) };
 }
 
-DashboardEtisalat.displayName = "Dashboard Etisalat";
+DashboardEtisalat.displayName = "__HIDE";
 export default connect(
     mapStateToProps,
     mapDispatchToProps
