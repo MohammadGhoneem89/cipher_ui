@@ -10,6 +10,8 @@ module.exports = {
     partnerlist: [
         { alias: "", key: "partnerCode", type: "hiddenID" },
         { alias: "Partner Code", key: "partnerCode", type: "string" },
+        { alias: "From Partner Code", key: "fromPartner", type: "string" },
+        { alias: "To Partner Code", key: "toPartner", type: "string" },
         { alias: "Partner Er Code", key: "partnerErCode", type: "string" },
         { alias: "Approved By", key: "approvedBy", type: "string" },
         // { alias: "Rejected By", key: "rejectedBy", type: "string" },

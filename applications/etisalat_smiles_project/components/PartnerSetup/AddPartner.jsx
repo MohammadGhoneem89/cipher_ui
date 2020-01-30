@@ -31,7 +31,7 @@ class AddPartner extends Component {
         this.state = {
             body: {},
             isLoading: true,
-            subsidaryPartnerBool: false,
+            subsidaryPartnerBool: true,
             subsidaryPartners: [],
             contactInformationArr: [],
             contactInformation: {},
@@ -62,15 +62,44 @@ class AddPartner extends Component {
         this.generalHandler = gen.generalHandler.bind(this)
     }
 
+    getEntityDetails = (entityNames, orgCode) => {
+        if (orgCode) {
+            for (let i in entityNames) {
+                if (_.get(entityNames[i], 'value', '').toUpperCase() === orgCode.toUpperCase()) {
+                    return { ...entityNames[i] }
+                }
+            }
+        }
+        return {}
+    }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.typeData) {
+        if (nextProps.typeData && nextProps.entityNames && nextProps.user && nextProps.userEntity) {
             this.setState({
-                typeData: nextProps.typeData,
+                user: { ...nextProps.user },
+                userEntity: {
+                    ...nextProps.userEntity
+                },
+                typeData: {
+                    ...nextProps.typeData,
+                    entityNames: nextProps.entityNames
+                        .filter(item => {
+                            if (item.orgType === 'PARTNER') {
+                                return true
+                            } else {
+                                return false
+                            }
+                        })
+                },
+                body: {
+                    ..._.get(this.state, 'body', {}),
+                    logo: _.get(nextProps.userEntity, 'entityLogo.sizeSmall', '')
+                },
+
                 isLoading: this.props.params.partnerCode ? this.state.isLoading : false
             })
         }
 
-        if (nextProps.getPartnerDataByID) {
+        if (nextProps.getPartnerDataByID && (nextProps.typeData && nextProps.entityNames) && nextProps.user && nextProps.userEntity) {
             let status = _.get(nextProps, 'getPartnerDataByID.status', '').toUpperCase()
             let erpSettingsFrom = { ..._.get(nextProps, 'getPartnerDataByID.erpSettingsFrom', {}) }
             let contactInformationArr = [..._.get(nextProps, 'getPartnerDataByID.contacts', [])]
@@ -94,10 +123,61 @@ class AddPartner extends Component {
                 })
             }
 
+
+
+
+
+            let contractParams = contractParamsArr[0];
+            let redemptionTermsArr = [..._.get(contractParams, 'redemptionBillingRates', [])]
+            for (let i in redemptionTermsArr) {
+                redemptionTermsArr[i].action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+                { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+            }
+            let accrualTermsArr = [..._.get(contractParams, 'accrualBillingRates', [])]
+            for (let i in accrualTermsArr) {
+                accrualTermsArr[i].action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+                { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+            }
+            let ratesArr = [..._.get(contractParams, 'conversionBillingRates', [])]
+            for (let i in ratesArr) {
+                ratesArr[i].action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+                { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+            }
+
+
+            // console.log("contractParams from subsidiaryPartnerActionHandler", contractParams)
+
             this.setState({
                 body: {
-                    ...nextProps.getPartnerDataByID
+                    ...nextProps.getPartnerDataByID,
+                    logo: _.get(nextProps.userEntity, 'entityLogo.sizeSmall', '')
                 },
+                typeData: {
+                    ...nextProps.typeData,
+                    entityNames: nextProps.entityNames
+                        .filter(item => {
+                            if (item.orgType === 'PARTNER') {
+                                return true
+                            } else {
+                                return false
+                            }
+                        })
+                },
+                user: nextProps.user,
+                userEntity: {
+                    ...nextProps.userEntity
+                },
+                contractParams,
+                isAccrualPartner: contractParams.isAccrualPartner,
+                isRedemptionPartner: contractParams.isRedemptionPartner,
+                isPointConversionPartner: contractParams.isPointConversionPartner,
+                redemptionTermsArr,
+                accrualTermsArr,
+                ratesArr,
+                settlementStartOn: _.get(contractParams, 'settlement.startOn', ''),
+                settlement: _.get(contractParams, 'settlement', {}),
+                pointCreditRules: _.get(contractParams, 'pointCreditRules', {}),
+                erpSettingsTo: _.get(contractParams, 'erpSettingsTo', {}),
                 contractParamsArr,
                 contactInformationArr,
                 erpSettingsFrom,
@@ -126,6 +206,11 @@ class AddPartner extends Component {
         }
 
         this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', 'contactMode', 'rateType', 'paymentMethod']));
+        this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({     // Get Orgs (entities)
+            "currentPageNo": 1,
+            "pageSize": 1
+        }));
+
 
     }
 
@@ -147,7 +232,7 @@ class AddPartner extends Component {
             <div className="col-md-12" style={{ textAlign: "center", ...divStyle }}>
                 <img
                     id="UserProfilePic"
-                    src={_.get(this.state, `${formname}.logo`, undefined) ? constants.baseUrl + _.get(this.state, `${formname}.logo`, undefined) : constants.baseUrl + "/images/image-user.png"}
+                    src={_.get(this.state, `${formname}.logo`, undefined) ? _.get(this.state, `${formname}.logo`, undefined) : constants.baseUrl + "/images/image-user.png"}
                     onError={this.addDefaultSrc}
                     className="img-responsive img-thumbnail" alt="Profile Image" width='150px'
                     height='150px'
@@ -156,7 +241,7 @@ class AddPartner extends Component {
                 />
                 <br />
 
-                {(this.props.params.partnerCode ? (this.state.status == "APPROVED" ? true : false) : true) && <button
+                {/* {(this.props.params.partnerCode ? (this.state.status == "APPROVED" ? true : false) : true) && <button
                     className="btn green"
                     style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
                     onClick={() => {
@@ -164,7 +249,7 @@ class AddPartner extends Component {
                     }}
                 >
                     {"Upload Image"}
-                </button>}
+                </button>} */}
 
                 <input
                     name="profilePicUploader"
@@ -254,7 +339,7 @@ class AddPartner extends Component {
         // }
 
         if (!contractParams) {
-            toaster.showToast('Subsidary Partner Details not added.', 'ERROR');
+            toaster.showToast('Partner Details not added.', 'ERROR');
             return;
         }
 
@@ -286,24 +371,25 @@ class AddPartner extends Component {
 
 
         console.log("contactParams >>>> ", contractParams)
-        this.setState({
-            contractParamsArr,
-            contractParams: {},
-            settlement: {},
-            erpSettingsTo: {},
-            accrualTermsArr: [],
-            pointCreditRulesArr: [],
-            pointCreditRules: {},
-            ratesArr: [],
-            pointConversionArr: [],
-            settlementStartOn: undefined,
-            isEdited: false,
-            isAccrualPartner: false,
-            isPointConversionPartner: false,
-            isRedemptionPartner: false,
-            redemptionTermsArr: []
-        })
-        this.stateChangeSubsidaryPartnerBool();
+        // this.setState({
+        //     contractParamsArr,
+        //     contractParams: {},
+        //     settlement: {},
+        //     erpSettingsTo: {},
+        //     accrualTermsArr: [],
+        //     pointCreditRulesArr: [],
+        //     pointCreditRules: {},
+        //     ratesArr: [],
+        //     pointConversionArr: [],
+        //     settlementStartOn: undefined,
+        //     isEdited: false,
+        //     isAccrualPartner: false,
+        //     isPointConversionPartner: false,
+        //     isRedemptionPartner: false,
+        //     redemptionTermsArr: []
+        // })
+        // this.stateChangeSubsidaryPartnerBool();
+        return contractParamsArr
     }
 
     addAccuralTerm = () => {
@@ -456,14 +542,17 @@ class AddPartner extends Component {
                                         <div>
                                             <div className="row">
                                                 <div className="col-md-6">
-                                                    <Label text="Partner Code" columns='4' />
-                                                    <Input
+                                                    <Label text="Your Partner Code" columns='4' />
+                                                    <Combobox
                                                         fieldname='withPartnerCode'
                                                         formname='contractParams'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                         columns='7'
-                                                        placeholder=''
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
+                                                        placeholder='Select'
+                                                        style={{}}
                                                         state={this.state}
+                                                        typeName="entityNames"
+                                                        dataSource={_.get(this.state, 'typeData', {})}
                                                         actionHandler={this.generalHandler}
                                                         className="form-control"
                                                     />
@@ -534,8 +623,8 @@ class AddPartner extends Component {
                                                 </Portlet> */}
 
 
-                                            {
-                                                this.props.params.partnerCode && this.renderTypePortlet(2)
+{
+                                                (this.props.params.partnerCode && this.state.status!="APPROVED") && this.renderTypePortlet(2)
                                             }
 
 
@@ -630,14 +719,17 @@ class AddPartner extends Component {
                                         <div>
                                             <div className="row">
                                                 <div className="col-md-6">
-                                                    <Label text="Code" columns='4' />
-                                                    <Input
+                                                    <Label text="Your Partner Code" columns='4' />
+                                                    <Combobox
                                                         fieldname='withPartnerCode'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                         formname='contractParams'
                                                         columns='7'
-                                                        placeholder=''
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
+                                                        placeholder='Select'
+                                                        style={{}}
                                                         state={this.state}
+                                                        typeName="entityNames"
+                                                        dataSource={_.get(this.state, 'typeData', {})}
                                                         actionHandler={this.generalHandler}
                                                         className="form-control"
                                                     />
@@ -645,7 +737,7 @@ class AddPartner extends Component {
 
                                             </div>
                                             {
-                                                this.props.params.partnerCode && this.renderTypePortlet(2)
+                                                (this.props.params.partnerCode && this.state.status!="APPROVED") && this.renderTypePortlet(2)
                                             }
 
                                             <Portlet title={"REDEMPTION TERMS"}>
@@ -755,14 +847,17 @@ class AddPartner extends Component {
                                         <div>
                                             <div className="row">
                                                 <div className="col-md-6">
-                                                    <Label text="Code" columns='4' />
-                                                    <Input
+                                                    <Label text="Your Partner Code" columns='4' />
+                                                    <Combobox
                                                         fieldname='withPartnerCode'
                                                         formname='contractParams'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                         columns='7'
-                                                        placeholder=''
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
+                                                        placeholder='Select'
+                                                        style={{}}
                                                         state={this.state}
+                                                        typeName="entityNames"
+                                                        dataSource={_.get(this.state, 'typeData', {})}
                                                         actionHandler={this.generalHandler}
                                                         className="form-control"
                                                     />
@@ -770,7 +865,7 @@ class AddPartner extends Component {
 
                                             </div>
                                             {
-                                                this.props.params.partnerCode && this.renderTypePortlet(2)
+                                                (this.props.params.partnerCode && this.state.status!="APPROVED") && this.renderTypePortlet(2)
                                             }
 
                                             <Portlet title={"ACCURAL BILLING RATES"}>
@@ -921,7 +1016,7 @@ class AddPartner extends Component {
                                         <div className="col-md-6">
                                             <Label text="Start On" columns='4' />
                                             <div className="col-md-7">
-                                                <DateControl disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false} id="settlementStartOn" defaultValue={utils.UNIXConvertToDate(this.state.settlementStartOn)} dateChange={this.dateChange.bind(this, 'settlementStartOn')} />
+                                                <DateControl id="settlementStartOn" defaultValue={utils.UNIXConvertToDate(this.state.settlementStartOn)} dateChange={this.dateChange.bind(this, 'settlementStartOn')} />
                                             </div>
                                         </div>
                                     </div>
@@ -1046,7 +1141,7 @@ class AddPartner extends Component {
                                 </Portlet>
 
 
-                                <div className="row">
+                                {/* <div className="row">
                                     <div className="col-md-12">
                                         <div className="btn-toolbar pull-right">
                                             {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? true : false)) && <button onClick={this.addSubsidaryPartner} type="submit" className="pull-right btn green">
@@ -1057,7 +1152,7 @@ class AddPartner extends Component {
                                             </button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
 
                             </COL>
                         </ROW>
@@ -1402,6 +1497,10 @@ class AddPartner extends Component {
 
 
     setPartner = () => {
+
+        let contractParams = this.addSubsidaryPartner()
+
+
         let body = { ...this.state.body }
 
         console.log("body :::: ", body)
@@ -1415,14 +1514,10 @@ class AddPartner extends Component {
             toaster.showToast("Please fill the fields", "ERROR");
             return;
         }
-        if (!body.partnerNameEn) {
-            toaster.showToast("Partner name is required", "ERROR");
-            return;
-        }
-        if (!body.partnerCode) {
-            toaster.showToast("Partner code is required", "ERROR");
-            return;
-        }
+        body.partnerNameEn = _.get(this.state, 'userEntity.entityName.name', '')
+        body.partnerCode = _.get(this.state, 'user.orgCode', '')
+        body.partnerNameAr = _.get(this.state, 'userEntity.arabicName', '')
+
         if (!body.partnerCategory) {
             toaster.showToast("Partner category is required", "ERROR");
             return;
@@ -1448,11 +1543,11 @@ class AddPartner extends Component {
             body.contacts = [...this.state.contactInformationArr]
         }
 
-        if (!this.state.contractParamsArr.length) {
+        if (!contractParams.length) {
             toaster.showToast("Contract Parameters are required", "ERROR");
             return;
         } else {
-            body.contractParams = [...this.state.contractParamsArr]
+            body.contractParams = [...contractParams]
         }
         let request = {
             body: { ...body }
@@ -1498,12 +1593,27 @@ class AddPartner extends Component {
                         <div className="row">
                             <div className="col-md-6" style={{ padding: "20 0 0 0" }}>
                                 <div className="row">
+                                    <Label text="Partner Code" columns='4' style={{ padding: "0 0 0 30" }} />
+                                    <Input
+                                        fieldname='partnerCode'
+                                        formname='body'
+                                        value={_.get(this.state, 'user.orgCode', 'Loading...')}
+                                        columns='7'
+                                        disabled={true}
+                                        placeholder=''
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </div>
+                                <div className="row">
                                     <Label text="Partner Name En" columns='4' style={{ padding: "0 0 0 30" }} />
                                     <Input
                                         fieldname='partnerNameEn'
                                         formname='body'
                                         columns='7'
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
+                                        value={_.get(this.state, 'userEntity.entityName.name', 'Loading...')}
+                                        disabled={true}
                                         placeholder='Name'
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1516,7 +1626,8 @@ class AddPartner extends Component {
                                         fieldname='partnerNameAr'
                                         formname='body'
                                         columns='7'
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
+                                        value={_.get(this.state, 'userEntity.arabicName', 'Loading...')}
+                                        disabled={true}
                                         placeholder=' شَريك اسم '
                                         style={{ textAlign: "right" }}
                                         state={this.state}
@@ -1524,19 +1635,7 @@ class AddPartner extends Component {
                                         className="form-control"
                                     />
                                 </div>
-                                <div className="row">
-                                    <Label text="Partner Code" columns='4' style={{ padding: "0 0 0 30" }} />
-                                    <Input
-                                        fieldname='partnerCode'
-                                        formname='body'
-                                        columns='7'
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
-                                        placeholder=''
-                                        state={this.state}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
+
                                 <div className="row">
                                     <Label text="Partner Category" columns='4' style={{ padding: "0 0 0 30" }} />
                                     <Combobox
@@ -1813,7 +1912,7 @@ class AddPartner extends Component {
 
 
 
-                        <Portlet title={"Related Partners"}>
+                        {/* <Portlet title={"Related Partners"}>
                             <Table
                                 gridColumns={utils.getGridColumnByName('subsidaryPartner')}
                                 gridData={this.state.contractParamsArr || []}
@@ -1830,17 +1929,8 @@ class AddPartner extends Component {
                                         </div>
                                     </div>
                                 </div>}
-                        </Portlet>
+                        </Portlet> */}
 
-                        <div className="row">
-                            <div className="col-md-12">
-                                <div className="btn-toolbar pull-right">
-                                    <button onClick={(!this.props.params.partnerCode || this.state.status == "APPROVED") ? this.setPartner : this.approvePartner} type="submit" className="pull-right btn green">
-                                        {(!this.props.params.partnerCode || this.state.status == "APPROVED") ? utils.getLabelByID("Submit") : utils.getLabelByID("Approve")}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
 
                     </COL>
                 </COL>
@@ -1947,8 +2037,18 @@ class AddPartner extends Component {
         } else {
             return (
                 <div className="row">
-                    {!this.state.subsidaryPartnerBool && this.partnerFields()}
-                    {this.state.subsidaryPartnerBool && this.subsidaryPartner()}
+                    {this.partnerFields()}
+                    {this.subsidaryPartner()}
+
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="btn-toolbar pull-right">
+                                <button onClick={(!this.props.params.partnerCode || this.state.status == "APPROVED") ? this.setPartner : this.approvePartner} type="submit" className="pull-right btn green">
+                                    {(!this.props.params.partnerCode || this.state.status == "APPROVED") ? utils.getLabelByID("Submit") : utils.getLabelByID("Approve")}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             );
         }
@@ -1957,8 +2057,11 @@ class AddPartner extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
+        user: _.get(state.app, 'user.data.searchResult', undefined),
+        userEntity: _.get(state.app, 'entityList.data.searchResult[0]', undefined),
         typeData: state.app.typeData.data,
-        getPartnerDataByID: _.get(state.app, 'getInterim')
+        entityNames: _.get(state.app, 'entityList.data.typeData.entityNames', undefined),
+        getPartnerDataByID: _.get(state.app, 'getInterim', undefined)
     };
 }
 

@@ -68,7 +68,7 @@ class PartnerList extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-        if (nextProps.getPartnersList) {
+        if (nextProps.getPartnersList && nextProps.user) {
 
             let page = { ...nextProps.getPartnersList.pageData }
 
@@ -82,6 +82,11 @@ class PartnerList extends Component {
                     ...partner
                 }
 
+
+                data.fromPartner = data.partnerCode
+                data.toPartner = Object.keys(JSON.parse(data.contractParams))[0]
+
+
                 data.statusObj = {
                     type: this.getType(data.status), // ERROR // WARNING
                     value: data.status.toUpperCase()
@@ -89,14 +94,17 @@ class PartnerList extends Component {
 
                 if (data.status.toLowerCase() == 'pending' || data.status.toLowerCase() == 'rejected') {
 
-                    data.actions = [
-                        {
-                            "label": "Approve",
-                            "URI": ["/smiles/ApprovePartner"],
-                            "params": "_id",
-                            "iconName": "fa fa-check"
-                        }
-                    ]
+                    if (_.get(nextProps.user, 'orgCode', '') == data.toPartner) {
+                        data.actions = [
+                            {
+                                "label": "Approve",
+                                "URI": ["/smiles/ApprovePartner"],
+                                "params": "_id",
+                                "iconName": "fa fa-check"
+                            }
+                        ]
+                    }
+
                 } else {
                     data.actions = [
                         {
@@ -115,7 +123,8 @@ class PartnerList extends Component {
             console.log(gridData, ' Grid Data')
             this.setState({
                 gridData,
-                page
+                page,
+                user: { ...nextProps.user }
             })
         }
 
@@ -268,6 +277,7 @@ PartnerList.propTypes = {
 function mapStateToProps(state, ownProps) {
     console.log(state.app, ' state')
     return {
+        user: _.get(state.app, 'user.data.searchResult', undefined),
         // Grid Data
         getPartnersList: _.get(state.app, 'getPartnersList', undefined),
         // Type Data

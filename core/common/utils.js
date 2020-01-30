@@ -161,9 +161,8 @@ export function formatAmountField(val) {
 }
 export function UNIXConvertToDate(UNIXTS) {
     if (!UNIXTS || UNIXTS == 0)
-        return "";
-    return moment.unix(UNIXTS).format('DD/MM/YYYY hh:mm:ss')
-
+      return "";
+    return moment.unix(UNIXTS / 1000).format('DD/MM/YYYY')
 }
 
 export function UNIXConvertToDateStrata(UNIXTS) {
