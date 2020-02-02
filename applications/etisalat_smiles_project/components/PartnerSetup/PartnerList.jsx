@@ -106,14 +106,16 @@ class PartnerList extends Component {
                     }
 
                 } else {
-                    data.actions = [
-                        {
-                            "label": "Edit",
-                            "URI": ["/smiles/EditPartner"],
-                            "params": "_id",
-                            "iconName": "fa fa-Edit"
-                        }
-                    ]
+                    if (_.get(nextProps.user, 'orgCode', '') == data.fromPartner) {
+                        data.actions = [
+                            {
+                                "label": "Edit",
+                                "URI": ["/smiles/EditPartner"],
+                                "params": "_id",
+                                "iconName": "fa fa-Edit"
+                            }
+                        ]
+                    }
                 }
 
                 gridData.push({

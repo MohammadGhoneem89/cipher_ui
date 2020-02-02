@@ -205,7 +205,7 @@ class AddPartner extends Component {
             });
         }
 
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', 'contactMode', 'rateType', 'paymentMethod']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', 'contactMode', 'rateType', 'paymentMethod', 'yesnobinary']));
         this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({     // Get Orgs (entities)
             "currentPageNo": 1,
             "pageSize": 1
@@ -309,7 +309,7 @@ class AddPartner extends Component {
         contractParams.isPointConversionPartner = this.state.isPointConversionPartner;
 
         if (this.state.settlementStartOn) {
-            settlement.startsOn = this.state.settlementStartOn;
+            settlement.startOn = parseInt(this.state.settlementStartOn);
         }
         settlement.currency = "AED";
 
@@ -328,7 +328,7 @@ class AddPartner extends Component {
         // }
 
         // console.log("settlement >>> ", settlement)
-        // if (!settlement.startsOn || !settlement.settleAs || !settlement.frequency) {
+        // if (!settlement.startOn || !settlement.settleAs || !settlement.frequency) {
         //     toaster.showToast("All fields are required for Settlement", "ERROR");
         //     return;
         // }
@@ -344,7 +344,7 @@ class AddPartner extends Component {
         }
 
 
-        contractParams.settlements = settlement
+        contractParams.settlement = settlement
         contractParams.erpSettingsTo = { ...erpSettingsTo }
         contractParams.accrualBillingRates = [...this.state.accrualTermsArr]
 
@@ -623,8 +623,8 @@ class AddPartner extends Component {
                                                 </Portlet> */}
 
 
-{
-                                                (this.props.params.partnerCode && this.state.status!="APPROVED") && this.renderTypePortlet(2)
+                                            {
+                                                (this.props.params.partnerCode && this.state.status != "APPROVED") && this.renderTypePortlet(2)
                                             }
 
 
@@ -737,7 +737,7 @@ class AddPartner extends Component {
 
                                             </div>
                                             {
-                                                (this.props.params.partnerCode && this.state.status!="APPROVED") && this.renderTypePortlet(2)
+                                                (this.props.params.partnerCode && this.state.status != "APPROVED") && this.renderTypePortlet(2)
                                             }
 
                                             <Portlet title={"REDEMPTION TERMS"}>
@@ -865,7 +865,7 @@ class AddPartner extends Component {
 
                                             </div>
                                             {
-                                                (this.props.params.partnerCode && this.state.status!="APPROVED") && this.renderTypePortlet(2)
+                                                (this.props.params.partnerCode && this.state.status != "APPROVED") && this.renderTypePortlet(2)
                                             }
 
                                             <Portlet title={"ACCURAL BILLING RATES"}>
@@ -977,9 +977,9 @@ class AddPartner extends Component {
                                 <Portlet title={"SETTLEMENT"}>
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <Label text="Settle As" columns='4' />
+                                            <Label text="Creation" columns='4' />
                                             <Combobox
-                                                fieldname='settleAs'
+                                                fieldname='creationAutoOrManual'
                                                 formname='settlement'
                                                 disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
                                                 columns='7'
@@ -992,6 +992,26 @@ class AddPartner extends Component {
                                                 className="form-control"
                                             />
                                         </div>
+                                        <div className="col-md-6">
+                                            <Label text="Manual Approval" columns='4' />
+                                            <Combobox
+                                                fieldname='requireManualApproval'
+                                                formname='settlement'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : false) : false}
+                                                columns='7'
+                                                placeholder='Select'
+                                                style={{}}
+                                                state={this.state}
+                                                typeName="yesnobinary"
+                                                dataSource={_.get(this.state, 'typeData', {})}
+                                                actionHandler={this.generalHandler}
+                                                className="form-control"
+                                            />
+                                        </div>
+
+
+                                    </div>
+                                    <div className="row">
                                         <div className="col-md-6">
                                             <Label text="Frequency" columns='4' />
                                             <Combobox
@@ -1008,11 +1028,6 @@ class AddPartner extends Component {
                                                 className="form-control"
                                             />
                                         </div>
-
-                                    </div>
-                                    <div className="row">
-
-
                                         <div className="col-md-6">
                                             <Label text="Start On" columns='4' />
                                             <div className="col-md-7">
@@ -1022,8 +1037,18 @@ class AddPartner extends Component {
                                     </div>
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <Label text="" columns='4' />
-
+                                            <Label text="Currency" columns='4' />
+                                            <Input
+                                                fieldname='currency'
+                                                disabled={true}
+                                                value={"AED"}
+                                                formname='settlement'
+                                                columns='7'
+                                                placeholder=''
+                                                state={this.state}
+                                                actionHandler={this.generalHandler}
+                                                className="form-control"
+                                            />
                                         </div>
                                     </div>
 
@@ -1295,8 +1320,8 @@ class AddPartner extends Component {
                         redemptionTermsArr,
                         accrualTermsArr,
                         ratesArr,
-                        settlementStartOn: _.get(contractParams, 'settlements.startsOn', ''),
-                        settlement: _.get(contractParams, 'settlements', {}),
+                        settlementStartOn: _.get(contractParams, 'settlement.startOn', ''),
+                        settlement: _.get(contractParams, 'settlement', {}),
                         pointCreditRules: _.get(contractParams, 'pointCreditRules', {}),
                         erpSettingsTo: _.get(contractParams, 'erpSettingsTo', {})
                     });
