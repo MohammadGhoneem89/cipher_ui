@@ -27,7 +27,7 @@ module.exports = {
     ],
     LMSData: [
         { alias: "S.NO", key: "", type: "serialNo" },
-        { alias: "Program Name", key: "program_name", type: "string" },
+        { alias: "Loyalty Program Name", key: "program_name", type: "string" },
         { alias: "Membership # ", key: "membershipno", type: "string" },
         { alias: "Current Points", key: "currentpoints", type: "string" }
     ],

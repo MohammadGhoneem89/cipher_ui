@@ -25,7 +25,7 @@ class LMSData extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            isLoading: false,
+            isLoading: true,
             // page: {
             //     pageSize: 10,
             //     currentPageNo: 1,
@@ -63,7 +63,8 @@ class LMSData extends Component {
 
         if (nextProps.getLMSData && nextProps.getLMSData.searchResult && nextProps.getLMSData.pageData) {
             this.setState({
-                gridData:nextProps.getLMSData.searchResult
+                gridData:nextProps.getLMSData.searchResult,
+                isLoading:false
             });
         }
     }
