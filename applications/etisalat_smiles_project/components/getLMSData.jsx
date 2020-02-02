@@ -116,7 +116,7 @@ class LMSData extends Component {
         else
             return (
                 <div id="LMSData">
-                    <Portlet title={"LMS Data"}>
+                    <Portlet title={"Points Redeemed By Loyalty Management System"}>
                         <Table
                             gridColumns={utils.getGridColumnByName('LMSData')}
                             gridData={this.state.gridData || []}
@@ -149,5 +149,5 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-LMSData.displayName = "LMS Data";
+LMSData.displayName = "Points Redeemed By Loyalty Management System";
 export default connect(mapStateToProps, mapDispatchToProps)(LMSData)

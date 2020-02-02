@@ -45,7 +45,7 @@ import LMSData from "./components/getLMSData.jsx";
 let authRoutes = <div>
 
 
-    <Route path="/smiles/LMSData" component={LMSData}></Route>
+    <Route path="/smiles/LMS" component={LMSData}></Route>
     {/* RECON SCREEN */}
     <Route path="/smiles/transactionList" component={ViewTransactions} />
     <Route path="/smiles/transaction/view/:id" component={TransactionDetail} />
