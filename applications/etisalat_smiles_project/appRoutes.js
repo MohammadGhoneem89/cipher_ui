@@ -41,9 +41,11 @@ import DashboardPartner from "./components/DashboardPartner.jsx";
 import CreateAmendRedemption from "./components/CreateAmendRedemption.jsx"
 import OrderManagementDetails from "./components/OrderManagementDetail.jsx"
 
-
+import LMSData from "./components/getLMSData.jsx";
 let authRoutes = <div>
 
+
+    <Route path="/smiles/LMSData" component={LMSData}></Route>
     {/* RECON SCREEN */}
     <Route path="/smiles/transactionList" component={ViewTransactions} />
     <Route path="/smiles/transaction/view/:id" component={TransactionDetail} />
@@ -61,7 +63,7 @@ let authRoutes = <div>
     <Route path="/smiles/addPartner" component={AddPartner} />
     <Route path="/smiles/approvePartner/:partnerCode" component={AddPartner} />
     <Route path="/smiles/EditPartner/:partnerCode" component={AddPartner} />
-    
+
     <Route path="/smiles/partnerList" component={PartnerList} />
 
     {/* REDEMPTION */}

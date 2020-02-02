@@ -4,8 +4,9 @@ let baseUrl = backOffices.baseUrl;
 
 
 module.exports = {
-    getInterim: baseUrl +'/API/SMILES/getInterim',
-    getViewTransaction: baseUrl + '/API/SMILES/getPointConversionTransactionLists' ,
+    getLMSData: baseUrl + '/API/SMILES/getLMSData',
+    getInterim: baseUrl + '/API/SMILES/getInterim',
+    getViewTransaction: baseUrl + '/API/SMILES/getPointConversionTransactionLists',
     getPartnerByID: `${baseUrl}/API/SMILES/getPartnerByID`,
     updatePartnerStatus: `${baseUrl}/API/SMILES/updatePartnerStatus`,
     getPartnersList: `${baseUrl}/API/SMILES/getPartnersList`,

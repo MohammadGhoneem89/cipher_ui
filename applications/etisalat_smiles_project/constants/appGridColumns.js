@@ -25,6 +25,12 @@ module.exports = {
         { alias: "Logo", key: "logo", type: "string" },
         { alias: "Action", key: "action", type: "action" }
     ],
+    LMSData: [
+        { alias: "S.NO", key: "", type: "serialNo" },
+        { alias: "Program Name", key: "program_name", type: "string" },
+        { alias: "Membership # ", key: "membershipno", type: "string" },
+        { alias: "Current Points", key: "currentpoints", type: "string" }
+    ],
     ERPsettings: [
         { alias: "Vendor Code", key: "vendorCode", type: "string" },
         { alias: "Vendor Site ID", key: "vendorSiteID", type: "string" },
