@@ -21,7 +21,7 @@ import AddShop from './components/AddShop.jsx'
 import ListOffers from './components/ListOffers.jsx'
 import VoucherList from './components/VoucherList.jsx'
 import VoucherManagement from './components/VoucherManagement.jsx'
-import AddPartner from './components/PartnerSetup/addPartner.jsx'
+import AddPartner from './components/PartnerSetup/AddPartner.jsx'
 import PartnerList from './components/PartnerSetup/PartnerList.jsx'
 import dashboard from './components/Dashboard/dashboard.jsx';
 
