@@ -223,16 +223,11 @@ class DashboardEtisalat extends React.Component {
                                             </div>
                                         </div>
                                         <div className="row">
-
                                             <Col>
-
                                                 <BarChart data={[]} />
-
                                             </Col>
                                         </div>
                                     </Portlet>
-
-
                                 </div>
                             </Col>
                         </Col>
