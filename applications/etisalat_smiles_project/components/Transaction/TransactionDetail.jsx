@@ -319,12 +319,9 @@ function mapStateToProps(state, ownProps) {
         transactionData: _.get(state.app, "responseMessage.data.getTransactionByID", {}),
         // getPage: _.get(state.app, "getMasterAgreement.pageData", []),
         id: ownProps.params.id,
-<<<<<<< HEAD
-=======
         from: ownProps.params.from,
         with: ownProps.params.with,
         // from/:with
->>>>>>> changes
         getPartnerDataByID: _.get(state.app, 'getPartnerDataByID'),
     };
 }
