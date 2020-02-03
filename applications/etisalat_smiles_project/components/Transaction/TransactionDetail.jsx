@@ -78,7 +78,9 @@ class TransactionDetail extends React.Component {
     getRequest = () => {
         return {
             "body": {
-                "sourceTransactionId": this.props.id
+                "sourceTransactionId": this.props.id,
+                "from": this.props.from,
+                "with": this.props.with
             }
         };
     }
@@ -317,6 +319,12 @@ function mapStateToProps(state, ownProps) {
         transactionData: _.get(state.app, "responseMessage.data.getTransactionByID", {}),
         // getPage: _.get(state.app, "getMasterAgreement.pageData", []),
         id: ownProps.params.id,
+<<<<<<< HEAD
+=======
+        from: ownProps.params.from,
+        with: ownProps.params.with,
+        // from/:with
+>>>>>>> changes
         getPartnerDataByID: _.get(state.app, 'getPartnerDataByID'),
     };
 }
