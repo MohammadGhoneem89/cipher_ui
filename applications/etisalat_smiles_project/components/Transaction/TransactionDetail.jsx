@@ -118,8 +118,6 @@ class TransactionDetail extends React.Component {
         }
     }
 
-
-
     componentDidMount() {
         this.props.actions.generalProcess(constants.getTransactionByID, this.getRequest());
         console.log()
@@ -153,14 +151,15 @@ class TransactionDetail extends React.Component {
                                     <div className="row">
                                         <div className="col-md-offset-4 col-md-12">
                                             <div className="col-md-2">
-                                                <img src={this.state.partnerLogo} style={{ height: "150px" }} />
+                                                <img src={constants.baseUrl + this.state.partnerLogo} style={{ height: "150px" }} />
                                             </div>
 
                                             <div className="col-md-3 text-center" >
-                                                <div style={{ fontSize: "30px", marginTop: "30px" }}><b>CBD-76545677</b></div>
+                                                <div style={{ fontSize: "30px", marginTop: "30px" }}><b>{this.state.transactionData.partnerCode}</b></div>
                                                 <div className="row" style={{ marginTop: "30px" }}>{this.state.englishPartnerName ? this.state.englishPartnerName: 'N/A'} &emsp; {this.state.englishPartnerName ? this.state.englishPartnerName: 'غير متاح'}</div>
                                             </div>
                                         </div>
+
                                     </div>
 
                                     {/* <img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png" className="tablogo" />
@@ -318,16 +317,12 @@ function mapStateToProps(state, ownProps) {
         transactionData: _.get(state.app, "responseMessage.data.getTransactionByID", {}),
         // getPage: _.get(state.app, "getMasterAgreement.pageData", []),
         id: ownProps.params.id,
-        
         getPartnerDataByID: _.get(state.app, 'getPartnerDataByID'),
-        
-        
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
-
 }
 TransactionDetail.displayName = "Transaction Detail ";
 export default connect(mapStateToProps, mapDispatchToProps)(TransactionDetail);
