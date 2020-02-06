@@ -40,7 +40,7 @@ import DashboardEtisalat from "./components/DashboardEtisalat.jsx";
 import DashboardPartner from "./components/DashboardPartner.jsx";
 import CreateAmendRedemption from "./components/CreateAmendRedemption.jsx"
 import OrderManagementDetails from "./components/OrderManagementDetail.jsx"
-
+import SettlementList from "./components/Settlement/Settlement.jsx"
 import LMSData from "./components/getLMSData.jsx";
 let authRoutes = <div>
 
@@ -49,7 +49,7 @@ let authRoutes = <div>
     {/* RECON SCREEN */}
     <Route path="/smiles/transactionList" component={ViewTransactions} />
     <Route path="/smiles/transaction/view/:from/:with/:id" component={TransactionDetail} />
-    <Route path="/smiles/settlementList" component={ViewSettlement} />
+    <Route path="/smiles/settlementList" component={SettlementList} />
     <Route path="/smiles/settlementDetail" component={SubmitSettlement} />
     <Route path="/smiles/initiateSettlementPartner" component={InitiateSettlementPartner} />
     <Route path="/smiles/initiateSettlementEtisalat" component={InitiateSettlementEtisalat} />
@@ -92,7 +92,8 @@ let authRoutes = <div>
     <Route path="/smiles/partnerSetup/addPartner" component={AddPartner} />
     <Route path="/smiles/View/Transaction" component={ViewTransactions} />
     <Route path="/smiles/Detail/Transaction" component={TransactionDetail} />
-    <Route path="/smiles/View/Settlements/:id" component={ViewSettlement} />
+    <Route path="/smiles/settlement/view/:from/:with/:id" component={ViewSettlement} />
+    {/* <Route path="/smiles/View/Settlements/:id" component={ViewSettlement} /> */}
     <Route path="/smiles/Submit/Settlements" component={SubmitSettlement} />
     <Route path="/smiles/View/dashboard" component={dashboard} />
     {/* --accruals */}

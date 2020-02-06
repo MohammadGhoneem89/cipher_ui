@@ -84,17 +84,15 @@ class TransactionDetail extends React.Component {
             }
         };
     }
-     
+
     getRequestPartner = () => {
-        
-        let partnerCode= (this.props.id).split("_")
-        console.log('-------PARTNERCODE ',partnerCode[0])
-        return {
-            "body": {
-                "partnerCode": partnerCode[0]
-            }
-        };
-    }
+
+        let partnerCode = (this.props.id).split("_")
+        console.log('-------PARTNERCODE ', partnerCode[0])
+        return { "action": "entityDetail", "spCode": partnerCode[0] }
+
+    };
+
 
 
 
@@ -109,13 +107,13 @@ class TransactionDetail extends React.Component {
                 }
             )
         }
-        
-        if(nextProps.getPartnerDataByID){
-            let data= nextProps.getPartnerDataByID;
+
+        if (nextProps.getPartnerDataByID) {
+            let data = nextProps.getPartnerDataByID;
             this.setState({
-                englishPartnerName: _.get(data,'partnerNameEn',''), 
-                arabicPartnerName: _.get(data,'partnerNameAr',''),
-                partnerLogo: _.get(data,'logo','')
+                englishPartnerName: _.get(data, 'entityName', ''),
+                arabicPartnerName: _.get(data, 'spCode', ''),
+                partnerLogo: _.get(data, 'entityLogo.sizeSmall', '')
             })
         }
     }
@@ -123,8 +121,8 @@ class TransactionDetail extends React.Component {
     componentDidMount() {
         this.props.actions.generalProcess(constants.getTransactionByID, this.getRequest());
         console.log()
-        this.props.actions.generalProcess(constants.getPartnerByID, this.getRequestPartner());
-        
+        this.props.actions.generalProcess(constants.orgDetail, this.getRequestPartner());
+
         window.scrollTo(0, 0);
     }
 
@@ -151,14 +149,14 @@ class TransactionDetail extends React.Component {
                             <div className="row">
                                 <Portlet title='transaction details'>
                                     <div className="row">
-                                        <div className="col-md-offset-4 col-md-12">
+                                        <div className="col-md-offset-3 col-md-12">
                                             <div className="col-md-2">
-                                                <img src={constants.baseUrl + this.state.partnerLogo} style={{ height: "150px" }} />
+                                                <img src={constants.baseUrl + this.state.partnerLogo} style={{ width: "150px" }} />
                                             </div>
 
-                                            <div className="col-md-3 text-center" >
-                                                <div style={{ fontSize: "30px", marginTop: "30px" }}><b>{this.state.transactionData.partnerCode}</b></div>
-                                                <div className="row" style={{ marginTop: "30px" }}>{this.state.englishPartnerName ? this.state.englishPartnerName: 'N/A'} &emsp; {this.state.englishPartnerName ? this.state.englishPartnerName: 'غير متاح'}</div>
+                                            <div className="col-md-4 text-center" >
+                                                <div style={{ fontSize: "30px", marginTop: "30px" }}><b>{this.state.englishPartnerName}</b></div>
+                                                <div className="row" style={{ fontSize: "15px" }}><h4><b>({this.state.transactionData.partnerCode } Dated:03/02/2020)</b></h4></div>
                                             </div>
                                         </div>
 
@@ -322,7 +320,7 @@ function mapStateToProps(state, ownProps) {
         from: ownProps.params.from,
         with: ownProps.params.with,
         // from/:with
-        getPartnerDataByID: _.get(state.app, 'getPartnerDataByID'),
+        getPartnerDataByID: _.get(state.app, 'entityDetail.data'),
     };
 }
 

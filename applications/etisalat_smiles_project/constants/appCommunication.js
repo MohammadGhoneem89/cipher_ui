@@ -36,5 +36,8 @@ module.exports = {
     customerDashboard: `${baseUrl}/API/STRATA/customerDashboard`,
     supplierDashboardData: `${baseUrl}/API/STRATA/supplierDashboardData`,
     getSubOrderList: `${baseUrl}/API/STRATA/getSubOrderList`,
-    getTransactionByID: `${baseUrl}/API/SMILES/getTransactionByID`
+    getTransactionByID: `${baseUrl}/API/SMILES/getTransactionByID`,
+    orgDetail:`${baseUrl}/API/UI/orgDetail`,
+    getSettlementList:`${baseUrl}/API/SMILES/getSettlementList`,
+    getSettlementBatch:`${baseUrl}/API/SMILES/getSettlementBatch`
 };

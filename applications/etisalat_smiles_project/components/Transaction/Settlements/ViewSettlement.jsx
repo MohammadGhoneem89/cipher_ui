@@ -11,6 +11,7 @@ import Col from '../../../../../core/common/Col.jsx';
 import Row from '../../../../../core/common/Row.jsx';
 import TileUnit from '../../../../../core/common/tileUnit.jsx';
 import _ from 'lodash';
+import DateControl from '../../../../../core/common/DateControl.jsx';
 import * as requestCreator from '../../../../../core/common/request.js';
 import Label from '../../../../../core/common/Lable.jsx';
 
@@ -25,6 +26,7 @@ class ViewSettlement extends React.Component {
                 currentPageNo: 1
             },
             isLoading: true,
+            gridDataTPool: [],
             gridData: [],
             actions: [],
             dashboardTiles: [{
@@ -63,42 +65,59 @@ class ViewSettlement extends React.Component {
     }
 
     getRequest = () => {
-
-        let contractID = document.getElementById('contractId') == null ? "" : document.getElementById('contractId').value;
-        let status = document.getElementById('status') == null ? "" : document.getElementById('status').value;
-        let searchCriteria = {}
-
-        if (contractID != "")
-            searchCriteria.contractID = contractID
-
-        if (status != "")
-            searchCriteria.status = status
-
-
-        this.setState({ searchCriteria: searchCriteria })
-        let request = {
+        return {
             "body": {
-                "page": {
-                    "currentPageNo": this.state.page.currentPageNo,
-                    "pageSize": this.state.page.pageSize
-                },
-                searchCriteria
+                "fromPartenerCode": this.props.from,
+                "withPartenerCode": this.props.with,
+                "Id": this.props.id
             }
-
         };
-        return request;
     }
+    onStartDateChange = value => {
+        value == 'Invalid date' ? this.setState({ startDate: undefined }) : this.setState({ startDate: value });
+    };
+
+    onEndDateChange = value => {
+        value == 'Invalid date' ? this.setState({ endDate: undefined }) : this.setState({ endDate: value });
+    };
+
     componentWillReceiveProps(nextProps) {
 
-        this.setState(
-            {
-                isLoading: false
-            }
-        )
+
+
+        if (nextProps.settlementData) {
+            let settlementData = nextProps.settlementData;
+
+            this.setState(
+                {
+                    settlementData,
+                    gridDataTPool: _.get(settlementData, 'transactionPool', []),
+                    gridData: _.get(settlementData, 'transactionList', []),
+                    isLoading: false
+                }
+            )
+        }
+        if (nextProps.getPartnerDataByID) {
+            let data = nextProps.getPartnerDataByID;
+            this.setState({
+                englishPartnerName: _.get(data, 'entityName', ''),
+                arabicPartnerName: _.get(data, 'spCode', ''),
+                partnerLogo: _.get(data, 'entityLogo.sizeSmall', '')
+            })
+        }
     }
+    getRequestPartner = () => {
+
+        let partnerCode = (this.props.id).split("_")
+        console.log('-------PARTNERCODE ', partnerCode[0])
+        return { "action": "entityDetail", "spCode": this.props.with }
+
+    };
 
     componentDidMount() {
-        // this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['orderStatus']));
+        this.props.actions.generalProcess(constants.orgDetail, this.getRequestPartner());
+        this.props.actions.generalProcess(constants.getSettlementBatch, this.getRequest());
+
         window.scrollTo(0, 0);
     }
     getStatusLabel = status => {
@@ -125,18 +144,19 @@ class ViewSettlement extends React.Component {
         return (
             <Row>
                 <Col>
-                    <div className="form" style={{ marginBottom: '3%' }}>
-                        <div className="row">
-                            <div className="col-md-offset-4 col-md-12">
+                    <div className="form">
+                        <div className="row" >
+                            <div className="col-md-offset-3 col-md-12" style={{ marginBottom: '4%' }}>
                                 <div className="col-md-2">
-                                    <img src="/assets/imgs/gift.jpg" style={{ height: "150px" }} />
+                                    <img src={constants.baseUrl + this.state.partnerLogo} style={{ width: "130px" }} />
                                 </div>
 
-                                <div className="col-md-3 text-center" >
-                                    <div style={{ fontSize: "30px", marginTop: "30px" }}><b>CBD-76545677</b></div>
-                                    <div className="row" style={{ marginTop: "30px" }}>Commercial Bank of Dubai (10/10/2019-20/10/2019)</div>
+                                <div className="col-md-4 text-center" >
+                                    <div style={{ fontSize: "30px", marginTop: "30px" }}><b>{this.state.englishPartnerName}</b></div>
+                                    <div className="row" style={{ fontSize: "15px" }}><h4><b>({this.state.arabicPartnerName} Dated:03/02/2020)</b></h4></div>
                                 </div>
                             </div>
+
                         </div>
 
 
@@ -146,21 +166,21 @@ class ViewSettlement extends React.Component {
                                 <div className="col-3">
                                     <TileUnit data={[{
                                         title: "AMOUNT",
-                                        value: "445.00",
+                                        value: _.get(this.state.settlementData, 'amount', 0),
                                         percentageTag: true
                                     }]} />
                                 </div>
                                 <div className="col-3">
                                     <TileUnit data={[{
                                         title: "Commission",
-                                        value: "566.00",
+                                        value: _.get(this.state.settlementData, 'commissionAmount', 0),
                                         percentageTag: true
                                     }]} />
                                 </div>
                                 <div className="col-3">
                                     <TileUnit data={[{
                                         title: "POINTS",
-                                        value: "6777",
+                                        value: _.get(this.state.settlementData, 'Points', 0),
                                         percentageTag: true
                                     }]} />
                                 </div>
@@ -175,7 +195,10 @@ class ViewSettlement extends React.Component {
                                         <label className="control-label">{utils.getLabelByID("Start Date")}</label>
                                     </div>
                                     <div className="form-group col-md-8">
-                                        <input type="text" className="form-control" name="contractId" id="contractId" />
+                                        <DateControl
+                                            id='endDate'
+                                            dateChange={this.onStartDateChange}
+                                        />
                                     </div>
                                 </div>
 
@@ -184,7 +207,10 @@ class ViewSettlement extends React.Component {
                                         <label className="control-label">{utils.getLabelByID("End Date")}</label>
                                     </div>
                                     <div className="form-group col-md-8">
-                                        <input type="text" className="form-control" name="contractId" id="contractId" />
+                                        <DateControl
+                                            id='endDate'
+                                            dateChange={this.onEndDateChange}
+                                        />
                                     </div>
                                 </div>
                                 <div className="col-md-12">
@@ -199,16 +225,34 @@ class ViewSettlement extends React.Component {
                             </div>
                             <Row>
                                 <Col>
-                                    <Table
-                                        gridColumns={utils.getGridColumnByName("viewTranxListNew")}
-                                        gridData={[{ "no": "1", "tranx": "12212222", "acc": "555222", "ttype": "ACCURAL", "amount": "100045", "points": "12220211", "date": "01/12/2020", "status": "APPROVED", "partner": "ETIHAD" }]}
-                                        fontclass=""
-                                        totalRecords={this.props.getPage.totalRecords}
-                                        pageSize={10}
-                                        pageChanged={this.pageChanged}
-                                        pagination={true}
-                                        activePage={this.state.page.currentPageNo}
-                                    />
+                                    <Col>
+                                        <Table
+                                            gridColumns={utils.getGridColumnByName("viewTranxListSettlemnt")}
+                                            gridData={this.state.gridData}
+                                            fontclass=""
+                                            pageSize={10}
+                                            pageChanged={this.pageChanged}
+                                            pagination={true}
+                                            activePage={this.state.page.currentPageNo}
+                                        />
+                                    </Col>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Col>
+                                        <h3>Tracking Events</h3>
+                                        <Table
+                                            gridColumns={utils.getGridColumnByName("viewTranxListEvents")}
+                                            gridData={this.state.gridDataTPool}
+                                            fontclass=""
+                                            totalRecords={this.state.totalRecords}
+                                            pageSize={10}
+                                            pagination={false}
+                                            search={true}
+                                            activePage={this.state.page.currentPageNo}
+                                        />
+                                    </Col>
                                 </Col>
                             </Row>
                         </Portlet>
@@ -222,9 +266,11 @@ class ViewSettlement extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         typeData: state.app.typeData.data,
-        gridActions: _.get(state.app, 'getMasterAgreement.actions', []),
-        getMasterAgreement: _.get(state.app, "getMasterAgreement.searchResult", []),
-        getPage: _.get(state.app, "getMasterAgreement.pageData", [])
+        id: ownProps.params.id,
+        from: ownProps.params.from,
+        with: ownProps.params.with,
+        settlementData: _.get(state.app, "result", {}),
+        getPartnerDataByID: _.get(state.app, 'entityDetail.data'),
 
     };
 }

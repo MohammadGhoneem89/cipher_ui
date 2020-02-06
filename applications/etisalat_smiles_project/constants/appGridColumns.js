@@ -304,6 +304,18 @@ module.exports = {
         { alias: "Receipt Quantity", key: "receiptQuantity", type: "string" },
     ],
     /// Smiles 
+    viewTranxListSettlemnt: [
+        { alias: "", key: "transactionId", type: "hiddenID" },
+        { alias: "S.No", key: "", type: 'serialNo' },
+        { alias: "Transaction", key: "sourceTransactionId", type: "string" },
+        { alias: "Account#", key: "membershipNo", type: "string" },
+        { alias: "TRANS TYPE", key: "transactionType", type: "string" },
+        { alias: "Amount", key: "accrualParams.amountSpent", type: "string" },
+        { alias: "Points", key: "pointsAwarded", type: "string" },
+        { alias: "TRANS Date", key: "lastUpdateTimestamp", type: "epochDateTimeMs" },
+        { alias: "Status", key: "internalStatus", type: "statusBox" },
+        { alias: "Partner", key: "partnerCode", type: "string" }
+    ],
     viewTranxList: [
         { alias: "", key: "transactionId", type: "hiddenID" },
         { alias: "S.No", key: "", type: 'serialNo' },
@@ -315,6 +327,19 @@ module.exports = {
         { alias: "TRANS Date", key: "tranxData.lastUpdateTimestamp", type: "epochDateTimeMs" },
         { alias: "Status", key: "tranxData.internalStatus", type: "statusBox" },
         { alias: "Partner", key: "tranxData.partnerCode", type: "string" },
+        { alias: "action", key: "actions", type: "action" }
+    ],
+    viewSettlementList: [
+        { alias: "", key: "transactionId", type: "hiddenID" },
+        { alias: "S.No", key: "", type: 'serialNo' },
+        { alias: "Batch ID", key: "tranxData.key", type: "string" },
+        { alias: "Start Date", key: "tranxData.startDate", type: "epochDateTimeMs" },
+        { alias: "End Date", key: "tranxData.endDate", type: "epochDateTimeMs" },
+        { alias: "Type", key: "tranxData.type", type: "string" },
+        { alias: "Partner Code", key: "tranxData.partenerCode", type: "string" },
+        { alias: "Settlement Partner Code", key: "tranxData.withPartenerCode", type: "string" },
+        { alias: "Status", key: "tranxData.Status", type: "statusBox" },
+        { alias: "Amount", key: "tranxData.amount", type: "string" },
         { alias: "action", key: "actions", type: "action" }
     ],
     viewTranxListNew: [

@@ -12,6 +12,7 @@ import * as utils from '../../../core/common/utils.js';
 //import * as utils from '../common/utils.js';
 //import { DropdownInput } from '../common/FormControls.jsx';
 
+import * as constants from '../../../core/constants/Communication.js';
 import Combobox from '../common/Select.jsx';
 //import Combobox from '../../../core/common/Select.jsx';
 import * as gen from '../common/generalActionHandler'
@@ -38,13 +39,12 @@ class DashboardEtisalat extends React.Component {
             pageSize: 5,
             currentPageNo: 1,
             searchCriteria: {},
+            page: {
+                pageSize: 10,
+                currentPageNo: 1
+            },
             valid: true,
-            gridData: [
-                {
-                    "serial_no": "1", "batch": "CBD-7685787", "invoice": "555222", "to": "ETIHAD", "ammount": "33000", "comission": "True", "settlementperiod": "6000", "status": "Success",
-                    "actions": [{ "value": "1003", "type": "componentAction", "label": "View", "params": "", "iconName": "icon-docs", "URI": ["/smiles/View/Settlements/"] }]
-                },
-            ],
+            gridData: [],
             tiles: [
                 { id: 1, title: "Recivables", value: 2, actionURI: "", overDue: "", fontClass: "green-steel" },
                 { id: 1, title: "Payables", value: 2, actionURI: "", overDue: "", fontClass: "green-steel" },
@@ -52,9 +52,28 @@ class DashboardEtisalat extends React.Component {
         }
         this.generalHandler = gen.generalHandler.bind(this);
         this.partnerChanged = this.partnerChanged.bind(this);
+ 
     }
 
     componentWillMount() {
+    }
+    getRequest = () => {
+        let searchCriteria = {
+            ..._.get(this.state, 'searchCriteria', {}),
+            startDate: this.state.startDate,
+            endDate: this.state.endDate
+        }
+        console.log(searchCriteria, ' search criteria')
+        let request = {
+            "body": {
+                "page": {
+                    "currentPageNo": this.state.page.currentPageNo,
+                    "pageSize": this.state.page.pageSize,
+                },
+                searchCriteria
+            }
+        };
+        return request;
     }
 
     componentDidMount() {
@@ -62,7 +81,7 @@ class DashboardEtisalat extends React.Component {
             requestCreator.createTypeDataRequest([
                 'listOfferStatus',
             ]));
-
+        this.props.actions.generalProcess(constants.getSettlementList, this.getRequest())
 
     }
     partnerChanged() { }
@@ -71,7 +90,15 @@ class DashboardEtisalat extends React.Component {
             typeData: nextProps.typeData
         })
 
-        console.log("DDDDDDDDDDD", nextProps.typeData)
+        if (nextProps.transData)
+            this.setState({ gridData: nextProps.transData })
+        if (nextProps.records)
+            this.setState({ totalRecords: nextProps.records })
+        this.setState(
+            {
+                isLoading: false
+            }
+        )
 
     }
 
@@ -186,7 +213,7 @@ class DashboardEtisalat extends React.Component {
                                             <Col>
                                                 <Col>
                                                     <Table
-                                                        gridColumns={utils.getGridColumnByName("DashboadrEtisalat")}
+                                                        gridColumns={utils.getGridColumnByName("viewSettlementList")}
                                                         gridData={this.state.gridData}
                                                         pageSize={10}
                                                         //pageChanged={this.pageChanged}
@@ -244,6 +271,8 @@ function mapStateToProps(state, ownProps) {
     //console.log(state.app)
     return {
         typeData: _.get(state.app, 'typeData.data', null),
+        transData: _.get(state.app, 'getSettlementList.data.searchResult.rows', []),
+        records: _.get(state.app, 'getSettlementList.data.searchResult.count', '')
     };
 }
 
