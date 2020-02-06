@@ -82,10 +82,9 @@ class PartnerList extends Component {
                     ...partner
                 }
 
-
                 data.fromPartner = data.partnerCode
                 data.toPartner = Object.keys(JSON.parse(data.contractParams))[0]
-
+                data.Id = `${data.fromPartner}_${data.toPartner}`
 
                 data.statusObj = {
                     type: this.getType(data.status), // ERROR // WARNING

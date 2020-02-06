@@ -8,7 +8,7 @@ module.exports = {
         { alias: "Action", key: "action", type: "action" }
     ],
     partnerlist: [
-        { alias: "", key: "partnerCode", type: "hiddenID" },
+        { alias: "", key: "Id", type: "hiddenID" },
         { alias: "Partner Code", key: "partnerCode", type: "string" },
         { alias: "From Partner Code", key: "fromPartner", type: "string" },
         { alias: "To Partner Code", key: "toPartner", type: "string" },

@@ -200,7 +200,9 @@ class AddPartner extends Component {
         if (this.props.params.partnerCode) {
             this.props.actions.generalProcess(constants.getInterim, {
                 body: {
-                    partnerCode: this.props.params.partnerCode
+                    Id: this.props.params.partnerCode,
+                    partnerCode: this.props.params.partnerCode.split('_')[0],
+                    withPartnerCode: this.props.params.partnerCode.split('_')[1]
                 }
             });
         }
