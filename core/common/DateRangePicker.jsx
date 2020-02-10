@@ -49,12 +49,11 @@ class DateRangePicker extends React.Component {
             startDate={this.state.startDate}
             endDate={this.state.endDate}
             onApply={this.handleApply}
-            
           >
 
        
 
-         <a className="btn-outline" href="#daterangepicker_modal" data-toggle="modal" style={{...this.props.style}}> 
+         <a className="btn btn-outline" href="#daterangepicker_modal" data-toggle="modal" style={{...this.props.style}}> 
           <span>{label}&nbsp;</span>
           
           <i className="fa fa-calendar sp"></i>

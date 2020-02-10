@@ -1,7 +1,7 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {browserHistory} from 'react-router';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
@@ -14,6 +14,7 @@ class FileTemplateSearchContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.submit = this.submit.bind(this);
+    this.pageChanged = this.pageChanged.bind(this);
 
     this.state = {
       filterCriteria: undefined,
@@ -36,7 +37,7 @@ class FileTemplateSearchContainer extends React.Component {
       "currentPageNo": this.state.activePage,
       "pageSize": this.state.pageSize
     }));
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
   }
 
   loadURL(url) {
@@ -45,19 +46,19 @@ class FileTemplateSearchContainer extends React.Component {
 
   submit(filterCriteria) {
     this.props.actions.generalProcess(constants.getFileTemplateList, requestCreator.createFileTemplateListRequest({
-        "currentPageNo": 1,
-        "pageSize": this.state.pageSize
-      },
+      "currentPageNo": 1,
+      "pageSize": this.state.pageSize
+    },
       filterCriteria));
-    this.setState({filterCriteria, activePage: 1});
+    this.setState({ filterCriteria, activePage: 1 });
   }
   pageChanged(pageNo) {
     this.props.actions.generalProcess(constants.getFileTemplateList, requestCreator.createFileTemplateListRequest({
-        "currentPageNo": 1,
-        "pageSize": this.state.pageSize
-      },
+      "currentPageNo": pageNo,
+      "pageSize": this.state.pageSize
+    },
       this.state.filterCriteria));
-    this.setState({activePage: pageNo});
+    this.setState({ activePage: pageNo });
   }
 
   render() {
@@ -66,12 +67,16 @@ class FileTemplateSearchContainer extends React.Component {
     // ];
     if (!this.state.isLoading && this.state.fileTemplateList)
       return (
-        <Portlet title={utils.getLabelByID("FTSearch_Heading")}>
-          <FileTemplateFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state}/>
+        <div>
+          <Portlet title={utils.getLabelByID("FTSearch_Heading")}>
+            <FileTemplateFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state} />
+
+          </Portlet>
           <Portlet title={utils.getLabelByID("FileTemplateList")} isPermissioned={true}
-                   actions={this.state.fileTemplateList.data.actions}>
+            actions={this.state.fileTemplateList.data.actions}>
             <Table
               pagination={true}
+              pageChanged={this.pageChanged}
               export={false}
               search={false}
               activePage={this.state.activePage}
@@ -81,7 +86,7 @@ class FileTemplateSearchContainer extends React.Component {
               totalRecords={this.state.fileTemplateList.pageData.totalRecords}
             />
           </Portlet>
-        </Portlet>
+        </div>
       );
     else
       return (<div className="loader">{utils.getLabelByID("Loading")}</div>)

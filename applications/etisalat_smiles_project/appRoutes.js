@@ -42,6 +42,12 @@ import CreateAmendRedemption from "./components/CreateAmendRedemption.jsx"
 import OrderManagementDetails from "./components/OrderManagementDetail.jsx"
 import SettlementList from "./components/Settlement/Settlement.jsx"
 import LMSData from "./components/getLMSData.jsx";
+
+import FileList from "./components/Files/FileList.jsx";
+import FileData from "./components/Files/FileData.jsx";
+import FileTemplateSetup from "./components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx";
+
+
 let authRoutes = <div>
 
 
@@ -136,6 +142,11 @@ let authRoutes = <div>
     <Route path="/smiles/View/Settlements" component={ViewSettlement} />
     <Route path="/smiles/Submit/Settlements" component={SubmitSettlement} />
     <Route path="/smiles/View/dashboard" component={dashboard} />
+
+
+    <Route path="/smiles/fileList" component={FileList} />
+    <Route path="/etisalat/fileData/:id" component={FileData} />
+    <Route path="/fileTemplateSetup1" component={FileTemplateSetup} />
 
 
     {/* --end duplicates */}

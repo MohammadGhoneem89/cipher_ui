@@ -372,4 +372,22 @@ module.exports = {
         { alias: "error Reason", key: "errorReason", type: "string" },
         { alias: "Dependency", key: "Dependency", type: "string" }
     ],
+    fileList: [
+        { alias: "S.No", key: "", type: "serialNo" },
+        { alias: "", key: "id", type: "hiddenID" },
+        { alias: "Path", key: "path", type: "string" },
+        { alias: "File Name", key: "name", type: "string" },
+        { alias: "Date", key: "dateEpoch", type: "epochDate" },
+        { alias: "Action", key: "action", type: "action" },
+      ],
+      fileData: [
+        { alias: "S.No", key: "", type: "serialNo" },
+        { alias: "", key: "id", type: "hiddenID" },
+        { alias: "Rule Name", key: "rulename", type: "string" },
+        { alias: "Column 1", key: "column1", type: "string" },
+        { alias: "Column 2", key: "column2", type: "string" },
+        { alias: "Column 3", key: "column3", type: "string" },
+        { alias: "Status", key: "status", type: "statusBox" },
+        { alias: "Action", key: "action", type: "action" },
+      ]
 };

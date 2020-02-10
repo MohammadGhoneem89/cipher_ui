@@ -1,10 +1,10 @@
 import React from 'react';
-import {reduxForm} from 'redux-form';
-import {DataList} from '../../common/FormControls.jsx';
+import { reduxForm } from 'redux-form';
+import { DataList } from '../../common/FormControls.jsx';
 import * as utils from '../../common/utils.js';
 
 const FileTemplateFilterForm = props => {
-    const {handleSubmit, pristine, reset, submitting, state} = props;
+    const { handleSubmit, pristine, reset, submitting, state } = props;
 
 
     return (
@@ -22,13 +22,18 @@ const FileTemplateFilterForm = props => {
                         </div>
                     </div>
                 </div>
-                <div className="pull-right btn-toolbar">
-                    <button type="submit" className="btn green" disabled={submitting}>
-                        {utils.getLabelByID("Search")}
-                    </button>
-                    <button type="button" className="btn btn-default" disabled={pristine || submitting} onClick={reset}>
-                        {utils.getLabelByID("Clear")}
-                    </button>
+
+                <div className="col-md-12">
+                    <div className="col-md-12">
+                        <div className="pull-right  btn-toolbar pull-right">
+                            <button type="submit" className="btn green" disabled={submitting}>
+                                {utils.getLabelByID("Search")}
+                            </button>
+                            <button type="button" className="btn btn-default" disabled={pristine || submitting} onClick={reset}>
+                                {utils.getLabelByID("Clear")}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>

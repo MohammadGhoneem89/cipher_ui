@@ -28,6 +28,8 @@ import * as coreConstants from '../../../core/constants/Communication.js'
 import Input from '../../../core/common/Input.jsx';
 import BarChart from '../../../core/common/barChart.jsx';
 import { Row, Col } from '../common/index.jsx';
+import DateRangePicker from '../../../core/common/DateRangePicker.jsx';
+import moment from 'moment';
 
 
 class DashboardEtisalat extends React.Component {
@@ -38,21 +40,29 @@ class DashboardEtisalat extends React.Component {
             totalRecords: 10,
             pageSize: 5,
             currentPageNo: 1,
-            searchCriteria: {},
+            searchCriteria: {
+                fromDate: moment().subtract(29, 'days').format('DD/MM/YYYY'),
+                toDate: moment().format('DD/MM/YYYY'),
+            },
+            dashData: {
+                "listdates": [],
+                "listConfirmed": [],
+                "listPending": [],
+                "listRejected": [],
+                "recievables": 0,
+                "payables": 0
+            },
             page: {
                 pageSize: 10,
                 currentPageNo: 1
             },
             valid: true,
             gridData: [],
-            tiles: [
-                { id: 1, title: "Recivables", value: 2, actionURI: "", overDue: "", fontClass: "green-steel" },
-                { id: 1, title: "Payables", value: 2, actionURI: "", overDue: "", fontClass: "green-steel" },
-            ]
+            tiles: []
         }
         this.generalHandler = gen.generalHandler.bind(this);
         this.partnerChanged = this.partnerChanged.bind(this);
- 
+        this.onDateChange = this.onDateChange.bind(this);
     }
 
     componentWillMount() {
@@ -81,8 +91,30 @@ class DashboardEtisalat extends React.Component {
             requestCreator.createTypeDataRequest([
                 'listOfferStatus',
             ]));
+        // entityTypedata
+        this.props.actions.generalProcess(constants.entityTypedata, {})
         this.props.actions.generalProcess(constants.getSettlementList, this.getRequest())
+        this.props.actions.generalProcess(constants.getDashboardDataList, this.getRequest())
 
+    }
+    onDateChange(toDate, fromDate) {
+        this.setState({
+            searchCriteria: {
+                ...this.state.searchCriteria,
+                fromDate: fromDate,
+                toDate: toDate
+            },
+            isDateSelected: true
+        });
+
+        let request = {
+            searchCriteria: {
+                ...this.state.searchCriteria,
+                fromDate: fromDate,
+                toDate: toDate
+            }
+        };
+        this.props.actions.generalProcess(constants.getDashboardDataList, request);
     }
     partnerChanged() { }
     componentWillReceiveProps(nextProps) {
@@ -90,6 +122,16 @@ class DashboardEtisalat extends React.Component {
             typeData: nextProps.typeData
         })
 
+        if (nextProps.dashData) {
+            this.setState({
+                dashData: nextProps.dashData
+            })
+        }
+
+
+        if (nextProps.entityTypedata) {
+            this.setState({ ddlListEntities: nextProps.entityTypedata })
+        }
         if (nextProps.transData)
             this.setState({ gridData: nextProps.transData })
         if (nextProps.records)
@@ -115,14 +157,27 @@ class DashboardEtisalat extends React.Component {
                                     <div className="row">
                                         <div className="col-md-12 ">
                                             <div className="col-md-6">
-                                                <h4 style={{ color: 'white' }}><b>Accrual Workboard</b></h4>
+                                                {/* <div className="col-md-5"> */}
+                                                <DateRangePicker onChangeRange={this.onDateChange} style={{ borderColor: "white" , color: "white" }} />
+                                                {/* </div> */}
+                                                {/* <div className="col-md-6">
+                                                    <h4 style={{ color: 'white' }}><b>Accrual Workboard</b></h4>
+                                                </div> */}
                                             </div>
                                             <div className="col-md-6">
                                                 <div className="input-group input-large">
+
                                                     <div className="input-group input-large" >
-                                                        <select id="network" name="Network" className="form-control" onChange={this.partnerChanged} style={{ width: "350px", marginTop: "2px" }}>
-                                                            <option value="1">CBD</option>
-                                                        </select>
+
+                                                        <Combobox
+                                                            fieldname='to'
+                                                            formname='searchCriteria'
+                                                            state={this.state}
+                                                            placeholder="Parteners"
+                                                            typeName="ddlListEntities"
+                                                            dataSource={this.state}
+                                                            multiple={false}
+                                                            actionHandler={this.generalHandler} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -136,7 +191,10 @@ class DashboardEtisalat extends React.Component {
                                     <div className="row">
                                         <div className="row">
                                             <div className="col-md-6">
-                                                <TileUnit customClass="col-md-6" data={this.state.tiles} />
+                                                <TileUnit customClass="col-md-6" data={[
+                                                    { id: 1, title: "Payables", value: this.state.dashData.recievables, actionURI: "", overDue: "", fontClass: "green-steel" },
+                                                    { id: 1, title: "Recivables", value: this.state.dashData.payables, actionURI: "", overDue: "", fontClass: "green-steel" },
+                                                ]} />
                                             </div>
                                             <div className="col-md-offset-6">
                                                 <div className="col-md-2">
@@ -251,7 +309,7 @@ class DashboardEtisalat extends React.Component {
                                         </div>
                                         <div className="row">
                                             <Col>
-                                                <BarChart data={[]} />
+                                                <BarChart data={this.state.dashData} />
                                             </Col>
                                         </div>
                                     </Portlet>
@@ -272,7 +330,9 @@ function mapStateToProps(state, ownProps) {
     return {
         typeData: _.get(state.app, 'typeData.data', null),
         transData: _.get(state.app, 'getSettlementList.data.searchResult.rows', []),
-        records: _.get(state.app, 'getSettlementList.data.searchResult.count', '')
+        records: _.get(state.app, 'getSettlementList.data.searchResult.count', ''),
+        entityTypedata: _.get(state.app, 'entityTypedata.data', []),
+        dashData: _.get(state.app, 'getDashboardData.data', [])
     };
 }
 

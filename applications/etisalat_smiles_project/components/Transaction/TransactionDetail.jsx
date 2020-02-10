@@ -36,16 +36,12 @@ class TransactionDetail extends React.Component {
             englishPartnerName: '',
             partnerLogo: '',
             arabicPartnerName: '',
-
-
             dashboardTiles: [{
                 title: "Amount",
                 value: "12",
 
                 percentageTag: false
             }],
-
-
         };
         this.data = [];
     }
@@ -57,7 +53,6 @@ class TransactionDetail extends React.Component {
         document.getElementById('contractId').value = "";
         // document.getElementById('customer').value = "";
         document.getElementById('status').value = "";
-
         let request = {
             "body": {
                 page: {
@@ -265,7 +260,7 @@ class TransactionDetail extends React.Component {
                                                 </div>
                                             </div>
                                         </Row>
- */}
+                                        */}
 
                                         <Row>
                                             <div className="col-md-offset-1">

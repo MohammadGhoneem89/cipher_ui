@@ -34,7 +34,7 @@ class Input extends React.Component {
                     value={this.props.value ||
                         _.get(this.props.state, `${this.props.formname}.${[this.props.fieldname]}`, "")}
                     style={this.props.style ? this.props.style : {}}
-                    className={this.props.className}
+                    className={this.props.className||"form-control"}
                     onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'textbox')}
                     placeholder={this.props.placeholder}
                 />

@@ -11,7 +11,7 @@ const Wrapper = props => {
                         <div className="portlet light bordered sdg_portlet">
                             <div className="portlet-title D-header">
                                 <div className="designImg">
-                                    <img src="/assets/imgs/head-img.png" />
+                                   
                                 </div>
                                 <div className="caption">
                                     {/* <img src="/assets/imgs/header-icon.png" /> */}
