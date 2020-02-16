@@ -97,29 +97,52 @@ class PartnerList extends Component {
                         data.actions = [
                             {
                                 "label": "Approve",
-                                "URI": ["/smiles/ApprovePartner"],
+                                "URI": ["/smiles/approvePartner"],
                                 "params": "_id",
                                 "iconName": "fa fa-check"
+                            }
+                        ]
+                    } else if (_.get(nextProps.user, 'orgCode', '') == data.fromPartner) {
+
+                        data.actions = [
+                            {
+                                "label": "View",
+                                "URI": ["/smiles/viewPartner"],
+                                "params": "_id",
+                                "iconName": "fa fa-eye"
                             }
                         ]
                     }
 
                 } else {
+                    // viewPartner
                     if (_.get(nextProps.user, 'orgCode', '') == data.fromPartner) {
                         data.actions = [
                             {
                                 "label": "Edit",
-                                "URI": ["/smiles/EditPartner"],
+                                "URI": ["/smiles/editPartner"],
                                 "params": "_id",
                                 "iconName": "fa fa-Edit"
+                            }
+                        ]
+                    } else if (_.get(nextProps.user, 'orgCode', '') == data.toPartner) {
+                        data.actions = [
+                            {
+                                "label": "View",
+                                "URI": ["/smiles/viewPartner"],
+                                "params": "_id",
+                                "iconName": "fa fa-eye"
                             }
                         ]
                     }
                 }
 
-                gridData.push({
-                    ...data
-                })
+                if (data.fromPartner == _.get(nextProps.user, 'orgCode', '') || data.toPartner == _.get(nextProps.user, 'orgCode', '')) {
+                    gridData.push({
+                        ...data
+                    })
+                }
+
             })
             console.log(gridData, ' Grid Data')
             this.setState({
