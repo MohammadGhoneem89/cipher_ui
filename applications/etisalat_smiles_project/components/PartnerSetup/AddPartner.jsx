@@ -104,12 +104,12 @@ class AddPartner extends Component {
             let erpSettingsFrom = { ..._.get(nextProps, 'getPartnerDataByID.erpSettingsFrom', {}) }
             let contactInformationArr = [..._.get(nextProps, 'getPartnerDataByID.contacts', [])]
 
-            if (status == "APPROVED") {
-                for (let i in contactInformationArr) {
-                    contactInformationArr[i].action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
-                    { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
-                }
-            }
+            // if (status == "APPROVED") {
+            //     for (let i in contactInformationArr) {
+            //         contactInformationArr[i].action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+            //         { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+            //     }
+            // }
 
             let contractParamsObj = _.get(nextProps.getPartnerDataByID, 'contractParams', {})
 

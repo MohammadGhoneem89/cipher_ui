@@ -229,7 +229,12 @@ class TableCell extends React.Component {
         return " badge badge-success badge-roundless";
       case "LINK UP":
         return " badge badge-success badge-roundless";
-
+      case "RECIEVED":
+        return " badge badge-success badge-roundless";
+      case "PAID":
+        return " badge badge-warning badge-roundless";
+      case "INITIATED":
+        return " badge badge-info badge-roundless";
       case "SUCCESS":
         return " badge badge-success badge-roundless";
       case "UNCONFIRMED":

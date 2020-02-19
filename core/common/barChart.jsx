@@ -98,11 +98,11 @@ class BarChartExceptions extends React.Component {
                 data: this.props.data.listPending
             },
             {
-                backgroundColor: '#083D77',
-                borderColor: '#083D77',
+                backgroundColor: '#FF0000',
+                borderColor: '#FF0000',
                 borderWidth: 1,
-                hoverBackgroundColor: '#023163',
-                hoverBorderColor: '#023163',
+                hoverBackgroundColor: '#FF0000',
+                hoverBorderColor: '#FF0000',
                 label: 'Rejected',
                 data: this.props.data.listRejected
             }]

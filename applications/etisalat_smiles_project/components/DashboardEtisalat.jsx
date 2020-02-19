@@ -40,6 +40,7 @@ class DashboardEtisalat extends React.Component {
             totalRecords: 10,
             pageSize: 5,
             currentPageNo: 1,
+            entityDetail: {},
             searchCriteria: {
                 fromDate: moment().subtract(29, 'days').format('DD/MM/YYYY'),
                 toDate: moment().format('DD/MM/YYYY'),
@@ -85,6 +86,11 @@ class DashboardEtisalat extends React.Component {
         };
         return request;
     }
+    getRequestPartner = () => {
+        // alert(JSON.stringify(sessionStorage))
+        return { "action": "entityDetail", "spCode": "SELF" }
+
+    };
 
     componentDidMount() {
         this.props.actions.generalProcess(coreConstants.getTypeData,
@@ -95,6 +101,7 @@ class DashboardEtisalat extends React.Component {
         this.props.actions.generalProcess(constants.entityTypedata, {})
         this.props.actions.generalProcess(constants.getSettlementList, this.getRequest())
         this.props.actions.generalProcess(constants.getDashboardDataList, this.getRequest())
+        this.props.actions.generalProcess(constants.orgDetail, this.getRequestPartner());
 
     }
     onDateChange(toDate, fromDate) {
@@ -118,210 +125,202 @@ class DashboardEtisalat extends React.Component {
     }
     partnerChanged() { }
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            typeData: nextProps.typeData
-        })
 
-        if (nextProps.dashData) {
+        if (nextProps.entityDetail && nextProps.dashData && nextProps.entityTypedata && nextProps.records) {
             this.setState({
-                dashData: nextProps.dashData
+                entityDetail: nextProps.entityDetail,
+                isLoading: false,
+                typeData: nextProps.typeData,
+                dashData: nextProps.dashData,
+                ddlListEntities: nextProps.entityTypedata,
+                gridData: nextProps.transData,
+                totalRecords: nextProps.records
             })
         }
-
-
-        if (nextProps.entityTypedata) {
-            this.setState({ ddlListEntities: nextProps.entityTypedata })
-        }
-        if (nextProps.transData)
-            this.setState({ gridData: nextProps.transData })
-        if (nextProps.records)
-            this.setState({ totalRecords: nextProps.records })
-        this.setState(
-            {
-                isLoading: false
-            }
-        )
 
     }
 
     render() {
 
         //console.log("MMM",this.state.searchCriteria.merchant)
-        if (this.state.typeData) {
-            return (
-                <Row>
-                    <Col>
+        if (this.state.isLoading)
+            return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
+        else
+            if (this.state.typeData) {
+                return (
+                    <Row>
                         <Col>
-                            <div className="daterange_con" >
-                                <div className="center-block dashdate" style={{ padding: "12px 20px" }}>
-                                    <div className="row">
-                                        <div className="col-md-12 ">
-                                            <div className="col-md-6">
-                                                {/* <div className="col-md-5"> */}
-                                                <DateRangePicker onChangeRange={this.onDateChange} style={{ borderColor: "white" , color: "white" }} />
-                                                {/* </div> */}
-                                                {/* <div className="col-md-6">
+                            <Col>
+                                <div className="daterange_con" >
+                                    <div className="center-block dashdate" style={{ padding: "12px 20px" }}>
+                                        <div className="row">
+                                            <div className="col-md-12 ">
+                                                <div className="col-md-6">
+                                                    {/* <div className="col-md-5"> */}
+                                                    <DateRangePicker onChangeRange={this.onDateChange} style={{ borderColor: "white", color: "white" }} />
+                                                    {/* </div> */}
+                                                    {/* <div className="col-md-6">
                                                     <h4 style={{ color: 'white' }}><b>Accrual Workboard</b></h4>
                                                 </div> */}
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="input-group input-large">
+
+                                                        <div className="input-group input-large" >
+
+                                                            <Combobox
+                                                                fieldname='to'
+                                                                formname='searchCriteria'
+                                                                state={this.state}
+                                                                placeholder="Parteners"
+                                                                typeName="ddlListEntities"
+                                                                dataSource={this.state}
+                                                                multiple={false}
+                                                                actionHandler={this.generalHandler} />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className="col-md-6">
-                                                <div className="input-group input-large">
+                                        </div>
+                                    </div>
+                                </div>
+                                <Col>
+                                    <div className="row">
 
-                                                    <div className="input-group input-large" >
+                                        <div className="row">
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <TileUnit customClass="col-md-6" data={[
+                                                        { id: 1, title: "Payables", value: this.state.dashData.recievables, actionURI: "", overDue: "", fontClass: "green-steel" },
+                                                        { id: 1, title: "Recivables", value: this.state.dashData.payables, actionURI: "", overDue: "", fontClass: "green-steel" },
+                                                    ]} />
+                                                </div>
+                                                <div className="col-md-offset-6">
+                                                    <div className="col-md-2">
+                                                        <img src={constants.baseUrl + this.state.entityDetail.entityLogo.sizeSmall} style={{ height: "150px" }} />
+                                                    </div>
 
+                                                    <div className="col-md-6 text-center" >
+                                                        <div style={{ fontSize: "20px", marginTop: "30px", fontWeight: 800 }}>{this.state.entityDetail.entityName}</div>
+                                                        <div className="row" style={{ marginTop: "30px" }}> {this.state.entityDetail.orgType} </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Portlet title={"SETTLEMENTS"}>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <div className="form-group col-md-4">
+                                                        <label className="control-label">Start Date</label>
+                                                    </div>
+                                                    <div className="form-group col-md-8">
+                                                        <DateControl id="fromDate" dateChange={this.dateChangeFrom} />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="form-group col-md-4">
+                                                        <label className="control-label">End Date</label>
+                                                    </div>
+                                                    <div className="form-group col-md-8">
+                                                        <DateControl id="fromDate" dateChange={this.dateChangeFrom} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <div className="form-group col-md-4">
+                                                        <label className="control-label">Type</label>
+                                                    </div>
+                                                    <div className="form-group col-md-8">
+
+                                                        <Input
+                                                            isValid={this.state.valid}
+                                                            required={true}
+                                                            fieldname="merchant" formname="searchCriteria" state={this.state}
+                                                            actionHandler={this.generalHandler} className="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <div className="col-md-4">
+                                                        <label className="control-label">Status</label>
+                                                    </div>
+                                                    <div className="col-md-8">
                                                         <Combobox
-                                                            fieldname='to'
+                                                            fieldname='status'
                                                             formname='searchCriteria'
                                                             state={this.state}
-                                                            placeholder="Parteners"
-                                                            typeName="ddlListEntities"
-                                                            dataSource={this.state}
+                                                            typeName="listOfferStatus"
+                                                            dataSource={this.state.typeData}
                                                             multiple={false}
-                                                            actionHandler={this.generalHandler} />
+                                                            actionHandler={this.generalHandler}
+                                                        />
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <Col>
-                                <div className="row">
 
-                                    <div className="row">
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <TileUnit customClass="col-md-6" data={[
-                                                    { id: 1, title: "Payables", value: this.state.dashData.recievables, actionURI: "", overDue: "", fontClass: "green-steel" },
-                                                    { id: 1, title: "Recivables", value: this.state.dashData.payables, actionURI: "", overDue: "", fontClass: "green-steel" },
-                                                ]} />
-                                            </div>
-                                            <div className="col-md-offset-6">
-                                                <div className="col-md-2">
-                                                    <img src="/assets/imgs/gift.jpg" style={{ height: "150px" }} />
-                                                </div>
-
-                                                <div className="col-md-6 text-center" >
-                                                    <div style={{ fontSize: "20px", marginTop: "30px", fontWeight: 800 }}>Commercial Bank of Dubai</div>
-                                                    <div className="row" style={{ marginTop: "30px" }}>ACCURAL PARTNER  |<b> REDEMPTION PARTNER </b> | CONVERSION PARTNER</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <Portlet title={"SETTLEMENTS"}>
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">Start Date</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <DateControl id="fromDate" dateChange={this.dateChangeFrom} />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">End Date</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <DateControl id="fromDate" dateChange={this.dateChangeFrom} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">Type</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-
-                                                    <Input
-                                                        isValid={this.state.valid}
-                                                        required={true}
-                                                        fieldname="merchant" formname="searchCriteria" state={this.state}
-                                                        actionHandler={this.generalHandler} className="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div className="col-md-6">
-                                                <div className="col-md-4">
-                                                    <label className="control-label">Status</label>
-                                                </div>
-                                                <div className="col-md-8">
-                                                    <Combobox
-                                                        fieldname='status'
-                                                        formname='searchCriteria'
-                                                        state={this.state}
-                                                        typeName="listOfferStatus"
-                                                        dataSource={this.state.typeData}
-                                                        multiple={false}
-                                                        actionHandler={this.generalHandler}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="row">
-                                            <div className="btn-toolbar pull-right">
-                                                <div className="col-md-12">
+                                            <div className="row">
+                                                <div className="btn-toolbar pull-right">
                                                     <div className="col-md-12">
-                                                        <button type="submit" className="btn green">Search</button>
+                                                        <div className="col-md-12">
+                                                            <button type="submit" className="btn green">Search</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <Col>
+                                                    <Col>
+                                                        <Table
+                                                            gridColumns={utils.getGridColumnByName("viewSettlementList")}
+                                                            gridData={this.state.gridData}
+                                                            pageSize={10}
+                                                            //pageChanged={this.pageChanged}
+                                                            pagination={true}
+                                                            activePage={this.state.currentPageNo}
+                                                        />
+                                                    </Col>
+                                                </Col>
+                                            </div>
+                                        </Portlet>
+
+
+                                        <Portlet title={"Transactions"}>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <div className="form-group col-md-4">
+                                                        <label className="control-label">Type</label>
+                                                    </div>
+                                                    <div className="form-group col-md-8">
+                                                        <Input
+                                                            isValid={this.state.valid}
+                                                            required={true}
+                                                            fieldname="merchant" formname="searchCriteria" state={this.state}
+                                                            actionHandler={this.generalHandler} className="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="form-group col-md-4">
+                                                        <label className="control-label">Date</label>
+                                                    </div>
+                                                    <div className="form-group col-md-8">
+                                                        <DateControl id="fromDate" dateChange={this.dateChangeFrom} />
                                                     </div>
                                                 </div>
                                             </div>
-                                            <Col>
+                                            <div className="row">
                                                 <Col>
-                                                    <Table
-                                                        gridColumns={utils.getGridColumnByName("viewSettlementList")}
-                                                        gridData={this.state.gridData}
-                                                        pageSize={10}
-                                                        //pageChanged={this.pageChanged}
-                                                        pagination={true}
-                                                        activePage={this.state.currentPageNo}
-                                                    />
+                                                    <BarChart data={this.state.dashData} />
                                                 </Col>
-                                            </Col>
-                                        </div>
-                                    </Portlet>
-
-
-                                    <Portlet title={"Transactions"}>
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">Type</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <Input
-                                                        isValid={this.state.valid}
-                                                        required={true}
-                                                        fieldname="merchant" formname="searchCriteria" state={this.state}
-                                                        actionHandler={this.generalHandler} className="form-control" />
-                                                </div>
                                             </div>
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">Date</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <DateControl id="fromDate" dateChange={this.dateChangeFrom} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <Col>
-                                                <BarChart data={this.state.dashData} />
-                                            </Col>
-                                        </div>
-                                    </Portlet>
-                                </div>
+                                        </Portlet>
+                                    </div>
+                                </Col>
                             </Col>
                         </Col>
-                    </Col>
-                </Row >
-            );
-        }
-        else
-            return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
+                    </Row >
+                );
+            }
+            else
+                return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
     }
 }
 
@@ -332,6 +331,7 @@ function mapStateToProps(state, ownProps) {
         transData: _.get(state.app, 'getSettlementList.data.searchResult.rows', []),
         records: _.get(state.app, 'getSettlementList.data.searchResult.count', ''),
         entityTypedata: _.get(state.app, 'entityTypedata.data', []),
+        entityDetail: _.get(state.app, 'entityDetail.data'),
         dashData: _.get(state.app, 'getDashboardData.data', [])
     };
 }

@@ -339,7 +339,7 @@ module.exports = {
         { alias: "Partner Code", key: "tranxData.partenerCode", type: "string" },
         { alias: "Settlement Partner Code", key: "tranxData.withPartenerCode", type: "string" },
         { alias: "Status", key: "tranxData.Status", type: "statusBox" },
-        { alias: "Amount", key: "tranxData.amount", type: "string" },
+        { alias: "Amount", key: "tranxData.amount", type: "amount" },
         { alias: "action", key: "actions", type: "action" }
     ],
     viewTranxListNew: [
