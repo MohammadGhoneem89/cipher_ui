@@ -7,6 +7,7 @@ import Table from '../../../../../core/common/Datatable.jsx';
 import * as actions from '../../../../../core/actions/generalAction';
 import * as constants from '../../../../../core/constants/Communication.js';
 import Portlet from '../../../../../core/common/Portlet.jsx';
+import Steps from '../../../../../core/common/Steps.jsx';
 import Col from '../../../../../core/common/Col.jsx';
 import Row from '../../../../../core/common/Row.jsx';
 import TileUnit from '../../../../../core/common/tileUnit.jsx';
@@ -139,159 +140,164 @@ class ViewSettlement extends React.Component {
         else
             return (
                 <Row>
-                    <Col>
-                        <div className="form">
-                            <div className="row" >
-                                <div className="col-md-offset-3 col-md-12" style={{ marginBottom: '4%' }}>
-                                    <div className="col-md-2">
-                                        <img src={constants.baseUrl + this.state.partnerLogo} style={{ width: "130px" }} />
+                    <Row>
+                        <Steps statusList={[{ status: true, label: 'INITIATED' }, { status: false, label: 'SUBMITTED' }, { status: false, label: 'PAID' }, { status: false, label: 'RECEIVED' }]} />
+                    </Row>
+                    <Row>
+                        <Col>
+                            <div className="form">
+                                <div className="row" >
+                                    <div className="col-md-offset-3 col-md-12" style={{ marginBottom: '4%' }}>
+                                        <div className="col-md-2">
+                                            <img src={constants.baseUrl + this.state.partnerLogo} style={{ width: "130px" }} />
+                                        </div>
+
+                                        <div className="col-md-4 text-center" >
+                                            <div style={{ fontSize: "30px", marginTop: "30px" }}><b>{this.state.englishPartnerName}</b></div>
+                                            <div className="row" style={{ fontSize: "15px" }}><h4><b>({this.state.arabicPartnerName} Dated: {moment(parseInt(_.get(this.state.settlementData, 'startDate', 0)) * 1000).format('DD/MM/YYYY')} - {moment(parseInt(_.get(this.state.settlementData, 'endDate', 0)) * 1000).format('DD/MM/YYYY')})</b></h4></div>
+                                        </div>
                                     </div>
 
-                                    <div className="col-md-4 text-center" >
-                                        <div style={{ fontSize: "30px", marginTop: "30px" }}><b>{this.state.englishPartnerName}</b></div>
-                                        <div className="row" style={{ fontSize: "15px" }}><h4><b>({this.state.arabicPartnerName} Dated: {moment(parseInt(_.get(this.state.settlementData, 'startDate', 0)) * 1000).format('DD/MM/YYYY')} - {moment(parseInt(_.get(this.state.settlementData, 'endDate', 0)) * 1000).format('DD/MM/YYYY')})</b></h4></div>
-                                    </div>
                                 </div>
 
-                            </div>
 
 
-
-                            <div className="row">
-                                <div className="col-md-offset-2">
-                                    <div className="col-3">
-                                        <TileUnit data={[{
-                                            title: "AMOUNT",
-                                            value: _.get(this.state.settlementData, 'amount', 0),
-                                            percentageTag: true
-                                        }]} />
-                                    </div>
-                                    <div className="col-3">
-                                        <TileUnit data={[{
-                                            title: "Commission",
-                                            value: _.get(this.state.settlementData, 'commissionAmount', 0),
-                                            percentageTag: true
-                                        }]} />
-                                    </div>
-                                    <div className="col-3">
-                                        <TileUnit data={[{
-                                            title: "POINTS",
-                                            value: _.get(this.state.settlementData, 'Points', 0),
-                                            percentageTag: true
-                                        }]} />
-                                    </div>
-
-
-                                    <Row>
-                                        <div className="col-md-6">
-                                            <div className="col-md-4">
-                                                <Label text="Invoice Reference:" />
-                                            </div>
-                                            <div className="col-md-8">
-                                                <Label text={_.get(this.state.settlementData, 'batchInvoice', 0)} />
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="col-md-4">
-                                                <Label text="Invoice Date:" />
-                                            </div>
-                                            <div className="col-md-8">
-                                                <Label text={_.get(this.state.settlementData, 'invoiceDate', '02/12/2020') || '02/12/2020'} />
-                                            </div>
-                                        </div>
-                                    </Row>
-                                    <Row>
-                                        <div className="col-md-6">
-                                            <div className="col-md-4">
-                                                <Label text="Payment Reference:" />
-                                            </div>
-                                            <div className="col-md-8">
-                                                <Label text={_.get(this.state.settlementData, 'paymentref', 'N/A')} />
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="col-md-4">
-                                                <Label text="Payment Date:" />
-                                            </div>
-                                            <div className="col-md-8">
-                                                <Label text={_.get(this.state.settlementData, 'paymentDate', 'N/A')} />
-                                            </div>
-                                        </div>
-                                    </Row>
-                                </div>
-                            </div>
-                            <br />
-
-                            <Portlet title={utils.getLabelByID("TRANSACTIONS")}>
                                 <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group col-md-4">
-                                            <label className="control-label">{utils.getLabelByID("Start Date")}</label>
+                                    <div className="col-md-offset-2">
+                                        <div className="col-3">
+                                            <TileUnit data={[{
+                                                title: "AMOUNT",
+                                                value: _.get(this.state.settlementData, 'amount', 0),
+                                                percentageTag: true
+                                            }]} />
                                         </div>
-                                        <div className="form-group col-md-8">
-                                            <DateControl
-                                                id='endDate'
-                                                dateChange={this.onStartDateChange}
-                                            />
+                                        <div className="col-3">
+                                            <TileUnit data={[{
+                                                title: "Commission",
+                                                value: _.get(this.state.settlementData, 'commissionAmount', 0),
+                                                percentageTag: true
+                                            }]} />
                                         </div>
-                                    </div>
+                                        <div className="col-3">
+                                            <TileUnit data={[{
+                                                title: "POINTS",
+                                                value: _.get(this.state.settlementData, 'Points', 0),
+                                                percentageTag: true
+                                            }]} />
+                                        </div>
 
-                                    <div className="col-md-6">
-                                        <div className="form-group col-md-4">
-                                            <label className="control-label">{utils.getLabelByID("End Date")}</label>
-                                        </div>
-                                        <div className="form-group col-md-8">
-                                            <DateControl
-                                                id='endDate'
-                                                dateChange={this.onEndDateChange}
-                                            />
-                                        </div>
+
+                                        <Row>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
+                                                    <Label text="Invoice Reference:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text={_.get(this.state.settlementData, 'batchInvoice', 0)} />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
+                                                    <Label text="Invoice Date:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text={_.get(this.state.settlementData, 'invoiceDate', '02/12/2020') || '02/12/2020'} />
+                                                </div>
+                                            </div>
+                                        </Row>
+                                        <Row>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
+                                                    <Label text="Payment Reference:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text={_.get(this.state.settlementData, 'paymentref', 'N/A')} />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="col-md-4">
+                                                    <Label text="Payment Date:" />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <Label text={_.get(this.state.settlementData, 'paymentDate', 'N/A')} />
+                                                </div>
+                                            </div>
+                                        </Row>
                                     </div>
-                                    <div className="col-md-12">
-                                        <div className="form-group col-md-12">
-                                            <div className="btn-toolbar pull-right">
-                                                <button type="submit" className="btn green" onClick={this.formSubmit}>
-                                                    {utils.getLabelByID('Search')}
-                                                </button>
+                                </div>
+                                <br />
+
+                                <Portlet title={utils.getLabelByID("TRANSACTIONS")}>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="form-group col-md-4">
+                                                <label className="control-label">{utils.getLabelByID("Start Date")}</label>
+                                            </div>
+                                            <div className="form-group col-md-8">
+                                                <DateControl
+                                                    id='endDate'
+                                                    dateChange={this.onStartDateChange}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <div className="form-group col-md-4">
+                                                <label className="control-label">{utils.getLabelByID("End Date")}</label>
+                                            </div>
+                                            <div className="form-group col-md-8">
+                                                <DateControl
+                                                    id='endDate'
+                                                    dateChange={this.onEndDateChange}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="form-group col-md-12">
+                                                <div className="btn-toolbar pull-right">
+                                                    <button type="submit" className="btn green" onClick={this.formSubmit}>
+                                                        {utils.getLabelByID('Search')}
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <Row>
-                                    <Col>
+                                    <Row>
                                         <Col>
-                                            <Table
-                                                gridColumns={utils.getGridColumnByName("viewTranxListSettlemnt")}
-                                                gridData={this.state.gridData}
-                                                fontclass=""
-                                                pageSize={10}
-                                                pageChanged={this.pageChanged}
-                                                pagination={true}
-                                                activePage={this.state.page.currentPageNo}
-                                            />
+                                            <Col>
+                                                <Table
+                                                    gridColumns={utils.getGridColumnByName("viewTranxListSettlemnt")}
+                                                    gridData={this.state.gridData}
+                                                    fontclass=""
+                                                    pageSize={10}
+                                                    pageChanged={this.pageChanged}
+                                                    pagination={true}
+                                                    activePage={this.state.page.currentPageNo}
+                                                />
+                                            </Col>
                                         </Col>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
+                                    </Row>
+                                    <Row>
                                         <Col>
-                                            <h3>Tracking Events</h3>
-                                            <Table
-                                                gridColumns={utils.getGridColumnByName("viewTranxListEvents")}
-                                                gridData={this.state.gridDataTPool}
-                                                fontclass=""
-                                                totalRecords={this.state.totalRecords}
-                                                pageSize={10}
-                                                pagination={false}
-                                                search={true}
-                                                activePage={this.state.page.currentPageNo}
-                                            />
+                                            <Col>
+                                                <h3>Tracking Events</h3>
+                                                <Table
+                                                    gridColumns={utils.getGridColumnByName("viewTranxListEvents")}
+                                                    gridData={this.state.gridDataTPool}
+                                                    fontclass=""
+                                                    totalRecords={this.state.totalRecords}
+                                                    pageSize={10}
+                                                    pagination={false}
+                                                    search={true}
+                                                    activePage={this.state.page.currentPageNo}
+                                                />
+                                            </Col>
                                         </Col>
-                                    </Col>
-                                </Row>
-                            </Portlet>
-                        </div >
-                    </Col>
+                                    </Row>
+                                </Portlet>
+                            </div >
+                        </Col>
+                    </Row>
                 </Row>
             );
     }

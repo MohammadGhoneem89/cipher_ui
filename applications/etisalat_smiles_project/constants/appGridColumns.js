@@ -4,12 +4,12 @@ module.exports = {
         { alias: "End Date", key: "endDate", type: "epochDate" },
         { alias: "Rate", key: "rate", type: "string" },
         { alias: "Source Token", key: "sourceToken", type: "string" },
-        { alias: "Mode", key: "mode", type: "string" },
+        // { alias: "Mode", key: "mode", type: "string" },
         { alias: "Action", key: "action", type: "action" }
     ],
     partnerlist: [
         { alias: "", key: "Id", type: "hiddenID" },
-        { alias: "Partner Code", key: "partnerCode", type: "string" },
+        { alias: "S.NO", key: "", type: "serialNo" },
         { alias: "From Partner Code", key: "fromPartner", type: "string" },
         { alias: "To Partner Code", key: "toPartner", type: "string" },
         { alias: "Partner Er Code", key: "partnerErCode", type: "string" },
@@ -70,7 +70,7 @@ module.exports = {
         { alias: "Phone", key: "phone", type: "string" },
         { alias: "Mobile", key: "mobile", type: "string" },
         { alias: "Address", key: "address", type: "string" },
-        { alias: "Mode", key: "mode", type: "string" },
+        // { alias: "Mode", key: "mode", type: "string" },
         { alias: "Action", key: "action", type: "action" }
     ],
     accrualTerms: [
@@ -87,7 +87,7 @@ module.exports = {
         { alias: "Rate Type", key: "rateType", type: "string" },
         { alias: "Rate", key: "rate", type: "string" },
         { alias: "Payment Method", key: "paymentMethod", type: "string" },
-        { alias: "Mode", key: "mode", type: "string" },
+        // { alias: "Mode", key: "mode", type: "string" },
         { alias: "Action", key: "action", type: "action" }
     ],
     itemMaster: [

@@ -3265,3 +3265,16 @@ ul.switchScreen li:first-child ul.sub-menu li:first-child {
 	padding:0px 20px 5px 0px;
 }
 /*addNewMerchant*/
+
+
+#progressbar {margin: 10px 0 30;overflow: hidden;counter-reset: step; width: 100%;text-align: center;padding-left: 0;}
+#progressbar li {list-style-type: none;color: rgb(51, 51, 51);text-transform: uppercase;font-size: 12px; width: 25%;position: relative;font-weight: 800;font: normal normal normal 14px/1 FontAwesome;display: inline-block;}
+#progressbar li:before {content: counter(step);counter-increment: step;width: 54px;line-height: 54px; display: block;font-size: 16px;color: #fff; background: grey;border-radius: 50%;margin: 0 auto 4px auto;font-weight: 600;position: relative;z-index: 99;}
+#progressbar li:after {content: '';width: 100%;height: 3px;background: #d1e1bd;position: absolute; left: -50%;top: 30%;z-index: 0;}
+#progressbar li:first-child:after {content: none; }
+#progressbar li.step-inactive:before{background: red;content:"\f00d";}
+#progressbar li.active:before{
+	content: "\f00c";
+    background: #7AA62D;
+	background-image: linear-gradient(to right, rgba(255,0,0,0), rgb(218, 237, 12));
+}

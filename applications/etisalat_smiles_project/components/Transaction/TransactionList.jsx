@@ -51,6 +51,13 @@ class TransactionList extends React.Component {
     searchResult = () => {
         this.props.actions.generalProcess(constants.getViewTransaction, this.getRequest());
     }
+    reset = () => {
+        this.setState({
+            startDate: undefined,
+            endDate: undefined,
+            searchCriteria: undefined
+        })
+    }
 
 
     redirectToAddPage = () => {
@@ -145,65 +152,76 @@ class TransactionList extends React.Component {
                                     <div className="form-group col-md-4">
                                         <Label text="Status" />
                                     </div>
-                                    <div className="form-group col-md-8">
-                                        {/* <input type="text" className="form-control" name="status" id="status" /> */}
-                                        <Combobox
-                                            fieldname='Status'
-                                            formname='searchCriteria'
-                                            placeholder='Select'
-                                            style={{}}
-                                            state={this.state}
-                                            typeData="rule"
-                                            dataSource={_.get(this.state, 'typeData', {})}
-                                            actionHandler={this.generalHandler}
-                                            className="form-control"
-                                        />
-                                    </div>
+                                    <Combobox
+                                        fieldname='Status'
+                                        formname='searchCriteria'
+                                        placeholder='Select'
+                                        style={{}}
+                                        columns={8}
+                                        state={this.state}
+                                        typeData="rule"
+                                        dataSource={_.get(this.state, 'typeData', {})}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
                                 </div>
 
                                 <div className="col-md-6">
                                     <div className="form-group col-md-4">
                                         <Label text="Direction" />
                                     </div>
-                                    <div className="form-group col-md-8">
-                                        {/* <input type="text" className="form-control" name="status" id="status" /> */}
-                                        <Combobox
-                                            fieldname='direction'
-                                            formname='searchCriteria'
-                                            placeholder='Select'
-                                            style={{}}
-                                            state={this.state}
-                                            typeData="rule"
-                                            dataSource={_.get(this.state, 'typeData', {})}
-                                            actionHandler={this.generalHandler}
-                                            className="form-control"
-                                        />
-                                    </div>
+                                    <Combobox
+                                        fieldname='direction'
+                                        formname='searchCriteria'
+                                        placeholder='Select'
+                                        style={{}}
+                                        columns={8}
+                                        state={this.state}
+                                        typeData="rule"
+                                        dataSource={_.get(this.state, 'typeData', {})}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
                                 </div>
                             </Row>
 
                             <Row>
                                 <div className="col-md-6">
-                                    <div className="form-group col-md-4">
+                                    <div className="col-md-4">
                                         <Label text="Partner" />
                                     </div>
-                                    <div className="form-group col-md-8">
-                                        {/* <input type="text" className="form-control" name="status" id="status" /> */}
-                                        <Combobox
-                                            fieldname='partner'
-                                            formname='searchCriteria'
-                                            placeholder='Select'
-                                            style={{}}
-                                            state={this.state}
-                                            typeData="rule"
-                                            dataSource={_.get(this.state, 'typeData', {})}
-                                            actionHandler={this.generalHandler}
-                                            className="form-control"
-                                        />
-                                    </div>
+                                    {/* <input type="text" className="form-control" name="status" id="status" /> */}
+                                    <Combobox
+                                        fieldname='partner'
+                                        formname='searchCriteria'
+                                        placeholder='Select'
+                                        style={{}}
+                                        columns={8}
+                                        state={this.state}
+                                        typeData="rule"
+                                        dataSource={_.get(this.state, 'typeData', {})}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
                                 </div>
 
+                                <div className="col-md-6">
+                                    <div className="col-md-4">
+                                        <Label text="Transaction ID" />
+                                    </div>
+                                    <Input
+                                        fieldname='key'
+                                        formname='searchCriteria'
+                                        columns={8}
+                                        placeholder='#'
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </div>
+                            </Row>
 
+                            <Row>
                                 <div className="col-md-12">
                                     <div className="form-group col-md-12">
                                         <div className="btn-toolbar pull-right">
@@ -219,7 +237,7 @@ class TransactionList extends React.Component {
                                 </div>
                             </Row>
                         </div>
-                     
+
                         <Row>
                             <Col>
 
@@ -259,15 +277,4 @@ function mapDispatchToProps(dispatch) {
 
 TransactionList.displayName = "Transaction List";
 export default connect(mapStateToProps, mapDispatchToProps)(TransactionList);
-
-
-
-
-
-
-
-
-
-
-
 

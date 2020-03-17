@@ -207,7 +207,7 @@ class AddPartner extends Component {
             });
         }
 
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', 'contactMode', 'rateType', 'paymentMethod', 'yesnobinary']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', /*'contactMode',*/ 'rateType', 'paymentMethod', 'yesnobinary', 'authenticationTypes']));
         this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({     // Get Orgs (entities)
             "currentPageNo": 1,
             "pageSize": 1
@@ -406,7 +406,7 @@ class AddPartner extends Component {
             accrualTerms.accuralEndDate = this.state.accuralEndDate
         }
 
-        if (!accrualTerms.startDate || !accrualTerms.endDate || !accrualTerms.sellingRate || !accrualTerms.mode) {
+        if (!accrualTerms.startDate || !accrualTerms.endDate || !accrualTerms.sellingRate /*|| !accrualTerms.mode*/) {
             toaster.showToast("All fields are required for accrual terms", "ERROR");
             return;
         }
@@ -437,7 +437,7 @@ class AddPartner extends Component {
             redemptionTerms.redemptionEndDate = parseInt(this.state.redemptionEndDate)
         }
 
-        if (!redemptionTerms.startDate || !redemptionTerms.endDate || !redemptionTerms.rate || !redemptionTerms.mode) {
+        if (!redemptionTerms.startDate || !redemptionTerms.endDate || !redemptionTerms.rate /*|| !redemptionTerms.mode*/) {
             toaster.showToast("All fields are required for redemption terms", "ERROR");
             return;
         }
@@ -548,8 +548,8 @@ class AddPartner extends Component {
                                                     <Combobox
                                                         fieldname='withPartnerCode'
                                                         formname='contractParams'
-                                                        columns='7'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                        columns='8'
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                                         placeholder='Select'
                                                         style={{}}
                                                         state={this.state}
@@ -564,8 +564,8 @@ class AddPartner extends Component {
                                                     <Input
                                                         fieldname='conversionPartnerProgramName'
                                                         formname='contractParams'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                        columns='7'
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                        columns='8'
                                                         placeholder=''
                                                         state={this.state}
                                                         actionHandler={this.generalHandler}
@@ -573,6 +573,57 @@ class AddPartner extends Component {
                                                     />
                                                 </div>
 
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-md-6">
+
+                                                    <Label text="AED Conversion" columns='4' />
+                                                    <Input
+                                                        fieldname='aedConversion'
+                                                        formname='contractParams'
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                        columns='8'
+                                                        placeholder=''
+                                                        state={this.state}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+                                                <div className="col-md-6">
+
+                                                    <Label text="Authentication Type" columns='4' />
+                                                    <Combobox
+                                                        fieldname='authType'
+                                                        formname='contractParams'
+                                                        columns='8'
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                        placeholder='Select'
+                                                        style={{}}
+                                                        state={this.state}
+                                                        typeName="authenticationTypes"
+                                                        dataSource={_.get(this.state, 'typeData', {})}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+
+                                            </div>
+
+                                            <div className="row">
+                                                <div className="col-md-6">
+
+                                                    <Label text="Minimum Points" columns='4' />
+                                                    <Input
+                                                        fieldname='minPoints'
+                                                        formname='contractParams'
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                        columns='8'
+                                                        placeholder=''
+                                                        state={this.state}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
+                                                </div>
                                             </div>
                                             {/* <Portlet title={"POINT CONVERSION"}>
                                                     <div className="row">
@@ -631,17 +682,17 @@ class AddPartner extends Component {
 
 
                                             <Portlet title={"RATES"}>
-                                                {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? ((this.props.params.partnerCode && !( this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false) : false)) && (<div>
+                                                {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? ((this.props.params.partnerCode && !(this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false) : false)) && (<div>
                                                     <div className="row">
                                                         <div className="col-md-6">
                                                             <Label text="Start Date" columns='4' />
-                                                            <div className="col-md-7">
+                                                            <div className="col-md-8">
                                                                 <DateControl id="pointConversionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionStartDate)} dateChange={this.dateChange.bind(this, 'pointConversionStartDate')} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-6">
                                                             <Label text="End Date" columns='4' />
-                                                            <div className="col-md-7">
+                                                            <div className="col-md-8">
                                                                 <DateControl id="pointConversionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionEndDate)} dateChange={this.dateChange.bind(this, 'pointConversionEndDate')} />
                                                             </div>
                                                         </div>
@@ -654,7 +705,7 @@ class AddPartner extends Component {
                                                             <Input
                                                                 fieldname='rate'
                                                                 formname='rates'
-                                                                columns='7'
+                                                                columns='8'
                                                                 placeholder=''
                                                                 state={this.state}
                                                                 actionHandler={this.generalHandler}
@@ -666,7 +717,7 @@ class AddPartner extends Component {
                                                             <Input
                                                                 fieldname='sourceToken'
                                                                 formname='rates'
-                                                                columns='7'
+                                                                columns='8'
                                                                 disabled={true}
                                                                 value={"SMILES"}
                                                                 placeholder=''
@@ -676,7 +727,8 @@ class AddPartner extends Component {
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div className="row">
+
+                                                    {/* <div className="row">
                                                         <div className="col-md-6">
                                                             <Label text="Mode" columns='4' />
                                                             <Combobox
@@ -692,11 +744,12 @@ class AddPartner extends Component {
                                                                 className="form-control"
                                                             />
                                                         </div>
-                                                    </div>
+                                                    </div> */}
+
                                                     <div className="row">
                                                         <div className="col-md-12">
                                                             <div className="btn-toolbar pull-right">
-                                                                <button onClick={this.addRates} type="submit" className="pull-right btn green">
+                                                                <button style={{ marginRight: "22%" }} onClick={this.addRates} type="submit" className="pull-right btn green">
                                                                     {utils.getLabelByID("Add")}
                                                                 </button>
                                                             </div>
@@ -705,11 +758,15 @@ class AddPartner extends Component {
 
                                                 </div>)}
 
-                                                <Table
-                                                    gridColumns={utils.getGridColumnByName('rates')}
-                                                    gridData={this.state.ratesArr || []}
-                                                    componentFunction={this.ratesActionHandler}
-                                                />
+                                                <div style={{ padding: "0 15" }}>
+                                                    <Table
+                                                        gridColumns={utils.getGridColumnByName('rates')}
+                                                        gridData={this.state.ratesArr || []}
+                                                        componentFunction={this.ratesActionHandler}
+                                                    />
+                                                </div>
+
+
                                             </Portlet>
                                         </div>
 
@@ -725,8 +782,8 @@ class AddPartner extends Component {
                                                     <Combobox
                                                         fieldname='withPartnerCode'
                                                         formname='contractParams'
-                                                        columns='7'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                        columns='8'
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                                         placeholder='Select'
                                                         style={{}}
                                                         state={this.state}
@@ -743,17 +800,17 @@ class AddPartner extends Component {
                                             }
 
                                             <Portlet title={"REDEMPTION TERMS"}>
-                                                {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? ((this.props.params.partnerCode && !( this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false) : false)) && (<div>
+                                                {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? ((this.props.params.partnerCode && !(this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false) : false)) && (<div>
                                                     <div className="row">
                                                         <div className="col-md-6">
                                                             <Label text="Start Date" columns='4' />
-                                                            <div className="col-md-7">
+                                                            <div className="col-md-8">
                                                                 <DateControl id="redemptionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.redemptionStartDate)} dateChange={this.dateChange.bind(this, 'redemptionStartDate')} />
                                                             </div>
                                                         </div>
                                                         <div className="col-md-6">
                                                             <Label text="End Date" columns='4' />
-                                                            <div className="col-md-7">
+                                                            <div className="col-md-8">
                                                                 <DateControl id="redemptionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.redemptionEndDate)} dateChange={this.dateChange.bind(this, 'redemptionEndDate')} />
                                                             </div>
                                                         </div>
@@ -765,7 +822,7 @@ class AddPartner extends Component {
                                                             <Combobox
                                                                 fieldname='paymentMethod'
                                                                 formname='redemptionTerms'
-                                                                columns='7'
+                                                                columns='8'
                                                                 placeholder='Select'
                                                                 style={{}}
                                                                 state={this.state}
@@ -776,7 +833,7 @@ class AddPartner extends Component {
                                                             />
                                                         </div>
 
-                                                        <div className="col-md-6">
+                                                        {/* <div className="col-md-6">
                                                             <Label text="Mode" columns='4' />
                                                             <Combobox
                                                                 fieldname='mode'
@@ -790,6 +847,18 @@ class AddPartner extends Component {
                                                                 actionHandler={this.generalHandler}
                                                                 className="form-control"
                                                             />
+                                                        </div> */}
+                                                        <div className="col-md-6">
+                                                            <Label text="Rate" columns='4' />
+                                                            <Input
+                                                                fieldname='rate'
+                                                                formname='redemptionTerms'
+                                                                columns='8'
+                                                                placeholder=''
+                                                                state={this.state}
+                                                                actionHandler={this.generalHandler}
+                                                                className="form-control"
+                                                            />
                                                         </div>
 
                                                     </div>
@@ -799,7 +868,7 @@ class AddPartner extends Component {
                                                             <Combobox
                                                                 fieldname='rateType'
                                                                 formname='redemptionTerms'
-                                                                columns='7'
+                                                                columns='8'
                                                                 placeholder='Select'
                                                                 style={{}}
                                                                 state={this.state}
@@ -809,23 +878,11 @@ class AddPartner extends Component {
                                                                 className="form-control"
                                                             />
                                                         </div>
-                                                        <div className="col-md-6">
-                                                            <Label text="Rate" columns='4' />
-                                                            <Input
-                                                                fieldname='rate'
-                                                                formname='redemptionTerms'
-                                                                columns='7'
-                                                                placeholder=''
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
                                                     </div>
                                                     <div className="row">
                                                         <div className="col-md-12">
                                                             <div className="btn-toolbar pull-right">
-                                                                <button onClick={this.addRedemptionTerm} type="submit" className="pull-right btn green">
+                                                                <button style={{ marginRight: "22%" }} onClick={this.addRedemptionTerm} type="submit" className="pull-right btn green">
                                                                     {utils.getLabelByID("Add")}
                                                                 </button>
                                                             </div>
@@ -833,11 +890,14 @@ class AddPartner extends Component {
                                                     </div>
                                                 </div>)}
 
-                                                <Table
-                                                    gridColumns={utils.getGridColumnByName('redemptionTerms')}
-                                                    gridData={this.state.redemptionTermsArr || []}
-                                                    componentFunction={this.redemptionTermsActionHandler}
-                                                />
+                                                <div style={{ padding: "0 15" }}>
+                                                    <Table
+                                                        gridColumns={utils.getGridColumnByName('redemptionTerms')}
+                                                        gridData={this.state.redemptionTermsArr || []}
+                                                        componentFunction={this.redemptionTermsActionHandler}
+                                                    />
+                                                </div>
+
                                             </Portlet>
 
                                         </div>
@@ -853,8 +913,8 @@ class AddPartner extends Component {
                                                     <Combobox
                                                         fieldname='withPartnerCode'
                                                         formname='contractParams'
-                                                        columns='7'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                        columns='8'
+                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                                         placeholder='Select'
                                                         style={{}}
                                                         state={this.state}
@@ -871,19 +931,19 @@ class AddPartner extends Component {
                                             }
 
                                             <Portlet title={"ACCURAL BILLING RATES"}>
-                                                {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? ((this.props.params.partnerCode && !( this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false) : false)) &&
+                                                {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? ((this.props.params.partnerCode && !(this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false) : false)) &&
                                                     (<div>
 
                                                         <div className="row">
                                                             <div className="col-md-6">
                                                                 <Label text="Start Date" columns='4' />
-                                                                <div className="col-md-7">
+                                                                <div className="col-md-8">
                                                                     <DateControl id="accuralStartDate" defaultValue={utils.UNIXConvertToDate(this.state.accuralStartDate)} dateChange={this.dateChange.bind(this, 'accuralStartDate')} />
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-6">
                                                                 <Label text="End Date" columns='4' />
-                                                                <div className="col-md-7">
+                                                                <div className="col-md-8">
                                                                     <DateControl id="accuralEndDate" defaultValue={utils.UNIXConvertToDate(this.state.accuralEndDate)} dateChange={this.dateChange.bind(this, 'accuralEndDate')} />
                                                                 </div>
                                                             </div>
@@ -895,7 +955,7 @@ class AddPartner extends Component {
                                                                 <Input
                                                                     fieldname='sellingRate'
                                                                     formname='accrualTerms'
-                                                                    columns='7'
+                                                                    columns='8'
                                                                     placeholder=''
                                                                     state={this.state}
                                                                     actionHandler={this.generalHandler}
@@ -903,7 +963,7 @@ class AddPartner extends Component {
                                                                 />
                                                             </div>
 
-                                                            <div className="col-md-6">
+                                                            {/* <div className="col-md-6">
                                                                 <Label text="Mode" columns='4' />
                                                                 <Combobox
                                                                     fieldname='mode'
@@ -917,24 +977,28 @@ class AddPartner extends Component {
                                                                     actionHandler={this.generalHandler}
                                                                     className="form-control"
                                                                 />
-                                                            </div>
+                                                            </div> */}
 
                                                         </div>
                                                         <div className="row">
                                                             <div className="col-md-12">
                                                                 <div className="btn-toolbar pull-right">
-                                                                    <button onClick={this.addAccuralTerm} type="submit" className="pull-right btn green">
+                                                                    <button style={{ marginRight: "22%" }} onClick={this.addAccuralTerm} type="submit" className="pull-right btn green">
                                                                         {utils.getLabelByID("Add")}
                                                                     </button>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>)}
-                                                <Table
-                                                    gridColumns={utils.getGridColumnByName('accrualTerms')}
-                                                    gridData={this.state.accrualTermsArr || []}
-                                                    componentFunction={this.accrualTermsActionHandler}
-                                                />
+
+                                                <div style={{ padding: "0 15" }}>
+                                                    <Table
+                                                        gridColumns={utils.getGridColumnByName('accrualTerms')}
+                                                        gridData={this.state.accrualTermsArr || []}
+                                                        componentFunction={this.accrualTermsActionHandler}
+                                                    />
+                                                </div>
+
                                             </Portlet>
                                             <Portlet title={"ACCURAL POINT CREDIT RULES"}>
 
@@ -944,9 +1008,9 @@ class AddPartner extends Component {
                                                         <Combobox
                                                             fieldname='ruleType'
                                                             formname='pointCreditRules'
-                                                            columns='7'
+                                                            columns='8'
                                                             placeholder='Select'
-                                                            disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                            disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                                             style={{}}
                                                             state={this.state}
                                                             typeName="rule"
@@ -959,9 +1023,9 @@ class AddPartner extends Component {
                                                         <Label text="Max Unsettled(AED)" columns='4' />
                                                         <Input
                                                             fieldname='maxUnsettledAmount'
-                                                            disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                            disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                                             formname='pointCreditRules'
-                                                            columns='7'
+                                                            columns='8'
                                                             placeholder=''
                                                             state={this.state}
                                                             actionHandler={this.generalHandler}
@@ -983,8 +1047,8 @@ class AddPartner extends Component {
                                             <Combobox
                                                 fieldname='creationAutoOrManual'
                                                 formname='settlement'
-                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                columns='7'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                columns='8'
                                                 placeholder='Select'
                                                 style={{}}
                                                 state={this.state}
@@ -999,8 +1063,8 @@ class AddPartner extends Component {
                                             <Combobox
                                                 fieldname='requireManualApproval'
                                                 formname='settlement'
-                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                columns='7'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                columns='8'
                                                 placeholder='Select'
                                                 style={{}}
                                                 state={this.state}
@@ -1019,8 +1083,8 @@ class AddPartner extends Component {
                                             <Combobox
                                                 fieldname='frequency'
                                                 formname='settlement'
-                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                columns='7'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                columns='8'
                                                 placeholder='Select'
                                                 style={{}}
                                                 state={this.state}
@@ -1032,7 +1096,7 @@ class AddPartner extends Component {
                                         </div>
                                         <div className="col-md-6">
                                             <Label text="Start On" columns='4' />
-                                            <div className="col-md-7">
+                                            <div className="col-md-8">
                                                 <DateControl id="settlementStartOn" defaultValue={utils.UNIXConvertToDate(this.state.settlementStartOn)} dateChange={this.dateChange.bind(this, 'settlementStartOn')} />
                                             </div>
                                         </div>
@@ -1045,7 +1109,7 @@ class AddPartner extends Component {
                                                 disabled={true}
                                                 value={"AED"}
                                                 formname='settlement'
-                                                columns='7'
+                                                columns='8'
                                                 placeholder=''
                                                 state={this.state}
                                                 actionHandler={this.generalHandler}
@@ -1073,7 +1137,7 @@ class AddPartner extends Component {
                                         style={{ height: '120px' }}
                                         fieldname='termsandConditionsEn'
                                         formname='contractParams'
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                         columns='12'
                                         placeholder='Terms and Conditions'
                                         state={this.state}
@@ -1086,7 +1150,7 @@ class AddPartner extends Component {
                                         style={{ height: '120px', textAlign: "right" }}
                                         fieldname='termsandConditionsAr'
                                         formname='contractParams'
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                         columns='12'
                                         placeholder='الأحكام والشروط'
                                         state={this.state}
@@ -1101,8 +1165,8 @@ class AddPartner extends Component {
                                             <Input
                                                 fieldname='vendorCode'
                                                 formname='erpSettingsTo'
-                                                columns='7'
-                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                columns='8'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                                 placeholder=''
                                                 state={this.state}
                                                 actionHandler={this.generalHandler}
@@ -1114,8 +1178,8 @@ class AddPartner extends Component {
                                             <Input
                                                 fieldname='vendorSiteID'
                                                 formname='erpSettingsTo'
-                                                columns='7'
-                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                columns='8'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                                 placeholder=''
                                                 state={this.state}
                                                 actionHandler={this.generalHandler}
@@ -1129,8 +1193,8 @@ class AddPartner extends Component {
                                             <Input
                                                 fieldname='glCode'
                                                 formname='erpSettingsTo'
-                                                columns='7'
-                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                columns='8'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                                 placeholder=''
                                                 state={this.state}
                                                 actionHandler={this.generalHandler}
@@ -1142,8 +1206,8 @@ class AddPartner extends Component {
                                             <Input
                                                 fieldname='billingAccount'
                                                 formname='erpSettingsTo'
-                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                columns='7'
+                                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                columns='8'
                                                 placeholder=''
                                                 state={this.state}
                                                 actionHandler={this.generalHandler}
@@ -1433,7 +1497,7 @@ class AddPartner extends Component {
         let contactInformationArr = [...this.state.contactInformationArr]
         let contactInformation = { ...this.state.contactInformation }
 
-        if (!contactInformation.email || !contactInformation.firstName || !contactInformation.lastName || !contactInformation.mobile || !contactInformation.phone || !contactInformation.address || !contactInformation.mode) {
+        if (!contactInformation.email || !contactInformation.firstName || !contactInformation.lastName || !contactInformation.mobile || !contactInformation.phone || !contactInformation.address) {
             toaster.showToast("All fields are required for contact information", "ERROR");
             return;
         }
@@ -1541,9 +1605,9 @@ class AddPartner extends Component {
             toaster.showToast("Please fill the fields", "ERROR");
             return;
         }
-        body.partnerNameEn = !_.get(this.state, 'body.partnerNameEn', undefined) ? _.get(this.state, 'userEntity.entityName.name', '') : _.get(this.state, 'body.partnerNameEn','' )
-        body.partnerCode = !_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode','' )
-        body.partnerNameAr = !_.get(this.state, 'body.partnerNameAr', undefined) ? _.get(this.state, 'userEntity.arabicName', '') : _.get(this.state, 'body.partnerNameAr','' )
+        body.partnerNameEn = !_.get(this.state, 'body.partnerNameEn', undefined) ? _.get(this.state, 'userEntity.entityName.name', '') : _.get(this.state, 'body.partnerNameEn', '')
+        body.partnerCode = !_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')
+        body.partnerNameAr = !_.get(this.state, 'body.partnerNameAr', undefined) ? _.get(this.state, 'userEntity.arabicName', '') : _.get(this.state, 'body.partnerNameAr', '')
 
         if (!body.partnerCategory) {
             toaster.showToast("Partner category is required", "ERROR");
@@ -1624,8 +1688,8 @@ class AddPartner extends Component {
                                     <Input
                                         fieldname='partnerCode'
                                         formname='body'
-                                        value={ !_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', 'Loading...') : _.get(this.state, 'body.partnerCode','Loading...' )}
-                                        columns='7'
+                                        value={!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', 'Loading...') : _.get(this.state, 'body.partnerCode', 'Loading...')}
+                                        columns='8'
                                         disabled={true}
                                         placeholder=''
                                         state={this.state}
@@ -1638,8 +1702,8 @@ class AddPartner extends Component {
                                     <Input
                                         fieldname='partnerNameEn'
                                         formname='body'
-                                        columns='7'
-                                        value={ !_.get(this.state, 'body.partnerNameEn', undefined) ? _.get(this.state, 'userEntity.entityName.name', 'Loading...') : _.get(this.state, 'body.partnerNameEn','Loading...' )}
+                                        columns='8'
+                                        value={!_.get(this.state, 'body.partnerNameEn', undefined) ? _.get(this.state, 'userEntity.entityName.name', 'Loading...') : _.get(this.state, 'body.partnerNameEn', 'Loading...')}
                                         disabled={true}
                                         placeholder='Name'
                                         state={this.state}
@@ -1652,9 +1716,9 @@ class AddPartner extends Component {
                                     <Input
                                         fieldname='partnerNameAr'
                                         formname='body'
-                                        columns='7'
-                                        value={ !_.get(this.state, 'body.partnerNameAr', undefined) ? _.get(this.state, 'userEntity.arabicName', 'Loading...') : _.get(this.state, 'body.partnerNameAr','Loading...' )}
-                            
+                                        columns='8'
+                                        value={!_.get(this.state, 'body.partnerNameAr', undefined) ? _.get(this.state, 'userEntity.arabicName', 'Loading...') : _.get(this.state, 'body.partnerNameAr', 'Loading...')}
+
                                         disabled={true}
                                         placeholder=' شَريك اسم '
                                         style={{ textAlign: "right" }}
@@ -1669,8 +1733,8 @@ class AddPartner extends Component {
                                     <Combobox
                                         fieldname='partnerCategory'
                                         formname='body'
-                                        columns='7'
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                        columns='8'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                         placeholder='Select'
                                         style={{}}
                                         state={this.state}
@@ -1685,8 +1749,8 @@ class AddPartner extends Component {
                                     <Input
                                         fieldname='partnerErCode'
                                         formname='body'
-                                        columns='7'
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                        columns='8'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                         placeholder=''
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1710,8 +1774,8 @@ class AddPartner extends Component {
                                     style={{ height: '60px', width: "102%" }}
                                     fieldname='partnerDescriptionEn'
                                     formname='body'
-                                    columns='7'
-                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                    columns='8'
+                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                     placeholder='Partner Description'
                                     state={this.state}
                                     actionHandler={this.generalHandler}
@@ -1726,8 +1790,8 @@ class AddPartner extends Component {
                                     style={{ height: '60px', textAlign: "right" }}
                                     fieldname='partnerDescriptionAr'
                                     formname='body'
-                                    columns='7'
-                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                    columns='8'
+                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                     placeholder='وصف الشريك'
                                     state={this.state}
                                     actionHandler={this.generalHandler}
@@ -1741,7 +1805,7 @@ class AddPartner extends Component {
                         {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? true : false)) && this.renderTypePortlet()}
                         <Portlet title={"CONTACT"}>
                             {
-                                (!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? ((this.props.params.partnerCode && !( this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false) : false)) && (
+                                (!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? ((this.props.params.partnerCode && !(this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false) : false)) && (
                                     <div>
                                         <div className="row">
                                             <div className="col-md-6">
@@ -1749,7 +1813,7 @@ class AddPartner extends Component {
                                                 <Input
                                                     fieldname='firstName'
                                                     formname='contactInformation'
-                                                    columns='7'
+                                                    columns='8'
                                                     placeholder=''
                                                     state={this.state}
                                                     actionHandler={this.generalHandler}
@@ -1761,7 +1825,7 @@ class AddPartner extends Component {
                                                 <Input
                                                     fieldname='lastName'
                                                     formname='contactInformation'
-                                                    columns='7'
+                                                    columns='8'
                                                     placeholder=''
                                                     state={this.state}
                                                     actionHandler={this.generalHandler}
@@ -1775,7 +1839,7 @@ class AddPartner extends Component {
                                                 <Input
                                                     fieldname='phone'
                                                     formname='contactInformation'
-                                                    columns='7'
+                                                    columns='8'
                                                     placeholder=''
                                                     state={this.state}
                                                     actionHandler={this.generalHandler}
@@ -1787,41 +1851,7 @@ class AddPartner extends Component {
                                                 <Input
                                                     fieldname='mobile'
                                                     formname='contactInformation'
-                                                    columns='7'
-                                                    placeholder=''
-                                                    state={this.state}
-                                                    actionHandler={this.generalHandler}
-                                                    className="form-control"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-md-6">
-
-
-
-                                                <Label text="Mode" columns='4' />
-                                                <Combobox
-                                                    fieldname='mode'
-                                                    formname='contactInformation'
-                                                    columns='7'
-                                                    placeholder='Select'
-                                                    style={{}}
-                                                    state={this.state}
-                                                    typeName="contactMode"
-                                                    dataSource={_.get(this.state, 'typeData', {})}
-                                                    actionHandler={this.generalHandler}
-                                                    className="form-control"
-                                                />
-
-
-                                            </div>
-                                            <div className="col-md-6">
-                                                <Label text="Email" columns='4' />
-                                                <Input
-                                                    fieldname='email'
-                                                    formname='contactInformation'
-                                                    columns='7'
+                                                    columns='8'
                                                     placeholder=''
                                                     state={this.state}
                                                     actionHandler={this.generalHandler}
@@ -1836,7 +1866,19 @@ class AddPartner extends Component {
                                                     style={{ height: '60px' }}
                                                     fieldname='address'
                                                     formname='contactInformation'
-                                                    columns='7'
+                                                    columns='8'
+                                                    placeholder=''
+                                                    state={this.state}
+                                                    actionHandler={this.generalHandler}
+                                                    className="form-control"
+                                                />
+                                            </div>
+                                            <div className="col-md-6">
+                                                <Label text="Email" columns='4' />
+                                                <Input
+                                                    fieldname='email'
+                                                    formname='contactInformation'
+                                                    columns='8'
                                                     placeholder=''
                                                     state={this.state}
                                                     actionHandler={this.generalHandler}
@@ -1848,7 +1890,7 @@ class AddPartner extends Component {
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <div className="btn-toolbar pull-right">
-                                                    <button onClick={this.addContactInformation} type="submit" className="pull-right btn green">
+                                                    <button style={{ marginRight: '21%' }} onClick={this.addContactInformation} type="submit" className="pull-right btn green">
                                                         {utils.getLabelByID("Add")}
                                                     </button>
                                                 </div>
@@ -1857,12 +1899,13 @@ class AddPartner extends Component {
                                     </div>
                                 )
                             }
-
-                            <Table
-                                gridColumns={utils.getGridColumnByName('contactInfo')}
-                                gridData={this.state.contactInformationArr || []}
-                                componentFunction={this.contactInfoActionHandler}
-                            />
+                            <div style={{ padding: '0 15px' }}>
+                                <Table
+                                    gridColumns={utils.getGridColumnByName('contactInfo')}
+                                    gridData={this.state.contactInformationArr || []}
+                                    componentFunction={this.contactInfoActionHandler}
+                                />
+                            </div>
                         </Portlet>
 
                         <Portlet title={"ERP SETTINGS FROM"}>
@@ -1872,8 +1915,8 @@ class AddPartner extends Component {
                                     <Input
                                         fieldname='vendorCode'
                                         formname='erpSettingsFrom'
-                                        columns='7'
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                        columns='8'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                         placeholder=''
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1884,9 +1927,9 @@ class AddPartner extends Component {
                                     <Label text="Vendor Site ID" columns='4' />
                                     <Input
                                         fieldname='vendorSiteID'
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                         formname='erpSettingsFrom'
-                                        columns='7'
+                                        columns='8'
                                         placeholder=''
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1900,8 +1943,8 @@ class AddPartner extends Component {
                                     <Input
                                         fieldname='glCode'
                                         formname='erpSettingsFrom'
-                                        columns='7'
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                        columns='8'
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                         placeholder=''
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1913,9 +1956,9 @@ class AddPartner extends Component {
                                     <Input
                                         fieldname='billingAccount'
                                         formname='erpSettingsFrom'
-                                        columns='7'
+                                        columns='8'
                                         placeholder=''
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                         state={this.state}
                                         actionHandler={this.generalHandler}
                                         className="form-control"
@@ -2071,7 +2114,7 @@ class AddPartner extends Component {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="btn-toolbar pull-right">
-                                <button disabled={(this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[1])) ? true : ((this.props.params.partnerCode && (this.state.status == "PENDING" && this.state.user.orgCode==this.props.params.partnerCode.split("_")[0])) ? true : false)} onClick={(!this.props.params.partnerCode || this.state.status == "APPROVED") ? this.setPartner : this.approvePartner} type="submit" className="pull-right btn green">
+                                <button style={{ marginRight: '17%' }} disabled={(this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : ((this.props.params.partnerCode && (this.state.status == "PENDING" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[0])) ? true : false)} onClick={(!this.props.params.partnerCode || this.state.status == "APPROVED") ? this.setPartner : this.approvePartner} type="submit" className="pull-right btn green">
                                     {(!this.props.params.partnerCode || this.state.status == "APPROVED") ? utils.getLabelByID("Submit") : utils.getLabelByID("Approve")}
                                 </button>
                             </div>
