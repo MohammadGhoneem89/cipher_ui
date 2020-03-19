@@ -83,7 +83,7 @@ class AddPartner extends Component {
                     ...nextProps.typeData,
                     entityNames: nextProps.entityNames
                         .filter(item => {
-                            if (item.orgType === 'PARTNER') {
+                            if (item.orgType === 'PARTNER' && nextProps.user.orgCode.toUpperCase()!=item.value.toUpperCase()) {
                                 return true
                             } else {
                                 return false
@@ -713,7 +713,7 @@ class AddPartner extends Component {
                                                             />
                                                         </div>
                                                         <div className="col-md-6">
-                                                            <Label text="Source Token" columns='4' />
+                                                            <Label text="Program Name" columns='4' />
                                                             <Input
                                                                 fieldname='sourceToken'
                                                                 formname='rates'
@@ -1641,7 +1641,10 @@ class AddPartner extends Component {
             body.contractParams = [...contractParams]
         }
         let request = {
-            body: { ...body }
+            body: {
+                ...body,
+                isNewPartner: this.props.params.partnerCode ? false : true
+            }
         }
         console.log(`\n\n\n${JSON.stringify({ ...body })}\n\n\n`)
 
