@@ -305,6 +305,34 @@ class TableCell extends React.Component {
             src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
           </td>);
         }
+        case "image1":
+          if (this.props.url) {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth, height: this.props.columnHeight }}><img
+              width="28px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+                href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+            </td>);
+          }
+          else {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="28px" height="28px"
+              src={ (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+            </td>);
+          }
+        case "broaderImage": 
+        if (this.props.url) {
+          return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+            width="28px" height="28px"
+            src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+              href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+          </td>);
+        }
+        else {
+          return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+            width="28px" height="28px"
+            src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+          </td>);
+        }
       case "statusLabelBig":
         return (<td><h3><span className={this.getClassForStatusBig(this.props.cellData.type)}
           style={{ height: "20px" }}>{this.props.cellData.value}</span></h3></td>);

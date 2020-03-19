@@ -46,6 +46,7 @@ import LMSData from "./components/getLMSData.jsx";
 import FileList from "./components/Files/FileList.jsx";
 import FileData from "./components/Files/FileData.jsx";
 import FileTemplateSetup from "./components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx";
+import LoyaltyTokenRateManagement from './components/LoyaltyTokenRateManagement.jsx';
 
 
 let authRoutes = <div>
@@ -160,6 +161,7 @@ let authRoutes = <div>
     <Route path="/smiles/addNewMerchant" component={AddNewMerchant} />
     <Route path="/smiles/offerManagement" component={OfferManagement} />
     <Route path="/smiles/productManagement" component={ProductManagement} />
+    <Route path="/smiles/loyaltyToken" component={LoyaltyTokenRateManagement} />
 
 
 

@@ -48,4 +48,5 @@ module.exports = {
     getDBEndpointListView: baseUrl + "/API/etisalat/getDBEndpointListView",
     getTableNames: baseUrl + "/API/etisalat/getTableNames",
     getFieldsList: baseUrl + "/API/etisalat/getFieldsList",
+    getOrgCodeData: baseUrl + "/API/SMILES/getAllOrgMap",
 };

@@ -303,6 +303,21 @@ class TableCell extends React.Component {
             src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
           </td>);
         }
+        case "image1":
+          alert('sdds');
+          if (this.props.url) {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth, height: this.props.columnHeight }}><img
+              width="28px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+                href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+            </td>);
+          }
+          else {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="28px" height="28px"
+              src={ (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+            </td>);
+          }
       case "statusBox":
         return (<td><span className={this.getClassForStatusLabel(this.props.cellData)}
         >{this.props.cellData}</span></td>);
