@@ -73,8 +73,10 @@ class AddPartner extends Component {
         return {}
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.typeData && nextProps.entityNames && nextProps.user && nextProps.userEntity) {
+        if (nextProps.typeData && nextProps.entityNames && nextProps.user && nextProps.userEntity && nextProps.getAllOrgMap) {
+
             this.setState({
+                allOrgMap: [..._.get(nextProps, 'getAllOrgMap', [])],
                 user: { ...nextProps.user },
                 userEntity: {
                     ...nextProps.userEntity
@@ -83,7 +85,7 @@ class AddPartner extends Component {
                     ...nextProps.typeData,
                     entityNames: nextProps.entityNames
                         .filter(item => {
-                            if (item.orgType === 'PARTNER' && nextProps.user.orgCode.toUpperCase()!=item.value.toUpperCase()) {
+                            if (item.orgType === 'PARTNER' && nextProps.user.orgCode.toUpperCase() != item.value.toUpperCase()) {
                                 return true
                             } else {
                                 return false
@@ -213,7 +215,7 @@ class AddPartner extends Component {
             "pageSize": 1
         }));
 
-
+        this.props.actions.generalProcess(constants.getAllOrgMap, {});
     }
 
 
@@ -528,6 +530,27 @@ class AddPartner extends Component {
         this.setState({ ratesArr, rates: undefined, pointConversionStartDate: undefined, pointConversionEndDate: undefined })
     }
 
+    getSourceProgram(org) {
+        let arr = this.state.allOrgMap.filter(item => {
+            return item.orgCode == org
+        })
+        if (arr.length >= 1) {
+            return arr[0]
+        } else {
+            return {}
+        }
+    }
+
+    getProgram() {
+        let arr = this.state.allOrgMap.filter(item => {
+            return item.orgCode == _.get(this.state, 'contractParams.withPartnerCode', '')
+        })
+        if (arr.length >= 1) {
+            return arr[0]
+        } else {
+            return {}
+        }
+    }
 
     subsidaryPartner() {
         return (
@@ -542,144 +565,123 @@ class AddPartner extends Component {
                                 {
                                     this.state.isPointConversionPartner && (
                                         <div>
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <Label text="Your Partner Code" columns='4' />
-                                                    <Combobox
-                                                        fieldname='withPartnerCode'
-                                                        formname='contractParams'
-                                                        columns='8'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                        placeholder='Select'
-                                                        style={{}}
-                                                        state={this.state}
-                                                        typeName="entityNames"
-                                                        dataSource={_.get(this.state, 'typeData', {})}
-                                                        actionHandler={this.generalHandler}
-                                                        className="form-control"
-                                                    />
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <Label text="Program Name" columns='4' />
-                                                    <Input
-                                                        fieldname='conversionPartnerProgramName'
-                                                        formname='contractParams'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                        columns='8'
-                                                        placeholder=''
-                                                        state={this.state}
-                                                        actionHandler={this.generalHandler}
-                                                        className="form-control"
-                                                    />
-                                                </div>
-
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-md-6">
-
-                                                    <Label text="AED Conversion" columns='4' />
-                                                    <Input
-                                                        fieldname='aedConversion'
-                                                        formname='contractParams'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                        columns='8'
-                                                        placeholder=''
-                                                        state={this.state}
-                                                        actionHandler={this.generalHandler}
-                                                        className="form-control"
-                                                    />
-                                                </div>
-                                                <div className="col-md-6">
-
-                                                    <Label text="Authentication Type" columns='4' />
-                                                    <Combobox
-                                                        fieldname='authType'
-                                                        formname='contractParams'
-                                                        columns='8'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                        placeholder='Select'
-                                                        style={{}}
-                                                        state={this.state}
-                                                        typeName="authenticationTypes"
-                                                        dataSource={_.get(this.state, 'typeData', {})}
-                                                        actionHandler={this.generalHandler}
-                                                        className="form-control"
-                                                    />
-                                                </div>
-
-                                            </div>
-
-                                            <div className="row">
-                                                <div className="col-md-6">
-
-                                                    <Label text="Minimum Points" columns='4' />
-                                                    <Input
-                                                        fieldname='minPoints'
-                                                        formname='contractParams'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                        columns='8'
-                                                        placeholder=''
-                                                        state={this.state}
-                                                        actionHandler={this.generalHandler}
-                                                        className="form-control"
-                                                    />
-                                                </div>
-                                            </div>
-                                            {/* <Portlet title={"POINT CONVERSION"}>
-                                                    <div className="row">
-
-                                                        <div className="col-md-6">
-                                                            <div className="row">
-                                                                <Label text="Program Name" columns='4' style={{ padding: "0 0 0 30" }} />
-                                                                <Input
-                                                                    fieldname='conversionPartnerProgramName'
-                                                                    formname='pointConversion'
-                                                                    columns='7'
-                                                                    placeholder=''
-                                                                    state={this.state}
-                                                                    actionHandler={this.generalHandler}
-                                                                    className="form-control"
-                                                                />
-                                                            </div>
-                                                            <div className="row">
-                                                                <Label text="Program Code" columns='4' style={{ padding: "0 0 0 30" }} />
-                                                                <Input
-                                                                    fieldname='programCode'
-                                                                    formname='pointConversion'
-                                                                    columns='7'
-                                                                    placeholder=''
-                                                                    state={this.state}
-                                                                    actionHandler={this.generalHandler}
-                                                                    className="form-control"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            {this.imgDiv('pointConversion', { width: '100px', height: '100px', marginBottom: '-35px' })}
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col-md-12">
-                                                            <div className="btn-toolbar pull-right">
-                                                                <button onClick={this.addPointConversion} type="submit" className="pull-right btn green">
-                                                                    {utils.getLabelByID("Add")}
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <Table
-                                                        gridColumns={utils.getGridColumnByName('pointConversion')}
-                                                        gridData={this.state.pointConversionArr || []}
-                                                        componentFunction={this.pointConversionActionHandler}
-                                                    />
-
-                                                </Portlet> */}
 
 
                                             {
                                                 (this.props.params.partnerCode && this.state.status != "APPROVED") && this.renderTypePortlet(2)
                                             }
+                                            <Portlet title={"Program"}>
+                                                {
+                                                    this.state.isPointConversionPartner && (
+                                                        <div>
+                                                            <div className="row">
 
+                                                                <div className="col-md-6">
+                                                                    {this.getProgram().img && <img style={{
+                                                                        position: 'relative',
+                                                                        left: '250px',
+                                                                        top: '5px',
+                                                                        zIndex: '2',
+                                                                        bottom: '13px'
+                                                                    }} id="UserProfilePic" src={this.getProgram().img} class="img-responsive img-thumbnail" alt="Profile Image" width="20px" height="20px" />}
+                                                                    <div style={this.getProgram().img ? {
+                                                                        position: 'relative',
+                                                                        bottom: '22px'
+                                                                    } : {
+                                                                        position: 'relative'
+                                                                    }}>
+
+
+                                                                        <Label text="Program Name" columns='4' />
+                                                                        <Input
+                                                                            style={{ paddingLeft: "40px" }}
+                                                                            fieldname='conversionPartnerProgramName'
+                                                                            formname='contractParams'
+                                                                            value={this.getProgram().programCode}
+                                                                            // disabled= {this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                            disabled={true}
+                                                                            columns='8'
+                                                                            placeholder=''
+                                                                            state={this.state}
+                                                                            actionHandler={this.generalHandler}
+                                                                            className="form-control"
+                                                                        />
+                                                                    </div>
+
+
+                                                                    <div className="row">
+                                                                        <div className="col-md-8"></div>
+                                                                        <div className="col-md-4" style={{
+                                                                            textAlign: 'right',
+                                                                            position: 'relative',
+                                                                            bottom: '20px',
+                                                                            right: '12px',
+                                                                            fontStyle: 'italic',
+                                                                            color: '#E17630'
+                                                                        }}>
+                                                                            <span style={{ fontSize: '29px' }}>
+                                                                                {this.getProgram().AEDValue && `${this.getProgram().AEDValue} AED`}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="col-md-6">
+
+                                                                    <Label text="Minimum Points" columns='4' />
+                                                                    <Input
+                                                                        fieldname='minPoints'
+                                                                        formname='contractParams'
+                                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                        columns='8'
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+                                                                </div>
+
+                                                            </div>
+                                                            <div className="row">
+                                                                {/* <div className="col-md-6">
+
+                                                                    <Label text="AED Conversion" columns='4' />
+                                                                    <Input
+                                                                        fieldname='aedConversion'
+                                                                        formname='contractParams'
+                                                                        value={this.getProgram().AEDValue}
+                                                                        disabled={true}
+                                                                        // disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                        columns='8'
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+
+                                                                </div> */}
+                                                                <div className="col-md-6">
+
+                                                                    <Label text="Authentication Type" columns='4' />
+                                                                    <Combobox
+                                                                        fieldname='authType'
+                                                                        formname='contractParams'
+                                                                        columns='8'
+                                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                        placeholder='Select'
+                                                                        style={{}}
+                                                                        state={this.state}
+                                                                        typeName="authenticationTypes"
+                                                                        dataSource={_.get(this.state, 'typeData', {})}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                            </Portlet>
 
                                             <Portlet title={"RATES"}>
                                                 {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? ((this.props.params.partnerCode && !(this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false) : false)) && (<div>
@@ -713,18 +715,50 @@ class AddPartner extends Component {
                                                             />
                                                         </div>
                                                         <div className="col-md-6">
-                                                            <Label text="Program Name" columns='4' />
-                                                            <Input
-                                                                fieldname='sourceToken'
-                                                                formname='rates'
-                                                                columns='8'
-                                                                disabled={true}
-                                                                value={"SMILES"}
-                                                                placeholder=''
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
+                                                            {this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', {}) : _.get(this.state, 'body.partnerCode', {})).img && <img style={{
+                                                                position: 'relative',
+                                                                left: '250px',
+                                                                top: '5px',
+                                                                zIndex: '2',
+                                                                bottom: '13px'
+                                                            }} id="UserProfilePic" src={this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).img} class="img-responsive img-thumbnail" alt="Profile Image" width="20px" height="20px"
+                                                            />}
+                                                            <div style={ this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).img ? {
+                                                                position: 'relative',
+                                                                bottom: '22px'
+                                                            } : {
+                                                                position: 'relative'
+                                                            }}>
+                                                                <Label text="Program Name" columns='4' />
+                                                                <Input
+                                                                    style={{ paddingLeft: '40px' }}
+                                                                    fieldname='sourceToken'
+                                                                    formname='rates'
+                                                                    columns='8'
+                                                                    disabled={true}
+                                                                    value={this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).programCode}
+                                                                    placeholder=''
+                                                                    state={this.state}
+                                                                    actionHandler={this.generalHandler}
+                                                                    className="form-control"
+                                                                />
+                                                            </div>
+
+                                                            <div className="row">
+                                                                <div className="col-md-8"></div>
+                                                                <div className="col-md-4" style={{
+                                                                    textAlign: 'right',
+                                                                    position: 'relative',
+                                                                    bottom: '20px',
+                                                                    right: '12px',
+                                                                    fontStyle: 'italic',
+                                                                    color: '#E17630'
+                                                                }}>
+                                                                    <span style={{ fontSize: '29px' }}>{`${this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).AEDValue} AED`}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </div>
 
@@ -776,25 +810,6 @@ class AddPartner extends Component {
                                 {
                                     this.state.isRedemptionPartner && (
                                         <div>
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <Label text="Your Partner Code" columns='4' />
-                                                    <Combobox
-                                                        fieldname='withPartnerCode'
-                                                        formname='contractParams'
-                                                        columns='8'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                        placeholder='Select'
-                                                        style={{}}
-                                                        state={this.state}
-                                                        typeName="entityNames"
-                                                        dataSource={_.get(this.state, 'typeData', {})}
-                                                        actionHandler={this.generalHandler}
-                                                        className="form-control"
-                                                    />
-                                                </div>
-
-                                            </div>
                                             {
                                                 (this.props.params.partnerCode && this.state.status != "APPROVED") && this.renderTypePortlet(2)
                                             }
@@ -907,25 +922,6 @@ class AddPartner extends Component {
                                 {
                                     this.state.isAccrualPartner && (
                                         <div>
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <Label text="Your Partner Code" columns='4' />
-                                                    <Combobox
-                                                        fieldname='withPartnerCode'
-                                                        formname='contractParams'
-                                                        columns='8'
-                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                        placeholder='Select'
-                                                        style={{}}
-                                                        state={this.state}
-                                                        typeName="entityNames"
-                                                        dataSource={_.get(this.state, 'typeData', {})}
-                                                        actionHandler={this.generalHandler}
-                                                        className="form-control"
-                                                    />
-                                                </div>
-
-                                            </div>
                                             {
                                                 (this.props.params.partnerCode && this.state.status != "APPROVED") && this.renderTypePortlet(2)
                                             }
@@ -1250,7 +1246,7 @@ class AddPartner extends Component {
                     </div >
 
                 </div>
-            </div>
+            </div >
 
         )
     }
@@ -1684,125 +1680,32 @@ class AddPartner extends Component {
             <ROW>
                 <COL>
                     <COL>
-                        <div className="row">
-                            <div className="col-md-6" style={{ padding: "20 0 0 0" }}>
-                                <div className="row">
-                                    <Label text="Partner Code" columns='4' style={{ padding: "0 0 0 30" }} />
-                                    <Input
-                                        fieldname='partnerCode'
-                                        formname='body'
-                                        value={!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', 'Loading...') : _.get(this.state, 'body.partnerCode', 'Loading...')}
-                                        columns='8'
-                                        disabled={true}
-                                        placeholder=''
-                                        state={this.state}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
-                                <div className="row">
-                                    <Label text="Partner Name En" columns='4' style={{ padding: "0 0 0 30" }} />
-                                    <Input
-                                        fieldname='partnerNameEn'
-                                        formname='body'
-                                        columns='8'
-                                        value={!_.get(this.state, 'body.partnerNameEn', undefined) ? _.get(this.state, 'userEntity.entityName.name', 'Loading...') : _.get(this.state, 'body.partnerNameEn', 'Loading...')}
-                                        disabled={true}
-                                        placeholder='Name'
-                                        state={this.state}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
-                                <div className="row">
-                                    <Label text="Partner Name Ar" columns='4' style={{ padding: "0 0 0 30" }} />
-                                    <Input
-                                        fieldname='partnerNameAr'
-                                        formname='body'
-                                        columns='8'
-                                        value={!_.get(this.state, 'body.partnerNameAr', undefined) ? _.get(this.state, 'userEntity.arabicName', 'Loading...') : _.get(this.state, 'body.partnerNameAr', 'Loading...')}
 
-                                        disabled={true}
-                                        placeholder=' شَريك اسم '
-                                        style={{ textAlign: "right" }}
-                                        state={this.state}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
+
+
+                        <Portlet title={"From Partner"} style={{ height: "100px" }}>
+                            <div className="col-md-6" style={{ display: 'flex' }}>
+                                {this.imgDiv('body', { width: "100px", height: "100px" }, { textAlign: undefined, width: 'fit-content' })}
+                                <div>
+                                    <div className="row" style={{ padding: '0px 0px 0px 7px' }}>
+                                        <b>{!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', 'Loading...') : _.get(this.state, 'body.partnerCode', 'Loading...')}</b>
+                                    </div>
+                                    <div className="row" style={{ padding: '15px 0px 0px 7px' }}>
+                                        {!_.get(this.state, 'body.partnerNameEn', undefined) ? _.get(this.state, 'userEntity.entityName.name', 'Loading...') : _.get(this.state, 'body.partnerNameEn', 'Loading...')}
+                                    </div>
+                                    <div className="row" style={{ padding: '15px 0px 0px 7px' }}>
+                                        {!_.get(this.state, 'body.partnerNameAr', undefined) ? _.get(this.state, 'userEntity.arabicName', 'Loading...') : _.get(this.state, 'body.partnerNameAr', 'Loading...')}
+                                    </div>
                                 </div>
 
-                                <div className="row">
-                                    <Label text="Partner Category" columns='4' style={{ padding: "0 0 0 30" }} />
-                                    <Combobox
-                                        fieldname='partnerCategory'
-                                        formname='body'
-                                        columns='8'
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                        placeholder='Select'
-                                        style={{}}
-                                        state={this.state}
-                                        typeName="category"
-                                        dataSource={_.get(this.state, 'typeData', {})}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
-                                <div className="row">
-                                    <Label text="Partner Er Code" columns='4' style={{ padding: "0 0 0 30" }} />
-                                    <Input
-                                        fieldname='partnerErCode'
-                                        formname='body'
-                                        columns='8'
-                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                        placeholder=''
-                                        state={this.state}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                                </div>
 
 
                             </div>
+                        </Portlet>
 
-                            <div className="col-md-6">
-                                {this.imgDiv('body', { width: "200px", height: "200px" }, { paddingLeft: "195px" })}
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-6">
 
-                                <Label text="Partner Description En" columns='4' />
-                                <Textarea
-                                    divStyle={{ padding: "0 0 0 5" }}
-                                    style={{ height: '60px', width: "102%" }}
-                                    fieldname='partnerDescriptionEn'
-                                    formname='body'
-                                    columns='8'
-                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                    placeholder='Partner Description'
-                                    state={this.state}
-                                    actionHandler={this.generalHandler}
-                                    className="form-control"
-                                />
 
-                            </div>
-                            <div className="col-md-6">
 
-                                <Label text="Partner Description Ar" columns='4' style={{ padding: "0 0 0 30" }} />
-                                <Textarea
-                                    style={{ height: '60px', textAlign: "right" }}
-                                    fieldname='partnerDescriptionAr'
-                                    formname='body'
-                                    columns='8'
-                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                    placeholder='وصف الشريك'
-                                    state={this.state}
-                                    actionHandler={this.generalHandler}
-                                    className="form-control"
-                                />
-
-                            </div>
-                        </div>
                         <br></br>
 
                         {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? true : false)) && this.renderTypePortlet()}
@@ -2031,81 +1934,181 @@ class AddPartner extends Component {
     }
 
     renderTypePortlet = (place = 1) => {
-        return (<Portlet title={"TYPE"}>
+        return (
+            <div>
+                <Portlet title={"TO PARTNER"}>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <Label text="Your Partner Code" columns='4' />
+                            <Combobox
+                                fieldname='withPartnerCode'
+                                formname='contractParams'
+                                columns='8'
+                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                placeholder='Select'
+                                style={{}}
+                                state={this.state}
+                                typeName="entityNames"
+                                dataSource={_.get(this.state, 'typeData', {})}
+                                actionHandler={this.generalHandler}
+                                className="form-control"
+                            />
+                        </div>
 
-            <div className="row">
-                <div className="col-md-12">
-                    <div className="" style={{ opacity: '1' }}>
-                        <div className="portlet-body flip-scroll">
-                            <div className="row">
-                                <div className="col-md-10 col-md-offset-1">
+                        <div className="col-md-6">
+                            <Label text="Partner Er Code" columns='4' />
+                            <Input
+                                fieldname='partnerErCode'
+                                formname='body'
+                                columns='8'
+                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                placeholder=''
+                                state={this.state}
+                                actionHandler={this.generalHandler}
+                                className="form-control"
+                            />
+                        </div>
 
-                                    {
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6">
 
-                                        (!this.props.params.partnerCode ? true : this.state.isRedemptionPartner) && (
-                                            <div className="col-md-4 text-center">
-                                                <div className="voucherBox">
-                                                    <img src="/assets/Resources/Redemption.png" width="20%" />
-                                                    <h5><strong>Redemption</strong></h5>
-                                                    <div className="icheck-list">
-                                                        <label className="mt-checkbox mt-checkbox-outline">
-                                                            <label></label>
-                                                            <input disabled={this.props.params.partnerCode ? true : false} onChange={this.typeSelected} type="checkbox" name="Redemption" value="" checked={this.state.isRedemptionPartner} className="form-control" />
-                                                            <span></span></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    }
+                            <Label text="Partner Description En" columns='4' />
+                            <Textarea
+                                style={{ height: '60px', width: "100%" }}
+                                fieldname='partnerDescriptionEn'
+                                formname='body'
+                                columns='8'
+                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                placeholder='Partner Description'
+                                state={this.state}
+                                actionHandler={this.generalHandler}
+                                className="form-control"
+                            />
 
-                                    {
-                                        (!this.props.params.partnerCode ? true : this.state.isAccrualPartner) && (
-                                            <div className="col-md-4 text-center">
-                                                <div className="voucherBox">
-                                                    <img src="/assets/Resources/Accrual.png" width="20%" />
-                                                    <h5><strong>Accural</strong></h5>
-                                                    <div className="icheck-list">
-                                                        <label className="mt-checkbox mt-checkbox-outline">
-                                                            <label></label>
-                                                            <input disabled={this.props.params.partnerCode ? true : false} onChange={this.typeSelected} type="checkbox" name="Accrual" checked={this.state.isAccrualPartner} value="" className="form-control" />
-                                                            <span></span></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    }
+                        </div>
+                        <div className="col-md-6">
 
-                                    {
-                                        (!this.props.params.partnerCode ? true : this.state.isPointConversionPartner) && (
-                                            <div className="col-md-4 text-center">
-                                                <div className="voucherBox">
-                                                    <img src="/assets/Resources/pointConverstion.png" width="20%" />
-                                                    <h5><strong>Point Conversion</strong></h5>
-                                                    <div className="icheck-list">
-                                                        <label className="mt-checkbox mt-checkbox-outline">
-                                                            <label></label>
-                                                            <input disabled={this.props.params.partnerCode ? true : false} onChange={this.typeSelected} type="checkbox" name="pointConverstion" checked={this.state.isPointConversionPartner} className="form-control" />
-                                                            <span></span></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    }
+                            <Label text="Partner Description Ar" columns='4' />
+                            <Textarea
+                                style={{ height: '60px', textAlign: "right" }}
+                                fieldname='partnerDescriptionAr'
+                                formname='body'
+                                columns='8'
+                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                placeholder='وصف الشريك'
+                                state={this.state}
+                                actionHandler={this.generalHandler}
+                                className="form-control"
+                            />
 
-
-                                </div>
-                            </div>
                         </div>
                     </div>
-                </div>
+                    <br></br>
+
+                    <div className="row">
+                        <div className="col-md-6">
+                            <Label text="Partner Category" columns='4' />
+                            <Combobox
+                                fieldname='partnerCategory'
+                                formname='body'
+                                columns='8'
+                                disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                placeholder='Select'
+                                style={{}}
+                                state={this.state}
+                                typeName="category"
+                                dataSource={_.get(this.state, 'typeData', {})}
+                                actionHandler={this.generalHandler}
+                                className="form-control"
+                            />
+                        </div>
+
+                    </div>
+
+
+
+                    <Portlet title={"TYPE"}>
+
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="" style={{ opacity: '1' }}>
+                                    <div className="portlet-body flip-scroll">
+                                        <div className="row">
+                                            <div className="col-md-10 col-md-offset-1">
+
+                                                {
+
+                                                    (!this.props.params.partnerCode ? true : this.state.isRedemptionPartner) && (
+                                                        <div className="col-md-4 text-center">
+                                                            <div className="voucherBox">
+                                                                <img src="/assets/Resources/Redemption.png" width="20%" />
+                                                                <h5><strong>Redemption</strong></h5>
+                                                                <div className="icheck-list">
+                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                        <label></label>
+                                                                        <input disabled={this.props.params.partnerCode ? true : false} onChange={this.typeSelected} type="checkbox" name="Redemption" value="" checked={this.state.isRedemptionPartner} className="form-control" />
+                                                                        <span></span></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+
+                                                {
+                                                    (!this.props.params.partnerCode ? true : this.state.isAccrualPartner) && (
+                                                        <div className="col-md-4 text-center">
+                                                            <div className="voucherBox">
+                                                                <img src="/assets/Resources/Accrual.png" width="20%" />
+                                                                <h5><strong>Accural</strong></h5>
+                                                                <div className="icheck-list">
+                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                        <label></label>
+                                                                        <input disabled={this.props.params.partnerCode ? true : false} onChange={this.typeSelected} type="checkbox" name="Accrual" checked={this.state.isAccrualPartner} value="" className="form-control" />
+                                                                        <span></span></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+
+                                                {
+                                                    (!this.props.params.partnerCode ? true : this.state.isPointConversionPartner) && (
+                                                        <div className="col-md-4 text-center">
+                                                            <div className="voucherBox">
+                                                                <img src="/assets/Resources/pointConverstion.png" width="20%" />
+                                                                <h5><strong>Point Conversion</strong></h5>
+                                                                <div className="icheck-list">
+                                                                    <label className="mt-checkbox mt-checkbox-outline">
+                                                                        <label></label>
+                                                                        <input disabled={this.props.params.partnerCode ? true : false} onChange={this.typeSelected} type="checkbox" name="pointConverstion" checked={this.state.isPointConversionPartner} className="form-control" />
+                                                                        <span></span></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </Portlet>
+                </Portlet>
+
             </div>
 
-        </Portlet>)
+        )
     }
 
     render() {
 
-        this.state.subsidaryPartnerBool ? AddPartner.displayName = "Subsidary Partner" : AddPartner.displayName = "Add Partner";
+        this.state.subsidaryPartnerBool ? AddPartner.displayName = "Subsidary Partner" : AddPartner.displayName = "Partner Contract";
         if (this.state.isLoading) {
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         } else {
@@ -2131,6 +2134,7 @@ class AddPartner extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
+        getAllOrgMap: _.get(state.app, 'getAllOrgMap.data.searchResult', undefined),
         user: _.get(state.app, 'user.data.searchResult', undefined),
         userEntity: _.get(state.app, 'entityList.data.searchResult[0]', undefined),
         typeData: state.app.typeData.data,
@@ -2143,7 +2147,7 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-AddPartner.displayName = "Add Partner";
+AddPartner.displayName = "Partner Contract";
 export default connect(mapStateToProps, mapDispatchToProps)(AddPartner);
 
 
