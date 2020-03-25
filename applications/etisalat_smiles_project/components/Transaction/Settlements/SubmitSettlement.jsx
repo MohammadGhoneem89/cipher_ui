@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as utils from '../../../../../core/common/utils.js';
 import Table from '../../../../../core/common/Datatable.jsx';
+import { browserHistory } from 'react-router';
 import * as actions from '../../../../../core/actions/generalAction';
 import * as constants from '../../../../../core/constants/Communication.js';
 import Portlet from '../../../../../core/common/Portlet.jsx';
@@ -31,40 +32,10 @@ class SubmitSettlement extends React.Component {
             isLoading: true,
             gridDataTPool: [],
             gridData: [],
-            actions: [],
-            dashboardTiles: [{
-                title: "Amount",
-                value: "445",
-                percentageTag: false
-            }]
+            actions: []
         };
         this.data = [];
         this.pageChanged = this.pageChanged.bind(this);
-    }
-
-    formSubmit = () => {
-        // this.props.actions.generalProcess(constants.getViewTransactions, this.getRequest());
-    }
-    reset = () => {
-        document.getElementById('contractId').value = "";
-        // document.getElementById('customer').value = "";
-        document.getElementById('status').value = "";
-
-        let request = {
-            "body": {
-                page: {
-                    currentPageNo: 1,
-                    pageSize: 10
-                },
-                searchCriteria: {}
-            }
-        }
-        this.setState({ searchCriteria: {} });
-        // this.props.actions.generalProcess(constants.getMasterAgreement, request);
-    };
-
-    redirectToAddPage = () => {
-        //this.props.actions.generalProcess(constants.getMasterAgreementList, this.getRequest());
     }
 
     getRequest = (pageNo = 1) => {
@@ -109,6 +80,25 @@ class SubmitSettlement extends React.Component {
                 let key = _.get(element, 'key', undefined)
                 key && txList.push(key)
             });
+
+            if (txList.length == 0 && !this.state.txList) {
+                toaster.showToast("No transactions found for submition", "ERROR");
+                this.setState({
+                    txList,
+                    user: { ...nextProps.user },
+                    userEntity: {
+                        ...nextProps.userEntity
+                    },
+                    isLoading: false,
+                    page,
+                    settlementData: {
+                        commissionAmount,
+                        amount,
+                        pointsAwarded
+                    },
+                    gridData: nextProps.getTransactionList.searchResult
+                })
+            }
             this.setState({
                 txList,
                 user: { ...nextProps.user },
@@ -122,7 +112,14 @@ class SubmitSettlement extends React.Component {
                     amount,
                     pointsAwarded
                 },
-                gridData: nextProps.getTransactionList.searchResult
+                gridData: nextProps.getTransactionList.searchResult,
+                searchCriteria: {
+                    partnerCode: this.props.params.fromPartnerCode,
+                    withPartnerCode: this.props.params.withPartnerCode,
+                    internalStatus: "CONFIRMED",
+                    startDate: this.props.params.Start,
+                    endDate: this.props.params.End
+                }
             })
         }
     }
@@ -197,7 +194,8 @@ class SubmitSettlement extends React.Component {
             .then(result => {
                 console.log(result)
                 result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : toaster.showToast("Settlement Batch Submitted");
-                this.setState({ isLoading: false })
+                //this.setState({ isLoading: false })
+                browserHistory.push('/smiles/settlementList')
             }).catch(result => {
                 window.scrollTo(0, 0);
                 this.setState({ isLoading: false })
@@ -287,7 +285,7 @@ class SubmitSettlement extends React.Component {
 
                         <div className="row">
                             <div className="row clearfix pull-right">
-                                <button onClick={this.createSettlementBatch} type={"submit"} className="btn green" style={{ marginRight: '44px' }}>
+                                <button disabled={this.state.txList.length == 0 ? true : false} onClick={this.createSettlementBatch} type={"submit"} className="btn green" style={{ marginRight: '44px' }}>
                                     Submit
                                 </button>
                             </div>
@@ -303,7 +301,6 @@ function mapStateToProps(state, ownProps) {
     return {
         user: _.get(state.app, 'user.data.searchResult', undefined),
         getTransactionList: _.get(state, 'app.getTransactionList', undefined),
-        user: _.get(state.app, 'user.data.searchResult', undefined),
         userEntity: _.get(state.app, 'entityList.data.searchResult[0]', undefined),
     };
 }
