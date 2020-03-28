@@ -381,9 +381,9 @@ module.exports = {
         { alias: "Status", key: "internalStatus", type: "statusBox" },
         { alias: "paymentref", key: "paymentref", type: "string" },
         
-        { alias: "last Update", key: "lastUpdateTimestamp", type: "epochDateShort" },
+        { alias: "last Update", key: "lastUpdateTimestamp", type: "epochDate1" },
         { alias: "error Reason", key: "errorReason", type: "string" },
-        { alias: "Dependency", key: "Dependency", type: "string" }
+        // { alias: "Dependency", key: "Dependency", type: "string" }
     ],
     fileList: [
         { alias: "S.No", key: "", type: "serialNo" },

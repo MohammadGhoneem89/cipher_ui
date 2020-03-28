@@ -146,7 +146,7 @@ class TransactionDetail extends React.Component {
                                     <div className="row">
                                         <div className="col-md-offset-3 col-md-12">
                                             <div className="col-md-2">
-                                                <img src={constants.baseUrl + this.state.partnerLogo} style={{ width: "150px" }} />
+                                                <img src={ this.state.partnerLogo} style={{ width: "150px" }} />
                                             </div>
 
                                             <div className="col-md-4 text-center" >
