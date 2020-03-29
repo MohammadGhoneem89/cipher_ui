@@ -115,10 +115,23 @@ class TransactionDetail extends React.Component {
 
     componentDidMount() {
         this.props.actions.generalProcess(constants.getTransactionByID, this.getRequest());
-        console.log()
         this.props.actions.generalProcess(constants.orgDetail, this.getRequestPartner());
 
+
+        let intervalId = setInterval(() => {
+            this.props.actions.generalProcess(constants.getTransactionByID, this.getRequest());
+           
+        }, 50000);
+
+        this.setState({
+            intervalId
+        })
+
+
         window.scrollTo(0, 0);
+    }
+    componentWillUnmount() {
+        clearInterval(this.state.intervalId);
     }
 
     getStatusLabel = status => {
