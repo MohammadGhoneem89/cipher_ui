@@ -404,6 +404,8 @@ class TableCell extends React.Component {
         return (<td> {utils.UNIXConvertToDateTimeMs(this.props.cellData)}</td>);
       case "epochDate1":
         return (<td> {dates.MSddMMyyyy(this.props.cellData)}</td>);
+        case "epochDate4":
+          return (<td> {dates.MSddMMyyyyHHmmSS(this.props.cellData)}</td>);
       case "clpVal":
         return (<td><span className="clp_val">{this.props.cellData}</span></td>)
       case "hyperlink":

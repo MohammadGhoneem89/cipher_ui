@@ -380,8 +380,10 @@ module.exports = {
       
         { alias: "Status", key: "internalStatus", type: "statusBox" },
        // { alias: "paymentref", key: "paymentref", type: "string" },
-        
-        { alias: "last Update", key: "lastUpdateTimestamp", type: "epochDate1" },
+       { alias: "error Reason", key: "errorReason", type: "string" },
+       { alias: "Created On", key: "createdOn", type: "epochDate4" },
+        { alias: "Confirmation Time", key: "lastUpdateTimestamp", type: "epochDate4" },
+      
         { alias: "error Reason", key: "errorReason", type: "string" },
         // { alias: "Dependency", key: "Dependency", type: "string" }
     ],
