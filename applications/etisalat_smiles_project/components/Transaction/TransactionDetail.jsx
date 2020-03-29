@@ -121,7 +121,7 @@ class TransactionDetail extends React.Component {
         let intervalId = setInterval(() => {
             this.props.actions.generalProcess(constants.getTransactionByID, this.getRequest());
            
-        }, 20000);
+        }, 10000);
 
         this.setState({
             intervalId
