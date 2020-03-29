@@ -211,7 +211,8 @@ class TransactionDetail extends React.Component {
                                                     <Label text="Sub Type:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={this.state.transactionData.transactionSubType} />
+                                                    
+                                                    <Label text={this.state.transactionData.transactionSubType=="SO"?"Source to Others":"Other to Source"} />
                                                 </div>
                                             </div>
                                         </Row>
@@ -220,10 +221,10 @@ class TransactionDetail extends React.Component {
                                             <div className="col-md-6">
                                                 <div className="col-md-4">
 
-                                                    <Label text="Amount Spent:" />
+                                                    <Label text={this.state.transactionData.transactionType=="POINTCONVERSION"?"":"Amount Spent:"} />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={_.get(this.state.transactionData, 'accrualParams.amountSpent', 'N/A')} />
+                                                    <Label text={this.state.transactionData.transactionType=="POINTCONVERSION"?"":_.get(this.state.transactionData, 'accrualParams.amountSpent', 'N/A')} />
                                                 </div>
                                             </div>
                                             <div className="col-md-6">

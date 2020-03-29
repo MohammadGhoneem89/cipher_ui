@@ -374,12 +374,12 @@ module.exports = {
     viewTranxListEvents: [
         { alias: "", key: "_id", type: "hiddenID" },
         { alias: "S.NO", key: "", type: "serialNo" },
-        { alias: "From", key: "from", type: "string" },
-        { alias: "To", key: "to", type: "string" },
+        { alias: "System", key: "from", type: "string" },
+        //{ alias: "To", key: "to", type: "string" },
         { alias: "Processing Type", key: "processingType", type: "string" },
       
         { alias: "Status", key: "internalStatus", type: "statusBox" },
-        { alias: "paymentref", key: "paymentref", type: "string" },
+       // { alias: "paymentref", key: "paymentref", type: "string" },
         
         { alias: "last Update", key: "lastUpdateTimestamp", type: "epochDate1" },
         { alias: "error Reason", key: "errorReason", type: "string" },
