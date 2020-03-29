@@ -405,7 +405,7 @@ class TableCell extends React.Component {
       case "epochDate1":
         return (<td> {dates.MSddMMyyyy(this.props.cellData)}</td>);
         case "epochDate4":
-          return (<td> {dates.MSddMMyyyyHHmmSS(this.props.cellData)}</td>);
+          return (<td> {this.props.cellData==0?"N/A":dates.MSddMMyyyyHHmmSS(this.props.cellData)}</td>);
       case "clpVal":
         return (<td><span className="clp_val">{this.props.cellData}</span></td>)
       case "hyperlink":
