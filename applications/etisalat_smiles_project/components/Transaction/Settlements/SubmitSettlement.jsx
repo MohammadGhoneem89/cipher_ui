@@ -81,6 +81,7 @@ class SubmitSettlement extends React.Component {
                 key && txList.push(key)
             });
 
+            console.log("Points Awarded "+pointsAwarded )
             if (txList.length == 0 && !this.state.txList) {
                 toaster.showToast("No transactions found for submition", "ERROR");
                 this.setState({
@@ -99,6 +100,8 @@ class SubmitSettlement extends React.Component {
                     gridData: nextProps.getTransactionList.searchResult
                 })
             }
+
+         
             this.setState({
                 txList,
                 user: { ...nextProps.user },
@@ -114,8 +117,10 @@ class SubmitSettlement extends React.Component {
                 },
                 gridData: nextProps.getTransactionList.searchResult,
                 searchCriteria: {
-                    partnerCode: this.props.params.fromPartnerCode,
-                    withPartnerCode: this.props.params.withPartnerCode,
+                    actualFrom: this.props.params.actualFrom,
+                    actualTo: this.props.params.actualTo,
+                  //  partnerCode: this.props.params.fromPartnerCode,
+                    //withPartnerCode: this.props.params.withPartnerCode,
                     internalStatus: "CONFIRMED",
                     startDate: this.props.params.Start,
                     endDate: this.props.params.End
@@ -124,7 +129,7 @@ class SubmitSettlement extends React.Component {
         }
     }
     getRequestPartner = () => {
-
+        
         let partnerCode = (this.props.id).split("_")
         console.log('-------PARTNERCODE ', partnerCode[0])
         return { "action": "entityDetail", "spCode": this.props.with }
@@ -132,6 +137,7 @@ class SubmitSettlement extends React.Component {
     };
 
     componentDidMount() {
+  
         let request = {
             "body": {
                 "page": {
@@ -140,8 +146,11 @@ class SubmitSettlement extends React.Component {
 
                 },
                 "searchCriteria": {
-                    partnerCode: this.props.params.fromPartnerCode,
-                    withPartnerCode: this.props.params.withPartnerCode,
+
+                    actualFrom: this.props.params.actualFrom,
+                    actualTo: this.props.params.actualTo,
+                  //  partnerCode: this.props.params.fromPartnerCode,
+                    //withPartnerCode: this.props.params.withPartnerCode,
                     internalStatus: "CONFIRMED",
                     startDate: this.props.params.Start,
                     endDate: this.props.params.End
@@ -184,8 +193,8 @@ class SubmitSettlement extends React.Component {
         window.scrollTo(0, 0);
         this.props.actions.generalAjxProcess(constants.createSettlementBatch, {
             body: {
-                fromPartnerCode: this.props.params.fromPartnerCode,
-                withPartnerCode: this.props.params.withPartnerCode,
+                actualFrom: this.props.params.actualFrom,
+                actualTo: this.props.params.actualTo,
                 Start: this.props.params.Start,
                 End: this.props.params.End,
                 txList: _.get(this.state, 'txList', [])
@@ -223,7 +232,7 @@ class SubmitSettlement extends React.Component {
 
                                         <div className="col-md-4 text-center" >
                                             <div style={{ fontSize: "30px", marginTop: "30px" }}><b>{this.state.englishPartnerName}</b></div>
-                                            <div className="row" style={{ fontSize: "15px" }}><h4><b>({this.state.arabicPartnerName} Dated: {moment(parseInt(_.get(this.props.params, 'Start', 0)) * 1000).format('DD/MM/YYYY')} - {moment(parseInt(_.get(this.props.params, 'End', 0)) * 1000).format('DD/MM/YYYY')})</b></h4></div>
+                                            <div className="row" style={{ fontSize: "15px" }}><h4><b>({this.state.arabicPartnerName} Dated: {moment(parseInt(_.get(this.props.params, 'Start', 0))).format('DD/MM/YYYY')} - {moment(parseInt(_.get(this.props.params, 'End', 0)) ).format('DD/MM/YYYY')})</b></h4></div>
                                         </div>
                                     </div>
 
@@ -250,7 +259,7 @@ class SubmitSettlement extends React.Component {
                                         <div className="col-3">
                                             <TileUnit data={[{
                                                 title: "POINTS",
-                                                value: _.get(this.state.settlementData, 'Points', 0),
+                                                value: _.get(this.state.settlementData, 'pointsAwarded', 0),
                                                 percentageTag: true
                                             }]} />
                                         </div>
