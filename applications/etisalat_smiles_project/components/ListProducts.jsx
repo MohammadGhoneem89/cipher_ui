@@ -66,6 +66,9 @@ class ListProducts extends React.Component {
         
         console.log("DDDDDDDDDDD",nextProps.typeData)
     }
+    addProduct() {
+        this.props.history.push('/smiles/productManagement');
+    }
 
     render() {
         
@@ -76,7 +79,7 @@ class ListProducts extends React.Component {
             <div className="row">
 
             <Portlet title={"MERCHANT LIST"}>
-                <div className="row">
+                <div className="portlet sdg_portlet">
                     <div className="row">
                     <div className="col-md-6">
                         <div className="form-group col-md-4">
@@ -92,7 +95,21 @@ class ListProducts extends React.Component {
                          dataSource={this.state.typeData} 
                          multiple={false} 
                          actionHandler={this.generalHandler} 
-                         style={{width:"450px",height:"35px"}}/>
+                         style={{width:"100%",height:"35px"}}/>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group col-md-4 center">
+                            <label className="control-label">Title</label>
+                        </div>
+                        <div className="form-group col-md-8">
+                        <Input 
+                       isValid={this.state.valid}
+                       //validationChecker={this.validationHandler} 
+                         required={true} 
+                          fieldname="orderId" formname="searchCriteria" state={this.state}
+                         //errorMessage={'This field is required'}
+                         actionHandler={this.generalHandler }className="form-control"  />
                         </div>
                     </div>
                     </div>
@@ -113,20 +130,7 @@ class ListProducts extends React.Component {
                          actionHandler={this.generalHandler }className="form-control"  />
                         </div>
                     </div>
-                    <div className="col-md-6">
-                        <div className="form-group col-md-4">
-                            <label className="control-label">Title</label>
-                        </div>
-                        <div className="form-group col-md-8">
-                        <Input 
-                       isValid={this.state.valid}
-                       //validationChecker={this.validationHandler} 
-                         required={true} 
-                          fieldname="orderId" formname="searchCriteria" state={this.state}
-                         //errorMessage={'This field is required'}
-                         actionHandler={this.generalHandler }className="form-control"  />
-                        </div>
-                    </div>
+                  
                     </div>
                     
                        
@@ -136,7 +140,7 @@ class ListProducts extends React.Component {
                           <button type="submit" className="btn green">Export</button>
                        </div>
                        <div className="col-md-3" style={{ paddingRight: '50px'}}>
-                          <button type="submit" className="btn green">Add</button>
+                          <button onClick={() => this.addProduct()} type="submit" className="btn green">Add</button>
                        </div>
                 
                        <div className="col-md-3">

@@ -27,6 +27,7 @@ import Steps from "../../../core/common/Steps.jsx";
 import Row from '../../../core/common/Row.jsx';
 import Map from "./Charts/Map.jsx";
 import Col from '../../../core/common/Col.jsx';
+import Tabs from '../common/Tabs.jsx';
 
 class OrderManagementDetail extends React.Component {
 
@@ -85,7 +86,7 @@ class OrderManagementDetail extends React.Component {
     render() {
         return (
             <div className="row">
-
+                 <Tabs />
                 <Portlet >
                     <div>
                         <Row>

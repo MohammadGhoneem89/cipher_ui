@@ -916,10 +916,8 @@ module.exports = {
     {
       alias: "TOKEN PROGRAM", key: "img", type: "image1", width: "100%", height: "100px", url: ''
     },
-    // { alias: "TOKEN PROGRAM", key: {"imgURL": img, "name": programCode}, type: "broaderImage"},
     { alias: "ORG CODE", key: "orgCode", type: "string" },
-    { alias: "AED RATE", key: "AEDValue", type: "string" },
-    { alias: "Action", key: "actions", type: "action" },
+    { alias: "AED RATE", key: "AEDValue", type: "string" }
   ],
   ListProducts: [
     { alias: "", key: "_id", type: "hiddenID" },

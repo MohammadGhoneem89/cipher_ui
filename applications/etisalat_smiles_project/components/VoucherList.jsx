@@ -73,6 +73,9 @@ class VoucherList extends React.Component {
         console.log("DDDDDDDDDDD",nextProps.typeData)
         
     }
+    addVoucher() {
+        this.props.history.push('/smiles/voucherManagement')
+    }
 
     render() {
       
@@ -163,7 +166,7 @@ class VoucherList extends React.Component {
                          dataSource={this.state.typeData} 
                          multiple={false} 
                          actionHandler={this.generalHandler} 
-                         style={{width:"430px",height:"35px"}}
+                         style={{width:'100%', height:"35px"}}
                          />
                         
                         </div>
@@ -192,7 +195,7 @@ class VoucherList extends React.Component {
                           <button type="submit" className="btn green">Export</button>
                        </div>
                        <div className="col-md-3" style={{ paddingRight: '50px'}}>
-                          <button type="submit" className="btn green">Add</button>
+                          <button type="submit" onClick={() => this.addVoucher()} className="btn green">Add</button>
                        </div>
                 
                        <div className="col-md-3">

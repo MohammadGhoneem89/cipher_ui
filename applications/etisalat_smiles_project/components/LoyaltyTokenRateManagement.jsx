@@ -65,7 +65,7 @@ class LoyaltyTokenRateManagement extends React.Component {
         if (nextProps.getOrgCode.length > 0) {
             let gridData = [];
             let data = {}
-            nextProps.getOrgCode.forEach(element => {
+            nextProps.getOrgCode.forEach((element, index) => {
                 data = {
                     ...element
                 }
@@ -73,6 +73,7 @@ class LoyaltyTokenRateManagement extends React.Component {
                     imageURL: element.img,
                     name: element.programCode
                 }
+                data.serial_no = index + 1;
 
                 gridData.push({ ...data })
             });

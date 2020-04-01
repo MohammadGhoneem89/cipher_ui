@@ -44,7 +44,7 @@ class VoucherManagement extends React.Component {
         return (
             <div className="row">
 
-                <Portlet title="Voucher Management">
+                <Portlet>
                     <div className="row">
                         <div className="col-md-5 uploader-div">
                             <div className="utc-uploader">
@@ -92,7 +92,7 @@ class VoucherManagement extends React.Component {
                  <div className="row clearfix pull-right">
                                 <div className="col-md-2"></div>
                                 <div className="col-md-4">
-                                <button type="button" className="btn default" style={{ paddingRight: '50px',marginTop:"40px"}} >
+                                <button type="button" className="btn default" style={{ marginTop:"40px"}} >
                                     Next
                                 </button>
                                 </div>
@@ -115,7 +115,7 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-VoucherManagement.displayName = "Voucher Management";
+VoucherManagement.displayName = "Upload Vouchers";
 export default connect(mapStateToProps, mapDispatchToProps)(VoucherManagement);
 
 

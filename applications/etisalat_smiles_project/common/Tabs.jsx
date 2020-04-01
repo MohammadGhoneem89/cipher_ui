@@ -99,15 +99,15 @@ class Tabs extends React.Component {
     render() {
         return (
             <div>
-                <div className="whitewrap padding-top padding-bottom clearfix">
-                    <div className="col-md-4">
+                <div style={{display: 'flex', flexDirection: 'column'}} className="whitewrap padding-top padding-bottom clearfix">
+                    <div className="col-md-12">
                         <ul className="tabslist">
                             {this.state.tabsDta.map((td, index) => (
-                                <li key={index.toString()}><a href="javascript:;" className={td.className} onClick={this.tabActive.bind(this, index)}>{td.title}</a></li>
+                                <li className={td.className} style={{width: `${100/this.state.tabsDta.length+'%'}`}} key={index.toString()}><a href="javascript:;"  onClick={this.tabActive.bind(this, index)}>{td.title}</a></li>
                             ))}
                         </ul>
                     </div>
-                    <div className="col-md-8">
+                    <div className="col-md-12">
                         <div className="row">
                             <div className="tabscontent">{this.state.currentDescription}</div>
                         </div>

@@ -47,6 +47,10 @@ class MerchantList extends React.Component {
    
     componentWillMount() {
     }
+    redirectToAddPage() {
+        console.log(this.props);
+        this.props.history.push('/smiles/addNewMerchant');
+    }
 
     componentDidMount() {
         this.props.actions.generalProcess(coreConstants.getTypeData,
@@ -69,131 +73,243 @@ class MerchantList extends React.Component {
     }
 
     render() {
-        
 
-        
+        if (this.state.isLoading) {
+            return (
+              <div className="loader-container"> 
+            <div className="loader">isLoading...</div>
+            </div>
+            )
+        }
+
         return (
-           
-            <div className="row">
 
-            <Portlet title={"MERCHANT LIST"}>
+            <div className="portlet light" >
+
+
                 <div className="row">
-                    <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group col-md-4">
-                            <label className="control-label">Partner</label>
-                        </div>
-                        <div className="form-group col-md-8">
-                           
-                           <Combobox 
-                         fieldname='listOfferStatus' 
-                         formname='searchCriteria'
-                         state={this.state} //typeName="storeAs"
-                         typeName="InitiateSettlementPartner"
-                         dataSource={this.state.typeData} 
-                         multiple={false} 
-                         actionHandler={this.generalHandler} 
-                         style={{width:"450px",height:"35px"}}/>
-                        </div>
-                    </div>
-                    </div>
-                    
-                    
-                    <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group col-md-4">
-                            <label className="control-label">Code</label>
-                        </div>
-                        <div className="form-group col-md-8">
-                        <Input 
-                       isValid={this.state.valid}
-                       //validationChecker={this.validationHandler} 
-                         required={true} 
-                          fieldname="orderId" formname="searchCriteria" state={this.state}
-                         //errorMessage={'This field is required'}
-                         actionHandler={this.generalHandler }className="form-control"  />
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group col-md-4">
-                            <label className="control-label">Name</label>
-                        </div>
-                        <div className="form-group col-md-8">
-                        <Input 
-                       isValid={this.state.valid}
-                       //validationChecker={this.validationHandler} 
-                         required={true} 
-                          fieldname="orderId" formname="searchCriteria" state={this.state}
-                         //errorMessage={'This field is required'}
-                         actionHandler={this.generalHandler }className="form-control"  />
-                        </div>
-                    </div>
-                    </div>
-                    
-                    <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group col-md-4">
-                            <label className="control-label">Status</label>
-                        </div>
-                        <div className="form-group col-md-8">
-                           
-                           <Combobox 
-                         fieldname='listOfferStatus' 
-                         formname='searchCriteria'
-                         state={this.state} //typeName="storeAs"
-                         typeName="listOfferStatus"
-                         dataSource={this.state.typeData} 
-                         multiple={false} 
-                         actionHandler={this.generalHandler} 
-                         style={{width:"450px",height:"35px"}}/>
-                        </div>
-                    </div>
-                    </div>
 
-
-
-                    <div className="row clearfix pull-right">
-                                <div className="col-md-2"></div>
-                                <div className="col-md-4" style={{ paddingRight: '50px'}}>
-                                <button type="submit" className="btn green">
-                                    Add
-                                </button>
-                                </div>
-                            
-                                <div className="col-md-4">
-                                <button type="button" className="btn default" >
-                                    Search
-                                </button>
+                    <div className="col-md-12 ">
+                        <div className="portlet light bordered sdg_portlet">
+                            <div className="portlet-title">
+                                <div className="tools">
+                                    <a href="javascript:;" className="collapse" data-original-title title> </a>
                                 </div>
                             </div>
+                            <div className="portlet-body">
+                                <div className="form-body" id="APIPayloadList">
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="form-group col-md-4">
+                                                <label className="control-label">Partner</label>
+                                            </div>
+                                            <div className="form-group col-md-8">
+                                                <Input fieldname="partner" formname="searchCriteria" state={this.state}
+                                                    actionHandler={this.generalHandler} className="form-control" />
+
+
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group col-md-4">
+                                                <label className="control-label">Code</label>
+                                            </div>
+                                            <div className="form-group col-md-8">
+                                                <Combobox valueOnly={false} fieldname='code' formname='searchCriteria' style={{}}
+                                                    state={this.state} className="form-control" typeName="code"
+                                                    dataSource={this.state.typeData} multiple={false} actionHandler={this.generalHandler} />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="form-group col-md-4">
+                                                <label className="control-label">Status</label>
+                                            </div>
+                                            <div className="form-group col-md-8">
+                                                <Combobox fieldname='utcStatus' formname='searchCriteria' style={{}}
+                                                    state={this.state} typeName="status" className="form-control"
+                                                    dataSource={this.state.typeData} multiple={false} actionHandler={this.generalHandler} />
+
+                                            </div>
+
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <div className="form-group col-md-4">
+                                                <label className="control-label">Name</label>
+                                            </div>
+                                            <div className="form-group col-md-8">
+                                                <Combobox fieldname='subStatus' formname='searchCriteria' style={{}}
+                                                    state={this.state} typeName="name" className="form-control"
+                                                    dataSource={this.state.typeData} multiple={false} actionHandler={this.generalHandler} />
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="pull-right" >
+                                                <button type="submit" className="btn green" onClick={this.submit}> Search</button>
+
+                                            </div>
+                                            <div className="pull-right" style={{marginRight: "30px"}} >
+                                                <button type="submit" className="btn green" onClick={() => this.redirectToAddPage()}> Add</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div className="row">
+                    <div className="col-md-12">
+                        {<Table fontclass="" TableClass="portlet light bordered sdg_portlet "
+                            gridColumns={utils.getGridColumnByName("MerchantList")}
+                            gridData={this.state.gridData}
+                            totalRecords={this.state.totalRecords} pageSize={this.state.pageSize}
+                            pageChanged={this.pageChanged} export={false} search={true}
+                            activePage={this.state.currentPageNo}
+                            pagination={true}
+                        />}
+                    </div>
+                </div>
+
+            </div>
+
+        );
+    }
+    // render() {
+        
+
+        
+    //     return (
+           
+    //         <div className="row">
+
+    //         <Portlet title={"MERCHANT LIST"}>
+    //             <div className="row">
+    //                 <div className="row">
+    //                 <div className="col-md-6">
+    //                     <div className="form-group col-md-4">
+    //                         <label className="control-label">Partner</label>
+    //                     </div>
+    //                     <div className="form-group col-md-12">
+                           
+    //                        <Combobox 
+    //                      fieldname='listOfferStatus' 
+    //                      formname='searchCriteria'
+    //                      state={this.state} //typeName="storeAs"
+    //                      typeName="InitiateSettlementPartner"
+    //                      dataSource={this.state.typeData} 
+    //                      multiple={false} 
+    //                      actionHandler={this.generalHandler} />
+    //                     </div>
+    //                 </div>
+    //                 </div>
+                    
+                    
+    //                 <div className="row">
+    //                 <div className="col-md-6">
+    //                     <div className="form-group col-md-4">
+    //                         <label className="control-label">Code</label>
+    //                     </div>
+    //                     <div className="form-group col-md-8">
+    //                     <Input 
+    //                    isValid={this.state.valid}
+    //                    //validationChecker={this.validationHandler} 
+    //                      required={true} 
+    //                       fieldname="orderId" formname="searchCriteria" state={this.state}
+    //                      //errorMessage={'This field is required'}
+    //                      actionHandler={this.generalHandler }className="form-control"  />
+    //                     </div>
+    //                 </div>
+    //                 <div className="col-md-6">
+    //                     <div className="form-group col-md-4">
+    //                         <label className="control-label">Name</label>
+    //                     </div>
+    //                     <div className="form-group col-md-8">
+    //                     <Input 
+    //                    isValid={this.state.valid}
+    //                    //validationChecker={this.validationHandler} 
+    //                      required={true} 
+    //                       fieldname="orderId" formname="searchCriteria" state={this.state}
+    //                      //errorMessage={'This field is required'}
+    //                      actionHandler={this.generalHandler }className="form-control"  />
+    //                     </div>
+    //                 </div>
+    //                 </div>
+                    
+    //                 <div className="row">
+    //                 <div className="col-md-6">
+    //                     <div className="form-group col-md-4">
+    //                         <label className="control-label">Status</label>
+    //                     </div>
+    //                     <div className="form-group col-md-8">
+                           
+    //                        <Combobox 
+    //                      fieldname='listOfferStatus' 
+    //                      formname='searchCriteria'
+    //                      state={this.state} //typeName="storeAs"
+    //                      typeName="listOfferStatus"
+    //                      dataSource={this.state.typeData} 
+    //                      multiple={false} 
+    //                      actionHandler={this.generalHandler} 
+    //                      style={{width:"450px",height:"35px"}}/>
+    //                     </div>
+    //                 </div>
+    //                 </div>
+
+
+
+    //                 <div className="row clearfix pull-right">
+    //                             <div className="col-md-2"></div>
+    //                             <div className="col-md-4" style={{ paddingRight: '50px'}}>
+    //                             <button type="submit" className="btn green">
+    //                                 Add
+    //                             </button>
+    //                             </div>
+                            
+    //                             <div className="col-md-4">
+    //                             <button type="button" className="btn default" >
+    //                                 Search
+    //                             </button>
+    //                             </div>
+    //                         </div>
                              
                              
                     
-                             <Table
-                               gridColumns={utils.getGridColumnByName("MerchantList")}
-                            //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
-                            gridData={this.state.gridData}
-                            //totalRecords={this.state.totalRecords}
-                            pageSize={10}
-                           //pageChanged={this.pageChanged}
-                            pagination={true}
-                             activePage={this.state.currentPageNo}
-                               />
+    //                          <Table
+    //                            gridColumns={utils.getGridColumnByName("MerchantList")}
+    //                         //gridData={[{"serial_no": "1","offerId": "12212222","partner": "555222","merchant": "ACCURAL","description": "100045"}]}
+    //                         gridData={this.state.gridData}
+    //                         //totalRecords={this.state.totalRecords}
+    //                         pageSize={10}
+    //                        //pageChanged={this.pageChanged}
+    //                         pagination={true}
+    //                          activePage={this.state.currentPageNo}
+    //                            />
                              
 
-                </div>
+    //             </div>
 
                            
              
                 
 
-            </Portlet>
+    //         </Portlet>
            
-            </div>
+    //         </div>
             
            
-        );
-    }
+    //     );
+    // }
 }
 
 function mapStateToProps(state, ownProps) {

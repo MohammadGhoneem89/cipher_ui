@@ -49,4 +49,5 @@ module.exports = {
     getTableNames: baseUrl + "/API/etisalat/getTableNames",
     getFieldsList: baseUrl + "/API/etisalat/getFieldsList",
     getOrgCodeData: baseUrl + "/API/SMILES/getAllOrgMap",
+    addEditMerchant: baseUrl + "/API/SMILES/addEditMerchant"
 };

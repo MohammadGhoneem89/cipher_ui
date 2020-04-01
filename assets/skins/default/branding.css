@@ -12,6 +12,10 @@ body {
 	font-family: 'Open Sans', sans-serif;
 }
 
+.center {
+	text-align: center;
+}
+
 body,
 .dashdate .btn.btn-outline.green,
 .page-sidebar,
@@ -59,6 +63,24 @@ a {
 	background-repeat: no-repeat;
 	height: 100px;
 	margin-top: 56px !important;
+}
+.tabslist {
+	list-style: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+}
+.tabslist > li > a {
+		padding: 9px 25px 10px 25px;
+		color: black;
+		border: 1px solid lightgray;
+		text-decoration: none;
+}
+.tabslist > li > a.activeTab {
+		padding: 9px 25px 10px 25px;
+		background: #7aa62d;
+		color: white;
+		text-decoration: none;
 }
 
 body .login {
@@ -110,6 +132,39 @@ a:hover {
 .sdg_tbl thead {
 	border-bottom: 2px solid #7aa62d;
 	background: #f9fdf2;
+}
+.border-box {
+	border: 1px solid lightgray;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 180px;
+}
+.spread-items {
+	display: flex;
+    justify-content: space-between;
+}
+.collapse-icon {
+	background-image: url('../img/portlet-collapse-icon.png');
+    width: 14px;
+    visibility: visible;
+}
+.title-collapse {
+		width: 50%;
+		height: 100px;
+		background: lightgreen;
+		transition-property: width;
+		transition-duration: 2s;
+		width: 300px;
+} 
+.title-expand {
+		width: 100px;
+		height: 100px;
+		background: transparent;
+		transition-property: width;
+		transition-duration: 2s;
+		width: 300px;
 }
 
 .page-header.navbar .top-menu .navbar-nav>li.dropdown .dropdown-toggle .badge.badge-default {
@@ -418,7 +473,7 @@ a:hover {
 
 .portlet.light.sdg_portlet,
 .dashdate .modal-content {
-	border-top: 2px dashed #929693 !important;
+	border-top: 2px solid #7aa62d !important;
 	background: #fff !important;
 	margin-top: 0px;
 }
@@ -2995,7 +3050,7 @@ input[type=radio] {
 	margin: 4px !important;
 }
 .control-label {
-	margin-top: 4px !important;
+	margin-left: 20px;
 }
 
 
@@ -3180,7 +3235,7 @@ border-top: 10px;
     padding-left: 10px !important;
 	display: flex;
 	width: 50%;
-    font-size: 15px;
+    font-size: 25px;
     letter-spacing: 1px;
     /* flex-direction: column;
     justify-content: space-evenly; */
