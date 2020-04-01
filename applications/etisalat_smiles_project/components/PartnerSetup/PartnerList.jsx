@@ -96,7 +96,7 @@ class PartnerList extends Component {
                     if (_.get(nextProps.user, 'orgCode', '') == data.toPartner) {
                         data.actions = [
                             {
-                                "label": "Approve",
+                                "label": "View",
                                 "URI": ["/smiles/approvePartner"],
                                 "params": "_id",
                                 "iconName": "fa fa-check"
@@ -273,7 +273,7 @@ class PartnerList extends Component {
 
                     </Portlet>
 
-                    <Portlet title={"Partner List"}>
+                    <Portlet title={"Partner Contract List"}>
                         <Table
                             gridColumns={utils.getGridColumnByName('partnerlist')}
                             gridData={this.state.gridData || []}
@@ -315,5 +315,5 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-PartnerList.displayName = "Search Partner";
+PartnerList.displayName = "Search Partner Contract";
 export default connect(mapStateToProps, mapDispatchToProps)(PartnerList)

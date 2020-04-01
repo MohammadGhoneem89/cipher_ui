@@ -4,6 +4,8 @@ let baseUrl = backOffices.baseUrl;
 
 
 module.exports = {
+    getTransactionsForSettlement:`${baseUrl}/API/SMILES/getTransactionList`,
+    getAllOrgMap:`${baseUrl}/API/SMILES/getAllOrgMap`,
     createSettlementBatch: baseUrl + '/API/SMILES/createSettlementBatch',
     getLMSData: baseUrl + '/API/SMILES/getLMSData',
     getInterim: baseUrl + '/API/SMILES/getInterim',

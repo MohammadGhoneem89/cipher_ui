@@ -2,6 +2,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router';
 import * as utils from '../../../../core/common/utils.js';
 import Table from '../../../../core/common/Datatable.jsx';
 import * as actions from '../../../../core/actions/generalAction';
@@ -127,25 +128,22 @@ class SettlementList extends React.Component {
         window.scrollTo(0, 0);
     }
 
-    createSettlementBatch = () => {
-        this.setState({ isLoading: true })
-        window.scrollTo(0, 0);
-        this.props.actions.generalAjxProcess(constants.createSettlementBatch, {
-            body: {
-                ..._.get(this.state, 'body', {}),
-                "Start": this.state.Start,
-                "End": this.state.End
-            }
-        })
-            .then(result => {
-                console.log(result)
-                result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : toaster.showToast("Settlement Batch initiated");
-                this.setState({ isLoading: false, ModalBoxGrid: false })
-            }).catch(result => {
-                window.scrollTo(0, 0);
-                this.setState({ isLoading: false, ModalBoxGrid: false })
-                toaster.showToast(utils.getLabelByID("Settlment Batch not initiated"), "ERROR");
-            })
+    createSettlementBatch = (e) => {
+        e.preventDefault()
+        let body = _.get(this.state, 'body', {})
+        if (!body.withPartenerCode || body.withPartenerCode == "" ||
+            !this.state.Start || this.state.Start == "" ||
+            !this.state.End || this.state.End == "") {
+            toaster.showToast(utils.getLabelByID("Please Input Mandatory Fields"), "ERROR")
+            return;
+        }
+        let fromPartnerCode = _.get(this.state, 'user.orgCode', undefined)
+        if (!fromPartnerCode) {
+            toaster.showToast(utils.getLabelByID("Please Input Mandatory Fields"), "ERROR")
+            return;
+        }
+        browserHistory.push(`/smiles/Submit/Settlements/${fromPartnerCode}/${body.withPartenerCode}/${this.state.Start/1000}/${this.state.End/1000}`)
+
     }
 
     pageChanged = (pageNo) => {
@@ -176,7 +174,7 @@ class SettlementList extends React.Component {
                         />
                     </div>
                     <div className="col-md-6">
-                        <Label text="To Partner Code" columns='4' />
+                        <Label required={true} text="To Partner Code" columns='4' />
                         <Combobox
                             fieldname='withPartenerCode'
                             formname='body'
@@ -194,9 +192,7 @@ class SettlementList extends React.Component {
 
                 <div className="row">
                     <div className="col-md-6">
-                        <div className="form-group col-md-4">
-                            <label className="control-label">{utils.getLabelByID("Last Settlment Date")}</label>
-                        </div>
+                        <Label required={true} text="Last Settlment Date" columns='4' />
                         <div className="form-group col-md-8">
                             <DateControl
                                 id='endDate'
@@ -206,9 +202,7 @@ class SettlementList extends React.Component {
                     </div>
 
                     <div className="col-md-6">
-                        <div className="form-group col-md-4">
-                            <label className="control-label">{utils.getLabelByID("End Date")}</label>
-                        </div>
+                        <Label required={true} text="End Date" columns='4' />
                         <div className="form-group col-md-8">
                             <DateControl
                                 id='endDate'
@@ -219,10 +213,10 @@ class SettlementList extends React.Component {
                 </div>
                 <div className="row">
                     <div style={{ marginTop: '130px' }} className="row clearfix pull-right">
-                        <button type="submit" className="btn green" style={{ marginRight: '5px' }} onClick={this.createSettlementBatch}>
+                        <button className="btn green" style={{ marginRight: '5px' }} onClick={this.createSettlementBatch}>
                             Initiate
                         </button>
-                        <button type="submit" className="btn green" style={{ marginRight: '44px', width: '83px' }} onClick={this.showHideManualSettlement}>
+                        <button className="btn green" style={{ marginRight: '44px', width: '83px' }} onClick={this.showHideManualSettlement}>
                             Close
                         </button>
                     </div>

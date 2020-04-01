@@ -141,7 +141,7 @@ let authRoutes = <div>
     <Route path="/smiles/approveRedemptionContract" component={ApproveRedemtionContract} />
     <Route path="/smiles/dashboardEtisalat" component={DashboardEtisalat} />
     <Route path="/smiles/View/Settlements" component={ViewSettlement} />
-    <Route path="/smiles/Submit/Settlements" component={SubmitSettlement} />
+    <Route path="/smiles/Submit/Settlements/:fromPartnerCode/:withPartnerCode/:Start/:End" component={SubmitSettlement} />
     <Route path="/smiles/View/dashboard" component={dashboard} />
 
 

@@ -115,10 +115,23 @@ class TransactionDetail extends React.Component {
 
     componentDidMount() {
         this.props.actions.generalProcess(constants.getTransactionByID, this.getRequest());
-        console.log()
         this.props.actions.generalProcess(constants.orgDetail, this.getRequestPartner());
 
+
+        let intervalId = setInterval(() => {
+            this.props.actions.generalProcess(constants.getTransactionByID, this.getRequest());
+           
+        }, 10000);
+
+        this.setState({
+            intervalId
+        })
+
+
         window.scrollTo(0, 0);
+    }
+    componentWillUnmount() {
+        clearInterval(this.state.intervalId);
     }
 
     getStatusLabel = status => {
@@ -146,7 +159,7 @@ class TransactionDetail extends React.Component {
                                     <div className="row">
                                         <div className="col-md-offset-3 col-md-12">
                                             <div className="col-md-2">
-                                                <img src={constants.baseUrl + this.state.partnerLogo} style={{ width: "150px" }} />
+                                                <img src={ this.state.partnerLogo} style={{ width: "150px" }} />
                                             </div>
 
                                             <div className="col-md-4 text-center" >
@@ -211,7 +224,8 @@ class TransactionDetail extends React.Component {
                                                     <Label text="Sub Type:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={this.state.transactionData.transactionSubType} />
+                                                    
+                                                    <Label text={this.state.transactionData.transactionSubType=="SO"?"Source to Others":"Other to Source"} />
                                                 </div>
                                             </div>
                                         </Row>
@@ -220,10 +234,10 @@ class TransactionDetail extends React.Component {
                                             <div className="col-md-6">
                                                 <div className="col-md-4">
 
-                                                    <Label text="Amount Spent:" />
+                                                    <Label text={this.state.transactionData.transactionType=="POINTCONVERSION"?"":"Amount Spent:"} />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={_.get(this.state.transactionData, 'accrualParams.amountSpent', 'N/A')} />
+                                                    <Label text={this.state.transactionData.transactionType=="POINTCONVERSION"?"":_.get(this.state.transactionData, 'accrualParams.amountSpent', 'N/A')} />
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
