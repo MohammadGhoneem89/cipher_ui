@@ -332,7 +332,7 @@ module.exports = {
     viewTranxList: [
         { alias: "", key: "transactionId", type: "hiddenID" },
         { alias: "S.No", key: "", type: 'serialNo' },
-        { alias: "Transaction", key: "tranxData.sourceTransactionId", type: "string" },
+        { alias: "Transaction", key: "tranxData.key", type: "string" },
         { alias: "Account#", key: "tranxData.membershipNo", type: "string" },
         { alias: "TRANS TYPE", key: "tranxData.transactionType", type: "string" },
         { alias: "Amount", key: "tranxData.amount", type: "string" },
