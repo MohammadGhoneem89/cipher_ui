@@ -111,6 +111,7 @@ class TransactionDetail extends React.Component {
                 partnerLogo: _.get(data, 'entityLogo.sizeSmall', '')
             })
         }
+        //console.log(">>>>>>>>>>>>>>Data",this.state.transactionData)
     }
 
     componentDidMount() {
@@ -147,6 +148,7 @@ class TransactionDetail extends React.Component {
 
 
     render() {
+       
         if (this.state.isLoading)
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         else
@@ -156,104 +158,98 @@ class TransactionDetail extends React.Component {
                         <Col>
                             <div className="row">
                                 <Portlet title='transaction details'>
+                                    <div className="row" style={{ "font-size": "15px", "color": "#1d9b1d" }}><Label text={this.state.transactionData.sourceTransactionId} /></div>
+                                    <div className="row" style={{ "font-size": "15px",}}><b><Label text="CONFIRMED" /></b></div>
+                                    <div className="row">&nbsp;&nbsp;<b>Transaction Date:&nbsp; 03/02/2020</b></div>
+                                    <div className="row">&nbsp;&nbsp;<b>Confirmed On:&nbsp;&nbsp;&nbsp;&nbsp;    03/02/2020</b></div>
                                     <div className="row">
-                                        <div className="col-md-offset-3 col-md-12">
-                                            <div className="col-md-2">
-                                                <img src={ this.state.partnerLogo} style={{ width: "150px" }} />
+                                        <div className="col-md-offset-3 col-md-12" >
+                                            <div className="row" style={{ marginTop:"30px" }}>
+                                                <div className="col-md-4 boximage">
+                                                    <img src={ this.state.partnerLogo} style={{ width: "100px", height:"100px" }} />
+                                                     <div className="row" style={{ marginTop:"15px" }}><Label text="Membership Number:" /></div>
+                                                     <div className="row"><Label text={this.state.transactionData.membershipNo} /></div>
+                                                </div>
+                                                
+                                                   <div>
+                                                      <img src="../../../../../images/arrow.png" className="col-md-4" style={{width: "150px", height:"50px", marginTop:"30px" }} />
+                                                   </div>
+                                              
+                                                <div className="col-md-4 boximage2" >
+                                                    <img src="../../../../../images/Etihad Airmiles.png" style={{ width: "130px", height:"120px", paddingRight:"10px" }} />
+                                                     <div className="row" style={{ marginTop:"15px" }}><Label text="Membership Number:" /></div>
+                                                     <div className="row"><Label text={this.state.transactionData.membershipNo} /></div>
+                                                </div>
+                                                
                                             </div>
 
-                                            <div className="col-md-4 text-center" >
-                                                <div style={{ fontSize: "30px", marginTop: "30px" }}><b>{this.state.englishPartnerName}</b></div>
-                                                <div className="row" style={{ fontSize: "15px" }}><h4><b>({this.state.transactionData.partnerCode } Dated:03/02/2020)</b></h4></div>
-                                            </div>
+                                           
                                         </div>
 
                                     </div>
 
-                                    {/* <img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png" className="tablogo" />
-                    <h1 style={{ color: 'grey' }}>COMMERCIAL BANK OF DUBAI</h1> */}
+                                    {/** &rarr;
+                                     * src="../../../../assets/Resources/SMILES.png"
+                                     *  <div className="col-md-4 text-center" >
+                                                <div style={{ fontSize: "30px", marginTop: "30px" }}><b>{this.state.englishPartnerName}</b></div>
+                                                <div className="row" style={{ fontSize: "15px" }}><h4><b>({this.state.transactionData.partnerCode } Dated:03/02/2020)</b></h4></div>
+                                            </div>
+                                     */}
 
-                                    <div className="col-md-offset-1">
+                                    {/* <img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png" className="tablogo" />
+                    <h1 style={{ color: 'grey' }}>COMMERCIAL BANK OF DUBAI</h1> 
+                     <div className="col-md-offset-1">
+                    */}
+
+                                    <div style={{marginLeft:"-10px", marginTop:"30px"}}>
                                         <Row>
                                             <div className="col-md-6">
                                                 <div className="col-md-4">
-                                                    <Label text="Partner Tx. ID:" />
+                                                <Label text="Transaction Type:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={this.state.transactionData.sourceTransactionId} />
+                                                <Label text={this.state.transactionData.transactionType} />
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
                                                 <div className="col-md-4">
-                                                    <Label text="Submitted By Partner:" />
+                                                <Label text="Sub Type:" />
                                                 </div>
                                                 <div style={{ "padding": "0px" }} className="col-md-8">
-                                                    <Label text={this.state.transactionData.partnerCode} />
+                                                <Label text={this.state.transactionData.transactionSubType=="SO"?"Source to Others":"Other to Source"} />
+                                                   
                                                 </div>
                                             </div>
                                         </Row>
                                         <Row>
                                             <div className="col-md-6">
                                                 <div className="col-md-4">
-                                                    <Label text="Membership Number:" />
+                                                    <Label text="Submited by partner" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={this.state.transactionData.membershipNo} />
+                                                <Label text={this.state.transactionData.partnerCode} />
                                                 </div>
                                             </div>
-                                            <div className="col-md-6">
-                                                <div className="col-md-4">
-                                                    <Label text="Payment Reference:" />
-                                                </div>
-                                                <div className="col-md-8">
-                                                    <Label text={this.state.transactionData.paymentref} />
-                                                </div>
-                                            </div>
+                                           
                                         </Row>
+                                        
+                                        <div style={{marginTop:"20px"}}>
                                         <Row>
                                             <div className="col-md-6">
                                                 <div className="col-md-4">
-                                                    <Label text="Transaction Type:" />
-                                                </div>
-                                                <div className="col-md-8">
-                                                    <Label text={this.state.transactionData.transactionType} />
+                                                    <h4><b><Label text="SETTLEMENTS" /></b></h4>
                                                 </div>
                                             </div>
-                                            <div className="col-md-6">
-                                                <div className="col-md-4">
-                                                    <Label text="Sub Type:" />
-                                                </div>
-                                                <div className="col-md-8">
-                                                    
-                                                    <Label text={this.state.transactionData.transactionSubType=="SO"?"Source to Others":"Other to Source"} />
-                                                </div>
-                                            </div>
-                                        </Row>
 
+                                        </Row>
+                                       </div>
+
+                                      
                                         <Row>
                                             <div className="col-md-6">
                                                 <div className="col-md-4">
 
-                                                    <Label text={this.state.transactionData.transactionType=="POINTCONVERSION"?"":"Amount Spent:"} />
-                                                </div>
-                                                <div className="col-md-8">
-                                                    <Label text={this.state.transactionData.transactionType=="POINTCONVERSION"?"":_.get(this.state.transactionData, 'accrualParams.amountSpent', 'N/A')} />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="col-md-4">
                                                     <Label text="Settlement Batch No:" />
-                                                </div>
-                                                <div className="col-md-8">
-                                                    <Label text={_.get(this.state.transactionData, 'settlementBatchID', 'N/A')} />
-                                                </div>
-                                            </div>
-                                        </Row>
-                                        <Row>
-                                            <div className="col-md-6">
-                                                <div className="col-md-4">
-
-                                                    <Label text="Mobile No:" />
                                                 </div>
                                                 <div className="col-md-8">
                                                     <Label text={_.get(this.state.transactionData, 'accrualParams.mobileNo', 'N/A')} />
@@ -274,10 +270,11 @@ class TransactionDetail extends React.Component {
                                                 </div>
                                             </div>
                                         </Row>
+                                        //<div className="col-md-offset-1">
                                         */}
 
                                         <Row>
-                                            <div className="col-md-offset-1">
+                                            <div>
                                                 <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px" }}>
                                                     <Label text="Amount" />
                                                     <Label style={{ "font-size": "30px", "color": "#1d9b1d" }} text={`${_.get(this.state.transactionData, 'amount', '0')} AED`} />
@@ -296,7 +293,7 @@ class TransactionDetail extends React.Component {
                                     <Row>
                                         <Col>
                                             <Col>
-                                                <h1>Tracking Events</h1>
+                                                <h4><b>TRANSACTION TRACKING</b></h4>
                                                 <Table
                                                     gridColumns={utils.getGridColumnByName("viewTranxListEvents")}
                                                     gridData={this.state.gridData}

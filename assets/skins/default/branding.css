@@ -3348,3 +3348,49 @@ ul.switchScreen li:first-child ul.sub-menu li:first-child {
     background: #7AA62D;
 	background-image: linear-gradient(to right, rgba(255,0,0,0), rgb(218, 237, 12));
 }
+
+
+/*TransactionDetails*/
+/*border-top: #000000;
+	padding: 0px 0px 0px 0px;*/
+.boximage{	
+	width: 200px;
+	
+	padding:20px 0px 0px 50px;
+	height: 200px;
+	border-top-color:#000000;
+	border-bottom-color:#000000;  
+	border-right-color:#000000;
+	border-left-color:#000000;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+	font-size: 10px;
+	float: left;
+}
+.boximage2{	
+	width: 200px;
+	
+	padding:0px 0px 0px 50px;
+	height: 200px;
+	border-top-color:#000000;
+	border-bottom-color:#000000;  
+	border-right-color:#000000;
+	border-left-color:#000000;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+	font-size: 10px;
+	float: left;
+	margin:0px 0px 0px 30px;
+}
+.arrow{	
+	width: 10px;
+	padding:0px 0px 0px 50px;
+	height: 0px;
+	float: left;
+
+}
+
