@@ -73,15 +73,17 @@ class SubmitSettlement extends React.Component {
             let amount = 0
             let pointsAwarded = 0
             let txList = []
+            let count=0;
             nextProps.getTransactionList.searchResult.forEach(element => {
                 commissionAmount += _.get(element, 'tranxData.commissionAmount', 0)
                 amount += _.get(element, 'tranxData.amount', 0)
                 pointsAwarded += _.get(element, 'tranxData.pointsAwarded', 0)
                 let key = _.get(element, 'key', undefined)
                 key && txList.push(key)
+                count++;
             });
 
-            console.log("Points Awarded "+pointsAwarded )
+            
             if (txList.length == 0 && !this.state.txList) {
                 toaster.showToast("No transactions found for submition", "ERROR");
                 this.setState({
@@ -113,7 +115,8 @@ class SubmitSettlement extends React.Component {
                 settlementData: {
                     commissionAmount,
                     amount,
-                    pointsAwarded
+                    pointsAwarded,
+                    count
                 },
                 gridData: nextProps.getTransactionList.searchResult,
                 searchCriteria: {
@@ -191,26 +194,101 @@ class SubmitSettlement extends React.Component {
         e.preventDefault()
         this.setState({ isLoading: true })
         window.scrollTo(0, 0);
+
+        let UUID = utils.CreateGuid();
+        let bthId="BTH"+"-"+UUID;
         this.props.actions.generalAjxProcess(constants.createSettlementBatch, {
+        
             body: {
-                actualFrom: this.props.params.actualFrom,
-                actualTo: this.props.params.actualTo,
-                Start: this.props.params.Start,
-                End: this.props.params.End,
-                txList: _.get(this.state, 'txList', [])
+                fromPartner:this.props.params.actualFrom,
+                withPartner:this.props.params.actualTo,
+                amount:  _.get(this.state, 'settlementData.amount', 0).toString(),
+                commission:  _.get(this.state, 'settlementData.commissionAmount', []).toString(),
+                points: _.get(this.state, 'settlementData.pointsAwarded',0).toString(),
+                start: this.props.params.Start,
+                end: this.props.params.End,
+                typeMain:"CONVERSION",
+                transactions: [],
+                count: _.get(this.state, 'settlementData.count',0).toString(),
+                bthID:bthId,
+                actualFrom:this.props.params.actualFrom,
+                actualTo:this.props.params.actualTo
             }
         })
-            .then(result => {
-                console.log(result)
-                result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : toaster.showToast("Settlement Batch Submitted");
-                //this.setState({ isLoading: false })
-                browserHistory.push('/smiles/settlementList')
+            .then(result1 => {
+               
+
+                this.props.actions.generalAjxProcess(constants.initiateSettlement, {
+        
+                    body: {
+                        actualFrom: this.props.params.actualFrom,
+                        actualTo: this.props.params.actualTo,
+                        Start: this.props.params.Start,
+                        End: this.props.params.End,
+                        bthid:bthId,
+                        count:  _.get(this.state, 'settlementData.count', []),
+                        totalamount:  _.get(this.state, 'settlementData.amount', []),
+                        commission:  _.get(this.state, 'settlementData.commissionAmount', []),
+                        pointsawarded: _.get(this.state, 'settlementData.pointsAwarded', []),
+                        transactionList: _.get(this.state, 'txList', [])
+                    }
+                })
+                    .then(result => {
+                        console.log(result)
+                        result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : toaster.showToast("Settlement Batch Submitted");
+                        //this.setState({ isLoading: false })
+                        browserHistory.push('/smiles/settlementList')
+                    }).catch(result => {
+                        console.log(result)
+                        window.scrollTo(0, 0);
+                        this.setState({ isLoading: false })
+                        // browserHistory.push('/smiles/settlementList')
+                        toaster.showToast(utils.getLabelByID("Settlment Batch not Submitted"), "ERROR");
+        
+                    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }).catch(result => {
+                console.log(result)
                 window.scrollTo(0, 0);
                 this.setState({ isLoading: false })
+                // browserHistory.push('/smiles/settlementList')
                 toaster.showToast(utils.getLabelByID("Settlment Batch not Submitted"), "ERROR");
+
             })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       
     }
+
+    
 
     render() {
         if (this.state.isLoading)

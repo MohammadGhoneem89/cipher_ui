@@ -7,6 +7,7 @@ module.exports = {
     getTransactionsForSettlement:`${baseUrl}/API/SMILES/getTransactionList`,
     getAllOrgMap:`${baseUrl}/API/SMILES/getAllOrgMap`,
     createSettlementBatch: baseUrl + '/API/SMILES/createSettlementBatch',
+    initiateSettlement: baseUrl + '/API/SMILES/initiateSettlement',
     getLMSData: baseUrl + '/API/SMILES/getLMSData',
     getInterim: baseUrl + '/API/SMILES/getInterim',
     getViewTransaction: baseUrl + '/API/SMILES/getPointConversionTransactionUIList',

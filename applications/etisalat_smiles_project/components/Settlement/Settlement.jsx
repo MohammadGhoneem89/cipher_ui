@@ -413,7 +413,7 @@ function mapStateToProps(state, ownProps) {
         records: _.get(state.app, 'getSettlementList.data.searchResult.count', ''),
 
         user: _.get(state.app, 'user.data.searchResult', undefined),
-        userEntity: _.get(state.app, 'entityList.data.searchResult[0]', undefined),
+        userEntity: _.get(state.app, 'entityList.data.searchResult', undefined),
         entityNames: _.get(state.app, 'entityList.data.typeData.entityNames', undefined),
     }
 }
