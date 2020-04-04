@@ -214,7 +214,7 @@ class AddPartner extends Component {
             });
         }
 
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', /*'contactMode',*/ 'rateType', 'paymentMethod', 'yesnobinary', 'authenticationTypes']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', /*'contactMode',*/ 'rateType', 'paymentMethod', 'yesnobinary', 'authenticationTypes', 'unitType']));
         this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({     // Get Orgs (entities)
             "currentPageNo": 1,
             "pageSize": 1
@@ -355,7 +355,7 @@ class AddPartner extends Component {
     addSubsidaryPartner = () => {
 
         let contractParams = { ...this.state.contractParams };
-        let contractParamsArr = [...this.state.contractParamsArr];
+        let contractParamsArr = []//[...this.state.contractParamsArr];
         let settlement = { ...this.state.settlement };
         let accrualterms = this.state.accrualTermsArr;
         let erpSettingsTo = { ...this.state.erpSettingsTo }
@@ -415,7 +415,18 @@ class AddPartner extends Component {
             contractParams.accrualBillingRates[i].sellingRate = sellingrate
             contractParams.accrualBillingRates[i].serialNo = parseInt(i + 1)
         }
+
+        if (typeof(this.getProgram().programCode) !== "string"){
+            toaster.showToast("No relevant Progam Code Found", "ERROR");
+            return;
+        }
+        contractParams.conversionPartnerProgramName = this.getProgram().programCode
         contractParams.conversionBillingRates = [...this.state.ratesArr]
+        for (let i in contractParams.conversionBillingRates) {
+            contractParams.conversionBillingRates[i].rate = parseFloat(contractParams.conversionBillingRates[i].rate)
+            contractParams.conversionBillingRates[i].rate2 = parseFloat(contractParams.conversionBillingRates[i].rate2)
+            console.log("Rates >> " + typeof (contractParams.conversionBillingRates[i].rate) + "\n\n")
+        }
 
 
         contractParams.redemptionBillingRates = [..._.get(this.state, 'redemptionTermsArr', [])]
@@ -424,13 +435,15 @@ class AddPartner extends Component {
         //let pointRule = { ...this.state.pointCreditRules }
         pointRule.maxUnsettledAmount = parseInt(pointRule.maxUnsettledAmount || -1)
         contractParams.pointCreditRules = { ...pointRule }
+        contractParams.OTPLength = parseInt(contractParams.OTPLength)
+
 
         contractParams.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
         { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
         contractParamsArr.push({ ...contractParams });
 
 
-        console.log("contactParams >>>> ", contractParams)
+        console.log("contactParams >>>> ", contractParams.conversionBillingRates)
         // this.setState({
         //     contractParamsArr,
         //     contractParams: {},
@@ -572,6 +585,7 @@ class AddPartner extends Component {
             rates.endDate = parseInt(this.state.pointConversionEndDate)
         }
         rates.rate = parseFloat(rates.rate)
+        rates.rate2 = parseFloat(rates.rate2)
 
         if (Object.keys(rates).length == 0) {
             toaster.showToast("Rate not defined", "ERROR");
@@ -735,7 +749,56 @@ class AddPartner extends Component {
                                                                     />
                                                                 </div>
 
+                                                                <div className="col-md-6">
+                                                                    <Label required={true} text="OTP Length" columns='4' />
+                                                                    <Input
+                                                                        fieldname='OTPLength'
+                                                                        type='number'
+                                                                        formname='contractParams'
+                                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                        columns='8'
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+                                                                </div>
+
                                                             </div>
+                                                            <div className="row">
+
+                                                                <div className="col-md-6">
+                                                                    <Label required={true} text="Unit Type" columns='4' />
+                                                                    <Combobox
+                                                                        fieldname='unitType'
+                                                                        formname='contractParams'
+                                                                        columns='8'
+                                                                        placeholder='Select'
+                                                                        style={{}}
+                                                                        state={this.state}
+                                                                        typeName="unitType"
+                                                                        dataSource={_.get(this.state, 'typeData', {})}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+                                                                </div>
+
+                                                                <div className="col-md-6">
+                                                                    <Label text="Regular Expression" columns='4' />
+                                                                    <Input
+                                                                        fieldname='validationRegEx'
+                                                                        formname='contractParams'
+                                                                        placeholder='Enter'
+                                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                        columns='8'
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     )}
                                             </Portlet>
@@ -760,7 +823,7 @@ class AddPartner extends Component {
                                                     <br></br>
                                                     <div className="row">
                                                         <div className="col-md-6">
-                                                            <Label required={true} text="Rate" columns='4' />
+                                                            <Label required={true} text="Rate (From Partner -> To Partner)" columns='4' />
                                                             <Input
                                                                 fieldname='rate'
                                                                 formname='rates'
@@ -801,24 +864,36 @@ class AddPartner extends Component {
                                                                 />
                                                             </div>
 
-                                                            <div className="row">
-                                                                <div className="col-md-8"></div>
-                                                                <div className="col-md-4" style={{
-                                                                    textAlign: 'right',
-                                                                    position: 'relative',
-                                                                    bottom: '20px',
-                                                                    right: '12px',
-                                                                    fontStyle: 'italic',
-                                                                    color: '#E17630'
-                                                                }}>
-                                                                    <span style={{ fontSize: '29px' }}>{`${this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).AEDValue} AED`}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
+
 
                                                         </div>
                                                     </div>
 
+                                                    <div className="row">
+                                                        <div className="col-md-6">
+                                                            <Label required={true} text="Rate (To Partner -> From Partner)" columns='4' />
+                                                            <Input
+                                                                fieldname='rate2'
+                                                                formname='rates'
+                                                                columns='8'
+                                                                placeholder=''
+                                                                state={this.state}
+                                                                actionHandler={this.generalHandler}
+                                                                className="form-control"
+                                                            />
+                                                        </div>
+                                                        <div className="col-md-4" style={{
+                                                            textAlign: 'right',
+                                                            position: 'relative',
+                                                            bottom: '20px',
+                                                            right: '12px',
+                                                            fontStyle: 'italic',
+                                                            color: '#E17630'
+                                                        }}>
+                                                            <span style={{ fontSize: '29px' }}>{`${this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).AEDValue} AED`}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                     <div className="row">
                                                         <div className="col-md-12">
                                                             <div className="btn-toolbar pull-right">
@@ -1277,6 +1352,30 @@ class AddPartner extends Component {
                                     </div>
                                     <div className="row">
                                         <div className="col-md-6">
+                                            <Label text="Currency" columns='4' />
+                                            <Input
+                                                fieldname='currency'
+                                                disabled={true}
+                                                value={"AED"}
+                                                formname='settlement'
+                                                columns='8'
+                                                placeholder=''
+                                                state={this.state}
+                                                actionHandler={this.generalHandler}
+                                                className="form-control"
+                                            />
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <Label text="Start On" columns='4' />
+                                            <div className="col-md-8">
+                                                <DateControl id="settlementStartOn" defaultValue={utils.UNIXConvertToDate(this.state.settlementStartOn)} dateChange={this.dateChange.bind(this, 'settlementStartOn')} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+
+                                        {(this.state.settlement.creationAutoOrManual == "Auto" || this.state.settlement.creationAutoOrManual == "A") && <div className="col-md-6">
                                             <Label text="Frequency" columns='4' />
                                             <Combobox
                                                 fieldname='frequency'
@@ -1291,29 +1390,9 @@ class AddPartner extends Component {
                                                 actionHandler={this.customSelectHandler.bind(this, 'frequency')}
                                                 className="form-control"
                                             />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <Label text="Start On" columns='4' />
-                                            <div className="col-md-8">
-                                                <DateControl id="settlementStartOn" defaultValue={utils.UNIXConvertToDate(this.state.settlementStartOn)} dateChange={this.dateChange.bind(this, 'settlementStartOn')} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <Label text="Currency" columns='4' />
-                                            <Input
-                                                fieldname='currency'
-                                                disabled={true}
-                                                value={"AED"}
-                                                formname='settlement'
-                                                columns='8'
-                                                placeholder=''
-                                                state={this.state}
-                                                actionHandler={this.generalHandler}
-                                                className="form-control"
-                                            />
-                                        </div>
+                                        </div>}
+
+
                                     </div>
 
                                     {/* <div className="row">
@@ -1706,12 +1785,9 @@ class AddPartner extends Component {
         let body = { ...this.state.body }
 
         console.log("body :::: ", body)
-        if (Object.keys(_.get(this.state, 'erpSettingsFrom', {})).length != 0 && (!this.state.erpSettingsFrom.vendorCode || !this.state.erpSettingsFrom.glCode || !this.state.erpSettingsFrom.billingAccount || !this.state.erpSettingsFrom.vendorSiteID)) {
-            toaster.showToast("All fields are required for ERP From Settings", "ERROR");
-            return;
-        } else {
-            body.erpSettingsFrom = { ...this.state.erpSettingsFrom };
-        }
+
+        body.erpSettingsFrom = { ...this.state.erpSettingsFrom };
+
         if (Object.keys(body).length == 0) {
             toaster.showToast("Please fill the fields", "ERROR");
             return;
@@ -1719,7 +1795,7 @@ class AddPartner extends Component {
         body.partnerNameEn = !_.get(this.state, 'body.partnerNameEn', undefined) ? _.get(this.state, 'userEntity.entityName.name', '') : _.get(this.state, 'body.partnerNameEn', '')
         body.partnerCode = !_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')
         body.partnerNameAr = !_.get(this.state, 'body.partnerNameAr', undefined) ? _.get(this.state, 'userEntity.arabicName', '') : _.get(this.state, 'body.partnerNameAr', '')
-
+        body.logo = this.getProgram().img ? this.getProgram().img : "N/A"
         if (!body.partnerCategory) {
             toaster.showToast("Partner category is required", "ERROR");
             return;
@@ -1749,6 +1825,8 @@ class AddPartner extends Component {
             toaster.showToast("Contract Parameters are required", "ERROR");
             return;
         } else {
+
+
             body.contractParams = [...contractParams]
         }
 
@@ -1776,6 +1854,7 @@ class AddPartner extends Component {
                 return;
             });
     }
+
     redirectToList = (msg = 'Processed OK!') => {
         browserHistory.push('/smiles/partnerList')
         toaster.showToast(msg);
