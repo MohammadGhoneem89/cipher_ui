@@ -871,7 +871,7 @@ class AddPartner extends Component {
 
                                                     <div className="row">
                                                         <div className="col-md-6">
-                                                            <Label required={true} text="Rate (To Partner -> From Partner)" columns='4' />
+                                                            <Label text="Rate (To Partner -> From Partner)" columns='4' />
                                                             <Input
                                                                 fieldname='rate2'
                                                                 formname='rates'
