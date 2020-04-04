@@ -3430,3 +3430,20 @@ padding: 0px 0px 0px 0px;*/
 
 }
 
+.voucherBox {
+    padding: 10px 0 10px;
+    box-shadow: 0px 0px 4px #0000003b;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    height: 150px;
+	}
+
+.areacard p {
+		margin: 10px 0 0;
+		font-size: 18px;
+		font-weight: 500;
+}
+/*.voucherBox {
+		border: 1px solid #cecece;
+		padding: 40px 0;
+}*/
