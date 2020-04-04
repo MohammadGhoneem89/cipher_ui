@@ -197,11 +197,13 @@ class SubmitSettlement extends React.Component {
 
         let UUID = utils.CreateGuid();
         let bthId="BTH"+"-"+UUID;
+        let orgCode=_.get(this.state, 'user.orgCode', undefined);
+        let withPartnerCode=orgCode==this.props.params.actualFrom?this.props.params.actualTo:orgCode
         this.props.actions.generalAjxProcess(constants.createSettlementBatch, {
         
             body: {
-                fromPartner:this.props.params.actualFrom,
-                withPartner:this.props.params.actualTo,
+            
+                withPartner:withPartnerCode,
                 amount:  _.get(this.state, 'settlementData.amount', 0).toString(),
                 commission:  _.get(this.state, 'settlementData.commissionAmount', []).toString(),
                 points: _.get(this.state, 'settlementData.pointsAwarded',0).toString(),
