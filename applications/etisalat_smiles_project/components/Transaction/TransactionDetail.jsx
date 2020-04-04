@@ -320,14 +320,14 @@ let membership="";
                                         </div>
 
 
-                                   
-                                    <div style={{marginLeft:"-10px", marginTop:"30px"}}> 
+                                   {/**style={{marginLeft:"-10px", marginTop:"30px"}} */}
+                                    <div > 
                                     <div className="portlet light bordered sdg_portlet ProductDetails"> 
-                                            <div style={{marginTop:"20px"}}>
+                                            <div>
                                                 <Row>
                                                     <div className="col-md-6">
-                                                        <div className="col-md-4">
-                                                            <h4><b><Label text="SETTLEMENTS" /></b></h4>
+                                                        <div className="col-md-10">
+                                                            <h4><b><Label text="TRANSACTION DEAILS" /></b></h4>
                                                         </div>
                                                     </div>
 
@@ -335,9 +335,18 @@ let membership="";
                                             </div>
                                             <Row>
                                                 <div className="col-md-6">
-                                                    <div className="col-md-4">
+                                                    <div className="col-md-5">
 
                                                         <Label text="Settlement Batch No:" />
+                                                    </div>
+                                                    <div className="col-md-7">
+                                                        <Label text={_.get(this.state.transactionData, 'accrualParams.mobileNo', 'N/A')} />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="col-md-4">
+
+                                                        <Label text="Settlement Date:" />
                                                     </div>
                                                     <div className="col-md-8">
                                                         <Label text={_.get(this.state.transactionData, 'accrualParams.mobileNo', 'N/A')} />
