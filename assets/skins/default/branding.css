@@ -3352,16 +3352,17 @@ ul.switchScreen li:first-child ul.sub-menu li:first-child {
 
 /*TransactionDetails*/
 /*border-top: #000000;
-	padding: 0px 0px 0px 0px;*/
+padding: 0px 0px 0px 0px;*/
+
 .boximage{	
 	width: 200px;
 	
 	padding:20px 0px 0px 50px;
 	height: 200px;
-	border-top-color:#000000;
-	border-bottom-color:#000000;  
-	border-right-color:#000000;
-	border-left-color:#000000;
+	border-top-color:#D3D3D3;
+	border-bottom-color:#D3D3D3;  
+	border-right-color:#D3D3D3;
+	border-left-color:#D3D3D3;
 	border-top-style: solid;
 	border-bottom-style: solid;
 	border-right-style: solid;
@@ -3374,10 +3375,10 @@ ul.switchScreen li:first-child ul.sub-menu li:first-child {
 	
 	padding:0px 0px 0px 50px;
 	height: 200px;
-	border-top-color:#000000;
-	border-bottom-color:#000000;  
-	border-right-color:#000000;
-	border-left-color:#000000;
+	border-top-color:#D3D3D3;
+	border-bottom-color:#D3D3D3;  
+	border-right-color:#D3D3D3;
+	border-left-color:#D3D3D3;
 	border-top-style: solid;
 	border-bottom-style: solid;
 	border-right-style: solid;

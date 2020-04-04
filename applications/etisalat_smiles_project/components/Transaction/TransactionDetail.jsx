@@ -94,11 +94,27 @@ class TransactionDetail extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.transactionData) {
             let transactionData = nextProps.transactionData;
+let targetMembership="";
+let membership="";
+            if(nextProps.transactionData.transactionSubType=="SO"){
+                membership=nextProps.transactionData.membershipNo
+                targetMembership=nextProps.transactionData.conversionParams.targetMemberShipNo
+
+
+            }else{
+
+                targetMembership=nextProps.transactionData.membershipNo
+                membership =nextProps.transactionData.conversionParams.targetMemberShipNo
+
+
+            }
             this.setState(
                 {
                     transactionData,
                     gridData: _.get(transactionData, 'transactionPool', []),
-                    isLoading: false
+                    isLoading: false,
+                    membership:membership,
+                    targetMembership:targetMembership
                 }
             )
         }
@@ -111,14 +127,45 @@ class TransactionDetail extends React.Component {
                 partnerLogo: _.get(data, 'entityLogo.sizeSmall', '')
             })
         }
-        //console.log(">>>>>>>>>>>>>>Data",this.state.transactionData)
+
+
+        if (nextProps.getAllOrgMap && nextProps.transactionData ) {
+           
+            this.setState(
+                {
+                    allOrgMap: [..._.get(nextProps, 'getAllOrgMap', [])],
+
+                }
+            )
+
+            nextProps.getAllOrgMap.forEach(e=>{
+
+                console.log(">>>>"+JSON.stringify(e)+">>>"+JSON.stringify(nextProps.transactionData))
+                if(nextProps.transactionData.actualFrom==e.orgCode){
+                    this.setState({
+                        
+                        from: e.img
+                    })
+                }
+
+
+                    if(nextProps.transactionData.actualTo==e.orgCode){
+                        this.setState({
+                            
+                            to: e.img
+                        })
+
+                }
+            })
+            
+        }   
     }
 
     componentDidMount() {
         this.props.actions.generalProcess(constants.getTransactionByID, this.getRequest());
         this.props.actions.generalProcess(constants.orgDetail, this.getRequestPartner());
 
-
+        this.props.actions.generalProcess(constants.getAllOrgMap, {});
         let intervalId = setInterval(() => {
             this.props.actions.generalProcess(constants.getTransactionByID, this.getRequest());
            
@@ -327,6 +374,7 @@ function mapStateToProps(state, ownProps) {
         with: ownProps.params.with,
         // from/:with
         getPartnerDataByID: _.get(state.app, 'entityDetail.data'),
+        getAllOrgMap: _.get(state.app, 'getAllOrgMap.data.searchResult', undefined),
     };
 }
 
