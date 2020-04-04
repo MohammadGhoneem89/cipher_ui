@@ -16,6 +16,41 @@ body {
 	text-align: center;
 }
 
+.boximage{	
+	width: 314px;
+	
+	padding:20px 0px 0px 50px;
+	height: 283px;
+	border-top-color:#D3D3D3;
+	border-bottom-color:#D3D3D3;  
+	border-right-color:#D3D3D3;
+	border-left-color:#D3D3D3;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+	font-size: 10px;
+	float: left;
+}
+.boximage2{	
+	width: 200px;
+	
+	padding:0px 0px 0px 50px;
+	height: 200px;
+	border-top-color:#D3D3D3;
+	border-bottom-color:#D3D3D3;  
+	border-right-color:#D3D3D3;
+	border-left-color:#D3D3D3;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+	font-size: 10px;
+	float: left;
+	margin:0px 0px 0px 30px;
+}
+
+
 body,
 .dashdate .btn.btn-outline.green,
 .page-sidebar,

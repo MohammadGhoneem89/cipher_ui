@@ -210,22 +210,21 @@ let membership="";
                                     <div className="row">&nbsp;&nbsp;<b>Transaction Date:&nbsp; 03/02/2020</b></div>
                                     <div className="row">&nbsp;&nbsp;<b>Confirmed On:&nbsp;&nbsp;&nbsp;&nbsp;    03/02/2020</b></div>
                                     <div className="row">
-                                        <div className="col-md-offset-3 col-md-12" >
-                                            <div className="row" style={{ marginTop:"30px" }}>
-                                                <div className="col-md-4 boximage">
-                                                    <img src={ this.state.partnerLogo} style={{ width: "100px", height:"100px" }} />
-                                                     <div className="row" style={{ marginTop:"15px" }}><Label text="Membership Number:" /></div>
-                                                     <div className="row"><Label text={this.state.transactionData.membershipNo} /></div>
+                                        <div className="col-md-offset-2 col-md-12" style={{paddingBottom:"100px"}}>
+                                            <div className="row">
+                                                <div className="boximage" style={{float:"left"}}>
+                                                    <img src={ this.state.from} style={{ width: "200px", height:"200px" }} />
+                                                    <div className="row" style={{fontSize:"2em"}}> <Label text={this.state.membership} /></div>
+                                                     
+                        
                                                 </div>
-                                                
-                                                   <div>
-                                                      <img src="../../../../../images/arrow.png" className="col-md-4" style={{width: "150px", height:"50px", marginTop:"30px" }} />
-                                                   </div>
-                                              
-                                                <div className="col-md-4 boximage2" >
-                                                    <img src="../../../../../images/Etihad Airmiles.png" style={{ width: "130px", height:"120px", paddingRight:"10px" }} />
-                                                     <div className="row" style={{ marginTop:"15px" }}><Label text="Membership Number:" /></div>
-                                                     <div className="row"><Label text={this.state.transactionData.membershipNo} /></div>
+                                                <div>
+                                                <img src="../../../../../images/arrow.png" className="col-md-4" style={{width: "103px", height:"97px", marginTop:"76px",marginLeft:"206px" }} />
+                                                    </div>
+                                                <div className="boximage" style={{marginLeft:"206px"}}>
+                                                    <img src={this.state.to} style={{ width: "200px", height:"200px", }} />
+                                                     <div className="row" style={{fontSize:"2em"}}> <Label text={this.state.targetMembership} /></div>
+                                                 
                                                 </div>
                                                 
                                             </div>
@@ -377,6 +376,7 @@ function mapStateToProps(state, ownProps) {
         getAllOrgMap: _.get(state.app, 'getAllOrgMap.data.searchResult', undefined),
     };
 }
+
 
 function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
