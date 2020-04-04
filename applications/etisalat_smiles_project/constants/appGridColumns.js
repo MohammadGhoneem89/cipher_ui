@@ -320,7 +320,7 @@ module.exports = {
     viewTranxListSettlemnt: [
         { alias: "", key: "tranxData._id", type: "hiddenID" },
         { alias: "S.No", key: "", type: 'serialNo' },
-        { alias: "Organization", key: "tranxData.partnerCode", type: "string" },
+        { alias: "Organization", key: "partnerCode", type: "string" },
         { alias: "Partner", key: "tranxData.withPartnerCode", type: "string" },
         { alias: "Transaction", key: "tranxData._id", type: "string" },
         { alias: "TRANS TYPE", key: "tranxData.transactionType", type: "string" },
@@ -329,6 +329,23 @@ module.exports = {
         { alias: "Points", key: "tranxData.pointsAwarded", type: "string" },
         { alias: "TRANS Date", key: "tranxData.createdOn", type: "epochDateTimeMs" },
         { alias: "Status", key: "tranxData.internalStatus", type: "statusBox" }
+    ],
+
+
+
+
+    viewTranxListSettlemntDetail: [
+        { alias: "", key: "tranxData._id", type: "hiddenID" },
+        { alias: "S.No", key: "", type: 'serialNo' },
+        { alias: "Organization", key: "partnerCode", type: "string" },
+        { alias: "Partner", key: "withPartnerCode", type: "string" },
+        { alias: "Transaction", key: "_id", type: "string" },
+        { alias: "TRANS TYPE", key: "transactionType", type: "string" },
+        { alias: "Amount", key: "amount", type: "string" },
+        { alias: "Commission", key: "commissionAmount", type: "string" },
+        { alias: "Points", key: "pointsAwarded", type: "string" },
+        { alias: "TRANS Date", key: "createdOn", type: "epochDateTimeMs" },
+        { alias: "Status", key: "internalStatus", type: "statusBox" }
     ],
     viewTranxList: [
         { alias: "", key: "transactionId", type: "hiddenID" },
