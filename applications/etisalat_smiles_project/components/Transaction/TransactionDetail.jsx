@@ -208,20 +208,21 @@ let membership="";
                                     {/* <div className="row"><Label text="Transaction Date : 03/02/2020" /></div>
                                     <div className="row"><Label text="Confirmed On     : 03/02/2020" /></div> */}
                                     <div className="row">
-                                        <div className="col-md-offset-3 col-md-12" style={{paddingBottom:"100px"}}>
+                                        <div className="col-md-offset-2 col-md-12" style={{paddingBottom:"100px"}}>
                                             <div className="row">
                                                 <div className="boximage" style={{float:"left"}}>
-                                                    <img src={ this.state.from} style={{ width: "100px", height:"100px" }} />
-                                                     <div className="row"><Label text="Membership Number:" /></div>
-                                                     <div className="row"><Label text={this.state.membership} /></div>
+                                                    <img src={ this.state.from} style={{ width: "200px", height:"200px" }} />
+                                                    <div className="row" style={{fontSize:"2em"}}> <Label text={this.state.membership} /></div>
+                                                     
+                        
                                                 </div>
-                                                <div className="boximage" style={{float:"left"}}>
-                                                    
+                                                <div>
+                                                <img src="../../../../../images/arrow.png" className="col-md-4" style={{width: "103px", height:"97px", marginTop:"76px",marginLeft:"206px" }} />
                                                     </div>
-                                                <div className="boximage" style={{paddingLeft:"400px"}}>
-                                                    <img src={this.state.to} style={{ width: "100px", height:"100px" }} />
-                                                     <div className="row" style={{height:"10px"}}> <Label text="Membership Number:" /></div>
-                                                     <div className="row"><Label text={this.state.targetMembership} /></div>
+                                                <div className="boximage" style={{marginLeft:"206px"}}>
+                                                    <img src={this.state.to} style={{ width: "200px", height:"200px", }} />
+                                                     <div className="row" style={{fontSize:"2em"}}> <Label text={this.state.targetMembership} /></div>
+                                                 
                                                 </div>
                                                 
                                             </div>
@@ -360,6 +361,7 @@ function mapStateToProps(state, ownProps) {
         getAllOrgMap: _.get(state.app, 'getAllOrgMap.data.searchResult', undefined),
     };
 }
+
 
 function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
