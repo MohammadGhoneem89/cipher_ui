@@ -93,10 +93,17 @@ class TransactionList extends React.Component {
                 isLoading: false
             }
         )
+        if (nextProps.typeData) {
+            this.setState({
+                typeData: nextProps.typeData,
+                isLoading: false
+            })
+        }
     }
 
     componentDidMount() {
         this.props.actions.generalProcess(constants.getTransactionList, this.getRequest())
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['transactionDirection']));
         window.scrollTo(0, 0);
     }
 
@@ -159,7 +166,7 @@ class TransactionList extends React.Component {
                                         style={{}}
                                         columns={8}
                                         state={this.state}
-                                        typeData="rule"
+                                        typeData="status"
                                         dataSource={_.get(this.state, 'typeData', {})}
                                         actionHandler={this.generalHandler}
                                         className="form-control"
@@ -170,6 +177,7 @@ class TransactionList extends React.Component {
                                     <div className="form-group col-md-4">
                                         <Label text="Direction" />
                                     </div>
+                                    {console.log(_.get(this.state, 'typeData', {}))}
                                     <Combobox
                                         fieldname='direction'
                                         formname='searchCriteria'
@@ -177,7 +185,7 @@ class TransactionList extends React.Component {
                                         style={{}}
                                         columns={8}
                                         state={this.state}
-                                        typeData="rule"
+                                        typeName="transactionDirection"
                                         dataSource={_.get(this.state, 'typeData', {})}
                                         actionHandler={this.generalHandler}
                                         className="form-control"
@@ -267,7 +275,9 @@ class TransactionList extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         transData: _.get(state.app, 'getPointConversionTransactionList.data.searchResult.rows', []),
-        records: _.get(state.app, 'getPointConversionTransactionList.data.searchResult.count', '')
+        records: _.get(state.app, 'getPointConversionTransactionList.data.searchResult.count', ''),
+        typeData: state.app.typeData.data,
+        //transctionDirection: _.get(state.app, 'entityList.data.typeData.transactionDirection', undefined),
     }
 }
 

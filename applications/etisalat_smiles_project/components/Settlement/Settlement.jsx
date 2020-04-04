@@ -138,11 +138,24 @@ class SettlementList extends React.Component {
             return;
         }
         let fromPartnerCode = _.get(this.state, 'user.orgCode', undefined)
+        let direction = _.get(this.state, 'direction', undefined)
         if (!fromPartnerCode) {
             toaster.showToast(utils.getLabelByID("Please Input Mandatory Fields"), "ERROR")
             return;
+        }if (!direction) {
+            toaster.showToast(utils.getLabelByID("Please Input Mandatory Fields"), "ERROR")
+            return;
         }
-        browserHistory.push(`/smiles/Submit/Settlements/${fromPartnerCode}/${body.withPartenerCode}/${this.state.Start/1000}/${this.state.End/1000}`)
+        let actualFrom="";
+        let actualTo="";
+        if(this.state.direction){
+        let direction=this.state.direction
+        direction=direction.split("_")
+        actualFrom=direction[0]
+        actualTo=direction[1]
+    }
+
+        browserHistory.push(`/smiles/Submit/Settlements/${actualFrom}/${actualTo}/${this.state.Start}/${this.state.End}`)
 
     }
 
@@ -192,7 +205,7 @@ class SettlementList extends React.Component {
 
                 <div className="row">
                     <div className="col-md-6">
-                        <Label required={true} text="Last Settlment Date" columns='4' />
+                        <Label required={true} text="Start Date" columns='4' />
                         <div className="form-group col-md-8">
                             <DateControl
                                 id='endDate'
@@ -211,6 +224,23 @@ class SettlementList extends React.Component {
                         </div>
                     </div>
                 </div>
+                { _.get(this.state, 'body.withPartenerCode', undefined) ? 
+                <div className="row">
+                
+                <div className="form-group col-md-6">
+                <Label required={true} text="Direction" columns='4' />
+                <select name="type" value={this.state.direction} style={{width:'349px',marginLeft:'16px'}} className="form-control col-md-8" onChange={(e) => {
+            this.setState({ direction: e.target.value });
+          }}>
+              <option value="none">Select</option>
+            <option value={_.get(this.state, 'user.orgCode', undefined)+"_"+_.get(this.state, 'body.withPartenerCode', undefined)}>{_.get(this.state, 'user.orgCode', undefined)+"  ==>  "+_.get(this.state, 'body.withPartenerCode', undefined)}</option>
+            <option value={_.get(this.state, 'body.withPartenerCode', undefined)+"_"+_.get(this.state, 'user.orgCode', undefined)}>{_.get(this.state, 'body.withPartenerCode', undefined)+"   ==>  "+_.get(this.state, 'user.orgCode', undefined)}</option>
+           
+          </select>
+          </div>
+                    
+                </div>
+              :  null }
                 <div className="row">
                     <div style={{ marginTop: '130px' }} className="row clearfix pull-right">
                         <button className="btn green" style={{ marginRight: '5px' }} onClick={this.createSettlementBatch}>
@@ -383,7 +413,7 @@ function mapStateToProps(state, ownProps) {
         records: _.get(state.app, 'getSettlementList.data.searchResult.count', ''),
 
         user: _.get(state.app, 'user.data.searchResult', undefined),
-        userEntity: _.get(state.app, 'entityList.data.searchResult[0]', undefined),
+        userEntity: _.get(state.app, 'entityList.data.searchResult', undefined),
         entityNames: _.get(state.app, 'entityList.data.typeData.entityNames', undefined),
     }
 }
