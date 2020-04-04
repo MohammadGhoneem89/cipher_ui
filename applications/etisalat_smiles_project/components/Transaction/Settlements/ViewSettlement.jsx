@@ -266,7 +266,7 @@ class ViewSettlement extends React.Component {
                                         <Col>
                                             <Col>
                                                 <Table
-                                                    gridColumns={utils.getGridColumnByName("viewTranxListSettlemnt")}
+                                                    gridColumns={utils.getGridColumnByName("viewTranxListSettlemntDetail")}
                                                     gridData={this.state.gridData}
                                                     fontclass=""
                                                     pageSize={10}
