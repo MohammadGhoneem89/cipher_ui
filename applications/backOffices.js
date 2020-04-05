@@ -16,13 +16,21 @@
 //     reportUrl: "http://23.97.138.116:9087"
 // }
 
+// const backOffices = {
+//     baseUrl: "http://localhost:9089",
+//     blockChainURL: "http://localhost:9089",         
+//     webSocketURL: "http://localhost:9089",
+//     repostActionURL: "http://localhost:9089/API",
+//     blockChainViewerURL: "http://localhost:9089",
+//     reportUrl: "http://localhost:9089"
+// };
 const backOffices = {
-    baseUrl: "http://localhost:9089",
-    blockChainURL: "http://localhost:9089",         
-    webSocketURL: "http://localhost:9089",
-    repostActionURL: "http://localhost:9089/API",
-    blockChainViewerURL: "http://localhost:9089",
-    reportUrl: "http://localhost:9089"
+    baseUrl: "https://etisalat-smiles-server.uaenorth.cloudapp.azure.com/api",
+    blockChainURL: "https://etisalat-smiles-server.uaenorth.cloudapp.azure.com/api",         
+    webSocketURL: "https://etisalat-smiles-server.uaenorth.cloudapp.azure.com/api",
+    repostActionURL: "https://etisalat-smiles-server.uaenorth.cloudapp.azure.com/api/API",
+    blockChainViewerURL: "https://etisalat-smiles-server.uaenorth.cloudapp.azure.com/api",
+    reportUrl: "https://etisalat-smiles-server.uaenorth.cloudapp.azure.com/api"
 };
 // const backOffices={
 //     baseUrl: "http://23.97.138.116:9089",

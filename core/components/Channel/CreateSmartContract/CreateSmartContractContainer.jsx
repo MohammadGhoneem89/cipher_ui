@@ -78,7 +78,38 @@ class CreateSmartContract extends React.Component {
               "actionType": "COMPONENT_FUNCTION"
             }
           ]
-        } else {
+        }else if(nextProps.AddUpdateChannel.data.ChannelConfig.network.fabricVersion == "2.0"){
+
+          element.actions = [
+            {
+              "label": "Install2.0",
+              "iconName": "fa fa-chain",
+              "actionType": "COMPONENT_FUNCTION"
+            },
+            {
+              "label": "Approve",
+              "iconName": "fa fa-thumbs-up",
+              "actionType": "COMPONENT_FUNCTION"
+            },
+            {
+              "label": "Commit & Init",
+              "iconName": "fa fa-cubes",
+              "actionType": "COMPONENT_FUNCTION"
+            },
+            {
+              "label": "Commit & Upgrade",
+              "iconName": "fa fa-arrow-up",
+              "actionType": "COMPONENT_FUNCTION"
+            }
+          ]
+
+          // ,
+          //   {
+          //     "label": "Commit & Upgrade",
+          //     "iconName": "fa fa-arrow-up",
+          //     "actionType": "COMPONENT_FUNCTION"
+          //   }
+        }else {
           element.actions = [
             {
               "label": "Install",
@@ -86,7 +117,7 @@ class CreateSmartContract extends React.Component {
               "actionType": "COMPONENT_FUNCTION"
             },
             {
-              "label": "Instanciate",
+              "label": "Instantiate",
               "iconName": "fa fa-chain",
               "actionType": "COMPONENT_FUNCTION"
             },
@@ -195,7 +226,379 @@ class CreateSmartContract extends React.Component {
         }
         break;
 
-      case "Instanciate":
+        case "Install2.0":
+        if (index > -1) {
+          console.log("----------------->>>>>>>>>.> smartContractData : ", JSON.stringify(this.state.smartContractData));
+          if (this.state.smartContractData.channelName.trim() == '') {
+            alert("channelName is required");
+            return;
+          }
+          if (this.state.smartContractData.smartContract == '') {
+            alert("smartContractName is required");
+            return;
+          }
+
+          if (this.state.smartContractData.smartContractVersion == '') {
+            alert("smartContractVersion is required");
+            return;
+          }
+          if (!this.state.documents) {
+            alert("SmartContract  is required");
+            return;
+          }
+          if (this.state.smartContractData.orderer == '') {
+            alert("orderer is required");
+            return;
+          }
+          if (this.state.smartContractData.ordererDomain == '') {
+            alert("ordererDomain is required");
+            return;
+          }
+          if (this.state.smartContractData.ordererPort == '') {
+            alert("ordererPort is required");
+            return;
+          }
+          if (this.state.smartContractData.MSP == '') {
+            alert("MSP is required");
+            return;
+          }
+          if (this.state.smartContractData.peer == '') {
+            alert("peer is required");
+            return;
+          }
+          if (this.state.smartContractData.peerDomain == '') {
+            alert("peerDomain is required");
+            return;
+          }
+          if (this.state.smartContractData.peerPort == '') {
+            alert("peerPort is required");
+            return;
+          }
+          if (this.state.smartContractData.signaturePolicy == '') {
+            alert("signaturePolicy is required");
+            return;
+          }
+          if (this.state.smartContractData.sequence == '') {
+            alert("sequence is required");
+            return;
+          }
+          if (this.state.documents.length && this.state.documents.length != 0) {
+            this.state.smartContractData.status = "========================INSTALL 2.0 REQUEST SENT=============================="
+            this.setState({ status: this.state.smartContractData });
+            let data = {
+              "function": "0009",
+              "network": this.state.channelData.network.networkName,
+              "channelName": this.state.channelData.channelName.trim(),
+              "peerList": [this.state.networkPeerList[index].requests.replace("grpcs://", '')],
+              "smartContractName": this.state.smartContractData.smartContract,
+              "smartContractVersion": this.state.smartContractData.smartContractVersion,
+              "smartContractPackPath": this.state.documents[0].retreivalPath,
+              "orderer":this.state.channelData.network.orderer,
+              "ordererDomain":this.state.channelData.network.ordererDomain,
+              "ordererPort":this.state.channelData.network.ordererPort,
+              "MSP":this.state.channelData.network.MSP,
+              "peer":this.state.channelData.network.peer,
+              "peerDomain":this.state.channelData.network.peerDomain,
+              "peerPort":this.state.channelData.network.peerPort,
+              "signaturePolicy":this.state.channelData.network.signaturePolicy,
+              "sequence":this.state.channelData.network.sequence
+            }
+            this.props.actions.generalProcess(constants.hyperledgerConnect, data);
+          } else {
+            alert("SmartContract is required");
+            return;
+          }
+        }
+        break;
+
+        case "Approve":
+        if (index > -1) {
+          console.log("----------------->>>>>>>>>.> smartContractData : ", JSON.stringify(this.state.smartContractData));
+          if (this.state.smartContractData.channelName.trim() == '') {
+            alert("channelName is required");
+            return;
+          }
+          if (this.state.smartContractData.smartContract == '') {
+            alert("smartContractName is required");
+            return;
+          }
+
+          if (this.state.smartContractData.smartContractVersion == '') {
+            alert("smartContractVersion is required");
+            return;
+          }
+          if (!this.state.documents) {
+            alert("SmartContract  is required");
+            return;
+          }
+          if (this.state.smartContractData.orderer == '') {
+            alert("orderer is required");
+            return;
+          }
+          if (this.state.smartContractData.ordererDomain == '') {
+            alert("ordererDomain is required");
+            return;
+          }
+          if (this.state.smartContractData.ordererPort == '') {
+            alert("ordererPort is required");
+            return;
+          }
+          if (this.state.smartContractData.MSP == '') {
+            alert("MSP is required");
+            return;
+          }
+          if (this.state.smartContractData.peer == '') {
+            alert("peer is required");
+            return;
+          }
+          if (this.state.smartContractData.peerDomain == '') {
+            alert("peerDomain is required");
+            return;
+          }
+          if (this.state.smartContractData.peerPort == '') {
+            alert("peerPort is required");
+            return;
+          }
+          if (this.state.smartContractData.signaturePolicy == '') {
+            alert("signaturePolicy is required");
+            return;
+          }
+          if (this.state.smartContractData.sequence == '') {
+            alert("sequence is required");
+            return;
+          }
+          if (this.state.documents.length && this.state.documents.length != 0) {
+            this.state.smartContractData.status = "========================INSTALL 2.0 REQUEST SENT=============================="
+            this.setState({ status: this.state.smartContractData });
+            let data = {
+              "function": "0010",
+              "network": this.state.channelData.network.networkName,
+              "channelName": this.state.channelData.channelName.trim(),
+              "peerList": [this.state.networkPeerList[index].requests.replace("grpcs://", '')],
+              "smartContractName": this.state.smartContractData.smartContract,
+              "smartContractVersion": this.state.smartContractData.smartContractVersion,
+              "smartContractPackPath": this.state.documents[0].retreivalPath,
+              "orderer":this.state.channelData.network.orderer,
+              "ordererDomain":this.state.channelData.network.ordererDomain,
+              "ordererPort":this.state.channelData.network.ordererPort,
+              "MSP":this.state.channelData.network.MSP,
+              "peer":this.state.channelData.network.peer,
+              "peerDomain":this.state.channelData.network.peerDomain,
+              "peerPort":this.state.channelData.network.peerPort,
+              "signaturePolicy":this.state.channelData.network.signaturePolicy,
+              "sequence":this.state.channelData.network.sequence
+            }
+            this.props.actions.generalProcess(constants.hyperledgerConnect, data);
+          } else {
+            alert("SmartContract is required");
+            return;
+          }
+        }
+        break;
+
+        case "Commit & Init":
+        if (index > -1) {
+          console.log("----------------->>>>>>>>>.> smartContractData : ", JSON.stringify(this.state.smartContractData));
+          if (this.state.smartContractData.channelName.trim() == '') {
+            alert("channelName is required");
+            return;
+          }
+          if (this.state.smartContractData.smartContract == '') {
+            alert("smartContractName is required");
+            return;
+          }
+
+          if (this.state.smartContractData.smartContractVersion == '') {
+            alert("smartContractVersion is required");
+            return;
+          }
+          if (!this.state.documents) {
+            alert("SmartContract  is required");
+            return;
+          }
+          if (this.state.smartContractData.orderer == '') {
+            alert("orderer is required");
+            return;
+          }
+          if (this.state.smartContractData.ordererDomain == '') {
+            alert("ordererDomain is required");
+            return;
+          }
+          if (this.state.smartContractData.ordererPort == '') {
+            alert("ordererPort is required");
+            return;
+          }
+          if (this.state.smartContractData.MSP == '') {
+            alert("MSP is required");
+            return;
+          }
+          if (this.state.smartContractData.peer == '') {
+            alert("peer is required");
+            return;
+          }
+          if (this.state.smartContractData.peerDomain == '') {
+            alert("peerDomain is required");
+            return;
+          }
+          if (this.state.smartContractData.peerPort == '') {
+            alert("peerPort is required");
+            return;
+          }
+          if (this.state.smartContractData.signaturePolicy == '') {
+            alert("signaturePolicy is required");
+            return;
+          }
+          if (this.state.smartContractData.sequence == '') {
+            alert("sequence is required");
+            return;
+          }
+          let arg;
+          if (this.state.smartContractData.smartContractArgs == '') {
+            alert("smartContractArgs is required");
+            return;
+          } else {
+            try {
+
+              arg = JSON.parse(this.state.smartContractData.smartContractArgs);
+
+            } catch (error) {
+
+              alert("smartContractArgs must be a valid array");
+              return false;
+            }
+          }
+          if (this.state.documents.length && this.state.documents.length != 0) {
+            this.state.smartContractData.status = "========================INSTALL 2.0 REQUEST SENT=============================="
+            this.setState({ status: this.state.smartContractData });
+            let data = {
+              "function": "0011",
+              "network": this.state.channelData.network.networkName,
+              "channelName": this.state.channelData.channelName.trim(),
+              "peerList": [this.state.networkPeerList[index].requests.replace("grpcs://", '')],
+              "smartContractName": this.state.smartContractData.smartContract,
+              "smartContractVersion": this.state.smartContractData.smartContractVersion,
+              "smartContractPackPath": this.state.documents[0].retreivalPath,
+              "orderer":this.state.channelData.network.orderer,
+              "ordererDomain":this.state.channelData.network.ordererDomain,
+              "ordererPort":this.state.channelData.network.ordererPort,
+              "MSP":this.state.channelData.network.MSP,
+              "peer":this.state.channelData.network.peer,
+              "peerDomain":this.state.channelData.network.peerDomain,
+              "peerPort":this.state.channelData.network.peerPort,
+              "signaturePolicy":this.state.channelData.network.signaturePolicy,
+              "sequence":this.state.channelData.network.sequence,
+              "smartContractArgs": arg
+            }
+            this.props.actions.generalProcess(constants.hyperledgerConnect, data);
+          } else {
+            alert("SmartContract is required");
+            return;
+          }
+        }
+        break;
+
+        case "Commit & Upgrade":
+        if (index > -1) {
+          console.log("----------------->>>>>>>>>.> CommitUpgrade  : ", JSON.stringify(this.state.smartContractData));
+          if (this.state.smartContractData.channelName.trim() == '') {
+            alert("channelName is required");
+            return;
+          }
+          if (this.state.smartContractData.smartContract == '') {
+            alert("smartContractName is required");
+            return;
+          }
+
+          if (this.state.smartContractData.smartContractVersion == '') {
+            alert("smartContractVersion is required");
+            return;
+          }
+          if (!this.state.documents) {
+            alert("SmartContract  is required");
+            return;
+          }
+          if (this.state.smartContractData.orderer == '') {
+            alert("orderer is required");
+            return;
+          }
+          if (this.state.smartContractData.ordererDomain == '') {
+            alert("ordererDomain is required");
+            return;
+          }
+          if (this.state.smartContractData.ordererPort == '') {
+            alert("ordererPort is required");
+            return;
+          }
+          if (this.state.smartContractData.MSP == '') {
+            alert("MSP is required");
+            return;
+          }
+          if (this.state.smartContractData.peer == '') {
+            alert("peer is required");
+            return;
+          }
+          if (this.state.smartContractData.peerDomain == '') {
+            alert("peerDomain is required");
+            return;
+          }
+          if (this.state.smartContractData.peerPort == '') {
+            alert("peerPort is required");
+            return;
+          }
+          if (this.state.smartContractData.signaturePolicy == '') {
+            alert("signaturePolicy is required");
+            return;
+          }
+          if (this.state.smartContractData.sequence == '') {
+            alert("sequence is required");
+            return;
+          }
+          let arg;
+          if (this.state.smartContractData.smartContractArgs == '') {
+            alert("smartContractArgs is required");
+            return;
+          } else {
+            try {
+
+              arg = JSON.parse(this.state.smartContractData.smartContractArgs);
+
+            } catch (error) {
+
+              alert("smartContractArgs must be a valid array");
+              return false;
+            }
+          }
+          if (this.state.documents.length && this.state.documents.length != 0) {
+            this.state.smartContractData.status = "========================INSTALL 2.0 REQUEST SENT=============================="
+            this.setState({ status: this.state.smartContractData });
+            let data = {
+              "function": "0012",
+              "network": this.state.channelData.network.networkName,
+              "channelName": this.state.channelData.channelName.trim(),
+              "peerList": [this.state.networkPeerList[index].requests.replace("grpcs://", '')],
+              "smartContractName": this.state.smartContractData.smartContract,
+              "smartContractVersion": this.state.smartContractData.smartContractVersion,
+              "smartContractPackPath": this.state.documents[0].retreivalPath,
+              "orderer":this.state.channelData.network.orderer,
+              "ordererDomain":this.state.channelData.network.ordererDomain,
+              "ordererPort":this.state.channelData.network.ordererPort,
+              "MSP":this.state.channelData.network.MSP,
+              "peer":this.state.channelData.network.peer,
+              "peerDomain":this.state.channelData.network.peerDomain,
+              "peerPort":this.state.channelData.network.peerPort,
+              "signaturePolicy":this.state.channelData.network.signaturePolicy,
+              "sequence":this.state.channelData.network.sequence,
+              "smartContractArgs": arg
+            }
+            this.props.actions.generalProcess(constants.hyperledgerConnect, data);
+          } else {
+            alert("SmartContract is required");
+            return;
+          }
+        }
+        break;
+
+      case "Instantiate":
         if (index > -1) {
           if (this.state.smartContractData.channelName.trim() == '') {
             alert("channelName is required");
@@ -255,6 +658,8 @@ class CreateSmartContract extends React.Component {
         }
 
         break;
+
+      
       case "Upgrade":
         if (index > -1) {
           if (this.state.smartContractData.channelName.trim() == '') {
@@ -495,6 +900,7 @@ class CreateSmartContract extends React.Component {
     this.setState(data);
   }
   render() {
+    console.log("channel data ------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>", JSON.stringify(this.state.channelData))
     if (this.state.isLoading) {
       return (<div className="loader">isLoading...</div>)
     }
