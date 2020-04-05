@@ -823,6 +823,7 @@ class AddPartner extends Component {
                                                     <br></br>
                                                     <div className="row">
                                                         <div className="col-md-6">
+                                                        
                                                             <Label required={true} text="Rate (From Partner -> To Partner)" columns='4' />
                                                             <Input
                                                                 fieldname='rate'
@@ -1366,13 +1367,15 @@ class AddPartner extends Component {
                                             />
                                         </div>
 
-                                        <div className="col-md-6">
+                                        {(this.state.settlement.creationAutoOrManual == "Auto" || this.state.settlement.creationAutoOrManual == "A") && <div className="col-md-6">
                                             <Label text="Start On" columns='4' />
                                             <div className="col-md-8">
                                                 <DateControl id="settlementStartOn" defaultValue={utils.UNIXConvertToDate(this.state.settlementStartOn)} dateChange={this.dateChange.bind(this, 'settlementStartOn')} />
                                             </div>
-                                        </div>
+                                        </div>}
+
                                     </div>
+
                                     <div className="row">
 
                                         {(this.state.settlement.creationAutoOrManual == "Auto" || this.state.settlement.creationAutoOrManual == "A") && <div className="col-md-6">

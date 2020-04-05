@@ -3,7 +3,7 @@ module.exports = {
         { alias: "Start Date", key: "startDate", type: "epochDate" },
         { alias: "End Date", key: "endDate", type: "epochDate" },
         { alias: "Rate", key: "rate", type: "string" },
-        { alias: "Rate2", key: "Rate2", type: "string" },
+        { alias: "Rate2", key: "rate2", type: "string" },
         { alias: "Source Token", key: "sourceToken", type: "string" },
         // { alias: "Mode", key: "mode", type: "string" },
         { alias: "Action", key: "action", type: "action" }
