@@ -198,7 +198,7 @@ class SubmitSettlement extends React.Component {
         let UUID = utils.CreateGuid();
         let bthId="BTH"+"-"+UUID;
         let orgCode=_.get(this.state, 'user.orgCode', undefined);
-        let withPartnerCode=orgCode==this.props.params.actualFrom?this.props.params.actualTo:orgCode
+        let withPartnerCode=orgCode!=this.props.params.actualFrom?this.props.params.actualFrom:this.props.params.actualTo
         this.props.actions.generalAjxProcess(constants.createSettlementBatch, {
         
             body: {
