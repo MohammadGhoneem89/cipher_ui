@@ -299,7 +299,7 @@ class SubmitSettlement extends React.Component {
             return (
                 <Row>
                     <Row>
-                        <Steps statusList={[{ status: true, label: 'INITIATED' }, { status: false, label: 'SUBMITTED' }, { status: false, label: 'PAID' }, { status: false, label: 'RECEIVED' }]} />
+                        <Steps statusList={[{ status: false, label: 'INITIATED' }, { status: false, label: 'APPROVED' }, { status: false, label: 'PAID' }, { status: false, label: 'RECEIVED' }]} />
                     </Row>
                     <Row>
                         <Col>
