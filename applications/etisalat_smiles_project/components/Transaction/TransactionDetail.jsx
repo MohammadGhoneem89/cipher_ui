@@ -218,7 +218,7 @@ let membership="";
                                                                 <label className="label-control"><strong>Transction Date</strong></label>
                                                             </div>
                                                             <div className="col-md-6 col-sm-6 col-xs-6">    
-                                                                <label>{moment(parseInt(_.get(this.state.transactionData, 'createdOn', 0)) ).format('DD/MM/YYYY')}</label>
+                                                                {moment(parseInt(_.get(this.state.transactionData, 'createdOn', 0)) ).format('DD/MM/YYYY')}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -230,7 +230,7 @@ let membership="";
                                                                 <label className="label-control"><strong>Confirm on</strong></label>
                                                             </div>
                                                             <div className="col-md-6 col-sm-6 col-xs-6">    
-                                                                <label>{moment(parseInt(_.get(this.state.transactionData, 'createdOn', 0)) ).format('DD/MM/YYYY')}</label>
+                                                                {moment(parseInt(_.get(this.state.transactionData, 'createdOn', 0)) ).format('DD/MM/YYYY')}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -288,7 +288,7 @@ let membership="";
                                                                     <label className="label-control"><strong>Transction Type</strong></label>
                                                                 </div>
                                                                 <div className="col-md-6 col-sm-6 col-xs-6">    
-                                                                    <label>{this.state.transactionData.transactionType}</label>
+                                                                    {this.state.transactionData.transactionType}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -300,7 +300,7 @@ let membership="";
                                                                     <label className="label-control"><strong>Sumitted by Partner on</strong></label>
                                                                 </div>
                                                                 <div className="col-md-6 col-sm-6 col-xs-6">    
-                                                                    <label>{this.state.transactionData.partnerCode}</label>
+                                                                   {this.state.transactionData.partnerCode}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -312,7 +312,7 @@ let membership="";
                                                                 <label className="label-control"><strong>Sub Type</strong></label>
                                                             </div>
                                                             <div className="col-md-6 col-sm-6 col-xs-6">    
-                                                                <label>{this.state.transactionData.transactionSubType=="SO"?"Source to Others":"Other to Source"}</label>
+                                                                {this.state.transactionData.transactionSubType=="SO"?"Source to Others":"Other to Source"}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -323,7 +323,7 @@ let membership="";
                                    {/**style={{marginLeft:"-10px", marginTop:"30px"}} */}
                                     <div > 
                                     <div className="portlet light bordered sdg_portlet ProductDetails"> 
-                                            <div>
+                                            <div style={{marginBottom:"20px"}}>
                                                 <Row>
                                                     <div className="col-md-6">
                                                         <div className="col-md-10">
