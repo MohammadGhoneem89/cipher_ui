@@ -371,15 +371,15 @@ let membership="";
 
                                                 <Row>
                                                     <div>
-                                                        <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px", "borderColor":"#D3D3D3" }}>
+                                                        <div className="col-md-3 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px", "borderColor":"#D3D3D3" }}>
                                                             <Label text="Amount" />
                                                             <Label style={{ "font-size": "30px", "color": "#1d9b1d" }} text={`${_.get(this.state.transactionData, 'amount', '0')} AED`} />
                                                         </div>
-                                                        <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px","borderColor":"#D3D3D3" }}>
+                                                        <div className="col-md-3 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px","borderColor":"#D3D3D3" }}>
                                                             <Label text="Commission" />
                                                             <Label style={{ "font-size": "30px", "color": "#1d9b1d" }} text={`${_.get(this.state.transactionData, 'commissionAmount', '0')} AED`} />
                                                         </div>
-                                                        <div className="col-md-2 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px","borderColor":"#D3D3D3" }}>
+                                                        <div className="col-md-3 text-center" style={{ "border": "2px solid", "margin-bottom": "20px", "margin-top": "20px", "height": "90px", "margin-left": "50px", "padding": "2px","borderColor":"#D3D3D3" }}>
                                                             <Label text="Points Awarded" />
                                                             <Label style={{ "font-size": "30px", "color": "#1d9b1d" }} text={`${_.get(this.state.transactionData, 'pointsAwarded', '0')} `} />
                                                         </div>
