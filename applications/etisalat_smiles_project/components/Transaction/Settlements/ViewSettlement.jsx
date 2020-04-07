@@ -437,7 +437,7 @@ class ViewSettlement extends React.Component {
                                                     <Label text="Invoice Date:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={moment(parseInt(_.get(this.state.settlementData, 'invoiceDate', 0)) ).format('DD/MM/YYYY')} />
+                                                    <Label text={_.get(this.state.settlementData, 'invoiceDate', 0)==0?"N/A":moment(parseInt(_.get(this.state.settlementData, 'invoiceDate', 0)) ).format('DD/MM/YYYY')} />
                                                 </div>
                                             </div>
                                         </Row>
@@ -455,7 +455,7 @@ class ViewSettlement extends React.Component {
                                                     <Label text="Payment Date:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={moment(parseInt(_.get(this.state.settlementData, 'paymentDate', 0)) ).format('DD/MM/YYYY')} />
+                                                    <Label text={_.get(this.state.settlementData, 'paymentDate', 0)==0?"N/A":moment(parseInt(_.get(this.state.settlementData, 'paymentDate', 0)) ).format('DD/MM/YYYY')} />
                                                 </div>
                                             </div>
                                         </Row>
