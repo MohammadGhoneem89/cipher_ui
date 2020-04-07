@@ -220,15 +220,15 @@ class ViewSettlement extends React.Component {
         let status = "";
 
 
-        if(settlementData.Status=='INITIATED'){
-            this.state.sendingStatus="PENDING"
-            this.state.actionSettlement='APPROVED'
+        if (settlementData.Status == 'INITIATED') {
+            this.state.sendingStatus = "PENDING"
+            this.state.actionSettlement = 'APPROVED'
             this.updateCall(status);
             this.updateDb()
-        }else if(settlementData.Status=='APPROVED'){
-            this.state.sendingStatus="INVOICED"
-            this.state.actionSettlement='Invoiced'
-            this.state.valueType="Invoice Number : "
+        } else if (settlementData.Status == 'APPROVED') {
+            this.state.sendingStatus = "INVOICED"
+            this.state.actionSettlement = 'Invoiced'
+            this.state.valueType = "Invoice Number : "
             this.showHideManualSettlement();
 
         } else if (settlementData.Status == 'INVOICED') {
@@ -269,18 +269,20 @@ class ViewSettlement extends React.Component {
 
 
 
-                            console.log(result)
-                            result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : toaster.showToast("Settlement Batch Submitted");
-                            
+        this.props.actions.generalAjxProcess(constants.updateSettlement, { body })
+            .then(result => {
 
-                            if (result.message.status == 'OK' &&  this.state.sendingStatus=="APPROVED"){
+                console.log(result)
+                result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : toaster.showToast("Settlement Batch Submitted");
 
-                                updateDb();
-                            }else{
-                                this.showHideManualSettlement();
-                            result.message.status == 'OK'? browserHistory.push('/smiles/settlementList'):""
-                            }
 
+                if (result.message.status == 'OK' && this.state.sendingStatus == "APPROVED") {
+
+                    updateDb();
+                } else {
+                    this.showHideManualSettlement();
+                    result.message.status == 'OK' ? browserHistory.push('/smiles/settlementList') : ""
+                }
 
             });
 
@@ -288,21 +290,21 @@ class ViewSettlement extends React.Component {
 
 
 
-    updateDb=() => {
-        let settlementData= this.state.settlementData
+    updateDb = () => {
+        let settlementData = this.state.settlementData
         this.props.actions.generalAjxProcess(constants.initiateSettlement, {
-        
+
             body: {
-             
-                status:"APPROVED",
-                bthid:settlementData.key
+
+                status: "APPROVED",
+                bthid: settlementData.key
             }
-      
+
         }).then(result => {
-            result.message.status == 'OK'? browserHistory.push('/smiles/settlementList'):""
+            result.message.status == 'OK' ? browserHistory.push('/smiles/settlementList') : ""
             result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : toaster.showToast("Settlement Batch Submitted");
-                       
-            })
+
+        })
 
     }
 
@@ -457,7 +459,7 @@ class ViewSettlement extends React.Component {
                                                     <Label text="Invoice Date:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={_.get(this.state.settlementData, 'invoiceDate', 0)==0?"N/A":moment(parseInt(_.get(this.state.settlementData, 'invoiceDate', 0)) ).format('DD/MM/YYYY')} />
+                                                    <Label text={_.get(this.state.settlementData, 'invoiceDate', 0) == 0 ? "N/A" : moment(parseInt(_.get(this.state.settlementData, 'invoiceDate', 0))).format('DD/MM/YYYY')} />
                                                 </div>
                                             </div>
                                         </Row>
@@ -475,7 +477,7 @@ class ViewSettlement extends React.Component {
                                                     <Label text="Payment Date:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={_.get(this.state.settlementData, 'paymentDate', 0)==0?"N/A":moment(parseInt(_.get(this.state.settlementData, 'paymentDate', 0)) ).format('DD/MM/YYYY')} />
+                                                    <Label text={_.get(this.state.settlementData, 'paymentDate', 0) == 0 ? "N/A" : moment(parseInt(_.get(this.state.settlementData, 'paymentDate', 0))).format('DD/MM/YYYY')} />
                                                 </div>
                                             </div>
                                         </Row>
