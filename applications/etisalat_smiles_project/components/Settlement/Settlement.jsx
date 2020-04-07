@@ -52,7 +52,7 @@ class SettlementList extends React.Component {
     };
 
     searchResult = () => {
-        this.props.actions.generalProcess(constants.getViewTransaction, this.getRequest());
+        this.props.actions.generalProcess(constants.getSettlementList, this.getRequest());
     }
 
 

@@ -11,6 +11,7 @@ module.exports = {
     getLMSData: baseUrl + '/API/SMILES/getLMSData',
     getInterim: baseUrl + '/API/SMILES/getInterim',
     getViewTransaction: baseUrl + '/API/SMILES/getPointConversionTransactionUIList',
+    updateSettlement: baseUrl + '/API/SMILES/updateSettlementBatch',
     getPartnerByID: `${baseUrl}/API/SMILES/getPartnerByID`,
     updatePartnerStatus: `${baseUrl}/API/SMILES/updatePartnerStatus`,
     getPartnersList: `${baseUrl}/API/SMILES/getPartnersList`,

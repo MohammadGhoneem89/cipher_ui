@@ -3159,9 +3159,22 @@ a.btn.btnclear:hover {
 
 
 .voucherBox {
-    border: 1px solid #cecece;
-    padding: 40px 0;
+    padding: 10px 0 10px;
+    box-shadow: 0px 0px 4px #0000003b;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    height: 160px;
+    }
+
+.areacard p {
+        margin: 10px 0 0;
+        font-size: 18px;
+        font-weight: 500;
 }
+/*.voucherBox {
+        border: 1px solid #cecece;
+        padding: 40px 0;
+}*/
 .icheck-list {
     position: absolute;
     left: 50%;
@@ -3373,7 +3386,7 @@ ul.switchScreen li:first-child ul.sub-menu li:first-child {
 
 
 #progressbar {margin: 10px 0 30;overflow: hidden;counter-reset: step; width: 100%;text-align: center;padding-left: 0;}
-#progressbar li {list-style-type: none;color: rgb(51, 51, 51);text-transform: uppercase;font-size: 12px; width: 25%;position: relative;font-weight: 800;font: normal normal normal 14px/1 FontAwesome;display: inline-block;}
+#progressbar li {list-style-type: none;color: rgb(51, 51, 51);text-transform: uppercase;font-size: 12px; width: 20%;position: relative;font-weight: 800;font: normal normal normal 14px/1 FontAwesome;display: inline-block;}
 #progressbar li:before {content: counter(step);counter-increment: step;width: 54px;line-height: 54px; display: block;font-size: 16px;color: #fff; background: grey;border-radius: 50%;margin: 0 auto 4px auto;font-weight: 600;position: relative;z-index: 99;}
 #progressbar li:after {content: '';width: 100%;height: 3px;background: #d1e1bd;position: absolute; left: -50%;top: 30%;z-index: 0;}
 #progressbar li:first-child:after {content: none; }
