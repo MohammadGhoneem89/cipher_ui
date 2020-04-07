@@ -67,7 +67,7 @@ class ViewSettlement extends React.Component {
                 searchCriteria: {}
             }
         }
-        this.setState({ searchCriteria: {},  ModalBoxGrid: false });
+        this.setState({ searchCriteria: {}, ModalBoxGrid: false });
         // this.props.actions.generalProcess(constants.getMasterAgreement, request);
     };
 
@@ -98,37 +98,58 @@ class ViewSettlement extends React.Component {
             let settlementData = nextProps.settlementData;
             let data = nextProps.getPartnerDataByID;
 
-            if(nextProps.settlementData.Status=="PENDING" && !this.state.intervalId ){
-            let intervalId = setInterval(() => {
-
-            this.props.actions.generalProcess(constants.getSettlementBatch, this.getRequest());
-        }, 10000);
-
-        this.setState({
-            intervalId
-        })
-    }else if (nextProps.settlementData.Status!="PENDING"){
-        clearInterval(this.state.intervalId)
-    }
-
-            let btnflowName="";
-            let visibilityFlow="visible";
-            if(nextProps.settlementData.Status=="INITIATED"){
-
-                btnflowName="Approve"
-            }else if (nextProps.settlementData.Status=="APPROVED") {
-                btnflowName="Invoice"
-            }else if (nextProps.settlementData.Status=="INVOICED") {
-                btnflowName="Paid"
-                
-            }else if (nextProps.settlementData.Status=="PAID") {
-                btnflowName="Receive"
-            }else{
-                visibilityFlow="hidden";
+            let txPool = settlementData.transactionList
+            if (typeof (txPool) !== "undefined") {
+                txPool.forEach(obj => {
+                    let actions = [{
+                        "value": "1003",
+                        "type": "componentAction",
+                        "label": "View",
+                        "params": "",
+                        "iconName": "icon-docs",
+                        "URI": [`/smiles/transaction/view/${obj.partnerCode}/${obj.withPartnerCode}`]
+                    }];
+                    obj.actions = actions
+                    obj.transactionId = `${obj.partnerCode}_${obj.sourceTransactionId}`
+                })
             }
-            
-         
-    
+
+
+            if (nextProps.settlementData.Status == "PENDING" && !this.state.intervalId) {
+                let intervalId = setInterval(() => {
+
+                    this.props.actions.generalProcess(constants.getSettlementBatch, this.getRequest());
+
+                }, 10000);
+
+
+                this.setState({
+                    intervalId
+                })
+            }
+            else if (nextProps.settlementData.Status != "PENDING") {
+                clearInterval(this.state.intervalId)
+            }
+
+            let btnflowName = "";
+            let visibilityFlow = "visible";
+            if (nextProps.settlementData.Status == "INITIATED") {
+
+                btnflowName = "Approve"
+            } else if (nextProps.settlementData.Status == "APPROVED") {
+                btnflowName = "Invoice"
+            } else if (nextProps.settlementData.Status == "INVOICED") {
+                btnflowName = "Paid"
+
+            } else if (nextProps.settlementData.Status == "PAID") {
+                btnflowName = "Receive"
+            } else {
+                visibilityFlow = "hidden";
+            }
+
+
+
+
 
             this.setState(
                 {
@@ -139,11 +160,12 @@ class ViewSettlement extends React.Component {
                     englishPartnerName: _.get(data, 'entityName', ''),
                     arabicPartnerName: _.get(data, 'spCode', ''),
                     partnerLogo: _.get(data, 'entityLogo.sizeSmall', ''),
-                    btnflowName:btnflowName
+                    btnflowName: btnflowName
                 }
             )
         }
     }
+
     getRequestPartner = () => {
 
         let partnerCode = (this.props.id).split("_")
@@ -162,10 +184,10 @@ class ViewSettlement extends React.Component {
     componentDidMount() {
         this.props.actions.generalProcess(constants.orgDetail, this.getRequestPartner());
         this.props.actions.generalProcess(constants.getSettlementBatch, this.getRequest());
-           
-      
-      
-        
+
+
+
+
 
         window.scrollTo(0, 0);
     }
@@ -179,7 +201,7 @@ class ViewSettlement extends React.Component {
             }
         }
     }
- componentWillUnmount() {
+    componentWillUnmount() {
         clearInterval(this.state.intervalId);
     }
     pageChanged = (pageNo) => {
@@ -191,38 +213,38 @@ class ViewSettlement extends React.Component {
 
     updateSettlement = () => {
 
-       let settlementData= this.state.settlementData
-       
+        let settlementData = this.state.settlementData
 
 
-        let status="";
+
+        let status = "";
 
 
-        if(settlementData.Status=='INITIATED'){
-            this.state.sendingStatus="APPROVED"
-            this.state.actionSettlement='APPROVED'
+        if (settlementData.Status == 'INITIATED') {
+            this.state.sendingStatus = "APPROVED"
+            this.state.actionSettlement = 'APPROVED'
             this.updateCall(status);
-        }else if(settlementData.Status=='APPROVED'){
-            this.state.sendingStatus="INVOICED"
-            this.state.actionSettlement='Invoiced'
-            this.state.valueType="Invoice Number : "
+        } else if (settlementData.Status == 'APPROVED') {
+            this.state.sendingStatus = "INVOICED"
+            this.state.actionSettlement = 'Invoiced'
+            this.state.valueType = "Invoice Number : "
             this.showHideManualSettlement();
 
-        }else if(settlementData.Status=='INVOICED'){
-            this.state.sendingStatus="PAID"
-            this.state.actionSettlement='Paid'
-            this.state.valueType="Payment Reference Number :"
+        } else if (settlementData.Status == 'INVOICED') {
+            this.state.sendingStatus = "PAID"
+            this.state.actionSettlement = 'Paid'
+            this.state.valueType = "Payment Reference Number :"
             this.showHideManualSettlement();
 
-        }else if(settlementData.Status=='PAID'){
-            this.state.sendingStatus="RECIEVED"
+        } else if (settlementData.Status == 'PAID') {
+            this.state.sendingStatus = "RECIEVED"
             this.updateCall()
         }
 
-        
+
     }
 
-    hideandCall = () =>{
+    hideandCall = () => {
         showHideManualSettlement();
         updateCall()
     }
@@ -230,32 +252,32 @@ class ViewSettlement extends React.Component {
     updateCall = () => {
 
 
-        let settlementData= this.state.settlementData
+        let settlementData = this.state.settlementData
 
         let body = {
-            fromPartner:settlementData.partenerCode,
-            withPartner:settlementData.withPartenerCode,
-            poolID:settlementData.key,
-            statusRecv:this.state.sendingStatus,
-            payref:_.get(this.state,"body.settleValue",""),
-
-     
-           
-                    }
+            fromPartner: settlementData.partenerCode,
+            withPartner: settlementData.withPartenerCode,
+            poolID: settlementData.key,
+            statusRecv: this.state.sendingStatus,
+            payref: _.get(this.state, "body.settleValue", ""),
 
 
 
-
-                    this.props.actions.generalAjxProcess(constants.updateSettlement,{ body})
-                        .then(result => {
-
-                            console.log(result)
-                            result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : toaster.showToast("Settlement Batch Submitted");
-                            this.showHideManualSettlement();
-                            result.message.status == 'OK'? browserHistory.push('/smiles/settlementList'):""
+        }
 
 
-                        });
+
+
+        this.props.actions.generalAjxProcess(constants.updateSettlement, { body })
+            .then(result => {
+
+                console.log(result)
+                result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : toaster.showToast("Settlement Batch Submitted");
+                this.showHideManualSettlement();
+                result.message.status == 'OK' ? browserHistory.push('/smiles/settlementList') : ""
+
+
+            });
 
     }
 
@@ -269,38 +291,38 @@ class ViewSettlement extends React.Component {
 
 
     renderBtn = () => {
-        if(this.state.btnflowName!="")
-        return (<button type="submit"  style={{float:"right",marginLeft:"33px"}} className="btn green" onClick={this.updateSettlement}>
-        {this.state.btnflowName}
-           </button>)
+        if (this.state.btnflowName != "")
+            return (<button type="submit" style={{ float: "right", marginLeft: "33px" }} className="btn green" onClick={this.updateSettlement}>
+                {this.state.btnflowName}
+            </button>)
 
     }
 
 
     renderModalGrid = () => {
         return (<Portlet style={{ height: '325px' }} title="Reference Number" isPermissioned={true}>
-            
+
             <form style={{ padding: "21 28px 14 14" }}>
 
-    
+
                 <div className="row">
-              
+
                     <div className="col-md-6">
                         <Label text={this.state.valueType} columns='4' />
 
                         <Combobox
-                                        fieldname='settleValue'
-                                        formname='body'
-                                        placeholder='Please enter reference number'
-                                        style={{}}
-                                        columns={8}
-                                        state={this.state}
-                                        typeData="status"
-                                        dataSource={_.get(this.state, 'typeData', {})}
-                                        actionHandler={this.generalHandler}
-                                        className="form-control"
-                                    />
-                        
+                            fieldname='settleValue'
+                            formname='body'
+                            placeholder='Please enter reference number'
+                            style={{}}
+                            columns={8}
+                            state={this.state}
+                            typeData="status"
+                            dataSource={_.get(this.state, 'typeData', {})}
+                            actionHandler={this.generalHandler}
+                            className="form-control"
+                        />
+
 
                     </div>
                     {/* <div className="col-md-6">
@@ -319,14 +341,14 @@ class ViewSettlement extends React.Component {
                         /> 
                     </div> */}
                     <button type="button" className="btn green" onClick={this.updateCall}>
-                    {this.state.btnflowName}
-                                            </button>
+                        {this.state.btnflowName}
+                    </button>
                 </div>
 
-               
+
             </form>
 
-        
+
         </Portlet>)
     }
 
@@ -346,16 +368,16 @@ class ViewSettlement extends React.Component {
             return (
                 <Row>
                     <Row>
-                        <Steps statusList={[{ status: this.state.settlementData.Status=="INITIATED", label: 'INITIATED' }, { status: this.state.settlementData.Status=="APPROVED", label: 'APPROVED' },{ status: this.state.settlementData.Status=="INVOICED", label: 'INVOICED' }, { status: this.state.settlementData.Status=="PAID", label: 'PAID' }, { status: this.state.settlementData.Status=="RECIEVED", label: 'RECEIVED' }]} />
+                        <Steps statusList={[{ status: this.state.settlementData.Status == "INITIATED", label: 'INITIATED' }, { status: this.state.settlementData.Status == "APPROVED", label: 'APPROVED' }, { status: this.state.settlementData.Status == "INVOICED", label: 'INVOICED' }, { status: this.state.settlementData.Status == "PAID", label: 'PAID' }, { status: this.state.settlementData.Status == "RECIEVED", label: 'RECEIVED' }]} />
                     </Row>
                     <Row>
                         <Col>
 
-                        <ModalBox isOpen={this.state.ModalBoxGrid}>
-                        {this.renderModalGrid()}
-                    </ModalBox>                            <div className="form">
+                            <ModalBox isOpen={this.state.ModalBoxGrid}>
+                                {this.renderModalGrid()}
+                            </ModalBox>                            <div className="form">
                                 <div className="row" >
-                            
+
                                     <div className="col-md-offset-3 col-md-12" style={{ marginBottom: '4%' }}>
                                         <div className="col-md-2">
                                             <img src={this.state.partnerLogo} style={{ width: "130px" }} />
@@ -363,7 +385,7 @@ class ViewSettlement extends React.Component {
 
                                         <div className="col-md-4 text-center" >
                                             <div style={{ fontSize: "30px", marginTop: "30px" }}><b>{this.state.englishPartnerName}</b></div>
-                                            <div className="row" style={{ fontSize: "15px" }}><h4><b>({this.state.arabicPartnerName} Dated: {moment(parseInt(_.get(this.state.settlementData, 'startDate', 0))).format('DD/MM/YYYY')} - {moment(parseInt(_.get(this.state.settlementData, 'endDate', 0)) ).format('DD/MM/YYYY')})</b></h4></div>
+                                            <div className="row" style={{ fontSize: "15px" }}><h4><b>({this.state.arabicPartnerName} Dated: {moment(parseInt(_.get(this.state.settlementData, 'startDate', 0))).format('DD/MM/YYYY')} - {moment(parseInt(_.get(this.state.settlementData, 'endDate', 0))).format('DD/MM/YYYY')})</b></h4></div>
                                         </div>
                                     </div>
 
@@ -410,7 +432,7 @@ class ViewSettlement extends React.Component {
                                                     <Label text="Invoice Date:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={moment(parseInt(_.get(this.state.settlementData, 'invoiceDate', 0)) ).format('DD/MM/YYYY')} />
+                                                    <Label text={moment(parseInt(_.get(this.state.settlementData, 'invoiceDate', 0))).format('DD/MM/YYYY')} />
                                                 </div>
                                             </div>
                                         </Row>
@@ -428,7 +450,7 @@ class ViewSettlement extends React.Component {
                                                     <Label text="Payment Date:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={moment(parseInt(_.get(this.state.settlementData, 'paymentDate', 0)) ).format('DD/MM/YYYY')} />
+                                                    <Label text={moment(parseInt(_.get(this.state.settlementData, 'paymentDate', 0))).format('DD/MM/YYYY')} />
                                                 </div>
                                             </div>
                                         </Row>
@@ -508,11 +530,11 @@ class ViewSettlement extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                    <div className="col-md-12">
-                        
-                    {this.renderBtn()}
-                                
-                                            </div>
+                        <div className="col-md-12">
+
+                            {this.renderBtn()}
+
+                        </div>
                     </Row>
                 </Row>
             );

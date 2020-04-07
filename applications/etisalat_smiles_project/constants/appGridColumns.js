@@ -335,7 +335,7 @@ module.exports = {
 
 
     viewTranxListSettlemntDetail: [
-        { alias: "", key: "tranxData._id", type: "hiddenID" },
+        { alias: "", key: "transactionId", type: "hiddenID" },
         { alias: "S.No", key: "", type: 'serialNo' },
         { alias: "Organization", key: "partnerCode", type: "string" },
         { alias: "Partner", key: "withPartnerCode", type: "string" },
@@ -345,7 +345,8 @@ module.exports = {
         { alias: "Commission", key: "commissionAmount", type: "string" },
         { alias: "Points", key: "pointsAwarded", type: "string" },
         { alias: "TRANS Date", key: "createdOn", type: "epochDate4" },
-        { alias: "Status", key: "internalStatus", type: "statusBox" }
+        { alias: "Status", key: "internalStatus", type: "statusBox" },
+        { alias: "action", key: "actions", type: "action" }
     ],
     viewTranxList: [
         { alias: "", key: "transactionId", type: "hiddenID" },
