@@ -199,9 +199,10 @@ class ViewSettlement extends React.Component {
 
 
         if(settlementData.Status=='INITIATED'){
-            this.state.sendingStatus="APPROVED"
+            this.state.sendingStatus="PENDING"
             this.state.actionSettlement='APPROVED'
             this.updateCall(status);
+            this.updateDb()
         }else if(settlementData.Status=='APPROVED'){
             this.state.sendingStatus="INVOICED"
             this.state.actionSettlement='Invoiced'
@@ -251,11 +252,37 @@ class ViewSettlement extends React.Component {
 
                             console.log(result)
                             result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : toaster.showToast("Settlement Batch Submitted");
-                            this.showHideManualSettlement();
-                            result.message.status == 'OK'? browserHistory.push('/smiles/settlementList'):""
+                            
 
+                            if (result.message.status == 'OK' &&  this.state.sendingStatus=="APPROVED"){
+
+                                updateDb();
+                            }else{
+                                this.showHideManualSettlement();
+                            result.message.status == 'OK'? browserHistory.push('/smiles/settlementList'):""
+                            }
 
                         });
+
+    }
+
+
+
+    updateDb=() => {
+        let settlementData= this.state.settlementData
+        this.props.actions.generalAjxProcess(constants.initiateSettlement, {
+        
+            body: {
+             
+                status:"APPROVED",
+                bthid:settlementData.key
+            }
+      
+        }).then(result => {
+            result.message.status == 'OK'? browserHistory.push('/smiles/settlementList'):""
+            result.message.status == 'ERROR' ? toaster.showToast(result.message.errorDescription, "ERROR") : toaster.showToast("Settlement Batch Submitted");
+                       
+            })
 
     }
 

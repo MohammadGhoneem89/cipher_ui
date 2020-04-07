@@ -93,18 +93,18 @@ class TransactionDetail extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.transactionData) {
-            let transactionData = nextProps.transactionData;
+            let transactionData =_.get(nextProps,"transactionData","");
 let targetMembership="";
 let membership="";
-            if(nextProps.transactionData.transactionSubType=="SO"){
-                membership=nextProps.transactionData.membershipNo
-                targetMembership=nextProps.transactionData.conversionParams.targetMemberShipNo
+            if(_.get(nextProps,"transactionData.transactionSubType","")=="SO"){
+                membership=_.get(nextProps,"transactionData.membershipNo","")
+                targetMembership=_.get(nextProps,"transactionData.conversionParams.targetMemberShipNo","")
 
 
             }else{
 
-                targetMembership=nextProps.transactionData.membershipNo
-                membership =nextProps.transactionData.conversionParams.targetMemberShipNo
+                targetMembership=_.get(nextProps,"transactionData.membershipNo","")
+                membership =_.get(nextProps,"transactionData.conversionParams.targetMemberShipNo","")
 
 
             }
@@ -340,7 +340,7 @@ let membership="";
                                                         <Label text="Settlement Batch No:" />
                                                     </div>
                                                     <div className="col-md-7">
-                                                        <Label text={_.get(this.state.transactionData, 'accrualParams.mobileNo', 'N/A')} />
+                                                        <Label text={_.get(this.state.transactionData, 'settlementBatchID', 'N/A')} />
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6">
@@ -349,9 +349,10 @@ let membership="";
                                                         <Label text="Settlement Date:" />
                                                     </div>
                                                     <div className="col-md-8">
-                                                        <Label text={_.get(this.state.transactionData, 'accrualParams.mobileNo', 'N/A')} />
+                                                        <Label text={_.get(this.state.transactionData, 'settlementTimestamp', 'N/A')} />
                                                     </div>
                                                 </div>
+                                            
                                             </Row>
 
 
