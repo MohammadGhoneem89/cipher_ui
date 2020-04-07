@@ -148,7 +148,7 @@ class ViewSettlement extends React.Component {
                     "params": "",
                     "iconName": "fa fa-eye",
                     //"URI": [`/smiles/transaction/view/${obj.partnerCode}/${obj.withPartnerCode}`]
-                    "URI": ['/smiles/transaction/view']
+                    "URI": ['/smiles/transaction/view/']
 
                 }]
                 return obj;

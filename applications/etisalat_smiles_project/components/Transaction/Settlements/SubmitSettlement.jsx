@@ -210,7 +210,7 @@ class SubmitSettlement extends React.Component {
                 start: this.props.params.Start,
                 end: this.props.params.End,
                 typeMain:"CONVERSION",
-                transactions: [],
+                transactions: _.get(this.state, 'txList', []),
                 count: _.get(this.state, 'settlementData.count',0).toString(),
                 bthID:bthId,
                 actualFrom:this.props.params.actualFrom,
@@ -218,7 +218,7 @@ class SubmitSettlement extends React.Component {
             }
         })
             .then(result1 => {
-               
+                if (result1.message.status == 'OK'){
 
                 this.props.actions.generalAjxProcess(constants.initiateSettlement, {
         
@@ -248,6 +248,15 @@ class SubmitSettlement extends React.Component {
                         toaster.showToast(utils.getLabelByID("Settlment Batch not Submitted"), "ERROR");
         
                     })
+                }else{
+
+                    console.log(result1)
+                    window.scrollTo(0, 0);
+                    this.setState({ isLoading: false })
+                    // browserHistory.push('/smiles/settlementList')
+                    toaster.showToast(utils.getLabelByID("Settlment Batch not Submitted"), "ERROR");
+
+                }
 
 
 

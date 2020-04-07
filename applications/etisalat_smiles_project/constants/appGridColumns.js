@@ -430,6 +430,8 @@ module.exports = {
        // { alias: "paymentref", key: "paymentref", type: "string" },
      //  { alias: "error Reason", key: "errorReason", type: "string" },
        { alias: "On Date", key: "createdOn", type: "epochDate4" },
+       { alias: "Organization", key: "organization",  type: "string" },
+       { alias: "Performed By", key: "performedBy", type: "string" },
       //  { alias: "Confirmation Time", key: "lastUpdateTimestamp", type: "epochDate4" },
       
        // { alias: "error Reason", key: "errorReason", type: "string" },
