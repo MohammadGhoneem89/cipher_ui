@@ -33,7 +33,8 @@ class ViewSettlement extends React.Component {
             viewCriteria: {},
             page: {
                 pageSize: 10,
-                currentPageNo: 1
+                currentPageNo: 1,
+                totalRecords: 0
             },
             isLoading: true,
             gridDataTPool: [],
@@ -126,15 +127,46 @@ class ViewSettlement extends React.Component {
             }else{
                 visibilityFlow="hidden";
             }
-            
-         
+
+            let result=[]
+          
+            // let  actions = [{
+            //     "value": "4014",
+            //     "type": "componentAction",
+            //     "label": "View",
+            //     "params": "",
+            //     "iconName": "fa fa-eye",
+            //     "URI": [`/smiles/transaction/view/${obj.partnerCode}/${obj.withPartnerCode}`]
+            // }];
+            let  actions = [{}]
+           result =settlementData.transactionList.map(obj => {
+                //obj.actions = actions;  
+                obj.actions =  [{
+                    "value": "4014",
+                    "type": "componentAction",
+                    "label": "View",
+                    "params": "",
+                    "iconName": "fa fa-eye",
+                    //"URI": [`/smiles/transaction/view/${obj.partnerCode}/${obj.withPartnerCode}`]
+                    "URI": ['/smiles/transaction/view']
+
+                }]
+                return obj;
+
+            })     
+           this.setState({ gridData: result })
     
+               console.log("settlementData-------------",this.state.gridData)
+               //console.log("Data-------------",data)
+
+
+           
 
             this.setState(
                 {
                     settlementData,
                     gridDataTPool: _.get(settlementData, 'transactionPool', []),
-                    gridData: _.get(settlementData, 'transactionList', []),
+                    //gridData: _.get(settlementData, 'transactionList', []),
                     isLoading: false,
                     englishPartnerName: _.get(data, 'entityName', ''),
                     arabicPartnerName: _.get(data, 'spCode', ''),
@@ -278,6 +310,7 @@ class ViewSettlement extends React.Component {
 
 
     renderModalGrid = () => {
+
         return (<Portlet style={{ height: '325px' }} title="Reference Number" isPermissioned={true}>
             
             <form style={{ padding: "21 28px 14 14" }}>
@@ -340,6 +373,8 @@ class ViewSettlement extends React.Component {
 
 
     render() {
+       
+        console.log('------------------grid data',this.state.gridData)
         if (this.state.isLoading)
             return (<div className="loader"> {utils.getLabelByID("loading")}</div>);
         else
@@ -354,7 +389,44 @@ class ViewSettlement extends React.Component {
                         <ModalBox isOpen={this.state.ModalBoxGrid}>
                         {this.renderModalGrid()}
                     </ModalBox>                            <div className="form">
-                                <div className="row" >
+                                     
+
+                                  
+
+                                       {/**src={this.state.partnerLogo} */}
+                                         <div className="row" style={{marginBottom:"30px"}}>
+                                                <div className="col-md-2"></div>
+                                                <div className="col-md-3 text-center">
+                                                    <div className="voucherBoxSettlement">                                                  
+                                                        <div className="areacard">
+                                                            <img src="../../../../../images/etihad.png" style={{ width: "130px", height: "68px", marginTop:"40px" }} />
+                                                            
+                                                      </div>
+                                                    </div>
+                                                </div> 
+                                                <div className="col-md-2 text-center">
+                                                    <img src="../../../../../images/arrow.png" style={{ width: "50px", marginTop:"40px" }}/>
+                                                </div>
+                                                <div className="col-md-3 text-center">
+                                                    <div className="voucherBoxSettlement">                                                  
+                                                        <div className="areacard">
+                                                        <img src="../../../../../images/smiles.jpg" style={{ width: "68px", height: "68px" }} />
+                                                        <p><b>{this.state.englishPartnerName}</b></p>
+                                                        <p style={{paddingRight:"50px",paddingLeft:"50px"}}><b>
+                                                            ({this.state.arabicPartnerName} Dated: {moment(parseInt(_.get(this.state.settlementData, 'startDate', 0))).format('DD/MM/YYYY')} - {moment(parseInt(_.get(this.state.settlementData, 'endDate', 0)) ).format('DD/MM/YYYY')})
+                                                            </b></p>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                        </div>            
+
+                          
+
+
+
+                                {/**    style={{paddingRight:"50px",paddingLeft:"50px"}}
+                                 *  <div className="row" >
                             
                                     <div className="col-md-offset-3 col-md-12" style={{ marginBottom: '4%' }}>
                                         <div className="col-md-2">
@@ -368,6 +440,10 @@ class ViewSettlement extends React.Component {
                                     </div>
 
                                 </div>
+                                 */}
+
+
+                               
 
 
 
@@ -402,7 +478,7 @@ class ViewSettlement extends React.Component {
                                                     <Label text="Invoice Reference:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={_.get(this.state.settlementData, 'batchInvoice', 0)} />
+                                                    {_.get(this.state.settlementData, 'batchInvoice', 0)} 
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
@@ -410,7 +486,7 @@ class ViewSettlement extends React.Component {
                                                     <Label text="Invoice Date:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={moment(parseInt(_.get(this.state.settlementData, 'invoiceDate', 0)) ).format('DD/MM/YYYY')} />
+                                                    {moment(parseInt(_.get(this.state.settlementData, 'invoiceDate', 0)) ).format('DD/MM/YYYY')} 
                                                 </div>
                                             </div>
                                         </Row>
@@ -420,7 +496,7 @@ class ViewSettlement extends React.Component {
                                                     <Label text="Payment Reference:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={_.get(this.state.settlementData, 'paymentref', 'N/A')} />
+                                                    {_.get(this.state.settlementData, 'paymentref', 'N/A')} 
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
@@ -428,7 +504,7 @@ class ViewSettlement extends React.Component {
                                                     <Label text="Payment Date:" />
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <Label text={moment(parseInt(_.get(this.state.settlementData, 'paymentDate', 0)) ).format('DD/MM/YYYY')} />
+                                                     {moment(parseInt(_.get(this.state.settlementData, 'paymentDate', 0)) ).format('DD/MM/YYYY')} 
                                                 </div>
                                             </div>
                                         </Row>
@@ -470,18 +546,24 @@ class ViewSettlement extends React.Component {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> */}
+                                    </div>           viewTranxListSettlemntDetail     viewTranxListEventsSettlement*/}
                                     <Row>
                                         <Col>
                                             <Col>
                                                 <Table
                                                     gridColumns={utils.getGridColumnByName("viewTranxListSettlemntDetail")}
                                                     gridData={this.state.gridData}
-                                                    fontclass=""
-                                                    pageSize={10}
+                                                    //pageSize={10}
                                                     pageChanged={this.pageChanged}
                                                     pagination={true}
                                                     activePage={this.state.page.currentPageNo}
+
+
+                                                     totalRecords={this.state.page.totalRecords}
+                                                    // pageChanged={this.pageChanged}
+                                                     pageSize={this.state.page.pageSize}
+                                                    // pagination={true}
+                                                    // activePage={this.state.page.currentPageNo}
                                                 />
                                             </Col>
                                         </Col>
@@ -494,9 +576,11 @@ class ViewSettlement extends React.Component {
                                                     gridColumns={utils.getGridColumnByName("viewTranxListEventsSettlement")}
                                                     gridData={this.state.gridDataTPool}
                                                     fontclass=""
-                                                    totalRecords={this.state.totalRecords}
-                                                    pageSize={10}
-                                                    pagination={false}
+                                                    //totalRecords={this.state.totalRecords}
+                                                    totalRecords={this.state.page.totalRecords}
+                                                    pageSize={this.state.page.pageSize}
+                                                    //pageSize={10}
+                                                    pagination={true}
                                                     search={true}
                                                     activePage={this.state.page.currentPageNo}
                                                 />

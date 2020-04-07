@@ -210,32 +210,7 @@ let membership="";
                                                    <h3>{this.state.transactionData.sourceTransactionId} </h3>
                                             </div>     
                                         </div>
-                                <div className="row">
-                                                <div className="col-md-6">
-                                                    <div className="form-group">
-                                                        <div className="row">
-                                                            <div className="col-md-6 col-sm-6 col-xs-6">
-                                                                <label className="label-control"><strong>Transction Date</strong></label>
-                                                            </div>
-                                                            <div className="col-md-6 col-sm-6 col-xs-6">    
-                                                                {moment(parseInt(_.get(this.state.transactionData, 'createdOn', 0)) ).format('DD/MM/YYYY')}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="form-group">
-                                                        <div className="row">
-                                                            <div className="col-md-6 col-sm-6 col-xs-6">
-                                                                <label className="label-control"><strong>Confirm on</strong></label>
-                                                            </div>
-                                                            <div className="col-md-6 col-sm-6 col-xs-6">    
-                                                                {moment(parseInt(_.get(this.state.transactionData, 'createdOn', 0)) ).format('DD/MM/YYYY')}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>     
-                                        </div>
+                              
 
 
                                         {/**src={ this.state.partnerLogo} src={this.state.from} src={this.state.to}*/}
@@ -318,6 +293,40 @@ let membership="";
                                                     </div>
                                                 </div>     
                                         </div>
+
+
+
+
+
+                                        <div className="row">
+                                                <div className="col-md-4">
+                                                    <div className="form-group">
+                                                        <div className="row">
+                                                            <div className="col-md-6 col-sm-6 col-xs-6">
+                                                                <label className="label-control"><strong>Transction Date</strong></label>
+                                                            </div>
+                                                            <div className="col-md-6 col-sm-6 col-xs-6">    
+                                                                {moment(parseInt(_.get(this.state.transactionData, 'createdOn', 0)) ).format('DD/MM/YYYY')}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-4">
+                                                    <div className="form-group">
+                                                        <div className="row">
+                                                            <div className="col-md-6 col-sm-6 col-xs-6">
+                                                                <label className="label-control"><strong>Confirm on</strong></label>
+                                                            </div>
+                                                            <div className="col-md-6 col-sm-6 col-xs-6">    
+                                                                {moment(parseInt(_.get(this.state.transactionData, 'createdOn', 0)) ).format('DD/MM/YYYY')}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>     
+                                        </div>
+
+
+
 
 
                                    {/**style={{marginLeft:"-10px", marginTop:"30px"}} */}

@@ -3164,7 +3164,14 @@ a.btn.btnclear:hover {
     border-radius: 2px;
     margin-bottom: 10px;
     height: 160px;
-    }
+	}
+.voucherBoxSettlement {
+		padding: 10px 0 10px;
+		box-shadow: 0px 0px 4px #0000003b;
+		border-radius: 2px;
+		margin-bottom: 10px;
+		height: 180px;
+}
 
 .areacard p {
         margin: 10px 0 0;
