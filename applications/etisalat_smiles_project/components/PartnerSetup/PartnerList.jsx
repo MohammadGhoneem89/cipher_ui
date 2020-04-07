@@ -53,7 +53,7 @@ class PartnerList extends Component {
                     "pageSize": _.get(this.state, 'page.pageSize', 10)
                 },
                 "searchCriteria": {
-                    "status": "APPROVED"
+                    "status": ""
                 }
             }
         }

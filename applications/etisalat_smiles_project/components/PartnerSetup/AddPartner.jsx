@@ -824,7 +824,7 @@ class AddPartner extends Component {
                                                     <div className="row">
                                                         <div className="col-md-6">
                                                         
-                                                            <Label required={true} text="Rate (From Partner -> To Partner)" columns='4' />
+                                                        <Label required={true} text={`Rate (From ${this.state.contractParams.withPartnerCode? this.state.contractParams.withPartnerCode: "Partner"} -> To ETISALAT)`} columns='4' />
                                                             <Input
                                                                 fieldname='rate'
                                                                 formname='rates'
@@ -872,7 +872,7 @@ class AddPartner extends Component {
 
                                                     <div className="row">
                                                         <div className="col-md-6">
-                                                            <Label text="Rate (To Partner -> From Partner)" columns='4' />
+                                                            <Label text={`Rate (To ETISALAT -> From  ${this.state.contractParams.withPartnerCode? this.state.contractParams.withPartnerCode: "Partner"} )`} columns='4' />
                                                             <Input
                                                                 fieldname='rate2'
                                                                 formname='rates'
