@@ -70,7 +70,17 @@ class AddPartner extends Component {
             let value = e.target.value;
 
             console.log("\n\n VALUE >> ", value)
-
+            let AEDSlabSM = this.state.allOrgMap.filter(obj => {
+               
+                return obj.orgCode === "ETISALAT"
+            }).map(item => {
+                return [...item.AEDSlab]
+            })
+            AEDSlabSM = AEDSlabSM.flat()
+            for (let i in AEDSlabSM) {
+                AEDSlabSM[i].actions = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+                { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+            }
 
             let AEDSlab = this.state.allOrgMap.filter(obj => {
                 console.log(obj)
@@ -88,7 +98,8 @@ class AddPartner extends Component {
             _.set(formdata, e.target.name, value);
             this.setState({
                 [formname]: formdata,
-                AEDSlab: [...AEDSlab]
+                AEDSlab: [...AEDSlab],
+                AEDSlabSM
             }, () => {
                 console.log('\n\n DATA-->', JSON.stringify(this.state.AEDSlab));
             });
@@ -1131,7 +1142,7 @@ class AddPartner extends Component {
                                                                 <div style={{ padding: "0 15" }}>
                                                                     <Table
                                                                         gridColumns={utils.getGridColumnByName('Slab')}
-                                                                        gridData={this.state.AEDSlab || []}
+                                                                        gridData={this.state.AEDSlabSM || []}
                                                                         componentFunction={this.slabActionHandler}
                                                                     />
                                                                 </div>
