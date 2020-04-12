@@ -8,6 +8,15 @@ module.exports = {
         // { alias: "Mode", key: "mode", type: "string" },
         { alias: "Action", key: "action", type: "action" }
     ],
+    Slab: [
+        { alias: "S.NO", key: "", type: "serialNo" },
+        { alias: "From Points", key: "fromPoint", type: "string" },
+        { alias: "To Point", key: "toPoint", type: "string" },
+        { alias: "AED Value", key: "AEDValue", type: "string" },
+        { alias: "Action", key: "actions", type: "action" }
+        // { alias: "Mode", key: "mode", type: "string" },
+        
+    ],
     partnerlist: [
         { alias: "", key: "Id", type: "hiddenID" },
         { alias: "S.NO", key: "", type: "serialNo" },

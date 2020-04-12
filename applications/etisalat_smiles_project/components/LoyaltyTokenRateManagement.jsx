@@ -3,6 +3,7 @@ import React, { PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../core/actions/generalAction";
+import OptionalStatus from "./OptionalStatus.jsx";
 
 
 //import Table from "../common/Datatable.jsx"
@@ -23,6 +24,8 @@ import * as requestCreator from '../../../core/common/request.js';
 import * as coreConstants from '../../../core/constants/Communication.js'
 import * as constants from '../../etisalat_smiles_project/constants/appCommunication.js';
 import Input from '../../../core/common/Input.jsx';
+import ModalBox from "../../../core/common/ModalBox.jsx";
+import { thresholdScott } from "d3";
 
 class LoyaltyTokenRateManagement extends React.Component {
 
@@ -34,7 +37,11 @@ class LoyaltyTokenRateManagement extends React.Component {
             currentPageNo: 1,
             searchCriteria: {},
             searchCriteria: {},
+            show: false,
             valid: true,
+
+            Range: [],
+
             gridData: []
             // gridData: [
             //     { "serial_no": "1", "tokenProg": { "name": "SMILES", "imageURL": "/imgs/logos/SMILES.png" }, "orgCode": "555222", "aedRate": "ACCURAL" },
@@ -45,6 +52,45 @@ class LoyaltyTokenRateManagement extends React.Component {
             // ]
         }
         this.generalHandler = gen.generalHandler.bind(this);
+        this.updateState = this.updateState.bind(this);
+        this.showModel = this.showModel.bind(this);
+        this.closePopup = this.closePopup.bind(this);
+    }
+    updateState(data) {
+        this.setState(data);
+    }
+
+    showModel = ({ actionName, index }) => {
+        if (index > -1) {
+            // let rates = this.state.gridData[index].AEDSlab;
+            // let rangeArr = [];
+            // rates.forEach(obj => {
+            //     console.log("HEREE! >> ", obj)
+            //     let rangeString = {}
+            //     rangeString.slab = obj.fromPoint + " - " + obj.toPoint
+            //     rangeString.value = obj.AEDValue
+            //     console.log(" \n\nRANGE OBJ>> ", rangeString)
+            //     rangeArr.push({ ...rangeString })
+            //     console.log(" \n\nRANGE AARR>> ", rangeArr)
+
+            // })
+            // console.log("--VALUES--> \n\n", rangeArr)
+            // this.setState({
+            //     Range: rangeArr
+            // })
+
+            //grid display..
+            let rates = this.state.gridData[index].AEDSlab;
+            this.setState({
+                Range: rates
+            })
+
+
+
+        }
+        this.setState({
+            show: true
+        })
     }
 
     componentWillMount() {
@@ -59,6 +105,21 @@ class LoyaltyTokenRateManagement extends React.Component {
         this.props.actions.generalProcess(constants.getOrgCodeData, {});
 
     }
+
+    optionalStatusModalBoxItem = () => {
+
+        return (
+            <div>
+                <OptionalStatus
+                    value={this.state.optionalStatusValue}
+                    handleSubmit={this.optionalStatusHandleSubmit}
+                    onUpdate={this.optionalStatusUpdateValue}
+                    closePortlet={this.optionalStatusModalBoxChangeState}
+                    options={this.getOptionalOptions()}
+                />
+            </div>
+        )
+    };
 
     componentWillReceiveProps(nextProps) {
         console.log(nextProps);
@@ -75,7 +136,9 @@ class LoyaltyTokenRateManagement extends React.Component {
                 }
                 data.serial_no = index + 1;
 
+                console.log("\n\n\n GRID DATA >> ", data)
                 gridData.push({ ...data })
+
             });
 
 
@@ -90,6 +153,12 @@ class LoyaltyTokenRateManagement extends React.Component {
         console.log("DDDDDDDDDDD", nextProps.typeData)
     }
 
+    closePopup() {
+        this.setState({
+            show: false
+        })
+    }
+
     render() {
 
 
@@ -97,8 +166,30 @@ class LoyaltyTokenRateManagement extends React.Component {
         return (
 
             <div className="row">
+                <ModalBox isOpen={this.state.show}>
+                    <Portlet title={"AED Slabs"}>
 
 
+                        <div className="row">
+                            <div className="row">
+                                <div style={{ padding: "0 15" }}>
+                                    <Table
+                                        gridColumns={utils.getGridColumnByName('AEDSlabList')}
+                                        gridData={this.state.Range || []}
+                                        componentFunction={this.slabActionHandler}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="btn-toolbar pull-right">
+                                <button type="submit" onClick={this.closePopup} className="pull-right btn green">
+                                    {utils.getLabelByID("Close")}
+                                </button>
+                            </div>
+                        </div>
+                    </Portlet>
+
+                </ModalBox>
 
                 <Table
                     gridColumns={utils.getGridColumnByName("LoyaltyTokenList")}
@@ -109,6 +200,8 @@ class LoyaltyTokenRateManagement extends React.Component {
                     //pageChanged={this.pageChanged}
                     pagination={true}
                     activePage={this.state.currentPageNo}
+                    componentFunction={this.showModel}
+
                 />
 
 

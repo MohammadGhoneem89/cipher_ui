@@ -55,11 +55,45 @@ class AddPartner extends Component {
             isAccrualPartner: false,
             isRedemptionPartner: false,
             ratesArr: [],
+            AEDSlab: [],
             rates: {},
             isEdited: false
 
         };
         this.generalHandler = gen.generalHandler.bind(this)
+        this.partnerHandler = this.partnerHandler.bind(this)
+    }
+
+    partnerHandler(formname, fieldname, type, e) {
+        // console.log('type', type, e);
+        if (type == "textbox" || type == "radiolist" || type == "combobox" || type == "textarea") {
+            let value = e.target.value;
+
+            console.log("\n\n VALUE >> ", value)
+
+
+            let AEDSlab = this.state.allOrgMap.filter(obj => {
+                console.log(obj)
+                return obj.orgCode == value
+            }).map(item => {
+                return [...item.AEDSlab]
+            })
+            AEDSlab = AEDSlab.flat()
+            for (let i in AEDSlab) {
+                AEDSlab[i].actions = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+                { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+            }
+            console.log("\n\n AEDSLAB >> ", AEDSlab)
+            let formdata = _.get(this.state, formname, {});
+            _.set(formdata, e.target.name, value);
+            this.setState({
+                [formname]: formdata,
+                AEDSlab: [...AEDSlab]
+            }, () => {
+                console.log('\n\n DATA-->', JSON.stringify(this.state.AEDSlab));
+            });
+
+        }
     }
 
     getEntityDetails = (entityNames, orgCode) => {
@@ -73,8 +107,11 @@ class AddPartner extends Component {
         return {}
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.typeData && nextProps.entityNames && nextProps.user && nextProps.userEntity && nextProps.getAllOrgMap) {
+       
 
+        if (nextProps.typeData && nextProps.entityNames && nextProps.user && nextProps.userEntity && nextProps.getAllOrgMap) {
+            
+            [..._.get(nextProps, 'getAllOrgMap', [])]
             this.setState({
                 allOrgMap: [..._.get(nextProps, 'getAllOrgMap', [])],
                 user: { ...nextProps.user },
@@ -202,7 +239,9 @@ class AddPartner extends Component {
         })
     }
 
+
     componentDidMount() {
+
         window.scrollTo(0, 0);
         if (this.props.params.partnerCode) {
             this.props.actions.generalProcess(constants.getInterim, {
@@ -214,7 +253,7 @@ class AddPartner extends Component {
             });
         }
 
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', /*'contactMode',*/ 'rateType', 'paymentMethod', 'yesnobinary', 'authenticationTypes', 'unitType']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['category', 'rule', 'frequency', 'settleas', 'status', /*'contactMode',*/ 'rateType', 'paymentMethod', 'yesnobinary', 'authenticationTypes', 'unitType','roundOff']));
         this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({     // Get Orgs (entities)
             "currentPageNo": 1,
             "pageSize": 1
@@ -416,7 +455,7 @@ class AddPartner extends Component {
             contractParams.accrualBillingRates[i].serialNo = parseInt(i + 1)
         }
 
-        if (typeof(this.getProgram().programCode) !== "string"){
+        if (typeof (this.getProgram().programCode) !== "string") {
             toaster.showToast("No relevant Progam Code Found", "ERROR");
             return;
         }
@@ -600,6 +639,27 @@ class AddPartner extends Component {
         this.setState({ ratesArr, rates: undefined, pointConversionStartDate: undefined, pointConversionEndDate: undefined })
     }
 
+    addAEDSlab = () => {
+        let slab = { ...this.state.AEDSlabValue }
+        let slabArr = [...this.state.AEDSlab]
+
+
+        slab.fromPoint = parseFloat(slab.fromPoint)
+        slab.toPoint = parseFloat(slab.toPoint)
+
+        if (Object.keys(slab).length == 0) {
+            toaster.showToast("Rate not defined", "ERROR");
+            return;
+        }
+
+
+        slab.action = [{ label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }]
+
+        slabArr.push({ ...slab })
+        this.setState({ AEDSlab: slabArr, AEDSlabValue: undefined })
+    }
+
     getSourceProgram(org) {
         let arr = this.state.allOrgMap.filter(item => {
             return item.orgCode == org
@@ -612,6 +672,7 @@ class AddPartner extends Component {
     }
 
     getProgram() {
+
         let arr = this.state.allOrgMap.filter(item => {
             return item.orgCode == _.get(this.state, 'contractParams.withPartnerCode', '')
         })
@@ -636,25 +697,52 @@ class AddPartner extends Component {
                                 {
                                     this.state.isPointConversionPartner && (
                                         <div>
-
-
-                                            {
-                                                (this.props.params.partnerCode && this.state.status != "APPROVED") && this.renderTypePortlet(2)
-                                            }
-                                            <Portlet title={"Program"}>
-                                                {
-                                                    this.state.isPointConversionPartner && (
-                                                        <div>
+                                            <Portlet title={"CONTRACT PARAMETERS"}>
+                                                {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? ((this.props.params.partnerCode && !(this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false) : false)) && (
+                                                    <div>
+                                                        <Portlet title={"DIRECTION"} style={{ paddingLeft: "234px" }}>
                                                             <div className="row">
 
-                                                                <div className="col-md-6">
-                                                                    {this.getProgram().img && <img style={{
-                                                                        position: 'relative',
-                                                                        left: '250px',
-                                                                        top: '5px',
+                                                                <div className="col-md-1" />
+                                                                <div className="col-md-4">
+                                                                    {this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', {}) : _.get(this.state, 'body.partnerCode', {})).img && <img style={{
+                                                                        position: 'absolute',
+                                                                        left: '40px',
+                                                                        top: '7px',
                                                                         zIndex: '2',
                                                                         bottom: '13px'
-                                                                    }} id="UserProfilePic" src={this.getProgram().img} class="img-responsive img-thumbnail" alt="Profile Image" width="20px" height="20px" />}
+                                                                    }} id="UserProfilePic" src={this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).img} class="img-responsive img-thumbnail" alt="Profile Image" width="20px" height="20px"
+                                                                    />}
+                                                                    <div style={this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).img ? {
+                                                                        position: 'relative',
+                                                                        bottom: '22px'
+                                                                    } : {
+                                                                            position: 'relative'
+                                                                        }}>
+                                                                    </div>
+                                                                    <Input
+                                                                        style={{ paddingLeft: "40px" }}
+                                                                        fieldname='sourceToken'
+                                                                        formname='rates'
+                                                                        columns='8'
+                                                                        disabled={true}
+                                                                        value={this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).programCode}
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+                                                                </div>
+
+                                                                <div className="col-md-4">
+                                                                    {this.getProgram().img &&
+                                                                        <img style={{
+                                                                            position: 'absolute',
+                                                                            left: '135px',
+                                                                            top: '7px',
+                                                                            zIndex: '2',
+                                                                            bottom: '13px'
+                                                                        }} id="UserProfilePic" src={this.getProgram().img} class="img-responsive img-thumbnail" alt="Profile Image" width="20px" height="20px" />}
                                                                     <div style={this.getProgram().img ? {
                                                                         position: 'relative',
                                                                         bottom: '22px'
@@ -662,100 +750,15 @@ class AddPartner extends Component {
                                                                             position: 'relative'
                                                                         }}>
 
-
-                                                                        <Label text="Program Name" columns='4' />
-                                                                        <Input
-                                                                            style={{ paddingLeft: "40px" }}
-                                                                            fieldname='conversionPartnerProgramName'
-                                                                            formname='contractParams'
-                                                                            value={this.getProgram().programCode}
-                                                                            // disabled= {this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                                            disabled={true}
-                                                                            columns='8'
-                                                                            placeholder=''
-                                                                            state={this.state}
-                                                                            actionHandler={this.generalHandler}
-                                                                            className="form-control"
-                                                                        />
                                                                     </div>
-
-
-                                                                    <div className="row">
-                                                                        <div className="col-md-8"></div>
-                                                                        <div className="col-md-4" style={{
-                                                                            textAlign: 'right',
-                                                                            position: 'relative',
-                                                                            bottom: '20px',
-                                                                            right: '12px',
-                                                                            fontStyle: 'italic',
-                                                                            color: '#E17630'
-                                                                        }}>
-                                                                            <span style={{ fontSize: '29px' }}>
-                                                                                {this.getProgram().AEDValue && `${this.getProgram().AEDValue} AED`}
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="col-md-6">
-
-                                                                    <Label required={true} text="Minimum Points" columns='4' />
+                                                                    <Label text="TO" columns='3' />
                                                                     <Input
-                                                                        fieldname='minPoints'
+                                                                        style={{ paddingLeft: "40px" }}
+                                                                        fieldname='conversionPartnerProgramName'
                                                                         formname='contractParams'
-                                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                                        columns='8'
-                                                                        placeholder=''
-                                                                        state={this.state}
-                                                                        actionHandler={this.generalHandler}
-                                                                        className="form-control"
-                                                                    />
-                                                                </div>
-
-                                                            </div>
-                                                            <div className="row">
-                                                                {/* <div className="col-md-6">
-
-                                                                    <Label text="AED Conversion" columns='4' />
-                                                                    <Input
-                                                                        fieldname='aedConversion'
-                                                                        formname='contractParams'
-                                                                        value={this.getProgram().AEDValue}
+                                                                        value={this.getProgram().programCode}
+                                                                        // disabled= {this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                                                         disabled={true}
-                                                                        // disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                                        columns='8'
-                                                                        placeholder=''
-                                                                        state={this.state}
-                                                                        actionHandler={this.generalHandler}
-                                                                        className="form-control"
-                                                                    />
-
-                                                                </div> */}
-                                                                <div className="col-md-6">
-
-                                                                    <Label required={true} text="Authentication Type" columns='4' />
-                                                                    <Combobox
-                                                                        fieldname='authType'
-                                                                        formname='contractParams'
-                                                                        columns='8'
-                                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                                        placeholder='Select'
-                                                                        style={{}}
-                                                                        state={this.state}
-                                                                        typeName="authenticationTypes"
-                                                                        dataSource={_.get(this.state, 'typeData', {})}
-                                                                        actionHandler={this.generalHandler}
-                                                                        className="form-control"
-                                                                    />
-                                                                </div>
-
-                                                                <div className="col-md-6">
-                                                                    <Label required={true} text="OTP Length" columns='4' />
-                                                                    <Input
-                                                                        fieldname='OTPLength'
-                                                                        type='number'
-                                                                        formname='contractParams'
-                                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                                                         columns='8'
                                                                         placeholder=''
                                                                         state={this.state}
@@ -763,159 +766,447 @@ class AddPartner extends Component {
                                                                         className="form-control"
                                                                     />
                                                                 </div>
+                                                                <div className="col-md-4" />
 
                                                             </div>
-                                                            <div className="row">
+                                                        </Portlet>
 
-                                                                <div className="col-md-6">
-                                                                    <Label required={true} text="Unit Type" columns='4' />
-                                                                    <Combobox
-                                                                        fieldname='unitType'
-                                                                        formname='contractParams'
-                                                                        columns='8'
-                                                                        placeholder='Select'
-                                                                        style={{}}
-                                                                        state={this.state}
-                                                                        typeName="unitType"
-                                                                        dataSource={_.get(this.state, 'typeData', {})}
-                                                                        actionHandler={this.generalHandler}
-                                                                        className="form-control"
-                                                                    />
-                                                                </div>
-
-                                                                <div className="col-md-6">
-                                                                    <Label text="Regular Expression" columns='4' />
-                                                                    <Input
-                                                                        fieldname='validationRegEx'
-                                                                        formname='contractParams'
-                                                                        placeholder='Enter'
-                                                                        disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
-                                                                        columns='8'
-                                                                        placeholder=''
-                                                                        state={this.state}
-                                                                        actionHandler={this.generalHandler}
-                                                                        className="form-control"
-                                                                    />
+                                                        <div className="row">
+                                                            <div className="col-md-6">
+                                                                <Label required={true} text="Start Date" columns='4' />
+                                                                <div className="col-md-8">
+                                                                    <DateControl id="pointConversionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionStartDate)} dateChange={this.dateChange.bind(this, 'pointConversionStartDate')} />
                                                                 </div>
                                                             </div>
-
-                                                        </div>
-                                                    )}
-                                            </Portlet>
-
-                                            <Portlet title={"RATES"}>
-                                                {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? ((this.props.params.partnerCode && !(this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false) : false)) && (<div>
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <Label required={true} text="Start Date" columns='4' />
-                                                            <div className="col-md-8">
-                                                                <DateControl id="pointConversionStartDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionStartDate)} dateChange={this.dateChange.bind(this, 'pointConversionStartDate')} />
+                                                            <div className="col-md-6">
+                                                                <Label text="End Date" columns='4' />
+                                                                <div className="col-md-8">
+                                                                    <DateControl id="pointConversionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionEndDate)} dateChange={this.dateChange.bind(this, 'pointConversionEndDate')} />
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div className="col-md-6">
-                                                            <Label text="End Date" columns='4' />
-                                                            <div className="col-md-8">
-                                                                <DateControl id="pointConversionEndDate" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionEndDate)} dateChange={this.dateChange.bind(this, 'pointConversionEndDate')} />
-                                                            </div>
-                                                        </div>
-                                                    </div>
 
-                                                    <br></br>
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                        
-                                                        <Label required={true} text={`Rate (From ${this.state.contractParams.withPartnerCode? this.state.contractParams.withPartnerCode: "Partner"} -> To ETISALAT)`} columns='4' />
-                                                            <Input
-                                                                fieldname='rate'
-                                                                formname='rates'
-                                                                columns='8'
-                                                                placeholder=''
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            {this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', {}) : _.get(this.state, 'body.partnerCode', {})).img && <img style={{
-                                                                position: 'relative',
-                                                                left: '250px',
-                                                                top: '5px',
-                                                                zIndex: '2',
-                                                                bottom: '13px'
-                                                            }} id="UserProfilePic" src={this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).img} class="img-responsive img-thumbnail" alt="Profile Image" width="20px" height="20px"
-                                                            />}
-                                                            <div style={this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).img ? {
-                                                                position: 'relative',
-                                                                bottom: '22px'
-                                                            } : {
-                                                                    position: 'relative'
-                                                                }}>
-                                                                <Label text="Program Name" columns='4' />
+                                                        <br></br>
+                                                        <br></br>
+
+
+                                                        <div className="row">
+                                                            <div className="col-md-6">
+                                                                <Label required={true} text="Minimum Commitments" columns='4' />
                                                                 <Input
-                                                                    style={{ paddingLeft: '40px' }}
-                                                                    fieldname='sourceToken'
-                                                                    formname='rates'
+                                                                    fieldname='minCommitments2'
+                                                                    formname='contractParams'
+                                                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
                                                                     columns='8'
-                                                                    disabled={true}
-                                                                    value={this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).programCode}
                                                                     placeholder=''
                                                                     state={this.state}
                                                                     actionHandler={this.generalHandler}
                                                                     className="form-control"
                                                                 />
                                                             </div>
-
-
-
                                                         </div>
-                                                    </div>
 
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <Label text={`Rate (To ETISALAT -> From  ${this.state.contractParams.withPartnerCode? this.state.contractParams.withPartnerCode: "Partner"} )`} columns='4' />
-                                                            <Input
-                                                                fieldname='rate2'
-                                                                formname='rates'
-                                                                columns='8'
-                                                                placeholder=''
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-4" style={{
-                                                            textAlign: 'right',
-                                                            position: 'relative',
-                                                            bottom: '20px',
-                                                            right: '12px',
-                                                            fontStyle: 'italic',
-                                                            color: '#E17630'
-                                                        }}>
-                                                            <span style={{ fontSize: '29px' }}>{`${this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).AEDValue} AED`}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col-md-12">
-                                                            <div className="btn-toolbar pull-right">
-                                                                <button style={{ marginRight: "22%" }} onClick={this.addRates} type="submit" className="pull-right btn green">
-                                                                    {utils.getLabelByID("Add")}
-                                                                </button>
+                                                        <Portlet title={"AED EQUIVALENT VALUE"}>
+                                                            <div className="row">
+                                                                <div className="col-md-4">
+                                                                    <Label text={`From Points`} />
+                                                                    <Input
+                                                                        fieldname='fromPoint'
+                                                                        formname='AEDSlabValue'
+                                                                        // disabled= {this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                        disabled={false}
+                                                                        style={{ width: "fit-content" }}
+                                                                        columns='6'
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+
+                                                                </div>
+
+                                                                <div className="col-md-4">
+                                                                    <Label text={`To Points`} />
+                                                                    <Input
+                                                                        fieldname='toPoint'
+                                                                        formname='AEDSlabValue'
+                                                                        style={{ width: "fit-content" }}
+                                                                        // disabled= {this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                        disabled={false}
+                                                                        columns='6'
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+                                                                </div>
+
+                                                                <div className="col-md-4">
+                                                                    <Label text={`AED Value`} />
+                                                                    <Input
+                                                                        fieldname='AEDValue'
+                                                                        formname='AEDSlabValue'
+                                                                        // disabled= {this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                        disabled={false}
+                                                                        columns='6'
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+                                                                </div>
+                                                            </div>
+
+                                                            <br></br>
+
+                                                            <div className="row">
+                                                                <div className="col-md-12">
+                                                                    <div className="btn-toolbar pull-right">
+                                                                        <button style={{ marginRight: "22%" }} onClick={this.addAEDSlab} type="submit" className="pull-right btn green">
+                                                                            {utils.getLabelByID("Add AED")}
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="row">
+                                                                <div style={{ padding: "0 15" }}>
+                                                                    <Table
+                                                                        gridColumns={utils.getGridColumnByName('Slab')}
+                                                                        gridData={this.state.AEDSlab || []}
+                                                                        componentFunction={this.slabActionHandler}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </Portlet>
+
+
+                                                        <div className="row">
+                                                            <div className="col-md-6">
+                                                                <Label required={true} text="Minimum Points" columns='4' />
+                                                                <Input
+                                                                    fieldname='minPoints2'
+                                                                    formname='contractParams'
+                                                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                    columns='8'
+                                                                    placeholder=''
+                                                                    state={this.state}
+                                                                    actionHandler={this.generalHandler}
+                                                                    className="form-control"
+                                                                />
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                </div>)}
+                                                        <div className="row">
+                                                            <div className="col-md-6">
+                                                                <Label required={true} text="Multiple Of" columns='4' />
+                                                                <Input
+                                                                    fieldname='multipleOf1'
+                                                                    formname='contractParams'
+                                                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                    columns='8'
+                                                                    placeholder=''
+                                                                    state={this.state}
+                                                                    actionHandler={this.generalHandler}
+                                                                    className="form-control"
+                                                                />
+                                                            </div>
+                                                            <div className="col-md-6">
+                                                                <Label required={true} text="Round Off Method" columns='4' />
+                                                                <Combobox
+                                                                    fieldname='paymentMethod1'
+                                                                    formname='redemptionTerms'
+                                                                    columns='8'
+                                                                    placeholder='Select'
+                                                                    style={{}}
+                                                                    state={this.state}
+                                                                    typeName="paymentMethod"
+                                                                    dataSource={_.get(this.state, 'typeData', {})}
+                                                                    actionHandler={this.generalHandler}
+                                                                    className="form-control"
+                                                                />
+                                                            </div>
+                                                        </div>
 
-                                                <div style={{ padding: "0 15" }}>
-                                                    <Table
-                                                        gridColumns={utils.getGridColumnByName('rates')}
-                                                        gridData={this.state.ratesArr || []}
-                                                        componentFunction={this.ratesActionHandler}
-                                                    />
-                                                </div>
+                                                        <div className="row">
+                                                            <div className="col-md-12">
+                                                                <div className="btn-toolbar pull-right">
+                                                                    <button style={{ marginRight: "22%" }} onClick={this.addRates} type="submit" className="pull-right btn green">
+                                                                        {utils.getLabelByID("Add")}
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="row">
+                                                            <div style={{ padding: "0 15" }}>
+                                                                <Table
+                                                                    gridColumns={utils.getGridColumnByName('rates')}
+                                                                    gridData={this.state.ratesArr || []}
+                                                                    componentFunction={this.ratesActionHandler}
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                    </div>)}
+                                            </Portlet>
 
 
+                                            <Portlet>
+                                                {(!this.props.params.partnerCode ? true : (this.state.status == "APPROVED" ? ((this.props.params.partnerCode && !(this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false) : false)) && (
+                                                    <div>
+                                                        <Portlet title={"DIRECTION"} style={{ paddingLeft: "234px" }}>
+                                                            <div className="row">
+
+                                                                <div className="col-md-1" />
+                                                                <div className="col-md-4">
+
+                                                                    {this.getProgram().img &&
+                                                                        <img style={{
+                                                                            position: 'absolute',
+                                                                            left: '40px',
+                                                                            top: '7px',
+                                                                            zIndex: '2',
+                                                                            bottom: '13px'
+                                                                        }} id="UserProfilePic" src={this.getProgram().img} class="img-responsive img-thumbnail" alt="Profile Image" width="20px" height="20px" />}
+                                                                    <div style={this.getProgram().img ? {
+                                                                        position: 'relative',
+                                                                        bottom: '22px'
+                                                                    } : {
+                                                                            position: 'relative'
+                                                                        }}>
+
+                                                                    </div>
+
+                                                                    <Input
+                                                                        style={{ paddingLeft: "40px" }}
+                                                                        fieldname='conversionPartnerProgramName'
+                                                                        formname='contractParams'
+                                                                        value={this.getProgram().programCode}
+                                                                        // disabled= {this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                        disabled={true}
+                                                                        columns='8'
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+
+                                                                </div>
+
+                                                                <div className="col-md-4">
+                                                                    <Label text="TO" columns='3' />
+                                                                    {this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', {}) : _.get(this.state, 'body.partnerCode', {})).img && <img style={{
+                                                                        position: 'absolute',
+                                                                        left: '135px',
+                                                                        top: '7px',
+                                                                        zIndex: '2',
+                                                                        bottom: '13px'
+                                                                    }} id="UserProfilePic" src={this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).img} class="img-responsive img-thumbnail" alt="Profile Image" width="20px" height="20px"
+                                                                    />}
+                                                                    <div style={this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).img ? {
+                                                                        position: 'relative',
+                                                                        bottom: '22px'
+                                                                    } : {
+                                                                            position: 'relative'
+                                                                        }}>
+                                                                    </div>
+                                                                    <Input
+                                                                        style={{ paddingLeft: "40px" }}
+                                                                        fieldname='sourceToken'
+                                                                        formname='rates'
+                                                                        columns='8'
+                                                                        disabled={true}
+                                                                        value={this.getSourceProgram(!_.get(this.state, 'body.partnerCode', undefined) ? _.get(this.state, 'user.orgCode', '') : _.get(this.state, 'body.partnerCode', '')).programCode}
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+                                                                </div>
+                                                                <div className="col-md-4" />
+
+                                                            </div>
+                                                        </Portlet>
+
+                                                        <div className="row">
+                                                            <div className="col-md-6">
+                                                                <Label required={true} text="Start Date" columns='4' />
+                                                                <div className="col-md-8">
+                                                                    <DateControl id="pointConversionStartDate1" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionStartDate)} dateChange={this.dateChange.bind(this, 'pointConversionStartDate')} />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-6">
+                                                                <Label text="End Date" columns='4' />
+                                                                <div className="col-md-8">
+                                                                    <DateControl id="pointConversionEndDate1" defaultValue={utils.UNIXConvertToDate(this.state.pointConversionEndDate)} dateChange={this.dateChange.bind(this, 'pointConversionEndDate')} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <br></br>
+                                                        <br></br>
+
+
+                                                        <div className="row">
+                                                            <div className="col-md-6">
+                                                                <Label required={true} text="Minimum Commitments" columns='4' />
+                                                                <Input
+                                                                    fieldname='minCommitments'
+                                                                    formname='contractParams'
+                                                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                    columns='8'
+                                                                    placeholder=''
+                                                                    state={this.state}
+                                                                    actionHandler={this.generalHandler}
+                                                                    className="form-control"
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                        <Portlet title={"AED EQUIVALENT VALUE"}>
+                                                            <div className="row">
+                                                                <div className="col-md-4">
+                                                                    <Label text={`From Points`} />
+                                                                    <Input
+                                                                        fieldname='fromPoint'
+                                                                        formname='AEDSlabValue'
+                                                                        // disabled= {this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                        disabled={false}
+                                                                        style={{ width: "fit-content" }}
+                                                                        columns='6'
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+
+                                                                </div>
+
+                                                                <div className="col-md-4">
+                                                                    <Label text={`To Points`} />
+                                                                    <Input
+                                                                        fieldname='toPoint'
+                                                                        formname='AEDSlabValue'
+                                                                        style={{ width: "fit-content" }}
+                                                                        // disabled= {this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                        disabled={false}
+                                                                        columns='6'
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+                                                                </div>
+
+                                                                <div className="col-md-4">
+                                                                    <Label text={`AED Value`} />
+                                                                    <Input
+                                                                        fieldname='AEDValue'
+                                                                        formname='AEDSlabValue'
+                                                                        // disabled= {this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                        disabled={false}
+                                                                        columns='6'
+                                                                        placeholder=''
+                                                                        state={this.state}
+                                                                        actionHandler={this.generalHandler}
+                                                                        className="form-control"
+                                                                    />
+                                                                </div>
+                                                            </div>
+
+                                                            <br></br>
+
+                                                            <div className="row">
+                                                                <div className="col-md-12">
+                                                                    <div className="btn-toolbar pull-right">
+                                                                        <button style={{ marginRight: "22%" }} onClick={this.addAEDSlab} type="submit" className="pull-right btn green">
+                                                                            {utils.getLabelByID("Add AED")}
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="row">
+                                                                <div style={{ padding: "0 15" }}>
+                                                                    <Table
+                                                                        gridColumns={utils.getGridColumnByName('Slab')}
+                                                                        gridData={this.state.AEDSlab || []}
+                                                                        componentFunction={this.slabActionHandler}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </Portlet>
+
+
+                                                        <div className="row">
+                                                            <div className="col-md-6">
+                                                                <Label required={true} text="Minimum Points" columns='4' />
+                                                                <Input
+                                                                    fieldname='minPoints'
+                                                                    formname='contractParams'
+                                                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                    columns='8'
+                                                                    placeholder=''
+                                                                    state={this.state}
+                                                                    actionHandler={this.generalHandler}
+                                                                    className="form-control"
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="row">
+                                                            <div className="col-md-6">
+                                                                <Label required={true} text="Multiple Of" columns='4' />
+                                                                <Input
+                                                                    fieldname='multipleOff'
+                                                                    formname='contractParams'
+                                                                    disabled={this.props.params.partnerCode ? (this.state.status == "PENDING" ? true : ((this.props.params.partnerCode && (this.state.status == "APPROVED" && this.state.user.orgCode == this.props.params.partnerCode.split("_")[1])) ? true : false)) : false}
+                                                                    columns='8'
+                                                                    placeholder=''
+                                                                    state={this.state}
+                                                                    actionHandler={this.generalHandler}
+                                                                    className="form-control"
+                                                                />
+                                                            </div>
+                                                            <div className="col-md-6">
+                                                                <Label required={true} text="Round Off Method" columns='4' />
+                                                                <Combobox
+                                                                    fieldname='paymentMethod'
+                                                                    formname='redemptionTerms'
+                                                                    columns='8'
+                                                                    placeholder='Select'
+                                                                    style={{}}
+                                                                    state={this.state}
+                                                                    typeName="paymentMethod"
+                                                                    dataSource={_.get(this.state, 'typeData', {})}
+                                                                    actionHandler={this.generalHandler}
+                                                                    className="form-control"
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="row">
+                                                            <div className="col-md-12">
+                                                                <div className="btn-toolbar pull-right">
+                                                                    <button style={{ marginRight: "22%" }} onClick={this.addRates} type="submit" className="pull-right btn green">
+                                                                        {utils.getLabelByID("Add")}
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="row">
+                                                            <div style={{ padding: "0 15" }}>
+                                                                <Table
+                                                                    gridColumns={utils.getGridColumnByName('rates')}
+                                                                    gridData={this.state.ratesArr || []}
+                                                                    componentFunction={this.ratesActionHandler}
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                    </div>)}
                                             </Portlet>
                                         </div>
 
@@ -1686,6 +1977,31 @@ class AddPartner extends Component {
         }
     }
 
+    slabActionHandler = ({ actionName, index }) => {
+        switch (actionName) {
+            case "Edit":
+                if (index > -1) {
+                    let slab = this.state.AEDSlab[index];
+                    let tempState = [...this.state.AEDSlab];
+                    tempState.splice(index, 1);
+                    this.setState({
+                        AEDSlabValue: slab,
+                        AEDSlab: tempState
+                    });
+                }
+                break;
+            case "Delete":
+                if (index > -1) {
+                    let AEDSlab = [...this.state.ratesArr];
+                    AEDSlab.splice(index, 1);
+                    this.setState({ AEDSlab });
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     addContactInformation = () => {
         let contactInformationArr = [...this.state.contactInformationArr]
         let contactInformation = { ...this.state.contactInformation }
@@ -1945,7 +2261,7 @@ class AddPartner extends Component {
                                 state={this.state}
                                 typeName="entityNames"
                                 dataSource={_.get(this.state, 'typeData', {})}
-                                actionHandler={this.generalHandler}
+                                actionHandler={this.partnerHandler}
                                 className="form-control"
                             />
                         </div>
