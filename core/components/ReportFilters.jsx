@@ -107,7 +107,9 @@ class ReportFilters extends React.Component {
 
 
         let link = document.createElement('a');
-        link.href = constants.report + "/Report/" + this.props.reportID + '?id=' + this.props.reportID + '&searchCriteria=' + fitlerCriteria + '&JWT=' + sessionStorage.token + "&language=" + nationalization + "&reportFormat=" + reportFormat;
+       // link.href = constants.report + "/Report/" + this.props.reportID + '?id=' + this.props.reportID + '&searchCriteria=' + fitlerCriteria + '&JWT=' + sessionStorage.token + "&language=" + nationalization + "&reportFormat=" + reportFormat;
+        link.href = constants.reportUrl + "/Report/" + this.props.reportID + '?id=' + this.props.reportID + '&searchCriteria=' + fitlerCriteria + '&JWT=' + sessionStorage.token + "&language=" + nationalization + "&reportFormat=" + reportFormat;
+
         link.download = "download";
         link.click();
 

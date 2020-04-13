@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseUrl } from '../constants/Communication.js';
+import { baseUrl, reportUrl } from '../constants/Communication.js';
 import * as utils from './utils.js';
 import * as Loaders from './loaders.jsx';
 //import Pagination from '../components/paginator.jsx';
@@ -136,7 +136,9 @@ class Datatable extends React.Component {
       searchCriteria = b64EncodeUnicode(searchCriteria);
     }
     //return baseUrl + '/exportFile?searchCriteria=' + searchCriteria + '&gridType=' + gridType + '&type=' + type + '&JWT=' + sessionStorage.token;
-    let url = baseUrl + '/export/Export?searchCriteria=' + searchCriteria + '&gridType=' + gridType + '&type=' + type + '&JWT=' + sessionStorage.token;
+    //let url = reportUrl + '/export/Export?gridType=' + gridType + '&type=' + type + '&JWT=' + sessionStorage.token;
+    let url = reportUrl + '/export/Export?searchCriteria=' + searchCriteria + '&gridType=' + gridType + '&type=' + type + '&JWT=' + sessionStorage.token;
+
     url = url.replace('amp', '');
     return url;
     // window.open(url, 'targetWindow',

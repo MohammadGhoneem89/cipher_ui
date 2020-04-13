@@ -362,7 +362,7 @@ module.exports = {
     //     { alias: "Status", key: "internalStatus", type: "statusBox" }
     // ],
     viewTranxListSettlemntDetail: [
-        { alias: "", key: "transactionId", type: "hiddenID" },
+        { alias: "", key: "sourceTransactionId", type: "hiddenID" },
         { alias: "S.No", key: "", type: 'serialNo' },
         { alias: "Transaction", key: "key", type: "string" },
         { alias: "Account#", key: "membershipNo", type: "string" },

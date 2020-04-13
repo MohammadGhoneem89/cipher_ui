@@ -22,6 +22,7 @@ import moment from 'moment';
 import ModalBox from '../../../../../core/common/ModalBox.jsx';
 import * as toaster from '../../../../../core/common/toaster.js';
 import Input from '../../../../../core/common/Input.jsx'
+//import * as requestCreator from '../../../../../core/common/request.js';
 
 
 
@@ -37,6 +38,7 @@ class ViewSettlement extends React.Component {
                 totalRecords: 0
             },
             isLoading: true,
+            filterCriteria: undefined,
             gridDataTPool: [],
             gridData: [],
             actions: [],
@@ -48,6 +50,7 @@ class ViewSettlement extends React.Component {
         };
         this.data = [];
         this.pageChanged = this.pageChanged.bind(this);
+        //this.sortList = this.sortList.bind(this);
         this.generalHandler = gen.generalHandler.bind(this)
     }
 
@@ -99,6 +102,8 @@ class ViewSettlement extends React.Component {
             let settlementData = nextProps.settlementData;
             let data = nextProps.getPartnerDataByID;
 
+            this.setState({ filterCriteria: settlementData.transactionList });
+
             if(nextProps.settlementData.Status=="PENDING" && !this.state.intervalId ){
             let intervalId = setInterval(() => {
 
@@ -140,7 +145,11 @@ class ViewSettlement extends React.Component {
             // }];
             let  actions = [{}]
            result =settlementData.transactionList.map(obj => {
-                //obj.actions = actions;  
+                //obj.actions = actions;
+                //console.log("data-------------------",obj)  
+                console.log("data-------------------",obj.partnerCode)  
+                console.log("data3-------------------",obj.withPartnerCode)  
+
                 obj.actions =  [{
                     "value": "4014",
                     "type": "componentAction",
@@ -148,7 +157,7 @@ class ViewSettlement extends React.Component {
                     "params": "",
                     "iconName": "fa fa-eye",
                     //"URI": [`/smiles/transaction/view/${obj.partnerCode}/${obj.withPartnerCode}`]
-                    "URI": ['/smiles/transaction/view/']
+                    "URI": [`/smiles/transaction/view/${obj.partnerCode}/${obj.withPartnerCode}`]
 
                 }]
                 return obj;
@@ -219,7 +228,21 @@ class ViewSettlement extends React.Component {
         page.currentPageNo = pageNo;
         this.setState({ page: page });
         this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
+        // this.props.actions.generalProcess(constants.getConsortiumList, requestCreator.createConsortiumListRequest({
+        //     currentPageNo: pageNo,
+        //     pageSize: this.state.page.pageSize},
+        //     this.state.filterCriteria))
+
+           // this.setState({ pageSize: pageNo });
+        
     }
+    // sortList = (sortData) => {
+    //     let page = this.state.page;
+    //     page.currentPageNo = pageNo;
+    //    // this.setState({ page: page });
+    //     this.props.actions.generalProcess(constants.getMasterAgreement, this.getRequest());
+    // }
+ 
 
     updateSettlement = () => {
 
@@ -547,21 +570,58 @@ class ViewSettlement extends React.Component {
                                             </div>
                                         </div>
                                     </div>           viewTranxListSettlemntDetail     viewTranxListEventsSettlement*/}
+                                    {/**
+                                     *  pagination={true}
+                                        export={true}
+                                        search={false}
+                                        gridType={'entity'}
+                                        gridColumns={utils.getGridColumnByName('entitySearch')}
+                                        gridData={this.state.entityList.data.searchResult}
+                                        totalRecords={this.state.entityList.pageData.totalRecords}
+                                        pageChanged={this.pageChanged}
+                                        activePage={this.state.activePage}
+                                        pageSize={this.state.pageSize}
+                                        searchCriteria={this.state.filterCriteria}
+                                        headerClick={this.sortList}
+                                        sortData={this.state.sortData}
+
+
+
+                                        pagination={true}
+                                        export={true}
+                                        search={false}
+                                        gridType={"consortium"}
+                                        gridColumns={utils.getGridColumnByName("consortiumSearch")}
+                                        gridData={this.state.consortiumList.data.searchResult}
+                                        totalRecords={this.state.consortiumList.pageData.totalRecords}
+                                        pageChanged={this.pageChanged}
+                                        activePage={this.state.activePage}
+                                        pageSize={this.state.pageSize}
+                                        searchCriteria={this.state.filterCriteria}
+
+
+                                     */}
                                     <Row>
                                         <Col>
                                             <Col>
                                                 <Table
                                                     gridColumns={utils.getGridColumnByName("viewTranxListSettlemntDetail")}
                                                     gridData={this.state.gridData}
+                                                    export={true}
+                                                    search={false}
+                                                     gridType={'consortium'} //  transaction
                                                     //pageSize={10}
                                                     pageChanged={this.pageChanged}
                                                     pagination={true}
+                                                    //searchCriteria={this.state.filterCriteria}
                                                     activePage={this.state.page.currentPageNo}
-
-
-                                                     totalRecords={this.state.page.totalRecords}
+                                                    totalRecords={this.state.page.totalRecords}
+                                                    pageSize={this.state.page.pageSize}
+                                                   // headerClick={this.sortList}
+                                                     
+                                                    // sortData={this.state.gridData}
                                                     // pageChanged={this.pageChanged}
-                                                     pageSize={this.state.page.pageSize}
+                                                     
                                                     // pagination={true}
                                                     // activePage={this.state.page.currentPageNo}
                                                 />
