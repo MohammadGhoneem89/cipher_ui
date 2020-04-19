@@ -876,6 +876,12 @@ module.exports = {
     { alias: "useCase", key: "useCase", type: "string" },
     { alias: "Action", key: "action", type: "action" }
   ],
+
+  AEDSlabList: [
+    { alias: "From Points", key: "fromPoint", type: 'number' },
+    { alias: "To Points", key: "toPoint", type: "string" },
+    { alias: "AED Value", key: "AEDValue", type: "string" }
+  ],
   /// Smiles 
   // viewTranxList: [
   //   {alias: "", key: "_id", type: "hiddenID"},
@@ -917,7 +923,11 @@ module.exports = {
       alias: "TOKEN PROGRAM", key: "img", type: "image1", width: "100%", height: "100px", url: ''
     },
     { alias: "ORG CODE", key: "orgCode", type: "string" },
-    { alias: "AED RATE", key: "AEDValue", type: "string" }
+    { alias: "OTPLenght", key: "linkingParams.OTPLength", type: "string" },
+    { alias: "Auth Type", key: "linkingParams.authType", type: "string" },
+    { alias: "Unit Type", key: "linkingParams.unitType", type: "string" },
+    { alias: "AED RATE", key: "AEDValue", type: "string" },
+    { alias: "AED Slabs", key: "actions", type: "action" },
   ],
   ListProducts: [
     { alias: "", key: "_id", type: "hiddenID" },

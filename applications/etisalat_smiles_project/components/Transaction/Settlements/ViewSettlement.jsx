@@ -609,7 +609,7 @@ class ViewSettlement extends React.Component {
                                                     gridData={this.state.gridData}
                                                     export={true}
                                                     search={false}
-                                                     gridType={'consortium'} //  transaction
+                                                     gridType={'settlementReport'} //  transaction
                                                     //pageSize={10}
                                                     pageChanged={this.pageChanged}
                                                     pagination={true}
@@ -617,6 +617,7 @@ class ViewSettlement extends React.Component {
                                                     activePage={this.state.page.currentPageNo}
                                                     totalRecords={this.state.page.totalRecords}
                                                     pageSize={this.state.page.pageSize}
+                                                    
                                                    // headerClick={this.sortList}
                                                      
                                                     // sortData={this.state.gridData}
@@ -636,7 +637,9 @@ class ViewSettlement extends React.Component {
                                                     gridColumns={utils.getGridColumnByName("viewTranxListEventsSettlement")}
                                                     gridData={this.state.gridDataTPool}
                                                     fontclass=""
+                                                    search={false}
                                                     //totalRecords={this.state.totalRecords}
+                                                    gridType={"settlementReport"}//{"entity"}//{"acquirer"}
                                                     totalRecords={this.state.page.totalRecords}
                                                     pageSize={this.state.page.pageSize}
                                                     //pageSize={10}

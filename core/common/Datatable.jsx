@@ -138,6 +138,8 @@ class Datatable extends React.Component {
     //return baseUrl + '/exportFile?searchCriteria=' + searchCriteria + '&gridType=' + gridType + '&type=' + type + '&JWT=' + sessionStorage.token;
     //let url = reportUrl + '/export/Export?gridType=' + gridType + '&type=' + type + '&JWT=' + sessionStorage.token;
     let url = reportUrl + '/export/Export?searchCriteria=' + searchCriteria + '&gridType=' + gridType + '&type=' + type + '&JWT=' + sessionStorage.token;
+    //let url = reportUrl + '/export/Export?searchCriteria=' + searchCriteria + '&gridType=' + "settlementReport" + '&type=' + type + '&JWT=' + sessionStorage.token;
+
 
     url = url.replace('amp', '');
     return url;

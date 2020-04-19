@@ -8,6 +8,15 @@ module.exports = {
         // { alias: "Mode", key: "mode", type: "string" },
         { alias: "Action", key: "action", type: "action" }
     ],
+    Slab: [
+        { alias: "S.NO", key: "", type: "serialNo" },
+        { alias: "From Points", key: "fromPoint", type: "string" },
+        { alias: "To Point", key: "toPoint", type: "string" },
+        { alias: "AED Value", key: "AEDValue", type: "string" },
+        { alias: "Action", key: "actions", type: "action" }
+        // { alias: "Mode", key: "mode", type: "string" },
+        
+    ],
     partnerlist: [
         { alias: "", key: "Id", type: "hiddenID" },
         { alias: "S.NO", key: "", type: "serialNo" },
@@ -334,7 +343,20 @@ module.exports = {
 
 
 
-   
+    viewTranxListSettlemntDetail: [
+        { alias: "", key: "transactionId", type: "hiddenID" },
+        { alias: "S.No", key: "", type: 'serialNo' },
+        { alias: "Organization", key: "partnerCode", type: "string" },
+        { alias: "Partner", key: "withPartnerCode", type: "string" },
+        { alias: "Transaction", key: "key", type: "string" },
+        { alias: "TRANS TYPE", key: "transactionType", type: "string" },
+        { alias: "Amount", key: "amount", type: "string" },
+        { alias: "Commission", key: "commissionAmount", type: "string" },
+        { alias: "Points", key: "pointsAwarded", type: "string" },
+        { alias: "TRANS Date", key: "createdOn", type: "epochDate4" },
+        { alias: "Status", key: "internalStatus", type: "statusBox" },
+        { alias: "action", key: "actions", type: "action" }
+    ],
     viewTranxList: [
         { alias: "", key: "transactionId", type: "hiddenID" },
         { alias: "S.No", key: "", type: 'serialNo' },

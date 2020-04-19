@@ -22,7 +22,8 @@ const backOffices = {
     webSocketURL: "http://localhost:9089",
     repostActionURL: "http://localhost:9089/API",
     blockChainViewerURL: "http://localhost:9089",
-    reportUrl: "http://localhost:10052",
+    reportUrl: "http://localhost:9087",
+    //reportUrl: "http://localhost:10052",
     //URLReportService: 'http://localhost:10052'
    // IPFS: "//avanza-training.westeurope.cloudapp.azure.com/API/core/download?type=IPFS&path="
 };

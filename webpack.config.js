@@ -13,6 +13,10 @@ var config = {
     disableHostCheck: true
   },
 
+  externals: [{
+    xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'
+  }],
+
   module: {
     loaders: [
       {
