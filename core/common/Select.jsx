@@ -35,7 +35,7 @@ class Combobox extends React.Component {
                     list={`id_${this.props.fieldname}`}
                     autoComplete={'off'}
                     style={this.props.style ? this.props.style : {}}
-                    className={this.props.className ? this.props.className : ''}
+                    className={this.props.className ? this.props.className : 'form-control'}
                     placeholder={this.props.placeholder ? this.props.placeholder : ''}
                     onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'combobox')}
                 />

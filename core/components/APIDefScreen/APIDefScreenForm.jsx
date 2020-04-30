@@ -21,6 +21,7 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
                     <div className="form-group col-md-8">
                       {/* {console.log(initialValues)} */}
                       <select name="useCase" value={initialValues.useCase} disabled={parentState.isEdit} onChange={onInputChange} className="form-control">
+                        <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                         {
                           typeData.UseCase.map((option, index) => {
                             return (
@@ -150,7 +151,7 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
                         fontWeight: "normal"
                       }}>{utils.getLabelByID("APIDefScreen_RSQueue")}</label>
                       <div className="form-group col-md-8">
-                        <input type="text" className="form-control" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "REST"} name="requestServiceQueue" value={initialValues.requestServiceQueue} />
+                        <input type="text" className="form-control" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "GRPC Relay"|| initialValues.communicationMode == "REST"} name="requestServiceQueue" value={initialValues.requestServiceQueue} />
                       </div>
                     </div>
                   </div>
@@ -161,7 +162,7 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
                         fontWeight: "normal"
                       }}>{utils.getLabelByID("APIDefScreen_ServiceURI")}</label>
                       <div className="form-group col-md-8">
-                        <input type="text" className="form-control" name="ServiceURL" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} value={initialValues.ServiceURL} />
+                        <input type="text" className="form-control" name="ServiceURL" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "GRPC Relay" || initialValues.communicationMode == "QUEUE"} value={initialValues.ServiceURL} />
                       </div>
                     </div>
                   </div>
@@ -172,7 +173,7 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
                         fontWeight: "normal"
                       }}>{utils.getLabelByID("APIDefScreen_ResponseQueue")}</label>
                       <div className="form-group col-md-8">
-                        <input type="text" className="form-control" name="responseQueue" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "REST"} value={initialValues.responseQueue} />
+                        <input type="text" className="form-control" name="responseQueue" onChange={onInputChange} disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "GRPC Relay"|| initialValues.communicationMode == "REST"} value={initialValues.responseQueue} />
                       </div>
                     </div>
                   </div>
@@ -183,7 +184,7 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
                         fontWeight: "normal"
                       }}>{utils.getLabelByID("APIDefScreen_ServiceEndPoint")}</label>
                       <div className="form-group col-md-8">
-                        <select id="endpointName" name="endpointName" value={initialValues.endpointName} onChange={onInputChange} className="form-control" disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} >
+                        <select id="endpointName" name="endpointName" value={initialValues.endpointName} onChange={onInputChange} className="form-control" disabled={initialValues.isRouteOveride || initialValues.communicationMode == "GRPC Relay"|| initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"} >
                           <option value="">--select--</option>
                           {parentState.getEndpointListView.map((option, index) => {
                             return (
@@ -370,6 +371,23 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
               <label className="form-group control-label col-md-4" style={{
                 textAlign: "left",
                 fontWeight: "normal"
+              }}>{utils.getLabelByID("isRelay")}</label>
+              <div className="form-group col-md-8">
+                <div className="icheck-list">
+                  <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                    <label />
+                    <input type="checkbox" className="form-control" onChange={onInputChange} name="isRelay" checked={initialValues.isRelay} id="isRelay" />
+                    <span />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "normal"
               }}>{utils.getLabelByID("APIDefScreen_isSimulated")}</label>
               <div className="form-group col-md-8">
                 <div className="icheck-list">
@@ -409,6 +427,10 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
                         <li>
                           <a href="#tab_1_4" data-toggle="tab"
                             style={{ fontWeight: "Bold", fontSize: "17px" }}>Billing</a>
+                        </li>
+                        <li>
+                          <a href="#tab_1_5" data-toggle="tab"
+                             style={{ fontWeight: "Bold", fontSize: "17px" }}>Relay Settings</a>
                         </li>
                       </ul>
                     </div>
@@ -972,6 +994,33 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
                             </div>
                             <div className="form-group col-md-8">
                               <DateControl id="billingDate" dateChange={onDateChange} defaultValue={initialValues.billingDate} />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="tab-pane" id="tab_1_5">
+                          <div className="col-md-6">
+                            <div className="form-group col-md-4">
+                              <label className="control-label">{utils.getLabelByID("Relay Network")}</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                              <select name="RelayNet" value={initialValues.RelayNet}  onChange={onInputChange} className="form-control">
+                                <option  >{utils.getLabelByID("Select ...")}</option>
+                                {parentState.RelayNetworks.map((option, index) => {
+                                  return (
+                                    <option key={index} value={option.label}>{option.label}</option>
+                                  );
+                                })
+                                }
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group col-md-4">
+                              <label className="control-label">{utils.getLabelByID("Remote API")}</label>
+                            </div>
+                            <div className="form-group col-md-8">
+                              <input type="text" className="form-control" onChange={onInputChange} name="RemoteAPI" value={initialValues.RemoteAPI} />
                             </div>
                           </div>
                         </div>

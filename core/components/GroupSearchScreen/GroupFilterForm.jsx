@@ -6,7 +6,6 @@ import Label from '../../common/Lable.jsx';
 
 const GroupFilterForm = props => {
     const { handleSubmit, pristine, reset, submitting } = props;
-
     let grpType = [
         { value: "UI", label: "UI" },
         { value: "API", label: "API" },
@@ -15,8 +14,8 @@ const GroupFilterForm = props => {
         <form role="form" onSubmit={handleSubmit}>
             <div className="row">
                 <div className="col-md-6">
-                    <Label text="Group Name" columns='6' divStyle={{ width: '20%', paddingTop: '20px' }} />
-                    <div className="col-md-6">
+                    <Label text="Group Name" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
+                    <div className="col-md-9">
                         <TextInput
                             name="name"
                             type="text"
@@ -25,8 +24,8 @@ const GroupFilterForm = props => {
 
                 </div>
                 <div className="col-md-6">
-                    <Label text="Description" columns='6' divStyle={{ width: '20%', paddingTop: '20px' }} />
-                    <div className="col-md-6">
+                    <Label text="Description" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
+                    <div className="col-md-9">
                         <TextInput
                             name="description"
                             type="text"
@@ -40,8 +39,8 @@ const GroupFilterForm = props => {
             <div className="row">
 
                 <div className="col-md-6">
-                    <Label text="Group Type" columns='6' divStyle={{ width: '20%', paddingTop: '20px' }} />
-                    <div className="col-md-6">
+                    <Label text="Group Type" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
+                    <div className="col-md-9">
                         <DropdownInput name="type" options={grpType}
                         />
                     </div>

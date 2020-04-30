@@ -46,34 +46,34 @@ const FormSection1 = ({ initialValues, updateState, state }) => {
         { value: "Saturday", label: "Saturday" },
     ];
     return (
-        <div>
-            <div className="row">
-                <div className="col-md-12 col-sm-12">
-                    <div className="col-md-3 col-sm-3">
-                        <DropdownInput name="weekStartDay" options={weekStartDay}
-                            label="Week Start Day" />
-                    </div>
-                    <div className="col-md-3 col-sm-3">
-                        <DropdownInput name="weekEndDay" options={weekEndDay}
-                            label="Week End Day" />
-                    </div>
-                </div>
-            </div>
-            <div className="row" style={{ padding: "15px" }}>
-                <div className="col-md-12 col-sm-12">
-                    <Portlet title={"Exception List"} actions={exceptionActions}>
-                        <Table
-                            pagination={true}
-                            export={false}
-                            search={false}
-                            gridColumns={utils.getGridColumnByName("workingCaledarExceptionList")}
-                            gridData={state.exceptionList ? state.exceptionList : []}
-                            totalRecords={state.exceptionList ? state.exceptionList.length : 0}
-                        />
-                    </Portlet>
-                </div>
-            </div>
-        </div>
+      <div>
+          <div className="row">
+              <div className="col-md-12 col-sm-12">
+                  <div className="col-md-3 col-sm-3">
+                      <DropdownInput name="weekStartDay" options={weekStartDay}
+                                     label="Week Start Day" />
+                  </div>
+                  <div className="col-md-3 col-sm-3">
+                      <DropdownInput name="weekEndDay" options={weekEndDay}
+                                     label="Week End Day" />
+                  </div>
+              </div>
+          </div>
+          <div className="row" style={{ padding: "15px" }}>
+              <div className="col-md-12 col-sm-12">
+                  <Portlet title={"Exception List"} actions={exceptionActions}>
+                      <Table
+                        pagination={true}
+                        export={false}
+                        search={false}
+                        gridColumns={utils.getGridColumnByName("workingCaledarExceptionList")}
+                        gridData={state.exceptionList ? state.exceptionList : []}
+                        totalRecords={state.exceptionList ? state.exceptionList.length : 0}
+                      />
+                  </Portlet>
+              </div>
+          </div>
+      </div>
     )
 };
 
@@ -145,32 +145,32 @@ class WorkingCalSetupForm extends React.Component {
     render() {
         const { handleSubmit, pristine, reset, submitting, initialValues } = this.props;
         return (
-            <div>
-                <form>
-                </form>
-                <ModalBox isOpen={this.state.exceptionListModalIsOpen}>
-                    <ExceptionListForm onSubmit={this.updateExceptionList} initialValues={this.state}
-                        index={this.state.index} updateState={this.updateState} />
+          <div>
+              <form>
+              </form>
+              <ModalBox isOpen={this.state.exceptionListModalIsOpen}>
+                  <ExceptionListForm onSubmit={this.updateExceptionList} initialValues={this.state}
+                                     index={this.state.index} updateState={this.updateState} />
 
-                </ModalBox>
-                <form role="form" onSubmit={handleSubmit(this.submit)}>
-                    <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state} />
+              </ModalBox>
+              <form role="form" onSubmit={handleSubmit(this.submit)}>
+                  <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state} />
 
 
-                    <div id='calendar' style={{ paddingLeft: "200px", width: "1000" }}></div>
+                  <div id='calendar' style={{ paddingLeft: "200px", width: "1000" }}></div>
 
-                    {this.renderCalendar(initialValues.exceptionList)}
-                    <div className="pull-right">
-                        <button type="submit" className="btn green" disabled={submitting}>
-                            Submit
-                        </button>
-                        <button type="button" className="btn btn-default" disabled={pristine || submitting}
-                            onClick={reset}>
-                            Clear Values
-                        </button>
-                    </div>
-                </form>
-            </div>
+                  {this.renderCalendar(initialValues.exceptionList)}
+                  <div className="pull-right">
+                      <button type="submit" className="btn green" disabled={submitting}>
+                          Submit
+                      </button>
+                      <button type="button" className="btn btn-default" disabled={pristine || submitting}
+                              onClick={reset}>
+                          Clear Values
+                      </button>
+                  </div>
+              </form>
+          </div>
         );
     }
 }

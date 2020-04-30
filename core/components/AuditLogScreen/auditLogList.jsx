@@ -230,10 +230,12 @@ class AuditLogList extends React.Component {
 
                                         <div className="row">
                                             <div className="col-md-12">
-                                                <div className="pull-right">
-                                                    <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
-                                                    {"  "}
-                                                    <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
+                                                <div className="col-md-12">
+                                                    <div className="pull-right">
+                                                        <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
+                                                        {"  "}
+                                                        <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -244,28 +246,28 @@ class AuditLogList extends React.Component {
                     </div>
                     <div className="row">
                         <div className="col-md-12">
-                            <Table title={utils.getLabelByID("AuditLogList")}  fontclass="" TableClass="portlet light bordered sdg_portlet" gridColumns={utils.getGridColumnByName("auditLogListData")} gridData={this.props.AuditLogListData.data.searchResult}
+                            <Table title={utils.getLabelByID("AuditLogList")} fontclass="" TableClass="portlet light bordered sdg_portlet" gridColumns={utils.getGridColumnByName("auditLogListData")} gridData={this.props.AuditLogListData.data.searchResult}
                                 totalRecords={this.props.AuditLogListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
                                 pagination={true} pageChanged={this.pageChanged} search={true}
                                 renderPopupBody={this.renderPopupBody} activePage={this.state.currentPageNo}
                                 searchCriteria={this.state.searchFilters} gridType={"auditLogList"} export={true} />
                         </div>
                     </div>
-                    <div className="modal fade in modal-overflow" id="modelWindows" tabIndex="-1" role="basic" aria-hidden="true" style={{ display: "none",paddingTop: "10" }}>
-                    <div className="modal-dialog" style={{ width: "1050" }}>
-                        <div className="modal-content" style={{ padding: "10px" }}>
-                            <div className="modal-header">
-                                <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">{utils.getLabelByID("TLP_Close")}</span></button>
-                                <h3 className="modal-title">{utils.getLabelByID("AuditLogDetail")}</h3>
+                    <div className="modal fade in modal-overflow" id="modelWindows" tabIndex="-1" role="basic" aria-hidden="true" style={{ display: "none", paddingTop: "10" }}>
+                        <div className="modal-dialog" style={{ width: "1050" }}>
+                            <div className="modal-content" style={{ padding: "10px" }}>
+                                <div className="modal-header">
+                                    <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">{utils.getLabelByID("TLP_Close")}</span></button>
+                                    <h3 className="modal-title">{utils.getLabelByID("AuditLogDetail")}</h3>
+                                </div>
+
+                                {<div className="modal-body" id="popup">
+                                    <AuditLogDetail auditLogID={this.state.auditLogID} />
+
+                                </div>
+                                }
+
                             </div>
-
-                            {<div className="modal-body" id="popup">
-                                <AuditLogDetail auditLogID={this.state.auditLogID} />
-
-                            </div>
-                            }
-
-                        </div>
                         </div>
                     </div>
                 </div>

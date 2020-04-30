@@ -38,7 +38,7 @@ class Header extends React.Component {
     }
 
     changePassword() {
-        browserHistory.push('/changePassword');
+        browserHistory.push('/changePasswordInternal');
     }
     lock() {
         auth.lockedUser();

@@ -71,19 +71,19 @@ class APIPayloadDetail extends React.Component {
                 return o.sort().map(v => isObject(v) ? JSON.sortJSON(v) : v);
             } else if (isObject(o)) {
                 return Object
-                    .keys(o)
-                    .sort()
-                    .reduce((a, k) => {
-                        if (isObject(o[k])) {
-                            a[k] = JSON.sort(o[k]);
-                        } else if (Array.isArray(o[k])) {
-                            a[k] = o[k].map(v => isObject(v) ? JSON.sortJSON(v) : v);
-                        } else {
-                            a[k] = o[k];
-                        }
+                  .keys(o)
+                  .sort()
+                  .reduce((a, k) => {
+                      if (isObject(o[k])) {
+                          a[k] = JSON.sort(o[k]);
+                      } else if (Array.isArray(o[k])) {
+                          a[k] = o[k].map(v => isObject(v) ? JSON.sortJSON(v) : v);
+                      } else {
+                          a[k] = o[k];
+                      }
 
-                        return a;
-                    }, {});
+                      return a;
+                  }, {});
             }
 
             return o;
@@ -122,18 +122,18 @@ class APIPayloadDetail extends React.Component {
             return (
 
 
-                <div>
-                    <div className="form-body" id="auditTrailSection">
-                        <div className="row">
-                            <h3 className="form-section" style={{ fontWeight: "bold" }}>{"JSON"}</h3>
-                            <JSONPretty id="json-pretty" style={{ height: "400", width: "1000" }} json={this.props.APIPayloadDetailData.payload}></JSONPretty>
-                            <div>
-                                <ActionButton actionList={action} performAction={this.performAction} repostActionURL={repostActionURL} />
-                            </div>
+              <div>
+                  <div className="form-body" id="auditTrailSection">
+                      <div className="row">
+                          <h3 className="form-section" style={{ fontWeight: "bold" }}>{"JSON"}</h3>
+                          <JSONPretty id="json-pretty" style={{ height: "400", width: "1000" }} json={this.props.APIPayloadDetailData.payload}></JSONPretty>
+                          <div>
+                              <ActionButton actionList={action} performAction={this.performAction} repostActionURL={repostActionURL} />
+                          </div>
 
-                        </div>
-                    </div>
-                </div >
+                      </div>
+                  </div>
+              </div >
 
 
             );

@@ -33,19 +33,16 @@ class Input extends React.Component {
                     name={this.props.fieldname}
                     min={this.props.min ? this.props.min : 0}
                     disabled={this.props.disabled || false}
-                    value={this.props.value ||
-                        _.get(this.props.state, `${this.props.formname}.${[this.props.fieldname]}`, "")}
+                    value={this.props.value || _.get(this.props.state, `${this.props.formname}.${[this.props.fieldname]}`, "")}
                     style={this.props.style ? this.props.style : {}}
-                    className={this.props.className}
+                    className={this.props.className||'form-control'}
                     onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'textbox')}
                     placeholder={this.props.placeholder}
                 />
 
                 <div id="passwd" className="user-pwd" style={{ color: 'red', fontStyle: 'italic', width: 'auto', fontSize: '12px', position: 'absolute' }}>
-
                     {this.props.fieldname != "password" && (this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <span className="help-block">{this.props.state.errors[this.props.fieldname]}</span>}
                     {this.props.fieldname != "password" && (this.props.state.errors && this.props.state.errors.errors && this.props.state.errors.errors[this.props.fieldname]) && <span className="help-block">{this.props.state.errors.errors[this.props.fieldname].message}</span>}
-
                     {this.props.fieldname != "password" && (this.props.state.errors && this.props.state.errors[this.props.fieldname]) && <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />}
                     {this.props.fieldname != "password" && (this.props.state.errors && this.props.state.errors.errors && this.props.state.errors.errors[this.props.fieldname]) && <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />}
                 </div>

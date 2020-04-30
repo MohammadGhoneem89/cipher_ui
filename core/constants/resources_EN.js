@@ -760,7 +760,6 @@ module.exports = {
   BTL_value: "Value",
   BTL_Hex: "Input Hex",
   BTL_InputUTF8: "Input UTF8",
-  BTL_logData: "Log Data",
   BTL_Heading: "Block Transaction List",
   BLTLP_SearchFilter: "Block Transaction Search Filter",
   BLTLP_DetailHeading: "Block Transaction Detail",
@@ -1079,5 +1078,13 @@ module.exports = {
   ApiImport:"API Import",
   AddUpdateAPIImp:"Add / Update API import",
   ConstellationId:"Constellation ID",
-  MAU_ComplexTypeData:"Complex Types"
+  MAU_ComplexTypeData:"Complex Types",
+  RelayNetworkList:"Relay Network List",
+  RelayNetworkDefinitionScreen_Heading:"Relay Network Configuration",
+  ETSearch_Heading: "Email Template Search",
+  Working_Calendar_Year: "Calendar Year",
+  Working_Calendar_Month: "Calendar Month",
+  CL_actionOn: "Created At",
+  CL_actionBy: "Created By",
+  Working_Calendar_Name: "Calendar Name",
 };

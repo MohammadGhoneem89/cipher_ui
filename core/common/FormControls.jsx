@@ -161,6 +161,7 @@ export const DropdownInput = (props) => (
 export const DataList = (props) => (
     <Field
         {...props}
+        className="form-control"
         component={renderDataList}
     >
         {props.options.map((option, index) => {

@@ -38,6 +38,7 @@ const stateParent = {
     isOpen: false,
     importCalled: false
 }
+
 const Document = ({ updateState, initState }) => {
     function getUploadResponse(data) {
         let document = [];

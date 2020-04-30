@@ -15,20 +15,17 @@ export function getLabelByID(labelId) {
     let retValue;
     switch (lang) {
 
-        case "EN":
-            {
-                retValue = resEnglish[labelId];
-                retValue = retValue ? retValue : labelId;
-            }
+        case "EN": {
+            retValue = resEnglish[labelId];
+            retValue = retValue ? retValue : labelId;
+        }
             break;
-        case "AR":
-            {
-                retValue = resArabic[labelId];
-                retValue = retValue ? retValue : labelId;
-            }
+        case "AR": {
+            retValue = resArabic[labelId];
+            retValue = retValue ? retValue : labelId;
+        }
             break;
-        default:
-            retValue = labelId;
+        default: retValue = labelId;
             break;
     }
 
@@ -39,20 +36,17 @@ export function getLabelForLang(option) {
     let retValue;
     switch (lang) {
 
-        case "EN":
-            {
-                retValue = option.label;
-                retValue = retValue ? retValue : '-';
-            }
+        case "EN": {
+            retValue = option.label;
+            retValue = retValue ? retValue : '-';
+        }
             break;
-        case "AR":
-            {
-                retValue = option.labelAR;
-                retValue = retValue ? retValue : '-';
-            }
+        case "AR": {
+            retValue = option.labelAR;
+            retValue = retValue ? retValue : '-';
+        }
             break;
-        default:
-            retValue = '-';
+        default: retValue = '-';
             break;
     }
 
@@ -63,18 +57,15 @@ export function getConfirmUserName() {
     let retValue;
     switch (lang) {
 
-        case "EN":
-            {
-                retValue = "Not " + sessionStorage.firstName + " ?";
-            }
+        case "EN": {
+            retValue = "Not " + sessionStorage.firstName + " ?";
+        }
             break;
-        case "AR":
-            {
-                retValue = " ? Not " + sessionStorage.firstName;
-            }
+        case "AR": {
+            retValue = " ? Not " + sessionStorage.firstName;
+        }
             break;
-        default:
-            retValue = '-';
+        default: retValue = '-';
             break;
     }
 
@@ -84,14 +75,11 @@ export function getConfirmUserName() {
 export function getButtonLabelByID(labelId) {
     let retValue;
     switch (lang) {
-        case "EN":
-            retValue = _.get(cresEnglish, `buttons[${labelId}].displayText`, labelId);
+        case "EN": retValue = _.get(cresEnglish, `buttons[${labelId}].displayText`, labelId);
             break;
-        case "AR":
-            retValue = _.get(cresArabic, `buttons[${labelId}].displayText`, labelId);
+        case "AR": retValue = _.get(cresArabic, `buttons[${labelId}].displayText`, labelId);
             break;
-        default:
-            retValue = labelId;
+        default: retValue = labelId;
             break;
     }
 
@@ -102,14 +90,11 @@ export function getButtonClassByID(labelId) {
     let retValue
     try {
         switch (lang) {
-            case "EN":
-                retValue = cresEnglish.buttons[labelId].displayClass;
+            case "EN": retValue = cresEnglish.buttons[labelId].displayClass;
                 break;
-            case "AR":
-                retValue = cresEnglish.buttons[labelId].displayClass;
+            case "AR": retValue = cresEnglish.buttons[labelId].displayClass;
                 break;
-            default:
-                retValue = labelId;
+            default: retValue = labelId;
                 break;
         }
 
@@ -146,7 +131,7 @@ export function formatAmountField(val) {
 
     }
 
-    let nStr = parseFloat(val).toFixed(4);
+    let nStr = parseFloat(val).toFixed(2);
     var x = nStr.split('.');
     var x1 = x[0];
     var x2 = x.length > 1 ? '.' + x[1] : '';
@@ -159,22 +144,23 @@ export function formatAmountField(val) {
         retVal = '(' + retVal + ')'
     return retVal;
 }
-export function UNIXConvertToDate(UNIXTS) {
-    if (!UNIXTS || UNIXTS == 0)
-      return "";
-    return moment.unix(UNIXTS / 1000).format('DD/MM/YYYY')
-}
-
-export function UNIXConvertToDateTimeMs(UNIXTS) {
-    if (!UNIXTS || UNIXTS == 0)
-      return "";
-    return moment.unix(UNIXTS).format('DD/MM/YYYY')
-}
-export function UNIXConvertToDateStrata(UNIXTS) {
-    if (!UNIXTS || UNIXTS == 0)
+export function UNIXConvertToDate(UNIXTS, format = 'DD/MM/YYYY') {
+    if (UNIXTS == 0) {
+        return "01/01/1970";
+    }
+    if (UNIXTS == "") {
         return "";
-    return moment.unix(UNIXTS).format('DD/MM/YYYY')
+    }
+    if (UNIXTS == undefined){
+        return ""
+    }
+    return moment.unix(UNIXTS / 1000).format(format)
 
+}
+
+export function toEpoch(date, format = 'YYYY-MM-DD HH:mm:ss') {
+    date = date || ''
+    return moment(date, format).valueOf()
 }
 
 export function getDatesDiff(fromDate, toDate) {

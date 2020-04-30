@@ -60,7 +60,12 @@ import ModuleDefinitionScreen from "./components/ModuleScreen/ModuleDefinitionSc
 import dispatchList from "./components/dispatchSource/dispatchList.jsx";
 import AddUpdateDispatcher from "./components/dispatchSource/dispatchContainer.jsx";
 import NetworkDefination from "./components/BLAConfiguration/NetworkDefinitionScreen.jsx";
+import RelayNetworkDefination from "./components/RelayConfig/RelayNetworkDefinitionScreen.jsx";
+
+
 import NetworkList from "./components/BLAConfiguration/networkList.jsx";
+import RelayNetworkList from "./components/RelayConfig/relayNetworkList.jsx";
+
 import CreateChannel from './components/Channel/CreateChannel/CreateChannelContainer.jsx';
 import ChannelList from './components/Channel/CreateChannel/channelList.jsx';
 import SmartContractList from './components/Channel/CreateSmartContract/smartcontractList.jsx';
@@ -77,13 +82,15 @@ import ApiImport from './components/apiImport/apiImport.jsx';
 //onBoarding Routes
 import onBoardingProfileSetup from './components/onBoarding/onBoardingProfileSetup';
 import onBoardingProfileList from './components/onBoarding/onBoardingProfileList';
-
+import WorkingCalendarSearch from './components/WorkingCalendar/WorkingCalendarSearch.jsx';
 export default ( < Router history={ browserHistory }>
     < Route path="/Documentation/:useCase/:route" component={ GeneratePDF } />
     < Route path="/Locked" component={ Locked } onEnter={ isAuthorized } />
+    < Route path="/changePassword" component={ ChangePassword }  onEnter={ isAuthorized }/>
     < Route path="/cipher/login" component={ Login } onEnter={ isAuthorized } />
     < Route path="/blockChainViewer/:blockChainID" component={ BlockchainViewerQR } onEnter={ isAuthorized } /> { ApplicationsRoute.unAuthRouteIndex }
     < Route component={ master } onEnter={ requireAuth }> { /*
+
         <IndexRoute component={blockchainWorkboard}/>*/ }
         < Route path="/blockchain" component={ blockchainWorkboard } />
         < Route path="/groupList" component={ GroupSearch } />
@@ -91,6 +98,10 @@ export default ( < Router history={ browserHistory }>
         < Route path="/groupSetup/:groupID" component={ GroupSetup } />
         < Route path="/userList" component={ UserSearch } />
         < Route path="/userSetup" component={ UserSetup } />
+        <Route path="/workingCalendarList" component={WorkingCalendarSearch} />
+        <Route path="/workingCalendarDetail/:ID" component={WorkingCalendar} />
+        <Route path="/workingCalendarDetail" component={WorkingCalendar} />
+        < Route path="/changePasswordInternal" component={ ChangePassword }  />
         < Route path="/userSetup/:userID" component={ UserSetup } />
         < Route path="/workingCalendarDetail" component={ WorkingCalendar } />
         < Route path="/cipher/blockchain/edit" component={ BlockchainEditor } />
@@ -113,7 +124,7 @@ export default ( < Router history={ browserHistory }>
         < Route path="/pickupListSearch" component={ PickupListSearch } />
         < Route path="/pickupListSetup" component={ PickupListSetup } />
         < Route path="/pickupListSetup/edit/:pickupListID" component={ PickupListSetup } />
-        < Route path="/changePassword" component={ ChangePassword } />
+
         < Route path="/passwordPolicy" component={ PasswordPolicy } />
         < Route path="/APIPayloadSearch" component={ APIPayloadSearch } />
         < Route path="/APIPayloadSearch/:payLoadField/:payLoadFieldValue" component={ APIPayloadSearch } />
@@ -142,10 +153,15 @@ export default ( < Router history={ browserHistory }>
         < Route path="/APIDefScreen/:useCase/:route" component={ APIDefScreen } />
         < Route path="/ApiList" component={ ApiList } />
         < Route path="/NetworkList" component={ NetworkList } />
+        < Route path="/RelayNetworkList" component={ RelayNetworkList } />
+
         < Route path="/ModuleList" component={ ModuleList } />
         < Route path="/editModule(/:id)" component={ ModuleDefinitionScreen } />
         < Route path="/DispatchList" component={ dispatchList } />
         < Route path="/editDispatcher/:dispatcherName" component={ AddUpdateDispatcher } />
+
+
+        < Route path="/editRelayNetwork(/:id)" component={ RelayNetworkDefination } />
         < Route path="/editNetwork(/:id)" component={ NetworkDefination } />
         < Route path="/CreateChannel/:id" component={ CreateChannel } />
         < Route path="/ChannelList" component={ ChannelList } />

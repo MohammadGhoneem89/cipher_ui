@@ -39,6 +39,7 @@
     "deep-diff": "^1.0.2",
     "draft-js": "^0.10.3",
     "fs": "0.0.1-security",
+    "js-cookie": "^2.2.1",
     "json-loader": "^0.5.7",
     "json-to-pretty-yaml": "^1.2.2",
     "json2yaml": "^1.1.0",

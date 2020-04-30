@@ -149,126 +149,126 @@ class APIPayloadList extends React.Component {
     render() {
         if (this.props.APIPayloadListData.data) {
             return (
-                <div>
-                    <div className="row">
-                        <div className="col-md-12 ">
-                            <div className="portlet light bordered sdg_portlet">
-                                <div className="portlet-title">
-                                    <div className="caption">
-                                        <i className="fa fa-settings"></i>{"API Payload List Filters"}</div>
-                                    <div className="tools">
-                                        <a href="javascript:;" className="collapse" data-original-title title> </a>
-                                    </div>
-                                </div>
-                                <div className="portlet-body">
-                                    <div className="form-body" id="APIPayloadList">
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_FromDate")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <DateControl id="fromDate" />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_ToDate")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <DateControl id="toDate" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_UUID")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <input type="text" className="form-control" name="uuid" id="uuid" />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_Channel")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <input type="text" className="form-control" name="channel" id="channel" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_PayloadField")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <input type="text" className="form-control" name="payloadField" id="payloadField" />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_PayloadFieldValue")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <input type="text" className="form-control" name="payloadFieldValue" id="payloadFieldValue" />
-                                                </div>
-                                            </div>
-                                        </div>
+              <div>
+                  <div className="row">
+                      <div className="col-md-12 ">
+                          <div className="portlet light bordered sdg_portlet">
+                              <div className="portlet-title">
+                                  <div className="caption">
+                                      <i className="fa fa-settings"></i>{"API Payload List Filters"}</div>
+                                  <div className="tools">
+                                      <a href="javascript:;" className="collapse" data-original-title title> </a>
+                                  </div>
+                              </div>
+                              <div className="portlet-body">
+                                  <div className="form-body" id="APIPayloadList">
+                                      <div className="row">
+                                          <div className="col-md-6">
+                                              <div className="form-group col-md-4">
+                                                  <label className="control-label">{utils.getLabelByID("APL_FromDate")}</label>
+                                              </div>
+                                              <div className="form-group col-md-8">
+                                                  <DateControl id="fromDate" />
+                                              </div>
+                                          </div>
+                                          <div className="col-md-6">
+                                              <div className="form-group col-md-4">
+                                                  <label className="control-label">{utils.getLabelByID("APL_ToDate")}</label>
+                                              </div>
+                                              <div className="form-group col-md-8">
+                                                  <DateControl id="toDate" />
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div className="row">
+                                          <div className="col-md-6">
+                                              <div className="form-group col-md-4">
+                                                  <label className="control-label">{utils.getLabelByID("APL_UUID")}</label>
+                                              </div>
+                                              <div className="form-group col-md-8">
+                                                  <input type="text" className="form-control" name="uuid" id="uuid" />
+                                              </div>
+                                          </div>
+                                          <div className="col-md-6">
+                                              <div className="form-group col-md-4">
+                                                  <label className="control-label">{utils.getLabelByID("APL_Channel")}</label>
+                                              </div>
+                                              <div className="form-group col-md-8">
+                                                  <input type="text" className="form-control" name="channel" id="channel" />
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div className="row">
+                                          <div className="col-md-6">
+                                              <div className="form-group col-md-4">
+                                                  <label className="control-label">{utils.getLabelByID("APL_PayloadField")}</label>
+                                              </div>
+                                              <div className="form-group col-md-8">
+                                                  <input type="text" className="form-control" name="payloadField" id="payloadField" />
+                                              </div>
+                                          </div>
+                                          <div className="col-md-6">
+                                              <div className="form-group col-md-4">
+                                                  <label className="control-label">{utils.getLabelByID("APL_PayloadFieldValue")}</label>
+                                              </div>
+                                              <div className="form-group col-md-8">
+                                                  <input type="text" className="form-control" name="payloadFieldValue" id="payloadFieldValue" />
+                                              </div>
+                                          </div>
+                                      </div>
 
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <div className="form-group col-md-4">
-                                                    <label className="control-label">{utils.getLabelByID("APL_Action")}</label>
-                                                </div>
-                                                <div className="form-group col-md-8">
-                                                    <input type="text" className="form-control" name="action" id="action" />
-                                                </div>
-                                            </div>
-                                        </div>
+                                      <div className="row">
+                                          <div className="col-md-6">
+                                              <div className="form-group col-md-4">
+                                                  <label className="control-label">{utils.getLabelByID("APL_Action")}</label>
+                                              </div>
+                                              <div className="form-group col-md-8">
+                                                  <input type="text" className="form-control" name="action" id="action" />
+                                              </div>
+                                          </div>
+                                      </div>
 
-                                        <div className="row">
-                                            <div className="col-md-12">
-                                                <div className="pull-right">
-                                                    <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
-                                                    {"  "}
-                                                    <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <Table title="API Payload List" fontclass="" TableClass="portlet light bordered sdg_portlet" gridColumns={utils.getGridColumnByName("APIPayloadListData")} gridData={this.props.APIPayloadListData.data.searchResult}
-                                totalRecords={this.props.APIPayloadListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
-                                pagination={true} pageChanged={this.pageChanged} export={false} search={true}
-                                renderPopupBody={this.renderPopupBody} activePage={this.state.currentPageNo} />
-                        </div>
-                    </div>
-                    <div className="modal fade in modal-overflow" id="modelWindows" tabindex="-1" role="basic" aria-hidden="true" style={{ display: "none",  paddingTop: "10" }}>
-                    <div className="modal-dialog" style={{ width: "1050" }}>
-                        <div className="modal-content" style={{ padding: "10px" }}>
-                            <div className="modal-header">
-                                <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">{utils.getLabelByID("TLP_Close")}</span></button>
-                                <h3 className="modal-title">{"API Payload Detail"}</h3>
-                            </div>
+                                      <div className="row">
+                                          <div className="col-md-12">
+                                              <div className="pull-right">
+                                                  <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
+                                                  {"  "}
+                                                  <button type="button" className="btn default" onClick={this.clearFields} >{utils.getLabelByID("Clear")}</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div className="row">
+                      <div className="col-md-12">
+                          <Table title="API Payload List" fontclass="" TableClass="portlet light bordered sdg_portlet" gridColumns={utils.getGridColumnByName("APIPayloadListData")} gridData={this.props.APIPayloadListData.data.searchResult}
+                                 totalRecords={this.props.APIPayloadListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
+                                 pagination={true} pageChanged={this.pageChanged} export={false} search={true}
+                                 renderPopupBody={this.renderPopupBody} activePage={this.state.currentPageNo} />
+                      </div>
+                  </div>
+                  <div className="modal fade in modal-overflow" id="modelWindows" tabindex="-1" role="basic" aria-hidden="true" style={{ display: "none",  paddingTop: "10" }}>
+                      <div className="modal-dialog" style={{ width: "1050" }}>
+                          <div className="modal-content" style={{ padding: "10px" }}>
+                              <div className="modal-header">
+                                  <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">{utils.getLabelByID("TLP_Close")}</span></button>
+                                  <h3 className="modal-title">{"API Payload Detail"}</h3>
+                              </div>
 
-                            {<div className="modal-body" id="popup">
-                                <APIPayloadDetail APIPayloadID={this.state.APIPayloadID} />
+                              {<div className="modal-body" id="popup">
+                                  <APIPayloadDetail APIPayloadID={this.state.APIPayloadID} />
 
-                            </div>
-                            }
-                          
-                        </div>
-                        </div>
-                    </div>
+                              </div>
+                              }
 
-                </div>
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
             );
 
         }

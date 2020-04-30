@@ -24,6 +24,7 @@ const initialState = {
     "isActive": false,
     "isBlockchainProcess": false,
     "isBlockchain": false,
+    "isRelay": false,
     "isSimulated": false,
     "isRouteOveride": false,
     "fieldName": "",
@@ -42,15 +43,19 @@ const initialState = {
     "simulatorResponse": "",
     "ResponseMapping": "",
     "RequestMapping": "",
-    "endpointName": "",
+
     "isValBypass": false,
     "isResValBypass": false,
     "isResponseMapDisable": false,
     isBlockchainGet: false,
     isOffchainGet: false,
     responseParameters: [],
-    requestParameters: []
+    requestParameters: [],
+    RelayNet:"",
+    RemoteAPI:""
   },
+
+  RelayNetworks:[],
   selectedRuleList: [],
   MappingOrgFieldData: [],
   simucases: [],
@@ -328,7 +333,7 @@ class APIDefinitionScreen extends React.Component {
     this.props.actions.generalProcess(constants.getMappingList);
     this.props.actions.generalProcess(constants.getAdaptorsList);
     this.props.actions.generalProcess(constants.getEndpointListView);
-
+    this.props.actions.generalProcess(constants.getRelayNetworkConfigListTd);
 
 
     this.props.actions.generalProcess(constants.getAvailableObjectsList, {
@@ -378,9 +383,14 @@ class APIDefinitionScreen extends React.Component {
 
 
 
+    if (nextProps.RelayNetworks) {
+      // alert("nextProps.RelayNetworks")
+      this.setState({
+        RelayNetworks: nextProps.RelayNetworks
+      })
+    }
 
     if (nextProps.getEndpointListView.data) {
-
       this.setState({
         getEndpointListView: nextProps.getEndpointListView.data
       });
@@ -536,6 +546,9 @@ class APIDefinitionScreen extends React.Component {
     data.object = this.state.availableObjects;
     data.conditions = this.state.requestParams;
     data.fields = this.state.responseParams;
+    if(!data.endpointName){
+      _.set( data, 'endpointName', undefined);
+    }
     data.enablePaging = this.state.isEnablePagination;
     data.enableActions = this.state.isEnablComponentAction;
     data.rules = this.state.rules;
@@ -827,6 +840,7 @@ function mapStateToProps(state, ownProps) {
     getDBFields: get(state.app, 'getDBFields', {}),
     getAvailableObjectsList: get(state.app, 'getAvailableObjectsList.data', []),
     generateMappingFile: get(state.app, 'generateMappingFile', {}),
+    RelayNetworks: get(state.app, 'RelayNetworkTypeData.data.RelayNetworks', undefined),
     parameters: parameters,
     getEndpointListView: state.app.getEndpointListView
   };

@@ -4,89 +4,122 @@ import {connect} from 'react-redux';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
+import Input from '../../common/Input.jsx';
+import Select from '../../common/Select.jsx';
+import Lable from '../../common/Lable.jsx';
+import Row from '../../common/Row.jsx';
+import Col from '../../common/Col.jsx';
+import * as gen from '../../common/generalActionHandler';
 import Portlet from '../../common/Portlet.jsx';
 import Table from '../../common/Datatable.jsx';
-import PickupListFilterForm from './PickupListFilterForm.jsx';
 import * as utils from '../../common/utils.js';
+import _ from 'lodash';
 
 class PickupListSearchContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.submit = this.submit.bind(this);
-    this.pageChanged = this.pageChanged.bind(this);
+    this.generalActionHandler = gen.generalHandler.bind(this);
+    // this.pageChanged = this.pageChanged.bind(this);
 
     this.state = {
-      searchCriteria: {typeName:""},
+      searchCriteria: {typeName: ""},
       activePage: 1,
       pageSize: 10,
-      pickupList: undefined,
+      typeDataList: undefined,
+      pickupList: [],
+      searchForm: {},
       isLoading: false
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-
-    this.setState({
-      pickupList: nextProps.pickupList,
-      isLoading: false
-    });
-  }
-
   componentDidMount() {
-    this.props.actions.generalProcess(constants.getPickupList, requestCreator.createPickupListRequest({
+    this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequestForType({
       "currentPageNo": 1,
       "pageSize": 10
-    }, {typeName: ""}));
+    }, {type: "allTypes"}));
     this.setState({isLoading: true});
   }
 
-  performAction(actionObj) {
-    if (actionObj.label === "Reset") {
-      this.props.reset();
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
+    this.setState({
+      typeDataList: nextProps.typeDataList,
+      isLoading: false
+    });
+    if (nextProps.pickupList && nextProps.pickupList.data && nextProps.pickupList.data.searchResult[0]) {
+      let data = _.get(nextProps.pickupList, `data.searchResult`, []);
+      let typeName = _.get(data, `typeName`, '');
+      let obj = _.get(data, 'data', []);
+      this.setState({
+        pickupList: data
+      })
+    } else {
+      this.setState({
+        pickupList: []
+      })
     }
   }
 
-  pageChanged(pageNo) {
-    this.props.actions.generalProcess(constants.getPickupList, requestCreator.createPickupListRequest({
-        "currentPageNo": pageNo,
-        "pageSize": this.state.pageSize
-      },
-      this.state.searchCriteria));
-    this.setState({activePage: pageNo});
+  searchTypes = () => {
+    this.props.actions.generalProcess(constants.getPickupListForType, requestCreator.createPickupListRequest({
+      "currentPageNo": 1,
+      "pageSize": 10
+    }, {type: this.state.searchForm.orgtype}));
   }
 
-  submit(searchCriteria) {
-    this.props.actions.generalProcess(constants.getPickupList, requestCreator.createPickupListRequest({
-        "currentPageNo": 1,
-        "pageSize": 10
-      },
-      searchCriteria));
-    this.setState({searchCriteria, activePage: 1});
+  reset = () => {
+    this.setState({
+      searchForm: {}
+    })
+  }
+
+  addNew = () => {
+    this.props.history.push(`/pickupListSetup/edit/newType`)
   }
 
   render() {
-    // let actions =[
-    //     { className:"btn btn-default", type:"link", label: "ADD", icon: "plus", actionHandler: this.loadURL.bind(this, '/pickupListSetup')}
-    // ];
-    if (!this.state.isLoading && this.state.pickupList)
+    console.log('statatatataa', this.state.typeDataList)
+    if (!this.state.isLoading && this.state.typeDataList)
       return (
-        <Portlet title={utils.getLabelByID("PickupListSearch")}>
-          <PickupListFilterForm onSubmit={this.submit} initialValues={this.state.searchCriteria} state={this.state}/>
-          <Portlet title={utils.getLabelByID("TemplateList")} isPermissioned={true}
-                   actions={this.state.pickupList.data.actions}>
-            <Table
-              pagination={true}
-              export={false}
-              search={false}
-              pageChanged={this.pageChanged}
-              gridColumns={utils.getGridColumnByName("pickupList")}
-              gridData={this.state.pickupList.data.searchResult}
-              totalRecords={this.state.pickupList.pageData.totalRecords}
-              activePage={this.state.activePage}
-              pageSize={this.state.pageSize}
-            />
-          </Portlet>
-        </Portlet>
+        <Row>
+          <Col>
+            <Portlet title={utils.getLabelByID("Pickup List Search")}>
+              <Row>
+                <Lable columns='2' text={utils.getLabelByID("Categories")}/>
+                <Select fieldname='orgtype' className="form-control" formname='searchForm' columns='4' style={{}}
+                        state={this.state} typeName="typeDataList" dataSource={this.state}
+                        multiple={false} actionHandler={this.generalActionHandler}/>
+              </Row>
+              <br/>
+              <Row>
+                <Col>
+                  <div className="pull-right">
+                    <button type="submit" className="btn green" onClick={this.searchTypes}>
+                      {utils.getLabelByID("Search")}
+                    </button>
+                    {' '}
+                    <button type="button" className="btn green" onClick={this.addNew}>
+                      {utils.getLabelByID("Add")}
+                    </button>
+                  </div>
+                </Col>
+              </Row>
+            </Portlet>
+            <Portlet title={utils.getLabelByID("PICKUP LIST")} isPermissioned={true}>
+              <Table
+                pagination={false}
+                export={false}
+                search={false}
+                // pageChanged={this.pageChanged}
+                gridColumns={utils.getGridColumnByName("pickupList")}
+                gridData={this.state.pickupList}
+                // totalRecords={this.statetypeDataList}
+                // activePage={this.state.activePage}
+                // pageSize={this.state.pageSize}
+              />
+            </Portlet>
+          </Col>
+        </Row>
       );
     else
       return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
@@ -94,8 +127,10 @@ class PickupListSearchContainer extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  console.log(state.app)
   return {
-    pickupList: state.app.typeDataList
+    typeDataList: _.get(state.app, 'typeDataListByType.data.searchResult[0].data.allTypes', undefined),
+    pickupList: _.get(state.app, 'typeDataListForType', [])
   }
 
 }

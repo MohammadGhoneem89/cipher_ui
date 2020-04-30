@@ -354,10 +354,10 @@ export function createUserInsertRequest(data) {
         data
     }
 }
-
-export function createWorkingCalendarRequest() {
+export function createWorkingCalendarRequest(calendarID) {
     return {
-        "action": "workingCalendar"
+        "action": "workingCalendar",
+        calendarID
     }
 }
 
@@ -367,7 +367,12 @@ export function createWorkingCalendarUpdateRequest(data) {
         data
     }
 }
-
+export function createWorkingCalendarInsertRequest(data) {
+    return {
+        "action": "workingCalendarInsert",
+        data
+    }
+}
 export function createImgUploadRequest(data) {
     return {
         "action": "imgUpload",
@@ -487,4 +492,11 @@ export function createPickupListDetailRequest(typeDataId) {
     "action": "typeDataDetail",
     typeDataId
   }
+}export function createPickupListRequestForType(page, searchCriteria) {
+    return {
+        "action": "typeDataListByType",
+        searchCriteria,
+        page
+    }
 }
+

@@ -1,311 +1,311 @@
-/*standard imports*/
-import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import brandConfig from '../../../assets/skins/default/brandConfig.json';
-import { Link, browserHistory } from 'react-router';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as actions from '../../actions/generalAction';
-import * as utils from '../../common/utils';
+import React from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as actions from '../../actions/generalAction.js';
 import * as constants from '../../constants/Communication.js';
-import * as toaster from '../../../core/common/toaster.js';
+import * as toaster from '../../common/toaster.js';
+import brandConfig from '../../../assets/skins/default/brandConfig.json';
+import Portlet from '../../common/Portlet.jsx';
+import * as utils from "../../common/utils";
+
 class ChangePassword extends React.Component {
 
-    constructor(props) {
-        super(props);
 
-        this.handleKeyPress = this.handleKeyPress.bind(this);
+  constructor() {
+    super();
+    this.state = {
+      newPassword: false,
+      confirmPassword: false
+    }
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleKeyPressForgot = this.handleKeyPressForgot.bind(this);
+    sessionStorage.lang = "EN";
+
+
+  }
+  redirectToLoginPage() {
+    sessionStorage.removeItem('lastRequestTime');
+    document.location.href = '/cipher/login';
+  }
+
+  check(form) {
+    let oldPassword = (document.getElementById('oldPassword') === null || document.getElementById('oldPassword') === undefined) ? "" : document.getElementById('oldPassword').value;
+    let newPassword = (document.getElementById('newPassword') === null || document.getElementById('newPassword') === undefined) ? "" : document.getElementById('newPassword').value;
+    let confirmPassword = (document.getElementById('confirmPassword') === null || document.getElementById('confirmPassword') === undefined) ? "" : document.getElementById('confirmPassword').value;
+
+
+    if (newPassword === confirmPassword) {
+
+      let request = {
+        "passwordToken": this.props.passwordToken,
+        "newPassword": newPassword,
+        "oldPassword": oldPassword,
+        "isAuth": !!sessionStorage.token
+      };
+
+      this.props.actions.generalProcess(constants.passwordChange, request);
+    } else
+      toaster.showToast("New password does not match confirm password", "ERROR");
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+  }
+
+
+  changLangButton(languageTag) {
+    let eng = $('#engAnchor');
+    let arb = $('#arbAnchor');
+    switch (languageTag) {
+      case "AR":
+        eng.removeClass('actv');
+        arb.addClass('actv');
+        sessionStorage.lang = "AR";
+        break;
+      case "EN":
+        arb.removeClass('actv');
+        eng.addClass('actv');
         sessionStorage.lang = "EN";
-
-        this.state = {
-            isLocked: false,
-            type: "password",
-            type2: "password"
-        }
-    }
-    componentWillMount() {
+        break;
 
     }
 
-    componentDidMount() {
 
+  }
+
+  componentWillMount() {
+
+  }
+
+  componentDidMount() {
+    document.getElementById("username").addEventListener("keyup", this.handleKeyPress);
+    document.getElementById("password").addEventListener("keyup", this.handleKeyPress);
+    document.getElementById("usernameForgot").addEventListener("keyup", this.handleKeyPressForgot);
+    document.getElementById("emailForgot").addEventListener("keyup", this.handleKeyPressForgot);
+  }
+
+  handleKeyPress(e) {
+    if (e.which === 13) {
+      this.check();
     }
-    imageExists(image_url) {
+  }
 
-        var http = new XMLHttpRequest();
-
-        http.open('HEAD', image_url, false);
-        http.send();
-
-        return http.status != 404;
-
+  handleKeyPressForgot(e) {
+    if (e.which === 13) {
+      this.check();
     }
-    handleKeyPress(e) {
-        if (e.which === 13) {
-            this.check();
-        }
+  }
+
+  getLogosbyUserType() {
+
+    return (<div>
+
+      </div>
+    )
+  }
+
+  imageExists(image_url) {
+
+    let http = new XMLHttpRequest();
+
+    http.open('HEAD', image_url, false);
+    http.send();
+
+    return http.status != 404;
+
+  }
+
+  // getLogosForSDGUser() {
+  //     let imgURLOtherOrg = "../assets/pages/img/organization/" + this.props.orgType + ".png";
+  //     if (this.props.orgType.toString().toUpperCase() === 'SDG' || !this.imageExists(imgURLOtherOrg))
+  //         return (<div className="logo"><img src="../assets/pages/img/organization/logo-big.png" alt="" /></div>)
+  // }
+
+  getLogosForSDGUser() {
+    return (<div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+      {/* <div className="logo"> </div> */}
+      <div className="logo2"></div>
+    </div>);
+  }
+
+  changeView(fieldType) {
+    if (fieldType === 'newPassword') {
+      if (!this.state.newPassword) {
+        this.setState({
+          newPassword: true,
+        })
+      } else {
+        this.setState({
+          newPassword: false,
+        })
+      }
+    } else if (fieldType === 'confirmPassword') {
+      if (!this.state.confirmPassword) {
+        this.setState({
+          confirmPassword: true,
+        })
+      } else {
+        this.setState({
+          confirmPassword: false,
+        })
+      }
     }
+  }
 
-    handleKeyPressForgot(e) {
-        if (e.which === 13) {
-            this.checkForgot();
-        }
-    }
-    getLogosbyUserType() {
+  render() {
+    sessionStorage.loginOrgType = this.props.orgType;
+    if (!sessionStorage.token) {
+      return (
 
-        let imgSDG = "../assets/pages/img/organization/DP.png";
-        let imgURLOtherOrg = "../assets/pages/img/organization/" + this.props.orgType + ".png"
+        <div>
 
-        if (this.props.orgType && this.props.orgType.toString().toUpperCase() == 'DP') {
-            return (<div></div>)
-        }
-        else if (this.imageExists(imgURLOtherOrg)) {
-            return (<div>
-                <div style={{ marginTop: "60px", paddingTop: "80px" }}>
-                    <div className="row" style={{ marginLeft: "-20" }}>
-                        <div className="col-md-6 pull-left">
-                            <img src={imgSDG} alt="" />
-                        </div>
-                        <div className="col-md-6 pull-right">
-                            <img src={imgURLOtherOrg} alt="" style={{ width: "152px" }} />
-                        </div>
-                    </div>
+          <div className=" login">
+            <div id="particles-js"/>
+            <div className="content" style={{marginTop: "0px"}}>
 
+
+              <div className="login-form">
+                <div className="logo"></div>
+                {this.getLogosForSDGUser()}
+                <h3 className="form-title">{brandConfig.projectName}</h3>
+                <div className="alert alert-danger display-hide">
+                  <button className="close" data-close="alert"/>
+                  <span> Enter any username and password. </span>
                 </div>
-                <br />
-                <br />
-            </div>
-            )
-        }
-        else {
-            return (<div></div>)
-        }
-
-    }
-
-    changLangButton(langaugeTag) {
-
-        switch (langaugeTag) {
-            case "AR":
-                var eng = $('#engAnchor').removeClass('actv');
-                var arb = $('#arbAnchor').addClass('actv');
-                sessionStorage.lang = "AR";
-                break;
-            case "EN":
-                var eng = $('#arbAnchor').removeClass('actv');
-                var arb = $('#engAnchor').addClass('actv');
-                sessionStorage.lang = "EN";
-                break;
-
-        }
-
-
-    }
-
-    // formSubmit() {
-
-    //     let newPassword = (document.getElementById('newPassword') == null || document.getElementById('newPassword') == undefined) ? "" : document.getElementById('newPassword').value;
-    //     let confirmPassword = (document.getElementById('confirmPassword') == null || document.getElementById('confirmPassword') == undefined) ? "" : document.getElementById('confirmPassword').value;
-
-    //     console.log(this.props);
-    //     console.log(newPassword);
-    //     console.log(confirmPassword);
-
-    //     if(newPassword == confirmPassword)
-    //     {
-
-    //         let request  = {
-
-
-    //                 "data": {
-    //                     "passwordToken": this.props.passwordToken,
-    //                     "newPassword": newPassword
-    //                 }
-    //            }
-
-    //         this.props.actions.generalProcess(constants.passwordChange, request);   
-    //     }
-    //     else
-    //         alert('New password does not match confirm password')
-
-    //         document.getElementById('currentPassword').value = ''
-    //         document.getElementById('newPassword').value = ''
-    //         document.getElementById('confirmPassword').value = ''
-
-
-
-
-    // }
-
-    check(form) {
-        console.log(this.props);
-        let newPassword = (document.getElementById('newPassword') === null || document.getElementById('newPassword') === undefined) ? "" : document.getElementById('newPassword').value;
-        let confirmPassword = (document.getElementById('confirmPassword') === null || document.getElementById('confirmPassword') === undefined) ? "" : document.getElementById('confirmPassword').value;
-
-
-        if (newPassword === confirmPassword) {
-
-            let request = {
-                "passwordToken": this.props.passwordToken,
-                "newPassword": newPassword
-            };
-
-            this.props.actions.generalProcess(constants.passwordChange, request);
-        }
-        else
-            toaster.showToast("New password does not match confirm password", "ERROR");
-        document.getElementById('newPassword').value = '';
-        document.getElementById('confirmPassword').value = '';
-    }
-    handleClick = () => this.setState(({ type }) => ({
-        type: type === 'text' ? 'password' : 'text'
-    }))
-    handleClickConfirmPasswd = () => this.setState(({ type2 }) => ({
-        type2: type2 === 'text' ? 'password' : 'text'
-    }))
-    getLogosForSDGUser() {
-        return (<div className="logo" />);
-    }
-    render() {
-
-        return (
-
-            <div>
-
-                <div className="login">
-                    <div className="content" style={{ marginTop: "0px" }}>
-
-                        {this.getLogosbyUserType()}
-
-                        <div className="login-form">
-                            {this.getLogosForSDGUser()}
-                            <h3 className="form-title">{brandConfig.projectName}</h3>
-                            <div className="alert alert-danger display-hide">
-                                <button className="close" data-close="alert" />
-                                <span> Enter any username and password. </span>
-                            </div>
-
-
-
-                            <div className="form-group">
-                                <label className="control-label visible-ie8 visible-ie9">Password</label>
-                                <div className="input-icon">
-                                    <i className="fa fa-lock" />
-                                    <i className="fa fa-eye" aria-hidden="true" onClick={this.handleClick}></i>
-                                    <input type={this.state.type} className="form-control placeholder-no-fix" id="newPassword" placeholder="New Password"
-                                        autoComplete="off" placeholder="Password" name="password" />
-
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="control-label visible-ie8 visible-ie9">Password</label>
-                                <div className="input-icon"><i className="fa fa-lock" />
-                                    <i className="fa fa-eye" aria-hidden="true" onClick={this.handleClickConfirmPasswd}></i>
-                                    <input type={this.state.type2} className="form-control placeholder-no-fix" id="confirmPassword" placeholder="Confirm Password"
-                                        autoComplete="off" placeholder="Confirm Password" name="password" />
-                                </div>
-                            </div>
-
-
-                            <div className="form-actions"><a href="javascript:" onClick={this.check.bind(this)}
-                                className="btn green btn-block uppercase"> Submit </a>
-                            </div>
-                        </div>
-                       
-                    </div>
-
-                    <div className="copyright">2019 © Avanza Innovations LLC.</div>
+                {!!sessionStorage.token &&
+                <div className="form-group">
+                  <label className="control-label visible-ie8 visible-ie9">OLD Password</label>
+                  <div className="input-icon">
+                    <i className="fa fa-lock"/>
+                    <i className="fa fa-eye" onClick={() => this.changeView('oldPassword')}
+                       aria-hidden="true"/>
+                    <input type={this.state.oldPassword ? 'text' : 'oldPassword'}
+                           className="form-control placeholder-no-fix" name="oldPassword"
+                           autoComplete="off" id="oldPassword" placeholder="Old Password"/>
+                  </div>
                 </div>
+                }
+                <div className="form-group">
+                  <label className="control-label visible-ie8 visible-ie9">New Password</label>
+                  <div className="input-icon">
+                    <i className="fa fa-lock"/>
+                    <i className="fa fa-eye" onClick={() => this.changeView('newPassword')} aria-hidden="true"/>
+                    <input type={this.state.newPassword ? 'text' : 'password'}
+                           className="form-control placeholder-no-fix"
+                           name="password"
+                           autoComplete="off" id="newPassword" placeholder="New Password"/>
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label className="control-label visible-ie8 visible-ie9">Confirm Password</label>
+                  <div className="input-icon"><i className="fa fa-lock"/>
+
+                    <i className="fa fa-eye" onClick={() => this.changeView('confirmPassword')} aria-hidden="true"/>
+                    <input type={this.state.confirmPassword ? 'text' : 'password'}
+                           className="form-control placeholder-no-fix" name="confirmPassword"
+                           autoComplete="off" id="confirmPassword" placeholder="Confirm Password"/>
+                  </div>
+                </div>
+                <div className="form-actions"><a href="javascript:" onClick={this.check.bind(this)}
+                                                 className="btn green btn-block uppercase"> Change Password </a>
+                </div>
+                <a href="javascript:;"
+                   onClick={this.redirectToLoginPage.bind(this)}>{"Back to login?"}</a>
+              </div>
+
             </div>
 
-
-        );
-
-
-
+             {/*<div className="copyright">Copyright &copy; 2018-2020 Avanza Innovations. All Rights Reserved.</div>*/}
+          </div>
+        </div>
 
 
-        {/* <div className="login-password">
-                                <ul className="lng">
-                                    <li id="engAnchor" className="actv"><a href="javascript:"
-                                                                           onClick={this.changLangButton.bind(this, "EN")}>En</a>
-                                    </li>
-                                    <li id="arbAnchor"><a href="javascript:"
-                                                          onClick={this.changLangButton.bind(this, "AR")}>عربى</a></li>
-                                </ul>
-                            </div> */}
-        // return (
+      );
+    } else {
+      return (
 
-        //     <div>
-        //         <div className="form-body">
-        //             <div className="row">
-        //                 <div className="col-md-6">
-        //                     <div className="form-group col-md-4">
-        //                         <label className="control-label">{utils.getLabelByID("ChangePassword_CurrentPassword")}</label>
-        //                     </div>
-        //                     <div className="form-group col-md-8">
-        //                         <input type="password" className="form-control" name="currentPassword" id="currentPassword" placeholder="Password" />
-        //                     </div>
-        //                 </div>
+        <Portlet title={utils.getLabelByID("Change Password")}>
+          <div className="row">
+            <div className=" col-md-12">
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="col-md-6">
+                    <div className="form-group col-md-4">
+                      <label className="control-label">{utils.getLabelByID("Old Password")}</label>
+                    </div>
+                    <div className="form-group col-md-8">
+                      <input type={this.state.oldPassword ? 'text' : 'oldPassword'}
+                             className="form-control placeholder-no-fix" name="oldPassword"
+                             autoComplete="off" id="oldPassword" placeholder="Old Password"/>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-12">
+                  <div className="col-md-6">
+                    <div className="form-group col-md-4">
+                      <label className="control-label">{utils.getLabelByID("New Password")}</label>
+                    </div>
+                    <div className="form-group col-md-8">
+                      <input type={this.state.newPassword ? 'text' : 'password'}
+                             className="form-control placeholder-no-fix"
+                             name="password"
+                             autoComplete="off" id="newPassword" placeholder="New Password"/>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-12">
+                  <div className="col-md-6">
+                    <div className="form-group col-md-4">
+                      <label className="control-label">{utils.getLabelByID("Confirm Password")}</label>
+                    </div>
+                    <div className="form-group col-md-8">
+                      <input type={this.state.confirmPassword ? 'text' : 'password'}
+                             className="form-control placeholder-no-fix" name="confirmPassword"
+                             autoComplete="off" id="confirmPassword" placeholder="Confirm Password"/>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="col-md-12">
+                      <div className="col-md-6">
+                        <div className="col-md-12">
+                          <div className="btn-toolbar pull-right">
+                            <button type="submit" onClick={this.check.bind(this)}
+                                    className="btn green">{' '}{utils.getLabelByID("Update Password")}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        //             </div>
-        //             <div className="row">
-        //                 <div className="col-md-6">
-        //                     <div className="form-group col-md-4">
-        //                         <label className="control-label">{utils.getLabelByID("ChangePassword_NewPassword")}</label>
-        //                     </div>
-        //                     <div className="form-group col-md-8">
-        //                         <input type="password" className="form-control" name="newPassword" id="newPassword" placeholder="New Password" />
-        //                     </div>
-        //                 </div>
 
-        //             </div>
-        //             <div className="row">
-        //                 <div className="col-md-6">
-        //                     <div className="form-group col-md-4">
-        //                         <label className="control-label">{utils.getLabelByID("ChangePassword_ConfirmNewPassword")}</label>
-        //                     </div>
-        //                     <div className="form-group col-md-8">
-        //                         <input type="password" className="form-control" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" />
-        //                     </div>
-        //                 </div>
-
-        //             </div>
-
-        //             <div className="row">
-        //                 <div className="col-md-6">
-
-        //                     <div className="form-group col-md-4">
-        //                     </div>
-        //                     <div className="form-group col-md-8">
-        //                         <button type="submit" className="btn green" onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("ChangePassword_ChangePassword")} </button>
-        //                     </div>
-        //                 </div>
-        //             </div>
+        </Portlet>
 
 
-        //         </div>
-        //     </div >
-        // );
+      );
     }
+  }
+
 }
 
-ChangePassword.propTypes = {
-    changeResponseData: PropTypes.object,
-    children: PropTypes.object
-};
 
 function mapStateToProps(state, ownProps) {
-    return {
-        passwordToken: ownProps.location.query.t,
-        changeResponseData: state.app.changeResponseData.data
-    };
-
+  return {
+    passwordToken: ownProps.location.query.t,
+    orgType: ownProps.params.orgType
+  };
 }
+
 function mapDispatchToProps(dispatch) {
 
-    return { actions: bindActionCreators(actions, dispatch) }
+  return {actions: bindActionCreators(actions, dispatch)}
 
 }
-ChangePassword.displayName = "ChangePassword_Heading";
+
+ChangePassword.displayName = "Security";
+
 export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);

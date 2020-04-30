@@ -91,6 +91,7 @@ export default function UserSetupForm(props) {
                             actionHandler={comboBoxHandler}
                             className="form-control"
                             disabled={false}
+                            isDDL={true}
                         />
                     </Row>
 
@@ -120,6 +121,7 @@ export default function UserSetupForm(props) {
                             actionHandler={customHandler}
                             className="form-control"
                             disabled={false}
+                            isDDL={true}
                         />
 
                     </Row>

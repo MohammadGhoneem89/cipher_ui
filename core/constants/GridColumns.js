@@ -270,11 +270,30 @@ module.exports = {
     { alias: "RList_roleName", key: "groupName", type: "string" },
     { alias: "RList_description", key: "description", type: "string" },
   ],
-
+  workingCalendarSearchList: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "Working_Calendar_Name", key: "calendarName", type: "string" },
+    { alias: "Working_Calendar_Year", key: "calendarYear", type: "string" },
+    { alias: "Working_Calendar_Month", key: "calendarMonth", type: "string" },
+    { alias: "CL_actionOn", key: "createdAt", type: "epochDate" },
+    { alias: "CL_actionBy", key: "createdBy", type: "object", property: "userID" },
+    { alias: "EVNTL_ISACTIVE", key: "isActive", type: "cbDisabled" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
   workingCaledarExceptionList: [
     { alias: "WCD_exception", key: "title", type: "string" },
     { alias: "WCD_start", key: "start", type: "string" },
     { alias: "WCD_end", key: "end", type: "string" },
+    { alias: "Actions", key: "actions", type: "action" }
+  ],
+
+  workingCaledarExceptionListOnDays: [
+    { alias: "WCD_exception", key: "title", type: "string" },
+    { alias: "WCD_start", key: "start", type: "string" },
+    { alias: "WCD_end", key: "end", type: "string" },
+    { alias: "Day Start", key: "dayStart", type: "string" },
+    { alias: "Day End", key: "dayEnd", type: "string" }
   ],
 
 
@@ -500,7 +519,7 @@ module.exports = {
     { alias: "", key: "refNo", type: "hiddenID" },
     { alias: "RL_entity", key: "ServiceProvider", type: "image" },
     { alias: "RL_acquirer", key: "acquirerName", type: "string" },
-    { alias: "DL_refNo", key: "refNo", type: "string", type: 'hyperlink', url: '/viewDispute' },
+    { alias: "DL_refNo", key: "refNo", type: "string", url: '/viewDispute' },
     { alias: "RL_ePayRefNo", key: "ePayRefNo", type: 'hyperlink', url: '/viewTransactionDetail' },
     { alias: "RL_SPRefNo", key: "SPRefNo", type: "string" },
     { alias: "RL_PGRefNo", key: "PGRefNo", type: "string" },
@@ -681,6 +700,14 @@ module.exports = {
     { alias: "loadBalancingLevel", key: "loadBalancingLevel", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
+  endpointListOrg: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "orgCode", key: "orgCode", type: "string" },
+    { alias: "requestURL", key: "requests", type: "string" },
+    { alias: "nlbType", key: "nlbType", type: "string" },
+    { alias: "type", key: "isServer", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
   userListOrg: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "CAUserName", key: "userName", type: "string" },
@@ -751,6 +778,15 @@ module.exports = {
     { alias: "NAU_MSPID", key: "mspid", type: "string" },
     { alias: "type", key: "type", type: "string" },
     { alias: "NAU_orginizationAlias", key: "orginizationAlias", type: "string" },
+    { alias: "NAU_createdBy", key: "createdBy", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
+
+
+  RelayNetworkListData: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "NAU_networkName", key: "networkName", type: "string" },
     { alias: "NAU_createdBy", key: "createdBy", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
@@ -1113,6 +1149,12 @@ module.exports = {
     { alias: "ip", key: "ip", type: 'string' },
     { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
     { alias: "status", key: "status", type: "statusBox" }
+  ],
+  PickUPEdit: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "Label", key: "label", type: "string" },
+    { alias: "Value", key: "value", type: "string" },
+    { alias: "Actions", key: "actions", type: "action" }
   ]
 };
 
