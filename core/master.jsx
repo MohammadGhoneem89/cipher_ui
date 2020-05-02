@@ -9,8 +9,6 @@ import * as actions from './actions/generalAction';
 import { Router, Route, Link, browserHistory, IndexRoute } from 'react-router'
 import IdleTimer from 'react-idle-timer';
 
-
-
 /*container specific imports*/
 import Bradecums from './common/Bradecums.jsx';
 import Header from './common/Header.jsx';
@@ -55,7 +53,12 @@ class master extends React.Component {
 		auth.lockedUser();
 		browserHistory.push('/Locked');
 	}
+	logout() {
 
+		this.props.actions.generalProcess(constants.logout, requestCreator.createEmailTemplateListRequest({}));
+		auth.logOut();
+		browserHistory.push('/cipher/login');
+	}
 	componentWillMount() {
 
 		
@@ -109,7 +112,6 @@ class master extends React.Component {
 		//this.props.actions.sendWSData();
 
    return (
-
 		<IdleTimer
       	  ref="idleTimer"
           element={document}
@@ -117,10 +119,8 @@ class master extends React.Component {
           timeout={900000}
           format="MM-DD-YYYY HH:MM:ss.SSS">
 			<div>
-
-
 				<div className="page-header navbar navbar-fixed-top" >
-					<Header userData={this.props.userData} notifications={this.props.notificationData} />
+					<Header userData={this.props.userData} notifications={this.props.notificationData}  logout={this.logout.bind(this)}/>
 				</div>
 				<div className="clearfix"> </div>
 				<div className="page-container" >
@@ -144,7 +144,6 @@ class master extends React.Component {
 					</div>
 				</div>
 			</div>
-
 		</IdleTimer>
 		);
 	}

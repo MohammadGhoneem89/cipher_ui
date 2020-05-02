@@ -8,6 +8,8 @@ import auth from '../auth/authenticator';
 import * as utils from './utils';
 
 import { baseUrl } from '../constants/Communication.js';
+import * as constants from "../constants/Communication";
+import * as requestCreator from "./request";
 
 class Header extends React.Component {
 
@@ -44,11 +46,7 @@ class Header extends React.Component {
         auth.lockedUser();
         browserHistory.push('/Locked');
     }
-    logout() {
-        auth.logOut();
 
-        //browserHistory.push('/');
-    }
 
     getCurrentDateTime() {
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -177,7 +175,7 @@ class Header extends React.Component {
                                     <ul className="dropdown-menu dropdown-menu-default">
 
                                         <li>
-                                            <a href="javascript:;" onClick={this.logout.bind(this)} >
+                                            <a href="javascript:;" onClick={this.props.logout} >
                                                 <i className="icon-key" /> {utils.getLabelByID("header_logout")} </a>
                                         </li>
                                         <li>

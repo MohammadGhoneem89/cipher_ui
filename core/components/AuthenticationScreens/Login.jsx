@@ -1,19 +1,18 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import brandConfig from '../../../assets/skins/default/brandConfig.json';
 import ReactDOM from 'react-dom';
-import {Link, browserHistory} from 'react-router';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import { Link, browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
 import EN from '../../constants/resources_EN';
 import AR from '../../constants/resources_AR';
 import * as utils from '../../common/utils.js';
-
+import Cookies from 'js-cookie';
 
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import * as toaster from '../../common/toaster.js';
-
 let isLocked = false;
 
 class Login extends React.Component {
@@ -35,9 +34,7 @@ class Login extends React.Component {
   }
 
   check(form) {
-
     if (isLocked === false) {
-
       sessionStorage.setItem('lastRequestTime', new Date());
       var userId = $('#username').val();
       var password = $('#password').val();
@@ -166,8 +163,9 @@ class Login extends React.Component {
           browserHistory.push(this.props.LoginResult.firstScreen);
         else
           browserHistory.push("/home");
-        sessionStorage.setItem('token', this.props.LoginResult.token);
-        console.log("token" + this.props.LoginResult.token)
+        // sessionStorage.setItem('token', this.props.LoginResult.token);
+        // Cookies.set('login', this.props.LoginResult.token);
+        // console.log("token" + this.props.LoginResult.token)
 
       }
       // if (this.props.LoginResult.passwordRetriesExceed === false) {
@@ -175,14 +173,13 @@ class Login extends React.Component {
       // }
     }
     if (this.props.passwordReset !== '' && this.state.isLoading === true) {
-      this.setState({
-        isLoading: false,
-      })
+        this.setState({
+          isLoading: false,
+        })
     }
 
 
   }
-
   componentWillReceiveProps(nextProps) {
     // if (nextProps.LoginResult && nextProps.LoginResult.success === false && nextProps.LoginResult.passwordRetriesExceed === true) {
     //   this.setState({
@@ -220,24 +217,26 @@ class Login extends React.Component {
 
     if (this.props.orgType && this.props.orgType.toString().toUpperCase() == 'DP') {
       return (<div></div>)
-    } else if (this.imageExists(imgURLOtherOrg)) {
+    }
+    else if (this.imageExists(imgURLOtherOrg)) {
       return (<div>
-          <div style={{marginTop: "60px", paddingTop: "80px"}}>
-            <div className="row" style={{marginLeft: "-20"}}>
-              <div className="col-md-6 pull-left">
-                <img src={imgSDG} alt=""/>
-              </div>
-              <div className="col-md-6 pull-right">
-                <img src={imgURLOtherOrg} alt="" style={{width: "152px"}}/>
-              </div>
+        <div style={{ marginTop: "60px", paddingTop: "80px" }}>
+          <div className="row" style={{ marginLeft: "-20" }}>
+            <div className="col-md-6 pull-left">
+              <img src={imgSDG} alt="" />
             </div>
-
+            <div className="col-md-6 pull-right">
+              <img src={imgURLOtherOrg} alt="" style={{ width: "152px" }} />
+            </div>
           </div>
-          <br/>
-          <br/>
+
         </div>
+        <br />
+        <br />
+      </div>
       )
-    } else {
+    }
+    else {
       return (<div></div>)
     }
 
@@ -255,15 +254,13 @@ class Login extends React.Component {
   }
 
   getLogosForSDGUser() {
-    return (<div className="logo"/>);
+    return (<div className="logo" />);
   }
-
   loginAgainFalse = () => {
     this.setState({
       accountIsLocked: false
     })
   }
-
   render() {
 
 
@@ -275,55 +272,54 @@ class Login extends React.Component {
           <div className="login">
             <div style={{}}>
               {/*<div id="particles-js"></div>*/}
-              <div className="content" style={{height: 'auto', marginTop: '10px'}}>
-                <br/><br/>
+              <div className="content" style={{ height: 'auto', marginTop: '10px' }}>
+                <br /><br />
                 {this.getLogosbyUserType()}
                 <div className="login-form">
                   {this.getLogosForSDGUser()}
                   <h3 className="form-title">{brandConfig.projectName}</h3>
                   <div className="alert alert-danger display-hide">
-                    <button className="close" data-close="alert"/>
+                    <button className="close" data-close="alert" />
                     <span> Enter any username and password. </span>
                   </div>
-                  <br/>
+                  <br />
                   <div id="loginCarousel" className="carousel slide" data-ride="carousel" data-interval="false">
                     <div className="carousel-inner">
                       <div className="item active">
                         <div className="form-group">
                           <label className="control-label visible-ie8 visible-ie9">Username</label>
                           <div className="input-icon">
-                            <i className="fa fa-user"/>
+                            <i className="fa fa-user" />
                             <input className="form-control placeholder-no-fix" type="text" id="username"
-                                   autoComplete="off" placeholder="Username" name="username"/></div>
+                              autoComplete="off" placeholder="Username" name="username" /></div>
                         </div>
                         <div className="form-group">
                           <label className="control-label visible-ie8 visible-ie9">Password</label>
-                          <div className="input-icon"><i className="fa fa-lock"/>
+                          <div className="input-icon"><i className="fa fa-lock" />
 
-                            <i className="fa fa-eye" aria-hidden="true"/>
+                            <i className="fa fa-eye" aria-hidden="true" />
                             <input type="password" className="form-control placeholder-no-fix" id="password"
-                                   autoComplete="off" placeholder="Password" name="password"/>
+                              autoComplete="off" placeholder="Password" name="password" />
                           </div>
                         </div>
 
                         <div className="form-actions">
                           <div>
                             <button type="submit" className="btn green btn-block uppercase"
-                                    onClick={this.check.bind(this)}>
+                              onClick={this.check.bind(this)}>
                               LOGIN
-                            </button>
+                        </button>
                           </div>
                         </div>
 
                         <div className="forget-password">
                           <ul className="lng">
-                          </ul>
-                          <ul className="lng">
-                            <li data-target="#loginCarousel" data-slide-to="1">
-                              <a href="javascript:">Forgot your password ?</a></li>
+                          </ul> <ul className="lng">
+                            <li data-target="#loginCarousel" data-slide-to="1" >
+                              <a href="javascript:" >Forgot your password ?</a></li>
                           </ul>
                         </div>
-                        <br/>
+                        <br />
                         {/* {this.state.accountIsLocked &&
                           <div className="forget-password">
                             <ul className="lng">
@@ -339,25 +335,25 @@ class Login extends React.Component {
                         <div className="form-group">
                           <label className="control-label visible-ie8 visible-ie9">Username:</label>
                           <div className="input-icon">
-                            <i className="fa fa-user"/>
+                            <i className="fa fa-user" />
                             <input className="form-control placeholder-no-fix" type="text" id="usernameForgot"
-                                   autoComplete="off" placeholder="Username" name="username"/></div>
+                              autoComplete="off" placeholder="Username" name="username" /></div>
                         </div>
                         <div className="form-group">
                           <label className="control-label visible-ie8 visible-ie9">Email</label>
-                          <div className="input-icon"><i className="fa fa-envelope"/>
+                          <div className="input-icon"><i className="fa fa-envelope" />
                             <input type="email" className="form-control placeholder-no-fix" id="emailForgot"
-                                   autoComplete="off" placeholder="Email" name="password"/>
+                              autoComplete="off" placeholder="Email" name="password" />
                           </div>
-                          {this.state.emailError ? <span style={{color: 'red', position: 'relative', top: '2px'}}>
+                          {this.state.emailError ? <span style={{ color: 'red', position: 'relative', top: '2px' }}>
                             Not a Valid Email</span> : ''}
                         </div>
                         <div className="form-actions"><a onClick={this.checkForgot.bind(this)}
-                                                         className="btn green btn-block uppercase"> Submit </a></div>
+                          className="btn green btn-block uppercase"> Submit </a></div>
 
                         <div className="login-password">
                           <ul className="lng">
-                            <li data-target="#loginCarousel" data-slide-to="0">
+                            <li data-target="#loginCarousel" data-slide-to="0" >
                               <a href="javascript:">Remember your password ?</a></li>
                           </ul>
                         </div>
@@ -421,7 +417,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
 
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 
 }
 

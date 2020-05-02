@@ -25,7 +25,7 @@ class PickupListSearchContainer extends React.Component {
       searchCriteria: {typeName: ""},
       activePage: 1,
       pageSize: 10,
-      typeDataList: undefined,
+      typeDataList: [],
       pickupList: [],
       searchForm: {},
       isLoading: false
@@ -33,19 +33,27 @@ class PickupListSearchContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequestForType({
+    this.props.actions.generalProcess(constants.getPickupListForType, requestCreator.createPickupListRequestForType({
       "currentPageNo": 1,
       "pageSize": 10
     }, {type: "allTypes"}));
+
+    this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequest({
+      "currentPageNo": 1,
+      "pageSize": 10
+    }, {type: 'core'}));
     this.setState({isLoading: true});
   }
 
   componentWillReceiveProps(nextProps) {
     console.log(nextProps)
-    this.setState({
-      typeDataList: nextProps.typeDataList,
-      isLoading: false
-    });
+
+    if (nextProps.typeDataList) {
+      this.setState({
+        typeDataList: nextProps.typeDataList,
+        isLoading: false
+      });
+    }
     if (nextProps.pickupList && nextProps.pickupList.data && nextProps.pickupList.data.searchResult[0]) {
       let data = _.get(nextProps.pickupList, `data.searchResult`, []);
       let typeName = _.get(data, `typeName`, '');
@@ -61,7 +69,7 @@ class PickupListSearchContainer extends React.Component {
   }
 
   searchTypes = () => {
-    this.props.actions.generalProcess(constants.getPickupListForType, requestCreator.createPickupListRequest({
+    this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequest({
       "currentPageNo": 1,
       "pageSize": 10
     }, {type: this.state.searchForm.orgtype}));
@@ -129,9 +137,10 @@ class PickupListSearchContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   console.log(state.app)
   return {
-    typeDataList: _.get(state.app, 'typeDataListByType.data.searchResult[0].data.allTypes', undefined),
+    typeDataList: _.get(state.app, 'typeDataListByType.data.searchResult', undefined),
     pickupList: _.get(state.app, 'typeDataListForType', [])
   }
+
 
 }
 

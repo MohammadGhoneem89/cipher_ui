@@ -7,6 +7,7 @@ import * as toaster from '../../common/toaster.js';
 import brandConfig from '../../../assets/skins/default/brandConfig.json';
 import Portlet from '../../common/Portlet.jsx';
 import * as utils from "../../common/utils";
+import Cookies from "js-cookie";
 
 class ChangePassword extends React.Component {
 
@@ -40,7 +41,7 @@ class ChangePassword extends React.Component {
         "passwordToken": this.props.passwordToken,
         "newPassword": newPassword,
         "oldPassword": oldPassword,
-        "isAuth": !!sessionStorage.token
+        "isAuth": !!Cookies.get('login')
       };
 
       this.props.actions.generalProcess(constants.passwordChange, request);
@@ -152,7 +153,7 @@ class ChangePassword extends React.Component {
 
   render() {
     sessionStorage.loginOrgType = this.props.orgType;
-    if (!sessionStorage.token) {
+    if (!Cookies.get('login')) {
       return (
 
         <div>
