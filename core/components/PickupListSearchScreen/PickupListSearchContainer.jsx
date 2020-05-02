@@ -28,21 +28,21 @@ class PickupListSearchContainer extends React.Component {
       typeDataList: [],
       pickupList: [],
       searchForm: {},
-      isLoading: false
+      isLoading: true
     };
   }
 
   componentDidMount() {
-    this.props.actions.generalProcess(constants.getPickupListForType, requestCreator.createPickupListRequestForType({
-      "currentPageNo": 1,
-      "pageSize": 10
-    }, {type: "allTypes"}));
+    // this.props.actions.generalProcess(constants.getPickupListForType, requestCreator.createPickupListRequestForType({
+    //   "currentPageNo": 1,
+    //   "pageSize": 10
+    // }, {type: "allTypes"}));
 
     this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequest({
       "currentPageNo": 1,
       "pageSize": 10
     }, {type: 'core'}));
-    this.setState({isLoading: true});
+
   }
 
   componentWillReceiveProps(nextProps) {
