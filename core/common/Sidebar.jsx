@@ -76,7 +76,7 @@ class Sidebar extends React.Component {
         return (
             <div className="page-sidebar-wrapper">
                 <div className="page-sidebar navbar-collapse collapse">
-                    <div className="menu-toggler sidebar-toggler">
+                    <div id="menu" className="menu-toggler sidebar-toggler">
                         <img src="/assets/layouts/layout2/img/expand.png" className="expandImg" />
                     </div>
                     <ul id="SideMenuIcons" className="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu switchScreen"

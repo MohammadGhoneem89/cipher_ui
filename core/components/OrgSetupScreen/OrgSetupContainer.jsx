@@ -74,6 +74,7 @@ class OrgSetupContainer extends React.Component {
     submit(data) {
         if (this.state.orgID) {
             data._id = this.state.orgID; //Hack to avoid replication.
+
             return this.props.actions.reduxFormProcess(constants.entityUpdate, requestCreator.createEntityUpdateRequest(data))
                 .catch((error) => { 
                     throw new SubmissionError(error);

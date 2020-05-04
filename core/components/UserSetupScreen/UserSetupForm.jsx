@@ -63,6 +63,7 @@ export default function UserSetupForm(props) {
                             actionHandler={userTypeHandler}
                             className="form-control"
                             disabled={false}
+                            isDDL={true}
                         />
                     </Row>
 

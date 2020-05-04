@@ -76,7 +76,7 @@ class Combobox extends React.Component {
             {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) &&
             <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle"/>
             }
-
+            <option key="" value="">--select--</option>
             {this.prepareOptions(_.get(this.props.dataSource, this.props.typeName, []))}
           </select>
 

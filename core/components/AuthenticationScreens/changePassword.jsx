@@ -41,7 +41,8 @@ class ChangePassword extends React.Component {
         "passwordToken": this.props.passwordToken,
         "newPassword": newPassword,
         "oldPassword": oldPassword,
-        "isAuth": !!Cookies.get('login')
+        "isAuth": !!Cookies.get('login'),
+        "firstScreen": sessionStorage.firstScreen
       };
 
       this.props.actions.generalProcess(constants.passwordChange, request);
@@ -81,6 +82,10 @@ class ChangePassword extends React.Component {
     document.getElementById("password").addEventListener("keyup", this.handleKeyPress);
     document.getElementById("usernameForgot").addEventListener("keyup", this.handleKeyPressForgot);
     document.getElementById("emailForgot").addEventListener("keyup", this.handleKeyPressForgot);
+    document.getElementById('menu').click();
+      $("body").addClass('page-sidebar-closed');
+      $("#SideMenuIcons").addClass('page-sidebar-menu-closed');
+
   }
 
   handleKeyPress(e) {
@@ -152,6 +157,7 @@ class ChangePassword extends React.Component {
   }
 
   render() {
+
     sessionStorage.loginOrgType = this.props.orgType;
     if (!Cookies.get('login')) {
       return (
@@ -178,7 +184,7 @@ class ChangePassword extends React.Component {
                     <i className="fa fa-lock"/>
                     <i className="fa fa-eye" onClick={() => this.changeView('oldPassword')}
                        aria-hidden="true"/>
-                    <input type={this.state.oldPassword ? 'text' : 'oldPassword'}
+                    <input type={'password'}
                            className="form-control placeholder-no-fix" name="oldPassword"
                            autoComplete="off" id="oldPassword" placeholder="Old Password"/>
                   </div>
@@ -189,7 +195,7 @@ class ChangePassword extends React.Component {
                   <div className="input-icon">
                     <i className="fa fa-lock"/>
                     <i className="fa fa-eye" onClick={() => this.changeView('newPassword')} aria-hidden="true"/>
-                    <input type={this.state.newPassword ? 'text' : 'password'}
+                    <input type={ 'password'}
                            className="form-control placeholder-no-fix"
                            name="password"
                            autoComplete="off" id="newPassword" placeholder="New Password"/>
@@ -200,7 +206,7 @@ class ChangePassword extends React.Component {
                   <div className="input-icon"><i className="fa fa-lock"/>
 
                     <i className="fa fa-eye" onClick={() => this.changeView('confirmPassword')} aria-hidden="true"/>
-                    <input type={this.state.confirmPassword ? 'text' : 'password'}
+                    <input type={ 'password'}
                            className="form-control placeholder-no-fix" name="confirmPassword"
                            autoComplete="off" id="confirmPassword" placeholder="Confirm Password"/>
                   </div>
@@ -221,11 +227,15 @@ class ChangePassword extends React.Component {
 
       );
     } else {
+
+
       return (
 
-        <Portlet title={utils.getLabelByID("Change Password")}>
+        <Portlet title={utils.getLabelByID("")}>
           <div className="row">
-            <div className=" col-md-12">
+            <h3 className="text-center">Change Password</h3>
+            <br/>
+            <div className="col-sm-offset-3 col-md-12">
               <div className="row">
                 <div className="col-md-12">
                   <div className="col-md-6">
@@ -233,7 +243,7 @@ class ChangePassword extends React.Component {
                       <label className="control-label">{utils.getLabelByID("Old Password")}</label>
                     </div>
                     <div className="form-group col-md-8">
-                      <input type={this.state.oldPassword ? 'text' : 'oldPassword'}
+                      <input type={this.state.oldPassword ? 'text' : 'password'}
                              className="form-control placeholder-no-fix" name="oldPassword"
                              autoComplete="off" id="oldPassword" placeholder="Old Password"/>
                     </div>
