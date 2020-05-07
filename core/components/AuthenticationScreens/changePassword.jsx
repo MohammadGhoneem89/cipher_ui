@@ -8,6 +8,9 @@ import brandConfig from '../../../assets/skins/default/brandConfig.json';
 import Portlet from '../../common/Portlet.jsx';
 import * as utils from "../../common/utils";
 import Cookies from "js-cookie";
+import * as requestCreator from "../../common/request";
+import auth from "../../auth/authenticator";
+import {browserHistory} from "react-router";
 
 class ChangePassword extends React.Component {
 
@@ -24,9 +27,23 @@ class ChangePassword extends React.Component {
 
 
   }
+
   redirectToLoginPage() {
     sessionStorage.removeItem('lastRequestTime');
-    document.location.href = '/cipher/login';
+
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextProps.status && nextProps.status != 'ERROR') {
+      this.logout();
+
+    }
+  }
+
+  logout() {
+    this.props.actions.generalProcess(constants.logout, requestCreator.createEmailTemplateListRequest({}));
+    auth.logOut();
+    browserHistory.push('/cipher/login');
   }
 
   check(form) {
@@ -42,10 +59,13 @@ class ChangePassword extends React.Component {
         "newPassword": newPassword,
         "oldPassword": oldPassword,
         "isAuth": !!Cookies.get('login'),
-        "firstScreen": sessionStorage.firstScreen
+        "firstScreen": '/changePasswordInternal'
       };
-
       this.props.actions.generalProcess(constants.passwordChange, request);
+
+
+
+
     } else
       toaster.showToast("New password does not match confirm password", "ERROR");
     document.getElementById('newPassword').value = '';
@@ -83,8 +103,8 @@ class ChangePassword extends React.Component {
     document.getElementById("usernameForgot").addEventListener("keyup", this.handleKeyPressForgot);
     document.getElementById("emailForgot").addEventListener("keyup", this.handleKeyPressForgot);
     document.getElementById('menu').click();
-      $("body").addClass('page-sidebar-closed');
-      $("#SideMenuIcons").addClass('page-sidebar-menu-closed');
+    $("body").addClass('page-sidebar-closed');
+    $("#SideMenuIcons").addClass('page-sidebar-menu-closed');
 
   }
 
@@ -195,7 +215,7 @@ class ChangePassword extends React.Component {
                   <div className="input-icon">
                     <i className="fa fa-lock"/>
                     <i className="fa fa-eye" onClick={() => this.changeView('newPassword')} aria-hidden="true"/>
-                    <input type={ 'password'}
+                    <input type={'password'}
                            className="form-control placeholder-no-fix"
                            name="password"
                            autoComplete="off" id="newPassword" placeholder="New Password"/>
@@ -206,7 +226,7 @@ class ChangePassword extends React.Component {
                   <div className="input-icon"><i className="fa fa-lock"/>
 
                     <i className="fa fa-eye" onClick={() => this.changeView('confirmPassword')} aria-hidden="true"/>
-                    <input type={ 'password'}
+                    <input type={'password'}
                            className="form-control placeholder-no-fix" name="confirmPassword"
                            autoComplete="off" id="confirmPassword" placeholder="Confirm Password"/>
                   </div>
@@ -220,7 +240,7 @@ class ChangePassword extends React.Component {
 
             </div>
 
-             {/*<div className="copyright">Copyright &copy; 2018-2020 Avanza Innovations. All Rights Reserved.</div>*/}
+            {/*<div className="copyright">Copyright &copy; 2018-2020 Avanza Innovations. All Rights Reserved.</div>*/}
           </div>
         </div>
 
@@ -232,7 +252,7 @@ class ChangePassword extends React.Component {
       return (
 
         <Portlet title={utils.getLabelByID("")}>
-          <div className="row">
+          <div className="row" style={{height: '100%'}}>
             <h3 className="text-center">Change Password</h3>
             <br/>
             <div className="col-sm-offset-3 col-md-12">
@@ -306,6 +326,7 @@ class ChangePassword extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
+    status: _.get(state.app, 'responseMessage.data.message.status', undefined),
     passwordToken: ownProps.location.query.t,
     orgType: ownProps.params.orgType
   };
@@ -317,6 +338,6 @@ function mapDispatchToProps(dispatch) {
 
 }
 
-ChangePassword.displayName = "Security";
+ChangePassword.displayName = "__HIDEALL";
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);
