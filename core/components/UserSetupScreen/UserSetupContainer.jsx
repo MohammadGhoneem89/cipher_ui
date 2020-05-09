@@ -401,17 +401,25 @@ class UserSetupContainer extends Component {
     }
 
     resetPassword = () => {
-
         if (this.props.params.userID) {
-            let request = { "userID": this.props.params.userID };
+            let request = { "userID": this.state.userDetail.userID , email : this.state.userDetail.email };
             this.props.actions.generalProcess(constants.passwordReset, request);
         }
+    }
 
+    unlockAccount = () => {
+        // if (this.props.params.userID) {
+        //     let request = { "userID": this.state.userDetail.userID , email : this.state.userDetail.email };
+        //     this.props.actions.generalProcess(constants.passwordReset, request);
+        // }
     }
 
     performAction = (actionObj) => {
         if (actionObj.value === "4055") {
             return this.resetPassword();
+        }
+        if(actionObj.value === "4056"){
+            return this.unlockAccount()
         }
     }
 

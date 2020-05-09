@@ -33,6 +33,11 @@ export default function UserSetupForm(props) {
         performAction
     } = props
 
+    console.log("containerState" , containerState);
+    let resetAction = {
+        value : "4055"
+    }
+
     return (
         <form autoComplete="off" role="form" onSubmit={onSubmit}>
 
@@ -383,6 +388,8 @@ export default function UserSetupForm(props) {
 
             </Row>
 
+
+
             <hr></hr>
 
             <Row>
@@ -507,8 +514,44 @@ export default function UserSetupForm(props) {
 
             <br></br>
             <div className="clearfix">
+                
+        
+
+            <Row>
+                <div className="col-md-8"></div>
+                <div className="col-md-4">
+                    <button
+                        className="btn green"
+                        style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0', alignItems: 'right' }}
+                        onClick={() => {
+
+                        
+                            performAction(resetAction)
+
+                        }}
+                    >
+                        {"Reset Password"}
+                    </button>
+                    &nbsp;&nbsp;
+
+                {_.get(containerState, 'userDetail.isActive', true) === false ?
+                        <button
+                            className="btn green"
+                            style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0', alignItems: 'right' }}
+                            onClick={() => {
+                            }}
+                        >
+                            {"Unlock user"}
+                        </button>
+                        : null}
+                </div>
+            </Row>
+
+                
                 <ActionButton actionList={containerState.actions}
                 />
+
+
             </div>
 
             {/* <div className="clearfix">
