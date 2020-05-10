@@ -9,7 +9,6 @@ import Table from '../../common/Datatable.jsx';
 import FieldMappingForm from './FieldMappingForm.jsx';
 import RulesForm from './RulesForm.jsx';
 import validate from './validate.js';
-
 import Row from '../../common/Row.jsx';
 import Input from '../../common/Input.jsx';
 import Label from '../../common/Lable.jsx';;
@@ -23,14 +22,14 @@ const TemplateDetails = ({ error, initialValues, containerState, updateState, st
       <div className="row">
         <div className="col-md-6 col-sm-6">
           <TextInput name="templateName"
-            label={utils.getLabelByID("FTEMP_templateName")}
-            type="text"
+                     label={utils.getLabelByID("FTEMP_templateName")}
+                     type="text"
           />
         </div>
 
         <div className="col-md-6 col-sm-6">
           <DropdownInput name="fileType" options={containerState.fileTypes}
-            label={utils.getLabelByID("FTEMP_fileType")} onChange={onTypeChange}
+                         label={utils.getLabelByID("FTEMP_fileType")} onChange={onTypeChange}
           />
         </div>
       </div>
@@ -38,22 +37,22 @@ const TemplateDetails = ({ error, initialValues, containerState, updateState, st
 
         {!formState.isDBSelect && <div className="col-md-6 col-sm-6">
           <TextInput name="fileNameRegEx"
-            label={utils.getLabelByID("FTEMP_fileName")}
-            type="text"
+                     label={utils.getLabelByID("FTEMP_fileName")}
+                     type="text"
           />
         </div>}
 
         {!formState.isDBSelect && <div className="col-md-6 col-sm-6">
           <TextInput name="separator"
-            label={utils.getLabelByID("FTEMP_separator")}
-            type="text"
+                     label={utils.getLabelByID("FTEMP_separator")}
+                     type="text"
           />
         </div>}
 
         {!formState.isDBSelect && <div className="col-md-6 col-sm-6">
           <TextInput name="XMLMainTag"
-            label={utils.getLabelByID("Watch Path")}
-            type="text"
+                     label={utils.getLabelByID("Watch Path")}
+                     type="text"
           />
         </div>}
         {!formState.isDBSelect && <div className="col-md-3 col-sm-3">
@@ -72,7 +71,7 @@ const TemplateDetails = ({ error, initialValues, containerState, updateState, st
         </div>}
         {formState.isDBSelect && <div className="col-md-6 col-sm-6">
           <DropdownInput name="endpoint" options={containerState.endpointList || []}
-            label={utils.getLabelByID("End Point")} onChange={onEndpointSelect} disabled={containerState.endpointList ? false : true}
+                         label={utils.getLabelByID("End Point")} onChange={onEndpointSelect} disabled={containerState.endpointList ? false : true}
           />
         </div>}
         {formState.isDBSelect && <div className="col-md-6 col-sm-6">
@@ -133,7 +132,7 @@ class FileTemplateForm extends React.Component {
     else if (nextProps.initialValues.fields && this.state.fields.length === 0) {
       this.setState({ fields: nextProps.initialValues.fields, ruleList: nextProps.rulesList });
     }
-    
+
     this.setState({ rulesList: nextProps.rulesList });
   }
 
@@ -445,8 +444,8 @@ class FileTemplateForm extends React.Component {
       <div>
         <ModalBox isOpen={this.state.fieldsModalIsOpen}>
           <FieldMappingForm onSubmit={this.addFields} index={this.state.index} initialValues={this.state}
-            containerState={containerState} updateState={this.updateState}
-            state={this.state} />
+                            containerState={containerState} updateState={this.updateState}
+                            state={this.state} />
         </ModalBox>
 
         <ModalBox isOpen={this.state.ruleModalIsOpen}>
@@ -455,22 +454,22 @@ class FileTemplateForm extends React.Component {
               <Col col="6">
                 <Label text="incomming" columns="3"></Label>
                 <Combobox fieldname='incomming' formname='mapping' columns='9' style={{}}
-                  state={this.state} typeName="options"
-                  dataSource={(() => {
-                    let options = [];
-                    this.state.fields.map(item => {
-                      options.push({ label: item.fieldName, value: item.fieldName });
-                    });
-                    return { options };
-                  })()} multiple={false} actionHandler={this.generalHandler} />
+                          state={this.state} typeName="options"
+                          dataSource={(() => {
+                            let options = [];
+                            this.state.fields.map(item => {
+                              options.push({ label: item.fieldName, value: item.fieldName });
+                            });
+                            return { options };
+                          })()} multiple={false} actionHandler={this.generalHandler} />
               </Col>
               <Col col="6">
                 <Label text="mapped" columns="3"></Label>
                 <Combobox fieldname='mapped' formname='mapping' columns='9' style={{}}
-                  state={this.state} typeName="options"
-                  dataSource={(() => {
-                    return { options: this.props.fieldList };
-                  })()} multiple={false} actionHandler={this.generalHandler} />
+                          state={this.state} typeName="options"
+                          dataSource={(() => {
+                            return { options: this.props.fieldList };
+                          })()} multiple={false} actionHandler={this.generalHandler} />
               </Col>
             </Row>
             <Row>
@@ -508,7 +507,7 @@ class FileTemplateForm extends React.Component {
 
         <form autoComplete="off" role="form" id="oldForm" onSubmit={handleSubmit(this.submit)}>
           <TemplateDetails initialValues={initialValues} containerState={containerState}
-            updateState={this.updateState} onTypeChange={this.onTypeChange} formState={this.state} onEndpointSelect={onEndpointSelect} onTableSelect={onTableSelect} />
+                           updateState={this.updateState} onTypeChange={this.onTypeChange} formState={this.state} onEndpointSelect={onEndpointSelect} onTableSelect={onTableSelect} />
           <Portlet title={utils.getLabelByID("MAU_mapField")} actions={mappedFieldsActions} >
             <Table
               pagination={false}
@@ -527,53 +526,53 @@ class FileTemplateForm extends React.Component {
               <Col col="3">
                 <Label text="Field" columns="3"></Label>
                 <Combobox fieldname='field' formname='routing' columns='9' style={{}}
-                  state={this.state} typeName="options"
-                  dataSource={(() => {
-                    let options = [];
-                    if (this.state.isDBSelect) {
-                      containerState.fields.map(item => {
-                        options.push({ label: item.fieldName, value: item.fieldName });
-                      });
-                    }
-                    else {
-                      this.state.fields.map(item => {
-                        options.push({ label: item.fieldName, value: item.fieldName });
-                      });
-                    }
-                    return { options };
-                  })()} multiple={false} actionHandler={this.generalHandler} />
+                          state={this.state} typeName="options"
+                          dataSource={(() => {
+                            let options = [];
+                            if (this.state.isDBSelect) {
+                              containerState.fields.map(item => {
+                                options.push({ label: item.fieldName, value: item.fieldName });
+                              });
+                            }
+                            else {
+                              this.state.fields.map(item => {
+                                options.push({ label: item.fieldName, value: item.fieldName });
+                              });
+                            }
+                            return { options };
+                          })()} multiple={false} actionHandler={this.generalHandler} />
               </Col>
               <Col col="3">
                 <Label text="op." columns="3"></Label>
                 <Combobox fieldname='option' formname='routing' columns='9' style={{}}
-                  state={this.state} typeName="options"
-                  dataSource={(() => {
-                    let options = [];
-                    options.push({ label: '==', value: '==' });
-                    options.push({ label: 'Regexp', value: 'Regexp' });
-                    return { options };
-                  })()} multiple={false} actionHandler={this.generalHandler} />
+                          state={this.state} typeName="options"
+                          dataSource={(() => {
+                            let options = [];
+                            options.push({ label: '==', value: '==' });
+                            options.push({ label: 'Regexp', value: 'Regexp' });
+                            return { options };
+                          })()} multiple={false} actionHandler={this.generalHandler} />
               </Col>
               <Col col="3">
                 <Label text="Value" columns="3"></Label>
                 <Input fieldname='value' formname='routing' state={this.state}
-                  columns='9' style={{}} actionHandler={this.generalHandler} />
+                       columns='9' style={{}} actionHandler={this.generalHandler} />
               </Col>
               <Col col="3">
                 <Label text="Then" columns="3"></Label>
                 <Combobox fieldname='API' formname='routing' columns='9' style={{}}
-                  state={this.state} typeName="ApiList"
-                  dataSource={this.props.containerState} multiple={false} actionHandler={this.generalHandler} />
+                          state={this.state} typeName="ApiList"
+                          dataSource={this.props.containerState} multiple={false} actionHandler={this.generalHandler} />
               </Col>
               <Col col="3">
                 <Label text="Name" columns="3"></Label>
                 <Input fieldname='ruleName' formname='routing' state={this.state}
-                  columns='9' style={{}} actionHandler={this.generalHandler} />
+                       columns='9' style={{}} actionHandler={this.generalHandler} />
               </Col>
               <Col col="3">
                 <Label text="Custom" columns="3"></Label>
                 <Input fieldname='transformFunction' formname='routing' state={this.state}
-                  columns='9' style={{}} actionHandler={this.generalHandler} />
+                       columns='9' style={{}} actionHandler={this.generalHandler} />
               </Col>
             </Row>
             <Row>
@@ -602,8 +601,8 @@ class FileTemplateForm extends React.Component {
 
           <div className="clearfix">
             <ActionButton actionList={containerState.fileTemplateDetail.actions}
-              performAction={this.performAction}
-              submitting={submitting} pristine={pristine} />
+                          performAction={this.performAction}
+                          submitting={submitting} pristine={pristine} />
             {/*<button type="submit" className="pull-right btn green" disabled={submitting}>*/}
             {/*Submit*/}
             {/*</button>*/}

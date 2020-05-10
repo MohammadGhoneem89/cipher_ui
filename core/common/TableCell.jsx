@@ -5,7 +5,6 @@ import { browserHistory } from 'react-router';
 import * as utils from './utils.js';
 import * as dates from './dates.js';
 
-
 class TableCell extends React.Component {
   constructor() {
     super();
@@ -432,7 +431,9 @@ class TableCell extends React.Component {
           <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
         </td>;
 
+      case "object":
 
+        return (<td style={{ fontWeight: fontWeightStyle }}> {_.get(this.props.cellData , this.props.colMeta.property,'')} </td>);
       default:
         return (<td style={{ fontWeight: fontWeightStyle }}> {this.props.cellData} </td>);
 

@@ -3,6 +3,8 @@ import brandConfig from '../../../assets/skins/default/brandConfig.json';
 import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
+import { sha512 } from 'js-sha512';
+
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
 import EN from '../../constants/resources_EN';
@@ -46,7 +48,7 @@ class Login extends React.Component {
         //alert("Username, Password are required.");
       } else {
         isLocked = true
-        this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(userId, password,
+        this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(userId, sha512(password),
           lang));
 
       }

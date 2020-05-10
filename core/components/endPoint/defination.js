@@ -31,6 +31,7 @@ class EndPointDefination extends React.Component {
       authType: '',
       header: [],
       requestType: '',
+      dbType: '',
       auth: {
         endpoint: '',
         field: '',
@@ -39,7 +40,10 @@ class EndPointDefination extends React.Component {
       }
     };
 
-    this.requestTypes = [{label: 'SOAP', value: 'soap'}, {label: 'REST', value: 'rest'},{label: 'GRPC', value: 'GRPC'}];
+    this.requestTypes = [{label: 'SOAP', value: 'soap'}, {label: 'REST', value: 'rest'}, {
+      label: 'Database Connection',
+      value: 'dbConnection'
+    }];
     this.authTypes = [{label: 'Bearer Token', value: 'bearer'}, {
       label: 'No Auth',
       value: 'noAuth'
@@ -54,6 +58,10 @@ class EndPointDefination extends React.Component {
       label: 'Body Params',
       value: 'bodyParams'
     }, {label: 'Form Params', value: 'formParams'}, {label: 'Unique Reference', value: 'UUIDN'}];
+    this.dbTypes = [{label: 'Oracle', value: 'Oracle'}, {label: 'MySQL', value: 'MySQL'}, {
+      label: 'PostgreSQL',
+      value: 'Postgres'
+    }];
     this.ActionHandlers = this.ActionHandlers.bind(this);
   }
 
@@ -121,6 +129,11 @@ class EndPointDefination extends React.Component {
   };
 
   submit = () => {
+
+    if (!this.state.address || !this.state.name||!this.state.authType||!this.state.requestType) {
+      alert("Endpoint name, Auth type and Address must be required!!");
+      return;
+    }
     let payload = {
       address: this.state.address,
       status: this.state.status,
@@ -129,6 +142,7 @@ class EndPointDefination extends React.Component {
       certPhrase: this.state.certPhrase,
       authType: this.state.authType,
       requestType: this.state.requestType,
+      dbType: this.state.dbType,
       header: this.state.header,
       auth: this.state.auth,
       name: this.state.name
@@ -215,7 +229,7 @@ class EndPointDefination extends React.Component {
       return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
     }
     return (
-      <div>
+      <form action={"javascript:;"}>
         <Portlet title={"Endpoint Add / Edit"}>
           <div className="row">
             <div className="col-md-12">
@@ -253,6 +267,18 @@ class EndPointDefination extends React.Component {
                     </select>
                   </div>
                 </div>
+                {this.state.requestType == 'dbConnection' && <div className="col-md-6">
+                  <div className="form-group col-md-4">
+                    <label className="control-label">{utils.getLabelByID("DB Type")}</label>
+                  </div>
+                  <div className="form-group col-md-8">
+                    <select name="dbType" className="form-control" onChange={this.onChange} value={this.state.dbType}>
+                      <option disabled selected value="">{utils.getLabelByID("Select ...")}</option>
+                      {this.dbTypes.map((option, index) => (
+                        <option key={index} value={option.value}>{option.label}</option>))}
+                    </select>
+                  </div>
+                </div>}
               </div>
               <div className="row">
                 <div className="col-md-6">
@@ -300,7 +326,7 @@ class EndPointDefination extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6">
+                {this.state.requestType != 'dbConnection' && <div className="col-md-6">
                   <div className="form-group col-md-4">
                     <label className="control-label">{utils.getLabelByID("Attach Certificate")}</label>
                   </div>
@@ -313,9 +339,9 @@ class EndPointDefination extends React.Component {
                       </label>
                     </div>
                   </div>
-                </div>
+                </div>}
               </div>
-              {!this.state.editMode && (<div>
+              {!this.state.editMode && this.state.requestType != 'dbConnection' && (<div>
                 <div className="col-md-12">
                   <div className="form-group">
                     <div className="portlet-title" style={{paddingBottom: "20px"}}>
@@ -361,7 +387,7 @@ class EndPointDefination extends React.Component {
                       <label className="control-label">{utils.getLabelByID("Type")}</label>
                     </div>
                     <div className="form-group col-md-8">
-                      <select name="authType" className="form-control" onChange={this.onChange}
+                      <select required name="authType" className="form-control" onChange={this.onChange}
                               value={this.state.authType}>
                         <option disabled selected value="">{utils.getLabelByID("Select ...")}</option>
                         {this.authTypes.map((option, index) => (
@@ -418,14 +444,14 @@ class EndPointDefination extends React.Component {
                         <label className="control-label">{utils.getLabelByID("password")}</label>
                       </div>
                       <div className="form-group col-md-8">
-                        <input type="text" className="form-control" name="password" onChange={this.onAuthChange}
+                        <input type="password" className="form-control" name="password" onChange={this.onAuthChange}
                                value={this.state.auth.password}/>
                       </div>
                     </div>
                   </div>
                 </div>)}
 
-              <div className="row" id="headerSection">
+              {this.state.requestType != 'dbConnection' && <div className="row" id="headerSection">
                 <div className="form-group">
                   <div className="portlet-title" style={{paddingBottom: "5px"}}>
                     <div>
@@ -495,9 +521,7 @@ class EndPointDefination extends React.Component {
                     </div>
                   </div>
                 </div>
-              </div>
-
-
+              </div>}
             </div>
 
 
@@ -516,7 +540,7 @@ class EndPointDefination extends React.Component {
             </div>
           </div>
         </Portlet>
-      </div>);
+      </form>);
 
   }
 }

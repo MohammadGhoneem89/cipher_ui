@@ -33,10 +33,10 @@ class PickupListSearchContainer extends React.Component {
   }
 
   componentDidMount() {
-    // this.props.actions.generalProcess(constants.getPickupListForType, requestCreator.createPickupListRequestForType({
-    //   "currentPageNo": 1,
-    //   "pageSize": 10
-    // }, {type: "allTypes"}));
+    this.props.actions.generalProcess(constants.getPickupListForType, requestCreator.createPickupListRequestForType({
+      "currentPageNo": 1,
+      "pageSize": 10
+    }, {type: "allTypes"}));
 
     this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequest({
       "currentPageNo": 1,
@@ -95,7 +95,7 @@ class PickupListSearchContainer extends React.Component {
               <Row>
                 <Lable columns='2' text={utils.getLabelByID("Categories")}/>
                 <Select fieldname='orgtype' className="form-control" formname='searchForm' columns='4' style={{}}
-                        state={this.state} typeName="typeDataList" dataSource={this.state}
+                        state={this.state} typeName="pickupList" dataSource={this.state}
                         multiple={false} actionHandler={this.generalActionHandler}/>
               </Row>
               <br/>
@@ -120,7 +120,7 @@ class PickupListSearchContainer extends React.Component {
                 search={false}
                 // pageChanged={this.pageChanged}
                 gridColumns={utils.getGridColumnByName("pickupList")}
-                gridData={this.state.pickupList}
+                gridData={this.state.typeDataList}
                 // totalRecords={this.statetypeDataList}
                 // activePage={this.state.activePage}
                 // pageSize={this.state.pageSize}

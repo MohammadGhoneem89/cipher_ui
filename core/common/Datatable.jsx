@@ -324,7 +324,7 @@ class Datatable extends React.Component {
                                   recordID={recordID}
                                   rowData={rowData}
                                   cellData={_.get(rowData,colData.key,"")}
-                                  type={colData.type}
+                                  type={colData.type} colMeta={colData}
                                   rowIndex={index}
                                   componentFunction={this.props.componentFunction}
                                   renderPopupBody={this.renderPopupBody.bind(this)}

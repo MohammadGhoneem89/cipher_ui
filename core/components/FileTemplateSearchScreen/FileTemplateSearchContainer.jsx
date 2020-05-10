@@ -46,17 +46,17 @@ class FileTemplateSearchContainer extends React.Component {
 
   submit(filterCriteria) {
     this.props.actions.generalProcess(constants.getFileTemplateList, requestCreator.createFileTemplateListRequest({
-      "currentPageNo": 1,
-      "pageSize": this.state.pageSize
-    },
+        "currentPageNo": 1,
+        "pageSize": this.state.pageSize
+      },
       filterCriteria));
     this.setState({ filterCriteria, activePage: 1 });
   }
   pageChanged(pageNo) {
     this.props.actions.generalProcess(constants.getFileTemplateList, requestCreator.createFileTemplateListRequest({
-      "currentPageNo": pageNo,
-      "pageSize": this.state.pageSize
-    },
+        "currentPageNo": pageNo,
+        "pageSize": this.state.pageSize
+      },
       this.state.filterCriteria));
     this.setState({ activePage: pageNo });
   }
@@ -73,7 +73,7 @@ class FileTemplateSearchContainer extends React.Component {
 
           </Portlet>
           <Portlet title={utils.getLabelByID("FileTemplateList")} isPermissioned={true}
-            actions={this.state.fileTemplateList.data.actions}>
+                   actions={this.state.fileTemplateList.data.actions}>
             <Table
               pagination={true}
               pageChanged={this.pageChanged}

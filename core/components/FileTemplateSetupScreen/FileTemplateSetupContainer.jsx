@@ -44,7 +44,7 @@ class FileTemplateContainer extends React.Component {
                 ...this.state.fileTemplateDetail,
                 actions: nextProps.fileTemplateDetail.actions
             };
-            // alert(JSON.stringify(fileTemplateDetail.rulesList))
+            alert(JSON.stringify(fileTemplateDetail.rulesList))
             this.setState({
                 isLoading: false,
                 fileTemplateID: nextProps.fileTemplateID,
@@ -165,16 +165,16 @@ class FileTemplateContainer extends React.Component {
     render() {
         if (!this.state.isLoading)
             return (
-                <FileTemplateForm onSubmit={this.submit} initialValues={this.state.fileTemplateDetail}
-                    containerState={_.clone(this.state)}
-                    rulesList={this.state.rulesList}
-                    fieldList={this.props.fieldList}
-                    callinterface={this.getAPIList.bind(this)}
-                    containerProps={this.props} generalHandler={this.generalHandler}
-                    onDBSelect={this.onDBSelect}
-                    onEndpointSelect={this.onEndpointSelect}
-                    onTableSelect={this.onTableSelect}
-                />
+              <FileTemplateForm onSubmit={this.submit} initialValues={this.state.fileTemplateDetail}
+                                containerState={_.clone(this.state)}
+                                rulesList={this.state.rulesList}
+                                fieldList={this.props.fieldList}
+                                callinterface={this.getAPIList.bind(this)}
+                                containerProps={this.props} generalHandler={this.generalHandler}
+                                onDBSelect={this.onDBSelect}
+                                onEndpointSelect={this.onEndpointSelect}
+                                onTableSelect={this.onTableSelect}
+              />
             );
         else
             return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
