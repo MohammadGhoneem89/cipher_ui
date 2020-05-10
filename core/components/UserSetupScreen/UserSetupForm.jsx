@@ -38,6 +38,10 @@ export default function UserSetupForm(props) {
         value : "4055"
     }
 
+    let activateAction = {
+        value : "4056"
+    }
+
     return (
         <form autoComplete="off" role="form" onSubmit={onSubmit}>
 
@@ -516,16 +520,19 @@ export default function UserSetupForm(props) {
             <div className="clearfix">
                 
         
+                                
 
-            <Row>
-                <div className="col-md-8"></div>
-                <div className="col-md-4">
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                {/* <div className="col-md-8"></div> */}
+                {/* <div className="col-md-4"> */}
                     <button
+                    type = "button"
                         className="btn green"
-                        style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0', alignItems: 'right' }}
-                        onClick={() => {
-
-                        
+                        style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
+                        onClick={() => {                        
                             performAction(resetAction)
 
                         }}
@@ -536,16 +543,17 @@ export default function UserSetupForm(props) {
 
                 {_.get(containerState, 'userDetail.isActive', true) === false ?
                         <button
+                        type = "button"
                             className="btn green"
                             style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0', alignItems: 'right' }}
                             onClick={() => {
+                                performAction(activateAction)
                             }}
                         >
                             {"Unlock user"}
                         </button>
                         : null}
-                </div>
-            </Row>
+                {/* </div> */}
 
                 
                 <ActionButton actionList={containerState.actions}
@@ -554,15 +562,6 @@ export default function UserSetupForm(props) {
 
             </div>
 
-            {/* <div className="clearfix">
-                <div className="btn-toolbar pull-right">
-                
-                <ActionButton actionList={containerState.actions}
-                />
-                    
-
-                </div>
-            </div> */}
 
 
 

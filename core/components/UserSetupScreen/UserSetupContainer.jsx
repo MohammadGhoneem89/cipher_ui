@@ -408,13 +408,18 @@ class UserSetupContainer extends Component {
     }
 
     unlockAccount = () => {
-        // if (this.props.params.userID) {
-        //     let request = { "userID": this.state.userDetail.userID , email : this.state.userDetail.email };
-        //     this.props.actions.generalProcess(constants.passwordReset, request);
-        // }
+        if (this.props.params.userID) {
+            let request = { 
+                body:{
+                    "id": this.state.userDetail.userID
+                }
+             };
+            this.props.actions.generalProcess(constants.activateUser, request);
+        }
     }
 
     performAction = (actionObj) => {
+        console.log("actionObject" , actionObj);
         if (actionObj.value === "4055") {
             return this.resetPassword();
         }

@@ -88,6 +88,8 @@ module.exports = {
 
   passwordChange: baseUrl + "/API/UI/setPassword",
   passwordReset: baseUrl + "/API/UI/passwordReset",
+  
+  activateUser : baseUrl + "/API/UI/activateUser",
 
   getAPIPayLoadListData: baseUrl + "/API/UI/APIPayLoadList",
   getAPIPayloadDetail: baseUrl + "/API/UI/APIPayLoadDetail",
