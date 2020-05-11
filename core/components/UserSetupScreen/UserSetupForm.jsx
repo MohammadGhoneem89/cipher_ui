@@ -555,19 +555,19 @@ export default function UserSetupForm(props) {
         </div>
         &nbsp;&nbsp;
 
-        {_.get(containerState, 'userDetail.isActive', true) === false ?
-          <button
-            type="button"
-            className="btn green"
-            style={{cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0', alignItems: 'right'}}
-            onClick={() => {
-              performAction(activateAction)
-            }}
-          >
-            {"Unlock user"}
-          </button>
-          : null}
-        {/* </div> */}
+        {/*{_.get(containerState, 'userDetail.isActive', true) === false ?*/}
+        {/*  <button*/}
+        {/*    type="button"*/}
+        {/*    className="btn green"*/}
+        {/*    style={{cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0', alignItems: 'right'}}*/}
+        {/*    onClick={() => {*/}
+        {/*      performAction(activateAction)*/}
+        {/*    }}*/}
+        {/*  >*/}
+        {/*    {"Unlock user"}*/}
+        {/*  </button>*/}
+        {/*  : null}*/}
+        {/*/!* </div> *!/*/}
 
 
         <ActionButton actionList={containerState.actions}
