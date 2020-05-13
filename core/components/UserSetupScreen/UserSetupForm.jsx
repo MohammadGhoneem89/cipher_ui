@@ -202,7 +202,7 @@ export default function UserSetupForm(props) {
 
         </div>
         <div className="col-md-6">
-          {!containerState.id || containerState.editPassword && <Row>
+          {(!containerState.id || containerState.editPassword) && <Row>
             <div className="col-md-5" style={{width: '23%'}}>
               <Label text="Password" columns='8' divStyle={{width: 'auto', paddingRight: '0px'}}/>
               <Label text="*" style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
