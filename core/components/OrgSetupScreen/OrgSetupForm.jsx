@@ -166,7 +166,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
                     </div>
                     <div className="row">
                       <div className="form-group col-md-8">
-                        <input type="text" className="form-control" name="taxNO1" id="Tax NO 1" onChange={onInputChange}/>
+                        <input type="text" className="form-control" disabled={state.readOnly} value={state.taxNO1}  name="taxNO1" id="Tax NO 1" onChange={onInputChange}/>
                       </div>
                     </div>
                   </div>
@@ -178,7 +178,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
                     </div>
                     <div className="row">
                       <div className="form-group col-md-8">
-                        <input type="text" className="form-control" name="taxNO2" id="taxNO2" onChange={onInputChange}/>
+                        <input type="text" className="form-control" disabled={state.readOnly} value={state.taxNO2} name="taxNO2" id="taxNO2" onChange={onInputChange}/>
                       </div>
                     </div>
                   </div>
@@ -194,7 +194,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
                     </div>
                     <div className="row">
                       <div className="form-group col-md-8">
-                        <input type="text" className="form-control" name="address" id="address" onChange={onInputChange}/>
+                        <input type="text" className="form-control" disabled={state.readOnly} value={state.address} name="address" id="address" onChange={onInputChange}/>
                       </div>
                     </div>
                   </div>
@@ -219,7 +219,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
 
                   <div className="col-md-12">
                     <div className="col-md-12">
-                      <textarea type="text" className="form-control" name="publicKey"  onChange={onInputChange} rows="4" style={{ resize: "none", width: "100%" }} />
+                      <textarea type="text" className="form-control" disabled={state.readOnly} value={state.publicKey} name="publicKey"  onChange={onInputChange} rows="4" style={{ resize: "none", width: "100%" }} />
                     </div>
                   </div>
                 </div>
@@ -500,6 +500,8 @@ class OrgSetupForm extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+    
+   
     this.state = {
       index: undefined,
       readOnly: false,
@@ -706,14 +708,60 @@ class OrgSetupForm extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
+    let details = {
+      "taxNO1":"",
+      "taxNO2":"",
+      "address":"",
+      "publicKey":"",
+      "entityName":"",
+      "arabicName":"",
+      "spCode":"",
+      "shortCode":"",
+      "orgType":"",
+      "isActive":false,
+      "entityLogo":{
+         "sizeSmall":"",
+         "sizeMedium":""
+      },
+      "parentEntity":"",
+      "commissionTemplate":"",
+      "contacts":[
+   
+      ],
+      "mappedCodes":[
+   
+      ],
+      "additionalProps":[
+   
+      ],
+      "documents":[
+   
+      ],
+      "clientKey":"",
+      "lastReconDate":"",
+      "contactType":"",
+      "services":[
+   
+      ]
+   }
+
+   console.log("------------------->>>>>>>>>>. Props",nextProps)
+
     if (this.state.commissionTemplateID !== nextProps.initialValues.commissionTemplate) {
       this.setState({
         //commissionTemplateID: nextProps.initialValues.commissionTemplate,
         services: nextProps.initialValues.services,
         contacts: nextProps.initialValues.contacts,
         documents: nextProps.initialValues.documents,
-        readOnly: nextProps.containerState.readOnly
+        readOnly: nextProps.containerState.readOnly,
+        ...details,
+        ...nextProps.initialValues
+        
       });
+    }else {
+      this.setState({
+        ...details
+      })
     }
   }
 
@@ -722,6 +770,7 @@ class OrgSetupForm extends React.Component {
   }
 
   componentDidMount() {
+    console.log("------------------->>>>>>>>>>. Props DID ",this.props)
     let _this = this;
     this.disableFileds();
     document.getElementById('ImgUploadBtn').addEventListener('click', openDialog);
@@ -781,7 +830,7 @@ class OrgSetupForm extends React.Component {
   }
 
   render() {
-    console.log("----------------------", this.state)
+    console.log("----------st----------ar--", this.state)
     const { error, handleSubmit, pristine, reset, submitting, initialValues, containerState, containerProps } = this.props;
 
     return (
