@@ -388,6 +388,23 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
               <label className="form-group control-label col-md-4" style={{
                 textAlign: "left",
                 fontWeight: "normal"
+              }}>{utils.getLabelByID("Verify HMAC")}</label>
+              <div className="form-group col-md-8">
+                <div className="icheck-list">
+                  <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                    <label />
+                    <input type="checkbox" className="form-control" onChange={onInputChange} name="isHMAC" checked={initialValues.isHMAC} id="isHMAC" />
+                    <span />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "normal"
               }}>{utils.getLabelByID("APIDefScreen_isSimulated")}</label>
               <div className="form-group col-md-8">
                 <div className="icheck-list">

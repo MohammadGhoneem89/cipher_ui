@@ -22,17 +22,106 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
 
     <div>
 
-      <Portlet title={"Setup"}>
+
+      <Portlet title={"Basic Information"}>
+        <div className="row">
+          <div className="col-md-6 col-sm-6">
+            <TextInput
+              name="entityName"
+              label={utils.getLabelByID("entityName")}
+              type="text"
+              disabled={state.readOnly}
+            />
+            <br />
+            <TextInput
+              name="arabicName"
+              label={utils.getLabelByID("arabicName")}
+              type="text"
+              style={{ textAlign: "right" }}
+              disabled={state.readOnly}
+            />
+            <br />
+            <TextInput
+              name="clientKey"
+              label={utils.getLabelByID("Client Key")}
+              type="text"
+              disabled={state.readOnly}
+            />
+            <br />
+            <DropdownInput name="orgType" options={containerState.typeData.ORG_TYPES}
+                           label={utils.getLabelByID("ESEARCH_orgType")}
+                           disabled={state.readOnly}
+            />
+          </div>
+          <br />
+          <div className="col-md-6 col-sm-6 offset4">
+
+            <div className="row" style={{ display: "inline" }}>
+              <div className="col-md-6 col-sm-6" style={{ textAlign: "center" }} />
+              <div className="col-md-5 col-sm-5" style={{ textAlign: "center" }}>
+                <img id="EntityLogo"
+                     src={initialValues.entityLogo ? constants.baseUrl + initialValues.entityLogo.sizeMedium : "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png"}
+                     className="img-responsive img-thumbnail" alt="Entity Logo" width="150px"
+                     height="150px" />
+                {!state.readOnly &&
+                <div className="col-md-12 col-sm-12" style={{ textAlign: "center" }}>
+                            <span id="ImgUploadBtn" className="label label-primary" style={{ cursor: "pointer" }}>
+                              {utils.getLabelByID("ChangeImage")}
+                            </span>
+                  <TextInput name="entityLogo" id='ImgUploader' type='file'
+                             style={{ display: "none" }} />
+                </div>}
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="row">
+          <div className="row">
+            <div className="col-md-6 col-sm-6">
+              <div className="col-md-6 col-sm-6">
+                <br />
+                <DropdownInput name="parentEntity" options={containerProps.entityNames}
+                               label={utils.getLabelByID("parentEntity")}
+                               disabled={state.readOnly}
+                />
+              </div>
+              <div className="row">
+                <div className="col-md-6 col-sm-6">
+                  <br />
+                  <TextInput
+                    name="spCode"
+                    label={utils.getLabelByID("ES_spCode")}
+                    type="text"
+                    disabled={state.readOnly}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <div className="col-md-6 col-sm-6">
+                <CheckboxList>
+                  <CheckboxInput
+                    name="isActive"
+                    label={utils.getLabelByID("isActive")}
+                    type="checkbox"
+                    disabled={state.readOnly}
+                  />
+                </CheckboxList>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Portlet>
 
 
         <div className="tabbable-line boxless">
           <ul className="nav nav-tabs">
-            <li className="active">
+
+            <li className={"active"}>
               <a href="#tab_1_1" data-toggle="tab"
-                style={{ fontWeight: "Bold", fontSize: "17px" }}>Organization</a>
-            </li>
-            <li>
-              <a href="#tab_1_2" data-toggle="tab"
                 style={{ fontWeight: "Bold", fontSize: "17px" }}>Contacts</a>
             </li>
             <li>
@@ -60,103 +149,9 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
         <div className="tabbable-line">
           <div className="tab-content">
 
+
+
             <div className="tab-pane active" id="tab_1_1">
-              <Portlet title={"Details"}>
-                <div className="row">
-                  <div className="col-md-6 col-sm-6">
-                    <TextInput
-                      name="entityName"
-                      label={utils.getLabelByID("entityName")}
-                      type="text"
-                      disabled={state.readOnly}
-                    />
-                    <br />
-                    <TextInput
-                      name="arabicName"
-                      label={utils.getLabelByID("arabicName")}
-                      type="text"
-                      style={{ textAlign: "right" }}
-                      disabled={state.readOnly}
-                    />
-                    <br />
-                    <TextInput
-                      name="clientKey"
-                      label={utils.getLabelByID("Client Key")}
-                      type="text"
-                      disabled={state.readOnly}
-                    />
-                    <br />
-                    <DropdownInput name="orgType" options={containerState.typeData.ORG_TYPES}
-                      label={utils.getLabelByID("ESEARCH_orgType")}
-                      disabled={state.readOnly}
-                    />
-                  </div>
-                  <br />
-                  <div className="col-md-6 col-sm-6 offset4">
-
-                    <div className="row" style={{ display: "inline" }}>
-                      <div className="col-md-6 col-sm-6" style={{ textAlign: "center" }} />
-                      <div className="col-md-5 col-sm-5" style={{ textAlign: "center" }}>
-                        <img id="EntityLogo"
-                          src={initialValues.entityLogo ? constants.baseUrl + initialValues.entityLogo.sizeMedium : "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png"}
-                          className="img-responsive img-thumbnail" alt="Entity Logo" width="150px"
-                          height="150px" />
-                        {!state.readOnly &&
-                          <div className="col-md-12 col-sm-12" style={{ textAlign: "center" }}>
-                            <span id="ImgUploadBtn" className="label label-primary" style={{ cursor: "pointer" }}>
-                              {utils.getLabelByID("ChangeImage")}
-                            </span>
-                            <TextInput name="entityLogo" id='ImgUploader' type='file'
-                              style={{ display: "none" }} />
-                          </div>}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <br />
-                <div className="row">
-                  <div className="row">
-                    <div className="col-md-6 col-sm-6">
-                      <div className="col-md-6 col-sm-6">
-                        <br />
-                        <DropdownInput name="parentEntity" options={containerProps.entityNames}
-                          label={utils.getLabelByID("parentEntity")}
-                          disabled={state.readOnly}
-                        />
-                      </div>
-                      <div className="row">
-                        <div className="col-md-6 col-sm-6">
-                          <br />
-                          <TextInput
-                            name="spCode"
-                            label={utils.getLabelByID("ES_spCode")}
-                            type="text"
-                            disabled={state.readOnly}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="col-md-6 col-sm-6">
-                        <CheckboxList>
-                          <CheckboxInput
-                            name="isActive"
-                            label={utils.getLabelByID("isActive")}
-                            type="checkbox"
-                            disabled={state.readOnly}
-                          />
-                        </CheckboxList>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Portlet>
-
-            </div>
-
-            <div className="tab-pane" id="tab_1_2">
               <FormSection5 initialValues={initialValues} updateState={updateState} state={state} />
             </div>
 
@@ -250,7 +245,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
 
 
 
-      </Portlet>
+
     </div>
 
 
