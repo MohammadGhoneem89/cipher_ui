@@ -205,6 +205,19 @@ module.exports = {
     { alias: "ES_contacts_action", key: "actions", type: "action" }
   ],
 
+  mappedCodes: [
+    { alias: "mappingType", key: "mappingType", type: "string" },
+    { alias: "mappingCode", key: "mappingCode", type: "string" },
+    { alias: "action", key: "actions", type: "action" }
+  ],
+
+
+  additionalProperties: [
+    { alias: "propertyName", key: "propertyName", type: "string" },
+    { alias: "value", key: "value", type: "string" },
+    { alias: "action", key: "actions", type: "action" }
+  ],
+
   entitySearch: [
     { alias: "", key: "_id", type: "hiddenID" },
     { alias: "ESEARCH_entityName", key: "entityName", type: "image" },
