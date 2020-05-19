@@ -54,8 +54,8 @@ const initialState = {
     RelayNet: "",
     RemoteAPI: ""
   },
-
   RelayNetworks: [],
+  BillingPolicy: [],
   selectedRuleList: [],
   MappingOrgFieldData: [],
   simucases: [],
@@ -63,6 +63,7 @@ const initialState = {
   typeData: {},
   consortium: [],
   channel: [],
+  maxVal: 1,
   selectedConsortium: undefined,
   selectedChannel: undefined,
   smartcontract: [],
@@ -87,6 +88,8 @@ class APIDefinitionScreen extends React.Component {
     this.ActionHandlers = this.ActionHandlers.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.addRowRule = this.addRowRule.bind(this);
+    this.addPolicyRule = this.addPolicyRule.bind(this);
+
     this.onInputRuleEngine = this.onInputRuleEngine.bind(this);
     this.onInputChangeRequest = this.onInputChangeRequest.bind(this);
     this.navigateReq = this.navigateReq.bind(this);
@@ -125,6 +128,36 @@ class APIDefinitionScreen extends React.Component {
     if (uri.label)
       browserHistory.push(`/editMapping/${uri.label}`)
 
+  }
+
+  addPolicyRule() {
+    let from = document.getElementById('fromUnit') == null ? "" : document.getElementById('fromUnit').value;
+    let to = document.getElementById('toUnit') == null ? "" : document.getElementById('toUnit').value;
+    let billVal = document.getElementById('billVal') == null ? "" : document.getElementById('billVal').value;
+
+    if (!billVal || !from || !to) {
+      alert(`All fields is required!!`)
+      return;
+    }
+    let tupple = {
+      from, to, billVal,
+      actions: [
+        {label: "Delete Policy", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION"}
+      ]
+    }
+    let list = this.state.BillingPolicy;
+    list.push(tupple);
+    this.setState({BillingPolicy: list});
+    document.getElementById('fromUnit').value = '';
+    document.getElementById('toUnit').value = '';
+    document.getElementById('billVal').value = '';
+    this.state.BillingPolicy.forEach((elem) => {
+      if (elem.to > this.state.maxVal) {
+        this.setState({
+          maxVal: parseInt(elem.to) + 1
+        });
+      }
+    })
   }
 
   addRowRule() {
@@ -356,7 +389,7 @@ class APIDefinitionScreen extends React.Component {
       objectType: this.state.objectType || '',
     });
 
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['request_operator', 'database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES', 'bchain_rule_Type', 'UseCase']));
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['currency', 'cycle', 'request_operator', 'database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES', 'bchain_rule_Type', 'UseCase']));
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE") {
       let req = {
         useCase: this.props.useCase,
@@ -415,9 +448,18 @@ class APIDefinitionScreen extends React.Component {
           ];
           return item;
         });
+        nextProps.APIDefinitionAddUpdate.data.BillingPolicy.forEach((elem) => {
+          if (elem.to > this.state.maxVal) {
+            this.setState({
+              maxVal: parseInt(elem.to) + 1
+            });
+          }
+        })
         this.setState({
-          simucases: simucases
+          simucases: simucases,
+          BillingPolicy: nextProps.APIDefinitionAddUpdate.data.BillingPolicy
         });
+
       }
       // diff()
       // if (changes) {
@@ -568,6 +610,7 @@ class APIDefinitionScreen extends React.Component {
     data.simucases = this.state.simucases;
     data.CustomMappingFile = data.CustomMappingFile || this.state.generateMappingFile.path;
     data.MappingfunctionName = data.MappingfunctionName || this.state.generateMappingFile.functionName;
+    data.BillingPolicy = this.state.BillingPolicy;
     this.props.actions.generalProcess(constants.upsertAPIDefinition, data);
   }
 
@@ -722,6 +765,7 @@ class APIDefinitionScreen extends React.Component {
       <APIDefScreenForm navigateRes={this.navigateRes} navigateReq={this.navigateReq} parameters={this.state.parameters}
                         generateCustomFile={this.generateCustomFile} addParams={this.addParams}
                         onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule}
+                        addPolicyRule={this.addPolicyRule}
                         onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine}
                         onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList}
                         initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData}
@@ -734,7 +778,18 @@ class APIDefinitionScreen extends React.Component {
 
     //alert(actionName)
     switch (actionName) {
-
+      case "Delete Policy":
+        if (index > -1) {
+          let result = confirm("Are you you want to Delete Policy?");
+          if (result) {
+            if (index > -1) {
+              let tempStateRule = this.state.BillingPolicy;
+              tempStateRule.splice(index, 1);
+              this.setState({BillingPolicy: tempStateRule});
+            }
+          }
+        }
+        break;
       case "Remove":
         if (index > -1) {
           let result = confirm("Are you you want to delete rule?");

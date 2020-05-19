@@ -360,7 +360,13 @@ module.exports = {
     { alias: "ETEMP_templateType", key: "templateType", type: "string" },
     { alias: "ETEMP_template_action", key: "actions", type: "action" }
   ],
-
+  BillingRulesSetting: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "From", key: "from", type: "amount" },
+    { alias: "To", key: "to", type: "amount" },
+    { alias: "Billing Value", key: "billVal", type: "amount" },
+    { alias: "CTEMP_template_action", key: "actions", type: "action" }
+  ],
   auditTrailDetail: [
     { alias: "TL_DEGTransNo", key: "ePayNo", type: "string" },
     { alias: "TL_SPTransNo", key: "SPTRN", type: "string" },
@@ -486,8 +492,16 @@ module.exports = {
     { alias: "APL_Action", key: "action", type: "string" },
     { alias: "APL_Date", key: "createdAt", type: "string" },
     { alias: "APL_Actions", key: "actions", type: "action" },
+  ],
 
-
+  APIPayloadListTracking: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "APL_UUID", key: "uuid", type: "string" },
+    { alias: "Event Name", key: "eventname", type: "string" },
+    { alias: "created at", key: "createdat", type: "string" },
+    { alias: "duration", key: "duration", type: "number" },
+    { alias: "APL_Actions", key: "actions", type: "action" },
   ],
   viewRefundDownloadList: [
     { alias: "RV_fileName", key: "fileDetail", type: "downloadAttachement" },

@@ -244,7 +244,7 @@ class APIPayloadList extends React.Component {
                   </div>
                   <div className="row">
                       <div className="col-md-12">
-                          <Table title="API Payload List" fontclass="" TableClass="portlet light bordered sdg_portlet" gridColumns={utils.getGridColumnByName("APIPayloadListData")} gridData={this.props.APIPayloadListData.data.searchResult}
+                          <Table title="Transactions List" fontclass="" TableClass="portlet light bordered sdg_portlet" gridColumns={utils.getGridColumnByName("APIPayloadListData")} gridData={this.props.APIPayloadListData.data.searchResult}
                                  totalRecords={this.props.APIPayloadListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
                                  pagination={true} pageChanged={this.pageChanged} export={false} search={true}
                                  renderPopupBody={this.renderPopupBody} activePage={this.state.currentPageNo} />
@@ -298,5 +298,5 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) }
 
 }
-APIPayloadList.displayName = "API Payload List";
+APIPayloadList.displayName = "Transaction Tracking";
 export default connect(mapStateToProps, mapDispatchToProps)(APIPayloadList);

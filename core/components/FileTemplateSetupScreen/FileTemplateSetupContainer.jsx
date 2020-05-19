@@ -38,13 +38,14 @@ class FileTemplateContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(JSON.stringify(nextProps))
         if (nextProps.fileTemplateDetail._id === nextProps.fileTemplateID && nextProps.typeData.internalFields && nextProps.ApiList && nextProps.fileTemplateDetail.actions && this.state.isLoading == true) {
             //Add permissions
             let fileTemplateDetail = this.props.fileTemplateID ? nextProps.fileTemplateDetail : {
                 ...this.state.fileTemplateDetail,
                 actions: nextProps.fileTemplateDetail.actions
             };
-            alert(JSON.stringify(fileTemplateDetail.rulesList))
+            // alert(JSON.stringify(fileTemplateDetail.rulesList))
             this.setState({
                 isLoading: false,
                 fileTemplateID: nextProps.fileTemplateID,

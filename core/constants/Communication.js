@@ -88,8 +88,8 @@ module.exports = {
 
   passwordChange: baseUrl + "/API/UI/setPassword",
   passwordReset: baseUrl + "/API/UI/passwordReset",
-  
-  activateUser : baseUrl + "/API/UI/activateUser",
+
+  activateUser: baseUrl + "/API/UI/activateUser",
 
   getAPIPayLoadListData: baseUrl + "/API/UI/APIPayLoadList",
   getAPIPayloadDetail: baseUrl + "/API/UI/APIPayLoadDetail",
@@ -210,4 +210,9 @@ module.exports = {
   getPickupListForType: baseUrl + "/API/UI/typeDataListForType",
   updateTypeData: baseUrl + "/API/UI/updateTypeData",
   getPickupListDetail: baseUrl + "/API/UI/getTypeDataDetailByID",
-};
+  fileList: baseUrl + "/API/core/getFileList",
+  fileData: baseUrl + "/API/core/getFileData",
+  getDBEndpointListView: baseUrl + "/API/core/getDBEndpointListView",
+  getTableNames: baseUrl + "/API/core/getTableNames",
+  getFieldsList: baseUrl + "/API/core/getFieldsList",
+}

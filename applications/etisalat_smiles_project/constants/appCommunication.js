@@ -47,11 +47,7 @@ module.exports = {
     getSettlementBatch:`${baseUrl}/API/SMILES/getSettlementBatch`,
     entityTypedata:`${baseUrl}/API/UI/entityTypedata`,
     getDashboardDataList:`${baseUrl}/API/SMILES/getDashboardData`,
-    fileList: baseUrl + "/API/etisalat/getFileList",
-    fileData: baseUrl + "/API/etisalat/getFileData",
-    getDBEndpointListView: baseUrl + "/API/etisalat/getDBEndpointListView",
-    getTableNames: baseUrl + "/API/etisalat/getTableNames",
-    getFieldsList: baseUrl + "/API/etisalat/getFieldsList",
+
     getOrgCodeData: baseUrl + "/API/SMILES/getAllOrgMap",
     addEditMerchant: baseUrl + "/API/SMILES/addEditMerchant"
 };
