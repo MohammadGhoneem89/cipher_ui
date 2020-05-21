@@ -21,7 +21,7 @@ COPY package.json .
 COPY . .
 RUN bash -c "npm install"
 RUN bash -c "npm install -g npm latest"
-RUN bash -c "npm list"
+# RUN bash -c "npm list"
 USER 1001
 EXPOSE 3000
 
