@@ -215,4 +215,4 @@ module.exports = {
   getDBEndpointListView: baseUrl + "/API/core/getDBEndpointListView",
   getTableNames: baseUrl + "/API/core/getTableNames",
   getFieldsList: baseUrl + "/API/core/getFieldsList",
-}
+};

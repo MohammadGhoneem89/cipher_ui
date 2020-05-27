@@ -80,6 +80,9 @@ import EndPointList from './components/endPoint/list';
 import EndPointDefination from './components/endPoint/defination';
 import ApiImport from './components/apiImport/apiImport.jsx';
 
+// Moved screens from etisalat ----------
+import FileList from "./components/Files/FileList.jsx";
+import FileData from "./components/Files/FileData.jsx";
 //onBoarding Routes
 import onBoardingProfileSetup from './components/onBoarding/onBoardingProfileSetup';
 import onBoardingProfileList from './components/onBoarding/onBoardingProfileList';
@@ -181,7 +184,11 @@ export default (< Router history={browserHistory}>
       < Route path="/onBoardingProfile/setup/:id" component={onBoardingProfileSetup}/>
       < Route path="/onBoardingProfile" component={onBoardingProfileList}/>
       < Route path="/endpoint" component={EndPointList}/>
-      < Route path="/endpoint/:id" component={EndPointDefination}/> {ApplicationsRoute.routesIndex}
+      < Route path="/endpoint/:id" component={EndPointDefination}/>
+      <Route path="/fileList" component={FileList} />
+      <Route path="/fileList/:type" component={FileList} />
+      <Route path="/fileData/:id" component={FileData} />
+      {ApplicationsRoute.routesIndex}
     </Route>
     < Route path="*" components={NotFound}/>
   </Router>
