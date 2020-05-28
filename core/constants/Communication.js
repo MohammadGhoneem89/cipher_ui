@@ -220,3 +220,4 @@ module.exports = {
   getErrorCodeList: baseUrl + "/API/core/getErrorCodeList",
 
 }
+

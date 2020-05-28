@@ -5,7 +5,7 @@ import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
-
+import { sha512 } from 'js-sha512';
 
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
@@ -42,7 +42,7 @@ class Locked extends React.Component {
       toaster.showToast("Password fields must not be empty please enter password.", "ERROR");
       //alert("Username, Password are required.");
     } else {
-      this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(Userid, password, sessionStorage.lang));
+      this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(Userid, sha512(password), sessionStorage.lang));
 
     }
   }
@@ -152,7 +152,7 @@ class Locked extends React.Component {
               <h4>
                 {"Your session timeout, please enter password to login!"}
               </h4>
-              
+
               <div className="lock-body">
               <i className="fa fa-lock" aria-hidden="true"></i>
                 <div className="pull-left lock-avatar-block">
