@@ -35,7 +35,7 @@ export default function UserSetupForm(props) {
   let resetAction = {
     value: "4055"
   }
-  let unblockAction= {
+  let unblockAction = {
     value: "4056"
   }
   let activateAction = {
@@ -415,12 +415,12 @@ export default function UserSetupForm(props) {
                     <div className="custom-control custom-checkbox" style={{padding: '26px', textAlign: 'left'}}>
 
                       {containerState.userDetail.groups && containerState.userDetail.groups.filter((item, index) => {
-                        if (containerState.userDetail.userType === 'Human' && item.type != 'API') {
+                        
+                        if (containerState.userDetail.userType == 'Human' && item.type == 'UI') {
                           return true
-                        } else if (containerState.userDetail.userType === 'API' && item.type === 'API') {
+                        } else if (containerState.userDetail.userType == 'API' && item.type == 'API') {
                           return true
                         }
-                        return false
                       }).map((item, index) => {
                         return (
                           <div key={index} style={{padding: '10px'}}>
@@ -433,7 +433,6 @@ export default function UserSetupForm(props) {
                               <span></span>
                               {item.name}
                             </label>
-
                           </div>
                         )
                       })}

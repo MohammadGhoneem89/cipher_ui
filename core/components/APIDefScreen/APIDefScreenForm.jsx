@@ -7,7 +7,7 @@ import DateControl from '../../common/DateControl.jsx';
 import get from 'lodash/get';
 import filter from 'lodash/filter';
 
-const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomFile, addParams, onRequestTypeChange,addPolicyRule, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange}) => {
+const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomFile, addParams, onRequestTypeChange, addPolicyRule, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange}) => {
   return (
     <Portlet title={utils.getLabelByID("APIDefinitionScreen_Heading")}>
       <div className="row">
@@ -149,6 +149,16 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                         })
                       }
                     </select>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label className="form-group control-label col-md-4"
+                         style={{textAlign: "left"}}>{utils.getLabelByID("Estimated RTT")}</label>
+                  <div className="form-group col-md-8">
+                    <input type="number" className="form-control" name="estimatedRtt" onChange={onInputChange}
+                           value={initialValues.estimatedRtt}/>
                   </div>
                 </div>
               </div>
@@ -1200,7 +1210,8 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                     fontWeight: "normal"
                                   }}>{utils.getLabelByID("From Units")}</label>
                                   <div className="form-group col-md-8">
-                                    <input type="number" className="form-control" disabled={true} value={parentState.maxVal}
+                                    <input type="number" className="form-control" disabled={true}
+                                           value={parentState.maxVal}
                                            name="fromUnit" id="fromUnit"/>
                                   </div>
                                 </div>
@@ -1221,7 +1232,8 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                 <div className="form-actions right">
                                   <div className="form-group col-md-12">
                                     <div className="btn-toolbar pull-right">
-                                      <button type="submit" className="btn btn-default" onClick={addPolicyRule.bind(this)}>
+                                      <button type="submit" className="btn btn-default"
+                                              onClick={addPolicyRule.bind(this)}>
                                         <i
                                           className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Policy")} </button>
                                     </div>

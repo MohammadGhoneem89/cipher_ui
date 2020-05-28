@@ -7,405 +7,431 @@ import config from '../../config';
 
 class ReportFilters extends React.Component {
 
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            entityNames: props.entityNames,
-            acquirerNames: props.acquirerNames,
-            error: undefined,
-            downloading: false
-        };
-        this.formSubmit = this.formSubmit.bind(this);
-        this.generateFilters = this.generateFilters.bind(this);
-    }
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      entityNames: props.entityNames,
+      acquirerNames: props.acquirerNames,
+      error: undefined,
+      downloading: false
+    };
+    this.formSubmit = this.formSubmit.bind(this);
+    this.generateFilters = this.generateFilters.bind(this);
+  }
 
-    componentDidMount() {
+  componentDidMount() {
 
-    }
+  }
 
-    componentWillMount() {
+  componentWillMount() {
 
-    }
+  }
 
-    formSubmit() {
-        let _this = this;
-        let fitlerCriteria = {};
-        let fromDateVal = '';
-        let toDateVal = '';
+  formSubmit() {
+    let _this = this;
+    let fitlerCriteria = {};
+    let fromDateVal = '';
+    let toDateVal = '';
+    for (let count = 0; count < this.props.reportFilters.data.length; count++) {
+      let filter = this.props.reportFilters.data[count];
+      if (filter["type"] === "array") {
+        let selO = document.getElementById(filter['id']);
+        if (selO) {
 
-        for (let count = 0; count < this.props.reportFilters.data.length; count++) {
-            let filter = this.props.reportFilters.data[count];
-            if (filter["type"] === "array") {
-                let selO = document.getElementById(filter['id']);
-                if (selO) {
-                    let selValues = [];
+          let selValues = [];
 
-                    for (let i = 0; i < selO.length; i++) {
-                        if (selO.options[i].selected || selO.options[0].selected) {
-                            selValues.push(selO.options[i].value);
-                        }
-                    }
-                    fitlerCriteria[filter['id']] = selValues;
-                }
+          for (let i = 0; i < selO.length; i++) {
+
+            if (selO.options[i].selected || selO.options[0].selected) {
+
+              selValues.push(selO.options[i].value);
             }
-            else {
-                let value = '';
-
-                if (filter['controlType'] == "dateTime") {
-                    value = $('#' + filter['id']).find("input").val()
-
-                    if (value == '') {
-                        this.setState({ error: 'please select ' + filter['id'] });
-                        return '';
-                    }
-                    if (filter['id'] == 'fromDate')
-                        fromDateVal = value;
-                    else if (filter['id'] == 'toDate')
-                        toDateVal = value;
-
-                }
-                else
-                    value = document.getElementById(filter['id']) == undefined ? "" : document.getElementById(filter['id']).value;
-
-                if (value != undefined && value != "")
-                    fitlerCriteria[filter['id']] = value;
-
-            }
-        }
-        let reportFormat = document.getElementById('reportFormat') == undefined ? "" : document.getElementById('reportFormat').value;
-        let language = document.getElementById('language') == undefined ? "" : document.getElementById('language').value;
-
-
-        if (fromDateVal != '' && toDateVal != '') {
-            let daysDiff = dates.getDaysDiff(fromDateVal, toDateVal)
-
-            if (daysDiff + 1 < 0) {
-                this.setState({ error: 'From date should be less then to date' });
-                // alert('Please select valid from or to date')
-                return '';
-            }
-
-            if (daysDiff + 1 > config.reportAlllowedDays) {
-                this.setState({ error: 'Report can be generated for ' + config.reportAlllowedDays + ' days only' });
-                // alert('Report can be generated for ' +config.reportAlllowedDays + ' days only')
-                return ''
-            }
+          }
+          fitlerCriteria[filter['id']] = selValues;
         }
 
-        let nationalization = {
-            "dir": language === "ar" ? "rtl" : "ltr",
-            "lang": language
-        };
+        if (filter['id'] == 'user' && fitlerCriteria[filter['id']][0] == 'All') {
 
-        if (sessionStorage.orgType === "Entity")
-            fitlerCriteria.entity = [];
-        if (sessionStorage.orgType === "Acquirer")
-            fitlerCriteria.acquirer = [];
-        console.log(JSON.stringify(fitlerCriteria));
-        fitlerCriteria = this.b64EncodeUnicode(JSON.stringify(fitlerCriteria));
-        nationalization = this.b64EncodeUnicode(JSON.stringify(nationalization))
+          let users = []
+          this.props.userList && this.props.userList.map((element) => {
+            users.push({
+              userID: element.userID,
+              _id: element._id,
+              firstName: element.firstName
+            })
+          })
+          fitlerCriteria[filter['id']] = JSON.stringify(users);
+          // break;
+        } else if (filter['id'] == 'user' && fitlerCriteria[filter['id']][0] != 'All') {
+          fitlerCriteria[filter['id']] =
+            this.props.userList && this.props.userList.filter((user) => {
+              return user.userID == fitlerCriteria[filter['id']]
+            })
+        }
+        if (filter['id'] == 'group' && fitlerCriteria[filter['id']][0] == 'All') {
+          fitlerCriteria[filter['id']] = this.props.groupList;
+          //  break;
+        } else if (filter['id'] == 'group' && fitlerCriteria[filter['id']][0] != 'All') {
+          fitlerCriteria[filter['id']] =
+            this.props.groupList.filter((group) => {
+              return group.name == fitlerCriteria[filter['id']]
+            })
+        }
 
+      }
 
-        let link = document.createElement('a');
-       // link.href = constants.report + "/Report/" + this.props.reportID + '?id=' + this.props.reportID + '&searchCriteria=' + fitlerCriteria + '&JWT=' + sessionStorage.token + "&language=" + nationalization + "&reportFormat=" + reportFormat;
-        link.href = constants.reportUrl + "/Report/" + this.props.reportID + '?id=' + this.props.reportID + '&searchCriteria=' + fitlerCriteria + '&JWT=' + sessionStorage.token + "&language=" + nationalization + "&reportFormat=" + reportFormat;
+      let value = '';
 
-        link.download = "download";
-        link.click();
+      if (filter['controlType'] == "dateTime") {
+        value = $('#' + filter['id']).find("input").val()
 
-        this.setState({downloading: true});
-        setTimeout(()=>{
-            _this.setState({downloading: false});
-        },4000);
-    }
+        if (value == '') {
+          this.setState({error: 'Please select ' + filter['id']});
+          return '';
+        } else if (filter['id'] == 'fromDate') {
+          fromDateVal = value;
+          this.setState({error: undefined});
+        } else if (filter['id'] == 'toDate') {
+          toDateVal = value;
+          this.setState({error: undefined});
+        } else
+          value = document.getElementById(filter['id']) == undefined ? "" : document.getElementById(filter['id']).value;
 
-    getTextBox(filter) {
-        return (<div className="row">
-                <div className="col-md-6">
-                    <div className="form-group col-md-4">
-                        <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
-                    </div>
-                    <div className="form-group col-md-8">
-                        <input type="text" className="form-control " id={filter["id"]}/>
-                    </div>
-                </div>
-            </div>
-        )
+        if (value != undefined && value != "")
+          fitlerCriteria[filter['id']] = value;
+      }
+
 
     }
-
-    getDropDown(filter) {
-        let list = [];
-        if (filter["id"] === "Entity" || filter["id"] === "entity") {
-
-            if (!(sessionStorage.orgType === "Entity"))
-                list = this.props.entityNames;
-            else
-                return ("");
-        }
-
-        else if (filter["id"] == "Acquirer" || filter["id"] == "bank" || filter["id"] == "acquirer") {
-            if (!(sessionStorage.orgType === "Acquirer"))
-                list = this.props.acquirerNames;
-            else
-                return ("");
-        }
-        else if (filter["id"] == "entityService") {
-            if (sessionStorage.orgType === "Entity")
-                list = this.props.entityService[0].services
-            else
-                return ("");
-        }
-
-        else {
-            let listTypeData = filter["typeDataDetails"].data;
-            list = listTypeData[filter["typeData"]];
-
-        }
-
-        if (filter["id"] == "entityService") {
-            return (
-                <div className="col-md-6">
-                    <div className="form-group col-md-4">
-                        <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
-                    </div>
-                    <div className="form-group col-md-8">
-                        <select name={filter["id"]} id={filter["id"]} className="form-control">
-                            {list.map((option, index) => {
-                                return (
-                                    <option key={index} value={option.serviceCode}>{option.serviceName}</option>
-                                );
-                            })}
-                        </select>
-                    </div>
-                </div>)
+    let reportFormat = document.getElementById('reportFormat') == undefined ? "" : document.getElementById('reportFormat').value;
+    let language = document.getElementById('language') == undefined ? "" : document.getElementById('language').value;
 
 
-        }
-        else {
+    if (fromDateVal != '' && toDateVal != '') {
+      let daysDiff = dates.getDaysDiff(fromDateVal, toDateVal)
 
-            return (
-                <div className="col-md-6">
-                    <div className="form-group col-md-4">
-                        <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
-                    </div>
-                    <div className="form-group col-md-8">
-                        <select name={filter["id"]} id={filter["id"]} className="form-control">
-                            {list.map((option, index) => {
-                                return (
-                                    <option key={index} value={option.value}>{sessionStorage.lang == "EN" ? option.label : option.label_AR}</option>
-                                );
-                            })}
-                        </select>
-                    </div>
-                </div>)
-        }
+      if (daysDiff + 1 < 0) {
+        this.setState({error: 'From date should be less then to date'});
+        return '';
+      }
 
+      if (daysDiff + 1 > config.reportAlllowedDays) {
+        this.setState({error: 'Report can be generated for ' + config.reportAlllowedDays + ' days only'});
+        return ''
+      }
     }
 
-    getMultiSelectList(filter) {
-        let list = [];
-        if (filter["id"] === "Entity" || filter["id"] === "entity") {
-            if (!(sessionStorage.orgType === "Entity"))
-                list = this.props.entityNames;
-            else
-                return ("");
-        }
-        else if (filter["id"] === "Acquirer" || filter["id"] === "bank" || filter["id"] === "acquirer") {
-            if (!(sessionStorage.orgType === "Acquirer"))
-                list = this.props.acquirerNames;
-            else
-                return ("");
-        }
-        else if (filter["id"] === "entityService") {
-            if (sessionStorage.orgType === "Entity")
-                list = this.props.entityService[0].services;
-            else
-                return ("");
-        }
-        else {
+    let nationalization = {
+      "dir": language === "ar" ? "rtl" : "ltr",
+      "lang": language
+    };
 
-            let listTypeData = filter["typeDataDetails"].data;
-            list = listTypeData[filter["typeData"]];
+    console.log(constants.reportUrl, "constants.reportUrl");
+    console.log(fitlerCriteria, "??????????? fitlerCriteria")
+    fitlerCriteria = this.b64EncodeUnicode(JSON.stringify(fitlerCriteria));
+    nationalization = this.b64EncodeUnicode(JSON.stringify(nationalization))
 
-        }
 
-        if (filter["id"] === "entityService") {
-            return (<div className="col-md-6">
-                <div className="form-group col-md-4">
-                    <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
-                </div>
-                <div className="form-group col-md-8">
-                    <select name={filter["id"]} id={filter["id"]} multiple="multiple" className="multi-select" style={{ width: "370" }}>
-                        <option value="All" selected="true">All</option>
-                        {list.map((option, index) => {
-                            return (
-                                <option key={index} value={option.serviceCode}>{option.serviceName}</option>
-                            );
-                        })}
-                    </select>
-                </div>
-            </div>)
-        }
-        else {
+    let link = document.createElement('a');
+    link.href = constants.reportUrl + "/reports/" + this.props.reportID + '?id=' + this.props.reportID + '&searchCriteria=' + fitlerCriteria + '&JWT=' + sessionStorage.token + "&language=" + nationalization + "&reportFormat=" + reportFormat;
+    link.download = "download";
+    link.click();
 
-            return (<div className="col-md-6">
-                <div className="form-group col-md-4">
-                    <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
-                </div>
-                <div className="form-group col-md-8">
-                    <select name={filter["id"]} id={filter["id"]} multiple="multiple" className="multi-select" style={{ width: "370" }} onChange={(e)=>{this.onChange(filter["id"], e.target)}}>
-                        <option value="All" selected="true">All</option>
-                        {list.map((option, index) => {
-                            return (
-                                <option key={index} value={option.value}>{sessionStorage.lang === "EN" ? option.label : option.label_AR}</option>
-                            );
-                        })}
-                    </select>
-                </div>
-            </div>)
-        }
+    this.setState({downloading: true});
+    setTimeout(() => {
+      _this.setState({downloading: false});
+    }, 4000);
+  }
+
+  getTextBox(filter) {
+    return (<div className="row">
+        <div className="col-md-6">
+          <div className="form-group col-md-4">
+            <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
+          </div>
+          <div className="form-group col-md-8">
+            <input type="text" className="form-control " id={filter["id"]}/>
+          </div>
+        </div>
+      </div>
+    )
+
+  }
+
+  getDropDown(filter) {
+    let list = [];
+    if (filter["id"] === "user") {
+
+      let users = [{"userID": "All", "_id": ""}]
+      this.props.userList.map((element) => {
+        users.push({
+          userID: element.userID,
+          _id: element._id
+        })
+      })
+      list = users;
+    } else if (filter["id"] === "group") {
+      let group = [{"group": "All", "_id": ""}]
+      this.props.groupList.map((element) => {
+        group.push({
+          group: element.name,
+          _id: element._id
+        })
+      })
+      list = group;
+    } else if (filter["id"] == "Acquirer" || filter["id"] == "bank" || filter["id"] == "acquirer") {
+      if (!(sessionStorage.orgType === "Acquirer"))
+        list = this.props.acquirerNames;
+      else
+        return ("");
+    } else if (filter["id"] == "entityService") {
+      if (sessionStorage.orgType === "Entity")
+        list = this.props.entityService[0].services
+      else
+        return ("");
+    } else {
+      let listTypeData = filter["typeDataDetails"].data;
+      list = listTypeData[filter["typeData"]];
 
     }
-
-    getDateFilter(filter) {
-        return (<div className="col-md-6">
-            <div className="form-group col-md-4">
-                <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
-            </div>
-            <div className="form-group col-md-8">
-                <DateControl id={filter["id"]}/>
-            </div>
+    if (filter["id"] == "user") {
+      return (
+        <div className="col-md-6">
+          <div className="form-group col-md-4">
+            <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
+          </div>
+          <div className="form-group col-md-8">
+            <select name={filter["id"]} id={filter["id"]} className="form-control">
+              {list.map((option, index) => {
+                return (
+                  <option key={index} value={option.userID}>{option.userID}</option>
+                );
+              })}
+            </select>
+          </div>
+        </div>)
+    }
+    if (filter["id"] == "group") {
+      return (
+        <div className="col-md-6">
+          <div className="form-group col-md-4">
+            <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
+          </div>
+          <div className="form-group col-md-8">
+            <select name={filter["id"]} id={filter["id"]} className="form-control">
+              {list.map((option, index) => {
+                return (
+                  <option key={index} value={option.group}>{option.group}</option>
+                );
+              })}
+            </select>
+          </div>
         </div>)
     }
 
-    generateFilters(filter) {
-        if (filter === undefined)
-            return "";
+    if (filter["id"] == "entityService") {
+      return (
+        <div className="col-md-6">
+          <div className="form-group col-md-4">
+            <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
+          </div>
+          <div className="form-group col-md-8">
+            <select name={filter["id"]} id={filter["id"]} className="form-control">
+              {list.map((option, index) => {
+                return (
+                  <option key={index} value={option.serviceCode}>{option.serviceName}</option>
+                );
+              })}
+            </select>
+          </div>
+        </div>)
 
-        if (filter["controlType"] === "textBox")
-            return this.getTextBox(filter);
 
-        else if (filter["controlType"] === "multipleSelectionList")
-            return this.getMultiSelectList(filter);
+    } else {
 
-        else if (filter["controlType"] === "dropDownList")
-            return this.getDropDown(filter);
+      return (
+        <div className="col-md-6">
+          <div className="form-group col-md-4">
+            <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
+          </div>
+          <div className="form-group col-md-8">
+            <select name={filter["id"]} id={filter["id"]} className="form-control">
+              {list.map((option, index) => {
+                return (
+                  <option key={index} value={option.value}>{
+                    sessionStorage.lang == "EN" ? option.label : option.label_AR}</option>
+                );
+              })}
+            </select>
+          </div>
+        </div>)
+    }
 
-        else if (filter["controlType"] === "dateTime")
-            return this.getDateFilter(filter)
+  }
+
+  getMultiSelectList(filter) {
+    let list = [];
+    if (filter["id"] === "Entity" || filter["id"] === "entity") {
+      if (!(sessionStorage.orgType === "Entity"))
+        list = this.props.entityNames;
+      else
+        return ("");
+    } else if (filter["id"] === "Acquirer" || filter["id"] === "bank" || filter["id"] === "acquirer") {
+      if (!(sessionStorage.orgType === "Acquirer"))
+        list = this.props.acquirerNames;
+      else
+        return ("");
+    } else if (filter["id"] === "entityService") {
+      if (sessionStorage.orgType === "Entity")
+        list = this.props.entityService[0].services;
+      else
+        return ("");
+    } else {
+
+      let listTypeData = filter["typeDataDetails"].data;
+      list = listTypeData[filter["typeData"]];
 
     }
 
-    b64EncodeUnicode(str) {
-        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-            function toSolidBytes(match, p1) {
-                return String.fromCharCode('0x' + p1);
-            }));
+    if (filter["id"] === "entityService") {
+      return (<div className="col-md-6">
+        <div className="form-group col-md-4">
+          <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
+        </div>
+        <div className="form-group col-md-8">
+          <select name={filter["id"]} id={filter["id"]} multiple="multiple" className="multi-select"
+                  style={{width: "370"}}>
+            <option value="All" selected="true">All</option>
+            {list.map((option, index) => {
+              return (
+                <option key={index} value={option.serviceCode}>{option.serviceName}</option>
+              );
+            })}
+          </select>
+        </div>
+      </div>)
+    } else {
+
+      return (<div className="col-md-6">
+        <div className="form-group col-md-4">
+          <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
+        </div>
+        <div className="form-group col-md-8">
+          <select name={filter["id"]} id={filter["id"]} multiple="multiple" className="multi-select"
+                  style={{width: "370"}} onChange={(e) => {
+            this.onChange(filter["id"], e.target)
+          }}>
+            <option value="All" selected="true">All</option>
+            {list.map((option, index) => {
+              return (
+                <option key={index}
+                        value={option.value}>{sessionStorage.lang === "EN" ? option.label : option.label_AR}</option>
+              );
+            })}
+          </select>
+        </div>
+      </div>)
     }
 
-    clearFields() {
-        $('#filterForm').find('input:text').val('');
-        $('#filterForm').find('select').each(function () {
-            $(this)[0].selectedIndex = 0;
-        });
+  }
+
+  getDateFilter(filter) {
+    return (<div className="col-md-6">
+      <div className="form-group col-md-4">
+        <label className="control-label">{utils.getLabelByID(filter["label"])}</label>
+      </div>
+      <div className="form-group col-md-8">
+        <DateControl id={filter["id"]}/>
+      </div>
+    </div>)
+  }
+
+  generateFilters(filter) {
+    if (filter === undefined)
+      return "";
+
+    if (filter["controlType"] === "textBox")
+      return this.getTextBox(filter);
+
+    if (filter["controlType"] === "multipleSelectionList")
+      return this.getMultiSelectList(filter);
+
+    if (filter["controlType"] === "dropDownList")
+      return this.getDropDown(filter);
+
+    if (filter["controlType"] === "dateTime") {
+      return this.getDateFilter(filter)
     }
 
-    onChange(filterId, element){
-        if(filterId==="Entity"){
-            let selectedValues = [];
-            Object.keys(element.options).map((item)=>{
-                if (element.options[item].selected) {
-                    selectedValues.push(element.options[item].value);
-                }
-            });
-            console.log(selectedValues);
+  }
+
+  b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+      function toSolidBytes(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      }));
+  }
+
+  clearFields() {
+    $('#filterForm').find('input:text').val('');
+    $('#filterForm').find('select').each(function () {
+      $(this)[0].selectedIndex = 0;
+    });
+  }
+
+  onChange(filterId, element) {
+    if (filterId === "Entity") {
+      let selectedValues = [];
+      Object.keys(element.options).map((item) => {
+        if (element.options[item].selected) {
+          selectedValues.push(element.options[item].value);
         }
+      });
+      console.log(selectedValues);
     }
-    
-    render() {
-        let reprotFormat = [
-            {value: "pdf", label: "PDF"},
-            {value: "excel", label: "Excel"}
-        ];
-        let language = [
-            {value: "en", label: "English"},
-            {value: "ar", label: "Arabic"}
-        ];
-        return (
-            <div className="form-body" id="filterForm" key="filterForm">
-                {this.state.error && <div className="alert alert-danger" style={{ textAlign: "center" }}>
-                    <strong>Error!</strong> {this.state.error} </div>}
-                <div className="row">
-                    {this.generateFilters(this.props.reportFilters.data[0])}
-                    {this.generateFilters(this.props.reportFilters.data[1])}
-                </div>
-                <div className="row">
-                    {this.generateFilters(this.props.reportFilters.data[2])}
-                    {this.generateFilters(this.props.reportFilters.data[3])}
-                </div>
-                <div className="row">
-                    {this.generateFilters(this.props.reportFilters.data[4])}
-                    {this.generateFilters(this.props.reportFilters.data[5])}
-                </div>
-                <div className="row">
-                    {this.generateFilters(this.props.reportFilters.data[6])}
-                    {this.generateFilters(this.props.reportFilters.data[7])}
-                </div>
-                <div className="row">
-                    {this.generateFilters(this.props.reportFilters.data[8])}
-                    {this.generateFilters(this.props.reportFilters.data[9])}
-                </div>
-                <div className="row">
-                    {this.generateFilters(this.props.reportFilters.data[10])}
-                    {this.generateFilters(this.props.reportFilters.data[11])}
-                </div>
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group col-md-4">
-                            <label className="control-label">{utils.getLabelByID("RPT_ReportFormat")}</label>
-                        </div>
-                        <div className="form-group col-md-8">
-                            <select name="reportFormat" id="reportFormat" className="form-control">
-                                {reprotFormat.map((option, index) => {
-                                    return (
-                                        <option key={index} value={option.value}>{option.label}</option>
-                                    );
-                                })}
-                            </select>
-                        </div>
+  }
 
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group col-md-4">
-                            <label className="control-label">{utils.getLabelByID("RPT_Language")}</label>
-                        </div>
-                        <div className="form-group col-md-8">
-                            <select name="language" id="language" className="form-control">
-                                {language.map((option, index) => {
-                                    return (
-                                        <option key={index} value={option.value}>{option.label}</option>
-                                    );
-                                })}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="pull-right">
-                            <button type="submit" className="btn green mt-ladda-btn ladda-button" onClick={this.formSubmit.bind(this)} disabled={this.state.downloading}>{this.state.downloading && "Downloading"}{!this.state.downloading && "View Report"} </button>
-                            {"  "}
-                            <button type="button" className="btn default"
-                                    onClick={this.clearFields}>{utils.getLabelByID("Clear")}</button>
-                        </div>
-                    </div>
-                </div>
+  render() {
+
+    console.log("\n\n this.props.reportFilters ??? ", this.props.reportFilters)
+    let reprotFormat = [
+      {value: "pdf", label: "PDF"},
+      {value: "excel", label: "Excel"}
+    ];
+    let language = [
+      {value: "en", label: "English"},
+      {value: "ar", label: "Arabic"}
+    ];
+    return (
+      <div className="form-body" id="filterForm" key="filterForm">
+
+        {this.state.error && <div className="alert alert-danger" style={{textAlign: "center"}}>
+          <strong>Error!</strong> {this.state.error} </div>}
+        <div className="row">
+          {this.generateFilters(this.props.reportFilters.data[1])}
+          {this.generateFilters(this.props.reportFilters.data[2])}
+
+        </div>
+        <div className="row">
+          {this.generateFilters(this.props.reportFilters.data[0])}
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            <div className="pull-right">
+              <button type="submit" className="btn green mt-ladda-btn ladda-button" onClick={this.formSubmit.bind(this)}
+                      disabled={this.state.downloading}>{this.state.downloading && "Downloading"}{!this.state.downloading
+              && "View Report"} </button>
+              {"  "}
+              <button type="button" className="btn default"
+                      onClick={this.clearFields}>{utils.getLabelByID("Clear")}</button>
             </div>
+          </div>
+        </div>
+      </div>
 
-        );
+    );
 
-    }
+  }
 }
 
 export default ReportFilters;

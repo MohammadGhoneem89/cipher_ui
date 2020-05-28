@@ -103,10 +103,18 @@ class APIPayloadDetail extends React.Component {
     switch (actionName) {
       case "View Request":
 
-        this.setState({isVisible: true, heading: "Request", body: this.props.APIPayloadDetailData.tracking[index].request})
+        this.setState({
+          isVisible: true,
+          heading: "Request",
+          body: this.props.APIPayloadDetailData.tracking[index].request
+        })
         break;
       case "View Response":
-        this.setState({isVisible: true, heading: "Response", body: this.props.APIPayloadDetailData.tracking[index].response})
+        this.setState({
+          isVisible: true,
+          heading: "Response",
+          body: this.props.APIPayloadDetailData.tracking[index].response
+        })
         break;
       case "View Error":
         this.setState({isVisible: true, heading: "Error", body: this.props.APIPayloadDetailData.tracking[index].error})
@@ -152,6 +160,7 @@ class APIPayloadDetail extends React.Component {
         }
       ]
       let repostActionURL = this.props.APIPayloadDetailData.channel == 'Cipher' ? constants.repostAction : constants.repostActionInternal;
+      let eCode = _.get(this.props.APIPayloadDetailData.response, 'errorCode', 'N/A')
       return (
 
 
@@ -159,103 +168,122 @@ class APIPayloadDetail extends React.Component {
           <div className="form-body" id="auditTrailSection">
             <div className="row">
               <div className={"col-md-12"}>
-                <h4 className="form-section" style={{fontWeight: "bold"}}>{"Transaction details"}</h4>
-                <div className="row">
-                  <div className="row">
-                    <div className={"col-md-12"}>
-                      <div className={"col-md-12"}>
-                        <div className=" col-md-3">
-                          <label className="control-label bold">{utils.getLabelByID("Message ID")}</label>
-                        </div>
-                        <div className=" col-md-9">
-                          <label className="control-label ">{this.props.APIPayloadDetailData.uuid}</label>
-                        </div>
 
-                        <div className=" col-md-3">
-                          <label className="control-label bold">{utils.getLabelByID("Status")}</label>
-                        </div>
-                        <div className=" col-md-9">
-                          <label
-                            className="control-label ">{_.get(this.props.APIPayloadDetailData.response, 'errorCode', 'N/A')}</label>
-                        </div>
+                <div className="tabbable-line boxless">
+                  <ul className="nav nav-tabs">
+                    <li className="active">
+                      <a href="#tab_1_1" data-toggle="tab"
+                         style={{fontWeight: "Bold", fontSize: "17px"}}>Transaction</a>
+                    </li>
+                    <li>
+                      <a href="#tab_1_2" data-toggle="tab"
+                         style={{fontWeight: "Bold", fontSize: "17px"}}>Tracking</a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="tabbable-line">
+                  <div className="tab-content">
+                    {/* Simulator Box */}
+                    <div className="tab-pane active" id="tab_1_1">
+                      <h4 className="form-section" style={{fontWeight: "bold"}}>{"Transaction details"}</h4>
+                      <div className="row">
+                        <div className="row">
+                          <div className={"col-md-12"}>
+                            <div className={"col-md-12"}>
+                              <div className=" col-md-3">
+                                <label className="control-label bold">{utils.getLabelByID("Message ID")}</label>
+                              </div>
+                              <div className=" col-md-9">
+                                <label className="control-label ">{this.props.APIPayloadDetailData.uuid}</label>
+                              </div>
 
-                        <div className="] col-md-3">
-                          <label className="control-label bold">{utils.getLabelByID("Called At")}</label>
-                        </div>
-                        <div className=" col-md-9">
-                          <label className="control-label ">{this.props.APIPayloadDetailData.createdat}</label>
-                        </div>
+                              <div className=" col-md-3">
+                                <label className="control-label bold">{utils.getLabelByID("Status")}</label>
+                              </div>
+                              <div className=" col-md-9">
+                                <label
+                                  className="control-label "
+                                  style={{color: eCode == 200 ? 'green' : 'red'}}>{eCode}</label>
+                              </div>
+                              <div className="] col-md-3">
+                                <label className="control-label bold">{utils.getLabelByID("Called At")}</label>
+                              </div>
+                              <div className=" col-md-9">
+                                <label className="control-label ">{this.props.APIPayloadDetailData.createdat}</label>
+                              </div>
 
-                        <div className=" col-md-3">
-                          <label className="control-label bold">{utils.getLabelByID("Called By User")}</label>
-                        </div>
-                        <div className=" col-md-9">
-                          <label
-                            className="control-label ">{_.get(this.props.APIPayloadDetailData.payload, 'header.username', 'N/A')}</label>
-                        </div>
+                              <div className=" col-md-3">
+                                <label className="control-label bold">{utils.getLabelByID("Called By User")}</label>
+                              </div>
+                              <div className=" col-md-9">
+                                <label
+                                  className="control-label ">{_.get(this.props.APIPayloadDetailData.payload, 'header.username', 'N/A')}</label>
+                              </div>
 
-                        <div className=" col-md-3">
-                          <label className="control-label bold">{utils.getLabelByID("Duration")}</label>
-                        </div>
-                        <div className=" col-md-9">
-                          <label className="control-label ">{this.props.APIPayloadDetailData.duration} ms</label>
+                              <div className=" col-md-3">
+                                <label className="control-label bold">{utils.getLabelByID("Duration")}</label>
+                              </div>
+                              <div className=" col-md-9">
+                                <label className="control-label " style={{color: this.props.APIPayloadDetailData.duration <= this.props.APIPayloadDetailData.avgrtt ? 'green' : 'red'}}>{this.props.APIPayloadDetailData.duration} ms</label>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
+                      <div className={"col-md-6"}>
+                        <h4 className="form-section" style={{fontWeight: "bold"}}>{"Request"}</h4>
+                        <JSONPretty id="json-pretty" style={{height: "400", width: "100%"}}
+                                    json={this.props.APIPayloadDetailData.payload}></JSONPretty>
+                      </div>
+                      <div className={"col-md-6"}>
+                        <h4 className="form-section" style={{fontWeight: "bold"}}>{"Response"}</h4>
+                        <JSONPretty id="json-pretty" style={{height: "400", width: "100%"}}
+                                    json={this.props.APIPayloadDetailData.response}></JSONPretty>
+                        <div>
+
+                        </div>
+                      </div>
+                      <div className={"col-md-12"}>
+                        <h4 className="form-section" style={{fontWeight: "bold"}}>{"Error"}</h4>
+                        <JSONPretty id="json-pretty" style={{height: "auto", width: "100%"}}
+                                    json={this.props.APIPayloadDetailData.error || "Processed OK!"}></JSONPretty>
+                        <div>
+                          <ActionButton actionList={action} performAction={this.performAction}
+                                        repostActionURL={repostActionURL}/>
+                        </div>
+                      </div>
+                      <div className={"col-md-12"}>
+                      </div>
+                    </div>
+                    <div className="tab-pane active" id="tab_1_2">
+                      <h4 style={{fontWeight: "bold"}}>{"Tracking"}</h4>
+                      <Table title="" fontclass="" T
+                             gridColumns={utils.getGridColumnByName("APIPayloadListTracking")}
+                             gridData={this.props.APIPayloadDetailData.tracking}
+                             componentFunction={this.ActionHandlers}
+                        // renderPopupBody={this.renderPopupBody}
+                      />
+                      {
+                        this.state.isVisible &&
+                        <div className={"col-md-12"}>
+                          <h4 style={{fontWeight: "bold"}}>{this.state.heading}</h4>
+                          <JSONPretty id="json-pretty" style={{height: "auto", width: "100%"}}
+                                      json={this.state.body || "N/A"}></JSONPretty>
+                        </div>
+                      }
                     </div>
                   </div>
                 </div>
-
               </div>
-              <div className={"col-md-6"}>
-                <h4 className="form-section" style={{fontWeight: "bold"}}>{"Request"}</h4>
-                <JSONPretty id="json-pretty" style={{height: "400", width: "100%"}}
-                            json={this.props.APIPayloadDetailData.payload}></JSONPretty>
-              </div>
-              <div className={"col-md-6"}>
-                <h4 className="form-section" style={{fontWeight: "bold"}}>{"Response"}</h4>
-                <JSONPretty id="json-pretty" style={{height: "400", width: "100%"}}
-                            json={this.props.APIPayloadDetailData.response}></JSONPretty>
-                <div>
-
-                </div>
-              </div>
-              <div className={"col-md-12"}>
-                <h4 className="form-section" style={{fontWeight: "bold"}}>{"Error"}</h4>
-                <JSONPretty id="json-pretty" style={{height: "auto", width: "100%"}}
-                            json={this.props.APIPayloadDetailData.error || "Processed OK!"}></JSONPretty>
-                <div>
-                  <ActionButton actionList={action} performAction={this.performAction}
-                                repostActionURL={repostActionURL}/>
-                </div>
-              </div>
-
-              <div className={"col-md-12"}>
-                <h4 style={{fontWeight: "bold"}}>{"Tracking"}</h4>
-                <Table title="" fontclass="" T
-                       gridColumns={utils.getGridColumnByName("APIPayloadListTracking")}
-                       gridData={this.props.APIPayloadDetailData.tracking}
-                       componentFunction={this.ActionHandlers}
-                  // renderPopupBody={this.renderPopupBody}
-                />
-              </div>
-
-              {
-                this.state.isVisible &&
-                <div className={"col-md-12"}>
-                  <h4 style={{fontWeight: "bold"}}>{this.state.heading}</h4>
-                  <JSONPretty id="json-pretty" style={{height: "auto", width: "100%"}}
-                              json={this.state.body || "N/A"}></JSONPretty>
-                </div>
-
-              }
             </div>
           </div>
         </div>
 
-
       );
     } else
-      return (<div></div>)
+      return (
+        <div></div>
+      )
 
 
   }

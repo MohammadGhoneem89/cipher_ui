@@ -735,6 +735,12 @@ module.exports = {
     { alias: "type", key: "isServer", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
+  errorCodes: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "Code", key: "code", type: "string" },
+    { alias: "Description", key: "description", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
   userListOrg: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "CAUserName", key: "userName", type: "string" },

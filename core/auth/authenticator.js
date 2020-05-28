@@ -16,6 +16,7 @@ class Auth {
   }
   static lockedUser() {
     sessionStorage.removeItem('token');
+    Cookies.remove("login");
     sessionStorage.removeItem('lastRequestTime');
 
     Cookies.remove("login");

@@ -215,4 +215,8 @@ module.exports = {
   getDBEndpointListView: baseUrl + "/API/core/getDBEndpointListView",
   getTableNames: baseUrl + "/API/core/getTableNames",
   getFieldsList: baseUrl + "/API/core/getFieldsList",
+  getModuleConfigAll: baseUrl + "/API/core/getModuleConfigAll",
+  updateErrorCodeList: baseUrl + "/API/core/updateErrorCodeList",
+  getErrorCodeList: baseUrl + "/API/core/getErrorCodeList",
+
 }

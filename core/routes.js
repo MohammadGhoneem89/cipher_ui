@@ -10,11 +10,13 @@ import EmailTemplateSetup from './components/EmailTemplateSetupScreen/EmailTempl
 import OrgSearch from './components/OrgSearchScreen/OrgSearchContainer.jsx';
 import OrgSetup from './components/OrgSetupScreen/OrgSetupContainer.jsx';
 import GroupSearch from './components/GroupSearchScreen/GroupSearchContainer.jsx';
+import ErrorCodeList from './components/errorCode/errorCodeList.jsx';
 import GroupSetup from './components/GroupSetupScreen/GroupSetupContainer.jsx';
 import UserSearch from './components/UserSearchScreen/UserSearchContainer.jsx';
 import UserSetup from './components/UserSetupScreen/UserSetupContainer.jsx';
 import WorkingCalendar from './components/WorkingCalendar/WorkingCalContainer.jsx';
 import ChangePassword from './components/AuthenticationScreens/changePassword.jsx';
+import permissionAdd from './components/AuthenticationScreens/permissionAdd.jsx';
 import PasswordPolicy from './components/PasswordPolicyScreen/PasswordPolicyContainer.jsx';
 import PickupListSearch from './components/PickupListSearchScreen/PickupListSearchContainer.jsx';
 import PickupListSetup from './components/PickupListSetupScreen/PickupListSetupContainer.jsx';
@@ -80,6 +82,13 @@ import EndPointList from './components/endPoint/list';
 import EndPointDefination from './components/endPoint/defination';
 import ApiImport from './components/apiImport/apiImport.jsx';
 
+
+
+
+import UserDetail from "./components/reports/UserDetails.js";
+import UserRole from "./components/reports/UserRole.js";
+import RoleUser from "./components/reports/RoleUser.js";
+import ActivityLog from "./components/reports/ActivityLog.js";
 //onBoarding Routes
 import onBoardingProfileSetup from './components/onBoarding/onBoardingProfileSetup';
 import onBoardingProfileList from './components/onBoarding/onBoardingProfileList';
@@ -101,10 +110,12 @@ export default (< Router history={browserHistory}>
       < Route path="/groupSetup/:groupID" component={GroupSetup}/>
       < Route path="/userList" component={UserSearch}/>
       < Route path="/userSetup" component={UserSetup}/>
+      < Route path="/errorCodeList" component={ErrorCodeList}/>
       <Route path="/workingCalendarList" component={WorkingCalendarSearch}/>
       <Route path="/workingCalendarDetail/:ID" component={WorkingCalendar}/>
       <Route path="/workingCalendarDetail" component={WorkingCalendar}/>
       < Route path="/changePasswordInternal" component={ChangePassword}/>
+      < Route path="/permissionAdd/:link" component={permissionAdd}/>
       < Route path="/userSetup/:userID" component={UserSetup}/>
       < Route path="/workingCalendarDetail" component={WorkingCalendar}/>
       < Route path="/cipher/blockchain/edit" component={BlockchainEditor}/>
@@ -163,7 +174,11 @@ export default (< Router history={browserHistory}>
       < Route path="/DispatchList" component={dispatchList}/>
       < Route path="/editDispatcher/:dispatcherName" component={AddUpdateDispatcher}/>
 
+      <Route path="general/userDetail/:id" component={UserDetail} />
+      <Route path="general/userRole/:id" component={UserRole} />
+      <Route path="general/roleUser/:id" component={RoleUser} />
 
+      <Route path="general/activityLog/:id" component={ActivityLog} />
       < Route path="/editRelayNetwork(/:id)" component={RelayNetworkDefination}/>
       < Route path="/editNetwork(/:id)" component={NetworkDefination}/>
       < Route path="/CreateChannel/:id" component={CreateChannel}/>
@@ -189,7 +204,6 @@ export default (< Router history={browserHistory}>
 
 
 function requireAuth(nextState, replace) {
-
   if (!auth.loggedIn()) {
     replace({
       pathname: '/cipher/login',
@@ -202,7 +216,7 @@ function isAuthorized(nextState, replace) {
   if (auth.loggedIn()) {
 
     replace({
-      pathname: '/blockchain',
+      pathname: sessionStorage.firstScreen,
       state: {nextPathname: nextState.location.pathname}
     })
   }
