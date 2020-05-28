@@ -735,6 +735,12 @@ module.exports = {
     { alias: "type", key: "isServer", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
+  errorCodes: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "Code", key: "code", type: "string" },
+    { alias: "Description", key: "description", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
   userListOrg: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "CAUserName", key: "userName", type: "string" },
@@ -945,7 +951,7 @@ module.exports = {
     { alias: "To Points", key: "toPoint", type: "string" },
     { alias: "AED Value", key: "AEDValue", type: "string" }
   ],
-  /// Smiles 
+  /// Smiles
   // viewTranxList: [
   //   {alias: "", key: "_id", type: "hiddenID"},
   //   {alias: "S.No", key: "no", type: 'string'},
@@ -1182,6 +1188,24 @@ module.exports = {
     { alias: "Label", key: "label", type: "string" },
     { alias: "Value", key: "value", type: "string" },
     { alias: "Actions", key: "actions", type: "action" }
+  ],
+  fileList: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "", key: "id", type: "hiddenID" },
+    { alias: "Path", key: "path", type: "string" },
+    { alias: "File Name", key: "name", type: "string" },
+    { alias: "Date", key: "dateEpoch", type: "epochDate" },
+    { alias: "Action", key: "action", type: "action" },
+  ],
+  fileData: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "", key: "id", type: "hiddenID" },
+    { alias: "Rule Name", key: "rulename", type: "string" },
+    { alias: "Column 1", key: "column1", type: "string" },
+    { alias: "Column 2", key: "column2", type: "string" },
+    { alias: "Column 3", key: "column3", type: "string" },
+    { alias: "Status", key: "status", type: "statusBox" },
+    { alias: "Action", key: "action", type: "action" },
   ]
 };
 

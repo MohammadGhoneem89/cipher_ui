@@ -18,6 +18,7 @@ const initialState = {
   APIDefinitionAddUpdate: {
     "useCase": "",
     "route": "",
+    "estimatedRtt": 10000,
     "isBilled": false,
     "billingDate": (new Date().getTime()),
     "documentPath": "",
@@ -423,7 +424,7 @@ class APIDefinitionScreen extends React.Component {
         parameters: Object.assign(params, nextProps.parameters)
       })
     }
-
+    let BillingPolicy = _.get(nextProps, 'APIDefinitionAddUpdate.data.BillingPolicy', []);
 
     if (nextProps.RelayNetworks) {
       // alert("nextProps.RelayNetworks")
@@ -448,7 +449,7 @@ class APIDefinitionScreen extends React.Component {
           ];
           return item;
         });
-        nextProps.APIDefinitionAddUpdate.data.BillingPolicy.forEach((elem) => {
+        BillingPolicy.forEach((elem) => {
           if (elem.to > this.state.maxVal) {
             this.setState({
               maxVal: parseInt(elem.to) + 1
@@ -457,7 +458,7 @@ class APIDefinitionScreen extends React.Component {
         })
         this.setState({
           simucases: simucases,
-          BillingPolicy: nextProps.APIDefinitionAddUpdate.data.BillingPolicy
+          BillingPolicy: BillingPolicy
         });
 
       }

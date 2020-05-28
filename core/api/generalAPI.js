@@ -35,6 +35,9 @@ class generalAPI{
         Cookies.set('login', 'yes');
       }
 
+
+
+
       if(response.status===403) {
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('lastRequestTime');
@@ -46,7 +49,15 @@ class generalAPI{
         }, 300);
       }
 
-      return response.json();
+      return response.json().then((json)=>{
+        if(response.status===201){
+          setTimeout(() => {
+            browserHistory.push('/PermissionAdd/'+json.uri)
+          }, 300);
+
+        }
+        return json;
+      });
     }).catch(error => {
       let errorJson={
         "responseMessage":{

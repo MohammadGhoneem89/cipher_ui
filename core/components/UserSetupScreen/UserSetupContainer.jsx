@@ -10,7 +10,7 @@ import _ from 'lodash';
 import * as toaster from "../../common/toaster.js";
 import UserSetupForm from './UserSetupForm.jsx'
 import Portlet from '../../common/Portlet.jsx';
-
+import Combobox from '../../../applications/starta/common/Select.jsx';
 import config from '../../../config';
 
 import * as gen from '../../common/generalActionHandler';
@@ -132,6 +132,7 @@ class UserSetupContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+
     let perTypeData = this.getPermissionTypeData(nextProps.permission);
     if (nextProps.userDetail && nextProps.userDetail.groups && nextProps.passwordPolicyDetail && nextProps.entityNames && (nextProps.orgTypes || nextProps.callerTypes || nextProps.firstScreens) && nextProps.hyperledgerData && nextProps.quorrumData) {
 
@@ -139,7 +140,7 @@ class UserSetupContainer extends Component {
       const passwordPolicy = nextProps.passwordPolicyDetail;
       const allowIncorrectLoginAttempts = passwordPolicy.passwordPolicy[0].allowIncorrectLoginAttempts;
       const passwordRetries = nextProps.userDetail.passwordRetries;
-
+      console.log(JSON.stringify(nextProps.userDetail.groups))
 
       let userType = sessionStorage.orgType;
       let authenticationType = [];
@@ -553,19 +554,19 @@ class UserSetupContainer extends Component {
     let groupIndex = -1;
 
 
-    groups.filter((item, index) => {
-      if (this.state.userDetail.userType === 'Human' && item.type != 'API') {
-        return true
-      } else if (this.state.userDetail.userType === 'API' && item.type === 'API') {
-        return true
-      }
-      return false
-    }).forEach((item, index) => {
-      if (parseInt(e.target.name) === index) {
-        groupIndex = index
-      }
-    })
-    console.log(groupIndex, ' groupIndex >>>>>>>>>>>>>>>>>>>>>>')
+    // groups.filter((item, index) => {
+    //   if (this.state.userDetail.userType === 'Human' && item.type != 'API') {
+    //     return true
+    //   } else if (this.state.userDetail.userType === 'API' && item.type === 'API') {
+    //     return true
+    //   }
+    //   return false
+    // }).forEach((item, index) => {
+    //   if (parseInt(e.target.name) === index) {
+    //     groupIndex = index
+    //   }
+    // })
+    // console.log(groupIndex, ' groupIndex >>>>>>>>>>>>>>>>>>>>>>')
 
 
     this.setState({
