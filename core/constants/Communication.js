@@ -218,6 +218,7 @@ module.exports = {
   getModuleConfigAll: baseUrl + "/API/core/getModuleConfigAll",
   updateErrorCodeList: baseUrl + "/API/core/updateErrorCodeList",
   getErrorCodeList: baseUrl + "/API/core/getErrorCodeList",
+  groupTypeList: baseUrl + "/API/UI/groupTypeList",
 
 }
 

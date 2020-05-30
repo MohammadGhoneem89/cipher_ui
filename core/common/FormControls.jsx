@@ -6,7 +6,7 @@ const {DOM: {textarea}} = React;
 
 export const renderTextInput = ({input, id, className, type, disabled, isRequired, label, placeholder, style, meta: {touched, error, warning}}) => (
     <div className={error && touched ? "form-group has-error has-feedback" : ""}>
-        <label className="control-label">
+        <label >
             {label}
             {touched && error && <span className="control-label"> ({error})
         </span>}
@@ -24,7 +24,7 @@ export const renderInput = ({input, id, className, type, disabled, isRequired, l
            placeholder={placeholder}
            required={isRequired}
            disabled={disabled}/>
-    <label className="control-label">
+    <label >
       {touched && error && <span className="control-label"> ({error})
         </span>}
     </label>

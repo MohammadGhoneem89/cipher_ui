@@ -482,3 +482,14 @@ li:hover .dropdown-content {
 
 	border: 1px dashed grey !important;
 }
+
+.note.note-documentation {
+    background-color: #70708533;
+    border-color: #99da58;
+    color: #000;
+}
+
+.control-label {
+    padding-Top: 8px;
+    font-weight: 400;
+}
