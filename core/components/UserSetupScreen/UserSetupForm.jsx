@@ -41,7 +41,7 @@ export default function UserSetupForm(props) {
   let activateAction = {
     value: "4056"
   }
-
+  let groupIndex = -1;
   return (
     <form autoComplete="off" role="form" onSubmit={onSubmit}>
 
@@ -414,29 +414,46 @@ export default function UserSetupForm(props) {
                   <div className="col-md-12 text-center">
                     <div className="custom-control custom-checkbox" style={{padding: '26px', textAlign: 'left'}}>
 
-                      {containerState.userDetail.groups && containerState.userDetail.groups.filter((item, index) => {
-                        
-                        if (containerState.userDetail.userType == 'Human' && item.type == 'UI') {
-                          return true
-                        } else if (containerState.userDetail.userType == 'API' && item.type == 'API') {
-                          return true
-                        }
-                      }).map((item, index) => {
-                        return (
-                          <div key={index} style={{padding: '10px'}}>
-                            <label key={1} className="mt-checkbox mt-checkbox-outline"
-                                   style={{marginBottom: "0px", marginTop: "0px"}}>
-                              <input type="checkbox" className="form-control"
-                                     name={index}
-                                     checked={containerState.groupIndex === index ? true : false}
-                                     onChange={onChangeHandler}/>
-                              <span></span>
-                              {item.name}
-                            </label>
-                          </div>
-                        )
-                      })}
-
+                      {
+                        containerState.userDetail.userType == 'Human' &&
+                        containerState.groupUI.map((item, index) => {
+                          console.log(JSON.stringify(item));
+                          return (<div key={index} style={{padding: '10px'}}>
+                              <label key={1} className="mt-checkbox mt-checkbox-outline"
+                                     style={{marginBottom: "0px", marginTop: "0px"}}>
+                                <input type="checkbox" className="form-control"
+                                       name={index}
+                                       checked={item.isAssigned ? true : false}
+                                  // checked={item.isAssigned}
+                                       onChange={onChangeHandler}
+                                />
+                                <span></span>
+                                {item.name}
+                              </label>
+                            </div>
+                          )
+                        })
+                      }
+                      {
+                        (containerState.userDetail.userType == 'API') &&
+                        containerState.groupAPI.map((item, index) => {
+                          console.log(JSON.stringify(item));
+                          return (<div key={index} style={{padding: '10px'}}>
+                              <label key={1} className="mt-checkbox mt-checkbox-outline"
+                                     style={{marginBottom: "0px", marginTop: "0px"}}>
+                                <input type="checkbox" className="form-control"
+                                       name={index}
+                                       checked={item.isAssigned ? true : false}
+                                       onChange={onChangeHandler}
+                                  // checked={item.isAssigned}
+                                />
+                                <span></span>
+                                {item.name}
+                              </label>
+                            </div>
+                          )
+                        })
+                      }
 
                     </div>
                   </div>

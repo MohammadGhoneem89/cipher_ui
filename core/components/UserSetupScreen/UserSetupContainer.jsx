@@ -14,6 +14,7 @@ import Combobox from '../../../applications/starta/common/Select.jsx';
 import config from '../../../config';
 
 import * as gen from '../../common/generalActionHandler';
+import {forEach} from "react-bootstrap/cjs/ElementChildren";
 
 class UserSetupContainer extends Component {
 
@@ -165,6 +166,13 @@ class UserSetupContainer extends Component {
 
       let groups = [...nextProps.userDetail.groups]
 
+      let groupUI = []
+      let groupAPI = []
+
+      groups.forEach(elem => {
+        elem.type == 'UI' ? groupUI.push(elem) : groupAPI.push(elem);
+      })
+      console.log(JSON.stringify(groups))
       console.log(this.props.params.userID, ' : User ID')
 
       let hypUser = nextProps.userDetail.hypUser
@@ -199,6 +207,8 @@ class UserSetupContainer extends Component {
             quorrumData: nextProps.quorrumData,
             authenticationType
           },
+          groupUI,
+          groupAPI,
           permissionTypeData: perTypeData,
           actions: [...nextProps.userDetailActions]
 
@@ -226,6 +236,8 @@ class UserSetupContainer extends Component {
             authenticationType
           },
           permissionTypeData: perTypeData,
+          groupUI,
+          groupAPI,
           actions: [...nextProps.userDetailActions]
 
         })
@@ -296,7 +308,18 @@ class UserSetupContainer extends Component {
     if (this.state.userDetail.isActive) {
       this.state.userDetail.passwordRetries = 0
     }
-
+    let checkedGroups = [];
+    if (this.state.userDetail.userType === 'Human') {
+      this.state.groupUI.forEach((elem) => {
+        if (elem.isAssigned)
+          checkedGroups.push(elem)
+      })
+    } else if (this.state.userDetail.userType === 'API') {
+      this.state.groupAPI.forEach((elem) => {
+        if (elem.isAssigned)
+          checkedGroups.push(elem)
+      })
+    }
     console.log(this.state.userDetail, "updated user details");
     if (Object.keys(errors).length > 0) {
       console.log(errors, ' errors found')
@@ -326,16 +349,7 @@ class UserSetupContainer extends Component {
       //     isLoading: true
       // })
       window.scrollTo(0, 0);
-      const checkedGroups = this.state.userDetail.groups.filter((group, index) => {
-        if (this.state.userDetail.userType === 'Human' && group.type != 'API') {
-          return true
-        } else if (this.state.userDetail.userType === 'API' && group.type === 'API') {
-          return true
-        }
-        return false
-      }).filter((group, index) => {
-        return index === this.state.groupIndex
-      })
+
 
       this.props.actions.generalAjxProcess(constants.userUpdate,
         requestCreator.createUserInsertRequest({
@@ -364,16 +378,6 @@ class UserSetupContainer extends Component {
       //     isLoading: true
       // })
       window.scrollTo(0, 0);
-      const checkedGroups = this.state.userDetail.groups.filter((group, index) => {
-        if (this.state.userDetail.userType === 'Human' && group.type != 'API') {
-          return true
-        } else if (this.state.userDetail.userType === 'API' && group.type === 'API') {
-          return true
-        }
-        return false
-      }).filter((group, index) => {
-        return index === this.state.groupIndex
-      })
 
       this.props.actions.generalAjxProcess(constants.userInsert,
         requestCreator.createUserInsertRequest({
@@ -399,7 +403,6 @@ class UserSetupContainer extends Component {
 
     }
   }
-
   resetPassword = () => {
 
 
@@ -410,8 +413,6 @@ class UserSetupContainer extends Component {
       this.setState({editPassword: true});
     }
   }
-
-
   unlockAccount = () => {
     if (this.props.params.userID) {
       let request = {
@@ -422,7 +423,6 @@ class UserSetupContainer extends Component {
       this.props.actions.generalProcess(constants.activateUser, request);
     }
   }
-
   performAction = (actionObj) => {
     console.log("actionObject", actionObj);
     if (actionObj.value === "4055") {
@@ -541,39 +541,30 @@ class UserSetupContainer extends Component {
 
   onChange(e) {
 
-    let groups = [...this.state.userDetail.groups]
+    let groupUI = this.state.groupUI;
+    let groupAPI = this.state.groupAPI;
 
-    // clear all groups if a new is going to be selected to make it a combo box instead of checkbox
-    groups.map(item => {
-      item.isAssigned = false
-      return item
-    })
-    // checkbox ended
-
-    let groupIndex = -1;
-
-
-    groups.filter((item, index) => {
-      if (this.state.userDetail.userType === 'Human' && item.type != 'API') {
-        return true
-      } else if (this.state.userDetail.userType === 'API' && item.type === 'API') {
-        return true
-      }
-      return false
-    }).forEach((item, index) => {
-      if (parseInt(e.target.name) === index) {
-        groupIndex = index
-      }
-    })
-    console.log(groupIndex, ' groupIndex >>>>>>>>>>>>>>>>>>>>>>')
-
+    if (this.state.userDetail.userType == 'Human') {
+      groupUI.forEach((elem, index) => {
+        if (parseInt(e.target.name) == index) {
+          elem.isAssigned = true;
+        } else {
+          elem.isAssigned = false;
+        }
+      })
+    } else if (this.state.userDetail.userType == 'API') {
+      groupAPI.forEach((elem, index) => {
+        if (parseInt(e.target.name) == index) {
+          elem.isAssigned = true;
+        } else {
+          elem.isAssigned = false;
+        }
+      })
+    }
 
     this.setState({
-      userDetail: {
-        ...this.state.userDetail,
-        groups: [...groups]
-      },
-      groupIndex
+      groupUI,
+      groupAPI
     })
   }
 
@@ -588,33 +579,9 @@ class UserSetupContainer extends Component {
     if (!this.state.isLoading) {
       let allowedGroup = []
       let groupList = []
-      if (sessionStorage.orgType == 'Entity' || sessionStorage.orgType == 'Acquirer') {
 
-        if (sessionStorage.orgType == 'Entity')
-          allowedGroup = config.entityGroupList;
-        else
-          allowedGroup = config.acquirerGroupList;
+      console.log()
 
-        for (let groupCount = 0; groupCount < this.state.userDetail.groups.length; groupCount++) {
-          let isValid = false;
-          for (let count = 0; count < allowedGroup.length; count++) {
-            if (this.state.userDetail.groups[groupCount].name == allowedGroup[count]) {
-              isValid = true;
-              break;
-            }
-          }
-          if (isValid) {
-            groupList.push(this.state.userDetail.groups[groupCount])
-
-          }
-        }
-        this.setState({
-          userDetail: {
-            ...this.state.userDetail,
-            groups: groupList
-          }
-        })
-      }
     }
 
 
