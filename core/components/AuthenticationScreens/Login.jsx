@@ -130,6 +130,12 @@ class Login extends React.Component {
   componentDidMount() {
     document.getElementById("username").addEventListener("keyup", this.handleKeyPress);
     document.getElementById("password").addEventListener("keyup", this.handleKeyPress);
+
+    Cookies.remove("login");
+    Cookies.remove("token");
+
+
+    console.log("token" + this.props.LoginResult.token)
   }
 
   changLangButton(langaugeTag) {

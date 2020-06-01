@@ -12,15 +12,17 @@ class Auth {
     Cookies.remove("login");
     Cookies.remove("token");
     sessionStorage.removeItem('firstScreen');
-    sessionStorage.selectedIndex=0;
+    sessionStorage.selectedIndex = 0;
+    // document.location.href ='/cipher/login'
   }
+
   static lockedUser() {
     sessionStorage.removeItem('token');
     Cookies.remove("login");
     sessionStorage.removeItem('lastRequestTime');
 
     Cookies.remove("login");
-    sessionStorage.selectedIndex=0;
+    sessionStorage.selectedIndex = 0;
     // document.location.href ='/Locked'
   }
 }

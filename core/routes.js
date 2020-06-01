@@ -83,8 +83,6 @@ import EndPointDefination from './components/endPoint/defination';
 import ApiImport from './components/apiImport/apiImport.jsx';
 
 
-
-
 import UserDetail from "./components/reports/UserDetails.js";
 import UserRole from "./components/reports/UserRole.js";
 import RoleUser from "./components/reports/RoleUser.js";
@@ -179,11 +177,11 @@ export default (< Router history={browserHistory}>
       < Route path="/DispatchList" component={dispatchList}/>
       < Route path="/editDispatcher/:dispatcherName" component={AddUpdateDispatcher}/>
 
-      <Route path="general/userDetail/:id" component={UserDetail} />
-      <Route path="general/userRole/:id" component={UserRole} />
-      <Route path="general/roleUser/:id" component={RoleUser} />
+      <Route path="general/userDetail/:id" component={UserDetail}/>
+      <Route path="general/userRole/:id" component={UserRole}/>
+      <Route path="general/roleUser/:id" component={RoleUser}/>
 
-      <Route path="general/activityLog/:id" component={ActivityLog} />
+      <Route path="general/activityLog/:id" component={ActivityLog}/>
       < Route path="/editRelayNetwork(/:id)" component={RelayNetworkDefination}/>
       < Route path="/editNetwork(/:id)" component={NetworkDefination}/>
       < Route path="/CreateChannel/:id" component={CreateChannel}/>
@@ -202,9 +200,9 @@ export default (< Router history={browserHistory}>
       < Route path="/onBoardingProfile" component={onBoardingProfileList}/>
       < Route path="/endpoint" component={EndPointList}/>
       < Route path="/endpoint/:id" component={EndPointDefination}/>
-      <Route path="/fileList" component={FileList} />
-      <Route path="/fileList/:type" component={FileList} />
-      <Route path="/fileData/:id" component={FileData} />
+      <Route path="/fileList" component={FileList}/>
+      <Route path="/fileList/:type" component={FileList}/>
+      <Route path="/fileData/:id" component={FileData}/>
       {ApplicationsRoute.routesIndex}
     </Route>
     < Route path="*" components={NotFound}/>
@@ -222,8 +220,10 @@ function requireAuth(nextState, replace) {
 }
 
 function isAuthorized(nextState, replace) {
+  if (nextState.location.pathname == '/cipher/login') {
+    auth.logOut();
+  }
   if (auth.loggedIn()) {
-
     replace({
       pathname: sessionStorage.firstScreen,
       state: {nextPathname: nextState.location.pathname}
