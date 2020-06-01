@@ -789,12 +789,13 @@ class OrgSetupForm extends React.Component {
     this.setState({welcome: wc})
 
     this.props.containerProps.actions.generalAjxProcess(constants.createOnDemandWelCome, {
-      "orgType": "CORE",
-      "spCode": "RTA",
-      "apiGroup": "5bbeebe15999de3b52d3576b",
-      "userGroup": "5de8d9ec96a7142e19b6b5f2",
-      "firstScreen": "/",
-      "email": "bilal.mahroof@avanzainnovations.com"
+      "orgType": this.state.orgType,
+      "spCode": this.state.spCode,
+      "apiGroup": apiGroup,
+      "userGroup": userGroup,
+      "firstScreen": firstScreen,
+      "email": welcomeEmail,
+      "welcome": wc
     });
     // return this.props.onSubmit(data);
   }

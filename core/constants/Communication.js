@@ -219,6 +219,7 @@ module.exports = {
   updateErrorCodeList: baseUrl + "/API/core/updateErrorCodeList",
   getErrorCodeList: baseUrl + "/API/core/getErrorCodeList",
   groupTypeList: baseUrl + "/API/UI/groupTypeList",
+  createOnDemandWelCome: baseUrl + "/API/UI/createOnDemandWelCome",
 
 }
 
