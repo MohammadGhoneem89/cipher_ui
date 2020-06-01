@@ -693,18 +693,22 @@ class OrgSetupForm extends React.Component {
         documents: nextProps.initialValues.documents,
         readOnly: nextProps.containerState.readOnly,
         ...details,
-        ...nextProps.initialValues,
-        welcome: nextProps.welcome
+        ...nextProps.initialValues
       });
     } else {
       this.setState({
         ...details
       })
     }
+
     if (nextProps.welcome) {
       this.setState({
         welcome: nextProps.welcome
       })
+    }
+
+    if (nextProps.welcomeResp) {
+      this.setState({welcome: nextProps.welcomeResp});
     }
   }
 

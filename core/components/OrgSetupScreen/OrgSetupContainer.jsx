@@ -121,7 +121,8 @@ class OrgSetupContainer extends React.Component {
       return (
         <div>
           <EntitySetupForm onSubmit={this.submit} initialValues={this.state.entityDetail}
-                           containerState={this.state} containerProps={this.props} welcome={welcome}/>
+                           containerState={this.state} containerProps={this.props} welcome={welcome}
+                           welcomeResp={this.props.welcomeResp}/>
         </div>
       );
     } else {
@@ -140,7 +141,8 @@ function mapStateToProps(state, ownProps) {
     fileTemplateNames: state.app.fileTemplateList.data.typeData.fileTemplateNames,
     typeData: state.app.typeData.data,
     groupTypeList: _.get(state.app, 'groupTypeList.data', undefined),
-    readOnly: ownProps.params.mode === "view"
+    readOnly: ownProps.params.mode === "view",
+    welcomeResp: _.get(state.app, 'createOnDemandWelCome.data', undefined),
   };
 }
 
