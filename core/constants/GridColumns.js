@@ -1060,16 +1060,21 @@ module.exports = {
     {alias: "EMAIL", key: "email", type: 'string'},
     {alias: "Action", key: "actions", type: "action"}
   ],
-  ApproveredemptionContractRedemptionTerm: [
+  ViewTask: [
     {alias: "", key: "_id", type: "hiddenID"},
-    {alias: "S.No", key: "serial_no", type: 'string'},
+    {alias: "id", key: "id", type: 'string'},
     {alias: "START DATE", key: "startDate", type: 'epochDate'},
     {alias: "END DATE", key: "endDate", type: "epochDate"},
-    {alias: "PAYMENT METHOD", key: "paymentMethod", type: 'string'},
-    {alias: "TYPE", key: "type", type: 'string'},
-    {alias: "VALUE", key: "value", type: 'string'},
-    {alias: "STATUS", key: "status", type: 'string'},
-    {alias: "Action", key: "actions", type: "action"}
+    {alias: "json_payload", key: "json_payload", type: 'string'},
+    {alias: "task_type", key: "task_type", type: 'string'},
+    {alias: "api_url", key: "api_url", type: 'string'},
+    {alias: "receivers_list", key: "receivers_list", type: 'string'},
+    {alias: "email_subject", key: "email_subject", type: 'string'},
+    {alias: "execution_time", key: "execution_time", type: 'string'},
+    {alias: "retry_count", key: "retry_count", type: "string"},
+    {alias: "response", key: "response", type: "string"},
+    {alias: "status", key: "status", type: "string"}
+
   ],
   DashboadrEtisalat: [
     {alias: "", key: "_id", type: "hiddenID"},
@@ -1088,6 +1093,16 @@ module.exports = {
     {alias: "S.No", key: "serial_no", type: 'string'},
     {alias: "START DATE", key: "startDate", type: 'epochDate'},
     {alias: "END DATE", key: "endDate", type: "epochDate"},
+    {alias: "PAYMENT METHOD", key: "paymentMethod", type: 'string'},
+    {alias: "TYPE", key: "type", type: 'string'},
+    {alias: "VALUE", key: "value", type: 'string'},
+    {alias: "Action", key: "actions", type: "action"}
+  ],
+  CreateAmendRedemption: [
+    {alias: "", key: "_id", type: "hiddenID"},
+    {alias: "S.No", key: "serial_no", type: 'string'},
+    {alias: "username", key: "username", type: 'string'},
+    {alias: "schedule_time", key: "schedule_time", type: "epochDate"},
     {alias: "PAYMENT METHOD", key: "paymentMethod", type: 'string'},
     {alias: "TYPE", key: "type", type: 'string'},
     {alias: "VALUE", key: "value", type: 'string'},
