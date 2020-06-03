@@ -47,6 +47,7 @@ class ErrorCodeList extends React.Component {
     let tupple = {
       code: code,
       description: description,
+      bounce: this.state.errorCodeList,
       "actions": [
         {"label": "edit", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION"}
       ]
@@ -101,17 +102,16 @@ class ErrorCodeList extends React.Component {
       });
     }
     if (nextProps.updateErrorCodeList && nextProps.updateErrorCodeList.status) {
-      let newList = this.state.errorCodeList || [];
-      newList.push({
-        code: nextProps.updateErrorCodeList.bounce.code,
-        description: nextProps.updateErrorCodeList.bounce.description,
-        actions: [
-          {"label": "edit", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION"}
-        ]
-      });
-
+      // let newList = this.state.errorCodeList || [];
+      // newList.push({
+      //   code: nextProps.updateErrorCodeList.bounce.code,
+      //   description: nextProps.updateErrorCodeList.bounce.description,
+      //   actions: [
+      //     {"label": "edit", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION"}
+      //   ]
+      // });
       this.setState({
-        errorCodeList: newList
+        errorCodeList: nextProps.updateErrorCodeList.bounce
       });
     }
   }

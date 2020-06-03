@@ -1170,12 +1170,14 @@ module.exports = {
   ],
   endpointListHealth: [
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "name", key: "name", type: 'string'},
     {alias: "host", key: "host", type: 'string'},
     {alias: "Time", key: "lastUpdateTime", type: "epochDate"},
     {alias: "status", key: "status", type: "statusBox"}
   ],
   cipherSvc: [
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "svc", key: "svc", type: 'string'},
     {alias: "env", key: "env", type: 'string'},
     {alias: "pid", key: "pid", type: 'string'},
     {alias: "hostname", key: "hostname", type: 'string'},

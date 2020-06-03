@@ -46,7 +46,7 @@ class OrgSetupContainer extends React.Component {
       }));
     }
 
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES', 'First_Screens']));
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES', 'First_Screens','currency','cycle']));
     this.props.actions.generalProcess(constants.groupTypeList);
   }
 
