@@ -17,7 +17,7 @@ import {CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput} from '
 
 //https://github.com/erikras/redux-form/issues/369
 const FormSection1 = ({error, initialValues, updateState, state, containerProps, containerState, onInputChange, welcome, handleSubmit}) => {
-
+  console.log(JSON.stringify(containerState))
   return (
 
 
@@ -94,6 +94,23 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
               disabled={state.readOnly}
             />
           </div>
+        </div>
+        <br/>
+        <div className="row">
+
+
+          <div className="col-md-3">
+            <DropdownInput name="cycle" options={containerState.typeData.cycle}
+                           label={utils.getLabelByID("billing cycle")}
+                           disabled={state.readOnly}
+            />
+          </div>
+          <div className="col-md-3">
+            <DropdownInput name="currency" options={containerState.typeData.currency}
+                           label={utils.getLabelByID("billing currency")}
+                           disabled={state.readOnly}
+            />
+          </div>
 
           <div className="col-md-3">
             <div style={{padding: "17px"}}>
@@ -108,6 +125,7 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
             </div>
           </div>
         </div>
+
       </Portlet>
 
       <div className="tabbable-line boxless">
@@ -159,49 +177,39 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
             <Portlet title={"Tax Codes"}>
               <div className="row">
                 <div className="col-md-6">
-                  <div className="row">
-                    <div className="form-group col-md-4">
-                      <label className="control-label">{utils.getLabelByID("Tax NO 1")}</label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="form-group col-md-8">
-                      <input type="text" className="form-control" disabled={state.readOnly} value={state.taxNO1}
-                             name="taxNO1" id="Tax NO 1" onChange={onInputChange}/>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="row">
-                    <div className="form-group col-md-4">
-                      <label className="control-label">{utils.getLabelByID("Tax NO 2")}</label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="form-group col-md-8">
-                      <input type="text" className="form-control" disabled={state.readOnly} value={state.taxNO2}
-                             name="taxNO2" id="taxNO2" onChange={onInputChange}/>
-                    </div>
-                  </div>
+
+
+                  <TextInput
+                    name="taxNO1"
+                    id="taxNO1"
+                    label={utils.getLabelByID("Tax NO 1")}
+                    type="text"
+                    disabled={state.readOnly}
+                  />
+
                 </div>
 
+                <div className="col-md-6">
+                  <TextInput
+                    name="taxNO2"
+                    id="taxNO2"
+                    label={utils.getLabelByID("Tax NO 2")}
+                    type="text"
+                    disabled={state.readOnly}
+                  />
+                </div>
               </div>
               <br></br>
               <div className="row">
                 <div className="col-md-6">
-                  <div className="row">
-                    <div className="form-group col-md-4">
-                      <label className="control-label">{utils.getLabelByID("Address")}</label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="form-group col-md-8">
-                      <input type="text" className="form-control" disabled={state.readOnly} value={state.address}
-                             name="address" id="address" onChange={onInputChange}/>
-                    </div>
-                  </div>
+                  <TextInput
+                    name="address"
+                    id="address"
+                    label={utils.getLabelByID("Address")}
+                    type="text"
+                    disabled={state.readOnly}
+                  />
                 </div>
-
               </div>
             </Portlet>
           </div>
@@ -223,7 +231,7 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
                 <div className="col-md-12">
                   <div className="col-md-12">
                     <textarea type="text" className="form-control" disabled={state.readOnly} value={state.publicKey}
-                              name="publicKey" onChange={onInputChange} rows="12"
+                              name="publicKey" id="publicKey" onChange={onInputChange} rows="12"
                               style={{resize: "none", width: "100%"}}/>
                   </div>
                 </div>
@@ -287,6 +295,28 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
               </div>
             </Portlet>
           </div>
+          <div className="tab-pane" id="tab_1_9">
+            <Portlet title={"Billing"}>
+              <div className="row">
+
+
+                <div className="col-md-12">
+
+                  <div className="col-md-12">
+                    <Table
+                      pagination={false}
+                      export={false}
+                      search={false}
+                      gridColumns={utils.getGridColumnByName("billingGrid")}
+                      gridData={containerState.billing || []}
+                    />
+
+                  </div>
+                </div>
+              </div>
+            </Portlet>
+          </div>
+
         </div>
       </div>
     </div>
@@ -762,16 +792,24 @@ class OrgSetupForm extends React.Component {
   }
 
   submit(data) {
+
+    let taxNO1 = document.getElementById('taxNO1') == null ? "" : document.getElementById('taxNO1').value;
+    let taxNO2 = document.getElementById('taxNO2') == null ? "" : document.getElementById('taxNO2').value;
+    let address = document.getElementById('address') == null ? "" : document.getElementById('address').value;
+    let publicKey = document.getElementById('publicKey') == null ? "" : document.getElementById('publicKey').value;
+
     data.services = this.state.services;
     data.contacts = this.state.contacts;
     data.mappedCodes = this.state.mappedCodes;
     data.additionalProps = this.state.additionalProps;
     data.entityLogo = this.state.entityLogo ? this.state.entityLogo : data.entityLogo;
     data.documents = this.state.documents;
-    data.taxNO1 = this.state.taxNO1;
-    data.taxNO2 = this.state.taxNO2;
-    data.address = this.state.address;
-    data.publicKey = this.state.publicKey;
+
+
+    data.taxNO1 = taxNO1;
+    data.taxNO2 = taxNO2;
+    data.address = address;
+    data.publicKey = publicKey;
     console.log("-------------------------->>>>>>>>>>>>>>>>>>>>", data)
     return this.props.onSubmit(data);
   }

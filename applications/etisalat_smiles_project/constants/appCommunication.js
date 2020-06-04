@@ -2,10 +2,13 @@ import backOffices from '../../backOffices';
 
 let baseUrl = backOffices.baseUrl;
 
+let sehedularUrl= backOffices.sehedularUrl;
 
 module.exports = {
     getTransactionsForSettlement:`${baseUrl}/API/SMILES/getTransactionList`,
     getAllOrgMap:`${baseUrl}/API/SMILES/getAllOrgMap`,
+    //getTask:'http://5cc165b90e53350014908d51.mockapi.io/api/v1/getAllTask',
+    getTask: sehedularUrl + '/get',  //'http://localhost:8080/get',
     createSettlementBatch: baseUrl + '/API/SMILES/createSettlementBatch',
     initiateSettlement: baseUrl + '/API/SMILES/initiateSettlement',
     getLMSData: baseUrl + '/API/SMILES/getLMSData',

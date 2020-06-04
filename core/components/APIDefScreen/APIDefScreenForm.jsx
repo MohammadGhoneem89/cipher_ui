@@ -562,6 +562,18 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                               <label className="form-group control-label col-md-7" style={{
                                 textAlign: "left",
                                 fontWeight: "bold"
+                              }}>{utils.getLabelByID("Sample Request (Documentation)")}</label>
+                              <div className="col-md-12">
+                                <div className="form-group">
+                                  <textarea className="form-control" id="SimulatorRequest" rows="4"
+                                            style={{resize: "none", width: "100%"}}/>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-md-12">
+                              <label className="form-group control-label col-md-7" style={{
+                                textAlign: "left",
+                                fontWeight: "bold"
                               }}>{utils.getLabelByID("APIDefScreen_Label5")}</label>
                               <div className="col-md-12">
                                 <div className="form-group">
@@ -1144,51 +1156,6 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                           {/*  </div>*/}
                           {/*</div>*/}
 
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label className="form-group control-label col-md-4"
-                                     style={{textAlign: "left"}}>{utils.getLabelByID("currency")}</label>
-                              <div className="form-group col-md-8">
-                                {/* {console.log(initialValues)} */}
-                                <select name="currency" value={initialValues.currency}
-                                        onChange={onInputChange} className="form-control">
-                                  <option disabled selected>{utils.getLabelByID("Select ...")}</option>
-                                  {
-                                    typeData.currency.map((option, index) => {
-                                      return (
-                                        <option key={index} value={option.value}>{option.label}</option>
-                                      );
-                                    })
-                                  }
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label className="form-group control-label col-md-4"
-                                     style={{textAlign: "left"}}>{utils.getLabelByID("cycle")}</label>
-                              <div className="form-group col-md-8">
-                                {/* {console.log(initialValues)} */}
-                                <select name="cycle" value={initialValues.cycle}
-                                        onChange={onInputChange} className="form-control">
-                                  <option disabled selected>{utils.getLabelByID("Select ...")}</option>
-                                  {
-                                    typeData.cycle.map((option, index) => {
-                                      return (
-                                        <option key={index} value={option.value}>{option.label}</option>
-                                      );
-                                    })
-                                  }
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div className={"row"}>
-                            <div className={"col-md-12"}>
-                              <hr style={{border: "1px dashed rgba(128, 128, 128, 0.27)"}}/>
-                            </div>
-                          </div>
                           <div className={"row"}>
                             <div className={"col-md-12"}>
                               <div className="col-md-6">

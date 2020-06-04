@@ -221,7 +221,7 @@ function requireAuth(nextState, replace) {
 
 function isAuthorized(nextState, replace) {
   if (nextState.location.pathname == '/cipher/login') {
-    auth.logOut();
+    return auth.logOut();
   }
   if (auth.loggedIn()) {
     replace({
