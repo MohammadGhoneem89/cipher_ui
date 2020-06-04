@@ -48,9 +48,11 @@ import FileData from "./components/Files/FileData.jsx";
 import FileTemplateSetup from "./components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx";
 import LoyaltyTokenRateManagement from './components/LoyaltyTokenRateManagement.jsx';
 
-
+import Task from "./components/Task.jsx"
 let authRoutes = <div>
-
+    
+     
+     <Route path="/smiles/task" component={Task} />
 
     <Route path="/smiles/LMS" component={LMSData}></Route>
     {/* RECON SCREEN */}

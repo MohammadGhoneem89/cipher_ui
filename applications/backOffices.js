@@ -18,6 +18,7 @@
 
 const backOffices = {
     baseUrl: "http://localhost:9089",
+    sehedularUrl: "http://localhost:8080",
     blockChainURL: "http://localhost:9089",
     webSocketURL: "http://localhost:9089",
     repostActionURL: "http://localhost:9089/API",
