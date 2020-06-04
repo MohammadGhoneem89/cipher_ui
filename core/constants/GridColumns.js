@@ -1214,6 +1214,16 @@ module.exports = {
     {alias: "Step ID", key: "id", type: "string"},
     {alias: "Description", key: "description", type: "leftAlign"},
     {alias: "Status", key: "status", type: "string"}
+  ],
+// {"id":7,"startdate":"2020-05-31T20:00:00.000Z","enddate":"2020-06-29T20:00:00.000Z","amount":"0.320","currency":"USD","status":"Pending","billingcycle":"Monthly","orgcode":"ORG1"}
+  billingGrid: [
+    {alias: "S.No", key: "", type: "serialNo"},
+    {alias: "startdate", key: "startdate", type: "string"},
+    {alias: "enddate", key: "enddate", type: "string"},
+    {alias: "amount", key: "amount", type: "string"},
+    {alias: "currency", key: "currency", type: "string"},
+    {alias: "status", key: "currency", type: "string"},
+    {alias: "billingcycle", key: "billingcycle", type: "string"}
   ]
 };
 

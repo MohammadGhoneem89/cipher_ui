@@ -1,7 +1,7 @@
 /*standard imports*/
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import _ from 'lodash';
@@ -9,8 +9,9 @@ import * as requestCreator from '../../common/request.js';
 import DocumentComponent from './DocumentComponent.jsx';
 import cloneDeep from 'lodash/cloneDeep';
 import Portlet from '../../common/Portlet.jsx';
-import { Scrollbars } from 'react-custom-scrollbars';
+import {Scrollbars} from 'react-custom-scrollbars';
 import axios from 'axios'
+
 const initialState = {
   RouteList: {},
   MappingConfigList: {},
@@ -23,6 +24,7 @@ const initialState = {
   response: undefined,
   requestSample: undefined
 };
+
 class Documentation extends React.Component {
 
   constructor(props) {
@@ -40,31 +42,36 @@ class Documentation extends React.Component {
   componentWillMount() {
 
   }
+
   onEdit(data) {
-    this.setState({ request: data.updated_src })
+    this.setState({request: data.updated_src})
   }
+
   onLoadSample(uri, request) {
     if (this.state.requestSample)
-      this.setState({ request: this.state.requestSample });
+      this.setState({request: this.state.requestSample});
     else
       alert("No Request Sample Found!");
   }
+
   onRunApi(uri, request) {
     axios.post(uri, request)
       .then(res => {
 
         //return res;
-        this.setState({ response: res.data });
+        this.setState({response: res.data});
         $(window).scrollTop($('#responseData').offset().top - 300);
       }).catch((ex) => {
-        alert(ex.message);
-      });
+      alert(ex.message);
+    });
   }
+
   onAdd(data) {
-    this.setState({ request: data.updated_src })
+    this.setState({request: data.updated_src})
   }
+
   onDelete(data) {
-    this.setState({ request: data.updated_src })
+    this.setState({request: data.updated_src})
   }
 
   componentDidMount() {
@@ -76,10 +83,11 @@ class Documentation extends React.Component {
     this.props.actions.generalProcess(constants.APIDocs, req);
     this.props.actions.generalProcess(constants.getTypeDataList)
   }
+
   componentWillReceiveProps(nextProps) {
 
     if (nextProps.enumList) {
-      this.setState({ enumList: nextProps.enumList })
+      this.setState({enumList: nextProps.enumList})
     }
     if (nextProps.RouteListData) {
       let routemap = nextProps.RouteListData;
@@ -125,12 +133,22 @@ class Documentation extends React.Component {
             response = JSON.parse(routemap[useCase][route].simulatorResponse);
           }
           reqSample = routemap[useCase][route].sampleRequest
-          _.set(routemap, `${useCase}.${route}.requestSchema`, request)
+
+
+          let reqSam = _.get(routemap, `${useCase}.${route}.simucases[0].SimulatorRequest`, undefined);
+          console.log('>>>>>>>>>||||', JSON.stringify(reqSam));
+          if (reqSam) {
+            _.set(routemap, `${useCase}.${route}.requestSchema`, JSON.parse(reqSam))
+          } else {
+            _.set(routemap, `${useCase}.${route}.requestSchema`, request)
+          }
+
+
           _.set(routemap, `${useCase}.${route}.responseSchema`, response)
 
         }
       }
-      this.setState({ requestSample: reqSample, RouteList: routemap })
+      this.setState({requestSample: reqSample, RouteList: routemap})
     }
   }
 
@@ -146,18 +164,22 @@ class Documentation extends React.Component {
         let response = this.state.response;
         if (!this.state.response)
           response = _.get(this.state.RouteList, `${useCase}.${route}.responseSchema`, null);
-        resp.push(<DocumentComponent initialValues={this.state.RouteList[useCase][route]} useCase={useCase} route={route} request={request} response={response} baseurl={constants.baseUrl} PG={request} onEdit={this.onEdit} onDelete={this.onDelete} onAdd={this.onAdd} onLoadSample={this.onLoadSample} onRunApi={this.onRunApi} />);
+        resp.push(<DocumentComponent initialValues={this.state.RouteList[useCase][route]} useCase={useCase}
+                                     route={route} request={request} response={response} baseurl={constants.baseUrl}
+                                     PG={request} onEdit={this.onEdit} onDelete={this.onDelete} onAdd={this.onAdd}
+                                     onLoadSample={this.onLoadSample} onRunApi={this.onRunApi}/>);
       }
     }
     return (resp);
   }
+
   render() {
     return (
 
       <div>
         <div className="row">
           <div className="col-md-12 ">
-            <div className="portlet light bordered sdg_portlet" style={{ marginBottom: "0px" }}>
+            <div className="portlet light bordered sdg_portlet" style={{marginBottom: "0px"}}>
               <div className="portlet-title">
                 <div className="caption">
                   <span className="caption-subject">API Documentation</span>
@@ -196,8 +218,9 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators(actions, dispatch) }
+  return {actions: bindActionCreators(actions, dispatch)}
 }
+
 Documentation.displayName = "Documentation_Heading";
 export default connect(mapStateToProps, mapDispatchToProps)(Documentation);
 

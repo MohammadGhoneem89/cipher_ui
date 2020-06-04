@@ -21,7 +21,8 @@ class OrgSetupContainer extends React.Component {
       readOnly: false,
       status: "No Action",
       groupTypeListUI: [],
-      groupTypeListAPI: []
+      groupTypeListAPI: [],
+      billing: []
     };
 
     this.submit = this.submit.bind(this);
@@ -46,7 +47,7 @@ class OrgSetupContainer extends React.Component {
       }));
     }
 
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES', 'First_Screens','currency','cycle']));
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES', 'First_Screens', 'currency', 'cycle']));
     this.props.actions.generalProcess(constants.groupTypeList);
   }
 
@@ -57,6 +58,7 @@ class OrgSetupContainer extends React.Component {
 
     if (nextProps.entityDetail && nextProps.entityNames && nextProps.fileTemplateNames && nextProps.typeData && nextProps.groupTypeList) {
       //Add permissions
+      console.log(JSON.stringify(nextProps.entityDetail))
       let entityDetail = this.props.orgID ? nextProps.entityDetail : {
         ...this.state.entityDetail,
         actions: nextProps.entityDetail.actions
@@ -68,6 +70,7 @@ class OrgSetupContainer extends React.Component {
         entityNames: nextProps.entityNames,
         typeData: nextProps.typeData,
         isLoading: false,
+        billing: nextProps.entityDetail.billing,
         groupTypeListUI: nextProps.groupTypeList.UI || [],
         groupTypeListAPI: nextProps.groupTypeList.API || []
 
@@ -102,12 +105,12 @@ class OrgSetupContainer extends React.Component {
 
         {
           id: "C-ONBD-01",
-          description: `Creating Cipher User Interface User .............. username: ${this.state.entityDetail.spCode.toLowerCase()}_admin `,
+          description: `Creating Cipher User Interface User .............. username: ${this.state.entityDetail.spCode}_admin `,
           status: this.state.status
         },
         {
           id: "C-ONBD-02",
-          description: `Creating API User .............................................. username: ${this.state.entityDetail.spCode.toLowerCase()}_api `,
+          description: `Creating API User .............................................. username: ${this.state.entityDetail.spCode}_api `,
           status: this.state.status
         },
         {

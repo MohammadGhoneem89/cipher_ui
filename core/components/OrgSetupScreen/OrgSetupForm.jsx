@@ -17,7 +17,7 @@ import {CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput} from '
 
 //https://github.com/erikras/redux-form/issues/369
 const FormSection1 = ({error, initialValues, updateState, state, containerProps, containerState, onInputChange, welcome, handleSubmit}) => {
-
+  console.log(JSON.stringify(containerState))
   return (
 
 
@@ -295,6 +295,28 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
               </div>
             </Portlet>
           </div>
+          <div className="tab-pane" id="tab_1_9">
+            <Portlet title={"Billing"}>
+              <div className="row">
+
+
+                <div className="col-md-12">
+
+                  <div className="col-md-12">
+                    <Table
+                      pagination={false}
+                      export={false}
+                      search={false}
+                      gridColumns={utils.getGridColumnByName("billingGrid")}
+                      gridData={containerState.billing || []}
+                    />
+
+                  </div>
+                </div>
+              </div>
+            </Portlet>
+          </div>
+
         </div>
       </div>
     </div>
