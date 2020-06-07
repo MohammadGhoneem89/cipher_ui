@@ -52,7 +52,7 @@ import Task from "./components/Task.jsx"
 let authRoutes = <div>
     
      
-     <Route path="/smiles/task" component={Task} />
+     <Route path="/task" component={Task} />
 
     <Route path="/smiles/LMS" component={LMSData}></Route>
     {/* RECON SCREEN */}
