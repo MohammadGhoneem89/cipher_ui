@@ -562,6 +562,18 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                               <label className="form-group control-label col-md-7" style={{
                                 textAlign: "left",
                                 fontWeight: "bold"
+                              }}>{utils.getLabelByID("Sample Request (Documentation)")}</label>
+                              <div className="col-md-12">
+                                <div className="form-group">
+                                  <textarea className="form-control" id="SimulatorRequest" rows="4"
+                                            style={{resize: "none", width: "100%"}}/>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-md-12">
+                              <label className="form-group control-label col-md-7" style={{
+                                textAlign: "left",
+                                fontWeight: "bold"
                               }}>{utils.getLabelByID("APIDefScreen_Label5")}</label>
                               <div className="col-md-12">
                                 <div className="form-group">

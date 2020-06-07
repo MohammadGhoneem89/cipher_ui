@@ -320,6 +320,7 @@ class APIDefinitionScreen extends React.Component {
   }
 
   addRow() {
+    let SimulatorRequest = document.getElementById('SimulatorRequest') == null ? "" : document.getElementById('SimulatorRequest').value;
     let SimulatorResponse = document.getElementById('SimulatorResponse') == null ? "" : document.getElementById('SimulatorResponse').value;
     let SimuValue = document.getElementById('SimuValue') == null ? "" : document.getElementById('SimuValue').value;
     let SimuField = document.getElementById('SimuField') == null ? "" : document.getElementById('SimuField').value;
@@ -327,6 +328,7 @@ class APIDefinitionScreen extends React.Component {
 
     let data = this.state.simucases;
     let newtupple = {
+      SimulatorRequest: SimulatorRequest,
       SimulatorResponse: SimulatorResponse,
       SimuValue: SimuValue,
       SimuField: SimuField,
@@ -357,6 +359,15 @@ class APIDefinitionScreen extends React.Component {
       alert("Simulator Response must be a Parsable JSON format!");
       return false;
     }
+
+    try {
+      let jsonReq = JSON.parse(SimulatorRequest.trim())
+    } catch (ex) {
+      alert("Simulator Request must be a Parsable JSON format!");
+      return false;
+    }
+
+
     this.clearFields();
     data.push(newtupple);
     this.setState({simucases: data});
@@ -839,6 +850,7 @@ class APIDefinitionScreen extends React.Component {
       case "Edit":
         if (index > -1) {
           let a = this.state.simucases[index];
+          document.getElementById('SimulatorRequest').value = a.SimulatorRequest;
           document.getElementById('SimulatorResponse').value = a.SimulatorResponse;
           document.getElementById('SimuValue').value = a.SimuValue;
           document.getElementById('SimuField').value = a.SimuField;
