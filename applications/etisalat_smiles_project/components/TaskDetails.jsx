@@ -36,7 +36,7 @@ import { thresholdScott } from "d3";
 // import DateControl from "../../../core/common/DateControl.jsx";
 // import Combobox from '../../../core/common/Select.jsx';
 
-class Task extends React.Component {
+class TaskDetails extends React.Component {
 
     constructor(props, context) {
         super(props, context);
@@ -64,11 +64,22 @@ class Task extends React.Component {
     }
 
     componentDidMount() {
+        //let id = this.props.match.params.id;
+        //console.log("---------------props----",this.props.id)
+        console.log("------------------------ID", this.props.params.id)
+      //  console.log("---------------props",this.props.match.params.id)
         this.props.actions.generalProcess(coreConstants.getTypeData,
             requestCreator.createTypeDataRequest([
                 'listOfferStatus',
             ]));
             this.props.actions.generalProcess(constants.getTask, {});
+            let request={
+                "body":{
+                    task_id: this.props.params.id //this.props.id
+                }
+            }
+            this.props.actions.generalProcess(constants.searchTaskDetails,request);
+            //this.props.action.generalProcess(constants.searchTaskDetails,request);
           //  this.props.actions.generalProcess(constants.getAllOrgMap, {});
     }
     
@@ -91,42 +102,25 @@ class Task extends React.Component {
                             dataArray.push(this.state.gridData[i])
                         }
                }
-               let response1
-               let json_payload1
-               let response
-               let json_payload
-               let userId
-               let id
-               let title
-               let completed 
+               let log_response1
+               let log_request1
+               let log_response
+               let log_request
                 for(let i=0;i<dataArray.length;i++){
                     // console.log("------------------------dataArray1",this.state.gridData[this.state.responseIndex].response)
                     // console.log("--------------------dataArray2",dataArray)
-                    response1 =JSON.parse(this.state.gridData[this.state.responseIndex].response)
-                    response =JSON.stringify(response1,undefined,2)
+                    log_response1 =JSON.parse(this.state.gridData[this.state.responseIndex].log_response)
+                    log_response =JSON.stringify(log_response1,undefined,2)
 
-                    json_payload1 =JSON.parse(this.state.gridData[this.state.responseIndex].json_payload)
-                    json_payload=JSON.stringify(json_payload1,undefined,2)
+                    log_request1 =JSON.parse(this.state.gridData[this.state.responseIndex].log_request)
+                    log_request=JSON.stringify(log_request1,undefined,2)
 
                     // response =JSON.stringify(this.state.gridData[this.state.responseIndex].response)
                     // json_payload=JSON.stringify(this.state.gridData[this.state.responseIndex].json_payload)
 
                 }
-                //var allMovieData = JSON.stringify(this.state.gridData[this.state.responseIndex].response);
-                
-               // let jsonObj=JSON.parse()
-                // allMovieData = allMovieData.replace(/\n/g, '');
-
-                 console.log("------------------jsonObj1",response)
-                 console.log("------------------json_payload1",json_payload)
-
-
-                /**
-                 * <Table
-                                gridColumns={utils.getGridColumnByName("response")}
-                                gridData={this.state.gridData[this.state.responseIndex]}
-                                />
-                 */
+                 console.log("------------------log_response",log_response)
+                 console.log("------------------log_request",log_request)
             
        // }
         switch (actionName) {
@@ -137,22 +131,22 @@ class Task extends React.Component {
                         <div>
                                 <div className="row">
                                    <div className="col-md-2">
-                                        <Label text="Request Payload" />
+                                        <Label text="Log Request" />
                                    </div>
                                     <div className="col-md-10">
-                                        <TextArea style={{ height:"200px" }} fieldname='json_payload' formname='searchCriteria'
+                                        <TextArea style={{ height:"200px" }} fieldname='log_request' formname='searchCriteria'
                                                                 state={this.state} typeName="utcStatus" className="form-control"
-                                                                dataSource={[]} multiple={false} actionHandler={this.generalHandler} value={json_payload} disabled={true}/>
+                                                                dataSource={[]} multiple={false} actionHandler={this.generalHandler} value={log_request} disabled={true}/>
                                     </div>               
                                 </div>
                                 <div className="row" style={{marginTop:"30px"}}>
                                     <div className="col-md-2">
-                                        <Label text="Response Payload" />
+                                        <Label text="Log Response" />
                                     </div>
                                     <div className="col-md-10">
-                                        <TextArea style={{height:"100px"  }} fieldname='response' formname='searchCriteria'
+                                        <TextArea style={{height:"100px"  }} fieldname='log_response' formname='searchCriteria'
                                                                 state={this.state} typeName="utcStatus" className="form-control"
-                                                                dataSource={[]} multiple={false} actionHandler={this.generalHandler} value={response} disabled={true}/>
+                                                                dataSource={[]} multiple={false} actionHandler={this.generalHandler} value={log_response} disabled={true}/>
                                     </div>               
                                 </div>
                                
@@ -170,10 +164,11 @@ class Task extends React.Component {
 
     componentWillReceiveProps(nextProps) {
     //   moment(parseInt(_.get(this.state.settlementData, 'paymentDate', 0)) ).format('DD/MM/YYYY') "dddd, MMMM Do YYYY, h:mm:ss a"
-    //moment(epochDate).format("DD-MM-YYYY");    
+    //moment(epochDate).format("DD-MM-YYYY");   
+    console.log("-------------------searchTaskDetailsData",nextProps.searchTaskDetailsData) 
    
 
-    nextProps.getTask.forEach(element => {
+    nextProps.searchTaskDetailsData.forEach(element => {
             // element.actions=[{
             //     "URI": ["/userSetup/"],
             //     "value": "4042",
@@ -184,28 +179,11 @@ class Task extends React.Component {
             //   }]  
               element.actions= [{
                 label: "View", iconName: "icon-docs", actionType: "COMPONENT_FUNCTION","params": ""//value.key
-            },
-            {
-                "URI": ["/taskDetails/"],
-                "value": "4042",
-                "type": "componentAction",
-                "label": "Task Details",
-                "params": "",
-                "iconName": "icon-docs"
-              }
-        ];
-
-              let epochDateSchedule_time = Number(element.schedule_time)*1000;  
-              element.schedule_time= moment(epochDateSchedule_time).format("DD-MM-YYYY")
-
-              let epochDateExecution_time = Number(element.execution_time)*1000;  
-              element.execution_time= moment(epochDateExecution_time).format("DD-MM-YYYY") 
+            }]; 
         });
         this.setState({
             typeData: nextProps.typeData,
-            gridData:nextProps.getTask,
-            gridData2:nextProps.getTask
-
+            gridData:nextProps.searchTaskDetailsData,
         })
            
     }
@@ -253,9 +231,11 @@ class Task extends React.Component {
     }
 
     render() {       
-        console.log("---------------searchCriteria",this.state.searchCriteria)
-        console.log("---------------searchCriteria",this.state.searchCriteria.task_type)
-        console.log("---------------schedule_time",this.state.schedule_time)
+        // let id = this.props.match.params.id;
+        // console.log("---------------this.props.id",id)
+        // console.log("---------------searchCriteria",this.state.searchCriteria)
+         console.log("---------------searchCriteria",this.state.gridData)
+        
        // let data;
        
         //  console.log('------------------data',data)
@@ -265,83 +245,9 @@ class Task extends React.Component {
                     <ModalBox isOpen={this.state.responseModal}>
                         {this.slabActionHandler()}
                     </ModalBox>
-                    <div className="row"> 
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Task Type</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                    <Input
-                                    fieldname='task_type'
-                                    formname='searchCriteria'
-                                    placeholder=''
-                                    state={this.state}
-                                    actionHandler={this.generalHandler}
-                                    className="form-control"
-                                />
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                                <div className="form-group col-md-4">
-                                   <label className="control-label">API URL</label>
-                                </div>
-                            <div className="form-group col-md-8">
-                                    <Input
-                                    fieldname='api_url'
-                                    formname='searchCriteria'
-                                    placeholder=''
-                                    state={this.state}
-                                    actionHandler={this.generalHandler}
-                                    className="form-control"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="row"> 
-                        <div className="col-md-6">
-                            <div className="form-group col-md-4">
-                                <label className="control-label">Schedule Time</label>
-                            </div>
-                            <div className="form-group col-md-8">
-                                    <DateControl
-                                    id='endDate'
-                                    dateChange={this.onStartDateChange}
-                                />
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                                <div className="form-group col-md-4">
-                                   <label className="control-label">Status</label>
-                                </div>
-                            <div className="form-group col-md-8">
-                                    <Input
-                                    fieldname='status'
-                                    formname='searchCriteria'
-                                    placeholder=''
-                                    state={this.state}
-                                    actionHandler={this.generalHandler}
-                                    className="form-control"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                                        <div className="form-actions right">
-                                                    <div className="form-group col-md-12">
-                                                        <div className="btn-toolbar pull-right">
-
-                                                            <button type="submit" className="btn green" onClick={this.search.bind(this)}>{utils.getLabelByID("Search")} </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                               
-                                
-
+                    
                                   <Table
-                                    gridColumns={utils.getGridColumnByName("ViewTask")}
+                                    gridColumns={utils.getGridColumnByName("ViewTaskDetails")}
                                    gridData={this.state.gridData}
                                     //gridData={data}
                                     //totalRecords={this.state.totalRecords}
@@ -367,7 +273,8 @@ function mapStateToProps(state, ownProps) {
     //console.log(state.app)
     return {
         typeData: _.get(state.app, 'typeData.data', null),
-        getTask:_.get(state.app,'data',null)
+        getTask:_.get(state.app,'data',null),
+        searchTaskDetailsData:_.get(state.app,"searchTaskDetailsData",null)
     };
 }
 
@@ -375,9 +282,9 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators(actions, dispatch) };
 }
 
-Task.displayName = "Task";
+TaskDetails.displayName = "Task Details";
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Task);
+)(TaskDetails);
 

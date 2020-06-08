@@ -1061,7 +1061,7 @@ module.exports = {
     {alias: "Action", key: "actions", type: "action"}
   ],
   ViewTask: [
-    {alias: "", key: "_id", type: "hiddenID"},
+    {alias: "", key: "id", type: "hiddenID"},
     {alias: "id", key: "id", type: 'string'},
    // {alias: "username", key: "username", type: 'string'},  
     {alias: "schedule_time", key: "schedule_time", type: "string"},
@@ -1077,13 +1077,22 @@ module.exports = {
     {alias: "status", key: "status", type: "string"},
     {alias: "Action", key: "actions", type: "action"}
   ],
-  response: [
-    {alias: "", key: "_id", type: "hiddenID"},
-    {alias: "userId", key: "userId", type: "string"},
-    {alias: "id", key: "id", type: 'string'},  
-    {alias: "title", key: "title", type: 'string'},
-    {alias: "completed", key: "completed", type: 'string'},
+  ViewTaskDetails: [
+    {alias: "", key: "id", type: "hiddenID"},
+   // {alias: "id", key: "id", type: 'string'},  
+    {alias: "log_id", key: "log_id", type: "string"},
+    {alias: "task_id", key: "task_id", type: 'string'},
+    {alias: "log_status", key: "log_status", type: 'string'},
+    {alias: "log_retry_count", key: "log_retry_count", type: 'string'},
+    {alias: "Action", key: "actions", type: "action"}
   ],
+  // response: [
+  //   {alias: "", key: "_id", type: "hiddenID"},
+  //   {alias: "userId", key: "userId", type: "string"},
+  //   {alias: "id", key: "id", type: 'string'},  
+  //   {alias: "title", key: "title", type: 'string'},
+  //   {alias: "completed", key: "completed", type: 'string'},
+  // ],
   DashboadrEtisalat: [
     {alias: "", key: "_id", type: "hiddenID"},
     {alias: "S.No", key: "serial_no", type: 'string'},

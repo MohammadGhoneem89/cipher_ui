@@ -10,6 +10,7 @@ module.exports = {
     //getTask:'http://5cc165b90e53350014908d51.mockapi.io/api/v1/getAllTask',
     //getTask: sehedularUrl + '/get',  //'http://localhost:8080/get',
     getTask: baseUrl + '/API/Task/getTask',
+    searchTaskDetails: baseUrl + '/API/Task/searchTaskDetails',
     searchTask: baseUrl + '/API/Task/searchTask',
     addTask: baseUrl + '/API/Task/addTask',
     createSettlementBatch: baseUrl + '/API/SMILES/createSettlementBatch',
