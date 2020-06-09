@@ -50,9 +50,13 @@ class Task extends React.Component {
             searchCriteria: {},
             gridData:[],
             gridData2:[],
-            schedule_time:"",
+            schedule_time: "",//moment(moment().subtract(1, 'days').format('DD/MM/YYYY'), 'DD/MM/YYYY').startOf('day').unix(),
             responseModal:false,
             responseIndex:"",
+            page: {
+                pageSize: 10,
+                currentPageNo: 1
+            },
         }
         this.generalHandler = gen.generalHandler.bind(this);
         this.onChangeCheckbox = this.onChangeCheckbox.bind(this);
@@ -62,13 +66,27 @@ class Task extends React.Component {
     
     componentWillMount() {
     }
-
+    getRequest = () => {
+        let searchCriteria={...this.state.searchCriteria, schedule_time: this.state.schedule_time}
+        console.log("searchCriteria",searchCriteria)
+        let request={
+            'body':{
+                "page": {
+                    "currentPageNo": this.state.page.currentPageNo,
+                    "pageSize": this.state.page.pageSize,
+                },
+                searchCriteria:searchCriteria
+            }
+        }
+        return request;
+    }
     componentDidMount() {
         this.props.actions.generalProcess(coreConstants.getTypeData,
             requestCreator.createTypeDataRequest([
                 'listOfferStatus',
             ]));
             this.props.actions.generalProcess(constants.getTask, {});
+            this.props.actions.generalProcess(constants.search,this.getRequest())
           //  this.props.actions.generalProcess(constants.getAllOrgMap, {});
     }
     
@@ -171,9 +189,13 @@ class Task extends React.Component {
     componentWillReceiveProps(nextProps) {
     //   moment(parseInt(_.get(this.state.settlementData, 'paymentDate', 0)) ).format('DD/MM/YYYY') "dddd, MMMM Do YYYY, h:mm:ss a"
     //moment(epochDate).format("DD-MM-YYYY");    
+    console.log("----------------searchTask",nextProps.searchTask)
+    console.log("----------------page",nextProps.page.totalRecords)
+
    
 
-    nextProps.getTask.forEach(element => {
+    //nextProps.getTask.forEach(element => {
+        nextProps.searchTask.forEach(element => {
             // element.actions=[{
             //     "URI": ["/userSetup/"],
             //     "value": "4042",
@@ -195,17 +217,25 @@ class Task extends React.Component {
               }
         ];
 
+             
               let epochDateSchedule_time = Number(element.schedule_time)*1000;  
               element.schedule_time= moment(epochDateSchedule_time).format("DD-MM-YYYY")
+             // element.schedule_time= moment(element.schedule_time).format("DD/MM/YYYY")
+              console.log("----------------element.schedule_time",element.schedule_time)
+             
 
+              
               let epochDateExecution_time = Number(element.execution_time)*1000;  
               element.execution_time= moment(epochDateExecution_time).format("DD-MM-YYYY") 
+              // element.execution_time= moment(element.execution_time).format("DD/MM/YYYY") 
+               console.log("----------------element.execution_time",element.execution_time)
+
         });
         this.setState({
             typeData: nextProps.typeData,
-            gridData:nextProps.getTask,
-            gridData2:nextProps.getTask
-
+            gridData:nextProps.searchTask,   //getTask,
+            gridData2:nextProps.searchTask, //getTask
+            totalRecords:nextProps.page.totalRecords
         })
            
     }
@@ -218,38 +248,42 @@ class Task extends React.Component {
         this.setState(data);
     }
     onStartDateChange = value => {
-        value == 'Invalid date' ? this.setState({ schedule_time: undefined }) : this.setState({ schedule_time: value });
+        value == 'Invalid date' ? this.setState({ schedule_time: undefined }) : this.setState({ schedule_time: value});
     };
+   
     search = () =>{
-        //this.setState({grid})
-        let searchCriteria={...this.state.searchCriteria, schedule_time: this.state.schedule_time}
-        let request={
-            'body':{
-                searchCriteria:searchCriteria
-            }
-        }
-        let dataArray=[]
-        this.state.gridData.forEach(value=>{
-            //if((value.task_type==this.state.searchCriteria.task_type) || (value.api_url==this.state.searchCriteria.api_url) || (value.schedule_time==this.state.schedule_time) || (value.status==this.state.searchCriteria.status)){
-                if(value.task_type==this.state.searchCriteria.task_type || value.api_url==this.state.searchCriteria.api_url || value.schedule_time==this.state.schedule_time ){
+      
+        this.props.actions.generalProcess(constants.search,this.getRequest())
+         //let searchCriteria={...this.state.searchCriteria, schedule_time: this.state.schedule_time}
 
-                console.log("-----------------matched")
-                dataArray.push(value)
-            } 
-            else{
-                console.log("-----------------notmatched")
-            }
-        })
-        this.setState({gridData:dataArray})
-        // let data=this.state.gridData.filter(function(value){
-        //     console.log("----------------filter ",value)
-        //     // if(this.state.searchCriteria.task_type!=""){
-        //     //  return value.task_type===this.state.searchCriteria.task_type
-        //     // }
-        //     return val;
+        // let request={
+        //     'body':{
+        //         "page": {
+        //             "currentPageNo": this.state.page.currentPageNo,
+        //             "pageSize": this.state.page.pageSize,
+        //         },
+        //         searchCriteria:searchCriteria
+        //     }
+        // }
+        // let dataArray=[]
+        // this.state.gridData.forEach(value=>{
+        //     //if((value.task_type==this.state.searchCriteria.task_type) || (value.api_url==this.state.searchCriteria.api_url) || (value.schedule_time==this.state.schedule_time) || (value.status==this.state.searchCriteria.status)){
+        //         if(value.task_type==this.state.searchCriteria.task_type || value.api_url==this.state.searchCriteria.api_url || value.schedule_time==this.state.schedule_time ){
+
+        //         console.log("-----------------matched")
+        //         dataArray.push(value)
+        //     } 
+        //     else{
+        //         console.log("-----------------notmatched")
+        //     }
         // })
-        //this.props.actions.generalProcess(constants.search,request)
-        // console.log("---------------data",data)
+        // this.setState({gridData:dataArray})
+    }
+    pageChanged = (pageNo) => {
+        let page = this.state.page;
+        page.currentPageNo = pageNo;
+        this.setState({ page: page });
+        this.props.actions.generalProcess(constants.search,this.getRequest())
     }
 
     render() {       
@@ -301,11 +335,12 @@ class Task extends React.Component {
                     <div className="row"> 
                         <div className="col-md-6">
                             <div className="form-group col-md-4">
-                                <label className="control-label">Schedule Time</label>
+                                <label className="control-label">Schedule Date</label>
                             </div>
                             <div className="form-group col-md-8">
                                     <DateControl
-                                    id='endDate'
+                                    id='onStartDateChange'
+                                   // defaultValue={utils.UNIXConvertToDateWithout1000(this.state.schedule_time)}
                                     dateChange={this.onStartDateChange}
                                 />
                             </div>
@@ -344,11 +379,11 @@ class Task extends React.Component {
                                     gridColumns={utils.getGridColumnByName("ViewTask")}
                                    gridData={this.state.gridData}
                                     //gridData={data}
-                                    //totalRecords={this.state.totalRecords}
+                                    totalRecords={this.state.totalRecords}
                                     pageSize={10}
-                                    //pageChanged={this.pageChanged}
+                                    pageChanged={this.pageChanged}
                                     pagination={true}
-                                    activePage={this.state.currentPageNo}
+                                    activePage={this.state.page.currentPageNo}
                                     componentFunction={this.showHideDetails}
                                     />
              
@@ -367,7 +402,9 @@ function mapStateToProps(state, ownProps) {
     //console.log(state.app)
     return {
         typeData: _.get(state.app, 'typeData.data', null),
-        getTask:_.get(state.app,'data',null)
+        getTask:_.get(state.app,'data',null),
+        searchTask: _.get(state.app,'searchTask.searchResult',[]),
+        page:_.get(state.app,'searchTask.pageData',{})
     };
 }
 

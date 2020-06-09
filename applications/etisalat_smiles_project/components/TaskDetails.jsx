@@ -53,6 +53,10 @@ class TaskDetails extends React.Component {
             schedule_time:"",
             responseModal:false,
             responseIndex:"",
+            page: {
+                pageSize: 10,
+                currentPageNo: 1
+            },
         }
         this.generalHandler = gen.generalHandler.bind(this);
         this.onChangeCheckbox = this.onChangeCheckbox.bind(this);
@@ -61,6 +65,19 @@ class TaskDetails extends React.Component {
 
     
     componentWillMount() {
+    }
+    getRequest = () => {
+        let searchCriteria={...this.state.searchCriteria, schedule_time: this.state.schedule_time}
+        let request={
+            'body':{
+                "page": {
+                    "currentPageNo": this.state.page.currentPageNo,
+                    "pageSize": this.state.page.pageSize,
+                },
+                task_id: this.props.params.id
+            }
+        }
+        return request;
     }
 
     componentDidMount() {
@@ -78,9 +95,19 @@ class TaskDetails extends React.Component {
                     task_id: this.props.params.id //this.props.id
                 }
             }
-            this.props.actions.generalProcess(constants.searchTaskDetails,request);
+           // this.props.actions.generalProcess(constants.searchTaskDetails,request);
+            this.props.actions.generalProcess(constants.searchTaskDetails,this.getRequest());
+
+            //this.getRequest()
             //this.props.action.generalProcess(constants.searchTaskDetails,request);
           //  this.props.actions.generalProcess(constants.getAllOrgMap, {});
+    }
+    pageChanged = (pageNo) => {
+        let page = this.state.page;
+        page.currentPageNo = pageNo;
+        this.setState({ page: page });
+        this.props.actions.generalProcess(constants.searchTaskDetails,this.getRequest());
+       // this.props.actions.generalProcess(constants.searchTaskDetails,request);
     }
     
     showHideDetails = (actionName,index)=>{
@@ -184,6 +211,7 @@ class TaskDetails extends React.Component {
         this.setState({
             typeData: nextProps.typeData,
             gridData:nextProps.searchTaskDetailsData,
+            totalRecords:nextProps.page.totalRecords
         })
            
     }
@@ -229,6 +257,8 @@ class TaskDetails extends React.Component {
         //this.props.actions.generalProcess(constants.search,request)
         // console.log("---------------data",data)
     }
+    
+
 
     render() {       
         // let id = this.props.match.params.id;
@@ -250,9 +280,9 @@ class TaskDetails extends React.Component {
                                     gridColumns={utils.getGridColumnByName("ViewTaskDetails")}
                                    gridData={this.state.gridData}
                                     //gridData={data}
-                                    //totalRecords={this.state.totalRecords}
+                                    totalRecords={this.state.totalRecords}
                                     pageSize={10}
-                                    //pageChanged={this.pageChanged}
+                                    pageChanged={this.pageChanged}
                                     pagination={true}
                                     activePage={this.state.currentPageNo}
                                     componentFunction={this.showHideDetails}
@@ -274,7 +304,9 @@ function mapStateToProps(state, ownProps) {
     return {
         typeData: _.get(state.app, 'typeData.data', null),
         getTask:_.get(state.app,'data',null),
-        searchTaskDetailsData:_.get(state.app,"searchTaskDetailsData",null)
+        searchTaskDetailsData:_.get(state.app,"TaskDetails.searchResult",null),
+        page:_.get(state.app,'TaskDetails.pageData',{})
+       // searchTaskDetailsData:_.get(state.app,"searchTaskDetailsData",null)
     };
 }
 
