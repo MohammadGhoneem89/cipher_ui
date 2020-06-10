@@ -220,6 +220,7 @@ module.exports = {
   getErrorCodeList: baseUrl + "/API/core/getErrorCodeList",
   groupTypeList: baseUrl + "/API/UI/groupTypeList",
   createOnDemandWelCome: baseUrl + "/API/UI/createOnDemandWelCome",
+  generateHMAC: baseUrl + "/API/core/generateHMAC",
 
 }
 

@@ -220,9 +220,9 @@ function requireAuth(nextState, replace) {
 }
 
 function isAuthorized(nextState, replace) {
-  if (nextState.location.pathname == '/cipher/login') {
-    return auth.logOut();
-  }
+  // if (nextState.location.pathname == '/cipher/login') {
+  //   return auth.logOut();
+  // }
   if (auth.loggedIn()) {
     replace({
       pathname: sessionStorage.firstScreen,
