@@ -12,6 +12,7 @@ module.exports = {
   ...CommunicationIndex,
   baseUrl,
   reportUrl,
+ // getTask: baseUrl + '/API/UI/getTask',
   getPermission: baseUrl + "/API/UI/permission",
   getUserData: `${baseUrl}/API/UI/user`,
   getNotificationData: baseUrl + "/API/UI/notificationList",
@@ -220,6 +221,7 @@ module.exports = {
   getErrorCodeList: baseUrl + "/API/core/getErrorCodeList",
   groupTypeList: baseUrl + "/API/UI/groupTypeList",
   createOnDemandWelCome: baseUrl + "/API/UI/createOnDemandWelCome",
+  generateHMAC: baseUrl + "/API/core/generateHMAC",
 
 }
 

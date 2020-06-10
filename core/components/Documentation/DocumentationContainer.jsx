@@ -8,6 +8,8 @@ import _ from 'lodash';
 import * as requestCreator from '../../common/request.js';
 import DocumentComponent from './DocumentComponent.jsx';
 import cloneDeep from 'lodash/cloneDeep';
+
+
 import Portlet from '../../common/Portlet.jsx';
 import {Scrollbars} from 'react-custom-scrollbars';
 import axios from 'axios'
@@ -22,11 +24,14 @@ const initialState = {
   enumList: {},
   request: undefined,
   response: undefined,
-  requestSample: undefined
+  requestSample: undefined,
+  variations: [],
+  isOpen: false,
+  isHmacOpen: false,
+  generateHMAC: ""
 };
 
 class Documentation extends React.Component {
-
   constructor(props) {
     super(props)
     this.state = cloneDeep(initialState)
@@ -36,8 +41,39 @@ class Documentation extends React.Component {
     this.onRunApi = this.onRunApi.bind(this);
     this.onAdd = this.onAdd.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.closePopUP = this.closePopUP.bind(this);
+    this.HmacPopUP = this.HmacPopUP.bind(this);
+    this.generateHmac = this.generateHmac.bind(this);
   }
 
+
+  closePopUP() {
+    let toggle = !this.state.isOpen;
+    this.setState({isOpen: toggle})
+  }
+
+  HmacPopUP() {
+    let toggle = !this.state.isHmacOpen;
+    this.setState({isHmacOpen: toggle})
+  }
+
+  generateHmac() {
+    let privatekey = document.getElementById('privatekey') == null ? "" : document.getElementById('privatekey').value;
+    let sharedSec = document.getElementById('sharedSec') == null ? "" : document.getElementById('sharedSec').value;
+    let body = document.getElementById('body') == null ? "" : document.getElementById('body').value;
+    if (!privatekey || !sharedSec || !body) {
+      return alert('all fields are required');
+    }
+    let bodyFinal;
+    try {
+      bodyFinal = JSON.stringify(JSON.parse(body))
+    } catch (e) {
+      return alert('body must be a valid json');
+    }
+
+    this.props.actions.generalProcess(constants.generateHMAC, {privatekey, sharedSec, body: bodyFinal});
+    // crypto.
+  }
 
   componentWillMount() {
 
@@ -46,6 +82,7 @@ class Documentation extends React.Component {
   onEdit(data) {
     this.setState({request: data.updated_src})
   }
+
 
   onLoadSample(uri, request) {
     if (this.state.requestSample)
@@ -85,9 +122,12 @@ class Documentation extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
     if (nextProps.enumList) {
       this.setState({enumList: nextProps.enumList})
+    }
+    if (nextProps.generateHMAC) {
+      // alert(nextProps.generateHMAC)
+      this.setState({generateHMAC: nextProps.generateHMAC})
     }
     if (nextProps.RouteListData) {
       let routemap = nextProps.RouteListData;
@@ -133,17 +173,16 @@ class Documentation extends React.Component {
             response = JSON.parse(routemap[useCase][route].simulatorResponse);
           }
           reqSample = routemap[useCase][route].sampleRequest
-
+          let variations = _.get(routemap, `${useCase}.${route}.simucases`, undefined);
 
           let reqSam = _.get(routemap, `${useCase}.${route}.simucases[0].SimulatorRequest`, undefined);
           console.log('>>>>>>>>>||||', JSON.stringify(reqSam));
           if (reqSam) {
+            this.setState({variations: variations})
             _.set(routemap, `${useCase}.${route}.requestSchema`, JSON.parse(reqSam))
           } else {
             _.set(routemap, `${useCase}.${route}.requestSchema`, request)
           }
-
-
           _.set(routemap, `${useCase}.${route}.responseSchema`, response)
 
         }
@@ -167,7 +206,11 @@ class Documentation extends React.Component {
         resp.push(<DocumentComponent initialValues={this.state.RouteList[useCase][route]} useCase={useCase}
                                      route={route} request={request} response={response} baseurl={constants.baseUrl}
                                      PG={request} onEdit={this.onEdit} onDelete={this.onDelete} onAdd={this.onAdd}
-                                     onLoadSample={this.onLoadSample} onRunApi={this.onRunApi}/>);
+                                     onLoadSample={this.onLoadSample} onRunApi={this.onRunApi}
+                                     containerState={this.state}
+                                     HmacPopUP={this.HmacPopUP}
+                                     generateHmac={this.generateHmac}
+                                     closePopUP={this.closePopUP}/>);
       }
     }
     return (resp);
@@ -213,7 +256,8 @@ function mapStateToProps(state, ownProps) {
     RouteListData: state.app.RouteList.data,
     useCase: ownProps.params.useCase,
     route: ownProps.params.route,
-    enumList: state.app.enumList.data
+    enumList: state.app.enumList.data,
+    generateHMAC: _.get(state.app, 'generateHMAC.data.generatedHMAC', undefined)
   };
 }
 
