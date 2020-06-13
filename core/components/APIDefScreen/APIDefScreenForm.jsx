@@ -485,7 +485,24 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
               </div>
             </div>
           </div>
-
+          <div className="col-md-6">
+            <div className="form-group">
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "normal"
+              }}>{utils.getLabelByID("isTracked")}</label>
+              <div className="form-group col-md-8">
+                <div className="icheck-list">
+                  <label className="mt-checkbox mt-checkbox-outline" style={{marginBottom: "0px", marginTop: "0px"}}>
+                    <label/>
+                    <input type="checkbox" className="form-control" onChange={onInputChange}
+                           name="isTracked" checked={initialValues.isTracked} id="isTracked"/>
+                    <span/>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
           {/* tabeed start */}
           <div className="row" style={{marginTop: "25px"}}>
             <div className="col-md-12">

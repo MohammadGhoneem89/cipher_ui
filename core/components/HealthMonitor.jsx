@@ -146,7 +146,7 @@ class HealthMonitorContainer extends React.Component {
               gridColumns={utils.getGridColumnByName("endpointListHealth")}
               gridData={this.state.serviceList.endpointList}
             />
-            <h4>{utils.getLabelByID("HyperLedger Prometheus Link")} </h4>
+            <h4>{utils.getLabelByID("HyperLedger Core Monitor")} </h4>
             <a href={this.state.prometheusURL}>Enter Monitoring</a>
             <h4>{utils.getLabelByID("Network Monitor")} </h4>
             <a href={this.state.gui_monitoring}>Enter Monitoring</a>

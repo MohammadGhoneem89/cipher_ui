@@ -20,7 +20,17 @@ class OrgSearchContainer extends React.Component {
       pageSize: 10,
       activePage: 1,
       sortData: undefined,
-      isLoading: false
+      isLoading: false,
+      actions: [{
+        "value": "1002",
+        "type": "pageAction",
+        "label": "ADD",
+        "labelName": "COM_AB_Add",
+        "actionType": "PORTLET_LINK",
+        "iconName": "fa fa-plus",
+        "URI": "/orgSetup",
+        "children": []
+      }]
     };
     this.pageChanged = this.pageChanged.bind(this);
     this.sortList = this.sortList.bind(this);
@@ -92,7 +102,9 @@ class OrgSearchContainer extends React.Component {
                               state={this.state}/>
           </Portlet>
           <Portlet title={utils.getLabelByID("List")} isPermissioned={true}
-                   actions={this.state.entityList.data.actions}>
+                   actions={this.state.actions}
+                   // actions={this.state.entityList.data.actions}
+          >
             <Table
               pagination={true}
 
