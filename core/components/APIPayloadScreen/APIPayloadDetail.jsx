@@ -26,8 +26,10 @@ class APIPayloadDetail extends React.Component {
       APIPayloadID: undefined,
       isVisible: false,
       heading: "",
-      body: ""
+      body: "",
+      viewFull: false
     }
+    this.viewFull = this.viewFull.bind(this);
     this.performAction = this.performAction.bind(this);
     this.ActionHandlers = this.ActionHandlers.bind(this);
   }
@@ -49,7 +51,7 @@ class APIPayloadDetail extends React.Component {
         "id": nextProps.APIPayloadID,
       }
 
-      this.setState({APIPayloadID: nextProps.APIPayloadID})
+      this.setState({APIPayloadID: nextProps.APIPayloadID, viewFull: false})
       this.props.actions.generalProcess(constants.getAPIPayloadDetail, request);
     }
     if (document.getElementById('diffoutput') != null) {
@@ -61,6 +63,10 @@ class APIPayloadDetail extends React.Component {
 
   diffUsingJS(viewType) {
 
+  }
+
+  viewFull(viewType) {
+    this.setState({viewFull: !this.state.viewFull})
   }
 
   convertJSONToString(value) {
@@ -134,6 +140,28 @@ class APIPayloadDetail extends React.Component {
 
   }
 
+  getTrim(pLoad) {
+    let deep = _.cloneDeep(pLoad)
+    _.set(deep, 'header', undefined)
+    _.set(deep, 'action', undefined)
+    _.set(deep, 'channel', undefined)
+    _.set(deep, 'ipAddress', undefined)
+
+    return this.clearEmpties(deep);
+  }
+
+  clearEmpties(o) {
+    for (var k in o) {
+      if (!o[k] || typeof o[k] !== "object") {
+        continue;
+      }
+      if (Object.keys(o[k]).length === 0) {
+        delete o[k];
+      }
+    }
+    return o;
+  }
+
   render() {
     if (this.props.APIPayloadDetailData.tracking) {
       this.props.APIPayloadDetailData.tracking.forEach((elem) => {
@@ -161,9 +189,8 @@ class APIPayloadDetail extends React.Component {
       ]
       let repostActionURL = this.props.APIPayloadDetailData.channel == 'Cipher' ? constants.repostAction : constants.repostActionInternal;
       let eCode = _.get(this.props.APIPayloadDetailData.response, 'errorCode', 'N/A')
+
       return (
-
-
         <div>
           <div className="form-body" id="auditTrailSection">
             <div className="row">
@@ -190,6 +217,13 @@ class APIPayloadDetail extends React.Component {
                         <div className="row">
                           <div className={"col-md-12"}>
                             <div className={"col-md-12"}>
+                              <div className=" col-md-3">
+                                <label className="control-label bold">{utils.getLabelByID("URI")}</label>
+                              </div>
+                              <div className=" col-md-9">
+                                <label
+                                  className="control-label ">{`/API/${this.props.APIPayloadDetailData.channel}/${this.props.APIPayloadDetailData.action}`}</label>
+                              </div>
                               <div className=" col-md-3">
                                 <label className="control-label bold">{utils.getLabelByID("Message ID")}</label>
                               </div>
@@ -224,16 +258,26 @@ class APIPayloadDetail extends React.Component {
                                 <label className="control-label bold">{utils.getLabelByID("Duration")}</label>
                               </div>
                               <div className=" col-md-9">
-                                <label className="control-label " style={{color: this.props.APIPayloadDetailData.duration <= this.props.APIPayloadDetailData.avgrtt ? 'green' : 'red'}}>{this.props.APIPayloadDetailData.duration} ms</label>
+                                <label className="control-label "
+                                       style={{color: this.props.APIPayloadDetailData.duration <= this.props.APIPayloadDetailData.avgrtt ? 'green' : 'red'}}>{this.props.APIPayloadDetailData.duration} ms</label>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className={"col-md-6"}>
-                        <h4 className="form-section" style={{fontWeight: "bold"}}>{"Request"}</h4>
+                        <div className={"row"}>
+                          <div className={"col-md-6"}>
+                            <h4 className="form-section" style={{fontWeight: "bold"}}>{"Request "}
+                            </h4>
+                          </div>
+                          <div className={"col-md-6"}><a href={"javascript:;"} className={"btn btn-default dark"}
+                                                         onClick={this.viewFull}>view full request</a>
+                          </div>
+                        </div>
+
                         <JSONPretty id="json-pretty" style={{height: "400", width: "100%"}}
-                                    json={this.props.APIPayloadDetailData.payload}></JSONPretty>
+                                    json={this.state.viewFull ? this.props.APIPayloadDetailData.payload : this.getTrim(this.props.APIPayloadDetailData.payload)}></JSONPretty>
                       </div>
                       <div className={"col-md-6"}>
                         <h4 className="form-section" style={{fontWeight: "bold"}}>{"Response"}</h4>
@@ -276,32 +320,32 @@ class APIPayloadDetail extends React.Component {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+            < /div>
+              < /div>
 
-      );
-    } else
-      return (
-        <div></div>
-      )
+                );
+                } else
+                return (
+                <div></div>
+                )
 
 
-  }
-}
+                }
+                }
 
-APIPayloadDetail.propTypes = {
-  APIPayloadDetailData: PropTypes.object
-};
+                APIPayloadDetail.propTypes = {
+                APIPayloadDetailData: PropTypes.object
+              };
 
-function mapStateToProps(state, ownProps) {
-  return {
-    APIPayloadDetailData: state.app.APIPayLoadDetail.data
-  };
-}
+                function mapStateToProps(state, ownProps) {
+                return {
+                APIPayloadDetailData: state.app.APIPayLoadDetail.data
+              };
+              }
 
-function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)}
-}
+                function mapDispatchToProps(dispatch) {
+                return {actions: bindActionCreators(actions, dispatch)}
+              }
 
-APIPayloadDetail.displayName = "Audit Log Detail";
-export default connect(mapStateToProps, mapDispatchToProps)(APIPayloadDetail);
+                APIPayloadDetail.displayName = "Audit Log Detail";
+                export default connect(mapStateToProps, mapDispatchToProps)(APIPayloadDetail);

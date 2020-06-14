@@ -155,7 +155,7 @@ class APIPayloadList extends React.Component {
                           <div className="portlet light bordered sdg_portlet">
                               <div className="portlet-title">
                                   <div className="caption">
-                                      <i className="fa fa-settings"></i>{"API Payload List Filters"}</div>
+                                      <i className="fa fa-settings"></i>{"Transaction Tracking List Filters"}</div>
                                   <div className="tools">
                                       <a href="javascript:;" className="collapse" data-original-title title> </a>
                                   </div>
@@ -255,7 +255,7 @@ class APIPayloadList extends React.Component {
                           <div className="modal-content" style={{ padding: "10px" }}>
                               <div className="modal-header">
                                   <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">{utils.getLabelByID("TLP_Close")}</span></button>
-                                  <h3 className="modal-title">{"API Payload Detail"}</h3>
+                                  <h3 className="modal-title">{"Transaction Tracking Detail"}</h3>
                               </div>
 
                               {<div className="modal-body" id="popup">
