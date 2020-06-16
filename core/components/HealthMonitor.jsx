@@ -93,136 +93,91 @@ class HealthMonitorContainer extends React.Component {
   render() {
     if (!this.state.isLoading) {
       return (
-        // cipherSvc
-        <div>
-          <Portlet title={utils.getLabelByID("Cipher Health Stats")} isPermissioned={true}>
-            <h4>{utils.getLabelByID("Cipher Services")} </h4>
-            <Table
-              pagination={false}
-              export={false}
-              search={false}
-              gridColumns={utils.getGridColumnByName("cipherSvc")}
-              gridData={this.state.serviceList.cipherSvc}
-            />
-            <h4>{utils.getLabelByID("Postgress Client List")} </h4>
-            <Table
-              pagination={false}
-              export={false}
-              search={false}
-              gridColumns={utils.getGridColumnByName("pgClientList")}
-              gridData={this.state.serviceList.clientList}
-            />
+        <Portlet title={utils.getLabelByID("Network Statistics")} isPermissioned={true}>
 
-            <h4>{utils.getLabelByID("Rabbit MQ Stats")} </h4>
+          <div className="tabbable-line boxless">
+            <ul className="nav nav-tabs">
 
-            <Table
-              pagination={false}
-              export={false}
-              search={false}
-              gridColumns={utils.getGridColumnByName("rmqStatus")}
-              gridData={this.state.serviceList.rabbitMQ}
-            />
-            <h4>{utils.getLabelByID("HyperLedger Orderer")} </h4>
-            <Table
-              pagination={false}
-              export={false}
-              search={false}
-              gridColumns={utils.getGridColumnByName("ordererList")}
-              gridData={this.state.serviceList.ordererList}
-            />
-            <h4>{utils.getLabelByID("HyperLedger Peer")} </h4>
-            <Table
-              pagination={false}
-              export={false}
-              search={false}
-              gridColumns={utils.getGridColumnByName("peerListHealth")}
-              gridData={this.state.serviceList.peerList}
-            />
-            <h4>{utils.getLabelByID("Endpoint List")} </h4>
-            <Table
-              pagination={false}
-              export={false}
-              search={false}
-              gridColumns={utils.getGridColumnByName("endpointListHealth")}
-              gridData={this.state.serviceList.endpointList}
-            />
-            <h4>{utils.getLabelByID("HyperLedger Core Monitor")} </h4>
-            <a href={this.state.prometheusURL}>Enter Monitoring</a>
-            <h4>{utils.getLabelByID("Network Monitor")} </h4>
-            <a href={this.state.gui_monitoring}>Enter Monitoring</a>
-          </Portlet>
-          {/*<Portlet title={utils.getLabelByID("Notification Rules")} >*/}
-          {/*    <Row>*/}
-          {/*        <Col col="3">*/}
-          {/*            <Label text="field" columns="3"></Label>*/}
-          {/*            <Combobox fieldname='field' formname='routing' columns='9' style={{}}*/}
-          {/*                state={this.state} typeName="options"*/}
-          {/*                dataSource={(() => {*/}
-          {/*                    let options = [];*/}
-          {/*                    this.state.fields.map(item => {*/}
-          {/*                        options.push({ label: item.fieldName, value: item.fieldName });*/}
-          {/*                    });*/}
-          {/*                    return { options };*/}
-          {/*                })()} multiple={false} actionHandler={this.generalHandler} />*/}
-          {/*        </Col>*/}
-          {/*        <Col col="3">*/}
-          {/*            <Label text="op." columns="3"></Label>*/}
-          {/*            <Combobox fieldname='option' formname='routing' columns='9' style={{}}*/}
-          {/*                state={this.state} typeName="options"*/}
-          {/*                dataSource={(() => {*/}
-          {/*                    let options = [];*/}
-          {/*                    options.push({ label: '==', value: '==' });*/}
-          {/*                    options.push({ label: 'Regexp', value: 'Regexp' });*/}
-          {/*                    return { options };*/}
-          {/*                })()} multiple={false} actionHandler={this.generalHandler} />*/}
-          {/*        </Col>*/}
-          {/*        <Col col="3">*/}
-          {/*            <Label text="value" columns="3"></Label>*/}
-          {/*            <Input fieldname='value' formname='routing' state={this.state}*/}
-          {/*                columns='9' style={{}} actionHandler={this.generalHandler} />*/}
-          {/*        </Col>*/}
-          {/*        <Col col="3">*/}
-          {/*            <Label text="Then" columns="3"></Label>*/}
-          {/*            <Combobox fieldname='API' formname='routing' columns='9' style={{}}*/}
-          {/*                state={this.state} typeName="ApiList"*/}
-          {/*                dataSource={this.props.containerState} multiple={false} actionHandler={this.generalHandler} />*/}
-          {/*        </Col>*/}
-          {/*        <Col col="3">*/}
-          {/*            <Label text="Name" columns="3"></Label>*/}
-          {/*            <Input fieldname='ruleName' formname='routing' state={this.state}*/}
-          {/*                columns='9' style={{}} actionHandler={this.generalHandler} />*/}
-          {/*        </Col>*/}
-          {/*        <Col col="3">*/}
-          {/*            <Label text="Custom" columns="3"></Label>*/}
-          {/*            <Input fieldname='transformFunction' formname='routing' state={this.state}*/}
-          {/*                columns='9' style={{}} actionHandler={this.generalHandler} />*/}
-          {/*        </Col>*/}
-          {/*    </Row>*/}
-          {/*    <Row>*/}
-          {/*        <Col>*/}
-          {/*            <div className="col-md-12">*/}
-          {/*                <div className="btn-toolbar pull-right">*/}
-          {/*                    <a className="btn btn-default" href="javascript:;" onClick={this.addRouting.bind(this)}>{utils.getLabelByID("Add Notification Rule")} </a>*/}
-          {/*                </div>*/}
-          {/*            </div>*/}
-          {/*            <Col col="12">*/}
-          {/*                <Table*/}
-          {/*                    pagination={false}*/}
-          {/*                    export={false}*/}
-          {/*                    search={false}*/}
-          {/*                    gridColumns={utils.getGridColumnByName("FTEMP_FilterRules")}*/}
-          {/*                    componentFunction={this.ActionHandlersRules}*/}
-          {/*                    gridData={this.state.rulesList}*/}
-          {/*                    totalRecords={this.state.rules.length}*/}
-          {/*                />*/}
-          {/*            </Col>*/}
-          {/*        </Col>*/}
-          {/*    </Row>*/}
-          {/*</Portlet>*/}
+              <li className={"active"}>
+                <a href="#tab_1_1" data-toggle="tab"
+                   style={{fontWeight: "Bold", fontSize: "17px"}}>Cipher Basic Health</a>
+              </li>
+              <li>
+                <a href="#tab_1_3" data-toggle="tab"
+                   style={{fontWeight: "Bold", fontSize: "17px"}}>Hyperledger Health</a>
+              </li>
+              <li>
+                <a href="#tab_1_4" data-toggle="tab"
+                   style={{fontWeight: "Bold", fontSize: "17px"}}>Technical Network Stats</a>
+              </li>
+            </ul>
+          </div>
+          <div className="tabbable-line">
+            <div className="tab-content">
+              <div className="tab-pane active" id="tab_1_1">
+                <div>
 
+                  <h4>{utils.getLabelByID("Cipher Services")} </h4>
+                  <Table
+                    pagination={false}
+                    export={false}
+                    search={false}
+                    gridColumns={utils.getGridColumnByName("cipherSvc")}
+                    gridData={this.state.serviceList.cipherSvc}
+                  />
+                  <h4>{utils.getLabelByID("Postgress Client List")} </h4>
+                  <Table
+                    pagination={false}
+                    export={false}
+                    search={false}
+                    gridColumns={utils.getGridColumnByName("pgClientList")}
+                    gridData={this.state.serviceList.clientList}
+                  />
 
-        </div>
+                  <h4>{utils.getLabelByID("Rabbit MQ Stats")} </h4>
 
+                  <Table
+                    pagination={false}
+                    export={false}
+                    search={false}
+                    gridColumns={utils.getGridColumnByName("rmqStatus")}
+                    gridData={this.state.serviceList.rabbitMQ}
+                  />
+                  <h4>{utils.getLabelByID("HyperLedger Orderer")} </h4>
+                  <Table
+                    pagination={false}
+                    export={false}
+                    search={false}
+                    gridColumns={utils.getGridColumnByName("ordererList")}
+                    gridData={this.state.serviceList.ordererList}
+                  />
+                  <h4>{utils.getLabelByID("HyperLedger Peer")} </h4>
+                  <Table
+                    pagination={false}
+                    export={false}
+                    search={false}
+                    gridColumns={utils.getGridColumnByName("peerListHealth")}
+                    gridData={this.state.serviceList.peerList}
+                  />
+                  <h4>{utils.getLabelByID("Endpoint List")} </h4>
+                  <Table
+                    pagination={false}
+                    export={false}
+                    search={false}
+                    gridColumns={utils.getGridColumnByName("endpointListHealth")}
+                    gridData={this.state.serviceList.endpointList}
+                  />
+                </div>
+              </div>
+              <div className="tab-pane" id="tab_1_3">
+                <iframe src={this.state.gui_monitoring} frameBorder="0" style={{height: "100%", width: "100%"}}></iframe>
+              </div>
+              <div className="tab-pane" id="tab_1_4">
+                <iframe src={this.state.prometheusURL} frameBorder="0" style={{height: "100%", width: "100%"}}></iframe>
+              </div>
+            </div>
+          </div>
+        </Portlet>
       );
     } else {
       return (<div className="loader">{utils.getLabelByID("Loading")}</div>)

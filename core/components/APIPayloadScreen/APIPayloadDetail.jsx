@@ -146,6 +146,8 @@ class APIPayloadDetail extends React.Component {
     _.set(deep, 'action', undefined)
     _.set(deep, 'channel', undefined)
     _.set(deep, 'ipAddress', undefined)
+    _.set(deep, '__JWTORG', undefined)
+    _.set(deep, 'headersParams', undefined)
 
     return this.clearEmpties(deep);
   }
@@ -251,7 +253,7 @@ class APIPayloadDetail extends React.Component {
                               </div>
                               <div className=" col-md-9">
                                 <label
-                                  className="control-label ">{_.get(this.props.APIPayloadDetailData.payload, 'header.username', 'N/A')}</label>
+                                  className="control-label ">{`${_.get(this.props.APIPayloadDetailData.payload, 'header.username', 'N/A')}/${_.get(this.props.APIPayloadDetailData, 'orgcode', ' No ORG')}`}</label>
                               </div>
 
                               <div className=" col-md-3">
@@ -271,8 +273,9 @@ class APIPayloadDetail extends React.Component {
                             <h4 className="form-section" style={{fontWeight: "bold"}}>{"Request "}
                             </h4>
                           </div>
-                          <div className={"col-md-6"}><a href={"javascript:;"} className={"btn btn-default dark"}
-                                                         onClick={this.viewFull}>view full request</a>
+                          <div className={"col-md-6"}><a href={"javascript:;"} className={"btn btn-default "}
+                                                         style={{height: '30px', fontSize: '12px'}}
+                                                         onClick={this.viewFull}>Detail</a>
                           </div>
                         </div>
 
@@ -320,32 +323,31 @@ class APIPayloadDetail extends React.Component {
                 </div>
               </div>
             </div>
-            < /div>
-              < /div>
+          </div>
+        </div>
 
-                );
-                } else
-                return (
-                <div></div>
-                )
+      );
+    } else
+      return (
+        <div></div>
+      )
+  }
+}
 
+APIPayloadDetail.propTypes = {
+  APIPayloadDetailData: PropTypes.object
+};
 
-                }
-                }
+function mapStateToProps(state, ownProps) {
+  return {
 
-                APIPayloadDetail.propTypes = {
-                APIPayloadDetailData: PropTypes.object
-              };
+    APIPayloadDetailData: state.app.APIPayLoadDetail.data
+  };
+}
 
-                function mapStateToProps(state, ownProps) {
-                return {
-                APIPayloadDetailData: state.app.APIPayLoadDetail.data
-              };
-              }
+function mapDispatchToProps(dispatch) {
+  return {actions: bindActionCreators(actions, dispatch)}
+}
 
-                function mapDispatchToProps(dispatch) {
-                return {actions: bindActionCreators(actions, dispatch)}
-              }
-
-                APIPayloadDetail.displayName = "Audit Log Detail";
-                export default connect(mapStateToProps, mapDispatchToProps)(APIPayloadDetail);
+APIPayloadDetail.displayName = "Audit Log Detail";
+export default connect(mapStateToProps, mapDispatchToProps)(APIPayloadDetail);
