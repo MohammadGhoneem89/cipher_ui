@@ -124,7 +124,7 @@ class ErrorCodeList extends React.Component {
 
     return (<ErrorCode flag={this.state.update} ActionHandlers={this.ActionHandlers}
                        onInputChange={this.onInputChange} addPeer={this.addPeer}
-                       typeData={this.state.typeData}
+                       typeData={this.state.typeData} isOwner={this.props.isOwner}
                        state={this.state}/>)
 
   }
@@ -132,14 +132,17 @@ class ErrorCodeList extends React.Component {
   ActionHandlers({actionName, index}) {
     switch (actionName) {
       case "edit":
-        if (index > -1) {
-          let b = this.state.errorCodeList[index];
-          document.getElementById('code').value = _.get(b, 'code', '');
-          document.getElementById('description').value = _.get(b, 'description', '');
-
-          let tempState = this.state.errorCodeList;
-          tempState.splice(index, 1);
-          this.setState({errorCodeList: tempState, update: true});
+        if (this.props.isOwner) {
+          if (index > -1) {
+            let b = this.state.errorCodeList[index];
+            document.getElementById('code').value = _.get(b, 'code', '');
+            document.getElementById('description').value = _.get(b, 'description', '');
+            let tempState = this.state.errorCodeList;
+            tempState.splice(index, 1);
+            this.setState({errorCodeList: tempState, update: true});
+          }
+        } else {
+          alert('Cannot Edit');
         }
         break;
       default:
@@ -158,7 +161,8 @@ ErrorCodeList.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     updateErrorCodeList: _.get(state.app, 'updateErrorCodeList.data', undefined),
-    errorCodeList: _.get(state.app, 'ErrorCodeList.data.searchResult', [])
+    errorCodeList: _.get(state.app, 'ErrorCodeList.data.searchResult', []),
+    isOwner: _.get(state.app, 'ErrorCodeList.data.isOwner', false)
   };
 }
 

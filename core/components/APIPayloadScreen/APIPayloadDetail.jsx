@@ -253,7 +253,7 @@ class APIPayloadDetail extends React.Component {
                               </div>
                               <div className=" col-md-9">
                                 <label
-                                  className="control-label ">{`${_.get(this.props.APIPayloadDetailData.payload, 'header.username', 'N/A')}/${_.get(this.props.APIPayloadDetailData, 'orgcode', ' No ORG')}`}</label>
+                                  className="control-label ">{`${_.get(this.props.APIPayloadDetailData, 'username', 'N/A')}/${_.get(this.props.APIPayloadDetailData, 'orgcode', ' No ORG')}`}</label>
                               </div>
 
                               <div className=" col-md-3">
