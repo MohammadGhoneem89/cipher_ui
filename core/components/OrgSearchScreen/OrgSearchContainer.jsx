@@ -43,7 +43,7 @@ class OrgSearchContainer extends React.Component {
         isLoading: nextProps.isLoading
       });
     }
-    if(nextProps.entityList.pageData && nextProps.entityList.pageData.sortData){
+    if (nextProps.entityList.pageData && nextProps.entityList.pageData.sortData) {
       this.setState({
         sortData: nextProps.entityList.pageData.sortData
 
@@ -102,8 +102,8 @@ class OrgSearchContainer extends React.Component {
                               state={this.state}/>
           </Portlet>
           <Portlet title={utils.getLabelByID("List")} isPermissioned={true}
-                   actions={this.state.actions}
-                   // actions={this.state.entityList.data.actions}
+            // actions={this.state.actions}
+                   actions={this.state.entityList.data.actions}
           >
             <Table
               pagination={true}

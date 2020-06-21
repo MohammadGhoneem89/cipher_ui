@@ -4,7 +4,6 @@ import {bindActionCreators} from 'redux';
 import * as actions from '../../actions/generalAction.js';
 import * as constants from '../../constants/Communication.js';
 import * as toaster from '../../common/toaster.js';
-import brandConfig from '../../../assets/skins/default/brandConfig.json';
 import Portlet from '../../common/Portlet.jsx';
 import * as utils from "../../common/utils";
 import Cookies from "js-cookie";
@@ -192,7 +191,7 @@ class ChangePassword extends React.Component {
               <div className="login-form">
                 <div className="logo"></div>
                 {this.getLogosForSDGUser()}
-                <h3 className="form-title">{brandConfig.projectName}</h3>
+                <h3 className="form-title">{Cipher}</h3>
                 <div className="alert alert-danger display-hide">
                   <button className="close" data-close="alert"/>
                   <span> Enter any username and password. </span>

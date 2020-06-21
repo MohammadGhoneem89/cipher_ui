@@ -10,8 +10,6 @@ import _ from 'lodash';
 import * as toaster from "../../common/toaster.js";
 import UserSetupForm from './UserSetupForm.jsx'
 import Portlet from '../../common/Portlet.jsx';
-import Combobox from '../../../applications/starta/common/Select.jsx';
-import config from '../../../config';
 
 import * as gen from '../../common/generalActionHandler';
 import {forEach} from "react-bootstrap/cjs/ElementChildren";

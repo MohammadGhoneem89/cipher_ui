@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import Label from '../../common/Lable.jsx';
 import ActionButton from '../../common/ActionButtonNew.jsx';
-import Combobox from '../../../applications/starta/common/Select.jsx';
+import Combobox from '../../common/Select.jsx';
 import CheckBox from '../../common/CheckBox.jsx';
 
 import Row from '../../common/Row.jsx';

@@ -10,36 +10,40 @@ const ErrorCodeForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isO
     <Portlet title={utils.getLabelByID("Error Code List")}>
       <div className="row" id={'form'}>
         <div className=" col-md-12">
-
-          <div className="col-md-6">
-            <div className="form-group">
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("Code")}</label>
-              <div className="form-group col-md-8">
-                <input type="text" disabled={!isOwner} className="form-control" id="code" onChange={onInputChange}
-                       value={state.code}/>
+          {isOwner &&
+          <div>
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-group control-label col-md-4" style={{
+                  textAlign: "left",
+                  fontWeight: "normal"
+                }}>{utils.getLabelByID("Code")}</label>
+                <div className="form-group col-md-8">
+                  <input type="text" disabled={!isOwner} className="form-control" id="code" onChange={onInputChange}
+                         value={state.code}/>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label className="form-group control-label col-md-4" style={{
-                textAlign: "left",
-                fontWeight: "normal"
-              }}>{utils.getLabelByID("description")}</label>
-              <div className="form-group col-md-8">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="form-group control-label col-md-4" style={{
+                  textAlign: "left",
+                  fontWeight: "normal"
+                }}>{utils.getLabelByID("description")}</label>
+                <div className="form-group col-md-8">
                     <textarea type="text" disabled={!isOwner} className="form-control" id="description" rows="4"
                               style={{resize: "none", width: "100%"}}/>
+                </div>
               </div>
             </div>
           </div>
+          }
         </div>
         <div className="row">
           <div className="col-md-12">
             <div className="col-md-12">
               <div className="col-md-12">
+                {isOwner &&
                 <div className="form-actions right">
                   <div className="form-group col-md-12">
                     <div className="btn-toolbar pull-right">
@@ -48,7 +52,8 @@ const ErrorCodeForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isO
                     </div>
                   </div>
                 </div>
-                <div className="col-md-12">
+                }
+                < div className="col-md-12">
                   <Table
                     gridColumns={utils.getGridColumnByName("errorCodes")}
                     gridData={state.errorCodeList}

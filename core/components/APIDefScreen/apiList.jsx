@@ -237,10 +237,11 @@ class ApiList extends React.Component {
                               {"  "}
                               <button type="button" className="btn default"
                                       onClick={this.clearFields}>{utils.getLabelByID("Clear")}</button>
+                              {this.props.ApiListData.data.isOwner &&
                               <button type="button" className="btn green"
                                       onClick={this.downloadChainCode}>{utils.getLabelByID("Generate_ChainCode")}
-
                               </button>
+                              }
                             </div>
                           </div>
                         </div>

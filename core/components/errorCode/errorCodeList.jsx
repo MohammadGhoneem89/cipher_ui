@@ -92,9 +92,11 @@ class ErrorCodeList extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.errorCodeList) {
       nextProps.errorCodeList.forEach((elem) => {
-        elem.actions = [
-          {"label": "edit", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION"}
-        ]
+        if(nextProps.isOwner==true) {
+          elem.actions = [
+            {"label": "edit", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION"}
+          ]
+        }
       })
       this.setState({
         errorCodeList: nextProps.errorCodeList,

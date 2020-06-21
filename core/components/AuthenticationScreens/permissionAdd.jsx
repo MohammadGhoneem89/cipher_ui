@@ -3,16 +3,9 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../../actions/generalAction.js';
 import * as constants from '../../constants/Communication.js';
-import * as toaster from '../../common/toaster.js';
-import brandConfig from '../../../assets/skins/default/brandConfig.json';
 import Portlet from '../../common/Portlet.jsx';
 import * as utils from "../../common/utils";
-import Cookies from "js-cookie";
-import * as requestCreator from "../../common/request";
-import auth from "../../auth/authenticator";
-import {browserHistory} from "react-router";
-import Combobox from '../../../applications/starta/common/Select.jsx';
-import * as gen from "../../common/generalActionHandler";
+import Combobox from '../../common/Select.jsx';
 
 class PermissionAdd extends React.Component {
 

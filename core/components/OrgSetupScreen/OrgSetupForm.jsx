@@ -155,10 +155,12 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
             <a href="#tab_1_7" data-toggle="tab"
                style={{fontWeight: "Bold", fontSize: "17px"}}>Mapped Codes</a>
           </li>
+          {!state.readOnly &&
           <li>
             <a href="#tab_1_8" data-toggle="tab"
                style={{fontWeight: "Bold", fontSize: "17px"}}>Welcome Kit</a>
           </li>
+          }
           <li>
             <a href="#tab_1_9" data-toggle="tab"
                style={{fontWeight: "Bold", fontSize: "17px"}}>Billing</a>

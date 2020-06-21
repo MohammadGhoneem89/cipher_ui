@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import brandConfig from '../../../assets/skins/default/brandConfig.json';
+
 import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
@@ -13,7 +13,6 @@ import * as toaster from '../../common/toaster.js';
 
 import auth from '../../auth/authenticator';
 import { baseUrl } from '../../constants/Communication.js';
-
 
 class Locked extends React.Component {
 
@@ -148,7 +147,7 @@ class Locked extends React.Component {
               <div className="logo">
                 <img src="https://admin.qa.dubaipay.gov.ae/assets/layouts/layout2/img/emirates-logo.jpg" alt="" />
               </div>
-              <h3 className="form-title">{brandConfig.projectName}</h3>
+              <h3 className="form-title">Cipher</h3>
               <h4>
                 {"Your session timeout, please enter password to login!"}
               </h4>
@@ -185,7 +184,7 @@ class Locked extends React.Component {
               </div>
             </div>
           </div>
-          <div className="copyright">{brandConfig.footer}</div>
+
         </div>
       </div>
 

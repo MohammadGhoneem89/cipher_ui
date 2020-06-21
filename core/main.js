@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 var React = require('react');
 import { Router,browserHistory} from 'react-router'
-
 /*Routing imports*/
 import routes from './routes';
 
@@ -21,7 +20,6 @@ store.dispatch(generalActionLoad());
 
 
 ReactDOM.render(
-
 	<Provider store={store}>
 		<Router history={browserHistory} routes={routes} />
 	</Provider>
