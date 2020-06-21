@@ -798,336 +798,336 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                         {/* End BlockChain Routing Tab */}
 
 
-                        {/* Custom Mapping Code Generator */}
-                        <div className="tab-pane" id="tab_1_3">
-                          <div className="col-md-12" id="offchainDefination">
-                            <div className="row">
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label className="form-group control-label col-md-4" style={{
-                                    textAlign: "left",
-                                    fontWeight: "normal"
-                                  }}>{utils.getLabelByID("Database Type")}</label>
-                                  <div className="form-group col-md-8">
-                                    <select id="databaseType" name="databaseType" className="form-control"
-                                            value={initialValues.databaseType} onChange={onInputChange}>
-                                      <option disabled selected>{utils.getLabelByID("Select ...")}</option>
-                                      {
-                                        typeData.database_types.map((option, index) => {
-                                          return (
-                                            <option key={index} value={option.value}>{option.label}</option>
-                                          );
-                                        })
-                                      }
-                                    </select>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label className="form-group control-label col-md-4" style={{
-                                    textAlign: "left",
-                                    fontWeight: "normal"
-                                  }}>{utils.getLabelByID("Adaptors")}</label>
-                                  <div className="form-group col-md-8">
-                                    <select id="adaptor" name="adaptor" className="form-control"
-                                            value={initialValues.adaptor} onChange={onInputChange}>
-                                      <option disabled selected>{utils.getLabelByID("Select ...")}</option>
-                                      {
-                                        get(parentState, `getAdaptorsList[${parentState.databaseType || 'mongo'}]`, []).map((option, index) => {
-                                          return (
-                                            <option key={index} value={option.value}>{option.label}</option>
-                                          );
-                                        })
-                                      }
-                                    </select>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label className="form-group control-label col-md-4" style={{
-                                    textAlign: "left",
-                                    fontWeight: "normal"
-                                  }}>{utils.getLabelByID("Object Type")}</label>
-                                  <div className="form-group col-md-8">
-                                    <select id="objectType" name="objectType" className="form-control"
-                                            value={initialValues.objectType} onChange={onInputChange}>
-                                      <option disabled selected>{utils.getLabelByID("Select ...")}</option>
-                                      {
-                                        filter(typeData.database_object_types, {type: parentState.databaseType || 'mongo'}).map((option, index) => {
-                                          return (
-                                            <option key={index} value={option.value}>{option.label}</option>
-                                          );
-                                        })
-                                      }
-                                    </select>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label className="form-group control-label col-md-4" style={{
-                                    textAlign: "left",
-                                    fontWeight: "normal"
-                                  }}>{utils.getLabelByID("Available Objects")}</label>
-                                  <div className="form-group col-md-8">
-                                    <select id="availableObjects" name="availableObjects" className="form-control"
-                                            value={initialValues.availableObjects} onChange={onInputChange}>
-                                      <option disabled selected>{utils.getLabelByID("Select ...")}</option>
-                                      {
-                                        get(parentState, `getAvailableObjectsList`, []).map((option, index) => {
-                                          return (
-                                            <option key={index} value={option.name}>{option.name}</option>
-                                          );
-                                        })
-                                      }
-                                    </select>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-6">
-                                <label className="form-group control-label col-md-4">
-                                  {utils.getLabelByID("Enable Paging")}
-                                </label>
-                                <div className="form-group col-md-8">
-                                  <div className="icheck-list">
-                                    <label className="mt-checkbox mt-checkbox-outline"
-                                           style={{marginBottom: "0px", marginTop: "0px"}}>
-                                      <label/>
-                                      <input type="checkbox" className="form-control" onChange={onInputChange}
-                                             name="isEnablePagination" id="isEnablePagination"
-                                             checked={initialValues.isEnablePagination}/>
-                                      <span/>
-                                    </label>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-6">
-                                <label className="form-group control-label col-md-4">
-                                  {utils.getLabelByID("Enable Component Action")}
-                                </label>
-                                <div className="form-group col-md-8">
-                                  <div className="icheck-list">
-                                    <label className="mt-checkbox mt-checkbox-outline"
-                                           style={{marginBottom: "0px", marginTop: "0px"}}>
-                                      <label/>
-                                      <input type="checkbox" className="form-control" onChange={onInputChange}
-                                             name="isEnablComponentAction" id="isEnablComponentAction"
-                                             checked={initialValues.isEnablComponentAction}/>
-                                      <span/>
-                                    </label>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-12 request-parameters" style={{marginBottom: "20px"}}>
-                                <div className="col-md-12">
-                                  <div className="col-md-12"
-                                       style={{border: "1px solid rgba(128, 128, 128, 0.15)", padding: "5px"}}>
-                                    <label className="form-group control-label col-md-7 uppercase" style={{
-                                      textAlign: "left",
-                                      fontWeight: "bold"
-                                    }}>{utils.getLabelByID("Request Parameters")}</label>
-                                    <div className="col-md-12">
-                                      <div className="row">
-                                        <div className="col-md-6">
-                                          <div className="form-group">
-                                            <label className="form-group control-label col-md-4" style={{
-                                              textAlign: "left",
-                                              fontWeight: "normal"
-                                            }}>{utils.getLabelByID("DB Field")}</label>
-                                            <div className="form-group col-md-8">
-                                              <select id="requestDBField" name="requestDBField" className="form-control"
-                                                      value={initialValues.requestDBField} onChange={onInputChange}>
-                                                <option disabled selected>{utils.getLabelByID("Select ...")}</option>
-                                                {
-                                                  get(parentState, 'getDBFields.data', []).map((option, index) => {
-                                                    return (
-                                                      <option key={index}
-                                                              value={JSON.stringify(option)}>{option.label}</option>
-                                                    );
-                                                  })
-                                                }
-                                              </select>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                          <div className="form-group">
-                                            <label className="form-group control-label col-md-4" style={{
-                                              textAlign: "left",
-                                              fontWeight: "normal"
-                                            }}>{utils.getLabelByID("Request Mapping Field")}</label>
-                                            <div className="form-group col-md-8">
-                                              <select id="requestMappingField" name="requestMappingField"
-                                                      className="form-control" value={initialValues.requestMappingField}
-                                                      onChange={onInputChange}>
-                                                <option disabled selected>{utils.getLabelByID("Select ...")}</option>
-                                                {
-                                                  get(parameters, `${parentState.RequestMapping}`, []).map((option, index) => {
-                                                    return (
-                                                      <option key={index}
-                                                              value={option.IN_FIELD}>{option.IN_FIELD}</option>
-                                                    );
-                                                  })
-                                                }
-                                              </select>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                          <div className="form-group">
-                                            <label className="form-group control-label col-md-4" style={{
-                                              textAlign: "left",
-                                              fontWeight: "normal"
-                                            }}>{utils.getLabelByID("Operator")}</label>
-                                            <div className="form-group col-md-8">
-                                              <select id="requestOperator" name="requestOperator"
-                                                      className="form-control" value={initialValues.requestOperator}
-                                                      onChange={onInputChange}>
-                                                <option disabled selected>{utils.getLabelByID("Select ...")}</option>
-                                                {
-                                                  typeData.request_operator.map((option, index) => {
-                                                    return (
-                                                      <option key={index} value={option.value}>{option.label}</option>
-                                                    );
-                                                  })
-                                                }
-                                              </select>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                          <div className="form-actions right">
-                                            <div className="form-group col-md-12">
-                                              <div className="btn-toolbar pull-right">
-                                                <button type="submit" className="btn btn-default"
-                                                        onClick={() => addParams('request')}><i
-                                                  className="fa fa-plus"/> {"  "}{utils.getLabelByID("Add Param")}
-                                                </button>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                          <div className="row">
-                                            <div className="col-md-12">
-                                              <div className="col-md-12">
-                                                <Table
-                                                  gridColumns={utils.getGridColumnByName("requestParametersGrid")}
-                                                  gridData={parentState.requestParams}
-                                                  export={false}
-                                                  componentFunction={ActionHandlers}
-                                                  pagination={false}/>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-12 response-parameters" style={{marginBottom: "20px"}}>
-                                <div className="col-md-12">
-                                  <div className="col-md-12"
-                                       style={{border: "1px solid rgba(128, 128, 128, 0.15)", padding: "5px"}}>
-                                    <label className="form-group control-label col-md-7 uppercase" style={{
-                                      textAlign: "left",
-                                      fontWeight: "bold"
-                                    }}>{utils.getLabelByID("Response Parameters")}</label>
-                                    <div className="col-md-12">
-                                      <div className="row">
-                                        <div className="col-md-6">
-                                          <div className="form-group">
-                                            <label className="form-group control-label col-md-4" style={{
-                                              textAlign: "left",
-                                              fontWeight: "normal"
-                                            }}>{utils.getLabelByID("DB Field")}</label>
-                                            <div className="form-group col-md-8">
-                                              <select id="responseBDField" name="responseBDField"
-                                                      className="form-control" value={initialValues.responseBDField}
-                                                      onChange={onInputChange}>
-                                                <option disabled selected>{utils.getLabelByID("Select ...")}</option>
-                                                {
-                                                  get(parentState, 'getDBFields.outputFields', []).map((option, index) => {
-                                                    return (
-                                                      <option key={index} value={option.name}>{option.label}</option>
-                                                    );
-                                                  })
-                                                }
-                                              </select>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                          <div className="form-group">
-                                            <label className="form-group control-label col-md-4" style={{
-                                              textAlign: "left",
-                                              fontWeight: "normal"
-                                            }}>{utils.getLabelByID("Response Mapping Field")}</label>
-                                            <div className="form-group col-md-8">
-                                              <select id="responseMappingField" name="responseMappingField"
-                                                      className="form-control"
-                                                      value={initialValues.responseMappingField}
-                                                      onChange={onInputChange}>
-                                                <option disabled selected>{utils.getLabelByID("Select ...")}</option>
-                                                {
-                                                  get(parameters, `${parentState.ResponseMapping}`, []).map((option, index) => {
-                                                    return (
-                                                      <option key={index}
-                                                              value={option.IN_FIELD}>{option.IN_FIELD}</option>
-                                                    );
-                                                  })
-                                                }
-                                              </select>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                          <div className="form-actions right">
-                                            <div className="form-group col-md-12">
-                                              <div className="btn-toolbar pull-right">
-                                                <button type="submit" className="btn btn-default"
-                                                        onClick={() => addParams('response')}><i
-                                                  className="fa fa-plus"/> {"  "}{utils.getLabelByID("Add Param")}
-                                                </button>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                          <div className="row">
-                                            <div className="col-md-12">
-                                              <div className="col-md-12">
-                                                <Table
-                                                  gridColumns={utils.getGridColumnByName("responseParametersGrid")}
-                                                  gridData={parentState.responseParams}
-                                                  export={false}
-                                                  componentFunction={ActionHandlers}
-                                                  pagination={false}/>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-12">
-                                <div className="col-md-12">
-                                  <div className="btn-toolbar pull-right">
-                                    <button type="submit" onClick={generateCustomFile} className="btn green"><i
-                                      className="fa fa-paper-plane"/>{' '}{utils.getLabelByID("Generate")}
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {/* End Custom Mapping Code Generator */}
+                        {/*/!* Custom Mapping Code Generator *!/*/}
+                        {/*<div className="tab-pane" id="tab_1_3">*/}
+                        {/*  <div className="col-md-12" id="offchainDefination">*/}
+                        {/*    <div className="row">*/}
+                        {/*      <div className="col-md-6">*/}
+                        {/*        <div className="form-group">*/}
+                        {/*          <label className="form-group control-label col-md-4" style={{*/}
+                        {/*            textAlign: "left",*/}
+                        {/*            fontWeight: "normal"*/}
+                        {/*          }}>{utils.getLabelByID("Database Type")}</label>*/}
+                        {/*          <div className="form-group col-md-8">*/}
+                        {/*            <select id="databaseType" name="databaseType" className="form-control"*/}
+                        {/*                    value={initialValues.databaseType} onChange={onInputChange}>*/}
+                        {/*              <option disabled selected>{utils.getLabelByID("Select ...")}</option>*/}
+                        {/*              {*/}
+                        {/*                typeData.database_types.map((option, index) => {*/}
+                        {/*                  return (*/}
+                        {/*                    <option key={index} value={option.value}>{option.label}</option>*/}
+                        {/*                  );*/}
+                        {/*                })*/}
+                        {/*              }*/}
+                        {/*            </select>*/}
+                        {/*          </div>*/}
+                        {/*        </div>*/}
+                        {/*      </div>*/}
+                        {/*      <div className="col-md-6">*/}
+                        {/*        <div className="form-group">*/}
+                        {/*          <label className="form-group control-label col-md-4" style={{*/}
+                        {/*            textAlign: "left",*/}
+                        {/*            fontWeight: "normal"*/}
+                        {/*          }}>{utils.getLabelByID("Adaptors")}</label>*/}
+                        {/*          <div className="form-group col-md-8">*/}
+                        {/*            <select id="adaptor" name="adaptor" className="form-control"*/}
+                        {/*                    value={initialValues.adaptor} onChange={onInputChange}>*/}
+                        {/*              <option disabled selected>{utils.getLabelByID("Select ...")}</option>*/}
+                        {/*              {*/}
+                        {/*                get(parentState, `getAdaptorsList[${parentState.databaseType || 'mongo'}]`, []).map((option, index) => {*/}
+                        {/*                  return (*/}
+                        {/*                    <option key={index} value={option.value}>{option.label}</option>*/}
+                        {/*                  );*/}
+                        {/*                })*/}
+                        {/*              }*/}
+                        {/*            </select>*/}
+                        {/*          </div>*/}
+                        {/*        </div>*/}
+                        {/*      </div>*/}
+                        {/*      <div className="col-md-6">*/}
+                        {/*        <div className="form-group">*/}
+                        {/*          <label className="form-group control-label col-md-4" style={{*/}
+                        {/*            textAlign: "left",*/}
+                        {/*            fontWeight: "normal"*/}
+                        {/*          }}>{utils.getLabelByID("Object Type")}</label>*/}
+                        {/*          <div className="form-group col-md-8">*/}
+                        {/*            <select id="objectType" name="objectType" className="form-control"*/}
+                        {/*                    value={initialValues.objectType} onChange={onInputChange}>*/}
+                        {/*              <option disabled selected>{utils.getLabelByID("Select ...")}</option>*/}
+                        {/*              {*/}
+                        {/*                filter(typeData.database_object_types, {type: parentState.databaseType || 'mongo'}).map((option, index) => {*/}
+                        {/*                  return (*/}
+                        {/*                    <option key={index} value={option.value}>{option.label}</option>*/}
+                        {/*                  );*/}
+                        {/*                })*/}
+                        {/*              }*/}
+                        {/*            </select>*/}
+                        {/*          </div>*/}
+                        {/*        </div>*/}
+                        {/*      </div>*/}
+                        {/*      <div className="col-md-6">*/}
+                        {/*        <div className="form-group">*/}
+                        {/*          <label className="form-group control-label col-md-4" style={{*/}
+                        {/*            textAlign: "left",*/}
+                        {/*            fontWeight: "normal"*/}
+                        {/*          }}>{utils.getLabelByID("Available Objects")}</label>*/}
+                        {/*          <div className="form-group col-md-8">*/}
+                        {/*            <select id="availableObjects" name="availableObjects" className="form-control"*/}
+                        {/*                    value={initialValues.availableObjects} onChange={onInputChange}>*/}
+                        {/*              <option disabled selected>{utils.getLabelByID("Select ...")}</option>*/}
+                        {/*              {*/}
+                        {/*                get(parentState, `getAvailableObjectsList`, []).map((option, index) => {*/}
+                        {/*                  return (*/}
+                        {/*                    <option key={index} value={option.name}>{option.name}</option>*/}
+                        {/*                  );*/}
+                        {/*                })*/}
+                        {/*              }*/}
+                        {/*            </select>*/}
+                        {/*          </div>*/}
+                        {/*        </div>*/}
+                        {/*      </div>*/}
+                        {/*      <div className="col-md-6">*/}
+                        {/*        <label className="form-group control-label col-md-4">*/}
+                        {/*          {utils.getLabelByID("Enable Paging")}*/}
+                        {/*        </label>*/}
+                        {/*        <div className="form-group col-md-8">*/}
+                        {/*          <div className="icheck-list">*/}
+                        {/*            <label className="mt-checkbox mt-checkbox-outline"*/}
+                        {/*                   style={{marginBottom: "0px", marginTop: "0px"}}>*/}
+                        {/*              <label/>*/}
+                        {/*              <input type="checkbox" className="form-control" onChange={onInputChange}*/}
+                        {/*                     name="isEnablePagination" id="isEnablePagination"*/}
+                        {/*                     checked={initialValues.isEnablePagination}/>*/}
+                        {/*              <span/>*/}
+                        {/*            </label>*/}
+                        {/*          </div>*/}
+                        {/*        </div>*/}
+                        {/*      </div>*/}
+                        {/*      <div className="col-md-6">*/}
+                        {/*        <label className="form-group control-label col-md-4">*/}
+                        {/*          {utils.getLabelByID("Enable Component Action")}*/}
+                        {/*        </label>*/}
+                        {/*        <div className="form-group col-md-8">*/}
+                        {/*          <div className="icheck-list">*/}
+                        {/*            <label className="mt-checkbox mt-checkbox-outline"*/}
+                        {/*                   style={{marginBottom: "0px", marginTop: "0px"}}>*/}
+                        {/*              <label/>*/}
+                        {/*              <input type="checkbox" className="form-control" onChange={onInputChange}*/}
+                        {/*                     name="isEnablComponentAction" id="isEnablComponentAction"*/}
+                        {/*                     checked={initialValues.isEnablComponentAction}/>*/}
+                        {/*              <span/>*/}
+                        {/*            </label>*/}
+                        {/*          </div>*/}
+                        {/*        </div>*/}
+                        {/*      </div>*/}
+                        {/*      <div className="col-md-12 request-parameters" style={{marginBottom: "20px"}}>*/}
+                        {/*        <div className="col-md-12">*/}
+                        {/*          <div className="col-md-12"*/}
+                        {/*               style={{border: "1px solid rgba(128, 128, 128, 0.15)", padding: "5px"}}>*/}
+                        {/*            <label className="form-group control-label col-md-7 uppercase" style={{*/}
+                        {/*              textAlign: "left",*/}
+                        {/*              fontWeight: "bold"*/}
+                        {/*            }}>{utils.getLabelByID("Request Parameters")}</label>*/}
+                        {/*            <div className="col-md-12">*/}
+                        {/*              <div className="row">*/}
+                        {/*                <div className="col-md-6">*/}
+                        {/*                  <div className="form-group">*/}
+                        {/*                    <label className="form-group control-label col-md-4" style={{*/}
+                        {/*                      textAlign: "left",*/}
+                        {/*                      fontWeight: "normal"*/}
+                        {/*                    }}>{utils.getLabelByID("DB Field")}</label>*/}
+                        {/*                    <div className="form-group col-md-8">*/}
+                        {/*                      /!*<select id="requestDBField" name="requestDBField" className="form-control"*!/*/}
+                        {/*                      /!*        value={initialValues.requestDBField} onChange={onInputChange}>*!/*/}
+                        {/*                      /!*  <option disabled selected>{utils.getLabelByID("Select ...")}</option>*!/*/}
+                        {/*                      /!*  {*!/*/}
+                        {/*                      /!*    get(parentState, 'getDBFields.data', []).map((option, index) => {*!/*/}
+                        {/*                      /!*      return (*!/*/}
+                        {/*                      /!*        <option key={index}*!/*/}
+                        {/*                      /!*                value={JSON.stringify(option)}>{option.label}</option>*!/*/}
+                        {/*                      /!*      );*!/*/}
+                        {/*                      /!*    })*!/*/}
+                        {/*                      /!*  }*!/*/}
+                        {/*                      /!*</select>*!/*/}
+                        {/*                    </div>*/}
+                        {/*                  </div>*/}
+                        {/*                </div>*/}
+                        {/*                <div className="col-md-6">*/}
+                        {/*                  <div className="form-group">*/}
+                        {/*                    <label className="form-group control-label col-md-4" style={{*/}
+                        {/*                      textAlign: "left",*/}
+                        {/*                      fontWeight: "normal"*/}
+                        {/*                    }}>{utils.getLabelByID("Request Mapping Field")}</label>*/}
+                        {/*                    <div className="form-group col-md-8">*/}
+                        {/*                      <select id="requestMappingField" name="requestMappingField"*/}
+                        {/*                              className="form-control" value={initialValues.requestMappingField}*/}
+                        {/*                              onChange={onInputChange}>*/}
+                        {/*                        <option disabled selected>{utils.getLabelByID("Select ...")}</option>*/}
+                        {/*                        {*/}
+                        {/*                          get(parameters, `${parentState.RequestMapping}`, []).map((option, index) => {*/}
+                        {/*                            return (*/}
+                        {/*                              <option key={index}*/}
+                        {/*                                      value={option.IN_FIELD}>{option.IN_FIELD}</option>*/}
+                        {/*                            );*/}
+                        {/*                          })*/}
+                        {/*                        }*/}
+                        {/*                      </select>*/}
+                        {/*                    </div>*/}
+                        {/*                  </div>*/}
+                        {/*                </div>*/}
+                        {/*                <div className="col-md-6">*/}
+                        {/*                  <div className="form-group">*/}
+                        {/*                    <label className="form-group control-label col-md-4" style={{*/}
+                        {/*                      textAlign: "left",*/}
+                        {/*                      fontWeight: "normal"*/}
+                        {/*                    }}>{utils.getLabelByID("Operator")}</label>*/}
+                        {/*                    <div className="form-group col-md-8">*/}
+                        {/*                      <select id="requestOperator" name="requestOperator"*/}
+                        {/*                              className="form-control" value={initialValues.requestOperator}*/}
+                        {/*                              onChange={onInputChange}>*/}
+                        {/*                        <option disabled selected>{utils.getLabelByID("Select ...")}</option>*/}
+                        {/*                        {*/}
+                        {/*                          typeData.request_operator.map((option, index) => {*/}
+                        {/*                            return (*/}
+                        {/*                              <option key={index} value={option.value}>{option.label}</option>*/}
+                        {/*                            );*/}
+                        {/*                          })*/}
+                        {/*                        }*/}
+                        {/*                      </select>*/}
+                        {/*                    </div>*/}
+                        {/*                  </div>*/}
+                        {/*                </div>*/}
+                        {/*                <div className="col-md-12">*/}
+                        {/*                  <div className="form-actions right">*/}
+                        {/*                    <div className="form-group col-md-12">*/}
+                        {/*                      <div className="btn-toolbar pull-right">*/}
+                        {/*                        <button type="submit" className="btn btn-default"*/}
+                        {/*                                onClick={() => addParams('request')}><i*/}
+                        {/*                          className="fa fa-plus"/> {"  "}{utils.getLabelByID("Add Param")}*/}
+                        {/*                        </button>*/}
+                        {/*                      </div>*/}
+                        {/*                    </div>*/}
+                        {/*                  </div>*/}
+                        {/*                </div>*/}
+                        {/*                <div className="col-md-12">*/}
+                        {/*                  <div className="row">*/}
+                        {/*                    <div className="col-md-12">*/}
+                        {/*                      <div className="col-md-12">*/}
+                        {/*                        <Table*/}
+                        {/*                          gridColumns={utils.getGridColumnByName("requestParametersGrid")}*/}
+                        {/*                          gridData={parentState.requestParams}*/}
+                        {/*                          export={false}*/}
+                        {/*                          componentFunction={ActionHandlers}*/}
+                        {/*                          pagination={false}/>*/}
+                        {/*                      </div>*/}
+                        {/*                    </div>*/}
+                        {/*                  </div>*/}
+                        {/*                </div>*/}
+                        {/*              </div>*/}
+                        {/*            </div>*/}
+                        {/*          </div>*/}
+                        {/*        </div>*/}
+                        {/*      </div>*/}
+                        {/*      <div className="col-md-12 response-parameters" style={{marginBottom: "20px"}}>*/}
+                        {/*        <div className="col-md-12">*/}
+                        {/*          <div className="col-md-12"*/}
+                        {/*               style={{border: "1px solid rgba(128, 128, 128, 0.15)", padding: "5px"}}>*/}
+                        {/*            <label className="form-group control-label col-md-7 uppercase" style={{*/}
+                        {/*              textAlign: "left",*/}
+                        {/*              fontWeight: "bold"*/}
+                        {/*            }}>{utils.getLabelByID("Response Parameters")}</label>*/}
+                        {/*            <div className="col-md-12">*/}
+                        {/*              <div className="row">*/}
+                        {/*                <div className="col-md-6">*/}
+                        {/*                  <div className="form-group">*/}
+                        {/*                    <label className="form-group control-label col-md-4" style={{*/}
+                        {/*                      textAlign: "left",*/}
+                        {/*                      fontWeight: "normal"*/}
+                        {/*                    }}>{utils.getLabelByID("DB Field")}</label>*/}
+                        {/*                    <div className="form-group col-md-8">*/}
+                        {/*                      <select id="responseBDField" name="responseBDField"*/}
+                        {/*                              className="form-control" value={initialValues.responseBDField}*/}
+                        {/*                              onChange={onInputChange}>*/}
+                        {/*                        <option disabled selected>{utils.getLabelByID("Select ...")}</option>*/}
+                        {/*                        {*/}
+                        {/*                          get(parentState, 'getDBFields.outputFields', []).map((option, index) => {*/}
+                        {/*                            return (*/}
+                        {/*                              <option key={index} value={option.name}>{option.label}</option>*/}
+                        {/*                            );*/}
+                        {/*                          })*/}
+                        {/*                        }*/}
+                        {/*                      </select>*/}
+                        {/*                    </div>*/}
+                        {/*                  </div>*/}
+                        {/*                </div>*/}
+                        {/*                <div className="col-md-6">*/}
+                        {/*                  <div className="form-group">*/}
+                        {/*                    <label className="form-group control-label col-md-4" style={{*/}
+                        {/*                      textAlign: "left",*/}
+                        {/*                      fontWeight: "normal"*/}
+                        {/*                    }}>{utils.getLabelByID("Response Mapping Field")}</label>*/}
+                        {/*                    <div className="form-group col-md-8">*/}
+                        {/*                      <select id="responseMappingField" name="responseMappingField"*/}
+                        {/*                              className="form-control"*/}
+                        {/*                              value={initialValues.responseMappingField}*/}
+                        {/*                              onChange={onInputChange}>*/}
+                        {/*                        <option disabled selected>{utils.getLabelByID("Select ...")}</option>*/}
+                        {/*                        {*/}
+                        {/*                          get(parameters, `${parentState.ResponseMapping}`, []).map((option, index) => {*/}
+                        {/*                            return (*/}
+                        {/*                              <option key={index}*/}
+                        {/*                                      value={option.IN_FIELD}>{option.IN_FIELD}</option>*/}
+                        {/*                            );*/}
+                        {/*                          })*/}
+                        {/*                        }*/}
+                        {/*                      </select>*/}
+                        {/*                    </div>*/}
+                        {/*                  </div>*/}
+                        {/*                </div>*/}
+                        {/*                <div className="col-md-12">*/}
+                        {/*                  <div className="form-actions right">*/}
+                        {/*                    <div className="form-group col-md-12">*/}
+                        {/*                      <div className="btn-toolbar pull-right">*/}
+                        {/*                        <button type="submit" className="btn btn-default"*/}
+                        {/*                                onClick={() => addParams('response')}><i*/}
+                        {/*                          className="fa fa-plus"/> {"  "}{utils.getLabelByID("Add Param")}*/}
+                        {/*                        </button>*/}
+                        {/*                      </div>*/}
+                        {/*                    </div>*/}
+                        {/*                  </div>*/}
+                        {/*                </div>*/}
+                        {/*                <div className="col-md-12">*/}
+                        {/*                  <div className="row">*/}
+                        {/*                    <div className="col-md-12">*/}
+                        {/*                      <div className="col-md-12">*/}
+                        {/*                        <Table*/}
+                        {/*                          gridColumns={utils.getGridColumnByName("responseParametersGrid")}*/}
+                        {/*                          gridData={parentState.responseParams}*/}
+                        {/*                          export={false}*/}
+                        {/*                          componentFunction={ActionHandlers}*/}
+                        {/*                          pagination={false}/>*/}
+                        {/*                      </div>*/}
+                        {/*                    </div>*/}
+                        {/*                  </div>*/}
+                        {/*                </div>*/}
+                        {/*              </div>*/}
+                        {/*            </div>*/}
+                        {/*          </div>*/}
+                        {/*        </div>*/}
+                        {/*      </div>*/}
+                        {/*      <div className="col-md-12">*/}
+                        {/*        <div className="col-md-12">*/}
+                        {/*          <div className="btn-toolbar pull-right">*/}
+                        {/*            <button type="submit" onClick={generateCustomFile} className="btn green"><i*/}
+                        {/*              className="fa fa-paper-plane"/>{' '}{utils.getLabelByID("Generate")}*/}
+                        {/*            </button>*/}
+                        {/*          </div>*/}
+                        {/*        </div>*/}
+                        {/*      </div>*/}
+                        {/*    </div>*/}
+                        {/*  </div>*/}
+                        {/*</div>*/}
+                        {/*/!* End Custom Mapping Code Generator *!/*/}
 
 
                         <div className="tab-pane" id="tab_1_5">

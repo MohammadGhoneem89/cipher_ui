@@ -899,13 +899,7 @@ class APIDefinitionScreen extends React.Component {
 APIDefinitionScreen.propTypes = {
   children: PropTypes.object,
   typeData: PropTypes.object,
-  APIDefinitionAddUpdate: PropTypes.object,
-  MappingConfigData: PropTypes.object,
-  MappingOrgFieldData: PropTypes.object,
-  getAdaptorsList: PropTypes.object,
-  getAvailableObjectsList: PropTypes.object,
-  getDBFields: PropTypes.object,
-  ConsortiumTypeData: PropTypes.object,
+
   parameters: PropTypes.object
 };
 
@@ -925,7 +919,7 @@ function mapStateToProps(state, ownProps) {
     route: ownProps.params.route,
     ConsortiumTypeData: state.app.ConsortiumTypeData,
     getAdaptorsList: get(state.app, 'getAdaptorsList.data', []),
-    getDBFields: get(state.app, 'getDBFields', {}),
+    getDBFields: get(state.app, 'getDBFields', {data: []}),
     getAvailableObjectsList: get(state.app, 'getAvailableObjectsList.data', []),
     generateMappingFile: get(state.app, 'generateMappingFile', {}),
     RelayNetworks: get(state.app, 'RelayNetworkTypeData.data.RelayNetworks', undefined),

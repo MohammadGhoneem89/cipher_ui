@@ -5,14 +5,12 @@ var config = {
     path: './',
     filename: 'index.js',
   },
-  devtool: 'inline-source-map',
   devServer: {
     inline: true,
     port: 3000,
     historyApiFallback: true,
     disableHostCheck: true
   },
-
   externals: [{
     xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'
   }],
