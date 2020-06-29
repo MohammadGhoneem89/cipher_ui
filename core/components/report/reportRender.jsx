@@ -146,7 +146,8 @@ class ReportContainer extends React.Component {
           elem.type = 'clpVal';
         }
       })
-      this.downloadDummyCSV(nextProps.testADHReport);
+      if (this.state.loadedOnce)
+        this.downloadDummyCSV(nextProps.testADHReport);
       this.setState({
         resultSet: nextProps.testADHReport,
         columnList: columnList
