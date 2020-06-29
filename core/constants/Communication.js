@@ -12,7 +12,7 @@ module.exports = {
   ...CommunicationIndex,
   baseUrl,
   reportUrl,
- // getTask: baseUrl + '/API/UI/getTask',
+  // getTask: baseUrl + '/API/UI/getTask',
   getPermission: baseUrl + "/API/UI/permission",
   getUserData: `${baseUrl}/API/UI/user`,
   getNotificationData: baseUrl + "/API/UI/notificationList",
@@ -222,6 +222,10 @@ module.exports = {
   groupTypeList: baseUrl + "/API/UI/groupTypeList",
   createOnDemandWelCome: baseUrl + "/API/UI/createOnDemandWelCome",
   generateHMAC: baseUrl + "/API/core/generateHMAC",
-
+  getADHReportByID: baseUrl + "/API/core/getADHReportByID",
+  getADHReportList: baseUrl + "/API/core/getADHReportList",
+  getADHReportListProtected: baseUrl + "/API/core/getADHReportListProtected",
+  updateADHReport: baseUrl + "/API/core/updateADHReport",
+  testADHReport: baseUrl + "/API/core/testADHReport",
 }
 

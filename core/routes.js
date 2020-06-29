@@ -97,21 +97,25 @@ import onBoardingProfileSetup from './components/onBoarding/onBoardingProfileSet
 import onBoardingProfileList from './components/onBoarding/onBoardingProfileList';
 import WorkingCalendarSearch from './components/WorkingCalendar/WorkingCalendarSearch.jsx';
 import Task from "./components/Task.jsx"
+import ReportRender from "./components/report/reportRender.jsx"
+import ReportContainer from "./components/report/reportContainer.jsx"
+import ReportList from "./components/report/reportList.jsx"
+import reportRenderList from "./components/report/reportRenderList.jsx"
 import TaskDetails from "./components/TaskDetails.jsx"
 
 export default (<Router history={browserHistory}>
-    
+
     <Route path="/Documentation/:useCase/:route" component={GeneratePDF}/>
     <Route path="/Locked" component={Locked} onEnter={isAuthorized}/>
     <Route path="/changePassword" component={ChangePassword} onEnter={isAuthorized}/>
     <Route path="/cipher/login" component={Login} onEnter={isAuthorized}/>
     <Route path="/blockChainViewer/:blockChainID" component={BlockchainViewerQR}
-            onEnter={isAuthorized}/> {ApplicationsRoute.unAuthRouteIndex}
+           onEnter={isAuthorized}/> {ApplicationsRoute.unAuthRouteIndex}
     <Route component={master} onEnter={requireAuth}> { /*
 
         <IndexRoute component={blockchainWorkboard}/>*/}
-      <Route path="/task" component={Task} />
-      <Route path="/taskDetails/:id" component={TaskDetails} />
+      <Route path="/task" component={Task}/>
+      <Route path="/taskDetails/:id" component={TaskDetails}/>
       <Route path="/blockchain" component={blockchainWorkboard}/>
       <Route path="/groupList" component={GroupSearch}/>
       <Route path="/groupSetup" component={GroupSetup}/>
@@ -178,6 +182,10 @@ export default (<Router history={browserHistory}>
       <Route path="/RelayNetworkList" component={RelayNetworkList}/>
 
       <Route path="/ModuleList" component={ModuleList}/>
+      <Route path="/ReportRender/(:id)" component={ReportRender}/>
+      <Route path="/ReportAddUpdate/(:id)" component={ReportContainer}/>
+      <Route path="/ReportList" component={ReportList}/>
+      <Route path="/ReportRenderList" component={reportRenderList}/>
       <Route path="/editModule(/:id)" component={ModuleDefinitionScreen}/>
       <Route path="/DispatchList" component={dispatchList}/>
       <Route path="/editDispatcher/:dispatcherName" component={AddUpdateDispatcher}/>

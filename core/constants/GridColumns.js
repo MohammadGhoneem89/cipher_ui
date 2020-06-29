@@ -744,6 +744,14 @@ module.exports = {
     {alias: "Description", key: "description", type: "string"},
     {alias: "EL_actions", key: "actions", type: "action"}
   ],
+  reportCtr: [
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "Field Name", key: "fieldName", type: "string"},
+    {alias: "Data Type", key: "dataType", type: "string"},
+    {alias: "test value", key: "testVal", type: "string"},
+    {alias: "ENUM", key: "span", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
   userListOrg: [
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
     {alias: "CAUserName", key: "userName", type: "string"},
@@ -847,6 +855,15 @@ module.exports = {
     {alias: "AAU_Doc", key: "hiddenID", type: 'hyperlinkNewTab', url: '/Documentation'},
     {alias: "AAU_isActive", key: "isActive", type: "cbDisabled"},
     {alias: "AAU_isSimulated", key: "isSimulated", type: "cbDisabled"},
+    {alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  ADHReportList: [
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "", key: "_id", type: "hiddenID"},
+    {alias: "name", key: "name", type: "string"},
+    {alias: "report Type", key: "reportType", type: "string"},
+    {alias: "connection Type", key: "connectionType", type: "string"},
     {alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string"},
     {alias: "EL_actions", key: "actions", type: "action"}
   ],

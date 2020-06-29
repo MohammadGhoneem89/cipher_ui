@@ -40,7 +40,18 @@ export function generalProcess(fetchURL, actionData) {
     };
 
 }
+export function generalAsyncProcess(fetchURL, actionData) {
+  return function (dispatch) {
+    return generalAPI.getData(fetchURL, actionData).then(resultSet => {
+      dispatch(generalActionLoad(resultSet));
+      console.log('\n\n\n\n\n>>>>>>>>>>>>>>>>>>>>>>>')
+      console.log(resultSet, ' result set')
+      return Promise.resolve(resultSet);
 
+    });
+  };
+
+}
 export function reduxFormProcess(fetchURL, actionData) {
     return function (dispatch) {
 

@@ -55,6 +55,8 @@
     "react-bootstrap-table": "^3.4.0",
     "react-chartjs-2": "^2.6.2",
     "react-checkbox-tree": "1.3.1",
+    "react-codemirror": "^1.0.0",
+    "react-codemirror-sql": "0.0.2",
     "react-confirm-alert": "^1.0.7",
     "react-confirm-bootstrap": "^3.1.4",
     "react-custom-scrollbars": "^4.2.1",

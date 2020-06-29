@@ -1135,7 +1135,7 @@ background-color: #36c6d3
     overflow: hidden;
     display: inline-block;
     background: #fefeee;
-    text-indent: -99;
+    /*text-indent: -99;*/
     border-radius: 5px !important;
     height: 30px;
     position: relative
@@ -1161,7 +1161,8 @@ background-color: #36c6d3
 }
 
 .clp_val:hover {
-    width: 150px;
+    width: auto;
+    height: auto;
     position: absolute;
     top: 5px;
     left: -35px;
