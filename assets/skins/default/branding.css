@@ -601,3 +601,9 @@ li:hover .dropdown-content {
     border-top: 1px solid #eef1f5;
     padding: 0px !important;
 }
+
+.tabbable-line>.nav-tabs>li.active {
+    background: 0 0;
+    border-bottom: 4px solid var(--tabs-color)!important;
+    position: relative;
+}
