@@ -12,6 +12,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import {forEach} from "react-bootstrap/cjs/ElementChildren";
 import Portlet from "../../common/Portlet.jsx";
 import * as utils from "../../common/utils";
+import Table from '../../common/Datatable.jsx';
 
 const initialState = {
   reportContainer: {},
@@ -25,7 +26,9 @@ const initialState = {
   isEdit: false,
   isLoading: true,
   isCustom: true,
-  loadedOnce: false
+  loadedOnce: false,
+  exportClicked: false,
+  showClicked: false
 };
 
 class ReportContainer extends React.Component {
@@ -43,11 +46,12 @@ class ReportContainer extends React.Component {
     $('#form').find('input:text').val('');
     $('#form').find('textarea').val('');
   }
+
   componentWillMount() {
     this.props.actions.updateStore({
-      testADHReport:  {},
+      testADHReport: {},
       reportContainer: {},
-      ResultData:{}
+      ResultData: {}
     });
   }
 
@@ -152,8 +156,13 @@ class ReportContainer extends React.Component {
           elem.type = 'clpVal';
         }
       })
-      if (this.state.loadedOnce)
+      if (this.state.loadedOnce && this.state.exportClicked) {
         this.downloadDummyCSV(nextProps.testADHReport);
+        this.setState({
+          exportClicked: false
+        });
+      }
+
       this.setState({
         resultSet: nextProps.testADHReport,
         columnList: columnList
@@ -213,6 +222,35 @@ class ReportContainer extends React.Component {
     _.set(reportContainer, 'finalForm', this.state.finalForm)
     _.set(reportContainer, 'filters', this.state.List)
     console.log(JSON.stringify(reportContainer))
+    this.setState({exportClicked: true})
+    this.props.actions.generalProcess(constants.testADHReport, reportContainer);
+    console.log(JSON.stringify(reportContainer))
+  }
+  load = (e) => {
+    let reportContainer = _.cloneDeep(this.state.reportContainer);
+    if (
+      _.isEmpty(reportContainer.name) ||
+      _.isEmpty(reportContainer.description) ||
+      _.isEmpty(reportContainer.reportType) ||
+      _.isEmpty(reportContainer.connectionType) ||
+      _.isEmpty(reportContainer.group) ||
+      _.isEmpty(reportContainer.queryStr)
+    ) {
+      alert("All fields are required");
+      return false;
+    }
+    if (
+      !_.isEmpty(reportContainer.connectionType) && reportContainer.connectionType != 'local' &&
+      _.isEmpty(reportContainer.connectionString)
+    ) {
+      alert("Connection String is required");
+      return false;
+    }
+    _.set(reportContainer, 'exptype', 'CSV')
+    _.set(reportContainer, 'finalForm', this.state.finalForm)
+    _.set(reportContainer, 'filters', this.state.List)
+    console.log(JSON.stringify(reportContainer))
+    this.setState({showClicked: true})
     this.props.actions.generalProcess(constants.testADHReport, reportContainer);
     console.log(JSON.stringify(reportContainer))
   }
@@ -294,6 +332,9 @@ class ReportContainer extends React.Component {
             <button type="submit" onClick={this.test}
                     className="btn green">{' '}{utils.getLabelByID("Export CSV")}
             </button>
+            <button type="submit" onClick={this.load}
+                    className="btn green">{' '}{utils.getLabelByID("Load Grid")}
+            </button>
             <button type="submit" onClick={this.clearFieldsPeer}
                     className="btn default">{' '}{utils.getLabelByID("Clear")}
             </button>
@@ -319,8 +360,22 @@ class ReportContainer extends React.Component {
         <div className={'row'}>
           {this.state.reportParamView}
         </div>
-
       </Portlet>
+      {this.state.columnList.length > 0 && this.state.showClicked === true &&
+      <Portlet title={"Result Set"}>
+        <div className={'row'}>
+          <div className="col-md-12">
+            <div className="col-md-12" style={{overflow: "scroll"}}>
+              <Table
+                gridColumns={this.state.columnList}
+                gridData={this.state.resultSet}
+                export={false}
+                pagination={false}/>
+            </div>
+          </div>
+        </div>
+      </Portlet>
+      }
       {/*<ReportForm flag={this.state.update}*/}
       {/*            typeData={this.state.typeData} isOwner={true} onInputChange={this.onInputChange}*/}
       {/*            testQuery={this.test}*/}
