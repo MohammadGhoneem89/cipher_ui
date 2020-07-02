@@ -99,13 +99,18 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
                 fontWeight: "normal"
               }}>{utils.getLabelByID("Connection String")}</label>
               <div className="form-group col-md-8">
-                <input type="text" disabled={!isOwner} className="form-control" id="connectionString"
-                       onChange={onInputChange}
-                       value={state.reportContainer.connectionString}/>
+
+                <select id="connectionString" name="connectionString" value={state.reportContainer.connectionString}
+                        onChange={onInputChange} className="form-control">
+                  <option value="">--select--</option>
+                  {state.getEndpointListView.map((option, index) => {
+                    return (
+                      <option key={index} value={option.value}>{option.text}</option>
+                    );
+                  })}
+                </select>
               </div>
             </div>
-
-
           </div>
 
           <div className="col-md-6">
@@ -259,8 +264,31 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
                       </div>
                     </div>
                   </div>
-                  {state.columnList.length > 0 &&
+
+
                   <div className="col-md-12">
+                    <div className="btn-toolbar pull-right">
+                      <button type="submit" onClick={testQuery}
+                              className="btn btn-default">{' '}
+                        <i className="fa fa-flask" aria-hidden="true"></i>
+                        {utils.getLabelByID("  Simulate Query")}
+                      </button>
+                      <button type="submit" onClick={onSubmit}
+                              className="btn green">{' '}{utils.getLabelByID("Add / Update Report")}
+                      </button>
+                    </div>
+                  </div>
+
+                  <br/>
+
+                  <div id={"loader-adhoc"} className="col-md-12" style={{marginTop: "10px" , display:state.gridLoading?'block':'none'}}>
+                    <pre>{state.text}</pre>
+                  </div>
+
+
+
+                  {state.columnList.length > 0 &&
+                  <div className="col-md-12" style={{overflow: "scroll"}}>
                     <h4>Result Set</h4>
                     <Table
                       gridColumns={state.columnList}
@@ -268,7 +296,6 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
                       export={false}
                       componentFunction={ActionHandlers}
                       pagination={false}/>
-
                   </div>
                   }
                 </div>
@@ -281,18 +308,7 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
       </div>
       <div className="row">
         <div className="col-md-12">
-          <div className="col-md-12">
-            <div className="col-md-12">
-              <div className="btn-toolbar pull-right">
-                <button type="submit" onClick={testQuery}
-                        className="btn green">{' '}{utils.getLabelByID("Test Query")}
-                </button>
-                <button type="submit" onClick={onSubmit}
-                        className="btn green">{' '}{utils.getLabelByID("Add / Update Report")}
-                </button>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
     </Portlet>

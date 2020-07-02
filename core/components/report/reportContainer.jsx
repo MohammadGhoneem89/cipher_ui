@@ -21,7 +21,10 @@ const initialState = {
   isEdit: false,
   isLoading: true,
   isCustom: true,
-  loadedOnce: false
+  loadedOnce: false,
+  gridLoading: false,
+  getEndpointListView: [],
+  text: "Please wait while your request is being processed."
 };
 
 class ReportContainer extends React.Component {
@@ -95,6 +98,8 @@ class ReportContainer extends React.Component {
 
   componentDidMount() {
     this.props.actions.generalProcess(constants.getTypeDataList, {});
+    this.props.actions.generalProcess(constants.getEndpointListView, {"requestType": "dbConnection"});
+
     this.props.actions.generalProcess(constants.getGroupList, {
       "action": "groupList",
       "searchCriteria": {},
@@ -106,13 +111,27 @@ class ReportContainer extends React.Component {
         "_id": this.props.id //"5bf9c9df4cb0c690e4461b89"
       });
     }
-    this.setState({loadedOnce: false})
+    this.setState({
+      loadedOnce: false,
+      gridLoading: false
+    })
   }
 
+  componentWillMount() {
+    this.props.actions.updateStore({
+      testADHReport: {},
+      reportContainer: {},
+      ResultData: {}
+    });
+  }
 
   componentWillReceiveProps(nextProps) {
 
-
+    if (nextProps.getEndpointListView.data) {
+      this.setState({
+        getEndpointListView: nextProps.getEndpointListView.data
+      });
+    }
     console.log(nextProps.typeData, nextProps.groupList)
     if (nextProps.typeData && nextProps.groupList && nextProps.enumList) {
       let gList = []
@@ -174,9 +193,12 @@ class ReportContainer extends React.Component {
       })
       this.setState({
         resultSet: nextProps.testADHReport,
-        columnList: columnList
+        columnList: columnList,
+        gridLoading: false
       });
     }
+
+
   }
 
   onInputChange = (e) => {
@@ -223,7 +245,15 @@ class ReportContainer extends React.Component {
     console.log(JSON.stringify(reportContainer))
     this.props.actions.generalProcess(constants.updateADHReport, reportContainer);
   }
+
+
   test = (e) => {
+
+
+
+    this.props.actions.updateStore({
+      testADHReport: {}
+    });
     let reportContainer = _.cloneDeep(this.state.reportContainer);
     if (
       _.isEmpty(reportContainer.name) ||
@@ -243,10 +273,21 @@ class ReportContainer extends React.Component {
       alert("Connection String is required");
       return false;
     }
-    _.set(reportContainer, 'filters', this.state.List)
-    console.log(JSON.stringify(reportContainer))
-    this.props.actions.generalProcess(constants.testADHReport, reportContainer);
-    console.log(JSON.stringify(reportContainer))
+    this.state.gridLoading = true;
+    this.state.text = "Please wait while your request is being processed.";
+
+    this.setState({
+      gridLoading: true,
+      columnList: [],
+      resultSet: [],
+      text: "Please wait while your request is being processed."
+    }, () => {
+      _.set(reportContainer, 'filters', this.state.List)
+      console.log(JSON.stringify(reportContainer))
+      this.props.actions.generalProcess(constants.testADHReport, reportContainer);
+      console.log(JSON.stringify(reportContainer))
+    });
+
   }
 
   render() {
@@ -320,7 +361,8 @@ function mapStateToProps(state, ownProps) {
     typeData: _.get(state.app, 'typeData.data', []),
     enumList: _.get(state.app, 'enumList.data', []),
     id: ownProps.params.id,
-    isOwner: _.get(state.app, 'ReportContainer.data.isOwner', false)
+    isOwner: _.get(state.app, 'ReportContainer.data.isOwner', false),
+    getEndpointListView: state.app.getEndpointListView
   };
 }
 

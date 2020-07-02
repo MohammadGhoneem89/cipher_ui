@@ -43,7 +43,13 @@ class ReportContainer extends React.Component {
     $('#form').find('input:text').val('');
     $('#form').find('textarea').val('');
   }
-
+  componentWillMount() {
+    this.props.actions.updateStore({
+      testADHReport:  {},
+      reportContainer: {},
+      ResultData:{}
+    });
+  }
 
   componentDidMount() {
     this.props.actions.generalProcess(constants.getTypeDataList, {});

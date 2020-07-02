@@ -6,8 +6,8 @@
     --Theme-Secondary-Color: #848586;
     --table-Head-Color:  #666666c7;
     --caption-subject: #c20c35;
-    --Tabs-color : #36c6d3;
-
+    --Tabs-color-hover : rgba(77, 30, 92, 0.51);
+    --tabs-color: #5b1163;
 
     /* Login page */
     --Login-Background: url(innovations-bg.jpg);

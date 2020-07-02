@@ -245,8 +245,8 @@ a:hover {
 }
 
 .sdg_tbl thead {
-    border-bottom: 2px solid var(--tableHeadColor);
-    background: var(--tableHeadColor);
+    border-bottom: 2px solid var(--table-Head-Color);
+    background: var(--table-Head-Color);
 }
 
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle .badge.badge-default {
@@ -570,7 +570,7 @@ li:hover .dropdown-content {
 
 .note.note-documentation {
     background-color: #70708533;
-    border-color: #99da58;
+    border-color: var(--tabs-color);
     color: #000;
 }
 
@@ -582,7 +582,7 @@ li:hover .dropdown-content {
 
 .tabbable-line2 > .nav-tabs > li.open, .tabbable-line > .nav-tabs > li:hover {
     background: 0 0;
-    border-bottom: 4px solid #99da588f;
+    border-bottom: 4px solid var(--Tabs-color-hover);
 }
 
 .tabbable-line2 > .nav-tabs > li.active {
