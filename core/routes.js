@@ -102,6 +102,11 @@ import ReportContainer from "./components/report/reportContainer.jsx"
 import ReportList from "./components/report/reportList.jsx"
 import reportRenderList from "./components/report/reportRenderList.jsx"
 import TaskDetails from "./components/TaskDetails.jsx"
+import documentList from "./components/Consent/List.jsx"
+import addDocType from "./components/Consent/Container.jsx"
+import ConsentProfile from "./components/ConsentProfile/Container.jsx"
+import ConsentProfileList from "./components/ConsentProfile/List.jsx"
+import safLogs from "./components/saf/dispatchQueue.jsx"
 
 export default (<Router history={browserHistory}>
 
@@ -180,6 +185,7 @@ export default (<Router history={browserHistory}>
       <Route path="/ApiList" component={ApiList}/>
       <Route path="/NetworkList" component={NetworkList}/>
       <Route path="/RelayNetworkList" component={RelayNetworkList}/>
+      <Route path="/safLogs" component={safLogs}/>
 
       <Route path="/ModuleList" component={ModuleList}/>
       <Route path="/ReportRender/(:id)" component={ReportRender}/>
@@ -189,12 +195,19 @@ export default (<Router history={browserHistory}>
       <Route path="/editModule(/:id)" component={ModuleDefinitionScreen}/>
       <Route path="/DispatchList" component={dispatchList}/>
       <Route path="/editDispatcher/:dispatcherName" component={AddUpdateDispatcher}/>
+      <Route path="/documentList" component={documentList}/>
+      <Route path="/addDocType/(:id)" component={addDocType}/>
 
-      <Route path="general/userDetail/:id" component={UserDetail}/>
-      <Route path="general/userRole/:id" component={UserRole}/>
-      <Route path="general/roleUser/:id" component={RoleUser}/>
 
-      <Route path="general/activityLog/:id" component={ActivityLog}/>
+      <Route path="/ConsentProfileList" component={ConsentProfileList}/>
+      <Route path="/ConsentProfile/(:id)" component={ConsentProfile}/>
+
+
+      <Route path="/general/userDetail/:id" component={UserDetail}/>
+      <Route path="/general/userRole/:id" component={UserRole}/>
+      <Route path="/general/roleUser/:id" component={RoleUser}/>
+      <Route path="/general/activityLog/:id" component={ActivityLog}/>
+
       <Route path="/editRelayNetwork(/:id)" component={RelayNetworkDefination}/>
       <Route path="/editNetwork(/:id)" component={NetworkDefination}/>
       <Route path="/CreateChannel/:id" component={CreateChannel}/>

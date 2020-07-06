@@ -117,6 +117,20 @@ class ReportContainer extends React.Component {
     })
   }
 
+  startDateChange = (e, value) => {
+    console.log(e, value)
+    let reportContainer = _.cloneDeep(this.state.reportContainer);
+    _.set(reportContainer, 'scheduleTime', e);
+    let convertedDate = moment(e * 1000).unix();
+    let finalForm = this.state.finalForm;
+    if (value == 'Invalid date') {
+      _.set(reportContainer, 'scheduleTimeDisplay', e.target.value)
+    } else {
+      _.set(reportContainer, 'scheduleTimeDisplay', moment(convertedDate).format('DD/MM/YYYY hh:mm:ss'))
+    }
+    this.setState({reportContainer})
+  };
+
   componentWillMount() {
     this.props.actions.updateStore({
       testADHReport: {},
@@ -242,13 +256,13 @@ class ReportContainer extends React.Component {
       return false;
     }
     _.set(reportContainer, 'filters', this.state.List)
+    _.set(reportContainer, 'test', true)
     console.log(JSON.stringify(reportContainer))
     this.props.actions.generalProcess(constants.updateADHReport, reportContainer);
   }
 
 
   test = (e) => {
-
 
 
     this.props.actions.updateStore({
@@ -283,6 +297,7 @@ class ReportContainer extends React.Component {
       text: "Please wait while your request is being processed."
     }, () => {
       _.set(reportContainer, 'filters', this.state.List)
+      _.set(reportContainer, 'test', true)
       console.log(JSON.stringify(reportContainer))
       this.props.actions.generalProcess(constants.testADHReport, reportContainer);
       console.log(JSON.stringify(reportContainer))
@@ -297,7 +312,7 @@ class ReportContainer extends React.Component {
 
     return (<ReportForm flag={this.state.update} ActionHandlers={this.ActionHandlers} addPeer={this.add}
                         typeData={this.state.typeData} isOwner={true} onInputChange={this.onInputChange}
-                        onSubmit={this.submit} testQuery={this.test}
+                        onSubmit={this.submit} testQuery={this.test} startDateChange={this.startDateChange}
                         state={this.state}/>)
 
   }

@@ -4,8 +4,9 @@ import Portlet from '../../common/Portlet.jsx';
 
 import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
+import DateControl from "../../common/DateControl.jsx";
 
-const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwner, onSubmit, testQuery}) => {
+const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwner, onSubmit, testQuery, startDateChange}) => {
   let options = {
     lineNumbers: true
   };
@@ -39,8 +40,6 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
                 </div>
               </div>
             </div>
-
-
           </div>
 
 
@@ -281,10 +280,10 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
 
                   <br/>
 
-                  <div id={"loader-adhoc"} className="col-md-12" style={{marginTop: "10px" , display:state.gridLoading?'block':'none'}}>
+                  <div id={"loader-adhoc"} className="col-md-12"
+                       style={{marginTop: "10px", display: state.gridLoading ? 'block' : 'none'}}>
                     <pre>{state.text}</pre>
                   </div>
-
 
 
                   {state.columnList.length > 0 &&

@@ -205,7 +205,6 @@ module.exports = {
   getRelayNetworkConfigList: baseUrl + '/API/core/getRelayNetworkConfigList',
   getRelayNetworkConfigListTd: baseUrl + '/API/core/getRelayNetworkConfigListTd',
   logout: baseUrl + '/logout',
-
   getPickupList: baseUrl + "/API/UI/typeDataList",
   getPickupListByType: baseUrl + "/API/UI/typeDataListByType",
   getPickupListForType: baseUrl + "/API/UI/typeDataListForType",
@@ -227,5 +226,13 @@ module.exports = {
   getADHReportListProtected: baseUrl + "/API/core/getADHReportListProtected",
   updateADHReport: baseUrl + "/API/core/updateADHReport",
   testADHReport: baseUrl + "/API/core/testADHReport",
+  getTask: baseUrl + '/API/Task/getTask',
+  searchTask: baseUrl + '/API/Task/searchTask',
+  addTask: baseUrl + '/API/Task/addTask',
+  searchTaskDetails: baseUrl + '/API/Task/searchTaskDetails',
+  getSafLogs: baseUrl + '/API/core/getSafLogs',
+  updateSafLogs: baseUrl + '/API/core/updateSafLogs',
+  getHealthRuleList: baseUrl + '/API/core/getHealthRuleList',
+  updateHealthRuleList: baseUrl + '/API/core/updateHealthRuleList',
 }
 

@@ -41,7 +41,7 @@ class Combobox extends React.Component {
             style={this.props.style ? this.props.style : {}}
             className={this.props.className ? this.props.className : 'form-control'}
             placeholder={this.props.placeholder ? this.props.placeholder : ''}
-            onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'combobox', this.props.dataSource[this.props.typeName])}
+            onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'combobox')}
           />
           {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) &&
           <span className="help-block">{this.props.state.errors[this.props.fieldname]}</span>}
@@ -69,7 +69,7 @@ class Combobox extends React.Component {
             style={this.props.style ? this.props.style : {}}
             className={this.props.className ? this.props.className : 'form-control'}
             placeholder={this.props.placeholder ? this.props.placeholder : ''}
-            onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'combobox', this.props.dataSource[this.props.typeName])}
+            onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'combobox')}
             multiple={this.props.multiple}
           >
             {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) &&

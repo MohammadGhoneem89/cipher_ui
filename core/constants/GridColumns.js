@@ -715,6 +715,16 @@ module.exports = {
     {alias: "EL_Error", key: "error", type: "string"},
     {alias: "EL_Status", key: "status", type: "statusLabel"},
     {alias: "EL_actions", key: "actions", type: "action"}
+  ],DispatchQueueDataSAF: [
+    {alias: "", key: "internalid", type: "hiddenID"},
+    {alias: "EVNTL_ID", key: "id", type: "string"},
+    {alias: "Function Name", key: "functionname", type: "string"},
+    {alias: "SAF Date", key: "createdon", type: "string"},
+    {alias: "Message Date", key: "messagedate", type: "string"},
+    {alias: "Network", key: "network", type: "string"},
+    {alias: "smartcontract", key: "smartcontract", type: "string"},
+    {alias: "EL_Status", key: "status", type: "statusLabel"},
+    {alias: "EL_actions", key: "actions", type: "action"}
   ],
   peerListOrgWOA: [
 
@@ -867,7 +877,22 @@ module.exports = {
     {alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string"},
     {alias: "EL_actions", key: "actions", type: "action"}
   ],
-
+  ADHReportList: [
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "", key: "_id", type: "hiddenID"},
+    {alias: "name", key: "name", type: "string"},
+    {alias: "report Type", key: "reportType", type: "string"},
+    {alias: "connection Type", key: "connectionType", type: "string"},
+    {alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
+  consentListPolicy: [
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "orgCode", key: "orgCode", type: "string"},
+    {alias: "orgType", key: "orgType", type: "string"},
+    {alias: "Can Revoke", key: "isRevokable", type: "cbDisabled"},
+    {alias: "EL_actions", key: "actions", type: "action"}
+  ],
   mappingConfig: [
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
     {alias: "MAU_incField", key: "IN_FIELD", type: "string"},
@@ -1187,6 +1212,15 @@ module.exports = {
     {alias: "FTEMP_transformFuc", key: "transformFunction", type: "string"},
     {alias: "Action", key: "actions", type: "action"}
   ],
+  FTEMP_FilterRulesHealth: [
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "ruleName", key: "ruleName", type: 'string'},
+    {alias: "field", key: "field", type: 'string'},
+    {alias: "option", key: "option", type: "string"},
+    {alias: "value", key: "value", type: "string"},
+    {alias: "group", key: "group", type: "string"},
+    {alias: "Action", key: "actions", type: "action"}
+  ],
   // HLTH CHK
 
   pgClientList: [
@@ -1235,7 +1269,8 @@ module.exports = {
     {alias: "hostname", key: "hostname", type: 'string'},
     {alias: "ip", key: "ip", type: 'string'},
     {alias: "Time", key: "lastUpdateTime", type: "epochDate"},
-    {alias: "status", key: "status", type: "statusBox"}
+    {alias: "status", key: "status", type: "statusBox"},
+    {alias: "Action", key: "actions", type: "action"}
   ],
   PickUPEdit: [
     {alias: "", key: "_id", type: "hiddenID"},

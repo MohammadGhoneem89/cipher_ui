@@ -71,7 +71,7 @@ class Task extends React.Component {
         'listOfferStatus',
       ]));
 
-    this.props.actions.generalProcess(constants.search, this.getRequest())
+    this.props.actions.generalProcess(constants.searchTask, this.getRequest())
   }
 
   showHideDetails = (actionName, index) => {
@@ -238,14 +238,14 @@ class Task extends React.Component {
 
   search = () => {
 
-    this.props.actions.generalProcess(constants.search, this.getRequest())
+    this.props.actions.generalProcess(constants.searchTask, this.getRequest())
 
   }
   pageChanged = (pageNo) => {
     let page = this.state.page;
     page.currentPageNo = pageNo;
     this.setState({page: page});
-    this.props.actions.generalProcess(constants.search, this.getRequest())
+    this.props.actions.generalProcess(constants.searchTask, this.getRequest())
   }
 
   render() {
