@@ -222,6 +222,12 @@ module.exports = {
   groupTypeList: baseUrl + "/API/UI/groupTypeList",
   createOnDemandWelCome: baseUrl + "/API/UI/createOnDemandWelCome",
   generateHMAC: baseUrl + "/API/core/generateHMAC",
+  getAllLetters: baseUrl + "/API/pureHealth/getAllLetters",
+  addUpdateLetter: baseUrl + "/API/pureHealth/addUpdateLetter",
+  testLetter: baseUrl + "/API/pureHealth/testLetter",
+ 
+  addUpdateSampleTemplate: baseUrl + "/API/pureHealth/addUpdateSampleTemplate",
+  getSampleLetters: baseUrl + "/API/pureHealth/getSampleLetters",
 
 }
 

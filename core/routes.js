@@ -99,6 +99,10 @@ import WorkingCalendarSearch from './components/WorkingCalendar/WorkingCalendarS
 import Task from "./components/Task.jsx"
 import TaskDetails from "./components/TaskDetails.jsx"
 
+// letter Routes
+import TemplateList from '../core/components/templateEngine/templateList.jsx';
+// import SampleTemplate from '../core/components/templateEngine/addSampleTemplate.jsx';
+
 export default (<Router history={browserHistory}>
     
     <Route path="/Documentation/:useCase/:route" component={GeneratePDF}/>
@@ -208,6 +212,8 @@ export default (<Router history={browserHistory}>
       <Route path="/fileList" component={FileList}/>
       <Route path="/fileList/:type" component={FileList}/>
       <Route path="/fileData/:id" component={FileData}/>
+
+      <Route path="/templateList" component={TemplateList}/>
       {ApplicationsRoute.routesIndex}
     </Route>
     <Route path="*" components={NotFound}/>
