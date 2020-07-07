@@ -1,8 +1,8 @@
-import React, { PropTypes } from 'react';
+import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
-import { Link, browserHistory } from 'react-router';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import {Link, browserHistory} from 'react-router';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import * as actions from '../../actions/generalAction';
 
 import * as utils from '../../common/utils.js';
@@ -14,9 +14,14 @@ import ReportFilters from '../../components/ReportFilters.jsx';
 class UserDetails extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { reportID: undefined }
+    this.state = {reportID: undefined}
   }
+
   componentWillMount() {
+  }
+
+  componentWillUnmount() {
+    this.props.actions.updateStore({reportFilters: {}})
   }
 
   componentDidMount() {
@@ -40,6 +45,7 @@ class UserDetails extends React.Component {
     this.props.actions.generalProcess(constants.getGroupList, request);
 
   }
+
   componentWillReceiveProps(nextProps) {
     console.log("GROUP LIST ########### ", nextProps.groupList)
     if (nextProps.groupList.data && nextProps.reportFilters)
@@ -50,6 +56,7 @@ class UserDetails extends React.Component {
       reportID: nextProps.reportID
     });
   }
+
   render() {
 
     if (this.state.reportFilters) {
@@ -84,8 +91,7 @@ class UserDetails extends React.Component {
         </div>
 
       );
-    }
-    else
+    } else
       return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
   }
 }
@@ -99,10 +105,12 @@ function mapStateToProps(state, ownProps) {
     };
   }
 }
+
 function mapDispatchToProps(dispatch) {
 
-  return { actions: bindActionCreators(actions, dispatch) }
+  return {actions: bindActionCreators(actions, dispatch)}
 
 }
+
 UserDetails.displayName = "User Details";
 export default connect(mapStateToProps, mapDispatchToProps)(UserDetails);

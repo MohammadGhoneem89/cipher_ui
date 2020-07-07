@@ -107,6 +107,9 @@ import addDocType from "./components/Consent/Container.jsx"
 import ConsentProfile from "./components/ConsentProfile/Container.jsx"
 import ConsentProfileList from "./components/ConsentProfile/List.jsx"
 import safLogs from "./components/saf/dispatchQueue.jsx"
+import APITemplateList from '../core/components/APITemplate/APITemplateList';
+import APITemplateEdit from '../core/components/APITemplate/APITemplateEdit';
+import APITemplateTest from '../core/components/APITemplate/APITemplateTest';
 
 export default (<Router history={browserHistory}>
 
@@ -155,7 +158,9 @@ export default (<Router history={browserHistory}>
       <Route path="/pickupListSearch" component={PickupListSearch}/>
       <Route path="/pickupListSetup" component={PickupListSetup}/>
       <Route path="/pickupListSetup/edit/:pickupListID" component={PickupListSetup}/>
-
+      <Route path="/apiTemplate" component={APITemplateList}/>
+      <Route path="/apiTemplate/:id" component={APITemplateEdit}/>
+      <Route path="/apiTemplate/test/:id" component={APITemplateTest}/>
       <Route path="/passwordPolicy" component={PasswordPolicy}/>
       <Route path="/APIPayloadSearch" component={APIPayloadSearch}/>
       <Route path="/APIPayloadSearch/:payLoadField/:payLoadFieldValue" component={APIPayloadSearch}/>

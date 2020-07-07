@@ -715,7 +715,7 @@ module.exports = {
     {alias: "EL_Error", key: "error", type: "string"},
     {alias: "EL_Status", key: "status", type: "statusLabel"},
     {alias: "EL_actions", key: "actions", type: "action"}
-  ],DispatchQueueDataSAF: [
+  ], DispatchQueueDataSAF: [
     {alias: "", key: "internalid", type: "hiddenID"},
     {alias: "EVNTL_ID", key: "id", type: "string"},
     {alias: "Function Name", key: "functionname", type: "string"},
@@ -1260,6 +1260,20 @@ module.exports = {
     {alias: "host", key: "host", type: 'string'},
     {alias: "Time", key: "lastUpdateTime", type: "epochDate"},
     {alias: "status", key: "status", type: "statusBox"}
+  ],
+  APITemplateList: [
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "S No.", key: "_id", type: "hiddenID"},
+    {alias: "Template Name", key: "name", type: 'string'},
+    {alias: "Template Type", key: "type", type: 'string'},
+    {alias: "Action", key: "action", type: "action"}
+  ],
+  IPFSDocumentsList: [
+    {alias: "COM_SerialNo", key: "", type: "serialNo"},
+    {alias: "S No.", key: "_id", type: "hiddenID"},
+    {alias: "IPFS Hash", key: "name", type: 'string'},
+    {alias: "Encryption Key", key: "name", type: 'string'},
+    {alias: "Action", key: "action", type: "action"}
   ],
   cipherSvc: [
     {alias: "COM_SerialNo", key: "", type: "serialNo"},

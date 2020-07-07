@@ -234,5 +234,7 @@ module.exports = {
   updateSafLogs: baseUrl + '/API/core/updateSafLogs',
   getHealthRuleList: baseUrl + '/API/core/getHealthRuleList',
   updateHealthRuleList: baseUrl + '/API/core/updateHealthRuleList',
+  getReportFilters: baseUrl + "/API/UI/getFilter",
+  report: baseUrl + "/reports",
 }
 
