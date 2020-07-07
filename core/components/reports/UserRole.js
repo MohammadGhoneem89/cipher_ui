@@ -1,8 +1,8 @@
-import React, { PropTypes } from 'react';
+import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
-import { Link, browserHistory } from 'react-router';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import {Link, browserHistory} from 'react-router';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import * as actions from '../../actions/generalAction';
 import _ from 'lodash'
 import * as utils from '../../common/utils.js';
@@ -13,9 +13,14 @@ import ReportFilters from '../../components/ReportFilters.jsx';
 class UserRole extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { reportID: undefined }
+    this.state = {reportID: undefined}
   }
+
   componentWillMount() {
+  }
+
+  componentWillUnmount() {
+    this.props.actions.updateStore({reportFilters: {}})
   }
 
   componentDidMount() {
@@ -23,9 +28,7 @@ class UserRole extends React.Component {
 
     var request = {
       "action": "userList",
-      "searchCriteria": {
-
-      },
+      "searchCriteria": {},
       "page": {
         "pageSize": 50,
         "currentPageNo": 1
@@ -42,6 +45,7 @@ class UserRole extends React.Component {
     this.props.actions.generalProcess(constants.getReportFilters, request);
 
   }
+
   componentWillReceiveProps(nextProps) {
 
     if (nextProps.reportFilters && nextProps.userList && nextProps.reportID) {
@@ -52,6 +56,7 @@ class UserRole extends React.Component {
       });
     }
   }
+
   render() {
 
     if (this.state.reportFilters) {
@@ -85,8 +90,7 @@ class UserRole extends React.Component {
         </div>
 
       );
-    }
-    else
+    } else
       return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
   }
 }
@@ -101,10 +105,12 @@ function mapStateToProps(state, ownProps) {
     };
   }
 }
+
 function mapDispatchToProps(dispatch) {
 
-  return { actions: bindActionCreators(actions, dispatch) }
+  return {actions: bindActionCreators(actions, dispatch)}
 
 }
+
 UserRole.displayName = "User Role";
 export default connect(mapStateToProps, mapDispatchToProps)(UserRole);

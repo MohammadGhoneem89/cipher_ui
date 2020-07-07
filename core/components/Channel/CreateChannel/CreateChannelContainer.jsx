@@ -210,7 +210,7 @@ class CreateChannel extends React.Component {
   }
   onInputChangeCbl = (e) => {
     let value = $("#" + e.target.name).is(":checked");
-    let index = e.target.name.split("~")[1];
+    let index = e.target.name.split("-")[1];
     this.state.orgTypeList[index].isChecked = value;
     this.setState({
       networkTypeList: this.state.networkTypeList

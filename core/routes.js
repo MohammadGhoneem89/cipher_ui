@@ -97,25 +97,37 @@ import onBoardingProfileSetup from './components/onBoarding/onBoardingProfileSet
 import onBoardingProfileList from './components/onBoarding/onBoardingProfileList';
 import WorkingCalendarSearch from './components/WorkingCalendar/WorkingCalendarSearch.jsx';
 import Task from "./components/Task.jsx"
+import ReportRender from "./components/report/reportRender.jsx"
+import ReportContainer from "./components/report/reportContainer.jsx"
+import ReportList from "./components/report/reportList.jsx"
+import reportRenderList from "./components/report/reportRenderList.jsx"
 import TaskDetails from "./components/TaskDetails.jsx"
+import documentList from "./components/Consent/List.jsx"
+import addDocType from "./components/Consent/Container.jsx"
+import ConsentProfile from "./components/ConsentProfile/Container.jsx"
+import ConsentProfileList from "./components/ConsentProfile/List.jsx"
+import safLogs from "./components/saf/dispatchQueue.jsx"
+import APITemplateList from '../core/components/APITemplate/APITemplateList';
+import APITemplateEdit from '../core/components/APITemplate/APITemplateEdit';
+import APITemplateTest from '../core/components/APITemplate/APITemplateTest';
 
 // letter Routes
 import TemplateList from '../core/components/templateEngine/templateList.jsx';
 // import SampleTemplate from '../core/components/templateEngine/addSampleTemplate.jsx';
 
 export default (<Router history={browserHistory}>
-    
+
     <Route path="/Documentation/:useCase/:route" component={GeneratePDF}/>
     <Route path="/Locked" component={Locked} onEnter={isAuthorized}/>
     <Route path="/changePassword" component={ChangePassword} onEnter={isAuthorized}/>
     <Route path="/cipher/login" component={Login} onEnter={isAuthorized}/>
     <Route path="/blockChainViewer/:blockChainID" component={BlockchainViewerQR}
-            onEnter={isAuthorized}/> {ApplicationsRoute.unAuthRouteIndex}
+           onEnter={isAuthorized}/> {ApplicationsRoute.unAuthRouteIndex}
     <Route component={master} onEnter={requireAuth}> { /*
 
         <IndexRoute component={blockchainWorkboard}/>*/}
-      <Route path="/task" component={Task} />
-      <Route path="/taskDetails/:id" component={TaskDetails} />
+      <Route path="/task" component={Task}/>
+      <Route path="/taskDetails/:id" component={TaskDetails}/>
       <Route path="/blockchain" component={blockchainWorkboard}/>
       <Route path="/groupList" component={GroupSearch}/>
       <Route path="/groupSetup" component={GroupSetup}/>
@@ -150,7 +162,9 @@ export default (<Router history={browserHistory}>
       <Route path="/pickupListSearch" component={PickupListSearch}/>
       <Route path="/pickupListSetup" component={PickupListSetup}/>
       <Route path="/pickupListSetup/edit/:pickupListID" component={PickupListSetup}/>
-
+      <Route path="/apiTemplate" component={APITemplateList}/>
+      <Route path="/apiTemplate/:id" component={APITemplateEdit}/>
+      <Route path="/apiTemplate/test/:id" component={APITemplateTest}/>
       <Route path="/passwordPolicy" component={PasswordPolicy}/>
       <Route path="/APIPayloadSearch" component={APIPayloadSearch}/>
       <Route path="/APIPayloadSearch/:payLoadField/:payLoadFieldValue" component={APIPayloadSearch}/>
@@ -180,17 +194,29 @@ export default (<Router history={browserHistory}>
       <Route path="/ApiList" component={ApiList}/>
       <Route path="/NetworkList" component={NetworkList}/>
       <Route path="/RelayNetworkList" component={RelayNetworkList}/>
+      <Route path="/safLogs" component={safLogs}/>
 
       <Route path="/ModuleList" component={ModuleList}/>
+      <Route path="/ReportRender/(:id)" component={ReportRender}/>
+      <Route path="/ReportAddUpdate/(:id)" component={ReportContainer}/>
+      <Route path="/ReportList" component={ReportList}/>
+      <Route path="/ReportRenderList" component={reportRenderList}/>
       <Route path="/editModule(/:id)" component={ModuleDefinitionScreen}/>
       <Route path="/DispatchList" component={dispatchList}/>
       <Route path="/editDispatcher/:dispatcherName" component={AddUpdateDispatcher}/>
+      <Route path="/documentList" component={documentList}/>
+      <Route path="/addDocType/(:id)" component={addDocType}/>
 
-      <Route path="general/userDetail/:id" component={UserDetail}/>
-      <Route path="general/userRole/:id" component={UserRole}/>
-      <Route path="general/roleUser/:id" component={RoleUser}/>
 
-      <Route path="general/activityLog/:id" component={ActivityLog}/>
+      <Route path="/ConsentProfileList" component={ConsentProfileList}/>
+      <Route path="/ConsentProfile/(:id)" component={ConsentProfile}/>
+
+
+      <Route path="/general/userDetail/:id" component={UserDetail}/>
+      <Route path="/general/userRole/:id" component={UserRole}/>
+      <Route path="/general/roleUser/:id" component={RoleUser}/>
+      <Route path="/general/activityLog/:id" component={ActivityLog}/>
+
       <Route path="/editRelayNetwork(/:id)" component={RelayNetworkDefination}/>
       <Route path="/editNetwork(/:id)" component={NetworkDefination}/>
       <Route path="/CreateChannel/:id" component={CreateChannel}/>

@@ -7,8 +7,9 @@ import FileUploader from '../../common/FileUploader.jsx';
 import Portlet from '../../common/Portlet.jsx';
 import {browserHistory} from 'react-router';
 import * as constants from '../../constants/Communication.js';
-import {get, isEmpty} from 'lodash';
+import _, {get, isEmpty} from 'lodash';
 import Table from '../../common/Datatable.jsx';
+import * as requestCreator from "../../common/request";
 
 class EndPointDefination extends React.Component {
 
@@ -58,10 +59,7 @@ class EndPointDefination extends React.Component {
       label: 'Body Params',
       value: 'bodyParams'
     }, {label: 'Form Params', value: 'formParams'}, {label: 'Unique Reference', value: 'UUIDN'}];
-    this.dbTypes = [{label: 'Oracle', value: 'Oracle'}, {label: 'MySQL', value: 'MySQL'}, {
-      label: 'PostgreSQL',
-      value: 'Postgres'
-    }];
+
     this.ActionHandlers = this.ActionHandlers.bind(this);
   }
 
@@ -74,11 +72,17 @@ class EndPointDefination extends React.Component {
     }
     let payload = {page: {pageSize: 100000, currentPageNo: 1}};
     this.props.actions.generalProcess(constants.findEndpointDefination, payload);
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['database_types'])); // Org types (entities)
+
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEmpty(nextProps.detail)) {
-      this.setState(Object.assign(nextProps.detail, {loading: false, editMode: true}));
+    if (!isEmpty(nextProps.detail) && nextProps.typeData) {
+      this.setState(Object.assign(nextProps.detail, {editMode: true, typeData: nextProps.typeData}));
+    }
+    if (nextProps.typeData) {
+      this.setState(Object.assign(nextProps.detail, {typeData: nextProps.typeData, loading: false}));
+      this.dbTypes = _.get(this.state, 'typeData.database_types', []);
     }
   }
 
@@ -130,7 +134,7 @@ class EndPointDefination extends React.Component {
 
   submit = () => {
 
-    if (!this.state.address || !this.state.name||!this.state.authType||!this.state.requestType) {
+    if (!this.state.address || !this.state.name || !this.state.authType || !this.state.requestType) {
       alert("Endpoint name, Auth type and Address must be required!!");
       return;
     }
@@ -552,7 +556,8 @@ EndPointDefination.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     detail: get(state.app, 'findEndpointDefinationById.data', {}),
-    list: get(state.app, 'findEndpointDefination.data', {})
+    list: get(state.app, 'findEndpointDefination.data', {}),
+    typeData: _.get(state.app, 'typeData.data', []),
   };
 }
 

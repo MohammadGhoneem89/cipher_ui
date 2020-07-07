@@ -333,7 +333,7 @@ class UserSetupContainer extends Component {
     this.state.userDetail.firstScreen
     this.state.typeData.firstScreens.forEach(obj => {
       if (obj.value === this.state.userDetail.firstScreen) {
-        firstScreen = obj.url
+        firstScreen = obj.url || obj.value
       }
     })
 
@@ -454,6 +454,7 @@ class UserSetupContainer extends Component {
     let formdata = _.get(this.state, formname, {});
     _.set(formdata, e.target.name, value);
     _.set(formdata, 'orgCode', '');
+
     this.setState({
 
         typeData: {
@@ -468,6 +469,8 @@ class UserSetupContainer extends Component {
             })
         },
         [formname]: formdata
+      },()=>{
+      console.log(JSON.stringify(this.state.typeData.entityNamesFiltered))
       }
     );
 

@@ -1,3 +1,5 @@
+@import url('../../../../skins/default/variable.css');
+
 .masthead {
     display: flex;
     flex-wrap: wrap;
@@ -33,7 +35,7 @@
     width: 100%;
     border-top-left-radius: 2.467em!important;
     border-bottom-left-radius: 2.467em!important;
-    border-color: #c20c35;
+    border-color: var(--caption-subject);
     border-width: 2px;
     border-right: 0px;
 }
@@ -180,7 +182,7 @@ i.fa.fa-search {
 
 
 .caption-subject {
-    color: #c20c35!important;
+    color:var(--caption-subject) !important;
 }
 .procard {
     padding: 15px;

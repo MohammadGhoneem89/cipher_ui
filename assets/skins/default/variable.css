@@ -1,0 +1,22 @@
+:root{
+
+    /* Theme Colors */
+
+    --Theme-Primary-Color: #B42572;
+    --Theme-Secondary-Color: #848586;
+    --table-Head-Color:  #666666c7;
+    --caption-subject: #c20c35;
+    --Tabs-color-hover : rgba(0, 211, 46, 0.51);
+    --tabs-color: #00631a;
+
+    /* Login page */
+    --Login-Background: url(innovations-bg.jpg);
+    --login-Logo: url(logo-default.jpg);
+
+    /* Main application Path */
+    --Main-logo: url(innovations-logo.png);
+    --collapse-Emblm: url(AI_Emblm.png)
+
+
+}
+

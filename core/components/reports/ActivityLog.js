@@ -20,6 +20,10 @@ class ActivityLog extends React.Component {
   componentWillMount() {
   }
 
+  componentWillUnmount() {
+    this.props.actions.updateStore({reportFilters: {}})
+  }
+
   componentDidMount() {
     console.log("PROPS : -------", this.props)
     window.scrollTo(0, 0);
