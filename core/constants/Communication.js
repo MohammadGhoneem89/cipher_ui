@@ -236,5 +236,11 @@ module.exports = {
   updateHealthRuleList: baseUrl + '/API/core/updateHealthRuleList',
   getReportFilters: baseUrl + "/API/UI/getFilter",
   report: baseUrl + "/reports",
+  getAllLetters: baseUrl + "/API/pureHealth/getAllLetters",
+  addUpdateLetter: baseUrl + "/API/pureHealth/addUpdateLetter",
+  testLetter: baseUrl + "/API/pureHealth/testLetter",
+ 
+  addUpdateSampleTemplate: baseUrl + "/API/pureHealth/addUpdateSampleTemplate",
+  getSampleLetters: baseUrl + "/API/pureHealth/getSampleLetters",
 }
 
