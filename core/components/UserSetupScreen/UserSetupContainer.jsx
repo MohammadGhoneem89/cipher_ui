@@ -184,6 +184,7 @@ class UserSetupContainer extends Component {
         if (checkLocked) {
           isActive = false;
         }
+        let value = nextProps.userDetail.orgType
         console.log(isActive);
         this.setState({
           id: this.props.params.userID,
@@ -201,6 +202,14 @@ class UserSetupContainer extends Component {
             callerTypes: nextProps.callerTypes || [],
             firstScreens: nextProps.firstScreens || [],
             entityNames: nextProps.entityNames,
+            entityNamesFiltered: nextProps.entityNames
+              .filter(item => {
+                if (item.orgType === value) {
+                  return true
+                } else {
+                  return false
+                }
+              }),
             hyperledgerData: nextProps.hyperledgerData,
             quorrumData: nextProps.quorrumData,
             authenticationType
@@ -432,7 +441,7 @@ class UserSetupContainer extends Component {
   }
 
 
-  // Helper
+// Helper
   getPermissionTypeData = (permission) => {
     let arr = [];
     for (let obj of permission) {
@@ -450,7 +459,14 @@ class UserSetupContainer extends Component {
 
   customHandler(formname, fieldname, type, typedata, e) {
     console.log("customHandler")
-    let value = e.target.value;
+    let value;
+    try {
+      value = e.target.value;
+    } catch (ex) {
+      e = typedata
+      value = typedata.target.value;
+    }
+
     let formdata = _.get(this.state, formname, {});
     _.set(formdata, e.target.name, value);
     _.set(formdata, 'orgCode', '');
@@ -469,22 +485,23 @@ class UserSetupContainer extends Component {
             })
         },
         [formname]: formdata
-      },()=>{
-      console.log(JSON.stringify(this.state.typeData.entityNamesFiltered))
+      }, () => {
+        console.log(JSON.stringify(this.state.typeData.entityNamesFiltered))
       }
     );
 
-    let typeList = typedata ? typedata : [{label: "", value: ""}];
-    const typeValue = typeList.map(data => data.value);
-    if (value) {
-      if (!typeValue.includes(value)) {
-        // toaster.showToast(`Invalid value`, "ERROR");
-        this.IsValid = false;
-        return;
-      }
-    }
+    // let typeList = typedata ? typedata : [{label: "", value: ""}];
+    // const typeValue = typeList.map(data => data.value);
+    // if (value) {
+    //   if (!typeValue.includes(value)) {
+    //     // toaster.showToast(`Invalid value`, "ERROR");
+    //     this.IsValid = false;
+    //     return;
+    //   }
+    // }
     this.IsValid = true;
-  };
+  }
+  ;
 
   userTypeHandler(formname, fieldname, type, typedata, e) {
     console.log("formname, fieldname, type, typedata, e", formname, fieldname, type, typedata, e)
@@ -506,27 +523,34 @@ class UserSetupContainer extends Component {
       }
     }
     this.IsValid = true;
-  };
+  }
+  ;
 
 
   comboBoxHandler = (formname, fieldname, type, typedata, e) => {
     console.log("formname, fieldname, type, typedata, e", formname, fieldname, type, typedata, e)
-    let value = e.target.value;
+    let value;
+    try {
+      value = e.target.value;
+    } catch (ex) {
+      e = typedata
+      value = typedata.target.value;
+    }
     let formdata = _.get(this.state, formname, {});
     _.set(formdata, e.target.name, value);
     this.setState({
       [formname]: formdata
     });
 
-    let typeList = typedata ? typedata : [{label: "", value: ""}];
-    const typeValue = typeList.map(data => data.value);
-    if (value) {
-      if (!typeValue.includes(value)) {
-        // toaster.showToast(`Invalid value`, "ERROR");
-        this.IsValid = false;
-        return;
-      }
-    }
+    // let typeList = typedata ? typedata : [{label: "", value: ""}];
+    // const typeValue = typeList.map(data => data.value);
+    // if (value) {
+    //   if (!typeValue.includes(value)) {
+    //     // toaster.showToast(`Invalid value`, "ERROR");
+    //     this.IsValid = false;
+    //     return;
+    //   }
+    // }
     this.IsValid = true;
   }
 
@@ -569,12 +593,12 @@ class UserSetupContainer extends Component {
     })
   }
 
-  // changePassword(e){
-  //     e.preventDefault()
-  //     console.log('changePassword')
-  //     browserHistory.push('/changePassword')
-  //     window.scrollTo(0, 0);
-  // }
+// changePassword(e){
+//     e.preventDefault()
+//     console.log('changePassword')
+//     browserHistory.push('/changePassword')
+//     window.scrollTo(0, 0);
+// }
 
   render() {
     if (!this.state.isLoading) {
