@@ -512,7 +512,6 @@ export default function UserSetupForm(props) {
 
             </div>
             <div className='row' style={{paddingLeft: '22px', paddingRight: '22px'}}>
-
               <div className="control-label col-md-5">
                 <Label text="User Association Quorrum" columns='5' divStyle={{width: 'auto', paddingRight: '0px'}}/>
                 <Label text={""} columns='1' style={{color: 'red', marginLeft: '-10px'}}/>
