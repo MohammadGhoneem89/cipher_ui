@@ -6,11 +6,11 @@ const {DOM: {textarea}} = React;
 
 export const renderTextInput = ({input, id, className, type, disabled, isRequired, label, placeholder, style, meta: {touched, error, warning}}) => (
   <div className={error && touched ? "form-group has-error has-feedback" : ""}>
-    <label>
+    {label && <label>
       {label}
       {touched && error && <span className="control-label"> ({error})
         </span>}
-    </label>
+    </label>}
     <input id={id} {...input} type={type} className={className || "form-control"} style={{...style}}
            placeholder={placeholder}
            required={isRequired}
@@ -70,7 +70,7 @@ export const renderCheckBox = ({input, id, className, type, disabled, isRequired
 );
 export const renderDropdown = ({input, id, className, type, label, disabled, isRequired, style, meta: {touched, error, warning}, children}) => (
   <div className={error && touched ? "form-group has-error has-feedback" : ""}>
-    <label>{label}</label>
+    {label && <label>{label}</label>}
     <select {...input} type={type} id={id} className={className || "form-control"} style={{...style}}
             disabled={disabled}
             required={isRequired}>
@@ -87,7 +87,7 @@ export const renderDropdown = ({input, id, className, type, label, disabled, isR
 
 export const DateInput = ({name, label, type, disabled, isRequired, style}) => (
   <div className="">
-    <label>{label}</label>
+    {label && <label>{label}</label>}
     <div className="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy"
          data-date-start-date="+0d" style={{zIndex: 0}}>
       <Field

@@ -48,7 +48,7 @@ export default function UserSetupForm(props) {
       <Row>
         <div className="col-md-6">
           <Row>
-            <div className="col-md-5">
+            <div className="control-label col-md-5">
               <Label text="User Type" columns='4' style={{textAlign: 'right'}}
                      divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
               <Label text="*" columns='1' style={{color: 'red', marginLeft: '-10px'}}/>
@@ -78,7 +78,7 @@ export default function UserSetupForm(props) {
           </Row>
 
           <Row>
-            <div className="col-md-5">
+            <div className="control-label col-md-5">
               <Label text="Auth Type" columns='4' divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
               <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""}
                      style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
@@ -109,7 +109,7 @@ export default function UserSetupForm(props) {
 
           <Row>
 
-            <div className="col-md-5">
+            <div className="control-label col-md-5">
               <Label text="Organization Type" columns='6'
                      divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
               <Label text="*" style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
@@ -140,7 +140,7 @@ export default function UserSetupForm(props) {
           </Row>
 
           <Row>
-            <div className="col-md-5">
+            <div className="control-label col-md-5">
               <Label text="Organization Name" columns='6'
                      divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
               <Label text="*" style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
@@ -179,7 +179,7 @@ export default function UserSetupForm(props) {
       <Row>
         <div className="col-md-6">
           <Row>
-            <div className="col-md-5">
+            <div className="control-label  col-md-5">
               <Label text="User ID" columns='8' divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
               <Label text="*" style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
             </div>
@@ -204,7 +204,7 @@ export default function UserSetupForm(props) {
         </div>
         <div className="col-md-6">
           {(!containerState.id || containerState.editPassword) && <Row>
-            <div className="col-md-5" style={{width: '23%'}}>
+            <div className="control-label col-md-5" style={{width: '23%'}}>
               <Label text="Password" columns='8' divStyle={{width: 'auto', paddingRight: '0px'}}/>
               <Label text="*" style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
 
@@ -241,7 +241,7 @@ export default function UserSetupForm(props) {
       <Row>
         <div className="col-md-6">
           <Row>
-            <div className="col-md-5">
+            <div className="control-label col-md-5">
               <Label text="First Name" columns='4' divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
               <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""}
                      style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
@@ -266,7 +266,7 @@ export default function UserSetupForm(props) {
         </div>
         <div className="col-md-6">
           <Row>
-            <div className="col-md-5" style={{width: '23%'}}>
+            <div className="control-label col-md-5" style={{width: '23%'}}>
               <Label text="Last Name" columns='8' divStyle={{width: 'auto', paddingRight: '0px'}}/>
               <Label text="" columns='1'/>
             </div>
@@ -296,7 +296,7 @@ export default function UserSetupForm(props) {
       <Row>
         <div className="col-md-6">
           <Row>
-            <div className="col-md-5">
+            <div className="control-label col-md-5">
               <Label text="Email" columns='4' divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
               <Label text={"*"} style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
 
@@ -321,7 +321,7 @@ export default function UserSetupForm(props) {
         </div>
         <div className="col-md-6">
           <Row>
-            <div className="col-md-5" style={{width: '23%'}}>
+            <div className="control-label col-md-5" style={{width: '23%'}}>
               <Label text="Allowed IP" columns='8' divStyle={{width: 'auto', paddingRight: '0px'}}/>
               <Label text={"*"} style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
             </div>
@@ -350,7 +350,7 @@ export default function UserSetupForm(props) {
       <Row>
         <div className="col-md-6">
           <Row>
-            <div className="col-md-5">
+            <div className="control-label col-md-5">
               <Label text="Landing Page" columns='4'
                      divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
               <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""} columns='1'
@@ -379,7 +379,7 @@ export default function UserSetupForm(props) {
             />
           </Row>
         </div>
-        <div className="col-md-6">
+        <div className="control-label col-md-6">
           <Label text="Is Active" columns='8' divStyle={{width: 'auto', paddingRight: '0px'}}
                  style={{paddingLeft: '2px'}}/>
           <CheckBox
@@ -478,7 +478,7 @@ export default function UserSetupForm(props) {
             <div className='row' style={{paddingLeft: '22px', paddingRight: '22px'}}>
 
 
-              <div className="col-md-5">
+              <div className="control-label  col-md-5">
                 <Label text="User Association Hyperledger" columns='5' divStyle={{width: 'auto', paddingRight: '0px'}}/>
                 <Label text={""} columns='1' style={{color: 'red', marginLeft: '-10px'}}/>
               </div>
@@ -513,7 +513,7 @@ export default function UserSetupForm(props) {
             </div>
             <div className='row' style={{paddingLeft: '22px', paddingRight: '22px'}}>
 
-              <div className="col-md-5">
+              <div className="control-label col-md-5">
                 <Label text="User Association Quorrum" columns='5' divStyle={{width: 'auto', paddingRight: '0px'}}/>
                 <Label text={""} columns='1' style={{color: 'red', marginLeft: '-10px'}}/>
               </div>
