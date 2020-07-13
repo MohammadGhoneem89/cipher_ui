@@ -180,9 +180,9 @@ class Login extends React.Component {
       // }
     }
     if (this.props.passwordReset !== '' && this.state.isLoading === true) {
-        this.setState({
-          isLoading: false,
-        })
+      this.setState({
+        isLoading: false,
+      })
     }
 
 
@@ -320,11 +320,16 @@ class Login extends React.Component {
                         </div>
 
                         <div className="forget-password">
-                          <ul className="lng">
-                          </ul> <ul className="lng">
-                            <li data-target="#loginCarousel" data-slide-to="1" >
-                              <a href="javascript:" >Forgot your password ?</a></li>
-                          </ul>
+                         
+                            <ul className="lng">
+                              <li id="engAnchor" className="actv"><a href="javascript:;"
+                                onClick={this.changLangButton.bind(this, "EN")}>En</a></li>
+                              <li id="arbAnchor"><a href="javascript:;" onClick={this.changLangButton.bind(this, "AR")}>عربى</a>
+                              </li>
+                            </ul>
+                            <h4 data-target="#loginCarousel" data-slide-to="1" >
+                              <a href="javascript:" >Forgot your password ?</a></h4>
+                        
                         </div>
                         <br />
                         {/* {this.state.accountIsLocked &&

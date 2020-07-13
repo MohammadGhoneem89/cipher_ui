@@ -24,7 +24,7 @@ import * as requestCreator from './common/request.js';
 import {Motion, spring} from 'react-motion';
 import config from '../config';
 import auth from './auth/authenticator';
-
+import backoffices from '../applications/backOffices.js';
 class master extends React.Component {
   constructor() {
     super();
@@ -68,13 +68,13 @@ class master extends React.Component {
   componentWillMount() {
 
 
-    this.props.actions.openSocket(constants.getSocket);
+    this.props.actions.openSocket(backoffices.webSocketURL);
     this.props.actions.generalProcess(constants.getPermission, {BT: "adasafad"});
     this.props.actions.generalProcess(constants.getUserData, {BT: "adasafad"});
     let notificationRequest = {
       "page": {
         "currentPageNo": 1,
-        "pageSize": 5
+        "pageSize": 8
       },
       "sortBy": {
         "createdAt": -1

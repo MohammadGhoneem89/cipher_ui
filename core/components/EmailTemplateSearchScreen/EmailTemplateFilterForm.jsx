@@ -1,10 +1,10 @@
 import React from 'react';
-import {reduxForm} from 'redux-form';
-import {TextInput, DataList, DropdownInput} from '../../common/FormControls.jsx';
+import { reduxForm } from 'redux-form';
+import { TextInput, DataList, DropdownInput } from '../../common/FormControls.jsx';
 import * as utils from '../../common/utils.js';
 
 const EmailTemplateFilterForm = props => {
-  const {handleSubmit, pristine, reset, submitting, containerSate} = props;
+  const { handleSubmit, pristine, reset, submitting, containerSate } = props;
 
 
   return (
@@ -20,15 +20,15 @@ const EmailTemplateFilterForm = props => {
                 options={containerSate.emailTemplateList.data.typeData.emailTemplateNames}
               />
             </div>
-            <div className="col-md-6 col-sm-6">
+            <div className="col-md-6 col-sm-6" style={{ marginTop: "8px" }}>
               <DropdownInput name="templateType" options={containerSate.templateTypes}
-                             label={utils.getLabelByID("ETEMP_templateType")}
+                label={utils.getLabelByID("ETEMP_templateType")}
               />
             </div>
           </div>
         </div>
 
-        <div className="col-md-12 form-group" style={{marginTop: "15px"}}>
+        <div className="col-md-12 form-group" style={{ marginTop: "15px" }}>
           <div className="btn-toolbar pull-right">
             <button type="submit" className="btn green" disabled={submitting}>
               Search

@@ -534,7 +534,7 @@ module.exports = {
     {alias: "COM_SerialNo", key: "", type: "serialNo"},
     {alias: "NOTI_Level", key: "type", type: "icon"},
     {alias: "NOTI_Message", key: "text", type: "longString"},
-    {alias: "NOTI_Message", key: "createdAt", type: "epochDate1"},
+    {alias: "Date", key: "createdAt", type: "epochDate1"},
     {alias: "NOTI_Actions", key: "actions", type: "action"}
   ],
   SLAWorkboardData: [
@@ -1289,6 +1289,7 @@ module.exports = {
   PickUPEdit: [
     {alias: "", key: "_id", type: "hiddenID"},
     {alias: "Label", key: "label", type: "string"},
+    {alias: "labelAr", key: "labelAr", type: "string"},  
     {alias: "Value", key: "value", type: "string"},
     {alias: "Actions", key: "actions", type: "action"}
   ],

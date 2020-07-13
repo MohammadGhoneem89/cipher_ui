@@ -1,20 +1,19 @@
 import 'whatwg-fetch'
 import Cookies from 'js-cookie';
-import {  browserHistory} from 'react-router'
-class generalAPI{
+import { browserHistory } from 'react-router'
+class generalAPI {
 
 
 
-  static getData(fetchURL,data) {
+  static getData(fetchURL, data) {
     let header;
-    if(sessionStorage.token){
-      header= new Headers({
+    if (sessionStorage.token) {
+      header = new Headers({
         'Content-Type': 'application/json',
-        'token':  Cookies.get('token')
+        'token': Cookies.get('token')
       })
-    } else
-    {
-      header= new Headers({
+    } else {
+      header = new Headers({
         'Content-Type': 'application/json'
       })
     }
@@ -26,7 +25,7 @@ class generalAPI{
       mode: "cors",
       credentials: "include",
       headers: header,
-      body: JSON.stringify({...data})
+      body: JSON.stringify({ ...data, lang: "AR" })
     });
 
 
@@ -38,10 +37,10 @@ class generalAPI{
 
 
 
-      if(response.status===403) {
+      if (response.status === 403) {
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('lastRequestTime');
-        sessionStorage.selectedIndex=0;
+        sessionStorage.selectedIndex = 0;
         Cookies.remove("login");
         Cookies.remove("token");
         setTimeout(() => {
@@ -49,25 +48,25 @@ class generalAPI{
         }, 300);
       }
 
-      return response.json().then((json)=>{
-        if(response.status===201){
+      return response.json().then((json) => {
+        if (response.status === 201) {
           setTimeout(() => {
-            browserHistory.push('/PermissionAdd/'+json.uri)
+            browserHistory.push('/PermissionAdd/' + json.uri)
           }, 300);
 
         }
         return json;
       });
     }).catch(error => {
-      let errorJson={
-        "responseMessage":{
-          "action":"Connection Error",
-          "data":{
-            "message":{
-              "status":"ERROR",
-              "errorDescription":"Error connecting to server please check your internet connection!!",
-              "routeTo":"success",
-              "displayToUser":true
+      let errorJson = {
+        "responseMessage": {
+          "action": "Connection Error",
+          "data": {
+            "message": {
+              "status": "ERROR",
+              "errorDescription": "Error connecting to server please check your internet connection!!",
+              "routeTo": "success",
+              "displayToUser": true
             }
           }
         }

@@ -112,6 +112,7 @@ class PickupListSetupContainer extends React.Component {
     if (this.state.addForm && this.state.addForm.label && this.state.addForm.value) {
       let temp = {
         label: this.state.addForm.label,
+        labelAr: this.state.addForm.labelAr,
         value: this.state.addForm.value,
         actions: [
           { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
@@ -161,10 +162,13 @@ class PickupListSetupContainer extends React.Component {
             <Row>
               <Col>
                 <Lable columns='1' text={utils.getLabelByID("Label")} />
-                <Input fieldname='label' formname='addForm' columns='5' style={{}}
+                <Input fieldname='label' formname='addForm' columns='3' style={{}}
+                  state={this.state} actionHandler={this.generalActionHandler} />
+                <Lable columns='1' text={utils.getLabelByID("LabelAr")} />
+                <Input fieldname='labelAr' formname='addForm' columns='3' style={{ textAlign: "right" }}
                   state={this.state} actionHandler={this.generalActionHandler} />
                 <Lable columns='1' text={utils.getLabelByID("Value")} />
-                <Input fieldname='value' formname='addForm' columns='5' style={{}}
+                <Input fieldname='value' formname='addForm' columns='3' style={{}}
                   state={this.state} actionHandler={this.generalActionHandler} />
               </Col>
             </Row>

@@ -122,8 +122,8 @@ export function createViewSettlementBatchRequest(entityID, batchID) {
 export function createConsortiumListRequest(page, searchCriteria) {
     return {
         "action": "consortiumList",
-        searchCriteria:searchCriteria||{},
-        page:page||{}
+        searchCriteria: searchCriteria || {},
+        page: page || {}
     }
 }
 export function createConsortiumDetailRequest(consortiumID) {
@@ -214,9 +214,10 @@ export function createAcquirerInsertRequest(data) {
 }
 
 
-export function createTypeDataRequest(typeData) {
+export function createTypeDataRequest(typeData, action) {
     return {
-        "action": "TypeData",
+        "action": action || "typeData",
+        "actionType": action || "typeData",
         typeData
     }
 }
@@ -224,6 +225,7 @@ export function createTypeDataRequest(typeData) {
 export function createFileTemplateListRequest(page, searchCriteria) {
     return {
         "action": "entityList",
+
         searchCriteria,
         page
     }
@@ -400,7 +402,7 @@ export function createExceptionListRequest(data) {
         "currentPageNo": 1,
         "pageSize": 10,
         "action": "exceptionList",
-        "data": {data}
+        "data": { data }
     }
 }
 
@@ -418,7 +420,7 @@ export function createCommissionTemplateUpdateRequest(data) {
     };
 }
 
-export function createAuditTrailDetailRequest(id, page, searchCriteria,) {
+export function createAuditTrailDetailRequest(id, page, searchCriteria, ) {
     return {
 
         "action": "auditTrailDetails",
@@ -480,19 +482,19 @@ export function createNotificationViewedRequest(data) {
 }
 
 export function createPickupListRequest(page, searchCriteria) {
-  return {
-    "action": "typeDataList",
-    searchCriteria,
-    page
-  }
+    return {
+        "action": "typeDataList",
+        searchCriteria,
+        page
+    }
 }
 
 export function createPickupListDetailRequest(typeDataId) {
-  return {
-    "action": "typeDataDetail",
-    typeDataId
-  }
-}export function createPickupListRequestForType(page, searchCriteria) {
+    return {
+        "action": "typeDataDetail",
+        typeDataId
+    }
+} export function createPickupListRequestForType(page, searchCriteria) {
     return {
         "action": "typeDataListByType",
         searchCriteria,
