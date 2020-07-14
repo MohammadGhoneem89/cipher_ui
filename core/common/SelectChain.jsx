@@ -21,26 +21,68 @@ class ComboboxChain extends React.Component {
     }
 
     prepareOptions = (typename) => {
-        let optionsList = _.get(this.state.typeList, elem, [])
+        let optionsList = _.get(this.state.typeList, typename, [])
         let options = [];
         optionsList.forEach((optionValue, index) => {
             options.push(<option key={typename + index} value={optionValue.value}>{optionValue.label}</option>)
         })
         return options;
     }
-    onChangeLocal() {
+    onChangeLocal(formname, fieldname, type, e) {
+        if (type == "textbox" || type == "radiolist" || type == "combobox" || type == "textarea") {
+            let value = e.target.value;
+            let formdata = _.get(this.state, formname, {});
+            _.set(formdata, e.target.name, value);
+            this.setState({
+                [formname]: formdata
+            }, () => {
+                // console.log('DATA-->', JSON.stringify(this.state[formname]));
+            });
+        } else if (type == "checklist") {
+            let value = e.target.value;
+            let checked = e.target.checked;
+            let prevState = _.get(this.state, `${formname}.${fieldname}`, [])
+            if (checked && prevState.indexOf(value) === -1) {
+                prevState.push(value)
+            } else {
+                prevState.splice(prevState.indexOf(value), 1);
+            }
+            let formdata = _.get(this.state, formname, {});
+            _.set(formdata, fieldname, prevState);
 
+
+            this.setState({
+                [formname]: formdata
+            })
+
+            console.log('formnam11e', (this.state[formname]));
+            // });
+        } else if (type == "checkbox") {
+            let value = e.target.checked;
+            let formdata = _.get(this.state, formname, {});
+
+            _.set(formdata, e.target.name, value);
+            this.setState({
+                [formname]: formdata
+            }, () => {
+                console.log('formname', JSON.stringify(this.state[formname]));
+            });
+        }
     }
 
     componentWillReceiveProps(nextProps) {
         let typeList = this.state.typeList;
         let formList = this.state.formList;
-        if (nextProps.typeData) {
-            for (let key of nextProps.typeData) {
-                _.set(typeList, key, nextProps.typeData[key]);
+        if (nextProps.typeDataChain) {
+            console.log(JSON.stringify(nextProps.typeDataChain))
+            let object = Object.keys(nextProps.typeDataChain)
+            object.forEach((key) => {
+                _.set(typeList, key, nextProps.typeDataChain[key]);
                 formList.push(key);
-            }
+            });
         }
+
+        console.log(JSON.stringify(typeList), JSON.stringify(formList))
         this.setState({
             typeList,
             formList
@@ -66,14 +108,14 @@ class ComboboxChain extends React.Component {
     render() {
 
         let view = []
-        this.state.formList.forEach((elem) => {
+        this.state.formList.forEach((elem, index) => {
             view.push(
-                <div className={`col-md-${this.props.columns} ${this.getColour(this.props.status)}`}>
+                <div key={index} className={`col-md-${this.props.columns} ${this.getColour(this.props.status)}`}>
                     <select
                         id={elem} name={elem}
                         className="form-control"
                         disabled={this.props.disabled ? true : false}
-                        value={this.props.selected || _.get(this.props.state, `${this.props.formname}.${this.props.fieldname}`, "")}
+                        value={this.props.selected || _.get(this.state, `${this.props.formname}.${this.props.fieldname}`, "")}
                         type="text"
                         list={`id_${elem}`}
                         autoComplete={'off'}
@@ -97,13 +139,13 @@ class ComboboxChain extends React.Component {
     }
 }
 ComboboxChain.propTypes = {
-    typeData: PropTypes.object,
+    typeDataChain: PropTypes.object,
     children: PropTypes.object
 };
 
 function mapStateToProps(state, ownProps) {
     return {
-        typeData: _.get(state.app, 'typeDataChain.data', undefined),
+        typeDataChain: _.get(state.app, 'typeDataChain.data', undefined),
     };
 
 }

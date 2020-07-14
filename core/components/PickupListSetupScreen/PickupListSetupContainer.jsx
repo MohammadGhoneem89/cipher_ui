@@ -52,6 +52,8 @@ class PickupListSetupContainer extends React.Component {
       this.setState({ isLoading: true });
       this.props.actions.generalProcess(constants.getPickupListDetail, requestCreator.createPickupListDetailRequest(this.props.pickupListID));
     }
+
+    this.props.actions.generalProcess(constants.getTypeDataList, {})
     this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequestForType({
       "currentPageNo": 1,
       "pageSize": 10
@@ -61,7 +63,16 @@ class PickupListSetupContainer extends React.Component {
   componentWillUnmount() { }
 
   componentWillReceiveProps(nextProps, props) {
-    if (this.props.pickupListID && (nextProps.pickupListDetail !== this.state.pickupListDetail)) {
+    if (this.props.pickupListID && nextProps.enumList && (nextProps.pickupListDetail !== this.state.pickupListDetail)) {
+
+
+      let eList = []
+      for (let key in nextProps.enumList) {
+        eList.push({
+          "label": key,
+          "value": key
+        });
+      }
       let pickupListDetail = _.get(nextProps.pickupListDetail, `data[0][${_.get(nextProps.pickupListDetail, 'typeName', '')}]`, []);
       if (pickupListDetail && pickupListDetail.length) {
         for (let pdl of pickupListDetail) {
@@ -71,6 +82,7 @@ class PickupListSetupContainer extends React.Component {
         }
       }
       this.setState({
+        eList: eList,
         typeDataList: nextProps.typeDataList,
         isLoading: false
       });
@@ -109,10 +121,16 @@ class PickupListSetupContainer extends React.Component {
 
   addToList = () => {
     console.log('this.state.pickupListDetail', this.state.pickupListDetail)
+
+    if (!this.state.addForm.label || !this.state.addForm.value) {
+      return alert('label and value is required');
+    }
     if (this.state.addForm && this.state.addForm.label && this.state.addForm.value) {
+
       let temp = {
         label: this.state.addForm.label,
         labelAr: this.state.addForm.labelAr,
+        dependent: this.state.addForm.dependent,
         value: this.state.addForm.value,
         actions: [
           { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
@@ -162,14 +180,18 @@ class PickupListSetupContainer extends React.Component {
             <Row>
               <Col>
                 <Lable columns='1' text={utils.getLabelByID("Label")} />
-                <Input fieldname='label' formname='addForm' columns='3' style={{}}
+                <Input fieldname='label' formname='addForm' columns='2' style={{}}
                   state={this.state} actionHandler={this.generalActionHandler} />
                 <Lable columns='1' text={utils.getLabelByID("LabelAr")} />
-                <Input fieldname='labelAr' formname='addForm' columns='3' style={{ textAlign: "right" }}
+                <Input fieldname='labelAr' formname='addForm' columns='2' style={{ textAlign: "right" }}
                   state={this.state} actionHandler={this.generalActionHandler} />
                 <Lable columns='1' text={utils.getLabelByID("Value")} />
-                <Input fieldname='value' formname='addForm' columns='3' style={{}}
+                <Input fieldname='value' formname='addForm' columns='2' style={{}}
                   state={this.state} actionHandler={this.generalActionHandler} />
+                <Lable columns='1' text={utils.getLabelByID("Dependent")} />
+                <Select fieldname='dependent' formname='addForm' columns='2' style={{}}
+                  state={this.state} typeName="eList" dataSource={this.state} isDDL={true}
+                  multiple={false} actionHandler={this.generalActionHandler} />
               </Col>
             </Row>
             <br />
@@ -247,6 +269,7 @@ function mapStateToProps(state, ownProps) {
     typeData: state.app.typeData.data,
     readOnly: ownProps.params.mode === "view",
     typeDataList: _.get(state.app, 'typeDataListByType.data.searchResult[0].data.allTypes', undefined),
+    enumList: _.get(state.app, 'enumList.data', []),
   };
 }
 
