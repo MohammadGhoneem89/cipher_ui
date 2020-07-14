@@ -191,7 +191,7 @@ class ChangePassword extends React.Component {
               <div className="login-form">
                 <div className="logo"></div>
                 {this.getLogosForSDGUser()}
-                <h3 className="form-title">{Cipher}</h3>
+                <h3 className="form-title">Cipher</h3>
                 <div className="alert alert-danger display-hide">
                   <button className="close" data-close="alert"/>
                   <span> Enter any username and password. </span>
