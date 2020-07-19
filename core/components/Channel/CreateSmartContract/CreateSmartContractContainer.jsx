@@ -1,8 +1,8 @@
 /*standard imports*/
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {browserHistory} from 'react-router';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router';
 import _ from 'lodash';
 import * as actions from '../../../actions/generalAction';
 /*container specific imports*/
@@ -164,7 +164,7 @@ class CreateSmartContract extends React.Component {
         let request = {
           "_id": data.channelID
         }
-        this.props.actions.generalProcess(constants.getChannelTypeList, {type: nextProps.AddUpdateSmartContract.data.SmartContractConfig.type});
+        this.props.actions.generalProcess(constants.getChannelTypeList, { type: nextProps.AddUpdateSmartContract.data.SmartContractConfig.type });
         this.props.actions.generalProcess(constants.getChannelConfigByID, request);
       }
 
@@ -199,7 +199,7 @@ class CreateSmartContract extends React.Component {
     }
   }
 
-  ActionHandlers({actionName, index}) {
+  ActionHandlers({ actionName, index }) {
     switch (actionName) {
 
       case "Install":
@@ -223,7 +223,7 @@ class CreateSmartContract extends React.Component {
           }
           if (this.state.documents.length && this.state.documents.length != 0) {
             this.state.smartContractData.status = "========================INSTALL REQUEST SENT=============================="
-            this.setState({status: this.state.smartContractData});
+            this.setState({ status: this.state.smartContractData });
             let data = {
               "function": "0007",
               "network": this.state.channelData.network.networkName,
@@ -300,7 +300,7 @@ class CreateSmartContract extends React.Component {
           }
           if (this.state.documents.length && this.state.documents.length != 0) {
             this.state.smartContractData.status = "========================INSTALL 2.0 REQUEST SENT=============================="
-            this.setState({status: this.state.smartContractData});
+            this.setState({ status: this.state.smartContractData });
             let data = {
               "function": "0009",
               "network": this.state.channelData.network.networkName,
@@ -386,7 +386,7 @@ class CreateSmartContract extends React.Component {
           }
           if (this.state.documents.length && this.state.documents.length != 0) {
             this.state.smartContractData.status = "========================INSTALL 2.0 REQUEST SENT=============================="
-            this.setState({status: this.state.smartContractData});
+            this.setState({ status: this.state.smartContractData });
             let data = {
               "function": "0010",
               "network": this.state.channelData.network.networkName,
@@ -487,7 +487,7 @@ class CreateSmartContract extends React.Component {
           }
           if (this.state.documents.length && this.state.documents.length != 0) {
             this.state.smartContractData.status = "========================INSTALL 2.0 REQUEST SENT=============================="
-            this.setState({status: this.state.smartContractData});
+            this.setState({ status: this.state.smartContractData });
             let data = {
               "function": "0011",
               "network": this.state.channelData.network.networkName,
@@ -588,7 +588,7 @@ class CreateSmartContract extends React.Component {
           }
           if (this.state.documents.length && this.state.documents.length != 0) {
             this.state.smartContractData.status = "========================INSTALL 2.0 REQUEST SENT=============================="
-            this.setState({status: this.state.smartContractData});
+            this.setState({ status: this.state.smartContractData });
             let data = {
               "function": "0012",
               "network": this.state.channelData.network.networkName,
@@ -660,7 +660,7 @@ class CreateSmartContract extends React.Component {
           }
 
           this.state.smartContractData.status = "========================Instanciate REQUEST SENT=============================="
-          this.setState({status: this.state.smartContractData});
+          this.setState({ status: this.state.smartContractData });
           let data = {
             "function": "0008",
             "network": this.state.channelData.network.networkName,
@@ -723,7 +723,7 @@ class CreateSmartContract extends React.Component {
           }
 
           this.state.smartContractData.status = "========================Upgrade REQUEST SENT=============================="
-          this.setState({status: this.state.smartContractData});
+          this.setState({ status: this.state.smartContractData });
           let data = {
             "function": "0008",
             "network": this.state.channelData.network.networkName,
@@ -777,10 +777,10 @@ class CreateSmartContract extends React.Component {
             }
           }
 
-          this.setState({status: this.state.smartContractData});
+          this.setState({ status: this.state.smartContractData });
           if (this.state.documents.length && this.state.documents.length != 0) {
             this.state.smartContractData.status = "========================Deploy REQUEST SENT=============================="
-            this.setState({status: this.state.smartContractData});
+            this.setState({ status: this.state.smartContractData });
             let dataToSave = _.cloneDeep(this.state.smartContractData);
             dataToSave.documents = this.state.documents;
             dataToSave.endorsementPolicy = JSON.parse(this.state.smartContractData.endorsementPolicy);
@@ -889,7 +889,7 @@ class CreateSmartContract extends React.Component {
       value = e.target.value;
     }
     if (e.target.name == 'type') {
-      this.props.actions.generalProcess(constants.getChannelTypeList, {type: value});
+      this.props.actions.generalProcess(constants.getChannelTypeList, { type: value });
     }
     this.state.smartContractData[e.target.name] = value;
     //alert(value)
@@ -929,14 +929,14 @@ class CreateSmartContract extends React.Component {
     }
     if (this.state.smartContractData.type == "Quorum")
       return (<CreateSmartContractFormQuorum back={this.back} initState={this.state} flag={this.props.id != "NEW"}
-                                             ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange}
-                                             updateState={this.updateState} onInputChannel={this.onInputChannel}
-                                             formSubmit={this.formSubmit} createChannel={this.createChannel}/>);
+        ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange}
+        updateState={this.updateState} onInputChannel={this.onInputChannel}
+        formSubmit={this.formSubmit} createChannel={this.createChannel} />);
     else
       return (<CreateSmartContractForm initState={this.state} flag={this.props.id != "NEW"}
-                                       ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange}
-                                       updateState={this.updateState} onInputChannel={this.onInputChannel}
-                                       formSubmit={this.formSubmit} createChannel={this.createChannel}/>);
+        ActionHandlers={this.ActionHandlers} onInputChange={this.onInputChange}
+        updateState={this.updateState} onInputChannel={this.onInputChannel}
+        formSubmit={this.formSubmit} createChannel={this.createChannel} />);
 
   }
 
@@ -967,7 +967,7 @@ function mapStateToProps(state, ownProps) {
 
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 
 }
 

@@ -1,7 +1,7 @@
 /*standard imports*/
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import _ from 'lodash';
@@ -9,7 +9,7 @@ import * as requestCreator from '../../common/request.js';
 import ReportForm from './reportForm.jsx';
 
 import cloneDeep from 'lodash/cloneDeep';
-import {forEach} from "react-bootstrap/cjs/ElementChildren";
+import { forEach } from "react-bootstrap/cjs/ElementChildren";
 
 const initialState = {
   reportContainer: {},
@@ -23,6 +23,7 @@ const initialState = {
   isCustom: true,
   loadedOnce: false,
   gridLoading: false,
+  queryCount: 1,
   getEndpointListView: [],
   text: "Please wait while your request is being processed."
 };
@@ -37,6 +38,24 @@ class ReportContainer extends React.Component {
     this.test = this.test.bind(this);
     this.state = cloneDeep(initialState);
   }
+  addvalue = (e) => {
+    let cnt = this.state.queryCount;
+    cnt += 1;
+    this.setState({
+      queryCount: cnt
+    })
+  }
+  removevalue = (e) => {
+    if (this.state.queryCount == 1) {
+      alert('cannot reduce value box to 0');
+    } else {
+      let cnt = this.state.queryCount;
+      cnt -= 1;
+      this.setState({
+        queryCount: cnt
+      })
+    }
+  }
 
   add = (e) => {
 
@@ -44,7 +63,6 @@ class ReportContainer extends React.Component {
     let dataType = document.getElementById('dataType') == null ? "" : document.getElementById('dataType').value;
     let testVal = document.getElementById('testVal') == null ? "" : document.getElementById('testVal').value;
     let span = document.getElementById('span') == null ? "" : document.getElementById('span').value;
-
 
     if (
       _.isEmpty(fieldName) ||
@@ -60,10 +78,10 @@ class ReportContainer extends React.Component {
       testVal,
       span,
       "actions": [
-        {label: "Move UP", iconName: "fa fa-arrow-up", actionType: "COMPONENT_FUNCTION"},
-        {label: "Move Down", iconName: "fa fa-arrow-down", actionType: "COMPONENT_FUNCTION"},
-        {"label": "edit", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION"},
-        {"label": "delete", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION"}
+        { label: "Move UP", iconName: "fa fa-arrow-up", actionType: "COMPONENT_FUNCTION" },
+        { label: "Move Down", iconName: "fa fa-arrow-down", actionType: "COMPONENT_FUNCTION" },
+        { "label": "edit", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" },
+        { "label": "delete", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION" }
       ]
     }
 
@@ -71,7 +89,7 @@ class ReportContainer extends React.Component {
       this.clearFieldsPeer()
       let List = _.cloneDeep(this.state.List);
       List.push(tupple)
-      this.setState({List: List})
+      this.setState({ List: List })
     } else {
       alert("Code Already Exists!!")
     }
@@ -86,7 +104,6 @@ class ReportContainer extends React.Component {
         return true;
       }
     }
-
     return false;
   }
 
@@ -98,12 +115,12 @@ class ReportContainer extends React.Component {
 
   componentDidMount() {
     this.props.actions.generalProcess(constants.getTypeDataList, {});
-    this.props.actions.generalProcess(constants.getEndpointListView, {"requestType": "dbConnection"});
+    this.props.actions.generalProcess(constants.getEndpointListView, { "requestType": "dbConnection" });
 
     this.props.actions.generalProcess(constants.getGroupList, {
       "action": "groupList",
       "searchCriteria": {},
-      "page": {"currentPageNo": 1, "pageSize": 1000}
+      "page": { "currentPageNo": 1, "pageSize": 1000 }
     });
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['adhoc_conntype', 'adhoc_datatype', 'adhoc_reptype'])); // Org types (entities)
     if (this.props.id !== "NEW") {
@@ -128,7 +145,7 @@ class ReportContainer extends React.Component {
     } else {
       _.set(reportContainer, 'scheduleTimeDisplay', moment(convertedDate).format('DD/MM/YYYY hh:mm:ss'))
     }
-    this.setState({reportContainer})
+    this.setState({ reportContainer })
   };
 
   componentWillMount() {
@@ -140,7 +157,6 @@ class ReportContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
     if (nextProps.getEndpointListView.data) {
       this.setState({
         getEndpointListView: nextProps.getEndpointListView.data
@@ -172,8 +188,19 @@ class ReportContainer extends React.Component {
     }
 
     if (nextProps.reportContainer && !this.state.loadedOnce) {
+      let reportCont = nextProps.reportContainer;
+      
+      if (reportCont.reportType == 'graphic-bar-multi') {
+        for (let i = 0; i < reportCont.queryCount; i++) {
+          _.set(reportCont, `queryStrMulti-${i}`, reportCont.queryStrValues[i]);
+        }
+      }
+
+
+
       this.setState({
-        reportContainer: nextProps.reportContainer,
+        reportContainer: reportCont,
+        queryCount: reportCont.queryCount || 1,
         List: nextProps.reportContainer.filters,
         loadedOnce: true
       });
@@ -189,7 +216,7 @@ class ReportContainer extends React.Component {
           let x = _.get(elem, key, '')
           // if (typeof x === 'string' || typeof x === 'number' || typeof x === 'boolean') {
           if (index == 0) {
-            columnList.push({alias: key, key: key, type: "string"})
+            columnList.push({ alias: key, key: key, type: "string" })
           }
           let y = _.get(columnLen, key, 0)
           if (y < String(x).length) {
@@ -255,6 +282,29 @@ class ReportContainer extends React.Component {
       alert("Connection String is required");
       return false;
     }
+
+
+    if (this.state.reportContainer.reportType == 'graphic-bar-multi') {
+
+      if (_.isEmpty(this.state.reportContainer.queryStrLabel)) {
+        return alert('label query must not be empty!')
+      }
+      _.set(reportContainer, 'queryStrLabel', this.state.reportContainer.queryStrLabel)
+
+      let queryList = [];
+      for (let i = 0; i < this.state.queryCount; i++) {
+        let query = _.get(this.state.reportContainer, `queryStrMulti-${i}`, '');
+        if (_.isEmpty(query)) {
+          return alert(`value query ${i} must not be empty!`);
+        }
+        queryList.push(query)
+      }
+      _.set(reportContainer, 'queryStrValues', queryList)
+
+      _.set(reportContainer, 'queryCount', this.state.queryCount)
+    }
+
+
     _.set(reportContainer, 'filters', this.state.List)
     _.set(reportContainer, 'test', true)
     console.log(JSON.stringify(reportContainer))
@@ -262,7 +312,7 @@ class ReportContainer extends React.Component {
   }
 
 
-  test = (e) => {
+  test = (i, e) => {
 
 
     this.props.actions.updateStore({
@@ -296,6 +346,21 @@ class ReportContainer extends React.Component {
       resultSet: [],
       text: "Please wait while your request is being processed."
     }, () => {
+      if (this.state.reportContainer.reportType == 'graphic-bar-multi') {
+        alert(i);
+        if (i == -1) {
+          if (_.isEmpty(this.state.reportContainer.queryStrLabel)) {
+            return alert('label query must not be empty!')
+          }
+          _.set(reportContainer, 'queryStr', this.state.reportContainer.queryStrLabel)
+        } else {
+          let query = _.get(this.state.reportContainer, `queryStrMulti-${i}`, '');
+          if (_.isEmpty(query)) {
+            return alert(`value query ${i} must not be empty!`);
+          }
+          _.set(reportContainer, 'queryStr', query)
+        }
+      }
       _.set(reportContainer, 'filters', this.state.List)
       _.set(reportContainer, 'test', true)
       console.log(JSON.stringify(reportContainer))
@@ -311,13 +376,14 @@ class ReportContainer extends React.Component {
     }
 
     return (<ReportForm flag={this.state.update} ActionHandlers={this.ActionHandlers} addPeer={this.add}
-                        typeData={this.state.typeData} isOwner={true} onInputChange={this.onInputChange}
-                        onSubmit={this.submit} testQuery={this.test} startDateChange={this.startDateChange}
-                        state={this.state}/>)
+      typeData={this.state.typeData} isOwner={true} onInputChange={this.onInputChange}
+      onSubmit={this.submit} testQuery={this.test} startDateChange={this.startDateChange}
+      addvalue={this.addvalue} removevalue={this.removevalue}
+      state={this.state} />)
 
   }
 
-  ActionHandlers({actionName, index}) {
+  ActionHandlers({ actionName, index }) {
     switch (actionName) {
       case "Move UP":
         if (index > 0) {
@@ -325,7 +391,7 @@ class ReportContainer extends React.Component {
           let prev = newConfig[index - 1];
           newConfig[index - 1] = newConfig[index]
           newConfig[index] = prev
-          this.setState({List: newConfig});
+          this.setState({ List: newConfig });
         }
         break;
       case "Move Down":
@@ -334,7 +400,7 @@ class ReportContainer extends React.Component {
           let next = newConfig[index + 1];
           newConfig[index + 1] = newConfig[index]
           newConfig[index] = next
-          this.setState({List: newConfig});
+          this.setState({ List: newConfig });
         }
         break;
       case "edit":
@@ -346,14 +412,14 @@ class ReportContainer extends React.Component {
           document.getElementById('span').value = _.get(b, 'span', '');
           let tempState = this.state.List;
           tempState.splice(index, 1);
-          this.setState({List: tempState});
+          this.setState({ List: tempState });
         }
         break;
       case "delete":
         if (index > -1) {
           let tempState = this.state.List;
           tempState.splice(index, 1);
-          this.setState({List: tempState});
+          this.setState({ List: tempState });
         }
         break;
       default:
@@ -382,7 +448,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 }
 
 ReportContainer.displayName = "ADHoc Reports";

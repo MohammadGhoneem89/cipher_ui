@@ -196,7 +196,7 @@ class ReportRenderList extends React.Component {
           <Portlet title={utils.getLabelByID("ADHOC Report List")} isPermissioned={true}
                    actions={this.state.actions}>
             <Table fontclass=""
-                   gridColumns={utils.getGridColumnByName("ADHReportList")}
+                   gridColumns={utils.getGridColumnByName("ADHRenderReportList")}
                    gridData={this.props.ADHReportList.data.searchResult}
                    totalRecords={this.props.ADHReportList.pageData.totalRecords}
                    searchCallBack={this.searchCallBack}

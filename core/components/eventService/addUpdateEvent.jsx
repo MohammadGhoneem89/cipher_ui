@@ -32,8 +32,8 @@ const stateParent = {
         "requestBody": "",
         "requestHeader": "",
         "requestURL": "",
-        "endpointName":"",
-        "templateName":"",
+        "endpointName": "",
+        "templateName": "",
         "templateId": "",
         "type": ""
     },
@@ -102,7 +102,7 @@ class AddUpdateEventList extends React.Component {
             }
 
 
-           
+
 
             if (nextProps.selectedDispatcher) {
                 let dispatchData = nextProps.AddUpdateEventListData.eventData ? nextProps.AddUpdateEventListData.eventData.dipatcher : [];
@@ -135,7 +135,7 @@ class AddUpdateEventList extends React.Component {
 
             }
 
-          
+
         } else {
             //alert("test")
             this.setState(cloneDeep(stateParent))
@@ -443,18 +443,18 @@ class AddUpdateEventList extends React.Component {
             return false;
         }
 
-        if (data.type.indexOf("API")>-1 && data.requestURL.trim() == "") {
+        if (data.type.indexOf("API") > -1 && data.requestURL.trim() == "") {
             alert("Request URI must be defined");
             return false;
         }
 
-        if (data.type.indexOf("API")>-1 && data.endpointName.trim() == "") {
+        if (data.type.indexOf("API") > -1 && data.endpointName.trim() == "") {
             alert("Endpoint Name must be defined");
             return false;
         }
 
 
-        if (data.type.indexOf("API Direct")>-1 && data.templateName.trim() == "") {
+        if (data.type.indexOf("API Direct") > -1 && data.templateName.trim() == "") {
             alert("Template Name must be defined");
             return false;
         }
@@ -468,7 +468,7 @@ class AddUpdateEventList extends React.Component {
             alert("template & groupName must be defined");
             return false;
         }
-     
+
         data.actions = [
             { label: "Edit", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
             { label: "Remove", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
@@ -665,9 +665,22 @@ class AddUpdateEventList extends React.Component {
                                                     </div>
 
                                                 </div>
-
+                                                <div className="col-md-6">
+                                                    <div className="form-group col-md-4">
+                                                        <label className="control-label">{utils.getLabelByID("Email On Failure")}</label>
+                                                    </div>
+                                                    <div className="form-group col-md-8">
+                                                        <div className="icheck-list">
+                                                            <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "10px" }}>
+                                                                <label></label>
+                                                                <input type="checkbox" className="form-control" onChange={this.onInputChange} checked={this.state.EventDispatcherDetails.isFailed} name="isFailed" id="isFailed" />
+                                                                <span></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                         
+
                                             <div style={{ display: this.state.EventDispatcherDetails.type !== "API Direct" && this.state.EventDispatcherDetails.type !== "API In-Direct" ? 'none' : 'block' }}>
                                                 <div className="row">
 
@@ -684,7 +697,7 @@ class AddUpdateEventList extends React.Component {
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("EndPointName")}</label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="endpointName" name="endpointName" value={this.state.EventDispatcherDetails.endpointName} onChange={this.onInputChange} className="form-control" >
-                                                                <option  value="">--select--</option>
+                                                                    <option value="">--select--</option>
                                                                     {this.state.getEndpointListView.map((option, index) => {
                                                                         return (
                                                                             <option key={index} value={option.value}>{option.text}</option>
@@ -703,7 +716,7 @@ class AddUpdateEventList extends React.Component {
                                                             <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_requestTemplate")}</label>
                                                             <div className="form-group col-md-8">
                                                                 <select id="templateName" name="templateName" value={this.state.EventDispatcherDetails.templateName} onChange={this.onInputChange} className="form-control" >
-                                                                <option  value="">--select--</option>
+                                                                    <option value="">--select--</option>
                                                                     {this.state.getTemplatesListView.map((option, index) => {
                                                                         return (
                                                                             <option key={index} value={option.value}>{option.text}</option>
