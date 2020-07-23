@@ -1,6 +1,6 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
@@ -13,47 +13,59 @@ import * as gen from '../../common/generalActionHandler';
 import Portlet from '../../common/Portlet.jsx';
 import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
+
+const toaster = require('../../common/toaster.js');
 import _ from 'lodash';
 
 class PickupListSearchContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.generalActionHandler = gen.generalHandler.bind(this);
+    this.sync = this.sync.bind(this);
     // this.pageChanged = this.pageChanged.bind(this);
 
     this.state = {
-      searchCriteria: {typeName: ""},
+      searchCriteria: { typeName: "" },
       activePage: 1,
       pageSize: 10,
       typeDataList: [],
       pickupList: [],
       searchForm: {},
-      isLoading: true
+      isLoading: true,
+      typeList: []
     };
   }
 
   componentDidMount() {
+
+
+    this.props.actions.generalProcess(constants.getTypeSyncOut, {})
     this.props.actions.generalProcess(constants.getPickupListForType, requestCreator.createPickupListRequestForType({
       "currentPageNo": 1,
       "pageSize": 10
-    }, {type: "allTypes"}));
+    }, { type: "allTypes" }));
 
     this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequest({
       "currentPageNo": 1,
       "pageSize": 10
-    }, {type: 'core'}));
+    }, { type: 'core' }));
 
   }
+  sync = (e) => {
 
+
+    this.props.actions.generalProcess(constants.pushTypeData, { body: { typeList: JSON.stringify(this.state.typeList) } })
+    toaster.showToast("Sync Call Sent successfully", 'OK');
+  }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
-
-    if (nextProps.typeDataList) {
+    if (nextProps.typeDataList && nextProps.typeListForSync) {
       this.setState({
         typeDataList: nextProps.typeDataList,
+        typeList: nextProps.typeListForSync,
         isLoading: false
       });
     }
+
     if (nextProps.pickupList && nextProps.pickupList.data && nextProps.pickupList.data.searchResult[0]) {
       let data = _.get(nextProps.pickupList, `data.searchResult`, []);
       let typeName = _.get(data, `typeName`, '');
@@ -72,7 +84,7 @@ class PickupListSearchContainer extends React.Component {
     this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequest({
       "currentPageNo": 1,
       "pageSize": 10
-    }, {type: this.state.searchForm.orgtype}));
+    }, { type: this.state.searchForm.orgtype }));
   }
 
   reset = () => {
@@ -93,20 +105,25 @@ class PickupListSearchContainer extends React.Component {
           <Col>
             <Portlet title={utils.getLabelByID("Pickup List Search")}>
               <Row>
-                <Lable columns='2' text={utils.getLabelByID("Categories")}/>
+                <Lable columns='2' text={utils.getLabelByID("Categories")} />
                 <Select fieldname='orgtype' className="form-control" formname='searchForm' columns='4' style={{}}
-                        state={this.state} typeName="pickupList" dataSource={this.state}
-                        multiple={false} actionHandler={this.generalActionHandler}/>
+                  state={this.state} typeName="pickupList" dataSource={this.state}
+                  multiple={false} actionHandler={this.generalActionHandler} />
               </Row>
-              <br/>
+              <br />
               <Row>
                 <Col>
-                  <div className="pull-right">
+                  <div className="btn-toolbar pull-right">
+                    <button type="submit" className="btn green" onClick={this.sync}>
+                      {utils.getLabelByID("Sync LOVs")}
+                    </button>
+                    {' '}
                     <button type="submit" className="btn green" onClick={this.searchTypes}>
                       {utils.getLabelByID("Search")}
                     </button>
                     {' '}
-                    <button type="button" className="btn green" onClick={this.addNew}>
+                    <button type="button" className="btn btn-default" onClick={this.addNew}>
+                      <i className="fa fa-plus"></i>
                       {utils.getLabelByID("Add")}
                     </button>
                   </div>
@@ -121,9 +138,9 @@ class PickupListSearchContainer extends React.Component {
                 // pageChanged={this.pageChanged}
                 gridColumns={utils.getGridColumnByName("pickupList")}
                 gridData={this.state.typeDataList}
-                // totalRecords={this.statetypeDataList}
-                // activePage={this.state.activePage}
-                // pageSize={this.state.pageSize}
+              // totalRecords={this.statetypeDataList}
+              // activePage={this.state.activePage}
+              // pageSize={this.state.pageSize}
               />
             </Portlet>
           </Col>
@@ -138,10 +155,9 @@ function mapStateToProps(state, ownProps) {
   console.log(state.app)
   return {
     typeDataList: _.get(state.app, 'typeDataListByType.data.searchResult', undefined),
+    typeListForSync: _.get(state.app, 'typeListForSync.data', undefined),
     pickupList: _.get(state.app, 'typeDataListForType', [])
   }
-
-
 }
 
 function mapDispatchToProps(dispatch) {

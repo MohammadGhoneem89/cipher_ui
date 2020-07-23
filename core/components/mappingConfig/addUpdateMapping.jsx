@@ -29,7 +29,9 @@ const stateParent = {
     transformationConfig: [],
     typeData: undefined,
     complexTypes: [],
-    localState: undefined
+    localState: undefined,
+    isupdate: true,
+    updateIndex: 0
 }
 
 class AddUpdateMapping extends React.Component {
@@ -170,7 +172,7 @@ class AddUpdateMapping extends React.Component {
                     document.getElementById('IN_FIELDTYPEDATA').value = a.IN_FIELDTYPEDATA;
                     let tempState = this.state.mappingConfig;
                     tempState.splice(index, 1);
-                    this.setState({ mappingConfig: tempState });
+                    this.setState({ mappingConfig: tempState, isupdate: true, updateIndex: index });
                 }
                 break;
             case "Delete":
@@ -386,8 +388,12 @@ class AddUpdateMapping extends React.Component {
         let litmus = this.containsObject(tupple, rows)
 
         if (litmus == false) {
-            rows.push(tupple);
-            this.setState({ mappingConfig: rows });
+            if (this.state.isupdate) {
+                rows.splice(this.state.updateIndex, 0, tupple);
+            } else {
+                rows.push(tupple);
+            }
+            this.setState({ mappingConfig: rows, isupdate: false });
             this.clearFields();
         } else {
             alert("Mapping for this field already exist!!")

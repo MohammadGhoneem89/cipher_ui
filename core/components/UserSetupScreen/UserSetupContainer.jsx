@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
+import React, { Component } from 'react'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
@@ -12,7 +12,7 @@ import UserSetupForm from './UserSetupForm.jsx'
 import Portlet from '../../common/Portlet.jsx';
 
 import * as gen from '../../common/generalActionHandler';
-import {forEach} from "react-bootstrap/cjs/ElementChildren";
+import { forEach } from "react-bootstrap/cjs/ElementChildren";
 
 class UserSetupContainer extends Component {
 
@@ -35,7 +35,7 @@ class UserSetupContainer extends Component {
 
   imgDiv() {
     return (
-      <div className="col-md-12" style={{textAlign: "center"}}>
+      <div className="col-md-12" style={{ textAlign: "center" }}>
         <img
           id="UserProfilePic"
           src={this.state.userDetail.profilePic ? constants.baseUrl + this.state.userDetail.profilePic : constants.baseUrl + "/images/image-user.png"}
@@ -44,7 +44,7 @@ class UserSetupContainer extends Component {
           height='190px'
           ref={input => this.profilePic = input}
         />
-        <br/>
+        <br />
         {/* <span
                     className="label label-primary"
                     style={{ cursor: "pointer" }}
@@ -58,7 +58,7 @@ class UserSetupContainer extends Component {
 
         <button
           className="btn green"
-          style={{cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0'}}
+          style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
           onClick={() => {
             this.profilePicUploader.click();
           }}
@@ -70,7 +70,7 @@ class UserSetupContainer extends Component {
           name="profilePicUploader"
           id='profilePicUploader'
           type='file'
-          style={{display: 'none'}}
+          style={{ display: 'none' }}
           ref={input => this.profilePicUploader = input}
           onChange={(e) => {
             console.log('Profile pic on change')
@@ -101,7 +101,7 @@ class UserSetupContainer extends Component {
               };
               reader.readAsDataURL(files[0]);
             }
-          }}/>
+          }} />
       </div>
     )
   }
@@ -110,7 +110,7 @@ class UserSetupContainer extends Component {
 
     this.props.actions.generalProcess(constants.getBlkUserList); // Hyperledger/quorum etc blckchain users (peer admins)
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES', 'CALLER_TYPES', 'First_Screens'])); // Org types (entities)
-    this.props.actions.generalProcess(constants.passwordPolicyDetail, {"action": "typeDataDetail"});
+    this.props.actions.generalProcess(constants.passwordPolicyDetail, { "action": "typeDataDetail" });
     this.props.actions.generalProcess(constants.getUserDetail, {    // user detail + groups list
       "action": "userDetails",
       "id": this.props.params.userID
@@ -144,12 +144,12 @@ class UserSetupContainer extends Component {
       let authenticationType = [];
       if (userType !== 'Entity' && userType !== 'Acquirer') {
         authenticationType = [
-          {value: "System", label: "System"},
-          {value: "Local", label: "Local"}
+          { value: "System", label: "System" },
+          { value: "Local", label: "Local" }
         ];
       } else {
         authenticationType = [
-          {value: "System", label: "System"},
+          { value: "System", label: "System" },
         ];
       }
       let firstScreen = ''
@@ -414,10 +414,10 @@ class UserSetupContainer extends Component {
 
 
     if (this.state.userDetail.userType === 'Human' && this.props.params.userID) {
-      let request = {"userID": this.state.userDetail.userID, email: this.state.userDetail.email};
+      let request = { "userID": this.state.userDetail.userID, email: this.state.userDetail.email };
       this.props.actions.generalProcess(constants.passwordReset, request);
     } else {
-      this.setState({editPassword: true});
+      this.setState({ editPassword: true });
     }
   }
   unlockAccount = () => {
@@ -441,7 +441,7 @@ class UserSetupContainer extends Component {
   }
 
 
-// Helper
+  // Helper
   getPermissionTypeData = (permission) => {
     let arr = [];
     for (let obj of permission) {
@@ -473,21 +473,21 @@ class UserSetupContainer extends Component {
 
     this.setState({
 
-        typeData: {
-          ...this.state.typeData,
-          entityNamesFiltered: this.state.typeData.entityNames
-            .filter(item => {
-              if (item.orgType === value) {
-                return true
-              } else {
-                return false
-              }
-            })
-        },
-        [formname]: formdata
-      }, () => {
-        console.log(JSON.stringify(this.state.typeData.entityNamesFiltered))
-      }
+      typeData: {
+        ...this.state.typeData,
+        entityNamesFiltered: this.state.typeData.entityNames
+          .filter(item => {
+            if (item.orgType === value) {
+              return true
+            } else {
+              return false
+            }
+          })
+      },
+      [formname]: formdata
+    }, () => {
+      console.log(JSON.stringify(this.state.typeData.entityNamesFiltered))
+    }
     );
 
     // let typeList = typedata ? typedata : [{label: "", value: ""}];
@@ -505,7 +505,13 @@ class UserSetupContainer extends Component {
 
   userTypeHandler(formname, fieldname, type, typedata, e) {
     console.log("formname, fieldname, type, typedata, e", formname, fieldname, type, typedata, e)
-    let value = e.target.value;
+    let value;
+    try {
+      value = e.target.value;
+    } catch (ex) {
+      e = typedata
+      value = typedata.target.value;
+    }
     let formdata = _.get(this.state, formname, {});
     _.set(formdata, e.target.name, value);
 
@@ -513,18 +519,16 @@ class UserSetupContainer extends Component {
       [formname]: formdata,
       groupIndex: 0
     });
-    let typeList = typedata ? typedata : [{label: "", value: ""}];
-    const typeValue = typeList.map(data => data.value);
-    if (value) {
-      if (!typeValue.includes(value)) {
-        // toaster.showToast(`Invalid value`, "ERROR");
-        this.IsValid = false;
-        return;
-      }
-    }
+    // let typeList = typedata ? typedata : [{label: "", value: ""}];
+    // const typeValue = typeList.map(data => data.value);
+    // if (value) {
+    //   if (!typeValue.includes(value)) {
+    //     this.IsValid = false;
+    //     return;
+    //   }
+    // }
     this.IsValid = true;
-  }
-  ;
+  };
 
 
   comboBoxHandler = (formname, fieldname, type, typedata, e) => {
@@ -593,12 +597,12 @@ class UserSetupContainer extends Component {
     })
   }
 
-// changePassword(e){
-//     e.preventDefault()
-//     console.log('changePassword')
-//     browserHistory.push('/changePassword')
-//     window.scrollTo(0, 0);
-// }
+  // changePassword(e){
+  //     e.preventDefault()
+  //     console.log('changePassword')
+  //     browserHistory.push('/changePassword')
+  //     window.scrollTo(0, 0);
+  // }
 
   render() {
     if (!this.state.isLoading) {
@@ -613,7 +617,7 @@ class UserSetupContainer extends Component {
     return (
       this.state.isLoading ? <div className="loader">Loading...</div> : (
 
-        <Portlet title={"User"} style={{minHeight: '845px'}}>
+        <Portlet title={"User"} style={{ minHeight: '845px' }}>
           < UserSetupForm
             // changePassword={this.props.params.userID ? this.changePassword.bind(this) : undefined}
             onError={this.addDefaultSrc}

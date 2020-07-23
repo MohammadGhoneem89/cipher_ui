@@ -1,13 +1,14 @@
 /*standard imports*/
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {browserHistory} from 'react-router';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import _ from 'lodash';
 import * as requestCreator from '../../common/request.js';
 import APIDefScreenForm from './APIDefScreenForm.jsx';
+
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import find from 'lodash/find';
@@ -55,6 +56,9 @@ const initialState = {
     RelayNet: "",
     RemoteAPI: ""
   },
+  List: [],
+  resultSet: [],
+  columnList: [],
   RelayNetworks: [],
   BillingPolicy: [],
   selectedRuleList: [],
@@ -77,7 +81,8 @@ const initialState = {
   requestParams: [],
   responseParams: [],
   getEndpointListView: [],
-  generateMappingFile: {}
+  generateMappingFile: {},
+  reportContainer: {}
 };
 
 class APIDefinitionScreen extends React.Component {
@@ -128,7 +133,6 @@ class APIDefinitionScreen extends React.Component {
     })
     if (uri.label)
       browserHistory.push(`/editMapping/${uri.label}`)
-
   }
 
   addPolicyRule() {
@@ -143,12 +147,12 @@ class APIDefinitionScreen extends React.Component {
     let tupple = {
       from, to, billVal,
       actions: [
-        {label: "Delete Policy", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION"}
+        { label: "Delete Policy", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
       ]
     }
     let list = this.state.BillingPolicy;
     list.push(tupple);
-    this.setState({BillingPolicy: list});
+    this.setState({ BillingPolicy: list });
     document.getElementById('fromUnit').value = '';
     document.getElementById('toUnit').value = '';
     document.getElementById('billVal').value = '';
@@ -167,7 +171,6 @@ class APIDefinitionScreen extends React.Component {
     let consortium = document.getElementById('consortium') == null ? "" : document.getElementById('consortium').value;
     let smartcontractid = document.getElementById('smartcontract') == null ? "" : document.getElementById('smartcontract').value;
     let smartcontract = $("#smartcontract").find("option[value='" + $("#smartcontract").val() + "']").text();
-
     let smartcontractFunc = document.getElementById('smartcontractFunc') == null ? "" : document.getElementById('smartcontractFunc').value;
     let type = document.getElementById('type') == null ? "" : document.getElementById('type').value;
     let channelText = $("#channel option:selected").text();
@@ -227,10 +230,10 @@ class APIDefinitionScreen extends React.Component {
       type,
       displayText: dispText.join(" && "),
       actions: [
-        {label: "Move UP", iconName: "fa fa-arrow-up", actionType: "COMPONENT_FUNCTION"},
-        {label: "Move Down", iconName: "fa fa-arrow-down", actionType: "COMPONENT_FUNCTION"},
-        {label: "Modify", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION"},
-        {label: "Remove", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION"}
+        { label: "Move UP", iconName: "fa fa-arrow-up", actionType: "COMPONENT_FUNCTION" },
+        { label: "Move Down", iconName: "fa fa-arrow-down", actionType: "COMPONENT_FUNCTION" },
+        { label: "Modify", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" },
+        { label: "Remove", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
       ]
     }
     if (isError === false) {
@@ -244,7 +247,7 @@ class APIDefinitionScreen extends React.Component {
 
         $(`[id^=fieldValue-]`).val('');
         rules.push(data);
-        this.setState({rules: rules});
+        this.setState({ rules: rules });
       } else {
         alert(`rule name or rule already exists, please update existing rule!!`);
       }
@@ -305,7 +308,6 @@ class APIDefinitionScreen extends React.Component {
   }
 
   containsObject(refObj, list) {
-
     for (let i = 0; i < list.length; i++) {
       let obj = list[i];
       if (
@@ -315,17 +317,34 @@ class APIDefinitionScreen extends React.Component {
         return true;
       }
     }
-
     return false;
   }
+  containsObjectADHOC(refObj, list) {
+    for (let i = 0; i < list.length; i++) {
+      let obj = list[i];
+      if (
+        obj.fieldName == refObj.fieldName
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+  test = (e) => {
+    
+    let queryStrCnt = document.getElementById('queryStrCnt') == null ? "" : document.getElementById('queryStrCnt').value;
+    let queryStr = document.getElementById('queryStr') == null ? "" : document.getElementById('queryStr').value;
 
+    console.log("ACCESS>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>||||||||||||||||>", queryStrCnt, queryStr)
+
+    this.props.actions.generalProcess(constants.getMappingConfigByID, { mappingName: let1.label });
+  }
   addRow() {
     let SimulatorRequest = document.getElementById('SimulatorRequest') == null ? "" : document.getElementById('SimulatorRequest').value;
     let SimulatorResponse = document.getElementById('SimulatorResponse') == null ? "" : document.getElementById('SimulatorResponse').value;
     let SimuValue = document.getElementById('SimuValue') == null ? "" : document.getElementById('SimuValue').value;
     let SimuField = document.getElementById('SimuField') == null ? "" : document.getElementById('SimuField').value;
     let RuleName = document.getElementById('RuleName') == null ? "" : document.getElementById('RuleName').value;
-
     let data = this.state.simucases;
     let newtupple = {
       SimulatorRequest: SimulatorRequest,
@@ -333,7 +352,7 @@ class APIDefinitionScreen extends React.Component {
       SimuValue: SimuValue,
       SimuField: SimuField,
       RuleName: RuleName,
-      actions: [{label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION"}, {
+      actions: [{ label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }, {
         label: "Edit",
         iconName: "fa fa-edit",
         actionType: "COMPONENT_FUNCTION"
@@ -370,21 +389,21 @@ class APIDefinitionScreen extends React.Component {
 
     this.clearFields();
     data.push(newtupple);
-    this.setState({simucases: data});
+    this.setState({ simucases: data });
   }
 
   getRequestResponseMapping = (val, type, MappingConfigList) => {
 
     MappingConfigList = MappingConfigList || this.state.MappingConfigList;
-    let let1 = find(get(MappingConfigList, type, []), {value: val});
+    let let1 = find(get(MappingConfigList, type, []), { value: val });
     let1 = let1 || {};
-    this.props.actions.generalProcess(constants.getMappingConfigByID, {mappingName: let1.label});
+    this.props.actions.generalProcess(constants.getMappingConfigByID, { mappingName: let1.label });
   };
 
   componentDidMount() {
     this.props.actions.generalProcess(constants.getConsortiumTypeList);
     this.props.actions.generalProcess(constants.getMappingList);
-    this.props.actions.generalProcess(constants.getAdaptorsList);
+    // this.props.actions.generalProcess(constants.getAdaptorsList);
     this.props.actions.generalProcess(constants.getEndpointListView);
     this.props.actions.generalProcess(constants.getRelayNetworkConfigListTd);
 
@@ -401,14 +420,14 @@ class APIDefinitionScreen extends React.Component {
       objectType: this.state.objectType || '',
     });
 
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['currency', 'cycle', 'request_operator', 'database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES', 'bchain_rule_Type', 'UseCase']));
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['currency', 'cycle', 'request_operator', 'database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES', 'bchain_rule_Type', 'UseCase', 'adhoc_datatype']));
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE") {
       let req = {
         useCase: this.props.useCase,
         route: this.props.route
       }
 
-      this.setState({isEdit: true, isStale: false}, () => {
+      this.setState({ isEdit: true, isStale: false }, () => {
         this.props.actions.generalProcess(constants.getAPIDefinitionID, req);
       })
     }
@@ -426,6 +445,42 @@ class APIDefinitionScreen extends React.Component {
 
   }
 
+  add = (e) => {
+
+    let fieldName = document.getElementById('fieldName') == null ? "" : document.getElementById('fieldName').value;
+    let dataType = document.getElementById('dataType') == null ? "" : document.getElementById('dataType').value;
+    let testVal = document.getElementById('testVal') == null ? "" : document.getElementById('testVal').value;
+
+    if (
+      _.isEmpty(fieldName) ||
+      _.isEmpty(dataType)
+    ) {
+      alert("All fields are required");
+      return false;
+    }
+
+    let tupple = {
+      fieldName,
+      dataType,
+      testVal,
+      // span,
+      "actions": [
+        { label: "Move UP", iconName: "fa fa-arrow-up", actionType: "COMPONENT_FUNCTION" },
+        { label: "Move Down", iconName: "fa fa-arrow-down", actionType: "COMPONENT_FUNCTION" },
+        { "label": "edit", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" },
+        { "label": "delete", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION" }
+      ]
+    }
+
+    if (this.containsObjectADHOC(tupple, this.state.List) === false) {
+      this.clearFieldsPeer()
+      let List = _.cloneDeep(this.state.List);
+      List.push(tupple)
+      this.setState({ List: List })
+    } else {
+      alert("Code Already Exists!!")
+    }
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.parameters) {
 
@@ -455,8 +510,8 @@ class APIDefinitionScreen extends React.Component {
         let simucases = nextProps.APIDefinitionAddUpdate.data.simucases;
         simucases.map(function (item) {
           item.actions = [
-            {label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION"},
-            {label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION"}
+            { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
+            { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
           ];
           return item;
         });
@@ -499,7 +554,7 @@ class APIDefinitionScreen extends React.Component {
         this.setState({
           MappingOrgFieldData: []
         }, () => {
-          let req = {_id: nextProps.APIDefinitionAddUpdate.data.RequestMapping}
+          let req = { _id: nextProps.APIDefinitionAddUpdate.data.RequestMapping }
           this.props.actions.generalProcess(constants.getMappingConfigOrgFieldData, req);
         });
       }
@@ -708,7 +763,7 @@ class APIDefinitionScreen extends React.Component {
       this.getRequestResponseMapping(value, 'REQUEST');
     }
 
-    let req = {_id: value}
+    let req = { _id: value }
     this.props.actions.generalProcess(constants.getMappingConfigOrgFieldData, req);
     this.state.APIDefinitionAddUpdate[e.target.name] = value;
     this.setState({
@@ -718,7 +773,7 @@ class APIDefinitionScreen extends React.Component {
   };
 
   submit = () => {
-    this.setState({formSubmitted: true});
+    this.setState({ formSubmitted: true });
   };
 
   addParams = (type) => {
@@ -769,24 +824,29 @@ class APIDefinitionScreen extends React.Component {
     this.props.actions.generalProcess(constants.generateMappingFile, data);
   };
 
+  clearFieldsPeer() {
+    $('#form').find('input:text').val('');
+    $('#form').find('textarea').val('');
+  }
+
   render() {
     if (this.state.isLoading) {
       return (<div className="loader">isLoading...</div>)
     }
     return (
       <APIDefScreenForm navigateRes={this.navigateRes} navigateReq={this.navigateReq} parameters={this.state.parameters}
-                        generateCustomFile={this.generateCustomFile} addParams={this.addParams}
-                        onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule}
-                        addPolicyRule={this.addPolicyRule}
-                        onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine}
-                        onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList}
-                        initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData}
-                        onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest}
-                        addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers}
-                        parentState={this.state}/>)
+        generateCustomFile={this.generateCustomFile} addParams={this.addParams}
+        onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule}
+        addPolicyRule={this.addPolicyRule}
+        onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine}
+        onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList}
+        initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData}
+        onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest}
+        addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers}
+        parentState={this.state} add={this.add} test={this.test} />)
   }
 
-  ActionHandlers({actionName, index}) {
+  ActionHandlers({ actionName, index }) {
 
     //alert(actionName)
     switch (actionName) {
@@ -797,7 +857,7 @@ class APIDefinitionScreen extends React.Component {
             if (index > -1) {
               let tempStateRule = this.state.BillingPolicy;
               tempStateRule.splice(index, 1);
-              this.setState({BillingPolicy: tempStateRule});
+              this.setState({ BillingPolicy: tempStateRule });
             }
           }
         }
@@ -809,7 +869,7 @@ class APIDefinitionScreen extends React.Component {
             if (index > -1) {
               let tempStateRule = this.state.rules;
               tempStateRule.splice(index, 1);
-              this.setState({rules: tempStateRule});
+              this.setState({ rules: tempStateRule });
             }
           }
         }
@@ -824,7 +884,7 @@ class APIDefinitionScreen extends React.Component {
           document.getElementById('smartcontractFunc').value = rule.smartcontractFunc || "";
           let tempStateRules = _.cloneDeep(this.state.rules);
           tempStateRules.splice(index, 1);
-          this.setState({rules: tempStateRules}, () => {
+          this.setState({ rules: tempStateRules }, () => {
             document.getElementById('consortium').value = rule.consortium;
             document.getElementById('smartcontract').value = rule.smartcontract;
             let pLoad = {};
@@ -857,7 +917,7 @@ class APIDefinitionScreen extends React.Component {
           document.getElementById('RuleName').value = a.RuleName;
           let tempState = this.state.simucases;
           tempState.splice(index, 1);
-          this.setState({simucases: tempState});
+          this.setState({ simucases: tempState });
         }
         break;
       case "Delete":
@@ -866,7 +926,7 @@ class APIDefinitionScreen extends React.Component {
           if (index > -1) {
             let a = this.state.simucases;
             a.splice(index, 1);
-            this.setState({simucases: a});
+            this.setState({ simucases: a });
           }
         }
         break;
@@ -877,7 +937,7 @@ class APIDefinitionScreen extends React.Component {
           let prev = newConfig[index - 1];
           newConfig[index - 1] = newConfig[index]
           newConfig[index] = prev
-          this.setState({rules: newConfig});
+          this.setState({ rules: newConfig });
         }
         break;
       case "Move Down":
@@ -886,7 +946,7 @@ class APIDefinitionScreen extends React.Component {
           let next = newConfig[index + 1];
           newConfig[index + 1] = newConfig[index]
           newConfig[index] = next
-          this.setState({rules: newConfig});
+          this.setState({ rules: newConfig });
         }
         break;
       default:
@@ -919,7 +979,7 @@ function mapStateToProps(state, ownProps) {
     route: ownProps.params.route,
     ConsortiumTypeData: state.app.ConsortiumTypeData,
     getAdaptorsList: get(state.app, 'getAdaptorsList.data', []),
-    getDBFields: get(state.app, 'getDBFields', {data: []}),
+    getDBFields: get(state.app, 'getDBFields', { data: [] }),
     getAvailableObjectsList: get(state.app, 'getAvailableObjectsList.data', []),
     generateMappingFile: get(state.app, 'generateMappingFile', {}),
     RelayNetworks: get(state.app, 'RelayNetworkTypeData.data.RelayNetworks', undefined),
@@ -929,7 +989,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 }
 
 APIDefinitionScreen.displayName = "APIDefinitionScreen_Heading";

@@ -1,13 +1,13 @@
 /*standard imports*/
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import Portlet from '../../common/Portlet.jsx';
 import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
 import DateControl from '../../common/DateControl.jsx';
 import get from 'lodash/get';
 import filter from 'lodash/filter';
-
-const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomFile, addParams, onRequestTypeChange, addPolicyRule, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange}) => {
+import ADHocQuery from './ADHocQuery.jsx';
+const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustomFile, addParams, onRequestTypeChange, addPolicyRule, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange, add, test }) => {
   return (
     <Portlet title={utils.getLabelByID("APIDefinitionScreen_Heading")}>
       <div className="row">
@@ -18,11 +18,11 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                 <div className="col-md-6">
                   <div className="form-group">
                     <label className="form-group control-label col-md-4"
-                           style={{textAlign: "left"}}>{utils.getLabelByID("useCase")}</label>
+                      style={{ textAlign: "left" }}>{utils.getLabelByID("useCase")}</label>
                     <div className="form-group col-md-8">
                       {/* {console.log(initialValues)} */}
                       <select name="useCase" value={initialValues.useCase} disabled={parentState.isEdit}
-                              onChange={onInputChange} className="form-control">
+                        onChange={onInputChange} className="form-control">
                         <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                         {
                           typeData.UseCase.map((option, index) => {
@@ -38,11 +38,11 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                 <div className="col-md-6">
                   <div className="form-group">
                     <label className="form-group control-label col-md-4"
-                           style={{textAlign: "left"}}>{utils.getLabelByID("APIDefScreen_route")}</label>
+                      style={{ textAlign: "left" }}>{utils.getLabelByID("APIDefScreen_route")}</label>
                     <div className="form-group col-md-8">
                       {/* {console.log(initialValues)} */}
                       <input type="text" className="form-control" name="route" onChange={onInputChange}
-                             disabled={parentState.isEdit} value={initialValues.route}/>
+                        disabled={parentState.isEdit} value={initialValues.route} />
                     </div>
                   </div>
                 </div>
@@ -55,7 +55,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                     <div className="col-md-8">
                       <div className="form-group">
                         <textarea onChange={onInputChange} name="description" value={initialValues.description}
-                                  className="form-control" rows="4" style={{resize: "none", width: "100%"}}/>
+                          className="form-control" rows="4" style={{ resize: "none", width: "100%" }} />
                       </div>
                     </div>
                   </div>
@@ -68,7 +68,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                     }}>{utils.getLabelByID("APIDefScreen_Authorization")}</label>
                     <div className="form-group col-md-8">
                       <select name="authorization" value={initialValues.authorization} onChange={onInputChange}
-                              className="form-control">
+                        className="form-control">
                         {
                           typeData.API_Authtypes.map((option, index) => {
                             return (
@@ -97,11 +97,11 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                 </div>
                 <div className="form-group col-md-8">
                   <div className="icheck-list">
-                    <label className="mt-checkbox mt-checkbox-outline" style={{marginBottom: "0px", marginTop: "0px"}}>
-                      <label/>
+                    <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                      <label />
                       <input type="checkbox" className="form-control" onChange={onInputChange} name="isRouteOveride"
-                             id="isRouteOveride" checked={initialValues.isRouteOveride}/>
-                      <span/>
+                        id="isRouteOveride" checked={initialValues.isRouteOveride} />
+                      <span />
                     </label>
                   </div>
                 </div>
@@ -116,7 +116,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                   }}>{utils.getLabelByID("APIDefScreen_fieldName")}</label>
                   <div className="form-group col-md-8">
                     <input type="text" className="form-control" onChange={onInputChange}
-                           disabled={!initialValues.isRouteOveride} name="fieldName" value={initialValues.fieldName}/>
+                      disabled={!initialValues.isRouteOveride} name="fieldName" value={initialValues.fieldName} />
                   </div>
                 </div>
               </div>
@@ -139,8 +139,8 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                   }}>{utils.getLabelByID("Communication Mode")}</label>
                   <div className="form-group col-md-8">
                     <select name="communicationMode" value={initialValues.communicationMode} onChange={onInputChange}
-                            disabled={initialValues.isRouteOveride || initialValues.isCustomMapping}
-                            className="form-control">
+                      disabled={initialValues.isRouteOveride || initialValues.isCustomMapping}
+                      className="form-control">
                       {
                         typeData.API_ComMode.map((option, index) => {
                           return (
@@ -155,10 +155,10 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
               <div className="col-md-6">
                 <div className="form-group">
                   <label className="form-group control-label col-md-4"
-                         style={{textAlign: "left"}}>{utils.getLabelByID("Estimated RTT")}</label>
+                    style={{ textAlign: "left" }}>{utils.getLabelByID("Estimated RTT")}</label>
                   <div className="form-group col-md-8">
                     <input type="number" className="form-control" name="estimatedRtt" onChange={onInputChange}
-                           value={initialValues.estimatedRtt}/>
+                      value={initialValues.estimatedRtt} />
                   </div>
                 </div>
               </div>
@@ -172,8 +172,8 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                       }}>{utils.getLabelByID("APIDefScreen_RSQueue")}</label>
                       <div className="form-group col-md-8">
                         <input type="text" className="form-control" onChange={onInputChange}
-                               disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "GRPC Relay" || initialValues.communicationMode == "REST"}
-                               name="requestServiceQueue" value={initialValues.requestServiceQueue}/>
+                          disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "Database" || initialValues.communicationMode == "GRPC Relay" || initialValues.communicationMode == "REST"}
+                          name="requestServiceQueue" value={initialValues.requestServiceQueue} />
                       </div>
                     </div>
                   </div>
@@ -185,8 +185,8 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                       }}>{utils.getLabelByID("APIDefScreen_ServiceURI")}</label>
                       <div className="form-group col-md-8">
                         <input type="text" className="form-control" name="ServiceURL" onChange={onInputChange}
-                               disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "GRPC Relay" || initialValues.communicationMode == "QUEUE"}
-                               value={initialValues.ServiceURL}/>
+                          disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "Database" || initialValues.communicationMode == "GRPC Relay" || initialValues.communicationMode == "QUEUE"}
+                          value={initialValues.ServiceURL} />
                       </div>
                     </div>
                   </div>
@@ -198,8 +198,8 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                       }}>{utils.getLabelByID("APIDefScreen_ResponseQueue")}</label>
                       <div className="form-group col-md-8">
                         <input type="text" className="form-control" name="responseQueue" onChange={onInputChange}
-                               disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "GRPC Relay" || initialValues.communicationMode == "REST"}
-                               value={initialValues.responseQueue}/>
+                          disabled={initialValues.isRouteOveride || initialValues.isCustomMapping || initialValues.communicationMode == "Database" || initialValues.communicationMode == "GRPC Relay" || initialValues.communicationMode == "REST"}
+                          value={initialValues.responseQueue} />
                       </div>
                     </div>
                   </div>
@@ -211,8 +211,8 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                       }}>{utils.getLabelByID("APIDefScreen_ServiceEndPoint")}</label>
                       <div className="form-group col-md-8">
                         <select id="endpointName" name="endpointName" value={initialValues.endpointName}
-                                onChange={onInputChange} className="form-control"
-                                disabled={initialValues.isRouteOveride || initialValues.communicationMode == "GRPC Relay" || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"}>
+                          onChange={onInputChange} className="form-control"
+                          disabled={initialValues.isRouteOveride || initialValues.communicationMode == "GRPC Relay" || initialValues.communicationMode == "Database" || initialValues.isCustomMapping || initialValues.communicationMode == "QUEUE"}>
                           <option value="">--select--</option>
                           {parentState.getEndpointListView.map((option, index) => {
                             return (
@@ -246,12 +246,12 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                     <div className="form-group col-md-8">
                       <div className="icheck-list">
                         <label className="mt-checkbox mt-checkbox-outline"
-                               style={{marginBottom: "0px", marginTop: "0px"}}>
-                          <label/>
+                          style={{ marginBottom: "0px", marginTop: "0px" }}>
+                          <label />
                           <input type="checkbox" className="form-control" onChange={onInputChange}
-                                 disabled={initialValues.isRouteOveride} name="isCustomMapping" id="isCustomMapping"
-                                 checked={initialValues.isCustomMapping}/>
-                          <span/>
+                            disabled={initialValues.isRouteOveride} name="isCustomMapping" id="isCustomMapping"
+                            checked={initialValues.isCustomMapping} />
+                          <span />
                         </label>
                       </div>
                     </div>
@@ -265,8 +265,8 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                       </label>
                       <div className="form-group col-md-8">
                         <input type="text" className="form-control" onChange={onInputChange}
-                               disabled={!initialValues.isCustomMapping || initialValues.isRouteOveride}
-                               name="MappingfunctionName" value={initialValues.MappingfunctionName}/>
+                          disabled={!initialValues.isCustomMapping || initialValues.isRouteOveride}
+                          name="MappingfunctionName" value={initialValues.MappingfunctionName} />
                       </div>
                     </div>
                   </div>
@@ -279,8 +279,8 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                       </label>
                       <div className="form-group col-md-8">
                         <input type="text" className="form-control" onChange={onInputChange}
-                               disabled={!initialValues.isCustomMapping || initialValues.isRouteOveride}
-                               name="CustomMappingFile" value={initialValues.CustomMappingFile}/>
+                          disabled={!initialValues.isCustomMapping || initialValues.isRouteOveride}
+                          name="CustomMappingFile" value={initialValues.CustomMappingFile} />
                       </div>
                     </div>
                   </div>
@@ -295,17 +295,17 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                 textAlign: "left",
                 fontWeight: "normal"
               }}>{utils.getLabelByID("APIDefScreen_RequestMapping")} <a href="javascript:"
-                                                                        onClick={navigateReq}> (edit)</a></label>
+                onClick={navigateReq}> (edit)</a></label>
               <div className="form-group col-md-8">
                 <select name="RequestMapping" value={initialValues.RequestMapping} disabled={initialValues.isValBypass}
-                        onChange={onInputChangeRequest} className="form-control">
+                  onChange={onInputChangeRequest} className="form-control">
                   <option disabled>{utils.getLabelByID("Select ...")}</option>
                   {dropdownItems.REQUEST &&
-                  dropdownItems.REQUEST.map((option, index) => {
-                    return (
-                      <option key={index} value={option.value}>{option.label}</option>
-                    );
-                  })
+                    dropdownItems.REQUEST.map((option, index) => {
+                      return (
+                        <option key={index} value={option.value}>{option.label}</option>
+                      );
+                    })
                   }
                 </select>
               </div>
@@ -317,17 +317,17 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                 textAlign: "left",
                 fontWeight: "normal"
               }}>{utils.getLabelByID("APIDefScreen_ResponseMapping")}<a href="javascript:"
-                                                                        onClick={navigateRes}> (edit)</a></label>
+                onClick={navigateRes}> (edit)</a></label>
               <div className="form-group col-md-8">
                 <select name="ResponseMapping" value={initialValues.ResponseMapping}
-                        disabled={initialValues.isResValBypass} onChange={onInputChange} className="form-control">
+                  disabled={initialValues.isResValBypass} onChange={onInputChange} className="form-control">
                   <option disabled>{utils.getLabelByID("Select ...")}</option>
                   {dropdownItems.RESPONSE &&
-                  dropdownItems.RESPONSE.map((option, index) => {
-                    return (
-                      <option key={index} value={option.value}>{option.label}</option>
-                    );
-                  })
+                    dropdownItems.RESPONSE.map((option, index) => {
+                      return (
+                        <option key={index} value={option.value}>{option.label}</option>
+                      );
+                    })
                   }
                 </select>
               </div>
@@ -341,11 +341,11 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
               }}>{utils.getLabelByID("Ignore Request Validation")}</label>
               <div className="form-group col-md-8">
                 <div className="icheck-list">
-                  <label className="mt-checkbox mt-checkbox-outline" style={{marginBottom: "0px", marginTop: "0px"}}>
-                    <label/>
+                  <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                    <label />
                     <input type="checkbox" className="form-control" onChange={onInputChange} name="isValBypass"
-                           id="isValBypass" checked={initialValues.isValBypass}/>
-                    <span/>
+                      id="isValBypass" checked={initialValues.isValBypass} />
+                    <span />
                   </label>
                 </div>
               </div>
@@ -359,11 +359,11 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
               }}>{utils.getLabelByID("Ignore Response validation")}</label>
               <div className="form-group col-md-8">
                 <div className="icheck-list">
-                  <label className="mt-checkbox mt-checkbox-outline" style={{marginBottom: "0px", marginTop: "0px"}}>
-                    <label/>
+                  <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                    <label />
                     <input type="checkbox" className="form-control" onChange={onInputChange} name="isResValBypass"
-                           id="isResValBypass" checked={initialValues.isResValBypass}/>
-                    <span/>
+                      id="isResValBypass" checked={initialValues.isResValBypass} />
+                    <span />
                   </label>
                 </div>
               </div>
@@ -380,11 +380,11 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                   <div className="form-group col-md-8">
                     <div className="icheck-list">
                       <label className="mt-checkbox mt-checkbox-outline"
-                             style={{marginBottom: "0px", marginTop: "0px"}}>
-                        <label/>
+                        style={{ marginBottom: "0px", marginTop: "0px" }}>
+                        <label />
                         <input type="checkbox" className="form-control" onChange={onInputChange}
-                               checked={initialValues.isActive} name="isActive" id="isActive"/>
-                        <span/>
+                          checked={initialValues.isActive} name="isActive" id="isActive" />
+                        <span />
                       </label>
                     </div>
                   </div>
@@ -399,11 +399,11 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                   <div className="form-group col-md-8">
                     <div className="icheck-list">
                       <label className="mt-checkbox mt-checkbox-outline"
-                             style={{marginBottom: "0px", marginTop: "0px"}}>
-                        <label/>
+                        style={{ marginBottom: "0px", marginTop: "0px" }}>
+                        <label />
                         <input type="checkbox" className="form-control" onChange={onInputChange}
-                               checked={initialValues.isBlockchain} name="isBlockchain" id="isBlockchain"/>
-                        <span/>
+                          checked={initialValues.isBlockchain} name="isBlockchain" id="isBlockchain" />
+                        <span />
                       </label>
                     </div>
                   </div>
@@ -419,11 +419,11 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
               }}>{utils.getLabelByID("isRelay")}</label>
               <div className="form-group col-md-8">
                 <div className="icheck-list">
-                  <label className="mt-checkbox mt-checkbox-outline" style={{marginBottom: "0px", marginTop: "0px"}}>
-                    <label/>
+                  <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                    <label />
                     <input type="checkbox" className="form-control" onChange={onInputChange} name="isRelay"
-                           checked={initialValues.isRelay} id="isRelay"/>
-                    <span/>
+                      checked={initialValues.isRelay} id="isRelay" />
+                    <span />
                   </label>
                 </div>
               </div>
@@ -437,11 +437,11 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
               }}>{utils.getLabelByID("Verify HMAC")}</label>
               <div className="form-group col-md-8">
                 <div className="icheck-list">
-                  <label className="mt-checkbox mt-checkbox-outline" style={{marginBottom: "0px", marginTop: "0px"}}>
-                    <label/>
+                  <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                    <label />
                     <input type="checkbox" className="form-control" onChange={onInputChange} name="isHMAC"
-                           checked={initialValues.isHMAC} id="isHMAC"/>
-                    <span/>
+                      checked={initialValues.isHMAC} id="isHMAC" />
+                    <span />
                   </label>
                 </div>
               </div>
@@ -455,11 +455,11 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
               }}>{utils.getLabelByID("APIDefScreen_isSimulated")}</label>
               <div className="form-group col-md-8">
                 <div className="icheck-list">
-                  <label className="mt-checkbox mt-checkbox-outline" style={{marginBottom: "0px", marginTop: "0px"}}>
-                    <label/>
+                  <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                    <label />
                     <input type="checkbox" className="form-control" onChange={onInputChange} name="isSimulated"
-                           checked={initialValues.isSimulated} id="isSimulated"/>
-                    <span/>
+                      checked={initialValues.isSimulated} id="isSimulated" />
+                    <span />
                   </label>
                 </div>
               </div>
@@ -475,11 +475,11 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
               }}>{utils.getLabelByID("isBilled")}</label>
               <div className="form-group col-md-8">
                 <div className="icheck-list">
-                  <label className="mt-checkbox mt-checkbox-outline" style={{marginBottom: "0px", marginTop: "0px"}}>
-                    <label/>
+                  <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                    <label />
                     <input type="checkbox" className="form-control" onChange={onInputChange}
-                           name="isBilled" checked={initialValues.isBilled} id="isBilled"/>
-                    <span/>
+                      name="isBilled" checked={initialValues.isBilled} id="isBilled" />
+                    <span />
                   </label>
                 </div>
               </div>
@@ -493,18 +493,18 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
               }}>{utils.getLabelByID("isTracked")}</label>
               <div className="form-group col-md-8">
                 <div className="icheck-list">
-                  <label className="mt-checkbox mt-checkbox-outline" style={{marginBottom: "0px", marginTop: "0px"}}>
-                    <label/>
+                  <label className="mt-checkbox mt-checkbox-outline" style={{ marginBottom: "0px", marginTop: "0px" }}>
+                    <label />
                     <input type="checkbox" className="form-control" onChange={onInputChange}
-                           name="isTracked" checked={initialValues.isTracked} id="isTracked"/>
-                    <span/>
+                      name="isTracked" checked={initialValues.isTracked} id="isTracked" />
+                    <span />
                   </label>
                 </div>
               </div>
             </div>
           </div>
           {/* tabeed start */}
-          <div className="row" style={{marginTop: "25px"}}>
+          <div className="row" style={{ marginTop: "25px" }}>
             <div className="col-md-12">
               <div className="col-md-12">
                 <div className="col-md-12">
@@ -517,23 +517,23 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                       <ul className="nav nav-tabs">
                         <li className="active">
                           <a href="#tab_1_1" data-toggle="tab"
-                             style={{fontWeight: "Bold", fontSize: "17px"}}>Rule Based Simulator</a>
+                            style={{ fontWeight: "Bold", fontSize: "17px" }}>Rule Based Simulator</a>
                         </li>
                         <li>
                           <a href="#tab_1_2" data-toggle="tab"
-                             style={{fontWeight: "Bold", fontSize: "17px"}}>Blockchain Routing </a>
+                            style={{ fontWeight: "Bold", fontSize: "17px" }}>Blockchain Routing </a>
                         </li>
                         <li>
                           <a href="#tab_1_3" data-toggle="tab"
-                             style={{fontWeight: "Bold", fontSize: "17px"}}>Code Generator</a>
+                            style={{ fontWeight: "Bold", fontSize: "17px" }}>Database Query</a>
                         </li>
                         <li>
                           <a href="#tab_1_4" data-toggle="tab"
-                             style={{fontWeight: "Bold", fontSize: "17px"}}>Billing</a>
+                            style={{ fontWeight: "Bold", fontSize: "17px" }}>Billing</a>
                         </li>
                         <li>
                           <a href="#tab_1_5" data-toggle="tab"
-                             style={{fontWeight: "Bold", fontSize: "17px"}}>Relay Settings</a>
+                            style={{ fontWeight: "Bold", fontSize: "17px" }}>Relay Settings</a>
                         </li>
                       </ul>
                     </div>
@@ -549,7 +549,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                   fontWeight: "normal"
                                 }}>{utils.getLabelByID("APIDefScreen_RuleName")}</label>
                                 <div className="form-group col-md-8">
-                                  <input type="text" className="form-control" name="RuleName" id="RuleName"/>
+                                  <input type="text" className="form-control" name="RuleName" id="RuleName" />
                                 </div>
                               </div>
                             </div>
@@ -560,7 +560,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                   fontWeight: "normal"
                                 }}>{utils.getLabelByID("APIDefScreen_SimuField")}</label>
                                 <div className="form-group col-md-8">
-                                  <input type="text" className="form-control" id="SimuField"/>
+                                  <input type="text" className="form-control" id="SimuField" />
                                 </div>
                               </div>
                             </div>
@@ -571,7 +571,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                   fontWeight: "normal"
                                 }}>{utils.getLabelByID("APIDefScreen_SimuValue")}</label>
                                 <div className="form-group col-md-8">
-                                  <input type="text" className="form-control" id="SimuValue"/>
+                                  <input type="text" className="form-control" id="SimuValue" />
                                 </div>
                               </div>
                             </div>
@@ -583,7 +583,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                               <div className="col-md-12">
                                 <div className="form-group">
                                   <textarea className="form-control" id="SimulatorRequest" rows="4"
-                                            style={{resize: "none", width: "100%"}}/>
+                                    style={{ resize: "none", width: "100%" }} />
                                 </div>
                               </div>
                             </div>
@@ -595,7 +595,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                               <div className="col-md-12">
                                 <div className="form-group">
                                   <textarea className="form-control" id="SimulatorResponse" rows="4"
-                                            style={{resize: "none", width: "100%"}}/>
+                                    style={{ resize: "none", width: "100%" }} />
                                 </div>
                               </div>
                             </div>
@@ -618,7 +618,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                       gridData={simucases}
                                       export={false}
                                       componentFunction={ActionHandlers}
-                                      pagination={false}/>
+                                      pagination={false} />
                                   </div>
                                 </div>
                               </div>
@@ -640,7 +640,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                     }}>{utils.getLabelByID("APIDefScreen_RuleName")}</label>
                                     <div className="form-group col-md-8">
                                       <input type="text" className="form-control" name="BlockRuleName"
-                                             id="BlockRuleName"/>
+                                        id="BlockRuleName" />
                                     </div>
                                   </div>
                                 </div>
@@ -676,7 +676,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                       }}>{utils.getLabelByID("APIDefScreen_OrgField") + index}</label>
                                       <div className="form-group col-md-8">
                                         <input type="text" className="form-control" disabled id={`fieldName-${index}`}
-                                               value={elem.IN_FIELD}/>
+                                          value={elem.IN_FIELD} />
                                       </div>
                                     </div>
                                   </div>
@@ -688,7 +688,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                       }}>{utils.getLabelByID("APIDefScreen_FieldValue") + index}</label>
                                       <div className="form-group col-md-8">
                                         <input type="text" className="form-control" id={`fieldValue-${index}`}
-                                               onChange={onInputRuleEngine} value={elem.value}/>
+                                          onChange={onInputRuleEngine} value={elem.value} />
                                       </div>
                                     </div>
                                   </div>
@@ -704,7 +704,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                 }}>{utils.getLabelByID("Consortium Name")}</label>
                                 <div className="form-group col-md-8">
                                   <select id="consortium" name="consortium" onChange={onInputRuleEngine}
-                                          value={parentState.selectedConsortium} className="form-control">
+                                    value={parentState.selectedConsortium} className="form-control">
                                     {
                                       parentState.consortium.map((option, index) => {
                                         return (
@@ -724,7 +724,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                 }}>{utils.getLabelByID("Channel Name")}</label>
                                 <div className="form-group col-md-8">
                                   <select name="channel" id="channel" onChange={onInputRuleEngine}
-                                          value={parentState.selectedChannel} className="form-control">
+                                    value={parentState.selectedChannel} className="form-control">
                                     {
                                       parentState.channel.map((option, index) => {
                                         return (
@@ -744,7 +744,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                 }}>{utils.getLabelByID("Smartcontract Name")}</label>
                                 <div className="form-group col-md-8">
                                   <select name="smartcontract" id="smartcontract" onChange={onInputRuleEngine}
-                                          value={parentState.selectedSmartcontract} className="form-control">
+                                    value={parentState.selectedSmartcontract} className="form-control">
                                     {
                                       parentState.smartcontract.map((option, index) => {
                                         return (
@@ -764,7 +764,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                 }}>{utils.getLabelByID("Smartcontract Function")}</label>
                                 <div className="form-group col-md-8">
                                   <input type="text" className="form-control" name="smartcontractFunc"
-                                         id="smartcontractFunc"/>
+                                    id="smartcontractFunc" />
                                 </div>
                               </div>
                             </div>
@@ -787,7 +787,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                       gridData={parentState.rules}
                                       export={false}
                                       componentFunction={ActionHandlers}
-                                      pagination={false}/>
+                                      pagination={false} />
                                   </div>
                                 </div>
                               </div>
@@ -796,7 +796,9 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
 
                         </div>
                         {/* End BlockChain Routing Tab */}
-
+                        <div className="tab-pane" id="tab_1_3">
+                          <ADHocQuery state={parentState} addPeer={add} testQuery={test} onInputChange={onInputChange} isOwner={initialValues.communicationMode == "Database"} />
+                        </div>
 
                         {/*/!* Custom Mapping Code Generator *!/*/}
                         {/*<div className="tab-pane" id="tab_1_3">*/}
@@ -1137,7 +1139,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                             </div>
                             <div className="form-group col-md-8">
                               <select name="RelayNet" value={initialValues.RelayNet} onChange={onInputChange}
-                                      className="form-control">
+                                className="form-control">
                                 <option>{utils.getLabelByID("Select ...")}</option>
                                 {parentState.RelayNetworks.map((option, index) => {
                                   return (
@@ -1154,7 +1156,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                             </div>
                             <div className="form-group col-md-8">
                               <input type="text" className="form-control" onChange={onInputChange} name="RemoteAPI"
-                                     value={initialValues.RemoteAPI}/>
+                                value={initialValues.RemoteAPI} />
                             </div>
                           </div>
                         </div>
@@ -1183,7 +1185,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                   }}>{utils.getLabelByID("Bill Value")}</label>
                                   <div className="form-group col-md-8">
                                     <input type="number" className="form-control"
-                                           name="billVal" id="billVal"/>
+                                      name="billVal" id="billVal" />
                                   </div>
                                 </div>
                               </div>
@@ -1195,8 +1197,8 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                   }}>{utils.getLabelByID("From Units")}</label>
                                   <div className="form-group col-md-8">
                                     <input type="number" className="form-control" disabled={true}
-                                           value={parentState.maxVal}
-                                           name="fromUnit" id="fromUnit"/>
+                                      value={parentState.maxVal}
+                                      name="fromUnit" id="fromUnit" />
                                   </div>
                                 </div>
                               </div>
@@ -1208,7 +1210,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                   }}>{utils.getLabelByID("To Units")}</label>
                                   <div className="form-group col-md-8">
                                     <input type="number" className="form-control"
-                                           name="toUnit" id="toUnit"/>
+                                      name="toUnit" id="toUnit" />
                                   </div>
                                 </div>
                               </div>
@@ -1217,7 +1219,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                   <div className="form-group col-md-12">
                                     <div className="btn-toolbar pull-right">
                                       <button type="submit" className="btn btn-default"
-                                              onClick={addPolicyRule.bind(this)}>
+                                        onClick={addPolicyRule.bind(this)}>
                                         <i
                                           className="fa fa-plus"></i> {"  "}{utils.getLabelByID("Add Policy")} </button>
                                     </div>
@@ -1233,7 +1235,7 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
                                     gridData={parentState.BillingPolicy}
                                     export={false}
                                     componentFunction={ActionHandlers}
-                                    pagination={false}/>
+                                    pagination={false} />
                                 </div>
                               </div>
 
@@ -1250,12 +1252,12 @@ const APIDefScreenForm = ({navigateReq, navigateRes, parameters, generateCustomF
               </div>
             </div>
           </div>
-          <div className="col-md-12" style={{marginTop: "20px"}}>
+          <div className="col-md-12" style={{ marginTop: "20px" }}>
             <div className="col-md-12">
 
               <div className="btn-toolbar pull-right">
                 <button type="submit" onClick={onSubmit} className="btn green"><i
-                  className="fa fa-paper-plane"/>{' '}{utils.getLabelByID("Save / Update")}
+                  className="fa fa-paper-plane" />{' '}{utils.getLabelByID("Save / Update")}
                 </button>
               </div>
 

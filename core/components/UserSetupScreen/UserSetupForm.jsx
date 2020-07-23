@@ -49,9 +49,9 @@ export default function UserSetupForm(props) {
         <div className="col-md-6">
           <Row>
             <div className="control-label col-md-5">
-              <Label text="User Type" columns='4' style={{textAlign: 'right'}}
-                     divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
-              <Label text="*" columns='1' style={{color: 'red', marginLeft: '-10px'}}/>
+              <Label text="User Type" columns='4' style={{ textAlign: 'right' }}
+                divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
+              <Label text="*" columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
             </div>
             <Combobox
               status={(containerState.errors && containerState.errors.userType) ? "ERROR" : undefined}
@@ -79,9 +79,9 @@ export default function UserSetupForm(props) {
 
           <Row>
             <div className="control-label col-md-5">
-              <Label text="Auth Type" columns='4' divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
+              <Label text="Auth Type" columns='4' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
               <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""}
-                     style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
+                style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
             </div>
             <Combobox
               status={(containerState.errors && containerState.errors.authType) ? "ERROR" : undefined}
@@ -111,8 +111,8 @@ export default function UserSetupForm(props) {
 
             <div className="control-label col-md-5">
               <Label text="Organization Type" columns='6'
-                     divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
-              <Label text="*" style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
+                divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
+              <Label text="*" style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
             </div>
             <Combobox
               status={(containerState.errors && containerState.errors.orgType) ? "ERROR" : undefined}
@@ -142,8 +142,8 @@ export default function UserSetupForm(props) {
           <Row>
             <div className="control-label col-md-5">
               <Label text="Organization Name" columns='6'
-                     divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
-              <Label text="*" style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
+                divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
+              <Label text="*" style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
             </div>
             <Combobox
               status={(containerState.errors && containerState.errors.orgCode) ? "ERROR" : undefined}
@@ -175,13 +175,13 @@ export default function UserSetupForm(props) {
 
         </div>
       </Row>
-      <br/>
+      <br />
       <Row>
         <div className="col-md-6">
           <Row>
             <div className="control-label  col-md-5">
-              <Label text="User ID" columns='8' divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
-              <Label text="*" style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
+              <Label text="User ID" columns='8' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
+              <Label text="*" style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
             </div>
             <Input
               status={(containerState.errors && containerState.errors.userID) ? "ERROR" : undefined}
@@ -198,15 +198,15 @@ export default function UserSetupForm(props) {
               state={containerState}
               actionHandler={inputHandler}
               className="form-control"
-              disabled={containerState.id ? true : false}/>
+              disabled={containerState.id ? true : false} />
           </Row>
 
         </div>
         <div className="col-md-6">
           {(!containerState.id || containerState.editPassword) && <Row>
-            <div className="control-label col-md-5" style={{width: '23%'}}>
-              <Label text="Password" columns='8' divStyle={{width: 'auto', paddingRight: '0px'}}/>
-              <Label text="*" style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
+            <div className="control-label col-md-5" style={{ width: '23%' }}>
+              <Label text="Password" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }} />
+              <Label text="*" style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
 
             </div>
 
@@ -226,7 +226,7 @@ export default function UserSetupForm(props) {
               type='password'
               actionHandler={inputHandler}
               className="form-control pwd-input"
-              disabled={false}/>
+              disabled={false} />
 
 
           </Row>}
@@ -237,14 +237,14 @@ export default function UserSetupForm(props) {
       </Row>
 
 
-      <br/>
+      <br />
       <Row>
         <div className="col-md-6">
           <Row>
             <div className="control-label col-md-5">
-              <Label text="First Name" columns='4' divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
+              <Label text="First Name" columns='4' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
               <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""}
-                     style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
+                style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
             </div>
             <Input
               status={(containerState.errors && containerState.errors.firstName) ? "ERROR" : undefined}
@@ -261,14 +261,14 @@ export default function UserSetupForm(props) {
               state={containerState}
               actionHandler={inputHandler}
               className="form-control"
-              disabled={false}/>
+              disabled={false} />
           </Row>
         </div>
         <div className="col-md-6">
           <Row>
-            <div className="control-label col-md-5" style={{width: '23%'}}>
-              <Label text="Last Name" columns='8' divStyle={{width: 'auto', paddingRight: '0px'}}/>
-              <Label text="" columns='1'/>
+            <div className="control-label col-md-5" style={{ width: '23%' }}>
+              <Label text="Last Name" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }} />
+              <Label text="" columns='1' />
             </div>
             <Input
               status={(containerState.errors && containerState.errors.lastName) ? "ERROR" : undefined}
@@ -285,7 +285,7 @@ export default function UserSetupForm(props) {
               state={containerState}
               actionHandler={inputHandler}
               className="form-control"
-              disabled={false}/>
+              disabled={false} />
           </Row>
         </div>
 
@@ -297,8 +297,8 @@ export default function UserSetupForm(props) {
         <div className="col-md-6">
           <Row>
             <div className="control-label col-md-5">
-              <Label text="Email" columns='4' divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
-              <Label text={"*"} style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
+              <Label text="Email" columns='4' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
+              <Label text={"*"} style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
 
             </div>
             <Input
@@ -316,14 +316,14 @@ export default function UserSetupForm(props) {
               state={containerState}
               actionHandler={inputHandler}
               className="form-control"
-              disabled={false}/>
+              disabled={false} />
           </Row>
         </div>
         <div className="col-md-6">
           <Row>
-            <div className="control-label col-md-5" style={{width: '23%'}}>
-              <Label text="Allowed IP" columns='8' divStyle={{width: 'auto', paddingRight: '0px'}}/>
-              <Label text={"*"} style={{color: 'red', marginLeft: '-10px'}} columns='1'/>
+            <div className="control-label col-md-5" style={{ width: '23%' }}>
+              <Label text="Allowed IP" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }} />
+              <Label text={"*"} style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
             </div>
             <Input
               status={(containerState.errors && containerState.errors.allowedIPRange) ? "ERROR" : undefined}
@@ -340,7 +340,7 @@ export default function UserSetupForm(props) {
               state={containerState}
               actionHandler={inputHandler}
               className="form-control"
-              disabled={false}/>
+              disabled={false} />
           </Row>
         </div>
 
@@ -352,9 +352,9 @@ export default function UserSetupForm(props) {
           <Row>
             <div className="control-label col-md-5">
               <Label text="Landing Page" columns='4'
-                     divStyle={{width: 'auto', paddingRight: '0px', paddingLeft: '30%'}}/>
+                divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
               <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""} columns='1'
-                     style={{color: 'red', marginLeft: '-10px'}}/>
+                style={{ color: 'red', marginLeft: '-10px' }} />
             </div>
             <Combobox
               status={(containerState.errors && containerState.errors.firstScreen) ? "ERROR" : undefined}
@@ -380,8 +380,8 @@ export default function UserSetupForm(props) {
           </Row>
         </div>
         <div className="control-label col-md-6">
-          <Label text="Is Active" columns='8' divStyle={{width: 'auto', paddingRight: '0px'}}
-                 style={{paddingLeft: '2px'}}/>
+          <Label text="Is Active" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }}
+            style={{ paddingLeft: '2px' }} />
           <CheckBox
             fieldname='isActive'
             formname='userDetail'
@@ -406,32 +406,32 @@ export default function UserSetupForm(props) {
           <div>
 
             <div className="table100 ver1 m-b-110">
-              <div className="table100-head orderdetails-table" style={{paddingBottom: '3px'}}>
-                <h4 className="caption" style={{fontWeight: 'bold', textAlign: 'center', color: 'black'}}>User
+              <div className="table100-head orderdetails-table" style={{ paddingBottom: '3px' }}>
+                <h4 className="caption" style={{ fontWeight: 'bold', textAlign: 'center', color: 'black' }}>User
                   Groups</h4>
               </div>
               <div className="">
                 <div className="col-md-12">
                   <div className="col-md-12 text-center">
-                    <div className="custom-control custom-checkbox" style={{padding: '26px', textAlign: 'left'}}>
+                    <div className="custom-control custom-checkbox" style={{ padding: '26px', textAlign: 'left' }}>
 
                       {
                         containerState.userDetail.userType == 'Human' &&
                         containerState.groupUI.map((item, index) => {
                           console.log(JSON.stringify(item));
-                          return (<div key={index} style={{padding: '10px'}}>
-                              <label key={1} className="mt-checkbox mt-checkbox-outline"
-                                     style={{marginBottom: "0px", marginTop: "0px"}}>
-                                <input type="checkbox" className="form-control"
-                                       name={index}
-                                       checked={item.isAssigned ? true : false}
-                                  // checked={item.isAssigned}
-                                       onChange={onChangeHandler}
-                                />
-                                <span></span>
-                                {item.name}
-                              </label>
-                            </div>
+                          return (<div key={index} style={{ padding: '10px' }}>
+                            <label key={1} className="mt-checkbox mt-checkbox-outline"
+                              style={{ marginBottom: "0px", marginTop: "0px" }}>
+                              <input type="checkbox" className="form-control"
+                                name={index}
+                                checked={item.isAssigned ? true : false}
+                                // checked={item.isAssigned}
+                                onChange={onChangeHandler}
+                              />
+                              <span></span>
+                              {item.name}
+                            </label>
+                          </div>
                           )
                         })
                       }
@@ -439,21 +439,26 @@ export default function UserSetupForm(props) {
                         (containerState.userDetail.userType == 'API') &&
                         containerState.groupAPI.map((item, index) => {
                           console.log(JSON.stringify(item));
-                          return (<div key={index} style={{padding: '10px'}}>
-                              <label key={1} className="mt-checkbox mt-checkbox-outline"
-                                     style={{marginBottom: "0px", marginTop: "0px"}}>
-                                <input type="checkbox" className="form-control"
-                                       name={index}
-                                       checked={item.isAssigned ? true : false}
-                                       onChange={onChangeHandler}
-                                  // checked={item.isAssigned}
-                                />
-                                <span></span>
-                                {item.name}
-                              </label>
-                            </div>
+                          return (<div key={index} style={{ padding: '10px' }}>
+                            <label key={1} className="mt-checkbox mt-checkbox-outline"
+                              style={{ marginBottom: "0px", marginTop: "0px" }}>
+                              <input type="checkbox" className="form-control"
+                                name={index}
+                                checked={item.isAssigned ? true : false}
+                                onChange={onChangeHandler}
+                              // checked={item.isAssigned}
+                              />
+                              <span></span>
+                              {item.name}
+                            </label>
+                          </div>
                           )
                         })
+                      }
+                      {(containerState.userDetail.userType != 'API' && containerState.userDetail.userType != 'Human') &&
+                        <div>
+                          <b><i>Note: Please select usertype to get Group List</i></b>
+                        </div>
                       }
 
                     </div>
@@ -469,18 +474,18 @@ export default function UserSetupForm(props) {
         </Col>
         <Col col='6'>
           <div className="table100 ver1 m-b-110">
-            <div className="table100-head orderdetails-table" style={{paddingBottom: '3px'}}>
-              <h4 className="caption" style={{fontWeight: 'bold', textAlign: 'center', color: 'black'}}>User Association
+            <div className="table100-head orderdetails-table" style={{ paddingBottom: '3px' }}>
+              <h4 className="caption" style={{ fontWeight: 'bold', textAlign: 'center', color: 'black' }}>User Association
                 - Blockchain</h4>
             </div>
             <br></br>
             <br></br>
-            <div className='row' style={{paddingLeft: '22px', paddingRight: '22px'}}>
+            <div className='row' style={{ paddingLeft: '22px', paddingRight: '22px' }}>
 
 
               <div className="control-label  col-md-5">
-                <Label text="User Association Hyperledger" columns='5' divStyle={{width: 'auto', paddingRight: '0px'}}/>
-                <Label text={""} columns='1' style={{color: 'red', marginLeft: '-10px'}}/>
+                <Label text="User Association Hyperledger" columns='5' divStyle={{ width: 'auto', paddingRight: '0px' }} />
+                <Label text={""} columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
               </div>
 
               <Combobox
@@ -511,10 +516,10 @@ export default function UserSetupForm(props) {
               />
 
             </div>
-            <div className='row' style={{paddingLeft: '22px', paddingRight: '22px'}}>
+            <div className='row' style={{ paddingLeft: '22px', paddingRight: '22px' }}>
               <div className="control-label col-md-5">
-                <Label text="User Association Quorrum" columns='5' divStyle={{width: 'auto', paddingRight: '0px'}}/>
-                <Label text={""} columns='1' style={{color: 'red', marginLeft: '-10px'}}/>
+                <Label text="User Association Quorrum" columns='5' divStyle={{ width: 'auto', paddingRight: '0px' }} />
+                <Label text={""} columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
               </div>
               <Combobox
                 fieldname='quorrumUser'
@@ -536,7 +541,7 @@ export default function UserSetupForm(props) {
       </Row>
 
       <br></br>
-      <div className="clearfix">
+      <div className="clearfix" style={{ padding: "30px" }}>
 
 
         &nbsp;
@@ -545,11 +550,11 @@ export default function UserSetupForm(props) {
         &nbsp;
         {/* <div className="col-md-8"></div> */}
         {/* <div className="col-md-4"> */}
-        <div className={"btn-toolbar pull-left"}>
+        <div className={"btn-toolbar pull-left"} style={{ marginLeft: "15px" }}>
           <button
             type="button"
             className="btn green"
-            style={{cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0'}}
+            style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
             onClick={() => {
               performAction(resetAction)
 
@@ -560,7 +565,7 @@ export default function UserSetupForm(props) {
           <button
             type="button"
             className="btn green"
-            style={{cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0'}}
+            style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
             onClick={() => {
               performAction(unblockAction)
 

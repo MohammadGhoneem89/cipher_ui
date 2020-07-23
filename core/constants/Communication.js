@@ -239,8 +239,10 @@ module.exports = {
   getAllLetters: baseUrl + "/API/pureHealth/getAllLetters",
   addUpdateLetter: baseUrl + "/API/pureHealth/addUpdateLetter",
   testLetter: baseUrl + "/API/pureHealth/testLetter",
- 
   addUpdateSampleTemplate: baseUrl + "/API/pureHealth/addUpdateSampleTemplate",
   getSampleLetters: baseUrl + "/API/pureHealth/getSampleLetters",
+  getTypeSyncOut: baseUrl + "/API/meta/getTypeSyncOut",
+  pushTypeData: baseUrl + "/API/general/pushTypeData",
+
 }
 
