@@ -460,6 +460,8 @@ class APIDefinitionScreen extends React.Component {
       object: this.state.availableObjects || '',
       objectType: this.state.objectType || '',
     });
+
+  
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['currency', 'cycle', 'request_operator', 'database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES', 'bchain_rule_Type', 'USE_CASE', 'adhoc_datatype']));
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE") {
       let req = {
