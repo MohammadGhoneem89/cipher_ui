@@ -7,7 +7,7 @@ import DateControl from '../../common/DateControl.jsx';
 import get from 'lodash/get';
 import filter from 'lodash/filter';
 import ADHocQuery from './ADHocQuery.jsx';
-const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustomFile, addParams, onRequestTypeChange, addPolicyRule, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange, add, test }) => {
+const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustomFile, addParams, onRequestTypeChange, addPolicyRule, addRowRule, onInputRuleEngine, onSubmit, initialValues = {}, typeData, dropdownItems, onInputChange, addRow, simucases, ActionHandlers, parentState, onInputChangeRequest, onDateChange, add, test, addvalue }) => {
   return (
     <Portlet title={utils.getLabelByID("APIDefinitionScreen_Heading")}>
       <div className="row">
@@ -25,7 +25,7 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
                         onChange={onInputChange} className="form-control">
                         <option disabled selected>{utils.getLabelByID("Select ...")}</option>
                         {
-                          typeData.UseCase.map((option, index) => {
+                          typeData.USE_CASE.map((option, index) => {
                             return (
                               <option key={index} value={option.value}>{option.label}</option>
                             );
@@ -797,9 +797,8 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
                         </div>
                         {/* End BlockChain Routing Tab */}
                         <div className="tab-pane" id="tab_1_3">
-                          <ADHocQuery state={parentState} addPeer={add} testQuery={test} onInputChange={onInputChange} isOwner={initialValues.communicationMode == "Database"} />
+                          <ADHocQuery state={parentState} addPeer={add} testQuery={test} onInputChange={onInputChange} addvalue={addvalue} isOwner={initialValues.communicationMode == "Database"} />
                         </div>
-
                         {/*/!* Custom Mapping Code Generator *!/*/}
                         {/*<div className="tab-pane" id="tab_1_3">*/}
                         {/*  <div className="col-md-12" id="offchainDefination">*/}

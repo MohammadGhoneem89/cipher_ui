@@ -243,6 +243,6 @@ module.exports = {
   getSampleLetters: baseUrl + "/API/pureHealth/getSampleLetters",
   getTypeSyncOut: baseUrl + "/API/meta/getTypeSyncOut",
   pushTypeData: baseUrl + "/API/general/pushTypeData",
-
+  testPagination: baseUrl + "/API/core/testPagination",
 }
 

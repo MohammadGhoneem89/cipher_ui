@@ -10,4 +10,4 @@
    return errors
 };
 
-export default validate;
+export default validate; 

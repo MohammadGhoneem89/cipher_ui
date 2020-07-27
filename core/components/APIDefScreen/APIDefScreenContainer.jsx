@@ -56,7 +56,6 @@ const initialState = {
     RelayNet: "",
     RemoteAPI: ""
   },
-  List: [],
   resultSet: [],
   columnList: [],
   RelayNetworks: [],
@@ -82,7 +81,9 @@ const initialState = {
   responseParams: [],
   getEndpointListView: [],
   generateMappingFile: {},
-  reportContainer: {}
+  reportContainer: {},
+  actionList: [],
+  List: []
 };
 
 class APIDefinitionScreen extends React.Component {
@@ -95,14 +96,12 @@ class APIDefinitionScreen extends React.Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.addRowRule = this.addRowRule.bind(this);
     this.addPolicyRule = this.addPolicyRule.bind(this);
-
     this.onInputRuleEngine = this.onInputRuleEngine.bind(this);
     this.onInputChangeRequest = this.onInputChangeRequest.bind(this);
     this.navigateReq = this.navigateReq.bind(this);
     this.navigateRes = this.navigateRes.bind(this);
     this.onDateChange = this.onDateChange.bind(this);
     this.state = cloneDeep(initialState)
-
   }
 
   componentWillMount() {
@@ -330,14 +329,55 @@ class APIDefinitionScreen extends React.Component {
     }
     return false;
   }
+  addvalue = (e) => {
+    let label = document.getElementById('label') == null ? "" : document.getElementById('label').value;
+    let action = document.getElementById('action') == null ? "" : document.getElementById('action').value;
+
+    if (label.trim() == '' || action.trim() == '') {
+      alert(`All values are is required!!`)
+      return;
+    }
+    let rules = this.state.actionList;
+
+    let data = {
+      label,
+      URI: action,
+      actions: [
+        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
+      ]
+    }
+
+    $(`#label`).val('');
+    $(`#action`).val('');
+
+    rules.push(data);
+    this.setState({ actionList: rules });
+
+
+  }
   test = (e) => {
-    
+
     let queryStrCnt = document.getElementById('queryStrCnt') == null ? "" : document.getElementById('queryStrCnt').value;
     let queryStr = document.getElementById('queryStr') == null ? "" : document.getElementById('queryStr').value;
 
-    console.log("ACCESS>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>||||||||||||||||>", queryStrCnt, queryStr)
+    let sc = {}
+    this.state.List.forEach((elem) => {
+      _.set(sc, elem.fieldName, undefined);
+    })
 
-    this.props.actions.generalProcess(constants.getMappingConfigByID, { mappingName: let1.label });
+    this.props.actions.generalProcess(constants.testPagination, {
+      "actionType": "triggerLocal",
+      "searchCriteria": sc,
+      "filters": [],
+      "actionList": this.state.actionList,
+      "connectionString": this.state.APIDefinitionAddUpdate.connectionStringRep,
+      "queryStrCnt": this.state.APIDefinitionAddUpdate.queryStrCnt,
+      "queryStr": this.state.APIDefinitionAddUpdate.queryStr,
+      "page": {
+        "currentPageNo": 1,
+        "pageSize": 10
+      }
+    });
   }
   addRow() {
     let SimulatorRequest = document.getElementById('SimulatorRequest') == null ? "" : document.getElementById('SimulatorRequest').value;
@@ -401,6 +441,7 @@ class APIDefinitionScreen extends React.Component {
   };
 
   componentDidMount() {
+    this.props.actions.updateStore({ triggerLocal: {} });
     this.props.actions.generalProcess(constants.getConsortiumTypeList);
     this.props.actions.generalProcess(constants.getMappingList);
     // this.props.actions.generalProcess(constants.getAdaptorsList);
@@ -419,8 +460,7 @@ class APIDefinitionScreen extends React.Component {
       object: this.state.availableObjects || '',
       objectType: this.state.objectType || '',
     });
-
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['currency', 'cycle', 'request_operator', 'database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES', 'bchain_rule_Type', 'UseCase', 'adhoc_datatype']));
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['currency', 'cycle', 'request_operator', 'database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES', 'bchain_rule_Type', 'USE_CASE', 'adhoc_datatype']));
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE") {
       let req = {
         useCase: this.props.useCase,
@@ -481,7 +521,52 @@ class APIDefinitionScreen extends React.Component {
       alert("Code Already Exists!!")
     }
   }
+
   componentWillReceiveProps(nextProps) {
+    console.log(JSON.stringify(nextProps.triggerLocal))
+    if (!_.isEmpty(nextProps.triggerLocal)) {
+      let columnList = [];
+      let columnLen = {};
+
+      nextProps.triggerLocal.data.searchResult.forEach((elem, index) => {
+        let keys = Object.keys(elem)
+        keys.forEach((key) => {
+          console.log(key);
+          let x = _.get(elem, key, '')
+
+          if (index == 0) {
+            columnList.push({ alias: key, key: key, type: "string" })
+          }
+
+          let y = _.get(columnLen, key, 0)
+          if (y < String(x).length) {
+            _.set(columnLen, key, String(x).length)
+          }
+        })
+      });
+
+      columnList.forEach((elem) => {
+        let y = _.get(columnLen, elem.key, 0)
+        if (y > 30) {
+          elem.type = 'clpVal';
+        }
+      })
+      columnList.forEach((elem) => {
+        if (elem.key == 'actions')
+          elem.type = 'action';
+        if (elem.key == 'id')
+          elem.type = 'hiddenID';
+      })
+
+      console.log(JSON.stringify(columnList))
+      this.setState({
+        resultSet: nextProps.triggerLocal.data.searchResult,
+        columnList: columnList,
+        gridLoading: false
+      });
+      return;
+    }
+
     if (nextProps.parameters) {
 
       let params = this.state.parameters || {};
@@ -576,6 +661,16 @@ class APIDefinitionScreen extends React.Component {
           requestDone: true
         })
       }
+      if (get(nextProps, 'APIDefinitionAddUpdate.data.actionList', undefined)) {
+        this.setState({
+          actionList: nextProps.APIDefinitionAddUpdate.data.actionList
+        })
+      }
+      if (get(nextProps, 'APIDefinitionAddUpdate.data.attributeList', undefined)) {
+        this.setState({
+          List: nextProps.APIDefinitionAddUpdate.data.attributeList
+        })
+      }
       if (get(nextProps, 'APIDefinitionAddUpdate.data.ResponseMapping', false) && !this.state.responseDone) {
         this.getRequestResponseMapping(nextProps.APIDefinitionAddUpdate.data.ResponseMapping, 'RESPONSE', nextProps.MappingConfigData);
         this.setState({
@@ -603,6 +698,8 @@ class APIDefinitionScreen extends React.Component {
         isLoading: false
       });
     }
+
+
     this.setState({
       getAdaptorsList: nextProps.getAdaptorsList,
       getDBFields: nextProps.getDBFields,
@@ -613,6 +710,7 @@ class APIDefinitionScreen extends React.Component {
         generateMappingFile: nextProps.generateMappingFile.data
       })
     }
+
   }
 
   formSubmit(e, generate) {
@@ -678,6 +776,13 @@ class APIDefinitionScreen extends React.Component {
     data.CustomMappingFile = data.CustomMappingFile || this.state.generateMappingFile.path;
     data.MappingfunctionName = data.MappingfunctionName || this.state.generateMappingFile.functionName;
     data.BillingPolicy = this.state.BillingPolicy;
+
+
+    data.attributeList = this.state.List
+    data.actionList = this.state.actionList
+
+
+
     this.props.actions.generalProcess(constants.upsertAPIDefinition, data);
   }
 
@@ -843,7 +948,7 @@ class APIDefinitionScreen extends React.Component {
         initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData}
         onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest}
         addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers}
-        parentState={this.state} add={this.add} test={this.test} />)
+        parentState={this.state} add={this.add} test={this.test} addvalue={this.addvalue} />)
   }
 
   ActionHandlers({ actionName, index }) {
@@ -858,6 +963,20 @@ class APIDefinitionScreen extends React.Component {
               let tempStateRule = this.state.BillingPolicy;
               tempStateRule.splice(index, 1);
               this.setState({ BillingPolicy: tempStateRule });
+            }
+          }
+        }
+        break;
+
+
+      case "Delete":
+        if (index > -1) {
+          let result = confirm("Are you you want to delete this action?");
+          if (result) {
+            if (index > -1) {
+              let tempStateRule = this.state.actionList;
+              tempStateRule.splice(index, 1);
+              this.setState({ actionList: tempStateRule });
             }
           }
         }
@@ -983,6 +1102,8 @@ function mapStateToProps(state, ownProps) {
     getAvailableObjectsList: get(state.app, 'getAvailableObjectsList.data', []),
     generateMappingFile: get(state.app, 'generateMappingFile', {}),
     RelayNetworks: get(state.app, 'RelayNetworkTypeData.data.RelayNetworks', undefined),
+    triggerLocal: get(state.app, 'triggerLocal', {}),
+
     parameters: parameters,
     getEndpointListView: state.app.getEndpointListView
   };

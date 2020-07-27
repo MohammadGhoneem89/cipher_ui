@@ -473,7 +473,7 @@ class AddUpdateMapping extends React.Component {
                                                     </div>
                                                     <div className="form-group col-md-8">
                                                         <select name="useCase" id="useCase" value={this.state.useCase} onChange={this.onUseCaseChange} className="form-control">
-                                                            {this.state.typeData && this.state.typeData.UseCase && this.state.typeData.UseCase.map((option, index) => {
+                                                            {this.state.typeData && this.state.typeData.USE_CASE && this.state.typeData.USE_CASE.map((option, index) => {
                                                                 return (
                                                                     <option key={index} value={option.value}>{option.label}</option>
                                                                 );

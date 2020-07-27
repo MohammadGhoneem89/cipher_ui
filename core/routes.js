@@ -1,6 +1,7 @@
 /*standard imports*/
 import React from 'react';
 import master from './master.jsx';
+import Cookies from 'js-cookie';
 import {browserHistory, IndexRoute, Route, Router} from 'react-router';
 import Login from './components/AuthenticationScreens/Login.jsx';
 import notification from './components/Notifications.jsx';
@@ -114,7 +115,7 @@ import APITemplateTest from '../core/components/APITemplate/APITemplateTest';
 // letter Routes
 import TemplateList from '../core/components/templateEngine/templateList.jsx';
 // import SampleTemplate from '../core/components/templateEngine/addSampleTemplate.jsx';
-
+import DocumentationContainer from "./components/DocumentationCode/DocumentationContainer.jsx";
 export default (<Router history={browserHistory}>
 
     <Route path="/Documentation/:useCase/:route" component={GeneratePDF}/>
@@ -125,7 +126,9 @@ export default (<Router history={browserHistory}>
            onEnter={isAuthorized}/> {ApplicationsRoute.unAuthRouteIndex}
     <Route component={master} onEnter={requireAuth}> { /*
 
+
         <IndexRoute component={blockchainWorkboard}/>*/}
+         <Route path="/DocumentationCode/:smartcontract" component={DocumentationContainer}/>
       <Route path="/task" component={Task}/>
       <Route path="/taskDetails/:id" component={TaskDetails}/>
       <Route path="/blockchain" component={blockchainWorkboard}/>
@@ -238,7 +241,7 @@ export default (<Router history={browserHistory}>
       <Route path="/fileList" component={FileList}/>
       <Route path="/fileList/:type" component={FileList}/>
       <Route path="/fileData/:id" component={FileData}/>
-
+      
       <Route path="/templateList" component={TemplateList}/>
       {ApplicationsRoute.routesIndex}
     </Route>
@@ -249,6 +252,8 @@ export default (<Router history={browserHistory}>
 
 function requireAuth(nextState, replace) {
   if (!auth.loggedIn()) {
+    Cookies.remove("login");
+    Cookies.remove("token");
     replace({
       pathname: '/cipher/login',
       state: {nextPathname: nextState.location.pathname}

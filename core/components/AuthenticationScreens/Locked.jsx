@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-
+import Cookies from 'js-cookie';
 import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
@@ -47,7 +47,7 @@ class Locked extends React.Component {
   }
 
   componentDidUpdate() {
-
+    Cookies.remove("login");
     if (this.props.LoginResult) {
 
       //alert(sessionStorage.loginTime)
@@ -153,7 +153,7 @@ class Locked extends React.Component {
               </h4>
 
               <div className="lock-body">
-              <i className="fa fa-lock" aria-hidden="true"></i>
+                <i className="fa fa-lock" aria-hidden="true"></i>
                 <div className="pull-left lock-avatar-block">
                   <img src={baseUrl + sessionStorage.profilePic} className="lock-avatar" /> {sessionStorage.firstName}
                   <br />
