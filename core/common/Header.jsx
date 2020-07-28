@@ -1,13 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Confirmationmodal from './Confirmationmodal.jsx';
 import * as Loaders from './loaders.jsx';
 import { Link, browserHistory } from 'react-router';
+import * as requestCreator from '../common/request.js';
+import * as constants from '../constants/Communication.js';
 import auth from '../auth/authenticator';
 
 import * as utils from './utils';
 
-import { baseUrl } from '../constants/Communication.js';
+import { baseUrl, logout } from '../constants/Communication.js';
+import * as actions from '../actions/generalAction.js';
 
 class Header extends React.Component {
 
@@ -38,16 +43,28 @@ class Header extends React.Component {
     }
 
     changePassword() {
-        browserHistory.push('/changePassword');
+         browserHistory.push('/changePassword');
+        let email = sessionStorage.email;
+        let userID = sessionStorage.userID;
+        let appType = 'backOffice';
+
+        if (!sessionStorage.email && sessionStorage.email == undefined) {
+            toaster.showToast("Email address not registered. Please contact Admin", "ERROR");
+        } else {
+            this.props.actions.generalProcess(constants.forgotPasswordRequest, requestCreator.createForgotPasswordRequest(userID, email, appType));
+        }
     }
     lock() {
+        this.props.actions.generalProcess(logout, {"token": sessionStorage.getItem('token')});
         auth.lockedUser();
-        browserHistory.push('/Locked');
+        setTimeout(() => browserHistory.push('/Locked'), 300);
     }
     logout() {
+        this.props.actions.generalProcess(logout, {"token": sessionStorage.getItem('token')});
+        
         auth.logOut();
 
-        //browserHistory.push('/');
+        setTimeout(() => browserHistory.push('/cipher/login'), 300);
     }
 
     getCurrentDateTime() {
@@ -119,6 +136,7 @@ class Header extends React.Component {
 
 
     render() {
+        console.log(this.props);
         if (this.props.notifications.data) {
             return (
                 <div className="page-header-inner ">
@@ -186,7 +204,7 @@ class Header extends React.Component {
                                         </li>
                                         <li>
                                             <a href="javascript:;" onClick={this.changePassword.bind(this)} >
-                                                <i className="icon-user" /> {utils.getLabelByID("header_changePassword")} </a>
+                                                <i className="icon-user" /> {utils.getLabelByID("Change Password")} </a>
                                         </li>
                                     </ul>
                                 </li>
@@ -205,4 +223,17 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
+function mapStateToProps(state, ownProps) {
+
+    return {
+        passwordReset: state.app.passwordReset.data
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+
+    return {actions: bindActionCreators(actions, dispatch)}
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

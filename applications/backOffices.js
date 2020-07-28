@@ -9,21 +9,32 @@ const backOffices = {
 };
 */
 
+
 const backOffices = {
-  baseUrl: "http://127.0.0.1:9082",
-  blockChainURL: "http://127.0.0.1:9082",
-  webSocketURL: "http://127.0.0.1:9082",
-  repostActionURL: "http://127.0.0.1:9082/API",
-  blockChainViewerURL: "http://127.0.0.1:9082"
+  baseUrl: "http://172.30.83.80:9080",
+  webSocketURL: "http://172.30.83.80:9080",
+  repostActionURL: "http://172.30.83.80:9080/API",
+  blockChainViewerURL: "http://172.30.83.80:9080"
 };
 
-//  backOffices = {
-//   baseUrl: "http://blockchain.avanza.com:10055",
-//   blockChainURL: "http://blockchain.avanza.com:10055",
-//   webSocketURL: "http://blockchain.avanza.com:10055",
-//   repostActionURL: "http://blockchain.avanza.com:10055/API",
-//   blockChainViewerURL: "http://blockchain.avanza.com:10055"
-// };
+/* Tried making HTTPS but didnt work
+const backOffices = {
+  baseUrl: "https://blockchaintest.dubaicustoms.ae:9080",
+  webSocketURL: "https://blockchaintest.dubaicustoms.ae:9080",
+  repostActionURL: "https://blockchaintest.dubaicustoms.ae:9080/API",
+  blockChainViewerURL: "https://blockchaintest.dubaicustoms.ae:9080"
+};
+*/
+
+/*
+const backOffices = {
+  baseUrl: "http://blockchain.avanza.com:10055",
+  blockChainURL: "http://blockchain.avanza.com:10055",
+  webSocketURL: "http://blockchain.avanza.com:10055",
+  repostActionURL: "http://blockchain.avanza.com:10055/API",
+  blockChainViewerURL: "http://blockchain.avanza.com:10055"
+};
+*/
 
 
 // const backOffices = {

@@ -84,7 +84,7 @@ class OrgSearchContainer extends React.Component {
                         <EntityFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria}
                                           state={this.state}/>
                     </Portlet>
-                    <Portlet title={utils.getLabelByID("List")} isPermissioned={true} actions={this.state.entityList.data.actions}>
+                    <Portlet title={utils.getLabelByID("List")} isPermissioned={true} >
                         <Table
                             pagination={true}
                              export={true}

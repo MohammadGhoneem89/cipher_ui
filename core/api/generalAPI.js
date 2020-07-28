@@ -25,14 +25,25 @@ static getData(fetchURL,data) {
 
     const request = new Request(fetchURL, {
       method: 'POST',
-	    mode: "cors",
+      mode: "cors",
+      timeout:"120000",
       headers: header, 
       body: JSON.stringify({...data})
     });
     
 
     return fetch(request).then(response => {
-		  return response.json();
+      if (response.status === 403) {
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('lastRequestTime');
+        sessionStorage.removeItem('transactionSearchCriteria');
+        sessionStorage.removeItem('exceptionSearchCriteria');
+        sessionStorage.selectedIndex = 0;
+        setTimeout(() => {
+            document.location.href = '/cipher/login';
+        }, 300);
+    }
+      return response.json();
     }).catch(error => {
 		      let errorJson={
 		      "responseMessage":{

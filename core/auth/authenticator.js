@@ -6,14 +6,14 @@ class Auth {
   static logOut() {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('lastRequestTime');
-    window.location.reload();
+  //  window.location.reload();
     sessionStorage.selectedIndex=0;
   }
   static lockedUser() {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('lastRequestTime');
     sessionStorage.selectedIndex=0;
-    document.location.href ='/Locked'
+    //document.location.href ='/Locked'
   }
 }
 

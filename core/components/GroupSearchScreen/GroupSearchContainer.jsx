@@ -105,6 +105,7 @@ class GroupSearchContainer extends React.Component {
                 </Portlet>
                 <Portlet title={"Group List"} isPermissioned={true} actions={this.props.groupList.data.actions}>
                         <Table
+                            export = {false}
                             pagination={true}
                             search={true}
                             gridColumns={utils.getGridColumnByName("roleSearch")}
