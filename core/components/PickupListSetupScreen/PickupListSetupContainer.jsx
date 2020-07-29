@@ -30,6 +30,7 @@ class PickupListSetupContainer extends React.Component {
       typeName: undefined,
       type: undefined,
       addForm: {},
+      editmode: false,
       typeForm: {},
       isNew: false
     };
@@ -85,16 +86,20 @@ class PickupListSetupContainer extends React.Component {
             let isInActive = _.get(pdl, 'isInActive', false)
             if (isInActive) {
               pdl["actions"] = [
-                { label: 'Activate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" }
+                { label: 'Activate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" },
+                { label: 'Edit', iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
+
               ]
             } else {
               pdl["actions"] = [
-                { label: 'Deactivate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" }
+                { label: 'Deactivate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" },
+                { label: 'Edit', iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
               ]
             }
           } else {
             pdl["actions"] = [
-              { label: "Delete", iconName: "fa fa-ban", actionType: "COMPONENT_FUNCTION" }
+              { label: "Delete", iconName: "fa fa-ban", actionType: "COMPONENT_FUNCTION" },
+              { label: 'Edit', iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
             ]
           }
         }
@@ -142,12 +147,21 @@ class PickupListSetupContainer extends React.Component {
             interm.isInActive = false;
             a.splice(index, 1);
             interm["actions"] = [
-              { label: 'Deactivate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" }
+              { label: 'Deactivate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" },
+              { label: 'Edit', iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
             ]
 
             a.push(interm);
             this.setState({ pickupListDetail: a });
           }
+        }
+        break;
+      case "Edit":
+        if (index > -1) {
+          let a = [...this.state.pickupListDetail];
+          let interm = a[index];
+          a.splice(index, 1);
+          this.setState({ pickupListDetail: a, addForm: interm, editmode: true });
         }
         break;
       case "Deactivate":
@@ -159,7 +173,8 @@ class PickupListSetupContainer extends React.Component {
             interm.isInActive = true;
             a.splice(index, 1);
             interm["actions"] = [
-              { label: 'Activate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" }
+              { label: 'Activate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" },
+              { label: 'Edit', iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
             ]
             a.push(interm);
             this.setState({ pickupListDetail: a });
@@ -184,8 +199,10 @@ class PickupListSetupContainer extends React.Component {
         labelAr: this.state.addForm.labelAr,
         dependent: this.state.addForm.dependent,
         value: this.state.addForm.value,
+
         actions: [
-          { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
+          { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
+          { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
         ]
       }
       this.setState({
@@ -193,6 +210,7 @@ class PickupListSetupContainer extends React.Component {
           ...this.state.pickupListDetail,
           temp
         ],
+        editmode: false,
         addForm: {}
       });
     }
@@ -239,7 +257,7 @@ class PickupListSetupContainer extends React.Component {
                 <Input fieldname='labelAr' formname='addForm' columns='2' style={{ textAlign: "right" }}
                   state={this.state} actionHandler={this.generalActionHandler} />
                 <Lable columns='1' text={utils.getLabelByID("Value")} />
-                <Input fieldname='value' formname='addForm' columns='2' style={{}}
+                <Input fieldname='value' disabled={this.state.editmode} formname='addForm' columns='2' style={{}}
                   state={this.state} actionHandler={this.generalActionHandler} />
                 <Lable columns='1' text={utils.getLabelByID("Dependent")} />
                 <Select fieldname='dependent' formname='addForm' columns='2' style={{}}
