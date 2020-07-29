@@ -73,16 +73,35 @@ class PickupListSetupContainer extends React.Component {
           "value": key
         });
       }
-      let pickupListDetail = _.get(nextProps.pickupListDetail, `data[0][${_.get(nextProps.pickupListDetail, 'typeName', '')}]`, []);
+      let pickupListDetail = _.get(nextProps.pickupListDetail, `data.data[0][${nextProps.typeName}]`, []);
+
+      let pickupListDetailIP = _.get(nextProps.pickupListDetail, `data`, {});
+      console.log(">>>>>>>>>>", JSON.stringify(pickupListDetailIP))
+      let isForign = _.get(pickupListDetailIP, 'isForign', false)
+
       if (pickupListDetail && pickupListDetail.length) {
         for (let pdl of pickupListDetail) {
-          pdl["actions"] = [
-            { label: "Delete", iconName: "fa fa-ban", actionType: "COMPONENT_FUNCTION" }
-          ]
+          if (isForign) {
+            let isInActive = _.get(pdl, 'isInActive', false)
+            if (isInActive) {
+              pdl["actions"] = [
+                { label: 'Activate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" }
+              ]
+            } else {
+              pdl["actions"] = [
+                { label: 'Deactivate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" }
+              ]
+            }
+          } else {
+            pdl["actions"] = [
+              { label: "Delete", iconName: "fa fa-ban", actionType: "COMPONENT_FUNCTION" }
+            ]
+          }
         }
       }
       this.setState({
         eList: eList,
+        isForign: isForign,
         typeDataList: nextProps.typeDataList,
         isLoading: false
       });
@@ -110,6 +129,39 @@ class PickupListSetupContainer extends React.Component {
           if (index > -1) {
             let a = [...this.state.pickupListDetail];
             a.splice(index, 1);
+            this.setState({ pickupListDetail: a });
+          }
+        }
+        break;
+      case "Activate":
+        let resultA = confirm("Are you you want to Activate?");
+        if (resultA) {
+          if (index > -1) {
+            let a = [...this.state.pickupListDetail];
+            let interm = a[index];
+            interm.isInActive = false;
+            a.splice(index, 1);
+            interm["actions"] = [
+              { label: 'Deactivate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" }
+            ]
+
+            a.push(interm);
+            this.setState({ pickupListDetail: a });
+          }
+        }
+        break;
+      case "Deactivate":
+        let resultD = confirm("Are you you want to Deactivate?");
+        if (resultD) {
+          if (index > -1) {
+            let a = [...this.state.pickupListDetail];
+            let interm = a[index];
+            interm.isInActive = true;
+            a.splice(index, 1);
+            interm["actions"] = [
+              { label: 'Activate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" }
+            ]
+            a.push(interm);
             this.setState({ pickupListDetail: a });
           }
         }
@@ -155,6 +207,7 @@ class PickupListSetupContainer extends React.Component {
       id: this.state.pickupListID || undefined,
       typeName: this.state.typeForm.typeName,
       type: this.state.typeForm.type,
+      isForign: this.state.isForign,
       typeNameDetails: typeNameDetails || []
     });
   }
@@ -250,15 +303,11 @@ function mapStateToProps(state, ownProps) {
   let typeName;
   let type;
   let pickupListDetail;
-  if (_.get(state.app.getTypeDataDetailByID, 'data', {})) {
+  if (_.get(state.app.getTypeDataDetailByID, 'data', undefined)) {
     getTypeDataDetailByID = _.get(state.app.getTypeDataDetailByID, 'data', {});
     typeName = _.get(getTypeDataDetailByID, 'typeName', []);
     type = _.get(getTypeDataDetailByID, 'type', []);
-    pickupListDetail = getTypeDataDetailByID.data ? getTypeDataDetailByID : (getTypeDataDetailByID.data = getTypeDataDetailByID[typeName]);
-  }
-
-  if (!pickupListDetail) {
-    pickupListDetail = [];
+    pickupListDetail = _.get(state.app, 'getTypeDataDetailByID', undefined)
   }
 
   return {

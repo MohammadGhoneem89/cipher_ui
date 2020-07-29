@@ -1,9 +1,9 @@
 /*standard imports*/
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import {Link, browserHistory} from 'react-router';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import { Link, browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
 import * as connts from '../../constants/Communication.js';
 import StatusBar from '../../common/StatusBar.jsx';
@@ -12,7 +12,7 @@ import ActionButton from '../../common/ActionButtonNew.jsx';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import * as utils from '../../common/utils.js';
-import {baseUrl} from '../../constants/Communication.js';
+import { baseUrl } from '../../constants/Communication.js';
 import JSONPretty from 'react-json-pretty';
 import * as toaster from '../../common/toaster.js';
 import Table from '../../common/Datatable.jsx';
@@ -51,7 +51,7 @@ class APIPayloadDetail extends React.Component {
         "id": nextProps.APIPayloadID,
       }
 
-      this.setState({APIPayloadID: nextProps.APIPayloadID, viewFull: false})
+      this.setState({ APIPayloadID: nextProps.APIPayloadID, viewFull: false })
       this.props.actions.generalProcess(constants.getAPIPayloadDetail, request);
     }
     if (document.getElementById('diffoutput') != null) {
@@ -66,7 +66,7 @@ class APIPayloadDetail extends React.Component {
   }
 
   viewFull(viewType) {
-    this.setState({viewFull: !this.state.viewFull})
+    this.setState({ viewFull: !this.state.viewFull })
   }
 
   convertJSONToString(value) {
@@ -104,11 +104,10 @@ class APIPayloadDetail extends React.Component {
     }
   }
 
-  ActionHandlers({actionName, index}) {
+  ActionHandlers({ actionName, index }) {
     // alert(index)
     switch (actionName) {
       case "View Request":
-
         this.setState({
           isVisible: true,
           heading: "Request",
@@ -123,7 +122,7 @@ class APIPayloadDetail extends React.Component {
         })
         break;
       case "View Error":
-        this.setState({isVisible: true, heading: "Error", body: this.props.APIPayloadDetailData.tracking[index].error})
+        this.setState({ isVisible: true, heading: "Error", body: this.props.APIPayloadDetailData.tracking[index].error })
         break;
       default:
         break;
@@ -142,13 +141,18 @@ class APIPayloadDetail extends React.Component {
 
   getTrim(pLoad) {
     let deep = _.cloneDeep(pLoad)
+    try {
+      deep = JSON.parse(deep);
+    } catch (e) {
+      deep = _.cloneDeep(pLoad);
+    }
+
     _.set(deep, 'header', undefined)
     _.set(deep, 'action', undefined)
     _.set(deep, 'channel', undefined)
     _.set(deep, 'ipAddress', undefined)
     _.set(deep, '__JWTORG', undefined)
     _.set(deep, 'headersParams', undefined)
-
     return this.clearEmpties(deep);
   }
 
@@ -168,9 +172,9 @@ class APIPayloadDetail extends React.Component {
     if (this.props.APIPayloadDetailData.tracking) {
       this.props.APIPayloadDetailData.tracking.forEach((elem) => {
         _.set(elem, 'actions', [
-          {"label": "View Request", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION"},
-          {"label": "View Response", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION"},
-          {"label": "View Error", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION"}
+          { "label": "View Request", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION" },
+          { "label": "View Response", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" },
+          { "label": "View Error", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" }
         ])
 
       })
@@ -202,11 +206,11 @@ class APIPayloadDetail extends React.Component {
                   <ul className="nav nav-tabs">
                     <li className="active">
                       <a href="#tab_1_1" data-toggle="tab"
-                         style={{fontWeight: "Bold", fontSize: "17px"}}>Transaction</a>
+                        style={{ fontWeight: "Bold", fontSize: "17px" }}>Transaction</a>
                     </li>
                     <li>
                       <a href="#tab_1_2" data-toggle="tab"
-                         style={{fontWeight: "Bold", fontSize: "17px"}}>Tracking</a>
+                        style={{ fontWeight: "Bold", fontSize: "17px" }}>Tracking</a>
                     </li>
                   </ul>
                 </div>
@@ -214,7 +218,7 @@ class APIPayloadDetail extends React.Component {
                   <div className="tab-content">
                     {/* Simulator Box */}
                     <div className="tab-pane active" id="tab_1_1">
-                      <h4 className="form-section" style={{fontWeight: "bold"}}>{"Transaction details"}</h4>
+                      <h4 className="form-section" style={{ fontWeight: "bold" }}>{"Transaction details"}</h4>
                       <div className="row">
                         <div className="row">
                           <div className={"col-md-12"}>
@@ -239,7 +243,7 @@ class APIPayloadDetail extends React.Component {
                               <div className=" col-md-9">
                                 <label
                                   className="control-label "
-                                  style={{color: eCode == 200 ? 'green' : 'red'}}>{eCode}</label>
+                                  style={{ color: eCode == 200 ? 'green' : 'red' }}>{eCode}</label>
                               </div>
                               <div className="] col-md-3">
                                 <label className="control-label bold">{utils.getLabelByID("Called At")}</label>
@@ -261,7 +265,7 @@ class APIPayloadDetail extends React.Component {
                               </div>
                               <div className=" col-md-9">
                                 <label className="control-label "
-                                       style={{color: this.props.APIPayloadDetailData.duration <= this.props.APIPayloadDetailData.avgrtt ? 'green' : 'red'}}>{this.props.APIPayloadDetailData.duration} ms</label>
+                                  style={{ color: this.props.APIPayloadDetailData.duration <= this.props.APIPayloadDetailData.avgrtt ? 'green' : 'red' }}>{this.props.APIPayloadDetailData.duration} ms</label>
                               </div>
                             </div>
                           </div>
@@ -270,52 +274,52 @@ class APIPayloadDetail extends React.Component {
                       <div className={"col-md-6"}>
                         <div className={"row"}>
                           <div className={"col-md-6"}>
-                            <h4 className="form-section" style={{fontWeight: "bold"}}>{"Request "}
+                            <h4 className="form-section" style={{ fontWeight: "bold" }}>{"Request "}
                             </h4>
                           </div>
                           <div className={"col-md-6"}><a href={"javascript:;"} className={"btn btn-default "}
-                                                         style={{height: '30px', fontSize: '12px'}}
-                                                         onClick={this.viewFull}>Detail</a>
+                            style={{ height: '30px', fontSize: '12px' }}
+                            onClick={this.viewFull}>Detail</a>
                           </div>
                         </div>
 
-                        <JSONPretty id="json-pretty" style={{height: "400", width: "100%"}}
-                                    json={this.state.viewFull ? this.props.APIPayloadDetailData.payload : this.getTrim(this.props.APIPayloadDetailData.payload)}></JSONPretty>
+                        <JSONPretty id="json-pretty" style={{ height: "400", width: "100%" }}
+                          json={this.state.viewFull ? this.props.APIPayloadDetailData.payload : this.getTrim(this.props.APIPayloadDetailData.payload)}></JSONPretty>
                       </div>
                       <div className={"col-md-6"}>
-                        <h4 className="form-section" style={{fontWeight: "bold"}}>{"Response"}</h4>
-                        <JSONPretty id="json-pretty" style={{height: "400", width: "100%"}}
-                                    json={this.props.APIPayloadDetailData.response}></JSONPretty>
+                        <h4 className="form-section" style={{ fontWeight: "bold" }}>{"Response"}</h4>
+                        <JSONPretty id="json-pretty" style={{ height: "400", width: "100%" }}
+                          json={this.props.APIPayloadDetailData.response}></JSONPretty>
                         <div>
 
                         </div>
                       </div>
                       <div className={"col-md-12"}>
-                        <h4 className="form-section" style={{fontWeight: "bold"}}>{"Error"}</h4>
-                        <JSONPretty id="json-pretty" style={{height: "auto", width: "100%"}}
-                                    json={this.props.APIPayloadDetailData.error || "Processed OK!"}></JSONPretty>
+                        <h4 className="form-section" style={{ fontWeight: "bold" }}>{"Error"}</h4>
+                        <JSONPretty id="json-pretty" style={{ height: "auto", width: "100%" }}
+                          json={this.props.APIPayloadDetailData.error || "Processed OK!"}></JSONPretty>
                         <div>
                           <ActionButton actionList={action} performAction={this.performAction}
-                                        repostActionURL={repostActionURL}/>
+                            repostActionURL={repostActionURL} />
                         </div>
                       </div>
                       <div className={"col-md-12"}>
                       </div>
                     </div>
                     <div className="tab-pane active" id="tab_1_2">
-                      <h4 style={{fontWeight: "bold"}}>{"Tracking"}</h4>
+                      <h4 style={{ fontWeight: "bold" }}>{"Tracking"}</h4>
                       <Table title="" fontclass="" T
-                             gridColumns={utils.getGridColumnByName("APIPayloadListTracking")}
-                             gridData={this.props.APIPayloadDetailData.tracking}
-                             componentFunction={this.ActionHandlers}
-                        // renderPopupBody={this.renderPopupBody}
+                        gridColumns={utils.getGridColumnByName("APIPayloadListTracking")}
+                        gridData={this.props.APIPayloadDetailData.tracking}
+                        componentFunction={this.ActionHandlers}
+                      // renderPopupBody={this.renderPopupBody}
                       />
                       {
                         this.state.isVisible &&
                         <div className={"col-md-12"}>
-                          <h4 style={{fontWeight: "bold"}}>{this.state.heading}</h4>
-                          <JSONPretty id="json-pretty" style={{height: "auto", width: "100%"}}
-                                      json={this.state.body || "N/A"}></JSONPretty>
+                          <h4 style={{ fontWeight: "bold" }}>{this.state.heading}</h4>
+                          <JSONPretty id="json-pretty" style={{ height: "auto", width: "100%" }}
+                            json={this.state.body || "N/A"}></JSONPretty>
                         </div>
                       }
                     </div>
@@ -346,7 +350,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 }
 
 APIPayloadDetail.displayName = "Audit Log Detail";

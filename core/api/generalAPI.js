@@ -116,24 +116,24 @@ class generalAPI {
 }
 
 
-window.onbeforeunload = async function () {
-  if (errorLog.length > 0) {
-    let header = new Headers({
-      'Content-Type': 'application/json'
-    })
-    const request = new Request(baseUrl + "/API/core/logErrors", {
-      method: 'POST',
-      mode: "cors",
-      credentials: "include",
-      headers: header,
-      body: JSON.stringify({ logList: errorLog })
-    });
-    let dataRecv = await fetch(request);
-    errorLog = [];
-    console.log(dataRecv)
-  }
-  Cookies.remove('login')
-  return undefined;
-}
+// window.onbeforeunload = async function () {
+//   if (errorLog.length > 0) {
+//     let header = new Headers({
+//       'Content-Type': 'application/json'
+//     })
+//     const request = new Request(baseUrl + "/API/core/logErrors", {
+//       method: 'POST',
+//       mode: "cors",
+//       credentials: "include",
+//       headers: header,
+//       body: JSON.stringify({ logList: errorLog })
+//     });
+//     let dataRecv = await fetch(request);
+//     errorLog = [];
+//     console.log(dataRecv)
+//   }
+//   Cookies.remove('login')
+//   return undefined;
+// }
 
 export default generalAPI;

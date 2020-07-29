@@ -22,29 +22,35 @@ class PickupListSearchContainer extends React.Component {
     super(props, context);
     this.generalActionHandler = gen.generalHandler.bind(this);
     this.sync = this.sync.bind(this);
-    // this.pageChanged = this.pageChanged.bind(this);
+    this.pageChanged = this.pageChanged.bind(this);
 
     this.state = {
-      searchCriteria: { typeName: "" },
+      searchCriteria: { typeName: "core" },
       activePage: 1,
       pageSize: 10,
       typeDataList: [],
       pickupList: [],
       searchForm: {},
+      pageData: {},
       isLoading: true,
-      typeList: []
+      typeList: [],
+      isOwner: false
     };
   }
-
+  pageChanged = (pageNo) => {
+    let page = this.state.page;
+    page.currentPageNo = pageNo;
+    page.pageSize = pageNo;
+    this.setState({ page: page });
+    this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequest({
+      "currentPageNo": pageNo,
+      "pageSize": 10
+    }, { type: this.state.searchCriteria.typeName }))
+  }
   componentDidMount() {
 
 
     this.props.actions.generalProcess(constants.getTypeSyncOut, {})
-    this.props.actions.generalProcess(constants.getPickupListForType, requestCreator.createPickupListRequestForType({
-      "currentPageNo": 1,
-      "pageSize": 10
-    }, { type: "allTypes" }));
-
     this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequest({
       "currentPageNo": 1,
       "pageSize": 10
@@ -59,8 +65,11 @@ class PickupListSearchContainer extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.typeDataList && nextProps.typeListForSync) {
+      console.log(JSON.stringify(nextProps.typeDataList.pageData))
       this.setState({
-        typeDataList: nextProps.typeDataList,
+        typeDataList: nextProps.typeDataList.searchResult,
+        pageData: nextProps.typeDataList.pageData,
+        isOwner: nextProps.typeDataList.isOwner,
         typeList: nextProps.typeListForSync,
         isLoading: false
       });
@@ -80,11 +89,12 @@ class PickupListSearchContainer extends React.Component {
     }
   }
 
+
   searchTypes = () => {
     this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequest({
       "currentPageNo": 1,
       "pageSize": 10
-    }, { type: this.state.searchForm.orgtype }));
+    }, { type: this.state.searchCriteria.typeName }));
   }
 
   reset = () => {
@@ -114,9 +124,11 @@ class PickupListSearchContainer extends React.Component {
               <Row>
                 <Col>
                   <div className="btn-toolbar pull-right">
-                    <button type="submit" className="btn green" onClick={this.sync}>
-                      {utils.getLabelByID("Sync LOVs")}
-                    </button>
+                    {this.state.isOwner &&
+                      <button type="submit" className="btn green" onClick={this.sync}>
+                        {utils.getLabelByID("Sync LOVs")}
+                      </button>
+                    }
                     {' '}
                     <button type="submit" className="btn green" onClick={this.searchTypes}>
                       {utils.getLabelByID("Search")}
@@ -132,15 +144,15 @@ class PickupListSearchContainer extends React.Component {
             </Portlet>
             <Portlet title={utils.getLabelByID("PICKUP LIST")} isPermissioned={true}>
               <Table
-                pagination={false}
+                pagination={true}
                 export={false}
                 search={false}
-                // pageChanged={this.pageChanged}
+                pageChanged={this.pageChanged}
                 gridColumns={utils.getGridColumnByName("pickupList")}
                 gridData={this.state.typeDataList}
-              // totalRecords={this.statetypeDataList}
-              // activePage={this.state.activePage}
-              // pageSize={this.state.pageSize}
+                totalRecords={this.state.pageData.totalRecords}
+                activePage={this.state.pageData.currentPageNo}
+                pageSize={this.state.pageData.pageSize}
               />
             </Portlet>
           </Col>
@@ -154,7 +166,7 @@ class PickupListSearchContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   console.log(state.app)
   return {
-    typeDataList: _.get(state.app, 'typeDataListByType.data.searchResult', undefined),
+    typeDataList: _.get(state.app, 'typeDataListByType.data', undefined),
     typeListForSync: _.get(state.app, 'typeListForSync.data', undefined),
     pickupList: _.get(state.app, 'typeDataListForType', [])
   }

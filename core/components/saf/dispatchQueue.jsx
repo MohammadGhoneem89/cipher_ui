@@ -1,7 +1,7 @@
 /*standard imports*/
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
 import Portlet from '../../common/Portlet.jsx';
 /*container specific imports*/
@@ -36,11 +36,11 @@ class DispatchQueue extends React.Component {
   }
 
   renderPopupBody(dataID) {
-    this.setState({APIPayloadID: dataID, isReQueued: false})
+    this.setState({ APIPayloadID: dataID, isReQueued: false })
   }
 
   closePopUP() {
-    this.setState({isOpen: false})
+    this.setState({ isOpen: false })
   }
 
   getRequest() {
@@ -64,7 +64,7 @@ class DispatchQueue extends React.Component {
       searchCriteria.toDate = toDate;
     }
 
-    this.setState({searchFilters: searchCriteria})
+    this.setState({ searchFilters: searchCriteria })
 
     var request = {
       "action": "DispatchQueueData",
@@ -74,7 +74,7 @@ class DispatchQueue extends React.Component {
         "pageSize": 10
       }
     }
-    this.setState({currentPageNo: 1})
+    this.setState({ currentPageNo: 1 })
     console.log(JSON.stringify(request))
 
 
@@ -86,12 +86,17 @@ class DispatchQueue extends React.Component {
 
   }
 
-  ActionHandlers({actionName, index}) {
+  ActionHandlers({ actionName, index }) {
     switch (actionName) {
       case "viewData":
         let data = this.props.DispatchQueueData.data.searchResult[index];
-
-        this.setState({showdata: data.payload || {}, response: data.response || {}, isOpen: true})
+        let payload = {}
+        try {
+          payload = JSON.parse(data.payload)
+        } catch (e) {
+          payload = data.payload
+        }
+        this.setState({ showdata: payload, response: data.response || {}, isOpen: true })
         this.props.DispatchQueueData.data.searchResult
         break;
       case "ReQueue":
@@ -102,7 +107,7 @@ class DispatchQueue extends React.Component {
             id,
             payload: a[index]
           }
-          this.setState({isReQueued: true}, () => {
+          this.setState({ isReQueued: true }, () => {
             this.props.actions.generalProcess(constants.updateSafLogs, request);
           })
 
@@ -175,7 +180,7 @@ class DispatchQueue extends React.Component {
         }
       }
 
-      this.setState({currentPageNo: pageNo})
+      this.setState({ currentPageNo: pageNo })
 
       this.props.actions.generalProcess(constants.getSafLogs, request);
 
@@ -204,14 +209,14 @@ class DispatchQueue extends React.Component {
                     <label className="control-label">{utils.getLabelByID("Message")}</label>
                   </div>
                   <div className="form-group col-md-12">
-                    <pre> <ReactJson src={this.state.showdata}/></pre>
+                    <pre> <ReactJson src={this.state.showdata} /></pre>
                   </div>
                 </div>
                 <div className="form-actions right">
                   <div className="form-group col-md-12">
                     <div className="btn-toolbar pull-right">
                       <button type="button" className="btn btn-default"
-                              onClick={this.closePopUP}>{utils.getLabelByID("Close")}</button>
+                        onClick={this.closePopUP}>{utils.getLabelByID("Close")}</button>
                     </div>
                   </div>
                 </div>
@@ -238,7 +243,7 @@ class DispatchQueue extends React.Component {
                               <label className="control-label">{utils.getLabelByID("APL_FromDate")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <DateControl id="fromDate"/>
+                              <DateControl id="fromDate" />
                             </div>
                           </div>
                           <div className="col-md-6">
@@ -246,7 +251,7 @@ class DispatchQueue extends React.Component {
                               <label className="control-label">{utils.getLabelByID("APL_ToDate")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <DateControl id="toDate"/>
+                              <DateControl id="toDate" />
                             </div>
                           </div>
                         </div>
@@ -257,7 +262,7 @@ class DispatchQueue extends React.Component {
                               <label className="control-label">{utils.getLabelByID("Function Name")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <input type="text" className="form-control" name="functionName" id="functionName"/>
+                              <input type="text" className="form-control" name="functionName" id="functionName" />
                             </div>
                           </div>
                           <div className="col-md-6">
@@ -265,7 +270,7 @@ class DispatchQueue extends React.Component {
                               <label className="control-label">{utils.getLabelByID("Network")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <input type="text" className="form-control" name="network" id="network"/>
+                              <input type="text" className="form-control" name="network" id="network" />
                             </div>
                           </div>
                         </div>
@@ -275,10 +280,10 @@ class DispatchQueue extends React.Component {
                             <div className="btn-toolbar pull-right">
 
                               <button type="submit" className="btn green"
-                                      onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
+                                onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
                               {"  "}
                               <button type="button" className="btn default"
-                                      onClick={this.clearFields}>{utils.getLabelByID("Clear")}</button>
+                                onClick={this.clearFields}>{utils.getLabelByID("Clear")}</button>
                             </div>
                           </div>
                         </div>
@@ -292,12 +297,12 @@ class DispatchQueue extends React.Component {
 
           <Portlet title={utils.getLabelByID("SAF Queue")} isPermissioned={true}>
             <Table componentFunction={this.ActionHandlers} fontclass=""
-                   gridColumns={utils.getGridColumnByName("DispatchQueueDataSAF")}
-                   gridData={this.props.DispatchQueueData.data.searchResult}
-                   totalRecords={this.props.DispatchQueueData.pageData.totalRecords}
-                   searchCallBack={this.searchCallBack} pageSize={10}
-                   pagination={true} pageChanged={this.pageChanged}
-                   activePage={this.state.currentPageNo}/>
+              gridColumns={utils.getGridColumnByName("DispatchQueueDataSAF")}
+              gridData={this.props.DispatchQueueData.data.searchResult}
+              totalRecords={this.props.DispatchQueueData.pageData.totalRecords}
+              searchCallBack={this.searchCallBack} pageSize={10}
+              pagination={true} pageChanged={this.pageChanged}
+              activePage={this.state.currentPageNo} />
 
           </Portlet>
 
@@ -327,7 +332,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
 
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 
 }
 

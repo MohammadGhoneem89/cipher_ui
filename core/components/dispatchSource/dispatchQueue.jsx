@@ -81,8 +81,16 @@ class DispatchQueue extends React.Component {
         switch (actionName) {
             case "viewData":
                 let data = this.props.DispatchQueueData.data.searchResult[index];
-
-                this.setState({ showdata: data.eventdata || {}, response: data.response || {}, isOpen: true })
+                let evtData = {}
+                let resData = {}
+                try {
+                    evtData = JSON.parse(data.eventdata)
+                    resData = JSON.parse(data.response)
+                } catch (e) {
+                    evtData = data.eventdata
+                    resData = data.response
+                }
+                this.setState({ showdata: evtData, response:resData, isOpen: true })
                 this.props.DispatchQueueData.data.searchResult
                 break;
             case "ReQueue":
