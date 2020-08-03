@@ -170,7 +170,7 @@ class Login extends React.Component {
           browserHistory.push(this.props.LoginResult.firstScreen);
         else
           browserHistory.push("/home");
-        // sessionStorage.setItem('token', this.props.LoginResult.token);
+          sessionStorage.setItem('token', this.props.LoginResult.token);
         // Cookies.set('login', this.props.LoginResult.token);
         // console.log("token" + this.props.LoginResult.token)
 
@@ -320,16 +320,16 @@ class Login extends React.Component {
                         </div>
 
                         <div className="forget-password">
-                         
-                            <ul className="lng">
-                              <li id="engAnchor" className="actv"><a href="javascript:;"
-                                onClick={this.changLangButton.bind(this, "EN")}>En</a></li>
-                              <li id="arbAnchor"><a href="javascript:;" onClick={this.changLangButton.bind(this, "AR")}>عربى</a>
-                              </li>
-                            </ul>
-                            <h4 data-target="#loginCarousel" data-slide-to="1" >
-                              <a href="javascript:" >Forgot your password ?</a></h4>
-                        
+
+                          <ul className="lng">
+                            <li id="engAnchor" className="actv"><a href="javascript:;"
+                              onClick={this.changLangButton.bind(this, "EN")}>En</a></li>
+                            <li id="arbAnchor"><a href="javascript:;" onClick={this.changLangButton.bind(this, "AR")}>عربى</a>
+                            </li>
+                          </ul>
+                          <h4 data-target="#loginCarousel" data-slide-to="1" >
+                            <a href="javascript:" >Forgot your password ?</a></h4>
+
                         </div>
                         <br />
                         {/* {this.state.accountIsLocked &&
