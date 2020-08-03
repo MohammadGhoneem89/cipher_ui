@@ -31,7 +31,6 @@ const PageDefinationForm = ({ onSubmit, initialValues, typeData, addRowApi, onIn
           </div>
         </div>
       </div>
-      
       <div className="row">
         <div className="col-md-12">
           <div className="col-md-6">

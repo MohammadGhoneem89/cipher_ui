@@ -1,5 +1,5 @@
-import sampleAppInitialState from '../SampleApp/constants/appInitialState';
+import couirer from '../Courier/constants/appInitialState';
 
 export default {
-  ...sampleAppInitialState
+  ...couirer
 }

@@ -162,20 +162,6 @@ class FileTemplateContainer extends React.Component {
             });
         }
     }
-  }
-  getAPIList(payload) {
-    this.props.actions.generalProcess(constants.getAPIRequestMapping, payload);
-  }
-
-  componentDidMount() {
-    this.props.actions.generalProcess(constants.getFileTemplateDetail, requestCreator.createFileTemplateDetailRequest(this.props.fileTemplateID));
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['internalFields', 'fileTypes', 'special', 'columnNos', 'reconDataTypes', 'transformationFunctions']));
-    this.props.actions.generalProcess(constants.getMappingListData, this.getRequest());
-    this.props.actions.generalProcess(constants.getAPIList, {});
-
-
-    this.setState({ isLoading: true });
-  }
 
     render() {
         if (!this.state.isLoading)
@@ -194,37 +180,6 @@ class FileTemplateContainer extends React.Component {
         else
             return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
     }
-    this.setState({ currentPageNo: 1 })
-    return request;
-  }
-
-  submit(data) {
-    if (this.state.fileTemplateID)
-      return this.props.actions.reduxFormProcess(constants.fileTemplateUpdate, requestCreator.createFileTemplateUpdateRequest(data)).then((result) => {
-      }).catch((error) => {
-        window.scrollTo(0, 0);
-        throw new SubmissionError(error);
-      });
-    else
-      return this.props.actions.reduxFormProcess(constants.fileTemplateInsert, requestCreator.createFileTemplateInsertRequest(data)).catch((error) => {
-        window.scrollTo(0, 0);
-        throw new SubmissionError(error);
-      });
-  }
-
-  render() {
-    if (!this.state.isLoading)
-      return (
-        <FileTemplateForm onSubmit={this.submit} initialValues={this.state.fileTemplateDetail}
-          containerState={this.state}
-          rulesList={this.state.rulesList}
-          fieldList={this.props.fieldList}
-          callinterface={this.getAPIList.bind(this)}
-          containerProps={this.props} generalHandler={this.generalHandler} />
-      );
-    else
-      return (<div className="loader">{utils.getLabelByID("Loading")}</div>)
-  }
 }
 
 function mapStateToProps(state, ownProps) {
@@ -242,9 +197,9 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(actions, dispatch)
-  };
+    return {
+        actions: bindActionCreators(actions, dispatch)
+    };
 }
 
 FileTemplateContainer.displayName = "FTSetup_Heading";

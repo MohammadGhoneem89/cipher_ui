@@ -14,7 +14,6 @@ let resArabic = Object.assign({}, resEnglish, arabic);
 export function getLabelByID(labelId) {
     let retValue;
     switch (lang) {
-
         case "EN": {
             retValue = resEnglish[labelId];
             retValue = retValue ? retValue : labelId;

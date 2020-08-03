@@ -1,8 +1,8 @@
 import React from 'react';
-import { Field } from 'redux-form';
+import {Field} from 'redux-form';
 import * as utils from './utils.js';
 
-const { DOM: { textarea } } = React;
+const {DOM: {textarea}} = React;
 
 export const renderTextInput = ({input, id, className, type, disabled, isRequired, label, placeholder, style, meta: {touched, error, warning}}) => (
   <div className={error && touched ? "form-group has-error has-feedback" : ""}>
@@ -181,14 +181,12 @@ export const TextInput = (props) => (
 );
 
 export const Input = (props) => (
-    <Field
-        {...props}
-        component={renderInput}
-    />
+  <Field
+    {...props}
+    component={renderInput}
+  />
 );
 
-export const CheckboxInput = ({ name, label, disabled, type, style }) => {
-    return (
 
 export const CheckboxInput = ({name, label, disabled, type, style}) => {
   return (<label className="mt-checkbox mt-checkbox-outline" style={{marginBottom: "0", marginTop: "20px"}}>

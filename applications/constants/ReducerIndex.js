@@ -1,5 +1,4 @@
-import sampleAppReducer from '../SampleApp/constants/appReducer';
-
+import customs from '../Courier/constants/appInitialState';
 export default {
-  sampleApp: sampleAppReducer
+  customs
 }

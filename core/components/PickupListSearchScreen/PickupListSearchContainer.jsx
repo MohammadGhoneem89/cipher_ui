@@ -13,7 +13,6 @@ import * as gen from '../../common/generalActionHandler';
 import Portlet from '../../common/Portlet.jsx';
 import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
-import _ from 'lodash';
 
 const toaster = require('../../common/toaster.js');
 import _ from 'lodash';
@@ -88,6 +87,7 @@ class PickupListSearchContainer extends React.Component {
         pickupList: []
       })
     }
+  }
 
 
   searchTypes = () => {
@@ -173,9 +173,9 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
 }
 
 PickupListSearchContainer.displayName = "PickupList_Heading";

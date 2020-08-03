@@ -11,7 +11,7 @@ const GroupFilterForm = props => {
         { value: "API", label: "API" },
     ];
     return (
-        <form role="form" onSubmit={handleSubmit} >
+        <form role="form" onSubmit={handleSubmit}>
             <div className="row">
                 <div className="col-md-6">
                     <Label text="Group Name" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />

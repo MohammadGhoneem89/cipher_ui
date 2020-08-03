@@ -40,7 +40,7 @@ const config = {
   },
   plugins: [
     // minify output
-    new webpack.optimize.UglifyJsPlugin()
+    // new webpack.optimize.UglifyJsPlugin()
   ]
 };
 

@@ -293,7 +293,7 @@ class Datatable extends React.Component {
 
             </div>
             {/*{this.getSearch(this.props.search)}*/}
-            { false && this.getExport(this.props.export)}
+            {this.getExport(this.props.export)}
             <div className="actions">
               <div className="btn-group btn-group-devided" data-toggle="buttons">
 

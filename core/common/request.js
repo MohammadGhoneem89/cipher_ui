@@ -481,14 +481,6 @@ export function createNotificationViewedRequest(data) {
     };
 }
 
-export function createPickupListRequestForType(page, searchCriteria) {
-  return {
-    "action": "typeDataListByType",
-    searchCriteria,
-    page
-  }
-}
-
 export function createPickupListRequest(page, searchCriteria) {
     return {
         "action": "typeDataList",

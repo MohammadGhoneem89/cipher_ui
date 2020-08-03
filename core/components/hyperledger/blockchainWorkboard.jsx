@@ -258,7 +258,6 @@ class blockchainWorkboard extends React.Component {
               <div className="row">
 
                 <TileUnit data={this.props.blockchainWorkboardData.dashboardTiles} />
-                {console.log(JSON.stringify(this.props.blockchainWorkboardData.dashboardTiles))}
               </div>
 
               <div className="row">

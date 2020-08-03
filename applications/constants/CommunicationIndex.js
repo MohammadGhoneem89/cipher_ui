@@ -1,5 +1,5 @@
-import SampleAppCommunication from '../SampleApp/constants/appCommunication';
+import customs from '../Courier/constants/appCommunication';
 
 module.exports = {
-  ...SampleAppCommunication
+  ...customs
 };

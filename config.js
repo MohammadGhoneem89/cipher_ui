@@ -20,6 +20,4 @@ const config = {
     allowedUploadFilesMessage : "txt, jpeg, png, gif, xlxs, xls, word, pdf and xml",
     retryCount : 3
 };
-
- 
 export default config;

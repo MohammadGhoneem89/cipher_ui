@@ -12,11 +12,6 @@ body, .dashdate .btn.btn-outline.green, .page-sidebar, .page-sidebar-closed.page
 
 .dashdate .btn.btn-outline.green:hover {
 
-.dashdate .btn.btn-outline.green:hover {}
-
-a {
-	text-shadow: none;
-	color: #ae8b4b;
 }
 
 .dsh_blued1:hover .dashboard-stat2 .progress, .dsh_blued2:hover .dashboard-stat2 .progress, .dsh_blued3:hover .dashboard-stat2 .progress, .dsh_blued4:hover .dashboard-stat2 .progress {
@@ -269,7 +264,6 @@ a:hover {
 .dsh_blued1:hover .dashboard-stat2, .dsh_blued2:hover .dashboard-stat2, .dsh_blued3:hover .dashboard-stat2, .dsh_blued4:hover .dashboard-stat2, .overDueBlk:hover {
     background:  var(--Theme-Primary-Color);
 }
-
 .progress-bar.blued1-sharp, .progress-bar.blued2-sharp, .progress-bar.blued3-sharp, .progress-bar.blued4-sharp {
     background: var(--Theme-Primary-Color) !important;
 }
@@ -333,9 +327,6 @@ a:hover {
     color: var(--Theme-Primary-Color);
 }
 
-.page-sidebar-menu.page-sidebar-menu-hover-submenu>li:hover>.sub-menu:before, .page-sidebar-menu.page-sidebar-menu-hover-submenu>li:hover>.sub-menu.upward:after {
-	color: #ae8b4b;
-}
 
 .page-sidebar .page-sidebar-menu .sub-menu > li.active > a, .page-sidebar .page-sidebar-menu .sub-menu > li.open > a, .page-sidebar .page-sidebar-menu .sub-menu > li:hover > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li.active > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li.open > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li:hover > a {
     background: var(--Theme-Primary-Color) !important;
@@ -427,7 +418,7 @@ a:hover {
 }
 
 .page-header-fixed .page-container {
-	margin-top: 67px !important;
+    margin-top: 67px !important;
 }
 
 .page-sidebar .page-sidebar-menu .sub-menu > li > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li > a {
@@ -458,19 +449,19 @@ a:hover {
 }
 
 .tab_active {
-    background-color: #a6266b;
+    background-color: var(--Theme-Primary-Color);
     padding: 6px 12px;
     border-radius: 10px !important;
     -webkit-box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.7);
     -moz-box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.7);
     box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.4);
     margin-right: 15px;
-    border: 2px solid #7d1c5199;
+    border: 2px solid var(--Theme-Primary-Color-dark);
     height: fit-content;
 }
 
 .tab_notactive {
-    background-color: #7a2151;
+    background-color: var(--Theme-Primary-Color);
     padding: 6px 12px;
     border-radius: 10px !important;
     -webkit-box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.7);
@@ -479,7 +470,7 @@ a:hover {
     -webkit-box-shadow: 0px 0px 48px 3px rgba(0, 0, 0, 0.29);
     -moz-box-shadow: 0px 0px 48px 3px rgba(0, 0, 0, 0.29);
     box-shadow: 0px 0px 48px 3px rgba(0, 0, 0, 0.29);
-    border: 2px solid #7d1c51;
+    border: 2px solid var(--Theme-Primary-Color-dark);
     margin-right: 15px;
     height: fit-content;
 }
@@ -515,7 +506,7 @@ a:hover {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #60183F;
+    background-color:  var(--Theme-Primary-Color-dark);
     min-width: 180px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
@@ -533,7 +524,7 @@ a:hover {
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
-    background-color: #9D2164;
+    background-color: var(--Theme-Primary-Color-dark);
     color: #fff !important;
     text-decoration: none;
 }
@@ -551,7 +542,7 @@ li:hover .dropdown-content {
 .tab_dropdownnav:hover {
     padding: 17px 10px 25px;
     cursor: pointer;
-    background: #60183f;
+    background: var(--Theme-Primary-Color-dark);
     border-radius: 4px !important;
 }
 
@@ -561,14 +552,14 @@ li:hover .dropdown-content {
 }
 
 .tab_notactive:hover {
-    background-color: #a6266b;
+    background-color: var(--Theme-Primary-Color);
     padding: 6px 12px;
     border-radius: 10px !important;
     -webkit-box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.7);
     -moz-box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.7);
     box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.4);
     margin-right: 15px;
-    border: 2px solid #7d1c5199;
+    border: 2px solid var(--Theme-Primary-Color-dark);
     height: fit-content;
 }
 

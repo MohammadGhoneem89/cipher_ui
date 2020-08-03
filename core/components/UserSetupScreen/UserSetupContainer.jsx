@@ -128,6 +128,7 @@ class UserSetupContainer extends Component {
     if (passwordRetries > allowIncorrectLoginAttempts) {
       return true;
     }
+  }
 
   componentWillReceiveProps(nextProps) {
     let perTypeData = this.getPermissionTypeData(nextProps.permission);
@@ -437,6 +438,7 @@ class UserSetupContainer extends Component {
     if (actionObj.value === "4056") {
       return this.unlockAccount()
     }
+  }
 
 
   // Helper
@@ -450,7 +452,7 @@ class UserSetupContainer extends Component {
           json.value = a.pageURI;
           arr.push(json);
         }
-
+      }
     }
     return arr;
   };
@@ -659,9 +661,9 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
 }
 
 UserSetupContainer.displayName = "USetup_Heading";

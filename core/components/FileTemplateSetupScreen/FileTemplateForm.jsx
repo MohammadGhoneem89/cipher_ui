@@ -1,7 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import Portlet from '../../common/Portlet.jsx';
-import PortletCrad from '../../common/PortletCrad.jsx';
 import ModalBox from '../../common/ModalBox.jsx';
 import * as utils from '../../common/utils.js';
 import { CheckboxInput, CheckboxList, DropdownInput, TextInput } from '../../common/FormControls.jsx';

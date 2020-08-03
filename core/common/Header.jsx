@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import Confirmationmodal from './Confirmationmodal.jsx';
 import * as Loaders from './loaders.jsx';
 import {Link, browserHistory} from 'react-router';
@@ -210,17 +208,4 @@ class Header extends React.Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-
-    return {
-        passwordReset: state.app.passwordReset.data
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-
-    return {actions: bindActionCreators(actions, dispatch)}
-
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

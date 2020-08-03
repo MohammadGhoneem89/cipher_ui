@@ -41,10 +41,6 @@ const FormSection1 = ({ error, initialValues, updateState, state, useCases }) =>
     function updateUseCases(e) {
         updateState({ usecase: e.target.value });
     }
-    function updateUseCases(e) {
-        updateState({ usecase: e.target.value });
-
-    }
     return (
         <div className="row">
             <div className="col-md-6">
