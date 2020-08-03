@@ -210,6 +210,19 @@ module.exports = {
     { alias: "ES_contacts_action", key: "actions", type: "action" }
   ],
 
+  mappedCodes: [
+    { alias: "mappingType", key: "mappingType", type: "string" },
+    { alias: "mappingCode", key: "mappingCode", type: "string" },
+    { alias: "action", key: "actions", type: "action" }
+  ],
+
+
+  additionalProperties: [
+    { alias: "propertyName", key: "propertyName", type: "string" },
+    { alias: "value", key: "value", type: "string" },
+    { alias: "action", key: "actions", type: "action" }
+  ],
+
   entitySearch: [
     { alias: "", key: "_id", type: "hiddenID" },
     { alias: "ESEARCH_entityName", key: "entityName", type: "image" },
@@ -275,11 +288,30 @@ module.exports = {
     { alias: "RList_roleName", key: "groupName", type: "string" },
     { alias: "RList_description", key: "description", type: "string" },
   ],
-
+  workingCalendarSearchList: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "Working_Calendar_Name", key: "calendarName", type: "string" },
+    { alias: "Working_Calendar_Year", key: "calendarYear", type: "string" },
+    { alias: "Working_Calendar_Month", key: "calendarMonth", type: "string" },
+    { alias: "CL_actionOn", key: "createdAt", type: "epochDate" },
+    { alias: "CL_actionBy", key: "createdBy", type: "object", property: "userID" },
+    { alias: "EVNTL_ISACTIVE", key: "isActive", type: "cbDisabled" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
   workingCaledarExceptionList: [
     { alias: "WCD_exception", key: "title", type: "string" },
     { alias: "WCD_start", key: "start", type: "string" },
     { alias: "WCD_end", key: "end", type: "string" },
+    { alias: "Actions", key: "actions", type: "action" }
+  ],
+
+  workingCaledarExceptionListOnDays: [
+    { alias: "WCD_exception", key: "title", type: "string" },
+    { alias: "WCD_start", key: "start", type: "string" },
+    { alias: "WCD_end", key: "end", type: "string" },
+    { alias: "Day Start", key: "dayStart", type: "string" },
+    { alias: "Day End", key: "dayEnd", type: "string" }
   ],
 
 
@@ -332,7 +364,13 @@ module.exports = {
     { alias: "ETEMP_templateType", key: "templateType", type: "string" },
     { alias: "ETEMP_template_action", key: "actions", type: "action" }
   ],
-
+  BillingRulesSetting: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "From", key: "from", type: "amount" },
+    { alias: "To", key: "to", type: "amount" },
+    { alias: "Billing Value", key: "billVal", type: "amount" },
+    { alias: "CTEMP_template_action", key: "actions", type: "action" }
+  ],
   auditTrailDetail: [
     { alias: "TL_DEGTransNo", key: "ePayNo", type: "string" },
     { alias: "TL_SPTransNo", key: "SPTRN", type: "string" },
@@ -456,10 +494,21 @@ module.exports = {
     { alias: "APL_UUID", key: "uuid", type: "string" },
     { alias: "APL_Channel", key: "channel", type: "string" },
     { alias: "APL_Action", key: "action", type: "string" },
+    { alias: "user", key: "username", type: "string" },
+    { alias: "code", key: "errcode", type: "string" },
+    { alias: "org code", key: "orgcode", type: "string" },
     { alias: "APL_Date", key: "createdAt", type: "string" },
+    { alias: "Actions", key: "actions", type: "action" },
+  ],
+
+  APIPayloadListTracking: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "APL_UUID", key: "uuid", type: "string" },
+    { alias: "Event Name", key: "eventname", type: "string" },
+    { alias: "created at", key: "createdat", type: "string" },
+    { alias: "duration", key: "duration", type: "number" },
     { alias: "APL_Actions", key: "actions", type: "action" },
-
-
   ],
   viewRefundDownloadList: [
     { alias: "RV_fileName", key: "fileDetail", type: "downloadAttachement" },
@@ -481,11 +530,15 @@ module.exports = {
     { alias: "FU_fileName", key: "fileDetail", type: "downloadAttachement" }
 
   ],
+  downloadFileListIPFS: [
+    { alias: "FU_fileName", key: "fileDetail", type: "downloadAttachement" }
+
+  ],
   notifications: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "NOTI_Level", key: "type", type: "icon" },
     { alias: "NOTI_Message", key: "text", type: "longString" },
-    { alias: "NOTI_Message", key: "createdAt", type: "epochDate1" },
+    { alias: "Date", key: "createdAt", type: "epochDate1" },
     { alias: "NOTI_Actions", key: "actions", type: "action" }
   ],
   SLAWorkboardData: [
@@ -500,7 +553,7 @@ module.exports = {
     { alias: "", key: "refNo", type: "hiddenID" },
     { alias: "RL_entity", key: "ServiceProvider", type: "image" },
     { alias: "RL_acquirer", key: "acquirerName", type: "string" },
-    { alias: "DL_refNo", key: "refNo", type: "string", type: 'hyperlink', url: '/viewDispute' },
+    { alias: "DL_refNo", key: "refNo", type: "string", url: '/viewDispute' },
     { alias: "RL_ePayRefNo", key: "ePayRefNo", type: 'hyperlink', url: '/viewTransactionDetail' },
     { alias: "RL_SPRefNo", key: "SPRefNo", type: "string" },
     { alias: "RL_PGRefNo", key: "PGRefNo", type: "string" },
@@ -666,6 +719,16 @@ module.exports = {
     { alias: "EL_Error", key: "error", type: "string" },
     { alias: "EL_Status", key: "status", type: "statusLabel" },
     { alias: "EL_actions", key: "actions", type: "action" }
+  ], DispatchQueueDataSAF: [
+    { alias: "", key: "internalid", type: "hiddenID" },
+    { alias: "EVNTL_ID", key: "id", type: "string" },
+    { alias: "Function Name", key: "functionname", type: "string" },
+    { alias: "SAF Date", key: "createdon", type: "string" },
+    { alias: "Message Date", key: "messagedate", type: "string" },
+    { alias: "Network", key: "network", type: "string" },
+    { alias: "smartcontract", key: "smartcontract", type: "string" },
+    { alias: "EL_Status", key: "status", type: "statusLabel" },
+    { alias: "EL_actions", key: "actions", type: "action" }
   ],
   peerListOrgWOA: [
 
@@ -679,6 +742,28 @@ module.exports = {
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "peerName", key: "peerName", type: "string" },
     { alias: "loadBalancingLevel", key: "loadBalancingLevel", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
+  endpointListOrg: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "orgCode", key: "orgCode", type: "string" },
+    { alias: "requestURL", key: "requests", type: "string" },
+    { alias: "nlbType", key: "nlbType", type: "string" },
+    { alias: "type", key: "isServer", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
+  errorCodes: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "Code", key: "code", type: "string" },
+    { alias: "Description", key: "description", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
+  reportCtr: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "Field Name", key: "fieldName", type: "string" },
+    { alias: "Data Type", key: "dataType", type: "string" },
+    { alias: "test value", key: "testVal", type: "string" },
+    { alias: "ENUM", key: "span", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
   userListOrg: [
@@ -754,6 +839,15 @@ module.exports = {
     { alias: "NAU_createdBy", key: "createdBy", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
+
+
+  RelayNetworkListData: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "NAU_networkName", key: "networkName", type: "string" },
+    { alias: "NAU_createdBy", key: "createdBy", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
   ModuleDefination: [
     { alias: "MDAU_PageLabel", key: "label", type: "string" },
     { alias: "MDAU_Type", key: "type", type: "string" },
@@ -778,7 +872,37 @@ module.exports = {
     { alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
-
+  ADHReportList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "name", key: "name", type: "string" },
+    { alias: "report Type", key: "reportType", type: "string" },
+    { alias: "connection Type", key: "connectionType", type: "string" },
+    { alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
+  actionList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "id", type: "hiddenID" },
+    { alias: "label", key: "label", type: "string" },
+    { alias: "action", key: "URI", type: "string" },
+    { alias: "actions", key: "actions", type: "action" },
+  ],
+  ADHRenderReportList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "name", key: "name", type: "string" },
+    { alias: "report Type", key: "reportType", type: "string" },
+    { alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
+  consentListPolicy: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "orgCode", key: "orgCode", type: "string" },
+    { alias: "orgType", key: "orgType", type: "string" },
+    { alias: "Can Revoke", key: "isRevokable", type: "cbDisabled" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
   mappingConfig: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "MAU_incField", key: "IN_FIELD", type: "string" },
@@ -824,7 +948,8 @@ module.exports = {
   SmartContractListData: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "", key: "_id", type: "hiddenID" },
-    { alias: "NAU_smartContract", key: "smartContract", type: "string" },
+    { alias: "NAU_smartContract", key: "smartContract", type: 'hyperlinkNewTab', url: '/DocumentationCode' },
+    // { alias: "NAU_smartContract", key: "smartContract", type: "string" },
     { alias: "type", key: "type", type: "string" },
     { alias: "NAU_channelName", key: "channelName", type: "string" },
     { alias: "NAU_createdBy", key: "createdBy", type: "string" },
@@ -876,6 +1001,218 @@ module.exports = {
     { alias: "useCase", key: "useCase", type: "string" },
     { alias: "Action", key: "action", type: "action" }
   ],
+
+  AEDSlabList: [
+    { alias: "From Points", key: "fromPoint", type: 'number' },
+    { alias: "To Points", key: "toPoint", type: "string" },
+    { alias: "AED Value", key: "AEDValue", type: "string" }
+  ],
+  /// Smiles
+  // viewTranxList: [
+  //   {alias: "", key: "_id", type: "hiddenID"},
+  //   {alias: "S.No", key: "no", type: 'string'},
+  //   {alias: "Transaction", key: "tranx", type: "string"},
+  //   {alias: "Account#", key: "acc", type: "string"},
+  //   {alias: "TRANS TYPE", key: "ttype", type: "string"},
+  //   {alias: "Amount", key: "amount", type: "string"},
+  //   {alias: "Points", key: "points", type: "string"},
+  //   {alias: "TRANS Date", key: "date", type: "string"},
+  //   {alias: "Status", key: "status", type: "string"},
+  //   {alias: "Partner", key: "partner", type: "string"},
+  //   {alias: "action", key: "actions", type: "action" }
+  // ],
+  ListOffers: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "Offer ID", key: "offerId", type: "string" },
+    { alias: "Partner", key: "partner", type: "string" },
+    { alias: "Merchant", key: "merchant", type: "string" },
+    { alias: "Description", key: "description", type: "string" },
+    { alias: "Action", key: "actions", type: "action" },
+  ],
+
+  MerchantList: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "LOGO", key: "logo", type: "image" },
+    { alias: "Partner", key: "partner", type: "string" },
+    { alias: "NAME", key: "name", type: "string" },
+    { alias: "CODE", key: "code", type: "string" },
+    { alias: "STATUS", key: "status", type: "string" },
+    { alias: "Action", key: "actions", type: "action" },
+  ],
+  LoyaltyTokenList: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    {
+      alias: "TOKEN PROGRAM", key: "img", type: "image1", width: "100%", height: "100px", url: ''
+    },
+    { alias: "ORG CODE", key: "orgCode", type: "string" },
+    { alias: "OTPLenght", key: "linkingParams.OTPLength", type: "string" },
+    { alias: "Auth Type", key: "linkingParams.authType", type: "string" },
+    { alias: "Unit Type", key: "linkingParams.unitType", type: "string" },
+    { alias: "AED RATE", key: "AEDValue", type: "string" },
+    { alias: "AED Slabs", key: "actions", type: "action" },
+  ],
+  ListProducts: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "IMAGE", key: "image", type: "image" },
+    { alias: "MERCHANT", key: "merchant", type: "string" },
+    { alias: "PRODUCT TITLE", key: "productTitle", type: "string" },
+    { alias: "CODE", key: "code", type: "string" },
+    { alias: "PRICE ADE", key: "priceAde", type: "string" },
+    { alias: "INVENTORY", key: "inventory", type: "string" },
+    { alias: "Action", key: "actions", type: "action" },
+  ],
+  OrderManagement: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "Merchant", key: "merchantImage", type: "image" },
+    { alias: "product", key: "product", type: "string" },
+    { alias: "Qty", key: "qty", type: "string" },
+    { alias: "Amount", key: "amount", type: "string" },
+    { alias: "Oder Date", key: "oderDate", type: "epochDate" },
+    { alias: "Order Status", key: "status", type: "string" },
+    { alias: "Action", key: "actions", type: "action" },
+  ],
+  AddNewMerchant: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "SHOP CODE", key: "shopCode", type: "string" },
+    { alias: "LOCATION X", key: "locationX", type: "string" },
+    { alias: "LOCATION Y", key: "locationY", type: "string" },
+    { alias: "Action", key: "actions", type: "action" },
+  ],
+  OfferManagementSharingBonus: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "CHANNEL", key: "channel", type: "string" },
+    { alias: "POINTS", key: "points", type: "string" },
+    { alias: "Action", key: "actions", type: "action" },
+  ],
+  OfferManagementCashVoucher: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "Type", key: "type", type: "string" },
+    { alias: "Denomination", key: "denomination", type: "string" },
+    { alias: "Action", key: "actions", type: "action" },
+  ],
+
+  OfferManagementCategories: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "CATEGORY", key: "category", type: "string" },
+    { alias: "SUB CATEGORY", key: "subCategory", type: "string" },
+    { alias: "Action", key: "actions", type: "action" },
+  ],
+  ApproveredemptionContractContact: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "NAME", key: "name", type: 'string' },
+    { alias: "ADDRESS", key: "address", type: "string" },
+    { alias: "MOBILE", key: "mobile", type: 'string' },
+    { alias: "PHONE", key: "phone", type: 'string' },
+    { alias: "EMAIL", key: "email", type: 'string' },
+    { alias: "Action", key: "actions", type: "action" }
+  ],
+  ViewTask: [
+    { alias: "", key: "id", type: "hiddenID" },
+    { alias: "id", key: "id", type: 'string' },
+    // {alias: "username", key: "username", type: 'string'},
+    { alias: "schedule time", key: "schedule_time", type: "string" },
+    // {alias: "json_payload", key: "json_payload", type: 'string'},
+    { alias: "task type", key: "task_type", type: 'string' },
+    { alias: "api url", key: "api_url", type: 'string' },
+    //  {alias: "receivers list", key: "receivers_list", type: 'string'},
+    // {alias: "email list", key: "email_list", type: 'string'},
+    // {alias: "email subject", key: "email_subject", type: 'string'},
+    { alias: "execution time", key: "execution_time", type: 'string' },
+    { alias: "retry count", key: "retry_count", type: "string" },
+    // {alias: "response", key: "response", type: "string"},
+    { alias: "status", key: "status", type: "string" },
+    { alias: "Action", key: "actions", type: "action" }
+  ],
+  ViewTaskDetails: [
+    { alias: "", key: "id", type: "hiddenID" },
+    // {alias: "id", key: "id", type: 'string'},
+    { alias: "log id", key: "log_id", type: "string" },
+    { alias: "task id", key: "task_id", type: 'string' },
+    { alias: "log status", key: "log_status", type: 'string' },
+    { alias: "log retry count", key: "log_retry_count", type: 'string' },
+    { alias: "Action", key: "actions", type: "action" }
+  ],
+  // response: [
+  //   {alias: "", key: "_id", type: "hiddenID"},
+  //   {alias: "userId", key: "userId", type: "string"},
+  //   {alias: "id", key: "id", type: 'string'},  
+  //   {alias: "title", key: "title", type: 'string'},
+  //   {alias: "completed", key: "completed", type: 'string'},
+  // ],
+  DashboadrEtisalat: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "BATCH#", key: "batch", type: 'string' },
+    { alias: "INVOICE#", key: "invoice", type: "string" },
+    { alias: "TO", key: "to", type: 'string' },
+    { alias: "AMMOUNT", key: "ammount", type: 'string' },
+    { alias: "COMISSION", key: "comission", type: 'string' },
+    { alias: "SETTLEMENT PERIOD", key: "settlementperiod", type: 'string' },
+    { alias: "STATUS", key: "status", type: 'string' },
+    { alias: "View", key: "actions", type: "action" }
+  ],
+  CreateAmendRedemption: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "START DATE", key: "startDate", type: 'epochDate' },
+    { alias: "END DATE", key: "endDate", type: "epochDate" },
+    { alias: "PAYMENT METHOD", key: "paymentMethod", type: 'string' },
+    { alias: "TYPE", key: "type", type: 'string' },
+    { alias: "VALUE", key: "value", type: 'string' },
+    { alias: "Action", key: "actions", type: "action" }
+  ],
+  CreateAmendRedemption: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "username", key: "username", type: 'string' },
+    { alias: "schedule_time", key: "schedule_time", type: "epochDate" },
+    { alias: "PAYMENT METHOD", key: "paymentMethod", type: 'string' },
+    { alias: "TYPE", key: "type", type: 'string' },
+    { alias: "VALUE", key: "value", type: 'string' },
+    { alias: "Action", key: "actions", type: "action" }
+  ],
+  OderManagementDetails: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "Attribute", key: "attribute", type: 'string' },
+    { alias: "Value", key: "value", type: "string" },
+  ],
+  OderManagementDetailsTracking: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "Date Time", key: "dateTime", type: 'epochDate' },
+    { alias: "Status", key: "status", type: "string" },
+  ],
+
+  VoucherList: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "S.No", key: "serial_no", type: 'string' },
+    { alias: "MERCHANT", key: "merchant", type: 'string' },
+    { alias: "Offer ID", key: "offerId", type: "string" },
+    { alias: "CODE", key: "code", type: 'string' },
+    { alias: "CREATED ON", key: "createdon", type: 'epochDate' },
+    { alias: "STATUS", key: "status", type: 'string' },
+    { alias: "EXPIRES ON", key: "expireson", type: 'string' },
+    { alias: "Action", key: "actions", type: "action" }
+  ],
+
+
+  FTEMP_MappRules: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "incomming", key: "incomming", type: 'string' },
+    { alias: "mapped", key: "mapped", type: 'string' },
+    { alias: "action", key: "actions", type: "action" }
+  ],
   FTEMP_FilterRules: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "ruleName", key: "ruleName", type: 'string' },
@@ -886,12 +1223,123 @@ module.exports = {
     { alias: "FTEMP_transformFuc", key: "transformFunction", type: "string" },
     { alias: "Action", key: "actions", type: "action" }
   ],
-  FTEMP_MappRules: [
+  FTEMP_FilterRulesHealth: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
-    { alias: "incomming", key: "incomming", type: 'string' },
-    { alias: "mapped", key: "mapped", type: 'string' },
-    { alias: "action", key: "actions", type: "action" }
+    { alias: "ruleName", key: "ruleName", type: 'string' },
+    { alias: "field", key: "field", type: 'string' },
+    { alias: "option", key: "option", type: "string" },
+    { alias: "value", key: "value", type: "string" },
+    { alias: "group", key: "group", type: "string" },
+    { alias: "Action", key: "actions", type: "action" }
   ],
+  // HLTH CHK
+
+  pgClientList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "host", key: "host", type: 'string' },
+    { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
+    { alias: "status", key: "connected", type: "statusBox" }
+
+  ],
+  rmqStatus: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "cluster name", key: "cluster_name", type: 'string' },
+    { alias: "publish", key: "publish", type: 'string' },
+    { alias: "publish_details_rate", key: "publish_details_rate", type: "string" },
+    { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
+    { alias: "message", key: "message", type: "string" },
+    { alias: "status", key: "status", type: "statusBox" }
+  ],
+  peerListHealth: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "Peer Name", key: "peerName", type: 'string' },
+    { alias: "Peer Address", key: "peerAddress", type: 'string' },
+    { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
+    { alias: "status", key: "status", type: "statusBox" }
+  ],
+
+  ordererList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "Orderer Name", key: "ordererName", type: 'string' },
+    { alias: "Orderer Address", key: "ordererAddress", type: 'string' },
+    { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
+    { alias: "status", key: "status", type: "statusBox" }
+  ],
+  endpointListHealth: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "name", key: "name", type: 'string' },
+    { alias: "host", key: "host", type: 'string' },
+    { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
+    { alias: "status", key: "status", type: "statusBox" }
+  ],
+  APITemplateList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "S No.", key: "_id", type: "hiddenID" },
+    { alias: "Template Name", key: "name", type: 'string' },
+    { alias: "Template Type", key: "type", type: 'string' },
+    { alias: "Action", key: "action", type: "action" }
+  ],
+  IPFSDocumentsList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "S No.", key: "_id", type: "hiddenID" },
+    { alias: "IPFS Hash", key: "name", type: 'string' },
+    { alias: "Encryption Key", key: "name", type: 'string' },
+    { alias: "Action", key: "action", type: "action" }
+  ],
+  cipherSvc: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "svc", key: "svc", type: 'string' },
+    { alias: "env", key: "env", type: 'string' },
+    { alias: "pid", key: "pid", type: 'string' },
+    { alias: "hostname", key: "hostname", type: 'string' },
+    { alias: "ip", key: "ip", type: 'string' },
+    { alias: "Time", key: "lastUpdateTime", type: "epochDate" },
+    { alias: "status", key: "status", type: "statusBox" },
+    { alias: "Action", key: "actions", type: "action" }
+  ],
+  PickUPEdit: [
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "Label", key: "label", type: "string" },
+    { alias: "labelAr", key: "labelAr", type: "string" },
+    { alias: "Value", key: "value", type: "string" },
+    { alias: "dependent", key: "dependent", type: "string" },
+    { alias: "Actions", key: "actions", type: "action" }
+  ],
+  fileList: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "", key: "id", type: "hiddenID" },
+    { alias: "Path", key: "path", type: "string" },
+    { alias: "File Name", key: "name", type: "string" },
+    { alias: "Date", key: "dateEpoch", type: "epochDate" },
+    { alias: "Action", key: "action", type: "action" },
+  ],
+  fileData: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "", key: "id", type: "hiddenID" },
+    { alias: "Rule Name", key: "rulename", type: "string" },
+    { alias: "Column 1", key: "column1", type: "string" },
+    { alias: "Column 2", key: "column2", type: "string" },
+    { alias: "Column 3", key: "column3", type: "string" },
+    { alias: "Status", key: "status", type: "statusBox" },
+    { alias: "Action", key: "action", type: "action" },
+  ],
+  welcomeKit: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "Step ID", key: "id", type: "string" },
+    { alias: "Description", key: "description", type: "leftAlign" },
+    { alias: "Status", key: "status", type: "string" }
+  ],
+  // {"id":7,"startdate":"2020-05-31T20:00:00.000Z","enddate":"2020-06-29T20:00:00.000Z","amount":"0.320","currency":"USD","status":"Pending","billingcycle":"Monthly","orgcode":"ORG1"}
+  billingGrid: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "startdate", key: "startdate", type: "string" },
+    { alias: "enddate", key: "enddate", type: "string" },
+    { alias: "amount", key: "amount", type: "string" },
+    { alias: "currency", key: "currency", type: "string" },
+    { alias: "status", key: "currency", type: "string" },
+    { alias: "billingcycle", key: "billingcycle", type: "string" }
+  ]
+};
 
   // HLTH CHK
 

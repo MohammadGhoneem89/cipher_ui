@@ -31,6 +31,7 @@ class FileUploader extends React.Component {
                 "source": this.props.source
             },
             headers: { "token": sessionStorage.token },
+            withCredentials: true,
             thumbnailMethod: 'contain',
             dictDefaultMessage: utils.getLabelByID("FU_dropMessage"),
             dictRemoveFile: utils.getLabelByID("FU_removeFileMessage"),
@@ -64,7 +65,6 @@ class FileUploader extends React.Component {
         const reader = new FileReader();
         reader.onload = () => {
             const fileAsBinaryString = reader.result;
-            console.log("successTransaction ON LOAD", fileAsBinaryString);
             $("#FILE_CONTENT").html(fileAsBinaryString);
             // do whatever you want with the file content
         };
@@ -99,11 +99,11 @@ class FileUploader extends React.Component {
     getAttachementGrid(showAttachementGrid) {
         if (showAttachementGrid) {
             return (
-                
+
                     <InnerGrid TableClass="portlet light bordered sdg_portlet bg-default bg-font-default" fontclass="font-dark" title="Attachments"
                         gridColumns={utils.getGridColumnByName("downloadFileList")}
                         gridData={this.state.gridData.contextData} />
-                
+
             );
         }
     }
@@ -119,7 +119,7 @@ class FileUploader extends React.Component {
 
             <div>
                 {this.getAttachementGrid(this.props.showAttachementGrid)}
-               
+
                 {this.props.showDropzone &&
                     <div>
 

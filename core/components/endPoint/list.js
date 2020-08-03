@@ -1,11 +1,11 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import * as actions from '../../actions/generalAction';
 import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
 import * as constants from '../../constants/Communication.js';
-import { browserHistory } from 'react-router';
+import {browserHistory} from 'react-router';
 import Portlet from '../../common/Portlet.jsx';
 import {get, isEmpty} from 'lodash';
 
@@ -30,7 +30,7 @@ class EndPointList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(!isEmpty(nextProps.list)){
+    if (!isEmpty(nextProps.list)) {
       this.setState({loading: false});
     }
   }
@@ -86,7 +86,8 @@ class EndPointList extends React.Component {
                     <label className="control-label">{utils.getLabelByID("Endpoint Name")}</label>
                   </div>
                   <div className="form-group col-md-8">
-                    <input type="text" className="form-control" name="name" onChange={this.onChange} value={this.state.name}/>
+                    <input type="text" className="form-control" name="name" onChange={this.onChange}
+                           value={this.state.name}/>
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -94,15 +95,21 @@ class EndPointList extends React.Component {
                     <label className="control-label">{utils.getLabelByID("Endpoint Address")}</label>
                   </div>
                   <div className="form-group col-md-8">
-                    <input type="text" className="form-control" name="address" onChange={this.onChange} value={this.state.address}/>
+                    <input type="text" className="form-control" name="address" onChange={this.onChange}
+                           value={this.state.address}/>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="form-group col-md-12">
-              <div className="btn-toolbar pull-right">
-                <button type="submit" className="btn green" onClick={this.search}>{utils.getLabelByID("Search")} </button>{"  "}
-                <button type="button" className="btn default" onClick={this.addItem}>{utils.getLabelByID("Add")} <i className="fa fa-plus"/></button>
+            <div className=" col-md-12">
+              <div className="form-group col-md-12">
+                <div className="btn-toolbar pull-right">
+                  <button type="submit" className="btn green"
+                          onClick={this.search}>{utils.getLabelByID("Search")} </button>
+                  {"  "}
+                  <button type="button" className="btn default" onClick={this.addItem}>{utils.getLabelByID("Add")} <i
+                    className="fa fa-plus"/></button>
+                </div>
               </div>
             </div>
           </div>
@@ -129,7 +136,7 @@ EndPointList.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   let list = get(state.app, 'findEndpointDefination', {});
-  for(let data of get(list, 'data', [])){
+  for (let data of get(list, 'data', [])) {
     data.actions = [
       {
         URI: ["/endpoint/"],

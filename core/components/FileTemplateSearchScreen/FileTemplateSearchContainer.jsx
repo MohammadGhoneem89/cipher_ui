@@ -14,6 +14,7 @@ class FileTemplateSearchContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.submit = this.submit.bind(this);
+    this.pageChanged = this.pageChanged.bind(this);
 
     this.state = {
       filterCriteria: undefined,
@@ -53,9 +54,9 @@ class FileTemplateSearchContainer extends React.Component {
   }
   pageChanged(pageNo) {
     this.props.actions.generalProcess(constants.getFileTemplateList, requestCreator.createFileTemplateListRequest({
-      "currentPageNo": 1,
-      "pageSize": this.state.pageSize
-    },
+        "currentPageNo": pageNo,
+        "pageSize": this.state.pageSize
+      },
       this.state.filterCriteria));
     this.setState({ activePage: pageNo });
   }
@@ -75,6 +76,7 @@ class FileTemplateSearchContainer extends React.Component {
             actions={this.state.fileTemplateList.data.actions}>
             <Table
               pagination={true}
+              pageChanged={this.pageChanged}
               export={false}
               search={false}
               activePage={this.state.activePage}

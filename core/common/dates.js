@@ -16,6 +16,10 @@ module.exports = {
     date = date || '';
     return moment(date, 'DDMMYYYY').valueOf();
   },
+  toEpoch: function(date, format='YYYY-MM-DD') {
+    date = date || '';
+    return moment(date, format).valueOf();
+  },
   yyyyMMddMS: function(date) {
     date = date || '';
     return moment(date, 'YYYYMMDD').valueOf();
@@ -32,6 +36,9 @@ module.exports = {
   },
   MMddyyyy: function(unix) {
     return moment(unix).format('MM/DD/YYYY');
+  },
+  MSddMMyyyyHHmm: function (unix) {
+    return moment.unix(unix).format('DD/MM/YYYY hh:mm:ss');
   },
   MSddMMyyyyHHmmSS: function(unix) {
     return moment(unix).format('DD/MM/YYYY h:mm:ss a');

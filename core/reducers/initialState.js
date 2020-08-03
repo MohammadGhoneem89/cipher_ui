@@ -5,10 +5,10 @@ export default {
   entityList: { action: "", data: { searchResult: [], typeData: { entityNames: [] } } },
   acquirerList: { action: "", data: { searchResult: [], typeData: { acquirerNames: [] } } },
   getEndpointListView: {},
-  getTemplatesListView:{},
-  ApiImport:{},
-  ElementList:{},
-  viewConsortium:{},
+  getTemplatesListView: {},
+  ApiImport: {},
+  ElementList: {},
+  viewConsortium: {},
   entityDetail: {
     action: "", data: {
       "entityName": "",
@@ -127,11 +127,12 @@ export default {
   notificationList: {},
   notificationDetailList: { action: "", data: { "pageData": { "totalRecords": 0 } } },
   containerData: { action: "", data: {} },
-  responseMessage: {
-    action: "",
-    data: { status: "ERROR", errorDescription: "I am the problem", routeTo: "success", displayToUser: false }
-  },
+  // responseMessage: {
+  //   action: "",
+  //   data: { status: "ERROR", errorDescription: "I am the problem", routeTo: "success", displayToUser: false }
+  // },
   loginResponse: { action: "", data: {} },
+  responseMessage: { action: "", data: "" },
   entityDashboardData: {
     action: "", data: {
       "dashboardTiles": [], "workboardData": { "pageData": {} }, "exceptionData": {
@@ -512,6 +513,7 @@ export default {
       }
     }
   },
+  
   getTypeDataDetailByID: {
     action: "",
     data: {}
@@ -535,6 +537,7 @@ export default {
     action: "",
     data: {}
   },
+  ComplexListData: {},
   typeDataList: {},
   ...ApplicationsInitialSate
 }

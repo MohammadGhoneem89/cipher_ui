@@ -63,7 +63,7 @@ const RulesForm = props => {
           <TextInput name={"rules[" + index + "].transformFunction"} options={containerState.apiList.map(item => {
             return {key: item, label: item}
           })}
-                         label={utils.getLabelByID("FTEMP_transformFuc")}
+                     label={utils.getLabelByID("FTEMP_transformFuc")}
           />
         </div>
         <div className="clearfix">

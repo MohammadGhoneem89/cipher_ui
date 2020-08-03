@@ -2,7 +2,8 @@ import { browserHistory } from 'react-router';
 import generalAPI from '../api/generalAPI';
 import auth from '../auth/authenticator';
 import config from '../../config';
-
+import main from '../main';
+import Cookies from 'js-cookie';
 let ws;
 
 export function generalActionLoad(resultData) {
@@ -40,7 +41,18 @@ export function generalProcess(fetchURL, actionData) {
     };
 
 }
+export function generalAsyncProcess(fetchURL, actionData) {
+  return function (dispatch) {
+    return generalAPI.getData(fetchURL, actionData).then(resultSet => {
+      dispatch(generalActionLoad(resultSet));
+      console.log('\n\n\n\n\n>>>>>>>>>>>>>>>>>>>>>>>')
+      console.log(resultSet, ' result set')
+      return Promise.resolve(resultSet);
 
+    });
+  };
+
+}
 export function reduxFormProcess(fetchURL, actionData) {
     return function (dispatch) {
 
@@ -79,7 +91,7 @@ export function generalAjxProcess(fetchURL, actionData) {
                 return Promise.reject(resultSet.responseMessage.data.error);
             }
             else {
-                return Promise.resolve(resultSet.responseMessage.data);
+            return Promise.resolve(resultSet.responseMessage.data);
             }
 
         });
@@ -87,13 +99,11 @@ export function generalAjxProcess(fetchURL, actionData) {
 
 }
 
-
 function openSocketAgain(host, dispatch) {
-    host = host.replace('https://', 'wss://');
-    host = host.replace('http://', 'ws://');
-    ws = new WebSocket(host + '/Socket');
+
+    ws = new WebSocket(host);
     ws.onopen = function (event) {
-        let msg = { "token": sessionStorage.token, "pageName": sessionStorage.pageName };
+        let msg = { "token": Cookies.get('token'), "pageName": sessionStorage.pageName };
         ws.send(JSON.stringify(msg));
     };
     ws.onclose = function (event) {
@@ -103,8 +113,11 @@ function openSocketAgain(host, dispatch) {
         }, 10000);
     };
     ws.onmessage = function (event) {
-        //alert(event.data)
-        dispatch(generalActionLoad(JSON.parse(event.data)));
+        console.log('MESSAGE RECV', event);
+        
+        dispatch(generalActionLoad(JSON.parse(event.data)))
+       
+        // dispatch(generalActionLoad(JSON.parse(event.data)));
     };
 
 }

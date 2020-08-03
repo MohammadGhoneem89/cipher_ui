@@ -17,7 +17,8 @@ const config = {
     transactionAllowedLimit: 365,
     entityGroupList : ["Entity", "API Group for Entities"],
     acquirerGroupList : ["Acquirer", "API Group for Acquirers"],
-    allowedUploadFilesMessage : "txt, jpeg, png, gif, xlxs, xls, word, pdf and xml"
+    allowedUploadFilesMessage : "txt, jpeg, png, gif, xlxs, xls, word, pdf and xml",
+    retryCount : 3
 };
 
  

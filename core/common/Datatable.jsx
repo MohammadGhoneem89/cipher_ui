@@ -38,6 +38,7 @@ class Datatable extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.gridData !== nextProps.gridData) {
+      console.log(this.props.gridData);
       this.setState({ isLoading: false });
     }
     this.setState({ activePage: this.props.activePage });
@@ -243,6 +244,13 @@ class Datatable extends React.Component {
     this.props.renderPopupBody(dataID)
   }
 
+  bindModalData(data) {
+    let { bindModalData = null } = this.props;
+    if (bindModalData) {
+      this.props.bindModalData(data);
+    }
+  }
+
   getCheckedItems(ID, checked) {
     this.props.getCheckedItems(ID, checked)
   }
@@ -255,7 +263,9 @@ class Datatable extends React.Component {
     })
   }
 
-
+  returnSingleKey(key, value) {
+    console.log(key, value);
+  }
   render() {
     if (this.props.forbiddenColumns) {
       for (let rowCount = 0; rowCount < this.props.gridColumns.length; rowCount++) {
@@ -293,7 +303,7 @@ class Datatable extends React.Component {
           <div className="portlet-body flip-scroll">
             <div className="row">
               <div className="col-md-12 ">
-                <table id={this.props.id ? this.props.id : ""} style={{ marginTop: "10px" }}
+                <table id={this.props.id ? this.props.id : ""} style={this.props.marginTop == true ? { marginTop: "10px", marginBottom: '120px' } : { marginTop: "10px"}}
                   className="table table-bordered table-striped table-condensed flip-content gridTable sdg_tbl">
                   <thead className="flip-content">
                     <tr>
@@ -319,11 +329,28 @@ class Datatable extends React.Component {
                                 <TableCell key={index2.toString()}
                                   recordID={recordID}
                                   rowData={rowData}
-                                  cellData={colData.type === "object" ? (rowData[colData.key] !== null ? rowData[colData.key][colData.property] : "") : rowData[colData.key]}
+                                  // cellData={colData.type === "object" ? (rowData[colData.key] !== null ? rowData[colData.key][colData.property] : "") : rowData[colData.key]}
+                                  cellData={colData.type === "specialObject" ? (rowData[colData.key] !== null ? 
+                                    Object.keys(colData.key).map((item, index) => {
+                                      console.log(colData.key);
+                                      console.log(item);
+                                      console.log(rowData);
+                                    return <div>
+                                      {rowData['actions'] && rowData['actions'].length > 0 ? 
+                                    <a href={`${colData.key['route']+rowData['UTCRefNo']}`}>
+                                    <div className={index === 0 ? 'font-bold' : ''}>{rowData[item]}</div>
+                                    </a> 
+                                    :
+                                    <div className={index === 0 ? 'font-bold' : ''}>{rowData[item]}</div>
+                                    }
+                                      {/* <div>{rowData[item]}</div> */}
+                                    </div> 
+                                  }) : "") : rowData[colData.key]}
                                   type={colData.type}
                                   rowIndex={index}
                                   componentFunction={this.props.componentFunction}
                                   renderPopupBody={this.renderPopupBody.bind(this)}
+                                  bindModalData={this.bindModalData.bind(this)}
                                   getCheckedItems={this.getCheckedItems.bind(this)}
                                   columnWidth={colData.width ? colData.width : ""}
                                   searialNo={(offSet || 1) + parseInt(index)}

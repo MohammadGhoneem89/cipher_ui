@@ -60,8 +60,15 @@ class TableCell extends React.Component {
   }
 
   renderIcon(type) {
+    console.log("notification logs............." , type);
     switch (type) {
       case "Error":
+        return (
+          <span className={"label label-sm label-danger"}>
+            <i className="fa fa-bell-o" />
+          </span>
+        );
+        case "ERROR":
         return (
           <span className={"label label-sm label-danger"}>
             <i className="fa fa-bell-o" />
@@ -142,12 +149,14 @@ class TableCell extends React.Component {
   }
 
   renderPopupBody(dataID) {
-
     this.props.renderPopupBody(dataID);
+  }
 
-
-    //$(".modal-body #hiddenValue").val(modalDataID);
-
+  bindModalData(data) {
+    let { bindModalData = null } = this.props;
+    if (bindModalData) {
+      this.props.bindModalData(data);
+    }
   }
 
   getCheckedItems(element) {
@@ -156,10 +165,9 @@ class TableCell extends React.Component {
 
 
   renderDownloadAttachement(name, UUID) {
-
-    return (<a href={constants.getUploadedFile + "/" + UUID + "?JWT=" + sessionStorage.token} download>
-      {name} </a>);
-
+    return (<a href={constants.getUploadedFile + "type=FILE&path=" + UUID} download> {name} </a>);
+    // return (<a href={`/API/core/download/type=FILE&path=${UUID}`} download> {name} </a>);
+    
   }
 
   renderDownload(name, url) {
@@ -306,6 +314,14 @@ class TableCell extends React.Component {
           width="50px" height="50px" style={{ width: "50px", height: "50px" }}
           src={baseUrl + this.props.cellData.imageURL} /> &nbsp;&nbsp; <b> {"   " + this.props.cellData.name} </b>
         </td>);
+      case "specialObject":
+        return (<td align="center" style={{ width: this.props.columnWidth }}>
+          {this.props.cellData}
+        </td>);
+      case "fixedWidth":
+        return (<td align="center" style={{ width: this.props.columnWidth }}>
+          {this.props.cellData}
+        </td>);
       case "stringBig":
         return (<td className="ent_nme caption-subject font-black bold ">
           <h4> {utils.getLabelByID(this.props.cellData) || this.props.cellData}</h4></td>);
@@ -327,7 +343,7 @@ class TableCell extends React.Component {
         cellData = this.props.cellData ? this.props.cellData : {};
         return (
           <td className="text-center">
-            {this.renderDownloadAttachement(cellData.name, cellData.UUID)}
+            {this.renderDownloadAttachement(cellData.name, cellData.hash)}
           </td>
         );
       case "download":
@@ -358,6 +374,8 @@ class TableCell extends React.Component {
         return (<td> {parseInt(this.props.searialNo) + "."}</td>);
       case "epochDate":
         return (<td> {utils.UNIXConvertToDate(this.props.cellData)}</td>);
+        case "epochDateMS":
+          return (<td> {utils.UNIXConvertToDateMS(this.props.cellData)}</td>);
       case "epochDate1":
         return (<td> {dates.MSddMMyyyy(this.props.cellData)}</td>);
       case "clpVal":
@@ -373,12 +391,15 @@ class TableCell extends React.Component {
           return (<span key={i}>{item}<br /></span>);
         });
 
-        return (<td style={{ fontWeight: fontWeightStyle }}> {cellData} </td>);
-      case "longString":
-        let temp = text_truncate(this.props.cellData, 100);
-        return <td style={{ fontWeight: fontWeightStyle }}>
-          <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
-        </td>;
+        return (<td style={{fontWeight: fontWeightStyle}}> {cellData} </td>);
+        case "longString":
+            let temp = text_truncate(this.props.cellData, 100);
+            return <td style={{fontWeight: fontWeightStyle}}>
+              <a href="javascript:" onClick={() => {
+                this.renderPopupBody(this.props.cellData);
+                this.bindModalData(this.props.rowData);
+              }}> {temp}</a>
+            </td>;
 
 
       default:
@@ -390,4 +411,3 @@ class TableCell extends React.Component {
 }
 
 export default TableCell;
-

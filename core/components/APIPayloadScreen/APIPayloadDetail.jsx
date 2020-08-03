@@ -15,147 +15,343 @@ import * as utils from '../../common/utils.js';
 import { baseUrl } from '../../constants/Communication.js';
 import JSONPretty from 'react-json-pretty';
 import * as toaster from '../../common/toaster.js';
-
-
-
+import Table from '../../common/Datatable.jsx';
+import _ from "lodash";
 
 class APIPayloadDetail extends React.Component {
 
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            APIPayloadID: undefined
-        }
-        this.performAction = this.performAction.bind(this);
-
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      APIPayloadID: undefined,
+      isVisible: false,
+      heading: "",
+      body: "",
+      viewFull: false
     }
-    componentWillMount() {
-        if (document.getElementById('auditTrailSection') != null) {
-            document.getElementById('auditTrailSection').innerHTML = "";
-        }
+    this.viewFull = this.viewFull.bind(this);
+    this.performAction = this.performAction.bind(this);
+    this.ActionHandlers = this.ActionHandlers.bind(this);
+  }
 
+  componentWillMount() {
+    if (document.getElementById('auditTrailSection') != null) {
+      document.getElementById('auditTrailSection').innerHTML = "";
     }
-    componentDidMount() {
+
+  }
+
+  componentDidMount() {
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+    if (nextProps.APIPayloadID != this.state.APIPayloadID) {
+      var request = {
+        "id": nextProps.APIPayloadID,
+      }
+
+      this.setState({ APIPayloadID: nextProps.APIPayloadID, viewFull: false })
+      this.props.actions.generalProcess(constants.getAPIPayloadDetail, request);
     }
+    if (document.getElementById('diffoutput') != null) {
 
-    componentWillReceiveProps(nextProps) {
+      document.getElementById('diffoutput').innerHTML = "";
+      this.diffUsingJS.bind(this, 0)
+    }
+  }
 
-        if (nextProps.APIPayloadID != this.state.APIPayloadID) {
-            var request = {
-                "id": nextProps.APIPayloadID,
+  diffUsingJS(viewType) {
+
+  }
+
+  viewFull(viewType) {
+    this.setState({ viewFull: !this.state.viewFull })
+  }
+
+  convertJSONToString(value) {
+
+    return JSON.stringify(value, 2);
+
+  }
+
+  sortJSON(o) {
+    try {
+      const isObject = (v) => ('[object Object]' === Object.prototype.toString.call(v));
+
+      if (Array.isArray(o)) {
+        return o.sort().map(v => isObject(v) ? JSON.sortJSON(v) : v);
+      } else if (isObject(o)) {
+        return Object
+          .keys(o)
+          .sort()
+          .reduce((a, k) => {
+            if (isObject(o[k])) {
+              a[k] = JSON.sort(o[k]);
+            } else if (Array.isArray(o[k])) {
+              a[k] = o[k].map(v => isObject(v) ? JSON.sortJSON(v) : v);
+            } else {
+              a[k] = o[k];
             }
 
-            this.setState({ APIPayloadID: nextProps.APIPayloadID })
-            this.props.actions.generalProcess(constants.getAPIPayloadDetail, request);
-        }
-        if (document.getElementById('diffoutput') != null) {
+            return a;
+          }, {});
+      }
 
-            document.getElementById('diffoutput').innerHTML = "";
-            this.diffUsingJS.bind(this, 0)
-        }
-    }
-    diffUsingJS(viewType) {
+      return o;
+    } catch (ex) {
 
     }
+  }
 
-    convertJSONToString(value) {
-
-        return JSON.stringify(value, 2);
-
+  ActionHandlers({ actionName, index }) {
+    // alert(index)
+    switch (actionName) {
+      case "View Request":
+        this.setState({
+          isVisible: true,
+          heading: "Request",
+          body: this.props.APIPayloadDetailData.tracking[index].request
+        })
+        break;
+      case "View Response":
+        this.setState({
+          isVisible: true,
+          heading: "Response",
+          body: this.props.APIPayloadDetailData.tracking[index].response
+        })
+        break;
+      case "View Error":
+        this.setState({ isVisible: true, heading: "Error", body: this.props.APIPayloadDetailData.tracking[index].error })
+        break;
+      default:
+        break;
     }
-    sortJSON(o) {
-        try {
-            const isObject = (v) => ('[object Object]' === Object.prototype.toString.call(v));
+  }
 
-            if (Array.isArray(o)) {
-                return o.sort().map(v => isObject(v) ? JSON.sortJSON(v) : v);
-            } else if (isObject(o)) {
-                return Object
-                    .keys(o)
-                    .sort()
-                    .reduce((a, k) => {
-                        if (isObject(o[k])) {
-                            a[k] = JSON.sort(o[k]);
-                        } else if (Array.isArray(o[k])) {
-                            a[k] = o[k].map(v => isObject(v) ? JSON.sortJSON(v) : v);
-                        } else {
-                            a[k] = o[k];
-                        }
-
-                        return a;
-                    }, {});
-            }
-
-            return o;
-        }
-        catch (ex) {
-
-        }
+  performAction(actionID) {
+    $('#modelWindows').modal('hide');
+    toaster.showToast("Request submitted successfully", "SUCCESS");
+    if (this.props.APIPayloadDetailData.payload.header) {
+      delete this.props.APIPayloadDetailData.payload.header.password;
     }
-    performAction(actionID) {
-        $('#modelWindows').modal('hide');
-        toaster.showToast("Request submitted successfully", "SUCCESS");
-        if (this.props.APIPayloadDetailData.payload.header) {
-            delete this.props.APIPayloadDetailData.payload.header.password;
-        }
-        return this.props.APIPayloadDetailData.payload;
+    return this.props.APIPayloadDetailData.payload;
 
+  }
+
+  getTrim(pLoad) {
+    let deep = _.cloneDeep(pLoad)
+    try {
+      deep = JSON.parse(deep);
+    } catch (e) {
+      deep = _.cloneDeep(pLoad);
     }
 
-    render() {
+    _.set(deep, 'header', undefined)
+    _.set(deep, 'action', undefined)
+    _.set(deep, 'channel', undefined)
+    _.set(deep, 'ipAddress', undefined)
+    _.set(deep, '__JWTORG', undefined)
+    _.set(deep, 'headersParams', undefined)
+    return this.clearEmpties(deep);
+  }
 
-        if (this.props.APIPayloadDetailData.payload) {
-            if (this.props.APIPayloadDetailData.payload.header) {
-                delete this.props.APIPayloadDetailData.payload.header.password;
-            }
+  clearEmpties(o) {
+    for (var k in o) {
+      if (!o[k] || typeof o[k] !== "object") {
+        continue;
+      }
+      if (Object.keys(o[k]).length === 0) {
+        delete o[k];
+      }
+    }
+    return o;
+  }
 
-            let action = [
-                {
-                    "type": "pageAction",
-                    "label": "Save",
-                    "labelName": "ReSubmit_Request",
-                    "params": "",
-                    "actionURI": "/" + this.props.APIPayloadDetailData.channel + "/" + this.props.APIPayloadDetailData.action
-                }
-            ]
-            let repostActionURL = this.props.APIPayloadDetailData.channel == 'Cipher' ? constants.repostAction : constants.repostActionInternal;
-            return (
+  render() {
+    if (this.props.APIPayloadDetailData.tracking) {
+      this.props.APIPayloadDetailData.tracking.forEach((elem) => {
+        _.set(elem, 'actions', [
+          { "label": "View Request", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION" },
+          { "label": "View Response", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" },
+          { "label": "View Error", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" }
+        ])
 
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="form-body" id="auditTrailSection">
-                           
-                                <h3 className="form-section" style={{ fontWeight: "bold" }}>{"JSON"}</h3>
-                                <JSONPretty id="json-pretty" style={{ height: "400", width: "1000" }} json={this.props.APIPayloadDetailData.payload}></JSONPretty>
-                                <div>
-                                    <ActionButton actionList={action} performAction={this.performAction} repostActionURL={repostActionURL} />
-                                </div>
+      })
+    }
+    if (this.props.APIPayloadDetailData.payload) {
+      if (this.props.APIPayloadDetailData.payload.header) {
+        delete this.props.APIPayloadDetailData.payload.header.password;
+      }
 
-                            
+      let action = [
+        {
+          "type": "pageAction",
+          "label": "Save",
+          "labelName": "ReSubmit_Request",
+          "params": "",
+          "actionURI": "/" + this.props.APIPayloadDetailData.channel + "/" + this.props.APIPayloadDetailData.action
+        }
+      ]
+      let repostActionURL = this.props.APIPayloadDetailData.channel == 'Cipher' ? constants.repostAction : constants.repostActionInternal;
+      let eCode = _.get(this.props.APIPayloadDetailData.response, 'errorCode', 'N/A')
+
+      return (
+        <div>
+          <div className="form-body" id="auditTrailSection">
+            <div className="row">
+              <div className={"col-md-12"}>
+
+                <div className="tabbable-line boxless">
+                  <ul className="nav nav-tabs">
+                    <li className="active">
+                      <a href="#tab_1_1" data-toggle="tab"
+                        style={{ fontWeight: "Bold", fontSize: "17px" }}>Transaction</a>
+                    </li>
+                    <li>
+                      <a href="#tab_1_2" data-toggle="tab"
+                        style={{ fontWeight: "Bold", fontSize: "17px" }}>Tracking</a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="tabbable-line">
+                  <div className="tab-content">
+                    {/* Simulator Box */}
+                    <div className="tab-pane active" id="tab_1_1">
+                      <h4 className="form-section" style={{ fontWeight: "bold" }}>{"Transaction details"}</h4>
+                      <div className="row">
+                        <div className="row">
+                          <div className={"col-md-12"}>
+                            <div className={"col-md-12"}>
+                              <div className=" col-md-3">
+                                <label className="control-label bold">{utils.getLabelByID("URI")}</label>
+                              </div>
+                              <div className=" col-md-9">
+                                <label
+                                  className="control-label ">{`/API/${this.props.APIPayloadDetailData.channel}/${this.props.APIPayloadDetailData.action}`}</label>
+                              </div>
+                              <div className=" col-md-3">
+                                <label className="control-label bold">{utils.getLabelByID("Message ID")}</label>
+                              </div>
+                              <div className=" col-md-9">
+                                <label className="control-label ">{this.props.APIPayloadDetailData.uuid}</label>
+                              </div>
+
+                              <div className=" col-md-3">
+                                <label className="control-label bold">{utils.getLabelByID("Status")}</label>
+                              </div>
+                              <div className=" col-md-9">
+                                <label
+                                  className="control-label "
+                                  style={{ color: eCode == 200 ? 'green' : 'red' }}>{eCode}</label>
+                              </div>
+                              <div className="] col-md-3">
+                                <label className="control-label bold">{utils.getLabelByID("Called At")}</label>
+                              </div>
+                              <div className=" col-md-9">
+                                <label className="control-label ">{this.props.APIPayloadDetailData.createdat}</label>
+                              </div>
+
+                              <div className=" col-md-3">
+                                <label className="control-label bold">{utils.getLabelByID("Called By User")}</label>
+                              </div>
+                              <div className=" col-md-9">
+                                <label
+                                  className="control-label ">{`${_.get(this.props.APIPayloadDetailData, 'username', 'N/A')}/${_.get(this.props.APIPayloadDetailData, 'orgcode', ' No ORG')}`}</label>
+                              </div>
+
+                              <div className=" col-md-3">
+                                <label className="control-label bold">{utils.getLabelByID("Duration")}</label>
+                              </div>
+                              <div className=" col-md-9">
+                                <label className="control-label "
+                                  style={{ color: this.props.APIPayloadDetailData.duration <= this.props.APIPayloadDetailData.avgrtt ? 'green' : 'red' }}>{this.props.APIPayloadDetailData.duration} ms</label>
+                              </div>
+                            </div>
+                          </div>
                         </div>
+                      </div>
+                      <div className={"col-md-6"}>
+                        <div className={"row"}>
+                          <div className={"col-md-6"}>
+                            <h4 className="form-section" style={{ fontWeight: "bold" }}>{"Request "}
+                            </h4>
+                          </div>
+                          <div className={"col-md-6"}><a href={"javascript:;"} className={"btn btn-default "}
+                            style={{ height: '30px', fontSize: '12px' }}
+                            onClick={this.viewFull}>Detail</a>
+                          </div>
+                        </div>
+
+                        <JSONPretty id="json-pretty" style={{ height: "400", width: "100%" }}
+                          json={this.state.viewFull ? this.props.APIPayloadDetailData.payload : this.getTrim(this.props.APIPayloadDetailData.payload)}></JSONPretty>
+                      </div>
+                      <div className={"col-md-6"}>
+                        <h4 className="form-section" style={{ fontWeight: "bold" }}>{"Response"}</h4>
+                        <JSONPretty id="json-pretty" style={{ height: "400", width: "100%" }}
+                          json={this.props.APIPayloadDetailData.response}></JSONPretty>
+                        <div>
+
+                        </div>
+                      </div>
+                      <div className={"col-md-12"}>
+                        <h4 className="form-section" style={{ fontWeight: "bold" }}>{"Error"}</h4>
+                        <JSONPretty id="json-pretty" style={{ height: "auto", width: "100%" }}
+                          json={this.props.APIPayloadDetailData.error || "Processed OK!"}></JSONPretty>
+                        <div>
+                          <ActionButton actionList={action} performAction={this.performAction}
+                            repostActionURL={repostActionURL} />
+                        </div>
+                      </div>
+                      <div className={"col-md-12"}>
+                      </div>
                     </div>
-                </div >
+                    <div className="tab-pane active" id="tab_1_2">
+                      <h4 style={{ fontWeight: "bold" }}>{"Tracking"}</h4>
+                      <Table title="" fontclass="" T
+                        gridColumns={utils.getGridColumnByName("APIPayloadListTracking")}
+                        gridData={this.props.APIPayloadDetailData.tracking}
+                        componentFunction={this.ActionHandlers}
+                      // renderPopupBody={this.renderPopupBody}
+                      />
+                      {
+                        this.state.isVisible &&
+                        <div className={"col-md-12"}>
+                          <h4 style={{ fontWeight: "bold" }}>{this.state.heading}</h4>
+                          <JSONPretty id="json-pretty" style={{ height: "auto", width: "100%" }}
+                            json={this.state.body || "N/A"}></JSONPretty>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-
-            );
-        }
-        else
-            return (<div></div>)
-
-
-    }
+      );
+    } else
+      return (
+        <div></div>
+      )
+  }
 }
+
 APIPayloadDetail.propTypes = {
-    APIPayloadDetailData: PropTypes.object
+  APIPayloadDetailData: PropTypes.object
 };
 
 function mapStateToProps(state, ownProps) {
-    return {
-        APIPayloadDetailData: state.app.APIPayLoadDetail.data
-    };
+  return {
+
+    APIPayloadDetailData: state.app.APIPayLoadDetail.data
+  };
 }
+
 function mapDispatchToProps(dispatch) {
-    return { actions: bindActionCreators(actions, dispatch) }
+  return { actions: bindActionCreators(actions, dispatch) }
 }
+
 APIPayloadDetail.displayName = "Audit Log Detail";
 export default connect(mapStateToProps, mapDispatchToProps)(APIPayloadDetail);

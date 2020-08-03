@@ -7,7 +7,12 @@ const validate = values => {
   if (!values.arabicName) {
     errors.arabicName = 'Required';
   }
-
+  if (!values.orgType) {
+    errors.orgType = 'Required';
+  }
+  if (!values.spCode) {
+    errors.spCode = 'Required';
+  }
   if (values.services) {
     errors.services = [];
     values.services.map((item, index) => {

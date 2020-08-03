@@ -1,0 +1,385 @@
+@import url('https://cdn.ek.aero/css/ek-webfonts.css');
+body {
+	overflow-x: hidden;
+	font-family: EmiratesSM,Helvetica,Arial,'Lucida Grande',sans-serif!important;
+}
+body, .dashdate .btn.btn-outline.green, .page-sidebar, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover, .dashdate .btn.btn-outline.green:hover, .btn.btn-outline.green:focus {
+	background: #353733!important;
+}
+
+.dsh_blued1:hover .dashboard-stat2 .progress, .dsh_blued2:hover .dashboard-stat2 .progress, .dsh_blued3:hover .dashboard-stat2 .progress, .dsh_blued4:hover .dashboard-stat2 .progress {
+	background: #b5b5b5 !important;
+}
+.login #arbAnchor li{
+	color: #333 !important;
+}
+.logo-default{
+	width: 111px !important;
+}
+.login .logo{
+	background: url(logo-default.jpg) top center;
+	background-repeat: no-repeat;
+	height: 100px;
+}
+body .login {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	background: #fff url(emirates-bg.png) no-repeat !important;
+	background-position: center center;
+	background-size: cover !important;
+}
+.sdg_tbl tbody img {
+    height: 55px;
+    width: 55px;
+}
+.sdg_tbl .ent_nme {
+	width: 100%;
+    display: flex;
+    height: 90px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.login .content .form-title {
+	color: #333 !important;
+}
+.login .content h4 a {
+	color: #333 !important;
+}
+a:hover {
+	cursor: pointer;
+	color: #333 !important;
+}
+.login .lng li.actv {
+	padding: 4px;
+	background: #333 !important;
+	-webkit-border-radius: 4px !important;
+	-moz-border-radius: 4px !important;
+	-ms-border-radius: 4px !important;
+	-o-border-radius: 4px !important;
+	border-radius: 4px !important;
+}
+.login .copyright {
+	margin-top: 434px !important;
+	color: #a7a7a7 !important;
+}
+@media (min-width: 992px){
+	.login .lng li.actv {
+		padding: 2px 8px !important;
+		background: #333 !important;
+	}
+}
+.sdg_tbl thead {
+	border-bottom: 2px solid #C60C30;
+	background: #f9fdf2;
+}
+
+.page-header.navbar .top-menu .navbar-nav>li.dropdown .dropdown-toggle .badge.badge-default{
+	background: #353733!important;
+}
+.page-header.navbar.navbar-fixed-top, .page-header.navbar.navbar-static-top {
+	border-top: 4px solid #C60C30;
+}
+.font-blued1-sharp, .font-blued1-sharp + small, .font-blued2-sharp, .font-blued2-sharp + small, .font-blued3-sharp, .font-blued3-sharp + small, .font-blued4-sharp, .font-blued4-sharp + small {
+	color: #C60C30!important;
+}
+.dsh_blued1:hover .dashboard-stat2, .dsh_blued2:hover .dashboard-stat2, .dsh_blued3:hover .dashboard-stat2, .dsh_blued4:hover .dashboard-stat2, .overDueBlk:hover {
+	background: #C60C30!important;
+}
+.progress-bar.blued1-sharp, .progress-bar.blued2-sharp, .progress-bar.blued3-sharp, .progress-bar.blued4-sharp {
+	background: #C60C30 !important;
+}
+.daterange_con, .page-sidebar .page-sidebar-menu>li.active.open>a, .page-sidebar .page-sidebar-menu>li.active>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.active.open>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.active>a {
+	background: #C60C30;
+}
+.daterange_con {
+	border: 1px solid #C60C30;
+}
+.dashdate .btn.btn-outline.green, .btn.btn-outline.green:focus {
+	border-color: #C60C30 !important;
+	color: #fff !important;
+}
+.portlet.light.sdg_portlet, .dashdate .modal-content {
+	border-top: 4px solid #C60C30 !important;
+}
+.sdg_tbl thead tr th {
+	color: #666;
+}
+
+
+.page-sidebar .page-sidebar-menu>li>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li>a{
+
+	border-bottom: 1px solid #40423e;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+	color: #fff;
+	background-color: #C60C30 !important;
+	border-color: #C60C30 !important;
+}
+.page-sidebar .page-sidebar-menu>li.active.open>a, .page-sidebar .page-sidebar-menu>li.active>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.active.open>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.active>a {
+	color: #fff;
+}
+.page-sidebar .page-sidebar-menu>li.open>a, .page-sidebar .page-sidebar-menu>li:hover>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.open>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li:hover>a, .page-sidebar .page-sidebar-menu>li.active>a:hover {
+	background: #C60C30 !important;
+	color: #fff;
+}
+.page-sidebar-menu-hover-submenu li:hover>.sub-menu {
+	background: #2a2b28!important;
+}
+.page-sidebar-menu-hover-submenu li:hover a>.arrow {
+	border-right: 8px solid #323550;
+}
+.page-sidebar-menu.page-sidebar-menu-hover-submenu>li:hover>.sub-menu:before, .page-sidebar-menu.page-sidebar-menu-hover-submenu>li:hover> .sub-menu.upward:after{
+	color: #C60C30;
+}
+
+
+.page-sidebar .page-sidebar-menu .sub-menu>li.active>a, .page-sidebar .page-sidebar-menu .sub-menu>li.open>a, .page-sidebar .page-sidebar-menu .sub-menu>li:hover>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li.active>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li.open>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li:hover>a {
+	background: #C60C30  !important;
+}
+
+.page-sidebar .page-sidebar-menu>li>a>i{
+	color: #fff !important;
+}
+.text-success {
+	color: #C60C30  !important;
+}
+.overDueBlk .days {
+	color: #C60C30
+}
+.overDueBlk:hover p, .overDueBlk:hover h3, .overDueBlk:hover a, .overDueBlk:hover i {
+	color: #fff !important
+}
+.btn.green:not(.btn-outline), .btn-success {
+	background-color: #C60C30 !important;
+	border-color: #C60C30 !important;
+	-webkit-border-radius: 4px !important;
+	-moz-border-radius: 4px !important;
+	border-radius: 4px !important;
+}
+.btn.green:not(.btn-outline):hover, .btn-success.active, .btn-success:active, .btn-success:hover, .open>.btn-success.dropdown-toggle {
+	background-color: #555 !important;
+	border-color: #666 !important;
+}
+.btn.green:not(.btn-outline):focus, .btn.green:not(.btn-outline):active {
+	background-color: #C60C30 !important;
+	border-color: #C60C30 !important;
+}
+.btn.btn-outline.red.active, .btn.btn-outline.red:active, .btn.btn-outline.red:active:focus, .btn.btn-outline.red:active:hover, .btn.btn-outline.red:focus, .btn.btn-outline.red:hover {
+	border-color: #009fe3;
+	color: #fff;
+	background-color: #009fe3;
+}
+.btn.btn-outline.red {
+	border-color: #C60C30 !important;
+	color: #C60C30 !important;
+	background: 0 0;
+}
+
+.btn.btn-outline.red.active, .btn.btn-outline.red:active, .btn.btn-outline.red:active:focus, .btn.btn-outline.red:active:hover, .btn.btn-outline.red:focus, .btn.btn-outline.red:hover {
+	border-color: #C60C30 !important;
+	color: #fff !important;
+	background-color: #C60C30 !important;
+}
+
+.btn.btn-outline.green.active, .btn.btn-outline.green:active, .btn.btn-outline.green:active:focus, .btn.btn-outline.green:active:hover, .btn.btn-outline.green:focus, .btn.btn-outline.green:hover {
+	border-color: #47aadf;
+	color: #FFF;
+	background-color: #47aadf;
+}
+.dashdate .btn.btn-outline.green:hover {
+	border-color: #40496a;
+}
+
+
+.page-header.navbar .page-logo{
+	background: url(emirates-logo.jpg) no-repeat;
+}body {
+	 overflow-x: hidden;
+ }
+body, .dashdate .btn.btn-outline.green, .page-sidebar, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover, .dashdate .btn.btn-outline.green:hover, .btn.btn-outline.green:focus {
+	background: #353733!important;
+}
+
+.dsh_blued1:hover .dashboard-stat2 .progress, .dsh_blued2:hover .dashboard-stat2 .progress, .dsh_blued3:hover .dashboard-stat2 .progress, .dsh_blued4:hover .dashboard-stat2 .progress {
+	background: #b5b5b5 !important;
+}
+.logo-default{
+	width: 111px !important;
+}
+.login .logo{
+	background: url(logo-default.jpg) top center;
+	background-repeat: no-repeat;
+	height: 100px;
+}
+body .login {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	background: #fff url(emirates-bg.png) no-repeat !important;
+	background-position: center center;
+	background-size: cover !important;
+}
+.login .content .form-title {
+	color: #333 !important;
+}
+.login .content h4 a {
+	color: #333 !important;
+}
+a:hover {
+	cursor: pointer;
+	color: #333 !important;
+}
+.login .lng li.actv {
+	padding: 4px;
+	background: #333 !important;
+	-webkit-border-radius: 4px !important;
+	-moz-border-radius: 4px !important;
+	-ms-border-radius: 4px !important;
+	-o-border-radius: 4px !important;
+	border-radius: 4px !important;
+}
+.login .copyright {
+	margin-top: 434px !important;
+	color: #a7a7a7 !important;
+}
+@media (min-width: 992px){
+	.login .lng li.actv {
+		padding: 2px 8px !important;
+		background: #333 !important;
+	}
+}
+.sdg_tbl thead {
+	border-bottom: 2px solid #C60C30;
+	background: #f9fdf2;
+}
+
+.page-header.navbar .top-menu .navbar-nav>li.dropdown .dropdown-toggle .badge.badge-default{
+	background: #353733!important;
+}
+.page-header.navbar.navbar-fixed-top, .page-header.navbar.navbar-static-top {
+	border-top: 4px solid #C60C30;
+}
+.font-blued1-sharp, .font-blued1-sharp + small, .font-blued2-sharp, .font-blued2-sharp + small, .font-blued3-sharp, .font-blued3-sharp + small, .font-blued4-sharp, .font-blued4-sharp + small {
+	color: #C60C30!important;
+}
+.dsh_blued1:hover .dashboard-stat2, .dsh_blued2:hover .dashboard-stat2, .dsh_blued3:hover .dashboard-stat2, .dsh_blued4:hover .dashboard-stat2, .overDueBlk:hover {
+	background: #C60C30!important;
+}
+.progress-bar.blued1-sharp, .progress-bar.blued2-sharp, .progress-bar.blued3-sharp, .progress-bar.blued4-sharp {
+	background: #C60C30 !important;
+}
+.daterange_con, .page-sidebar .page-sidebar-menu>li.active.open>a, .page-sidebar .page-sidebar-menu>li.active>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.active.open>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.active>a {
+	background: #C60C30;
+}
+.daterange_con {
+	border: 1px solid #C60C30;
+}
+.dashdate .btn.btn-outline.green, .btn.btn-outline.green:focus {
+	border-color: #C60C30 !important;
+	color: #fff !important;
+}
+.portlet.light.sdg_portlet, .dashdate .modal-content {
+	border-top: 4px solid #C60C30 !important;
+}
+.sdg_tbl thead tr th {
+	color: #666;
+}
+
+
+.page-sidebar .page-sidebar-menu>li>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li>a{
+
+	border-bottom: 1px solid #40423e;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+	color: #fff;
+	background-color: #C60C30 !important;
+	border-color: #C60C30 !important;
+}
+.page-sidebar .page-sidebar-menu>li.active.open>a, .page-sidebar .page-sidebar-menu>li.active>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.active.open>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.active>a {
+	color: #fff;
+}
+.page-sidebar .page-sidebar-menu>li.open>a, .page-sidebar .page-sidebar-menu>li:hover>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li.open>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li:hover>a, .page-sidebar .page-sidebar-menu>li.active>a:hover {
+	background: #C60C30 !important;
+	color: #fff;
+}
+.page-sidebar-menu-hover-submenu li:hover>.sub-menu {
+	background: #2a2b28!important;
+}
+.page-sidebar-menu-hover-submenu li:hover a>.arrow {
+	border-right: 8px solid #323550;
+}
+.page-sidebar-menu.page-sidebar-menu-hover-submenu>li:hover>.sub-menu:before, .page-sidebar-menu.page-sidebar-menu-hover-submenu>li:hover> .sub-menu.upward:after{
+	color: #C60C30;
+}
+
+
+.page-sidebar .page-sidebar-menu .sub-menu>li.active>a, .page-sidebar .page-sidebar-menu .sub-menu>li.open>a, .page-sidebar .page-sidebar-menu .sub-menu>li:hover>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li.active>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li.open>a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu>li:hover>a {
+	background: #C60C30  !important;
+}
+
+.page-sidebar .page-sidebar-menu>li>a>i{
+	color: #fff !important;
+}
+.text-success {
+	color: #C60C30  !important;
+}
+.overDueBlk .days {
+	color: #C60C30
+}
+.overDueBlk:hover p, .overDueBlk:hover h3, .overDueBlk:hover a, .overDueBlk:hover i {
+	color: #fff !important
+}
+.btn.green:not(.btn-outline), .btn-success {
+	background-color: #C60C30 !important;
+	border-color: #C60C30 !important;
+	-webkit-border-radius: 4px !important;
+	-moz-border-radius: 4px !important;
+	border-radius: 4px !important;
+}
+.btn.green:not(.btn-outline):hover, .btn-success.active, .btn-success:active, .btn-success:hover, .open>.btn-success.dropdown-toggle {
+	background-color: #555 !important;
+	border-color: #666 !important;
+}
+.btn.green:not(.btn-outline):focus, .btn.green:not(.btn-outline):active {
+	background-color: #C60C30 !important;
+	border-color: #C60C30 !important;
+}
+.btn.btn-outline.red.active, .btn.btn-outline.red:active, .btn.btn-outline.red:active:focus, .btn.btn-outline.red:active:hover, .btn.btn-outline.red:focus, .btn.btn-outline.red:hover {
+	border-color: #009fe3;
+	color: #fff;
+	background-color: #009fe3;
+}
+.btn.btn-outline.red {
+	border-color: #C60C30 !important;
+	color: #C60C30 !important;
+	background: 0 0;
+}
+
+.btn.btn-outline.red.active, .btn.btn-outline.red:active, .btn.btn-outline.red:active:focus, .btn.btn-outline.red:active:hover, .btn.btn-outline.red:focus, .btn.btn-outline.red:hover {
+	border-color: #C60C30 !important;
+	color: #fff !important;
+	background-color: #C60C30 !important;
+}
+
+.btn.btn-outline.green.active, .btn.btn-outline.green:active, .btn.btn-outline.green:active:focus, .btn.btn-outline.green:active:hover, .btn.btn-outline.green:focus, .btn.btn-outline.green:hover {
+	border-color: #47aadf;
+	color: #FFF;
+	background-color: #47aadf;
+}
+.dashdate .btn.btn-outline.green:hover {
+	border-color: #40496a;
+}
+
+
+.page-header.navbar .page-logo{
+	background: url("emirates-logo.jpg");
+	background-repeat: no-repeat;
+	margin-left: 3.5%;
+	width: 111px !important;
+}

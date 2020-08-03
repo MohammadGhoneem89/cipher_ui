@@ -6,7 +6,6 @@ import Label from '../../common/Lable.jsx';
 
 const GroupFilterForm = props => {
     const { handleSubmit, pristine, reset, submitting } = props;
-
     let grpType = [
         { value: "UI", label: "UI" },
         { value: "API", label: "API" },
@@ -15,44 +14,56 @@ const GroupFilterForm = props => {
         <form role="form" onSubmit={handleSubmit} >
             <div className="row">
                 <div className="col-md-6">
-                    <Label text="Group Name" columns="3"  style={{paddingTop:"25px"}}/>
+                    <Label text="Group Name" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
+                    <div className="col-md-9">
                         <TextInput
                             name="name"
-                            type="text"             
+                            type="text"
                         />
-                </div>
+                    </div>
 
+                </div>
                 <div className="col-md-6">
-                    <Label text="Description" columns="3" style={{paddingTop:"25px"}} />
+                    <Label text="Description" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
+                    <div className="col-md-9">
                         <TextInput
                             name="description"
                             type="text"
                         />
+                    </div>
+
                 </div>
 
+
             </div>
-
-
             <div className="row">
-                   <div className="col-md-6">
-                    <Label   text="Group Type"   columns="3" style={{paddingTop:"25px"}} />
-                    <DropdownInput name="type" options={grpType}/>
+
+                <div className="col-md-6">
+                    <Label text="Group Type" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
+                    <div className="col-md-9">
+                        <DropdownInput name="type" options={grpType}
+                        />
                     </div>
+
+                </div>
+
+
             </div>
 
-            <div className="row">
-            <div className=" clearfix pull-right" >
-                    
-                    <button type="submit" className="btn green" disabled={submitting} style={{marginRight:"10px"}}>
+            <div className="row clearfix pull-right">
+                <div className="col-md-2"></div>
+                <div className="col-md-4" style={{ paddingRight: '50px'}}>
+                    <button type="submit" className="btn green" disabled={submitting}>
                         Search
                     </button>
-                    <button type="button" className="btn default" disabled={pristine || submitting} onClick={reset} 
-                    style={{marginRight:"25px"}}>
+                </div>
+                
+                <div className="col-md-4">
+                    <button type="button" className="btn default" disabled={pristine || submitting} onClick={reset}>
                         Clear
-                    </button> 
-                     </div>
-                     </div>
-                     
+                    </button>
+                </div>
+            </div>
 
         </form>
     );

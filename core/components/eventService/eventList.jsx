@@ -23,7 +23,7 @@ class EventList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [] }
+        this.state = { searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [], statusListEvent: [] }
         this.pageChanged = this.pageChanged.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
         this.getRequest = this.getRequest.bind(this);
@@ -38,32 +38,24 @@ class EventList extends React.Component {
     getRequest() {
         let toDate = $("#toDate").find("input").val()
         let fromDate = $("#fromDate").find("input").val()
-        let uuid = (document.getElementById('uuid') == null || document.getElementById('uuid') == undefined) ? "" : document.getElementById('uuid').value;
-        let channel = document.getElementById('channel') == null ? "" : document.getElementById('channel').value;
-        let action = document.getElementById('action') == null ? "" : document.getElementById('action').value;
-        let dispatcher = document.getElementById('dispatcher') == null ? "" : document.getElementById('dispatcher').value;
-        let dataSource = document.getElementById('dataSource') == null ? "" : document.getElementById('dataSource').value;
+        let eventName = (document.getElementById('eventName') == null || document.getElementById('eventName') == undefined) ? "" : document.getElementById('eventName').value;
+        let status = document.getElementById('status') == null ? "" : document.getElementById('status').value;
+
 
         var searchCriteria = {
         }
 
-        if (uuid != "")
-            searchCriteria.uuid = uuid
-
-        if (channel != "")
-            searchCriteria.channel = channel
-
-        if (action != "")
-            searchCriteria.action = action
+        if (toDate != "")
+            searchCriteria.toDate = toDate;
 
         if (fromDate != "")
             searchCriteria.fromDate = fromDate;
 
-        if (dispatcher != "")
-            searchCriteria.dispatcherName = dispatcher;
+        if (eventName != "")
+            searchCriteria.eventName = eventName;
 
-        if (dataSource != "")
-            searchCriteria.dataSourceName = dataSource;
+        if (status != "")
+            searchCriteria.status = status;
 
 
         this.setState({ searchFilters: searchCriteria })
@@ -94,11 +86,19 @@ class EventList extends React.Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         this.props.actions.generalProcess(constants.getEventListData, this.getRequest());
+
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['statusListEvent']));
+
         this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/editEventRegistry/NEWEVENT", "children": [] }] })
     }
     formSubmit() {
 
         this.props.actions.generalProcess(constants.getEventListData, this.getRequest());
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.typeData.data && nextProps.typeData.data.statusListEvent) {
+            this.setState({ statusListEvent: nextProps.typeData.data.statusListEvent })
+        }
     }
     pageChanged(pageNo) {
         if (pageNo != undefined) {
@@ -183,20 +183,13 @@ class EventList extends React.Component {
 
                                                     <div className="col-md-6">
                                                         <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("EL_DataSource")}</label>
+                                                            <label className="control-label">{utils.getLabelByID("Event Name")}</label>
                                                         </div>
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="dataSource" id="dataSource" />
+                                                            <input type="text" className="form-control" name="eventName" id="eventName" />
                                                         </div>
                                                     </div>
-                                                    <div className="col-md-6">
-                                                        <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("EL_Dispatcher")}</label>
-                                                        </div>
-                                                        <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" name="dispatcher" id="dispatcher" />
-                                                        </div>
-                                                    </div>
+                                                   
                                                 </div>
 
                                                 <div className="form-actions right">
@@ -219,7 +212,7 @@ class EventList extends React.Component {
 
                     <Portlet title={utils.getLabelByID("EventList")} isPermissioned={true}
                         actions={this.state.actions}>
-                        <Table  fontclass="" gridColumns={utils.getGridColumnByName("EventListData")} gridData={this.props.EventListData.data.searchResult}
+                        <Table fontclass="" gridColumns={utils.getGridColumnByName("EventListData")} gridData={this.props.EventListData.data.searchResult}
                             totalRecords={this.props.EventListData.pageData.totalRecords} searchCallBack={this.searchCallBack} pageSize={10}
                             pagination={true} pageChanged={this.pageChanged} export={false} search={true}
                             activePage={this.state.currentPageNo} />
@@ -246,6 +239,7 @@ function mapStateToProps(state, ownProps) {
 
     return {
         EventListData: state.app.EventList,
+        typeData: state.app.typeData,
     };
 }
 function mapDispatchToProps(dispatch) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
+import {reduxForm} from 'redux-form';
 import validate from './validate';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
@@ -9,18 +9,22 @@ import Portlet from '../../common/Portlet.jsx';
 import ModalBox from '../../common/ModalBox.jsx';
 import EntityServicesForm from './OrgServicesForm.jsx';
 import EntityContactsForm from './OrgContactsForm.jsx';
+import OrgAdditionalPropsForm from './OrgAdditionalPropsForm.jsx';
+import OrgMappedCodesForm from './OrgMappedCodesForm.jsx';
 import * as utils from '../../common/utils.js';
 import ActionButton from '../../common/ActionButtonNew.jsx';
-import axios from 'axios';
-import DateControl from "react-bootstrap-datetimepicker";
-
-import { CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput } from '../../common/FormControls.jsx';
+import {CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput} from '../../common/FormControls.jsx';
 
 //https://github.com/erikras/redux-form/issues/369
-const FormSection1 = ({ error, initialValues, updateState, state, containerProps, containerState, onTimeChange }) => {
+const FormSection1 = ({error, initialValues, updateState, state, containerProps, containerState, onInputChange, welcome, handleSubmit}) => {
+  console.log(JSON.stringify(containerState))
   return (
+
+
     <div>
-      <Portlet title={"Details"}>
+
+
+      <Portlet title={"Basic Information"}>
         <div className="row">
           <div className="col-md-6 col-sm-6">
             <TextInput
@@ -29,49 +33,60 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
               type="text"
               disabled={state.readOnly}
             />
+            <br/>
             <TextInput
               name="arabicName"
               label={utils.getLabelByID("arabicName")}
               type="text"
-              style={{ textAlign: "right" }}
+              style={{textAlign: "right"}}
               disabled={state.readOnly}
             />
-            <DropdownInput name="orgType" options={containerState.typeData.ORG_TYPES}
-              label={utils.getLabelByID("ESEARCH_orgType")}
+            <br/>
+            <TextInput
+              name="clientKey"
+              label={utils.getLabelByID("Client Key")}
+              type="text"
               disabled={state.readOnly}
+            />
+            <br/>
+            <DropdownInput name="orgType" options={containerState.typeData.ORG_TYPES}
+                           label={utils.getLabelByID("ESEARCH_orgType")}
+                           disabled={state.readOnly}
             />
           </div>
+          <br/>
           <div className="col-md-6 col-sm-6 offset4">
 
-            <div className="row" style={{ display: "inline" }}>
-              <div className="col-md-6 col-sm-6" style={{ textAlign: "center" }} />
-              <div className="col-md-3 col-sm-3" style={{ textAlign: "center" }}>
+            <div className="row" style={{display: "inline"}}>
+              <div className="col-md-6 col-sm-6" style={{textAlign: "center"}}/>
+              <div className="col-md-5 col-sm-5" style={{textAlign: "center"}}>
                 <img id="EntityLogo"
-                  src={initialValues.entityLogo ? constants.baseUrl + initialValues.entityLogo.sizeMedium : "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png"}
-                  className="img-responsive img-thumbnail" alt="Entity Logo" width="110px"
-                  height="110px" />
+                     src={initialValues.entityLogo ? constants.baseUrl + initialValues.entityLogo.sizeMedium : "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png"}
+                     className="img-responsive img-thumbnail" alt="Entity Logo" width="150px"
+                     height="150px"/>
                 {!state.readOnly &&
-                  <div className="col-md-12 col-sm-12" style={{ textAlign: "center" }}>
-                    <span id="ImgUploadBtn" className="label label-primary" style={{ cursor: "pointer" }}>
-                      {utils.getLabelByID("ChangeImage")}
-                    </span>
-                    <TextInput name="entityLogo" id='ImgUploader' type='file'
-                      style={{ display: "none" }} />
-                  </div>}
+                <div className="col-md-12 col-sm-12" style={{textAlign: "center"}}>
+                            <span id="ImgUploadBtn" className="label label-primary" style={{cursor: "pointer"}}>
+                              {utils.getLabelByID("ChangeImage")}
+                            </span>
+                  <TextInput name="entityLogo" id='ImgUploader' type='file'
+                             style={{display: "none"}}/>
+                </div>}
               </div>
             </div>
           </div>
+        </div>
+        <br/>
+        <div className="row">
 
-          </div>
-          <div className="row">
 
-          <div className="col-md-6 col-sm-6">
+          <div className="col-md-3">
             <DropdownInput name="parentEntity" options={containerProps.entityNames}
-              label={utils.getLabelByID("parentEntity")}
-              disabled={state.readOnly}
+                           label={utils.getLabelByID("parentEntity")}
+                           disabled={state.readOnly}
             />
           </div>
-          <div className="col-md-6 col-sm-6" >
+          <div className="col-md-3">
             <TextInput
               name="spCode"
               label={utils.getLabelByID("ES_spCode")}
@@ -79,23 +94,26 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
               disabled={state.readOnly}
             />
           </div>
+        </div>
+        <br/>
+        <div className="row">
 
-          <div className="col-md-6 col-sm-6" >
-            <div className="col-md-3 col-sm-3" >
-              <label>Cutoff Time</label>
-            </div>
-            <div className="col-md-9 col-sm-9" >
-              <DateControl
-                mode="time"
-                id="time"
-                value={state.cutOf}
-                onChange={onTimeChange}
-                showToday={false}
-              />
-            </div>
+
+          <div className="col-md-3">
+            <DropdownInput name="cycle" options={containerState.typeData.cycle}
+                           label={utils.getLabelByID("billing cycle")}
+                           disabled={state.readOnly}
+            />
           </div>
-          <div className="col-md-6 col-sm-6" >
-            <div className="col-md-3 col-sm-3" style={{ marginTop: '10px' }}>
+          <div className="col-md-3">
+            <DropdownInput name="currency" options={containerState.typeData.currency}
+                           label={utils.getLabelByID("billing currency")}
+                           disabled={state.readOnly}
+            />
+          </div>
+
+          <div className="col-md-3">
+            <div style={{padding: "17px"}}>
               <CheckboxList>
                 <CheckboxInput
                   name="isActive"
@@ -105,22 +123,209 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
                 />
               </CheckboxList>
             </div>
-            <div className="col-md-3 col-sm-3" style={{ marginTop: '10px' }}>
-              <input type="checkbox" className="mt-checkbox mt-checkbox-single mt-checkbox-outline"
-                name="isConsolidate" id="isConsolidate" disabled={state.readOnly} />
-              <label htmlFor="isConsolidate">{'Is Consolidate'}</label><br />
-            </div>
           </div>
         </div>
 
       </Portlet>
+
+      <div className="tabbable-line boxless">
+        <ul className="nav nav-tabs">
+
+          <li className={"active"}>
+            <a href="#tab_1_1" data-toggle="tab"
+               style={{fontWeight: "Bold", fontSize: "17px"}}>Contacts</a>
+          </li>
+          <li>
+            <a href="#tab_1_3" data-toggle="tab"
+               style={{fontWeight: "Bold", fontSize: "17px"}}>Tax Codes</a>
+          </li>
+          <li>
+            <a href="#tab_1_4" data-toggle="tab"
+               style={{fontWeight: "Bold", fontSize: "17px"}}>Additional Properties</a>
+          </li>
+          <li>
+            <a href="#tab_1_5" data-toggle="tab"
+               style={{fontWeight: "Bold", fontSize: "17px"}}>Documents</a>
+          </li>
+          <li>
+            <a href="#tab_1_6" data-toggle="tab"
+               style={{fontWeight: "Bold", fontSize: "17px"}}>Public Key</a>
+          </li>
+          <li>
+            <a href="#tab_1_7" data-toggle="tab"
+               style={{fontWeight: "Bold", fontSize: "17px"}}>Mapped Codes</a>
+          </li>
+          {!state.readOnly &&
+          <li>
+            <a href="#tab_1_8" data-toggle="tab"
+               style={{fontWeight: "Bold", fontSize: "17px"}}>Welcome Kit</a>
+          </li>
+          }
+          <li>
+            <a href="#tab_1_9" data-toggle="tab"
+               style={{fontWeight: "Bold", fontSize: "17px"}}>Billing</a>
+          </li>
+        </ul>
+      </div>
+      <div className="tabbable-line">
+        <div className="tab-content">
+
+
+          <div className="tab-pane active" id="tab_1_1">
+            <FormSection5 initialValues={initialValues} updateState={updateState} state={state}/>
+          </div>
+
+          <div className="tab-pane" id="tab_1_3">
+            <Portlet title={"Tax Codes"}>
+              <div className="row">
+                <div className="col-md-6">
+
+
+                  <TextInput
+                    name="taxNO1"
+                    id="taxNO1"
+                    label={utils.getLabelByID("Tax NO 1")}
+                    type="text"
+                    disabled={state.readOnly}
+                  />
+
+                </div>
+
+                <div className="col-md-6">
+                  <TextInput
+                    name="taxNO2"
+                    id="taxNO2"
+                    label={utils.getLabelByID("Tax NO 2")}
+                    type="text"
+                    disabled={state.readOnly}
+                  />
+                </div>
+              </div>
+              <br></br>
+              <div className="row">
+                <div className="col-md-6">
+                  <TextInput
+                    name="address"
+                    id="address"
+                    label={utils.getLabelByID("Address")}
+                    type="text"
+                    disabled={state.readOnly}
+                  />
+                </div>
+              </div>
+            </Portlet>
+          </div>
+
+          <div className="tab-pane" id="tab_1_4">
+            <FormSection3 initialValues={initialValues} updateState={updateState} state={state}/>
+          </div>
+
+          <div className="tab-pane" id="tab_1_5">
+            <Portlet title={utils.getLabelByID("Documents")}>
+              <FormSection6 initialValues={initialValues} updateState={updateState} state={state}/>
+            </Portlet>
+          </div>
+
+          <div className="tab-pane" id="tab_1_6">
+            <Portlet title={"Public Key"}>
+              <div className="row">
+
+                <div className="col-md-12">
+                  <div className="col-md-12">
+                    <textarea type="text" className="form-control" disabled={state.readOnly} value={state.publicKey}
+                              name="publicKey" id="publicKey" onChange={onInputChange} rows="12"
+                              style={{resize: "none", width: "100%"}}/>
+                  </div>
+                </div>
+              </div>
+            </Portlet>
+          </div>
+
+          <div className="tab-pane" id="tab_1_7">
+            <FormSection2 initialValues={initialValues} updateState={updateState} state={state}/>
+          </div>
+
+          <div className="tab-pane" id="tab_1_8">
+            <Portlet title={"Welcome Kit"}>
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="col-md-3">
+                    <label className="bold">Email Address</label>
+                    <input type="text" className="form-control" disabled={state.readOnly}
+                           name="welcomeEmail" id="welcomeEmail"/>
+                  </div>
+                  <div className="col-md-3">
+                    <DropdownInput id="apiGroup" name="apiGroup" options={containerState.groupTypeListAPI}
+                                   label={utils.getLabelByID("Group for API user")}
+                                   disabled={state.readOnly}
+                    />
+                  </div>
+                  <div className="col-md-3">
+                    <DropdownInput name="userGroup" id="userGroup" options={containerState.groupTypeListUI}
+                                   label={utils.getLabelByID("Group for UI user")}
+                                   disabled={state.readOnly}
+                    />
+                  </div>
+                  <div className="col-md-3">
+                    <DropdownInput id="firstScreen" name="firstScreen" options={containerState.typeData.First_Screens}
+                                   label={utils.getLabelByID("First Screen")}
+                                   disabled={state.readOnly}
+                    />
+                  </div>
+
+                </div>
+                <div className="col-md-12">
+                  <div className="col-md-12">
+                    <a type="submit" className="btn btn-default dark pull-right" onClick={handleSubmit}
+                       href={"javascript:;"}
+                       style={{marginTop: "10px"}}> Generate
+                    </a>
+                  </div>
+                </div>
+                <div className="col-md-12">
+                  <div className="col-md-12">
+                    <Table
+                      pagination={false}
+                      export={false}
+                      search={false}
+                      gridColumns={utils.getGridColumnByName("welcomeKit")}
+                      gridData={welcome || []}
+                    />
+
+                  </div>
+                </div>
+              </div>
+            </Portlet>
+          </div>
+          <div className="tab-pane" id="tab_1_9">
+            <Portlet title={"Billing"}>
+              <div className="row">
+
+
+                <div className="col-md-12">
+
+                  <div className="col-md-12">
+                    <Table
+                      pagination={false}
+                      export={false}
+                      search={false}
+                      gridColumns={utils.getGridColumnByName("billingGrid")}
+                      gridData={containerState.billing || []}
+                    />
+
+                  </div>
+                </div>
+              </div>
+            </Portlet>
+          </div>
+
+        </div>
+      </div>
     </div>
-
-
   )
 };
 
-const FormSection5 = ({ initialValues, updateState, state }) => {
+const FormSection5 = ({initialValues, updateState, state, onInputChange}) => {
   let contactsActions = [
     {
       type: "link",
@@ -131,11 +336,12 @@ const FormSection5 = ({ initialValues, updateState, state }) => {
         contactsModalIsOpen: true,
         index: state.contacts.length
       })
+
     }
   ];
 
 
-  function contactActionHandlers({ actionName, index }) {
+  function contactActionHandlers({actionName, index}) {
     switch (actionName) {
       case "Edit":
         updateState({
@@ -147,11 +353,12 @@ const FormSection5 = ({ initialValues, updateState, state }) => {
         if (index > -1) {
           let a = state.contacts;
           a.splice(index, 1);
-          updateState({ contacts: a });
+          updateState({contacts: a});
         }
         break;
     }
   }
+
 
   return (
     <Portlet title={"Contacts"} actions={state.readOnly ? false : contactsActions}>
@@ -169,7 +376,155 @@ const FormSection5 = ({ initialValues, updateState, state }) => {
   )
 };
 
-const FormSection6 = ({ initialValues, updateState, state }) => {
+const FormSection2 = ({initialValues, updateState, state, onInputChange}) => {
+  let mappedCodesActions = [
+    {
+      type: "link",
+      className: "btn btn-default",
+      label: utils.getLabelByID("Add"),
+      icon: "plus",
+      actionHandler: updateState.bind(this, {
+        mappedCodesModalIsOpen: true,
+        index: state.mappedCodes.length
+      })
+
+    }
+  ];
+
+
+  function mappedCodesActionHandlers({actionName, index}) {
+    switch (actionName) {
+      case "Edit":
+        updateState({
+          mappedCodesModalIsOpen: true,
+          index
+        });
+        break;
+      case "Delete":
+        if (index > -1) {
+          let a = state.mappedCodes;
+          a.splice(index, 1);
+          updateState({mappedCodes: a});
+        }
+        break;
+    }
+  }
+
+
+  return (
+    <Portlet title={"Mapped Codes"} actions={state.readOnly ? false : mappedCodesActions}>
+      <Table
+        pagination={false}
+        export={false}
+        search={false}
+        gridColumns={utils.getGridColumnByName("mappedCodes")}
+        componentFunction={mappedCodesActionHandlers}
+        gridData={state.mappedCodes ? state.mappedCodes : []}
+        totalRecords={state.mappedCodes ? state.mappedCodes.length : 0}
+      />
+      {/* <Table
+        pagination={false}
+        export={false}
+        search={false}
+        gridColumns={utils.getGridColumnByName("entityContacts")}
+        componentFunction={contactActionHandlers}
+        gridData={state.contacts ? state.contacts : []}
+        totalRecords={state.contacts ? state.contacts.length : 0}
+      /> */}
+    </Portlet>
+
+  )
+};
+
+const FormSection3 = ({initialValues, updateState, state, onInputChange}) => {
+  let additionalPropertiesActions = [
+    {
+      type: "link",
+      className: "btn btn-default",
+      label: utils.getLabelByID("Add"),
+      icon: "plus",
+      actionHandler: updateState.bind(this, {
+        additionalPropsModalIsOpen: true,
+        index: state.additionalProps.length
+      })
+
+    }
+  ];
+
+
+  function contactActionHandlers({actionName, index}) {
+    switch (actionName) {
+      case "Edit":
+        updateState({
+          additionalPropsModalIsOpen: true,
+          index
+        });
+        break;
+      case "Delete":
+        if (index > -1) {
+          let a = state.additionalProps;
+          a.splice(index, 1);
+          updateState({additionalProps: a});
+        }
+        break;
+    }
+  }
+
+
+  return (
+    <Portlet title={"Additional Properties"} actions={state.readOnly ? false : additionalPropertiesActions}>
+      <Table
+        pagination={false}
+        export={false}
+        search={false}
+        gridColumns={utils.getGridColumnByName("additionalProperties")}
+        componentFunction={additionalPropsActionHandlers}
+        gridData={state.additionalProps ? state.additionalProps : []}
+        totalRecords={state.additionalProps ? state.additionalProps.length : 0}
+      />
+    </Portlet>
+
+  )
+};
+
+
+function mappedCodesActionHandlers({actionName, index}) {
+  switch (actionName) {
+    case "Edit":
+      updateState({
+        contactsModalIsOpen: true,
+        index
+      });
+      break;
+    case "Delete":
+      if (index > -1) {
+        let a = state.contacts;
+        a.splice(index, 1);
+        updateState({contacts: a});
+      }
+      break;
+  }
+}
+
+function additionalPropsActionHandlers({actionName, index}) {
+  switch (actionName) {
+    case "Edit":
+      updateState({
+        additionalPropsModalIsOpen: true,
+        index
+      });
+      break;
+    case "Delete":
+      if (index > -1) {
+        let a = state.additionalProps;
+        a.splice(index, 1);
+        updateState({additionalProps: a});
+      }
+      break;
+  }
+}
+
+const FormSection6 = ({initialValues, updateState, state}) => {
   function getUploadResponse(data) {
     let documents = [...state.documents];
     for (let i = 0; i < data.contextData.length; i++) {
@@ -183,8 +538,9 @@ const FormSection6 = ({ initialValues, updateState, state }) => {
       });
     }
     //documents.push(...data.contextData);
-    updateState({ documents })
+    updateState({documents})
   }
+
   function getRemoveResponse(documents) {
     console.log(documents.length, "LENGTH");
     updateState(documents);
@@ -194,13 +550,13 @@ const FormSection6 = ({ initialValues, updateState, state }) => {
     <div className="col-centered col-md-12">
       <div className="form-group">
         <FileUploader type="Document" source="AcquirerSetup"
-          initialValues={state.documents}
-          acceptedFiles="image/jpeg,image/png,image/gif,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          getUploadResponse={getUploadResponse}
-          getRemoveResponse={getRemoveResponse}
-          maxFiles="5"
-          showDropzone={!state.readOnly}
-          showAttachementGrid={true} />
+                      initialValues={state.documents}
+                      acceptedFiles="image/jpeg,image/png,image/gif,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                      getUploadResponse={getUploadResponse}
+                      getRemoveResponse={getRemoveResponse}
+                      maxFiles="5"
+                      showDropzone={!state.readOnly}
+                      showAttachementGrid={true}/>
       </div>
     </div>
   </div>);
@@ -210,6 +566,8 @@ class OrgSetupForm extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+
+
     this.state = {
       index: undefined,
       readOnly: false,
@@ -218,56 +576,21 @@ class OrgSetupForm extends React.Component {
       commissionTemplateID: "NOT_SET",
       services: [],
       contacts: [],
+      mappedCodes: [],
+      additionalProps: [],
       documents: [],
-      cutOf: undefined,
-      networkConfig: {
-        "ca": "https://dal-zbc01a.5.secure.blockchain.ibm.com:20327",
-        "username": "admin",
-        "secret": "4010f0d6b593e87872acf4ddfaf05c69",
-        "name": "peerdubaipay",
-        "mspid": "PeerOrg1",
-        "channelName": "btn-channels",
-        "orderer": {
-          "url": "grpcs://dal-zbc01b.5.secure.blockchain.ibm.com:20325",
-          "server_hostname": "dal-zbc01e.5.secure.blockchain.ibm.com",
-          "tls_cacerts": "-----BEGIN CERTIFICATE-----\r\nMIIElDCCA3ygAwIBAgIQAf2j627KdciIQ4tyS8+8kTANBgkqhkiG9w0BAQsFADBh\r\nMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\r\nd3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD\r\nQTAeFw0xMzAzMDgxMjAwMDBaFw0yMzAzMDgxMjAwMDBaME0xCzAJBgNVBAYTAlVT\r\nMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxJzAlBgNVBAMTHkRpZ2lDZXJ0IFNIQTIg\r\nU2VjdXJlIFNlcnZlciBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB\r\nANyuWJBNwcQwFZA1W248ghX1LFy949v/cUP6ZCWA1O4Yok3wZtAKc24RmDYXZK83\r\nnf36QYSvx6+M/hpzTc8zl5CilodTgyu5pnVILR1WN3vaMTIa16yrBvSqXUu3R0bd\r\nKpPDkC55gIDvEwRqFDu1m5K+wgdlTvza/P96rtxcflUxDOg5B6TXvi/TC2rSsd9f\r\n/ld0Uzs1gN2ujkSYs58O09rg1/RrKatEp0tYhG2SS4HD2nOLEpdIkARFdRrdNzGX\r\nkujNVA075ME/OV4uuPNcfhCOhkEAjUVmR7ChZc6gqikJTvOX6+guqw9ypzAO+sf0\r\n/RR3w6RbKFfCs/mC/bdFWJsCAwEAAaOCAVowggFWMBIGA1UdEwEB/wQIMAYBAf8C\r\nAQAwDgYDVR0PAQH/BAQDAgGGMDQGCCsGAQUFBwEBBCgwJjAkBggrBgEFBQcwAYYY\r\naHR0cDovL29jc3AuZGlnaWNlcnQuY29tMHsGA1UdHwR0MHIwN6A1oDOGMWh0dHA6\r\nLy9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbFJvb3RDQS5jcmwwN6A1\r\noDOGMWh0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbFJvb3RD\r\nQS5jcmwwPQYDVR0gBDYwNDAyBgRVHSAAMCowKAYIKwYBBQUHAgEWHGh0dHBzOi8v\r\nd3d3LmRpZ2ljZXJ0LmNvbS9DUFMwHQYDVR0OBBYEFA+AYRyCMWHVLyjnjUY4tCzh\r\nxtniMB8GA1UdIwQYMBaAFAPeUDVW0Uy7ZvCj4hsbw5eyPdFVMA0GCSqGSIb3DQEB\r\nCwUAA4IBAQAjPt9L0jFCpbZ+QlwaRMxp0Wi0XUvgBCFsS+JtzLHgl4+mUwnNqipl\r\n5TlPHoOlblyYoiQm5vuh7ZPHLgLGTUq/sELfeNqzqPlt/yGFUzZgTHbO7Djc1lGA\r\n8MXW5dRNJ2Srm8c+cftIl7gzbckTB+6WohsYFfZcTEDts8Ls/3HB40f/1LkAtDdC\r\n2iDJ6m6K7hQGrn2iWZiIqBtvLfTyyRRfJs8sjX7tN8Cp1Tm5gr8ZDOo0rwAhaPit\r\nc+LJMto4JQtV05od8GiG7S5BNO98pVAdvzr508EIDObtHopYJeS4d60tbvVS3bR0\r\nj6tJLp07kzQoH3jOlOrHvdPJbRzeXDLz\r\n-----END CERTIFICATE-----\r\n-----BEGIN CERTIFICATE-----\r\nMIIDrzCCApegAwIBAgIQCDvgVpBCRrGhdWrJWZHHSjANBgkqhkiG9w0BAQUFADBh\r\nMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\r\nd3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD\r\nQTAeFw0wNjExMTAwMDAwMDBaFw0zMTExMTAwMDAwMDBaMGExCzAJBgNVBAYTAlVT\r\nMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j\r\nb20xIDAeBgNVBAMTF0RpZ2lDZXJ0IEdsb2JhbCBSb290IENBMIIBIjANBgkqhkiG\r\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4jvhEXLeqKTTo1eqUKKPC3eQyaKl7hLOllsB\r\nCSDMAZOnTjC3U/dDxGkAV53ijSLdhwZAAIEJzs4bg7/fzTtxRuLWZscFs3YnFo97\r\nnh6Vfe63SKMI2tavegw5BmV/Sl0fvBf4q77uKNd0f3p4mVmFaG5cIzJLv07A6Fpt\r\n43C/dxC//AH2hdmoRBBYMql1GNXRor5H4idq9Joz+EkIYIvUX7Q6hL+hqkpMfT7P\r\nT19sdl6gSzeRntwi5m3OFBqOasv+zbMUZBfHWymeMr/y7vrTC0LUq7dBMtoM1O/4\r\ngdW7jVg/tRvoSSiicNoxBN33shbyTApOB6jtSj1etX+jkMOvJwIDAQABo2MwYTAO\r\nBgNVHQ8BAf8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUA95QNVbR\r\nTLtm8KPiGxvDl7I90VUwHwYDVR0jBBgwFoAUA95QNVbRTLtm8KPiGxvDl7I90VUw\r\nDQYJKoZIhvcNAQEFBQADggEBAMucN6pIExIK+t1EnE9SsPTfrgT1eXkIoyQY/Esr\r\nhMAtudXH/vTBH1jLuG2cenTnmCmrEbXjcKChzUyImZOMkXDiqw8cvpOp/2PV5Adg\r\n06O/nVsJ8dWO41P0jmP6P6fbtGbfYmbW0W5BjfIttep3Sp+dWOIrWcBAI+0tKIJF\r\nPnlUkiaY4IBIqDfv8NZ5YBberOgOzW6sRBc4L0na4UU+Krk2U886UAb3LujEV0ls\r\nYSEY1QSteDwsOoBrp+uvFRTp2InBuThs4pFsiv9kuXclVzDAGySj4dzp30d8tbQk\r\nCAUw7C29C79Fv1C5qfPrmAESrciIxpg0X40KPMbp1ZWVbd4=\r\n-----END CERTIFICATE-----\r\n"
-        },
-        "peerList": [
-          {
-            "peerName": "Peer1",
-            "requests": "grpcs://dal-zbc01c.5.secure.blockchain.ibm.com:20330",
-            "events": "grpcs://dal-zbc01c.5.secure.blockchain.ibm.com:20329",
-            "server_hostname": "dal-zbc01c.5.secure.blockchain.ibm.com",
-            "tls_cacerts": "-----BEGIN CERTIFICATE-----\r\nMIIElDCCA3ygAwIBAgIQAf2j627KdciIQ4tyS8+8kTANBgkqhkiG9w0BAQsFADBh\r\nMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\r\nd3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD\r\nQTAeFw0xMzAzMDgxMjAwMDBaFw0yMzAzMDgxMjAwMDBaME0xCzAJBgNVBAYTAlVT\r\nMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxJzAlBgNVBAMTHkRpZ2lDZXJ0IFNIQTIg\r\nU2VjdXJlIFNlcnZlciBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB\r\nANyuWJBNwcQwFZA1W248ghX1LFy949v/cUP6ZCWA1O4Yok3wZtAKc24RmDYXZK83\r\nnf36QYSvx6+M/hpzTc8zl5CilodTgyu5pnVILR1WN3vaMTIa16yrBvSqXUu3R0bd\r\nKpPDkC55gIDvEwRqFDu1m5K+wgdlTvza/P96rtxcflUxDOg5B6TXvi/TC2rSsd9f\r\n/ld0Uzs1gN2ujkSYs58O09rg1/RrKatEp0tYhG2SS4HD2nOLEpdIkARFdRrdNzGX\r\nkujNVA075ME/OV4uuPNcfhCOhkEAjUVmR7ChZc6gqikJTvOX6+guqw9ypzAO+sf0\r\n/RR3w6RbKFfCs/mC/bdFWJsCAwEAAaOCAVowggFWMBIGA1UdEwEB/wQIMAYBAf8C\r\nAQAwDgYDVR0PAQH/BAQDAgGGMDQGCCsGAQUFBwEBBCgwJjAkBggrBgEFBQcwAYYY\r\naHR0cDovL29jc3AuZGlnaWNlcnQuY29tMHsGA1UdHwR0MHIwN6A1oDOGMWh0dHA6\r\nLy9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbFJvb3RDQS5jcmwwN6A1\r\noDOGMWh0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbFJvb3RD\r\nQS5jcmwwPQYDVR0gBDYwNDAyBgRVHSAAMCowKAYIKwYBBQUHAgEWHGh0dHBzOi8v\r\nd3d3LmRpZ2ljZXJ0LmNvbS9DUFMwHQYDVR0OBBYEFA+AYRyCMWHVLyjnjUY4tCzh\r\nxtniMB8GA1UdIwQYMBaAFAPeUDVW0Uy7ZvCj4hsbw5eyPdFVMA0GCSqGSIb3DQEB\r\nCwUAA4IBAQAjPt9L0jFCpbZ+QlwaRMxp0Wi0XUvgBCFsS+JtzLHgl4+mUwnNqipl\r\n5TlPHoOlblyYoiQm5vuh7ZPHLgLGTUq/sELfeNqzqPlt/yGFUzZgTHbO7Djc1lGA\r\n8MXW5dRNJ2Srm8c+cftIl7gzbckTB+6WohsYFfZcTEDts8Ls/3HB40f/1LkAtDdC\r\n2iDJ6m6K7hQGrn2iWZiIqBtvLfTyyRRfJs8sjX7tN8Cp1Tm5gr8ZDOo0rwAhaPit\r\nc+LJMto4JQtV05od8GiG7S5BNO98pVAdvzr508EIDObtHopYJeS4d60tbvVS3bR0\r\nj6tJLp07kzQoH3jOlOrHvdPJbRzeXDLz\r\n-----END CERTIFICATE-----\r\n-----BEGIN CERTIFICATE-----\r\nMIIDrzCCApegAwIBAgIQCDvgVpBCRrGhdWrJWZHHSjANBgkqhkiG9w0BAQUFADBh\r\nMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\r\nd3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD\r\nQTAeFw0wNjExMTAwMDAwMDBaFw0zMTExMTAwMDAwMDBaMGExCzAJBgNVBAYTAlVT\r\nMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j\r\nb20xIDAeBgNVBAMTF0RpZ2lDZXJ0IEdsb2JhbCBSb290IENBMIIBIjANBgkqhkiG\r\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4jvhEXLeqKTTo1eqUKKPC3eQyaKl7hLOllsB\r\nCSDMAZOnTjC3U/dDxGkAV53ijSLdhwZAAIEJzs4bg7/fzTtxRuLWZscFs3YnFo97\r\nnh6Vfe63SKMI2tavegw5BmV/Sl0fvBf4q77uKNd0f3p4mVmFaG5cIzJLv07A6Fpt\r\n43C/dxC//AH2hdmoRBBYMql1GNXRor5H4idq9Joz+EkIYIvUX7Q6hL+hqkpMfT7P\r\nT19sdl6gSzeRntwi5m3OFBqOasv+zbMUZBfHWymeMr/y7vrTC0LUq7dBMtoM1O/4\r\ngdW7jVg/tRvoSSiicNoxBN33shbyTApOB6jtSj1etX+jkMOvJwIDAQABo2MwYTAO\r\nBgNVHQ8BAf8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUA95QNVbR\r\nTLtm8KPiGxvDl7I90VUwHwYDVR0jBBgwFoAUA95QNVbRTLtm8KPiGxvDl7I90VUw\r\nDQYJKoZIhvcNAQEFBQADggEBAMucN6pIExIK+t1EnE9SsPTfrgT1eXkIoyQY/Esr\r\nhMAtudXH/vTBH1jLuG2cenTnmCmrEbXjcKChzUyImZOMkXDiqw8cvpOp/2PV5Adg\r\n06O/nVsJ8dWO41P0jmP6P6fbtGbfYmbW0W5BjfIttep3Sp+dWOIrWcBAI+0tKIJF\r\nPnlUkiaY4IBIqDfv8NZ5YBberOgOzW6sRBc4L0na4UU+Krk2U886UAb3LujEV0ls\r\nYSEY1QSteDwsOoBrp+uvFRTp2InBuThs4pFsiv9kuXclVzDAGySj4dzp30d8tbQk\r\nCAUw7C29C79Fv1C5qfPrmAESrciIxpg0X40KPMbp1ZWVbd4=\r\n-----END CERTIFICATE-----\r\n",
-            "actions": [
-              { "label": "Delete Peer", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION" },
-              { "label": "Edit Peer", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" }
-            ]
-          }
-        ],
-        "peerUser": [
-          {
-            "userName": "admin",
-            "isFile": true,
-            "key": "../keystore",
-            "cert": "../signcerts",
-            "actions": [
-              { "label": "Delete User", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION" },
-              { "label": "Edit User", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" }
-            ]
-          }
-        ]
-      }
+
     };
 
     this.updateState = this.updateState.bind(this);
     this.updateServices = this.updateServices.bind(this);
     this.updateContacts = this.updateContacts.bind(this);
+    this.updateMappedCodes = this.updateMappedCodes.bind(this);
+    this.updateAdditionalProps = this.updateAdditionalProps.bind(this);
     this.submit = this.submit.bind(this);
+    this.generate = this.generate.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.onInputChangeOrderer = this.onInputChangeOrderer.bind(this);
-    this.onTimeChange = this.onTimeChange.bind(this);
-
     this.performAction = this.performAction.bind(this);
   }
 
@@ -291,57 +614,6 @@ class OrgSetupForm extends React.Component {
   }
 
 
-
-  addPeer = (e) => {
-    let peerName = document.getElementById('peerName') == null ? "" : document.getElementById('peerName').value;
-    let ServerName = document.getElementById('ServerName') == null ? "" : document.getElementById('ServerName').value;
-    let requestURL = document.getElementById('pageType') == null ? "" : document.getElementById('pageType').value;
-    let eventURL = document.getElementById('eventURL') == null ? "" : document.getElementById('eventURL').value;
-    let peercertificate = document.getElementById('peercertificate') == null ? "" : document.getElementById('peercertificate').value;
-    let netConf = _.cloneDeep(this.state.networkConfig);
-    let tupple = {
-      "peerName": peerName,
-      "requests": requestURL,
-      "events": eventURL,
-      "server_hostname": ServerName,
-      "tls_cacerts": peercertificate,
-      "actions": [
-        { "label": "Delete Peer", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION" },
-        { "label": "Edit Peer", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" }
-      ]
-    }
-
-    netConf.peerList.push(tupple);
-
-    this.setState({
-      networkConfig: netConf
-    })
-  }
-
-
-  addUser = (e) => {
-    let username = document.getElementById('username') == null ? "" : document.getElementById('username').value;
-    let usercertificate = document.getElementById('usercertificate') == null ? "" : document.getElementById('usercertificate').value;
-    let userkey = document.getElementById('userkey') == null ? "" : document.getElementById('userkey').value;
-
-    let netConf = _.cloneDeep(this.state.networkConfig);
-
-    let tupple = {
-      "userName": "admin",
-      "key": userkey,
-      "cert": usercertificate,
-      "actions": [
-        { "label": "Delete Peer", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION" },
-        { "label": "Edit Peer", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" }
-      ]
-    }
-
-    netConf.peerUser.push(tupple);
-
-    this.setState({
-      networkConfig: netConf
-    })
-  }
   onInputChange = (e) => {
 
     let value;
@@ -355,6 +627,8 @@ class OrgSetupForm extends React.Component {
       [e.target.name]: value
     })
   }
+
+
   updateServices(data) {
     data.services[this.state.index].actions = [
       {
@@ -386,15 +660,87 @@ class OrgSetupForm extends React.Component {
     });
   }
 
+  updateMappedCodes(data) {
+    data.mappedCodes[this.state.index].actions = [{
+      label: "Edit",
+      iconName: "fa fa-edit",
+      actionType: "COMPONENT_FUNCTION"
+    }];
+    this.setState({
+      mappedCodesModalIsOpen: false,
+      mappedCodes: data.mappedCodes
+    });
+  }
+
+  updateAdditionalProps(data) {
+    data.additionalProps[this.state.index].actions = [{
+      label: "Edit",
+      iconName: "fa fa-edit",
+      actionType: "COMPONENT_FUNCTION"
+    }];
+    this.setState({
+      additionalPropsModalIsOpen: false,
+      additionalProps: data.additionalProps
+    });
+  }
+
+
   componentWillReceiveProps(nextProps) {
-    if (this.state.commissionTemplateID !== nextProps.initialValues.commissionTemplate) {
+    let details = {
+      "taxNO1": "",
+      "taxNO2": "",
+      "address": "",
+      "publicKey": "",
+      "entityName": "",
+      "arabicName": "",
+      "spCode": "",
+      "shortCode": "",
+      "orgType": "",
+      "isActive": false,
+      "entityLogo": {
+        "sizeSmall": "",
+        "sizeMedium": ""
+      },
+      "parentEntity": "",
+      "commissionTemplate": "",
+      "contacts": [],
+      "mappedCodes": [],
+      "additionalProps": [],
+      "documents": [],
+      "clientKey": "",
+      "lastReconDate": "",
+      "contactType": "",
+      "services": [],
+      "welcomeEmail": "",
+
+    }
+
+    console.log("------------------->>>>>>>>>>. Props", nextProps)
+
+    if (this.state.commissionTemplateID !== nextProps.initialValues.commissionTemplate && nextProps.welcome) {
       this.setState({
         //commissionTemplateID: nextProps.initialValues.commissionTemplate,
         services: nextProps.initialValues.services,
         contacts: nextProps.initialValues.contacts,
         documents: nextProps.initialValues.documents,
-        readOnly: nextProps.containerState.readOnly
+        readOnly: nextProps.containerState.readOnly,
+        ...details,
+        ...nextProps.initialValues
       });
+    } else {
+      this.setState({
+        ...details
+      })
+    }
+
+    if (nextProps.welcome) {
+      this.setState({
+        welcome: nextProps.welcome
+      })
+    }
+
+    if (nextProps.welcomeResp) {
+      this.setState({welcome: nextProps.welcomeResp});
     }
   }
 
@@ -403,6 +749,7 @@ class OrgSetupForm extends React.Component {
   }
 
   componentDidMount() {
+    console.log("------------------->>>>>>>>>>. Props DID ", this.props)
     let _this = this;
     this.disableFileds();
     document.getElementById('ImgUploadBtn').addEventListener('click', openDialog);
@@ -422,7 +769,7 @@ class OrgSetupForm extends React.Component {
               type: files[0].type
             }
           })).then(result => {
-            _this.setState({ entityLogo: result.entityLogo })
+            _this.setState({entityLogo: result.entityLogo})
           });
         };
 
@@ -434,86 +781,108 @@ class OrgSetupForm extends React.Component {
       document.getElementById('ImgUploader').click();
     }
   }
+
   disableFileds() {
     $('#netconfig').find('input:text').attr("disabled", this.state.readOnly);
     $('#netconfig').find('textarea').attr("disabled", this.state.readOnly);
   }
+
   performAction(actionObj) {
     if (actionObj.label === "Reset") {
       this.props.reset();
     }
   }
 
-  async submit(data) {
+  submit(data) {
+
+    let taxNO1 = document.getElementById('taxNO1') == null ? "" : document.getElementById('taxNO1').value;
+    let taxNO2 = document.getElementById('taxNO2') == null ? "" : document.getElementById('taxNO2').value;
+    let address = document.getElementById('address') == null ? "" : document.getElementById('address').value;
+    let publicKey = document.getElementById('publicKey') == null ? "" : document.getElementById('publicKey').value;
+
     data.services = this.state.services;
     data.contacts = this.state.contacts;
+    data.mappedCodes = this.state.mappedCodes;
+    data.additionalProps = this.state.additionalProps;
     data.entityLogo = this.state.entityLogo ? this.state.entityLogo : data.entityLogo;
     data.documents = this.state.documents;
-    let morningTime = new Date().setHours(0, 0, 0);
-    data.cutOf = this.state.cutOf - morningTime;
-    let isConsolidate = document.getElementById('isConsolidate').checked;
-    data.isConsolidate = isConsolidate || false;
-    let isOk = false;
-    try {
-      let response = await axios.post(`${constants.baseUrl}/API/CUSTOMS/consolidationConfig`, {
-        headers: {
-          token: sessionStorage.token
-        },
-        body: {
-          orgCode: sessionStorage.orgCode,
-          eComerce: data.spCode,
-          isConsolidated: isConsolidate
 
-        }
-      });
-      if (response && response.data && response.data.errorCode == 200) {
-        isOk = true;
-        console.log('response', response)
-        return this.props.onSubmit(data);
-      } else {
-        alert(response.data.errorDescription || response.data.message)
-      }
-    } catch (error) {
-      alert('Blockchain Error')
-    }
+
+    data.taxNO1 = taxNO1;
+    data.taxNO2 = taxNO2;
+    data.address = address;
+    data.publicKey = publicKey;
+    console.log("-------------------------->>>>>>>>>>>>>>>>>>>>", data)
+    return this.props.onSubmit(data);
   }
-  onTimeChange(date) {
-    console.log('time', date)
-    this.setState({
-      cutOf: 1564394714057
+
+  generate(data) {
+
+    // welcomeEmail apiGroup userGroup firstScreen
+    let welcomeEmail = document.getElementById('welcomeEmail') == null ? "" : document.getElementById('welcomeEmail').value;
+    let apiGroup = document.getElementById('apiGroup') == null ? "" : document.getElementById('apiGroup').value;
+    let userGroup = document.getElementById('userGroup') == null ? "" : document.getElementById('userGroup').value;
+    let firstScreen = document.getElementById('firstScreen') == null ? "" : document.getElementById('firstScreen').value;
+
+    console.log("-------------------------->>>>>>>>>>>>>>>>>>>>", JSON.stringify(this.state))
+    let wc = this.state.welcome;
+    console.log("||||||||>>", welcomeEmail, apiGroup, userGroup, firstScreen);
+    wc.forEach((elem) => {
+      elem.status = 'PENDING';
+    })
+    this.setState({welcome: wc})
+
+    this.props.containerProps.actions.generalAjxProcess(constants.createOnDemandWelCome, {
+      "orgType": this.state.orgType,
+      "spCode": this.state.spCode,
+      "apiGroup": apiGroup,
+      "userGroup": userGroup,
+      "firstScreen": firstScreen,
+      "email": welcomeEmail,
+      "welcome": wc
     });
+    // return this.props.onSubmit(data);
   }
-  render() {
-    const { error, handleSubmit, pristine, reset, submitting, initialValues, containerState, containerProps } = this.props;
-    let box = document.getElementById('isConsolidate');
-    if (box) {
-      if (initialValues && initialValues.isConsolidate) {
-        box.checked = true;
-      } else {
-        box.checked = false;
-      }
-    }
 
+
+  render() {
+    console.log("----------st----------ar--", this.state)
+    const {error, handleSubmit, pristine, reset, submitting, initialValues, containerState, containerProps, welcome} = this.props;
     return (
       <div>
         <ModalBox isOpen={this.state.contactsModalIsOpen}>
           <EntityContactsForm onSubmit={this.updateContacts} initialValues={this.state}
-            index={this.state.index} updateState={this.updateState}
+                              index={this.state.index} updateState={this.updateState}
           />
         </ModalBox>
+        <ModalBox isOpen={this.state.mappedCodesModalIsOpen}>
+          <OrgMappedCodesForm onSubmit={this.updateMappedCodes} initialValues={this.state}
+                              index={this.state.index} updateState={this.updateState}
+          />
+        </ModalBox>
+
+        <ModalBox isOpen={this.state.additionalPropsModalIsOpen}>
+          <OrgAdditionalPropsForm onSubmit={this.updateAdditionalProps} initialValues={this.state}
+                                  index={this.state.index} updateState={this.updateState}
+          />
+        </ModalBox>
+
         <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)} ref={this._form = this}>
           <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state}
-            containerProps={containerProps} containerState={containerState} onTimeChange={this.onTimeChange} />
-          <FormSection5 initialValues={initialValues} updateState={this.updateState} state={this.state} />
-          <Portlet title={utils.getLabelByID("Documents")}>
-            <FormSection6 initialValues={initialValues} updateState={this.updateState} state={this.state} />
-          </Portlet>
+                        containerProps={containerProps} containerState={containerState} welcome={this.state.welcome}
+                        onInputChange={this.onInputChange} handleSubmit={this.generate}/>
+          {/* <FormSection5 initialValues={initialValues} updateState={this.updateState} state={this.state}/> */}
+          {/* <Portlet title={utils.getLabelByID("Documents")}>
+            <FormSection6 initialValues={initialValues} updateState={this.updateState} state={this.state}/>
+          </Portlet> */}
+
+
           {!this.state.readOnly &&
-            <div className="clearfix">
-              <ActionButton actionList={containerState.entityDetail.actions}
-                performAction={this.performAction}
-                submitting={submitting} pristine={pristine} />
-            </div>
+          <div className="clearfix">
+            <ActionButton actionList={containerState.entityDetail.actions}
+                          performAction={this.performAction}
+                          submitting={submitting} pristine={pristine}/>
+          </div>
           }
         </form>
       </div>

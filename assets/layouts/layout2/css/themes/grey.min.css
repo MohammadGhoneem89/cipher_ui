@@ -576,13 +576,13 @@ body .login {
     -moz-box-shadow: -1px 0px 16px 1px rgba(0, 0, 0, 0.2);
     box-shadow: -1px 0px 16px 1px rgba(0, 0, 0, 0.2);
 }
-
+/* 
 .dashboard-stat2 {
     -webkit-box-shadow: -4px 3px 19px -9px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: -4px 3px 19px -9px rgba(0, 0, 0, 0.3);
     box-shadow: -4px 3px 19px -9px rgba(0, 0, 0, 0.3);
     border: 1px solid #e7ecf1;
-}
+} */
 
 .st2 {
     background: #fff;
@@ -814,9 +814,9 @@ body .login {
 }
 
 .form-wizard .steps > li i.fa-long-arrow-right {
-    right: -10px;
-    position: absolute;
-    top: 24px;
+    right: -25px;
+    position: absolute!important;
+    top: 50px;
     font-size: 35px;
     z-index: 999;
     color: #e5e5e5;
@@ -984,9 +984,9 @@ body .login {
 .daterange_con {
     background: #4d9cd8;
     margin: 0px 0px 20px;
-    -webkit-box-shadow: -1px 3px 21px -9px rgba(0, 0, 0, 0.8);
+    /* -webkit-box-shadow: -1px 3px 21px -9px rgba(0, 0, 0, 0.8);
     -moz-box-shadow: -1px 3px 21px -9px rgba(0, 0, 0, 0.8);
-    box-shadow: -1px 3px 21px -9px rgba(0, 0, 0, 0.8);
+    box-shadow: -1px 3px 21px -9px rgba(0, 0, 0, 0.8); */
     border: 1px solid #4d9cd8;
 }
 
@@ -1135,7 +1135,7 @@ background-color: #36c6d3
     overflow: hidden;
     display: inline-block;
     background: #fefeee;
-    text-indent: -99;
+    /*text-indent: -99;*/
     border-radius: 5px !important;
     height: 30px;
     position: relative
@@ -1161,7 +1161,8 @@ background-color: #36c6d3
 }
 
 .clp_val:hover {
-    width: 150px;
+    width: auto;
+    height: auto;
     position: absolute;
     top: 5px;
     left: -35px;
@@ -2100,7 +2101,7 @@ textarea.small {
         position: absolute;
         border-radius: 30px;
         padding: 20px 18px;
-        background: #009fe3;
+        background: #7aa62d ;
         right: -20px;
         top: -20px;
 

@@ -7,7 +7,6 @@ import initialState from '../../reducers/initialState.js';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
-import PickupListSetupForm from './PickupListSetupForm.jsx';
 import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
 import _ from 'lodash';
@@ -31,6 +30,7 @@ class PickupListSetupContainer extends React.Component {
       typeName: undefined,
       type: undefined,
       addForm: {},
+      editmode: false,
       typeForm: {},
       isNew: false
     };
@@ -53,6 +53,8 @@ class PickupListSetupContainer extends React.Component {
       this.setState({ isLoading: true });
       this.props.actions.generalProcess(constants.getPickupListDetail, requestCreator.createPickupListDetailRequest(this.props.pickupListID));
     }
+
+    this.props.actions.generalProcess(constants.getTypeDataList, {})
     this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequestForType({
       "currentPageNo": 1,
       "pageSize": 10
@@ -62,16 +64,49 @@ class PickupListSetupContainer extends React.Component {
   componentWillUnmount() { }
 
   componentWillReceiveProps(nextProps, props) {
-    if (this.props.pickupListID && (nextProps.pickupListDetail !== this.state.pickupListDetail)) {
-      let pickupListDetail = _.get(nextProps.pickupListDetail, `data[0][${_.get(nextProps.pickupListDetail, 'typeName', '')}]`, []);
+    if (this.props.pickupListID && nextProps.enumList && (nextProps.pickupListDetail !== this.state.pickupListDetail)) {
+
+
+      let eList = []
+      for (let key in nextProps.enumList) {
+        eList.push({
+          "label": key,
+          "value": key
+        });
+      }
+      let pickupListDetail = _.get(nextProps.pickupListDetail, `data.data[0][${nextProps.typeName}]`, []);
+
+      let pickupListDetailIP = _.get(nextProps.pickupListDetail, `data`, {});
+      console.log(">>>>>>>>>>", JSON.stringify(pickupListDetailIP))
+      let isForign = _.get(pickupListDetailIP, 'isForign', false)
+
       if (pickupListDetail && pickupListDetail.length) {
         for (let pdl of pickupListDetail) {
-          pdl["actions"] = [
-            { label: "Can't Delete", iconName: "fa fa-ban", actionType: "COMPONENT_FUNCTION" }
-          ]
+          if (isForign) {
+            let isInActive = _.get(pdl, 'isInActive', false)
+            if (isInActive) {
+              pdl["actions"] = [
+                { label: 'Activate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" },
+                { label: 'Edit', iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
+
+              ]
+            } else {
+              pdl["actions"] = [
+                { label: 'Deactivate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" },
+                { label: 'Edit', iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
+              ]
+            }
+          } else {
+            pdl["actions"] = [
+              { label: "Delete", iconName: "fa fa-ban", actionType: "COMPONENT_FUNCTION" },
+              { label: 'Edit', iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
+            ]
+          }
         }
       }
       this.setState({
+        eList: eList,
+        isForign: isForign,
         typeDataList: nextProps.typeDataList,
         isLoading: false
       });
@@ -103,6 +138,49 @@ class PickupListSetupContainer extends React.Component {
           }
         }
         break;
+      case "Activate":
+        let resultA = confirm("Are you you want to Activate?");
+        if (resultA) {
+          if (index > -1) {
+            let a = [...this.state.pickupListDetail];
+            let interm = a[index];
+            interm.isInActive = false;
+            a.splice(index, 1);
+            interm["actions"] = [
+              { label: 'Deactivate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" },
+              { label: 'Edit', iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
+            ]
+
+            a.push(interm);
+            this.setState({ pickupListDetail: a });
+          }
+        }
+        break;
+      case "Edit":
+        if (index > -1) {
+          let a = [...this.state.pickupListDetail];
+          let interm = a[index];
+          a.splice(index, 1);
+          this.setState({ pickupListDetail: a, addForm: interm, editmode: true });
+        }
+        break;
+      case "Deactivate":
+        let resultD = confirm("Are you you want to Deactivate?");
+        if (resultD) {
+          if (index > -1) {
+            let a = [...this.state.pickupListDetail];
+            let interm = a[index];
+            interm.isInActive = true;
+            a.splice(index, 1);
+            interm["actions"] = [
+              { label: 'Activate', iconName: "fa fa-check", actionType: "COMPONENT_FUNCTION" },
+              { label: 'Edit', iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
+            ]
+            a.push(interm);
+            this.setState({ pickupListDetail: a });
+          }
+        }
+        break;
       default:
         break;
     }
@@ -110,12 +188,21 @@ class PickupListSetupContainer extends React.Component {
 
   addToList = () => {
     console.log('this.state.pickupListDetail', this.state.pickupListDetail)
+
+    if (!this.state.addForm.label || !this.state.addForm.value) {
+      return alert('label and value is required');
+    }
     if (this.state.addForm && this.state.addForm.label && this.state.addForm.value) {
+
       let temp = {
         label: this.state.addForm.label,
+        labelAr: this.state.addForm.labelAr,
+        dependent: this.state.addForm.dependent,
         value: this.state.addForm.value,
+
         actions: [
-          { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
+          { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
+          { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
         ]
       }
       this.setState({
@@ -123,6 +210,7 @@ class PickupListSetupContainer extends React.Component {
           ...this.state.pickupListDetail,
           temp
         ],
+        editmode: false,
         addForm: {}
       });
     }
@@ -137,6 +225,7 @@ class PickupListSetupContainer extends React.Component {
       id: this.state.pickupListID || undefined,
       typeName: this.state.typeForm.typeName,
       type: this.state.typeForm.type,
+      isForign: this.state.isForign,
       typeNameDetails: typeNameDetails || []
     });
   }
@@ -162,11 +251,18 @@ class PickupListSetupContainer extends React.Component {
             <Row>
               <Col>
                 <Lable columns='1' text={utils.getLabelByID("Label")} />
-                <Input fieldname='label' formname='addForm' columns='5' style={{}}
+                <Input fieldname='label' formname='addForm' columns='2' style={{}}
+                  state={this.state} actionHandler={this.generalActionHandler} />
+                <Lable columns='1' text={utils.getLabelByID("LabelAr")} />
+                <Input fieldname='labelAr' formname='addForm' columns='2' style={{ textAlign: "right" }}
                   state={this.state} actionHandler={this.generalActionHandler} />
                 <Lable columns='1' text={utils.getLabelByID("Value")} />
-                <Input fieldname='value' formname='addForm' columns='5' style={{}}
+                <Input fieldname='value' disabled={this.state.editmode} formname='addForm' columns='2' style={{}}
                   state={this.state} actionHandler={this.generalActionHandler} />
+                <Lable columns='1' text={utils.getLabelByID("Dependent")} />
+                <Select fieldname='dependent' formname='addForm' columns='2' style={{}}
+                  state={this.state} typeName="eList" dataSource={this.state} isDDL={true}
+                  multiple={false} actionHandler={this.generalActionHandler} />
               </Col>
             </Row>
             <br />
@@ -225,15 +321,11 @@ function mapStateToProps(state, ownProps) {
   let typeName;
   let type;
   let pickupListDetail;
-  if (_.get(state.app.getTypeDataDetailByID, 'data', {})) {
+  if (_.get(state.app.getTypeDataDetailByID, 'data', undefined)) {
     getTypeDataDetailByID = _.get(state.app.getTypeDataDetailByID, 'data', {});
     typeName = _.get(getTypeDataDetailByID, 'typeName', []);
     type = _.get(getTypeDataDetailByID, 'type', []);
-    pickupListDetail = getTypeDataDetailByID.data ? getTypeDataDetailByID : (getTypeDataDetailByID.data = getTypeDataDetailByID[typeName]);
-  }
-
-  if (!pickupListDetail) {
-    pickupListDetail = [];
+    pickupListDetail = _.get(state.app, 'getTypeDataDetailByID', undefined)
   }
 
   return {
@@ -244,6 +336,7 @@ function mapStateToProps(state, ownProps) {
     typeData: state.app.typeData.data,
     readOnly: ownProps.params.mode === "view",
     typeDataList: _.get(state.app, 'typeDataListByType.data.searchResult[0].data.allTypes', undefined),
+    enumList: _.get(state.app, 'enumList.data', []),
   };
 }
 

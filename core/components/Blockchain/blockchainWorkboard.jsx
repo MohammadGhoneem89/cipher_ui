@@ -66,7 +66,7 @@ class blockchainWorkboard extends React.Component {
     if (nextProps.ChannelTypeData.data.channels.length && nextProps.ChannelTypeData.data.channels.length > 0 && this.state.isLoading == true) {
       console.log(JSON.stringify(nextProps.ChannelTypeData.data.channels[0]))
 
-      let list = nextProps.ChannelTypeData.data.channels[0].label.split('-')
+      let list = nextProps.ChannelTypeData.data.channels[0].label.split('~')
       if (list && list.length && list.length == 2) {
         sessionStorage.selectedChannel = list[0]
         sessionStorage.selectedNetwork = list[1]
@@ -189,11 +189,11 @@ class blockchainWorkboard extends React.Component {
                     <div className="col-md-12 ">
                       <div className="col-md-6">
                         <ul className="daterange_con_tabs">
-                        <li className="tab_active">
-                            <a href="javascript:" onClick={this.navigateQuor}>
+                        {/* <li className="tab_active">
+                            {/* <a href="javascript:" onClick={this.navigateQuor}>
                               <img src="/assets/Resources/quorum.png"  alt="quorum" border="0" className="tablogo" />
-                            </a>
-                          </li>
+                            </a> */}
+                          {/* </li> */} 
                         <li className="tab_notactive">
                             <a href="javascript:">
                               <img src="/assets/Resources/Hyperledger_Fabric_Logo_White.png"  onClick={this.navigateHyper} className="tablogo" />

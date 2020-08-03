@@ -6,7 +6,7 @@ const config = {
     path: './',
     filename: 'index.js',
   },
-
+  devtool: 'inline-source-map',
   devServer: {
     inline: true,
     port: 3000,
@@ -15,6 +15,9 @@ const config = {
     historyApiFallback: true,
     disableHostCheck: true
   },
+  externals: [{
+    xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'
+  }],
 
   module: {
     loaders: [

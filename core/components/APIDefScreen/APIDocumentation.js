@@ -13,7 +13,6 @@ import APIDocExport from './APIDocExport.js';
 import * as toaster from '../../common/toaster.js';
 
 
-
 class APIDocumentation extends React.Component {
 
     constructor(props) {
@@ -54,20 +53,21 @@ class APIDocumentation extends React.Component {
         let orgTypes = $("#orgTypes").val() == null ? "" : $("#orgTypes").val();
         let searchCriteria = {};
         let url;
-        if (_.isEmpty(useCase) || _.isEmpty(orgTypes)){
-            toaster.showToast("UseCase and Organization must be provided", "ERROR");
+        if (_.isEmpty(useCase)){
+            toaster.showToast("UseCase must be provided", "ERROR");
         }else{
             searchCriteria.useCase = useCase;
-            searchCriteria.orgTypes = orgTypes;
+            searchCriteria.orgTypes = orgTypes == '-1' ? '': orgTypes;
             searchCriteria.useCaseLabel = this.getUseCaseLabel(this.state.useCases, useCase);
-            searchCriteria.entityLabel = this.getEntityLabel(this.state.orgTypes, orgTypes);
+            searchCriteria.entityLabel =  orgTypes == '' ? '': this.getEntityLabel(this.state.orgTypes, orgTypes);
 
+            console.log('orgTypes', orgTypes)
             let gridType = "getActiveAPIs";
             if (searchCriteria) {
                 searchCriteria = JSON.stringify(searchCriteria);
                 searchCriteria = b64EncodeUnicode(searchCriteria);
             }
-            url = constants.baseUrl + '/export/Export?searchCriteria=' + searchCriteria + '&gridType=' + gridType + '&type=' + type + '&JWT=' + sessionStorage.token;
+            url = constants.reportUrl + '/export/Export?searchCriteria=' + searchCriteria + '&gridType=' + gridType + '&type=' + type + '&JWT=' + sessionStorage.token;
             url = url.replace('amp', '');
             window.open(url,'_blank');
         }

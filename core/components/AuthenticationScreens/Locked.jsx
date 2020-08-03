@@ -1,19 +1,18 @@
-import React, {PropTypes} from 'react';
-import brandConfig from '../../../assets/skins/default/brandConfig.json';
+import React, { PropTypes } from 'react';
+import Cookies from 'js-cookie';
 import ReactDOM from 'react-dom';
-import {Link, browserHistory} from 'react-router';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import { Link, browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
-
+import { sha512 } from 'js-sha512';
 
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import * as toaster from '../../common/toaster.js';
 
 import auth from '../../auth/authenticator';
-import {baseUrl} from '../../constants/Communication.js';
-
+import { baseUrl } from '../../constants/Communication.js';
 
 class Locked extends React.Component {
 
@@ -42,13 +41,13 @@ class Locked extends React.Component {
       toaster.showToast("Password fields must not be empty please enter password.", "ERROR");
       //alert("Username, Password are required.");
     } else {
-      this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(Userid, password, sessionStorage.lang));
+      this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(Userid, sha512(password), sessionStorage.lang));
 
     }
   }
 
   componentDidUpdate() {
-
+    Cookies.remove("login");
     if (this.props.LoginResult) {
 
       //alert(sessionStorage.loginTime)
@@ -86,20 +85,20 @@ class Locked extends React.Component {
     }
     else if (this.imageExists(imgURLOtherOrg)) {
       return (<div>
-          <div style={{marginTop: "60px", paddingTop: "80px"}}>
-            <div className="row" style={{marginLeft: "-20"}}>
-              <div className="col-md-6 pull-left">
-                <img src={imgSDG} alt=""/>
-              </div>
-              <div className="col-md-6 pull-right">
-                <img src={imgURLOtherOrg} alt="" style={{width: "152px"}}/>
-              </div>
+        <div style={{ marginTop: "60px", paddingTop: "80px" }}>
+          <div className="row" style={{ marginLeft: "-20" }}>
+            <div className="col-md-6 pull-left">
+              <img src={imgSDG} alt="" />
             </div>
-
+            <div className="col-md-6 pull-right">
+              <img src={imgURLOtherOrg} alt="" style={{ width: "152px" }} />
+            </div>
           </div>
-          <br/>
-          <br/>
+
         </div>
+        <br />
+        <br />
+      </div>
       )
     }
     else {
@@ -122,7 +121,7 @@ class Locked extends React.Component {
   getLogosForSDGUser() {
     let imgURLOtherOrg = "../assets/pages/img/organization/" + this.props.orgType + ".png"
     if (this.props.orgType.toString().toUpperCase() == 'SDG' || !this.imageExists(imgURLOtherOrg))
-      return (<div className="logo"><img src="../../../assets/pages/img/organization/logo-big.png" alt=""/></div>)
+      return (<div className="logo"><img src="../../../assets/pages/img/organization/logo-big.png" alt="" /></div>)
   }
 
   redirectToLoginPage() {
@@ -140,17 +139,15 @@ class Locked extends React.Component {
     return (
 
       <div className="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid locked">
+
         <div className=" login">
-          <div id="particles-js"/>
-          <div className="content" style={{marginTop: "0px"}}>
+          <div className="content" style={{ marginTop: "0px" }}>
             <div></div>
             <div className="login-form">
               <div className="logo">
-                <img src="https://admin.qa.dubaipay.gov.ae/assets/layouts/layout2/img/emirates-logo.jpg" alt=""/>
+                <img src="https://admin.qa.dubaipay.gov.ae/assets/layouts/layout2/img/emirates-logo.jpg" alt="" />
               </div>
-              <h3 className="form-title">{brandConfig.projectName}</h3>
-
-
+              <h3 className="form-title">Cipher</h3>
               <h4>
                 {"Your session timeout, please enter password to login!"}
               </h4>
@@ -158,10 +155,10 @@ class Locked extends React.Component {
               <div className="lock-body">
                 <i className="fa fa-lock" aria-hidden="true"></i>
                 <div className="pull-left lock-avatar-block">
-                  <img src={baseUrl + sessionStorage.profilePic} className="lock-avatar"/> {sessionStorage.firstName}
-                  <br/>
+                  <img src={baseUrl + sessionStorage.profilePic} className="lock-avatar" /> {sessionStorage.firstName}
+                  <br />
                   <a href="javascript:;"
-                     onClick={this.redirectToLoginPage.bind(this)}>{"Not " + sessionStorage.firstName + "?"}</a>
+                    onClick={this.redirectToLoginPage.bind(this)}>{"Not " + sessionStorage.firstName + "?"}</a>
 
                 </div>
                 <div className="lock-form pull-left">
@@ -170,16 +167,16 @@ class Locked extends React.Component {
                     <label className="control-label visible-ie8 visible-ie9">{"Password"}</label>
                     <div className="input-icon">
 
-                      <i className="fa fa-eye" aria-hidden="true"/>
+                      <i className="fa fa-eye" aria-hidden="true" />
                       <input type="password" onKeyPress={this.handleChange}
-                             className="form-control placeholder-no-fix input-medium" id="password" autoComplete="off"
-                             placeholder="Password"
-                             name="password"/>
+                        className="form-control placeholder-no-fix input-medium" id="password" autoComplete="off"
+                        placeholder="Password"
+                        name="password" />
                     </div>
                   </div>
                   <div className="form-actions">
                     <a href="javascript:" onClick={this.check.bind(this)}
-                       className="btn green btn-block uppercase input-medium"> Login </a>
+                      className="btn green btn-block uppercase input-medium"> Login </a>
 
 
                   </div>
@@ -187,7 +184,7 @@ class Locked extends React.Component {
               </div>
             </div>
           </div>
-          <div className="copyright">{brandConfig.footer}</div>
+
         </div>
       </div>
 
@@ -211,7 +208,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
 
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 
 }
 

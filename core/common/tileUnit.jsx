@@ -33,8 +33,11 @@ class TileUnit extends React.Component {
     }
 
     abbreviateNumber(value) {
+        // Converts number to at most 2 decimal places
+        //value= Math.round(value * 100) / 100
+        value = Math.floor(value) 
         let newValue = value;
-        if (value >= 1000) {
+        if (Math.abs(value) >= 1000) {
             let suffixes = ["", "K", "M", "B", "T"];
             let suffixNum = Math.floor(("" + value).length / 3);
             let shortValue = '';
@@ -66,7 +69,7 @@ class TileUnit extends React.Component {
                     <a href="javascript:;" className={"dsh_blued" + (index + 1).toString()} key={index.toString()}
                        onClick={this.navigateToNext.bind(this, td.actionURI)}
                        style={{cursor: td.actionURI ? "" : "context-menu"}}>
-                        <div className={`col-md-${this.props.col||"3"}`}>
+                        <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                             <div className="dashboard-stat2 ">
                                 <div className="display">
                                     <div className="number">

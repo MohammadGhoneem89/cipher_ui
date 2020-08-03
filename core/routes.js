@@ -1,7 +1,8 @@
 /*standard imports*/
 import React from 'react';
 import master from './master.jsx';
-import { browserHistory, IndexRoute, Route, Router } from 'react-router';
+import Cookies from 'js-cookie';
+import {browserHistory, IndexRoute, Route, Router} from 'react-router';
 import Login from './components/AuthenticationScreens/Login.jsx';
 import notification from './components/Notifications.jsx';
 import auth from './auth/authenticator';
@@ -10,11 +11,13 @@ import EmailTemplateSetup from './components/EmailTemplateSetupScreen/EmailTempl
 import OrgSearch from './components/OrgSearchScreen/OrgSearchContainer.jsx';
 import OrgSetup from './components/OrgSetupScreen/OrgSetupContainer.jsx';
 import GroupSearch from './components/GroupSearchScreen/GroupSearchContainer.jsx';
+import ErrorCodeList from './components/errorCode/errorCodeList.jsx';
 import GroupSetup from './components/GroupSetupScreen/GroupSetupContainer.jsx';
 import UserSearch from './components/UserSearchScreen/UserSearchContainer.jsx';
 import UserSetup from './components/UserSetupScreen/UserSetupContainer.jsx';
 import WorkingCalendar from './components/WorkingCalendar/WorkingCalContainer.jsx';
 import ChangePassword from './components/AuthenticationScreens/changePassword.jsx';
+import permissionAdd from './components/AuthenticationScreens/permissionAdd.jsx';
 import PasswordPolicy from './components/PasswordPolicyScreen/PasswordPolicyContainer.jsx';
 import PickupListSearch from './components/PickupListSearchScreen/PickupListSearchContainer.jsx';
 import PickupListSetup from './components/PickupListSetupScreen/PickupListSetupContainer.jsx';
@@ -33,7 +36,8 @@ import ApplicationsRoute from '../applications/routesIndex';
 import Locked from './components/AuthenticationScreens/Locked.jsx';
 import FileTemplateSearch from './components/FileTemplateSearchScreen/FileTemplateSearchContainer.jsx';
 import FileTemplateSetup from './components/FileTemplateSetupScreen/FileTemplateSetupContainer.jsx';
-import CommissionTemplateSearch from './components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
+import CommissionTemplateSearch
+  from './components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
 import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
 import AuditLogList from './components/AuditLogScreen/auditLogList.jsx';
 
@@ -60,7 +64,12 @@ import ModuleDefinitionScreen from "./components/ModuleScreen/ModuleDefinitionSc
 import dispatchList from "./components/dispatchSource/dispatchList.jsx";
 import AddUpdateDispatcher from "./components/dispatchSource/dispatchContainer.jsx";
 import NetworkDefination from "./components/BLAConfiguration/NetworkDefinitionScreen.jsx";
+import RelayNetworkDefination from "./components/RelayConfig/RelayNetworkDefinitionScreen.jsx";
+
+
 import NetworkList from "./components/BLAConfiguration/networkList.jsx";
+import RelayNetworkList from "./components/RelayConfig/relayNetworkList.jsx";
+
 import CreateChannel from './components/Channel/CreateChannel/CreateChannelContainer.jsx';
 import ChannelList from './components/Channel/CreateChannel/channelList.jsx';
 import SmartContractList from './components/Channel/CreateSmartContract/smartcontractList.jsx';
@@ -74,128 +83,192 @@ import EndPointList from './components/endPoint/list';
 import EndPointDefination from './components/endPoint/defination';
 import ApiImport from './components/apiImport/apiImport.jsx';
 
+
+import UserDetail from "./components/reports/UserDetails.js";
+import UserRole from "./components/reports/UserRole.js";
+import RoleUser from "./components/reports/RoleUser.js";
+import ActivityLog from "./components/reports/ActivityLog.js";
+
+// Moved screens from etisalat ----------
+import FileList from "./components/Files/FileList.jsx";
+import FileData from "./components/Files/FileData.jsx";
+
 //onBoarding Routes
 import onBoardingProfileSetup from './components/onBoarding/onBoardingProfileSetup';
 import onBoardingProfileList from './components/onBoarding/onBoardingProfileList';
-import APITemplateList from "./components/APITemplate/APITemplateList";
-import APITemplateTest from "./components/APITemplate/APITemplateTest";
-import APITemplateEdit from "./components/APITemplate/APITemplateEdit";
-import ViewDocument from "../applications/WASL/components/documents/view";
+import WorkingCalendarSearch from './components/WorkingCalendar/WorkingCalendarSearch.jsx';
+import Task from "./components/Task.jsx"
+import ReportRender from "./components/report/reportRender.jsx"
+import ReportContainer from "./components/report/reportContainer.jsx"
+import ReportList from "./components/report/reportList.jsx"
+import reportRenderList from "./components/report/reportRenderList.jsx"
+import TaskDetails from "./components/TaskDetails.jsx"
+import documentList from "./components/Consent/List.jsx"
+import addDocType from "./components/Consent/Container.jsx"
+import ConsentProfile from "./components/ConsentProfile/Container.jsx"
+import ConsentProfileList from "./components/ConsentProfile/List.jsx"
+import safLogs from "./components/saf/dispatchQueue.jsx"
+import APITemplateList from '../core/components/APITemplate/APITemplateList';
+import APITemplateEdit from '../core/components/APITemplate/APITemplateEdit';
+import APITemplateTest from '../core/components/APITemplate/APITemplateTest';
 
-export default (
-  <Router history={browserHistory}>
-    <Route path="/Documentation/:useCase/:route" component={GeneratePDF} />
-    <Route path="/Locked" component={Locked} onEnter={isAuthorized} />
-    <Route path="/cipher/login" component={Login} onEnter={isAuthorized} />
-    <Route path="/blockChainViewer/:blockChainID" component={BlockchainViewerQR} onEnter={isAuthorized} />
-    {ApplicationsRoute.unAuthRouteIndex}
-    <Route component={master} onEnter={requireAuth}>
-      {/*<IndexRoute component={blockchainWorkboard}/>*/}
-      <Route path="/blockchain" component={blockchainWorkboard} />
-      <Route path="/groupList" component={GroupSearch} />
-      <Route path="/groupSetup" component={GroupSetup} />
-      <Route path="/groupSetup/:groupID" component={GroupSetup} />
-      <Route path="/userList" component={UserSearch} />
-      <Route path="/userSetup" component={UserSetup} />
-      <Route path="/userSetup/:userID" component={UserSetup} />
-      <Route path="/workingCalendarDetail" component={WorkingCalendar} />
-      <Route path="/cipher/blockchain/edit" component={BlockchainEditor} />
-      <Route path="/cipher/blockchain/blockSearch" component={BlockSearchScreen} />
-      <Route path="/cipher/blockchain/blockSearch/:blockNumber" component={BlockSearchScreen} />
-      <Route path="/cipher/blockchain/hashSearch" component={HashSearchScreen} />
-      <Route path="/cipher/blockchain/hashSearch/:hash" component={HashSearchScreen} />
-      <Route path="/cipher/consortiumSearch" component={ConsortiumSearch} />
-      <Route path="/cipher/consortiumSetup" component={ConsortiumSetup} />
-      <Route path="/cipher/consortiumSetup/:mode/:consortiumID" component={ConsortiumSetup} />
-      <Route path="/cipher/consortiums/:consortiumID/smartContracts/:smartContactID" component={SmartContract} />
-      <Route path="/cipher/:consortiumID/smartContractFiles/:smartContractIndex" component={SmartContractFileViewer} />
+// letter Routes
+import TemplateList from '../core/components/templateEngine/templateList.jsx';
+// import SampleTemplate from '../core/components/templateEngine/addSampleTemplate.jsx';
+import DocumentationContainer from "./components/DocumentationCode/DocumentationContainer.jsx";
+export default (<Router history={browserHistory}>
 
-      <Route path="/hyperledger/blockSearch" component={HyperledgerBlockSearchScreen} />
-      <Route path="/hyperledger/blockSearch/:blockNumber" component={HyperledgerBlockSearchScreen} />
-      <Route path="/hyperledger/hashSearch" component={HyperledgerHashSearchScreen} />
-      <Route path="/hyperledger/hashSearch/:hash" component={HyperledgerHashSearchScreen} />
+    <Route path="/Documentation/:useCase/:route" component={GeneratePDF}/>
+    <Route path="/Locked" component={Locked} onEnter={isAuthorized}/>
+    <Route path="/changePassword" component={ChangePassword} onEnter={isAuthorized}/>
+    <Route path="/cipher/login" component={Login} onEnter={isAuthorized}/>
+    <Route path="/blockChainViewer/:blockChainID" component={BlockchainViewerQR}
+           onEnter={isAuthorized}/> {ApplicationsRoute.unAuthRouteIndex}
+    <Route component={master} onEnter={requireAuth}> { /*
 
-      <Route path="/hyperledger/workboard" component={HyperledgerWorkboard} />
-      <Route path="/pickupListSearch" component={PickupListSearch} />
-      <Route path="/pickupListSetup" component={PickupListSetup} />
-      <Route path="/pickupListSetup/edit/:pickupListID" component={PickupListSetup} />
-      <Route path="/changePassword" component={ChangePassword} />
-      <Route path="/passwordPolicy" component={PasswordPolicy} />
-      <Route path="/APIPayloadSearch" component={APIPayloadSearch} />
-      <Route path="/APIPayloadSearch/:payLoadField/:payLoadFieldValue" component={APIPayloadSearch} />
-      <Route path="/auditLogList" component={AuditLogList} />
-      <Route path="/healthMonitor" component={HealthMonitor} />
-      <Route path="/fileTemplateSearch" component={FileTemplateSearch} />
-      <Route path="/fileTemplateSetup" component={FileTemplateSetup} />
-      <Route path="/fileTemplateSetup/edit/:fileTemplateID" component={FileTemplateSetup} />
-      <Route path="/commissionTemplateSearch" component={CommissionTemplateSearch} />
-      <Route path="/commissionTemplateSetup" component={CommissionTemplateSetup} />
-      <Route path="/commissionTemplateSetup/edit/:commissionTemplateID" component={CommissionTemplateSetup} />
-      <Route path="/notification" component={notification} />
-      <Route path="/emailTemplateSearch" component={EmailTemplateSearch} />
-      <Route path="/emailTemplateSetup" component={EmailTemplateSetup} />
-      <Route path="/emailTemplateSetup/edit/:emailTemplateID" component={EmailTemplateSetup} />
-      <Route path="/orgSearch" component={OrgSearch} />
-      <Route path="/orgSetup" component={OrgSetup} />
-      <Route path="/orgSetup/:mode/:orgID" component={OrgSetup} />
-      <Route path="/eventList" component={eventList} />
-      <Route path="/editEventRegistry/:eventName" component={AddUpdateEventList} />
-      <Route path="/dispatchQueue" component={DispatchQueue} />
-      <Route path="/datasourceList" component={DataSourceList} />
-      <Route path="/editDatasource/:datasource" component={AddUpdateDataSource} />
-      <Route path="/editMapping/:mappingName" component={AddUpdateMapping} />
-      <Route path="/mappingList" component={MappingList} />
-      <Route path="/APIDefScreen/:useCase/:route" component={APIDefScreen} />
-      <Route path="/ApiList" component={ApiList} />
-      <Route path="/NetworkList" component={NetworkList} />
-      <Route path="/ModuleList" component={ModuleList} />
-      <Route path="/editModule(/:id)" component={ModuleDefinitionScreen} />
-      <Route path="/DispatchList" component={dispatchList} />
-      <Route path="/editDispatcher/:dispatcherName" component={AddUpdateDispatcher} />
-      <Route path="/editNetwork(/:id)" component={NetworkDefination} />
-      <Route path="/CreateChannel/:id" component={CreateChannel} />
-      <Route path="/ChannelList" component={ChannelList} />
-      <Route path="/CreateSmartContract/:id" component={CreateSmartContract} />
-      <Route path="/SmartContractList" component={SmartContractList} />
-      <Route path="/SmartPlayGround(/:id)" component={SmartPlayGround} />
-      <Route path="/CreateConsortium/:id" component={CreateConsortium} />
-      <Route path="/configJs" component={vault} />
-      <Route path="/configYaml" component={vaultYaml} />
-      <Route path="/CreateChannel" component={CreateChannel} />
-      <Route path="/apiDocumentation" component={APIDocumentation} />
-      <Route path="/apiImport" component={ApiImport} />
-      <Route path="/onBoardingProfile/setup" component={onBoardingProfileSetup} />
-      <Route path="/onBoardingProfile/setup/:id" component={onBoardingProfileSetup} />
-      <Route path="/onBoardingProfile" component={onBoardingProfileList} />
-      <Route path="/endpoint" component={EndPointList} />
-      <Route path="/endpoint/:id" component={EndPointDefination} />
-      <Route path="/apiTemplate" component={APITemplateList} />
-      <Route path="/apiTemplate/:id" component={APITemplateEdit} />
-      <Route path="/apiTemplate/test/:id" component={APITemplateTest} />
-      <Route path="/document/view" component={ViewDocument} />
+
+        <IndexRoute component={blockchainWorkboard}/>*/}
+         <Route path="/DocumentationCode/:smartcontract" component={DocumentationContainer}/>
+      <Route path="/task" component={Task}/>
+      <Route path="/taskDetails/:id" component={TaskDetails}/>
+      <Route path="/blockchain" component={blockchainWorkboard}/>
+      <Route path="/groupList" component={GroupSearch}/>
+      <Route path="/groupSetup" component={GroupSetup}/>
+      <Route path="/groupSetup/:groupID" component={GroupSetup}/>
+      <Route path="/userList" component={UserSearch}/>
+      <Route path="/userSetup" component={UserSetup}/>
+      <Route path="/errorCodeList" component={ErrorCodeList}/>
+      <Route path="/workingCalendarList" component={WorkingCalendarSearch}/>
+      <Route path="/workingCalendarDetail/:ID" component={WorkingCalendar}/>
+      <Route path="/workingCalendarDetail" component={WorkingCalendar}/>
+      <Route path="/changePasswordInternal" component={ChangePassword}/>
+      <Route path="/permissionAdd/:link" component={permissionAdd}/>
+      <Route path="/userSetup/:userID" component={UserSetup}/>
+      <Route path="/workingCalendarDetail" component={WorkingCalendar}/>
+      <Route path="/cipher/blockchain/edit" component={BlockchainEditor}/>
+      <Route path="/cipher/blockchain/blockSearch" component={BlockSearchScreen}/>
+      <Route path="/cipher/blockchain/blockSearch/:blockNumber" component={BlockSearchScreen}/>
+      <Route path="/cipher/blockchain/hashSearch" component={HashSearchScreen}/>
+      <Route path="/cipher/blockchain/hashSearch/:hash" component={HashSearchScreen}/>
+      <Route path="/cipher/consortiumSearch" component={ConsortiumSearch}/>
+      <Route path="/cipher/consortiumSetup" component={ConsortiumSetup}/>
+      <Route path="/cipher/consortiumSetup/:mode/:consortiumID" component={ConsortiumSetup}/>
+      <Route path="/cipher/consortiums/:consortiumID/smartContracts/:smartContactID" component={SmartContract}/>
+      <Route path="/cipher/:consortiumID/smartContractFiles/:smartContractIndex" component={SmartContractFileViewer}/>
+
+      <Route path="/hyperledger/blockSearch" component={HyperledgerBlockSearchScreen}/>
+      <Route path="/hyperledger/blockSearch/:blockNumber" component={HyperledgerBlockSearchScreen}/>
+      <Route path="/hyperledger/hashSearch" component={HyperledgerHashSearchScreen}/>
+      <Route path="/hyperledger/hashSearch/:hash" component={HyperledgerHashSearchScreen}/>
+
+      <Route path="/hyperledger/workboard" component={HyperledgerWorkboard}/>
+      <Route path="/pickupListSearch" component={PickupListSearch}/>
+      <Route path="/pickupListSetup" component={PickupListSetup}/>
+      <Route path="/pickupListSetup/edit/:pickupListID" component={PickupListSetup}/>
+      <Route path="/apiTemplate" component={APITemplateList}/>
+      <Route path="/apiTemplate/:id" component={APITemplateEdit}/>
+      <Route path="/apiTemplate/test/:id" component={APITemplateTest}/>
+      <Route path="/passwordPolicy" component={PasswordPolicy}/>
+      <Route path="/APIPayloadSearch" component={APIPayloadSearch}/>
+      <Route path="/APIPayloadSearch/:payLoadField/:payLoadFieldValue" component={APIPayloadSearch}/>
+      <Route path="/auditLogList" component={AuditLogList}/>
+      <Route path="/healthMonitor" component={HealthMonitor}/>
+      <Route path="/fileTemplateSearch" component={FileTemplateSearch}/>
+      <Route path="/fileTemplateSetup" component={FileTemplateSetup}/>
+      <Route path="/fileTemplateSetup/edit/:fileTemplateID" component={FileTemplateSetup}/>
+      <Route path="/commissionTemplateSearch" component={CommissionTemplateSearch}/>
+      <Route path="/commissionTemplateSetup" component={CommissionTemplateSetup}/>
+      <Route path="/commissionTemplateSetup/edit/:commissionTemplateID" component={CommissionTemplateSetup}/>
+      <Route path="/notification" component={notification}/>
+      <Route path="/emailTemplateSearch" component={EmailTemplateSearch}/>
+      <Route path="/emailTemplateSetup" component={EmailTemplateSetup}/>
+      <Route path="/emailTemplateSetup/edit/:emailTemplateID" component={EmailTemplateSetup}/>
+      <Route path="/orgSearch" component={OrgSearch}/>
+      <Route path="/orgSetup" component={OrgSetup}/>
+      <Route path="/orgSetup/:mode/:orgID" component={OrgSetup}/>
+      <Route path="/eventList" component={eventList}/>
+      <Route path="/editEventRegistry/:eventName" component={AddUpdateEventList}/>
+      <Route path="/dispatchQueue" component={DispatchQueue}/>
+      <Route path="/datasourceList" component={DataSourceList}/>
+      <Route path="/editDatasource/:datasource" component={AddUpdateDataSource}/>
+      <Route path="/editMapping/:mappingName" component={AddUpdateMapping}/>
+      <Route path="/mappingList" component={MappingList}/>
+      <Route path="/APIDefScreen/:useCase/:route" component={APIDefScreen}/>
+      <Route path="/ApiList" component={ApiList}/>
+      <Route path="/NetworkList" component={NetworkList}/>
+      <Route path="/RelayNetworkList" component={RelayNetworkList}/>
+      <Route path="/safLogs" component={safLogs}/>
+
+      <Route path="/ModuleList" component={ModuleList}/>
+      <Route path="/ReportRender/(:id)" component={ReportRender}/>
+      <Route path="/ReportAddUpdate/(:id)" component={ReportContainer}/>
+      <Route path="/ReportList" component={ReportList}/>
+      <Route path="/ReportRenderList" component={reportRenderList}/>
+      <Route path="/editModule(/:id)" component={ModuleDefinitionScreen}/>
+      <Route path="/DispatchList" component={dispatchList}/>
+      <Route path="/editDispatcher/:dispatcherName" component={AddUpdateDispatcher}/>
+      <Route path="/documentList" component={documentList}/>
+      <Route path="/addDocType/(:id)" component={addDocType}/>
+
+
+      <Route path="/ConsentProfileList" component={ConsentProfileList}/>
+      <Route path="/ConsentProfile/(:id)" component={ConsentProfile}/>
+
+
+      <Route path="/general/userDetail/:id" component={UserDetail}/>
+      <Route path="/general/userRole/:id" component={UserRole}/>
+      <Route path="/general/roleUser/:id" component={RoleUser}/>
+      <Route path="/general/activityLog/:id" component={ActivityLog}/>
+
+      <Route path="/editRelayNetwork(/:id)" component={RelayNetworkDefination}/>
+      <Route path="/editNetwork(/:id)" component={NetworkDefination}/>
+      <Route path="/CreateChannel/:id" component={CreateChannel}/>
+      <Route path="/ChannelList" component={ChannelList}/>
+      <Route path="/CreateSmartContract/:id" component={CreateSmartContract}/>
+      <Route path="/SmartContractList" component={SmartContractList}/>
+      <Route path="/SmartPlayGround(/:id)" component={SmartPlayGround}/>
+      <Route path="/CreateConsortium/:id" component={CreateConsortium}/>
+      <Route path="/configJs" component={vault}/>
+      <Route path="/configYaml" component={vaultYaml}/>
+      <Route path="/CreateChannel" component={CreateChannel}/>
+      <Route path="/apiDocumentation" component={APIDocumentation}/>
+      <Route path="/apiImport" component={ApiImport}/>
+      <Route path="/onBoardingProfile/setup" component={onBoardingProfileSetup}/>
+      <Route path="/onBoardingProfile/setup/:id" component={onBoardingProfileSetup}/>
+      <Route path="/onBoardingProfile" component={onBoardingProfileList}/>
+      <Route path="/endpoint" component={EndPointList}/>
+      <Route path="/endpoint/:id" component={EndPointDefination}/>
+      <Route path="/fileList" component={FileList}/>
+      <Route path="/fileList/:type" component={FileList}/>
+      <Route path="/fileData/:id" component={FileData}/>
+      
+      <Route path="/templateList" component={TemplateList}/>
       {ApplicationsRoute.routesIndex}
     </Route>
-    <Route path="*" components={NotFound} />
+    <Route path="*" components={NotFound}/>
   </Router>
 );
 
 
 function requireAuth(nextState, replace) {
   if (!auth.loggedIn()) {
-
+    Cookies.remove("login");
+    Cookies.remove("token");
     replace({
       pathname: '/cipher/login',
-      state: { nextPathname: nextState.location.pathname }
+      state: {nextPathname: nextState.location.pathname}
     })
   }
 }
 
 function isAuthorized(nextState, replace) {
+  // if (nextState.location.pathname == '/cipher/login') {
+  //   return auth.logOut();
+  // }
   if (auth.loggedIn()) {
-
     replace({
-      pathname: '/blockchain',
-      state: { nextPathname: nextState.location.pathname }
+      pathname: sessionStorage.firstScreen,
+      state: {nextPathname: nextState.location.pathname}
     })
   }
 

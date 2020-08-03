@@ -8,6 +8,7 @@ import * as constants from '../../constants/Communication.js';
 import _ from 'lodash';
 import * as requestCreator from '../../common/request.js';
 import APIDefScreenForm from './APIDefScreenForm.jsx';
+
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import find from 'lodash/find';
@@ -18,12 +19,14 @@ const initialState = {
   APIDefinitionAddUpdate: {
     "useCase": "",
     "route": "",
+    "estimatedRtt": 10000,
     "isBilled": false,
     "billingDate": (new Date().getTime()),
     "documentPath": "",
     "isActive": false,
     "isBlockchainProcess": false,
     "isBlockchain": false,
+    "isRelay": false,
     "isSimulated": false,
     "isRouteOveride": false,
     "fieldName": "",
@@ -42,15 +45,21 @@ const initialState = {
     "simulatorResponse": "",
     "ResponseMapping": "",
     "RequestMapping": "",
-    "endpointName": "",
+    "isHMAC": false,
     "isValBypass": false,
     "isResValBypass": false,
     "isResponseMapDisable": false,
     isBlockchainGet: false,
     isOffchainGet: false,
     responseParameters: [],
-    requestParameters: []
+    requestParameters: [],
+    RelayNet: "",
+    RemoteAPI: ""
   },
+  resultSet: [],
+  columnList: [],
+  RelayNetworks: [],
+  BillingPolicy: [],
   selectedRuleList: [],
   MappingOrgFieldData: [],
   simucases: [],
@@ -58,6 +67,7 @@ const initialState = {
   typeData: {},
   consortium: [],
   channel: [],
+  maxVal: 1,
   selectedConsortium: undefined,
   selectedChannel: undefined,
   smartcontract: [],
@@ -70,8 +80,12 @@ const initialState = {
   requestParams: [],
   responseParams: [],
   getEndpointListView: [],
-  generateMappingFile: {}
+  generateMappingFile: {},
+  reportContainer: {},
+  actionList: [],
+  List: []
 };
+
 class APIDefinitionScreen extends React.Component {
 
   constructor(props) {
@@ -81,18 +95,19 @@ class APIDefinitionScreen extends React.Component {
     this.ActionHandlers = this.ActionHandlers.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.addRowRule = this.addRowRule.bind(this);
+    this.addPolicyRule = this.addPolicyRule.bind(this);
     this.onInputRuleEngine = this.onInputRuleEngine.bind(this);
     this.onInputChangeRequest = this.onInputChangeRequest.bind(this);
     this.navigateReq = this.navigateReq.bind(this);
     this.navigateRes = this.navigateRes.bind(this);
     this.onDateChange = this.onDateChange.bind(this);
     this.state = cloneDeep(initialState)
-
   }
 
   componentWillMount() {
 
   }
+
   navigateReq() {
     let data = cloneDeep(this.state.APIDefinitionAddUpdate);
     let RequestMapping = (data.RequestMapping === "" ? this.state.MappingConfigList.REQUEST[0].value : data.RequestMapping);
@@ -105,6 +120,7 @@ class APIDefinitionScreen extends React.Component {
     if (uri.label)
       browserHistory.push(`/editMapping/${uri.label}`)
   }
+
   navigateRes() {
     let data = cloneDeep(this.state.APIDefinitionAddUpdate);
     let ResponseMapping = (data.ResponseMapping === "" ? this.state.MappingConfigList.RESPONSE[0].value : data.ResponseMapping);
@@ -116,15 +132,44 @@ class APIDefinitionScreen extends React.Component {
     })
     if (uri.label)
       browserHistory.push(`/editMapping/${uri.label}`)
-
   }
+
+  addPolicyRule() {
+    let from = document.getElementById('fromUnit') == null ? "" : document.getElementById('fromUnit').value;
+    let to = document.getElementById('toUnit') == null ? "" : document.getElementById('toUnit').value;
+    let billVal = document.getElementById('billVal') == null ? "" : document.getElementById('billVal').value;
+
+    if (!billVal || !from || !to) {
+      alert(`All fields is required!!`)
+      return;
+    }
+    let tupple = {
+      from, to, billVal,
+      actions: [
+        { label: "Delete Policy", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
+      ]
+    }
+    let list = this.state.BillingPolicy;
+    list.push(tupple);
+    this.setState({ BillingPolicy: list });
+    document.getElementById('fromUnit').value = '';
+    document.getElementById('toUnit').value = '';
+    document.getElementById('billVal').value = '';
+    this.state.BillingPolicy.forEach((elem) => {
+      if (elem.to > this.state.maxVal) {
+        this.setState({
+          maxVal: parseInt(elem.to) + 1
+        });
+      }
+    })
+  }
+
   addRowRule() {
     let BlockRuleName = document.getElementById('BlockRuleName') == null ? "" : document.getElementById('BlockRuleName').value;
     let channel = document.getElementById('channel') == null ? "" : document.getElementById('channel').value;
     let consortium = document.getElementById('consortium') == null ? "" : document.getElementById('consortium').value;
     let smartcontractid = document.getElementById('smartcontract') == null ? "" : document.getElementById('smartcontract').value;
     let smartcontract = $("#smartcontract").find("option[value='" + $("#smartcontract").val() + "']").text();
-   
     let smartcontractFunc = document.getElementById('smartcontractFunc') == null ? "" : document.getElementById('smartcontractFunc').value;
     let type = document.getElementById('type') == null ? "" : document.getElementById('type').value;
     let channelText = $("#channel option:selected").text();
@@ -207,6 +252,7 @@ class APIDefinitionScreen extends React.Component {
       }
     }
   }
+
   onDateChange = (value) => {
     //alert(value)
     this.state.APIDefinitionAddUpdate.billingDate = value;
@@ -258,12 +304,9 @@ class APIDefinitionScreen extends React.Component {
     })
 
 
-
-
   }
 
   containsObject(refObj, list) {
-
     for (let i = 0; i < list.length; i++) {
       let obj = list[i];
       if (
@@ -273,22 +316,87 @@ class APIDefinitionScreen extends React.Component {
         return true;
       }
     }
-
     return false;
   }
+  containsObjectADHOC(refObj, list) {
+    for (let i = 0; i < list.length; i++) {
+      let obj = list[i];
+      if (
+        obj.fieldName == refObj.fieldName
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+  addvalue = (e) => {
+    let label = document.getElementById('label') == null ? "" : document.getElementById('label').value;
+    let action = document.getElementById('action') == null ? "" : document.getElementById('action').value;
+
+    if (label.trim() == '' || action.trim() == '') {
+      alert(`All values are is required!!`)
+      return;
+    }
+    let rules = this.state.actionList;
+
+    let data = {
+      label,
+      URI: action,
+      actions: [
+        { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }
+      ]
+    }
+
+    $(`#label`).val('');
+    $(`#action`).val('');
+
+    rules.push(data);
+    this.setState({ actionList: rules });
+
+
+  }
+  test = (e) => {
+
+    let queryStrCnt = document.getElementById('queryStrCnt') == null ? "" : document.getElementById('queryStrCnt').value;
+    let queryStr = document.getElementById('queryStr') == null ? "" : document.getElementById('queryStr').value;
+
+    let sc = {}
+    this.state.List.forEach((elem) => {
+      _.set(sc, elem.fieldName, undefined);
+    })
+
+    this.props.actions.generalProcess(constants.testPagination, {
+      "actionType": "triggerLocal",
+      "searchCriteria": sc,
+      "filters": [],
+      "actionList": this.state.actionList,
+      "connectionString": this.state.APIDefinitionAddUpdate.connectionStringRep,
+      "queryStrCnt": this.state.APIDefinitionAddUpdate.queryStrCnt,
+      "queryStr": this.state.APIDefinitionAddUpdate.queryStr,
+      "page": {
+        "currentPageNo": 1,
+        "pageSize": 10
+      }
+    });
+  }
   addRow() {
+    let SimulatorRequest = document.getElementById('SimulatorRequest') == null ? "" : document.getElementById('SimulatorRequest').value;
     let SimulatorResponse = document.getElementById('SimulatorResponse') == null ? "" : document.getElementById('SimulatorResponse').value;
     let SimuValue = document.getElementById('SimuValue') == null ? "" : document.getElementById('SimuValue').value;
     let SimuField = document.getElementById('SimuField') == null ? "" : document.getElementById('SimuField').value;
     let RuleName = document.getElementById('RuleName') == null ? "" : document.getElementById('RuleName').value;
-
     let data = this.state.simucases;
     let newtupple = {
+      SimulatorRequest: SimulatorRequest,
       SimulatorResponse: SimulatorResponse,
       SimuValue: SimuValue,
       SimuField: SimuField,
       RuleName: RuleName,
-      actions: [{ label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }, { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }],
+      actions: [{ label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" }, {
+        label: "Edit",
+        iconName: "fa fa-edit",
+        actionType: "COMPONENT_FUNCTION"
+      }],
     }
 
     if (SimulatorResponse.trim() == "") {
@@ -310,6 +418,15 @@ class APIDefinitionScreen extends React.Component {
       alert("Simulator Response must be a Parsable JSON format!");
       return false;
     }
+
+    try {
+      let jsonReq = JSON.parse(SimulatorRequest.trim())
+    } catch (ex) {
+      alert("Simulator Request must be a Parsable JSON format!");
+      return false;
+    }
+
+
     this.clearFields();
     data.push(newtupple);
     this.setState({ simucases: data });
@@ -324,11 +441,12 @@ class APIDefinitionScreen extends React.Component {
   };
 
   componentDidMount() {
+    this.props.actions.updateStore({ triggerLocal: {} });
     this.props.actions.generalProcess(constants.getConsortiumTypeList);
     this.props.actions.generalProcess(constants.getMappingList);
-    this.props.actions.generalProcess(constants.getAdaptorsList);
+    // this.props.actions.generalProcess(constants.getAdaptorsList);
     this.props.actions.generalProcess(constants.getEndpointListView);
-
+    this.props.actions.generalProcess(constants.getRelayNetworkConfigListTd);
 
 
     this.props.actions.generalProcess(constants.getAvailableObjectsList, {
@@ -343,7 +461,8 @@ class APIDefinitionScreen extends React.Component {
       objectType: this.state.objectType || '',
     });
 
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['request_operator', 'database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES', 'bchain_rule_Type','UseCase']));
+  
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['currency', 'cycle', 'request_operator', 'database_available_objects', 'database_object_types', 'database_adaptors', 'database_types', 'API_Authtypes', 'API_ComMode', 'ORG_TYPES', 'bchain_rule_Type', 'USE_CASE', 'adhoc_datatype']));
     if (this.props.useCase !== "NEWCASE" && this.props.route !== "NEWROUTE") {
       let req = {
         useCase: this.props.useCase,
@@ -361,12 +480,95 @@ class APIDefinitionScreen extends React.Component {
     $('#blockchainRoutingDefination').find('textarea').val('');
 
   }
+
   clearFields() {
     $('#simuDefination').find('input:text').val('');
     $('#simuDefination').find('textarea').val('');
 
   }
+
+  add = (e) => {
+
+    let fieldName = document.getElementById('fieldName') == null ? "" : document.getElementById('fieldName').value;
+    let dataType = document.getElementById('dataType') == null ? "" : document.getElementById('dataType').value;
+    let testVal = document.getElementById('testVal') == null ? "" : document.getElementById('testVal').value;
+
+    if (
+      _.isEmpty(fieldName) ||
+      _.isEmpty(dataType)
+    ) {
+      alert("All fields are required");
+      return false;
+    }
+
+    let tupple = {
+      fieldName,
+      dataType,
+      testVal,
+      // span,
+      "actions": [
+        { label: "Move UP", iconName: "fa fa-arrow-up", actionType: "COMPONENT_FUNCTION" },
+        { label: "Move Down", iconName: "fa fa-arrow-down", actionType: "COMPONENT_FUNCTION" },
+        { "label": "edit", "iconName": "fa fa-edit", "actionType": "COMPONENT_FUNCTION" },
+        { "label": "delete", "iconName": "fa fa-trash", "actionType": "COMPONENT_FUNCTION" }
+      ]
+    }
+
+    if (this.containsObjectADHOC(tupple, this.state.List) === false) {
+      this.clearFieldsPeer()
+      let List = _.cloneDeep(this.state.List);
+      List.push(tupple)
+      this.setState({ List: List })
+    } else {
+      alert("Code Already Exists!!")
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
+    console.log(JSON.stringify(nextProps.triggerLocal))
+    if (!_.isEmpty(nextProps.triggerLocal)) {
+      let columnList = [];
+      let columnLen = {};
+
+      nextProps.triggerLocal.data.searchResult.forEach((elem, index) => {
+        let keys = Object.keys(elem)
+        keys.forEach((key) => {
+          console.log(key);
+          let x = _.get(elem, key, '')
+
+          if (index == 0) {
+            columnList.push({ alias: key, key: key, type: "string" })
+          }
+
+          let y = _.get(columnLen, key, 0)
+          if (y < String(x).length) {
+            _.set(columnLen, key, String(x).length)
+          }
+        })
+      });
+
+      columnList.forEach((elem) => {
+        let y = _.get(columnLen, elem.key, 0)
+        if (y > 30) {
+          elem.type = 'clpVal';
+        }
+      })
+      columnList.forEach((elem) => {
+        if (elem.key == 'actions')
+          elem.type = 'action';
+        if (elem.key == 'id')
+          elem.type = 'hiddenID';
+      })
+
+      console.log(JSON.stringify(columnList))
+      this.setState({
+        resultSet: nextProps.triggerLocal.data.searchResult,
+        columnList: columnList,
+        gridLoading: false
+      });
+      return;
+    }
+
     if (nextProps.parameters) {
 
       let params = this.state.parameters || {};
@@ -375,12 +577,16 @@ class APIDefinitionScreen extends React.Component {
         parameters: Object.assign(params, nextProps.parameters)
       })
     }
+    let BillingPolicy = _.get(nextProps, 'APIDefinitionAddUpdate.data.BillingPolicy', []);
 
-
-
+    if (nextProps.RelayNetworks) {
+      // alert("nextProps.RelayNetworks")
+      this.setState({
+        RelayNetworks: nextProps.RelayNetworks
+      })
+    }
 
     if (nextProps.getEndpointListView.data) {
-
       this.setState({
         getEndpointListView: nextProps.getEndpointListView.data
       });
@@ -396,9 +602,18 @@ class APIDefinitionScreen extends React.Component {
           ];
           return item;
         });
+        BillingPolicy.forEach((elem) => {
+          if (elem.to > this.state.maxVal) {
+            this.setState({
+              maxVal: parseInt(elem.to) + 1
+            });
+          }
+        })
         this.setState({
-          simucases: simucases
+          simucases: simucases,
+          BillingPolicy: BillingPolicy
         });
+
       }
       // diff()
       // if (changes) {
@@ -409,9 +624,11 @@ class APIDefinitionScreen extends React.Component {
       let changeLocal = this.state.APIDefinitionAddUpdate.route === "" ? true : false;
       if (this.props.APIDefinitionAddUpdate.data && changes) {
         isChanged = true
-      } if (!this.props.APIDefinitionAddUpdate.data) {
+      }
+      if (!this.props.APIDefinitionAddUpdate.data) {
         isChanged = true
-      } if(changeLocal===true){
+      }
+      if (changeLocal === true) {
         isChanged = true
       }
 
@@ -446,6 +663,16 @@ class APIDefinitionScreen extends React.Component {
           requestDone: true
         })
       }
+      if (get(nextProps, 'APIDefinitionAddUpdate.data.actionList', undefined)) {
+        this.setState({
+          actionList: nextProps.APIDefinitionAddUpdate.data.actionList
+        })
+      }
+      if (get(nextProps, 'APIDefinitionAddUpdate.data.attributeList', undefined)) {
+        this.setState({
+          List: nextProps.APIDefinitionAddUpdate.data.attributeList
+        })
+      }
       if (get(nextProps, 'APIDefinitionAddUpdate.data.ResponseMapping', false) && !this.state.responseDone) {
         this.getRequestResponseMapping(nextProps.APIDefinitionAddUpdate.data.ResponseMapping, 'RESPONSE', nextProps.MappingConfigData);
         this.setState({
@@ -473,6 +700,8 @@ class APIDefinitionScreen extends React.Component {
         isLoading: false
       });
     }
+
+
     this.setState({
       getAdaptorsList: nextProps.getAdaptorsList,
       getDBFields: nextProps.getDBFields,
@@ -483,6 +712,7 @@ class APIDefinitionScreen extends React.Component {
         generateMappingFile: nextProps.generateMappingFile.data
       })
     }
+
   }
 
   formSubmit(e, generate) {
@@ -536,6 +766,9 @@ class APIDefinitionScreen extends React.Component {
     data.object = this.state.availableObjects;
     data.conditions = this.state.requestParams;
     data.fields = this.state.responseParams;
+    if (!data.endpointName) {
+      _.set(data, 'endpointName', undefined);
+    }
     data.enablePaging = this.state.isEnablePagination;
     data.enableActions = this.state.isEnablComponentAction;
     data.rules = this.state.rules;
@@ -544,6 +777,14 @@ class APIDefinitionScreen extends React.Component {
     data.simucases = this.state.simucases;
     data.CustomMappingFile = data.CustomMappingFile || this.state.generateMappingFile.path;
     data.MappingfunctionName = data.MappingfunctionName || this.state.generateMappingFile.functionName;
+    data.BillingPolicy = this.state.BillingPolicy;
+
+
+    data.attributeList = this.state.List
+    data.actionList = this.state.actionList
+
+
+
     this.props.actions.generalProcess(constants.upsertAPIDefinition, data);
   }
 
@@ -690,18 +931,58 @@ class APIDefinitionScreen extends React.Component {
     this.props.actions.generalProcess(constants.generateMappingFile, data);
   };
 
+  clearFieldsPeer() {
+    $('#form').find('input:text').val('');
+    $('#form').find('textarea').val('');
+  }
+
   render() {
     if (this.state.isLoading) {
       return (<div className="loader">isLoading...</div>)
     }
     return (
-      <APIDefScreenForm navigateRes={this.navigateRes} navigateReq={this.navigateReq} parameters={this.state.parameters} generateCustomFile={this.generateCustomFile} addParams={this.addParams} onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule} onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine} onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList} initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData} onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest} addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers} parentState={this.state} />)
+      <APIDefScreenForm navigateRes={this.navigateRes} navigateReq={this.navigateReq} parameters={this.state.parameters}
+        generateCustomFile={this.generateCustomFile} addParams={this.addParams}
+        onRequestTypeChange={this.onRequestTypeChange} addRowRule={this.addRowRule}
+        addPolicyRule={this.addPolicyRule}
+        onDateChange={this.onDateChange} onInputRuleEngine={this.onInputRuleEngine}
+        onSubmit={this.formSubmit} dropdownItems={this.state.MappingConfigList}
+        initialValues={this.state.APIDefinitionAddUpdate} typeData={this.state.typeData}
+        onInputChange={this.onInputChange} onInputChangeRequest={this.onInputChangeRequest}
+        addRow={this.addRow} simucases={this.state.simucases} ActionHandlers={this.ActionHandlers}
+        parentState={this.state} add={this.add} test={this.test} addvalue={this.addvalue} />)
   }
+
   ActionHandlers({ actionName, index }) {
 
     //alert(actionName)
     switch (actionName) {
+      case "Delete Policy":
+        if (index > -1) {
+          let result = confirm("Are you you want to Delete Policy?");
+          if (result) {
+            if (index > -1) {
+              let tempStateRule = this.state.BillingPolicy;
+              tempStateRule.splice(index, 1);
+              this.setState({ BillingPolicy: tempStateRule });
+            }
+          }
+        }
+        break;
 
+
+      case "Delete":
+        if (index > -1) {
+          let result = confirm("Are you you want to delete this action?");
+          if (result) {
+            if (index > -1) {
+              let tempStateRule = this.state.actionList;
+              tempStateRule.splice(index, 1);
+              this.setState({ actionList: tempStateRule });
+            }
+          }
+        }
+        break;
       case "Remove":
         if (index > -1) {
           let result = confirm("Are you you want to delete rule?");
@@ -750,6 +1031,7 @@ class APIDefinitionScreen extends React.Component {
       case "Edit":
         if (index > -1) {
           let a = this.state.simucases[index];
+          document.getElementById('SimulatorRequest').value = a.SimulatorRequest;
           document.getElementById('SimulatorResponse').value = a.SimulatorResponse;
           document.getElementById('SimuValue').value = a.SimuValue;
           document.getElementById('SimuField').value = a.SimuField;
@@ -760,7 +1042,7 @@ class APIDefinitionScreen extends React.Component {
         }
         break;
       case "Delete":
-        let result = confirm("Are you you want to delete?");
+        let result = confirm("Are you sure you want to delete?");
         if (result) {
           if (index > -1) {
             let a = this.state.simucases;
@@ -798,13 +1080,7 @@ class APIDefinitionScreen extends React.Component {
 APIDefinitionScreen.propTypes = {
   children: PropTypes.object,
   typeData: PropTypes.object,
-  APIDefinitionAddUpdate: PropTypes.object,
-  MappingConfigData: PropTypes.object,
-  MappingOrgFieldData: PropTypes.object,
-  getAdaptorsList: PropTypes.object,
-  getAvailableObjectsList: PropTypes.object,
-  getDBFields: PropTypes.object,
-  ConsortiumTypeData: PropTypes.object,
+
   parameters: PropTypes.object
 };
 
@@ -824,9 +1100,12 @@ function mapStateToProps(state, ownProps) {
     route: ownProps.params.route,
     ConsortiumTypeData: state.app.ConsortiumTypeData,
     getAdaptorsList: get(state.app, 'getAdaptorsList.data', []),
-    getDBFields: get(state.app, 'getDBFields', {}),
+    getDBFields: get(state.app, 'getDBFields', { data: [] }),
     getAvailableObjectsList: get(state.app, 'getAvailableObjectsList.data', []),
     generateMappingFile: get(state.app, 'generateMappingFile', {}),
+    RelayNetworks: get(state.app, 'RelayNetworkTypeData.data.RelayNetworks', undefined),
+    triggerLocal: get(state.app, 'triggerLocal', {}),
+
     parameters: parameters,
     getEndpointListView: state.app.getEndpointListView
   };
@@ -835,6 +1114,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return { actions: bindActionCreators(actions, dispatch) }
 }
+
 APIDefinitionScreen.displayName = "APIDefinitionScreen_Heading";
 export default connect(mapStateToProps, mapDispatchToProps)(APIDefinitionScreen);
 

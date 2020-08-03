@@ -1,5 +1,5 @@
 export function generalHandler(formname, fieldname, type, e) {
-    console.log('type', type, e);
+    // console.log('type', type, e);
     if (type == "textbox" || type == "radiolist" || type == "combobox" || type == "textarea") {
         let value = e.target.value;
         let formdata = _.get(this.state, formname, {});
@@ -7,7 +7,7 @@ export function generalHandler(formname, fieldname, type, e) {
         this.setState({
             [formname]: formdata
         }, () => {
-            console.log('formname', JSON.stringify(this.state[formname]));
+            // console.log('DATA-->', JSON.stringify(this.state[formname]));
         });
     } else if (type == "checklist") {
         let value = e.target.value;

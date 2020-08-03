@@ -18,16 +18,28 @@ const FormSection1 = ({ error, initialValues, updateState, state, useCases }) =>
         { value: "API", label: "API" },
     ];
     
-    function updateGroupType(e) {
-        updateState({ type: e.target.value });
 
+    function updateGroupType(e) {
+       
         let updateNodes = []
         if (e.target.value == 'API')
-            initialValues.nodes = initialValues.APINodes;
+            updateNodes = [...initialValues.APINodes];
         else if (e.target.value == 'UI')
-            initialValues.nodes = initialValues.UINodes;
+            updateNodes = [...initialValues.UINodes];
         else
-            initialValues.nodes = [];
+            updateNodes = [];
+
+        updateState({
+            initialValues : {
+                ...initialValues,
+                nodes: [...updateNodes]
+            },
+            type: e.target.value
+        });
+
+    }
+    function updateUseCases(e) {
+        updateState({ usecase: e.target.value });
     }
     function updateUseCases(e) {
         updateState({ usecase: e.target.value });
@@ -38,7 +50,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, useCases }) =>
             <div className="col-md-6">
 
                 <div className="row">
-                    <Label text="Group Name" columns='6' divStyle={{ width: '20%', paddingTop: '5px' }} />
+                    <Label text="Group Name" columns='6' divStyle={{ width: '20%', paddingTop: '20px' }} />
                     <div className="col-md-6">
                         <TextInput
                             name="name"
@@ -48,7 +60,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, useCases }) =>
                 </div>
 
                 <div className="row">
-                    <Label text="Description" columns='6' divStyle={{ width: '20%', paddingTop: '5px' }} />
+                    <Label text="Description" columns='6' divStyle={{ width: '20%', paddingTop: '20px' }} />
                     <div className="col-md-6">
                         <TextInput
                             name="description"
@@ -62,7 +74,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, useCases }) =>
             <div className="col-md-6">
 
                 <div className="row">
-                    <Label text="Group Type" columns='6' divStyle={{ width: '20%', paddingTop: '5px' }} />
+                    <Label text="Group Type" columns='6' divStyle={{ width: '20%', paddingTop: '20px' }} />
                     <div className="col-md-6">
                         <DropdownInput name="type" options={grpType} onChange={updateGroupType} excludeSelectOption={true}
                         />
@@ -70,7 +82,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, useCases }) =>
                 </div>
 
                 <div className="row">
-                    <Label text="Use Case" columns='6' divStyle={{ width: '20%', paddingTop: '5px' }} />
+                    <Label text="Use Case" columns='6' divStyle={{ width: '20%', paddingTop: '20px' }} />
                     <div className="col-md-6">
                         <DropdownInput name="usecase" options={useCases} onChange={updateUseCases} excludeSelectOption={true}
                         />
@@ -87,11 +99,11 @@ class GroupSetupForm extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-
         this.state = {
             expanded: [],
             checked: [],
             type: undefined,
+            initialValues: {...props.initialValues}
         }
         this.updateState = this.updateState.bind(this);
         this.submit = this.submit.bind(this);
@@ -99,7 +111,23 @@ class GroupSetupForm extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ checked: nextProps.initialValues.checked })
+
+        let nodes = [...nextProps.initialValues.nodes]
+        if (this.state.initialValues.nodes.length==0 && nextProps.initialValues.type && nextProps.initialValues){
+            this.setState({
+                initialValues: {
+                    ...this.state.initialValues,
+                    nodes
+                },
+                checked: nextProps.initialValues.checked
+            })
+        }
+
+        if (this.state.initialValues.nodes.length==0 && nextProps.initialValues){
+            this.setState({
+                checked: nextProps.initialValues.checked
+            })
+        }
 
     }
 
@@ -131,7 +159,7 @@ class GroupSetupForm extends React.Component {
                 <form role="form" onSubmit={handleSubmit(this.submit)}>
                     <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state} useCases={useCases} />
                     <hr></hr>
-                    <GroupTree updateState={this.updateState} state={this.state} initialValues={initialValues} />
+                    <GroupTree updateState={this.updateState} state={this.state} initialValues={this.state.initialValues} />
                     <div className="clearfix">
                         <ActionButton actionList={pageActions}
                             performAction={this.performAction}

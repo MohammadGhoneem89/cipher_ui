@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router';
 
 import moment from 'moment';
 import { Bar } from 'react-chartjs-2';
-import * as utils from './utils.js';
+import * as utils from '../common/utils.js';
 
 var fullDate = [];
 var x = new Date();
@@ -71,40 +71,43 @@ class CommonBarChart extends React.Component {
 
     render() {
         const dta = {
-            labels: this.props.graphLabels.labels,
+            labels: this.props.labels,
 
-            datasets: [{
+            datasets: []
+        };
+        // if(this.props.legends[0]){
+            dta.datasets.push({
                 backgroundColor: 'rgba(0, 87, 0, 1)',
                 borderColor: 'rgba(0, 87, 0, 1)',
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(0, 87, 0, 1)',
                 hoverBorderColor: 'rgba(0, 87, 0, 1)',
-                label: this.props.graphLabels.legends.firstLegend,
-                data: this.props.firstBarData
-            },
-            {
-                backgroundColor: 'rgba(255,1,1,1)',
-                borderColor: 'rgba(255,1,1,1)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(255,1,1,0.7)',
-                hoverBorderColor: 'rgba(255,1,1,1)',
-                label: this.props.graphLabels.legends.secondLegend,
-                data: this.props.secondBarData
-            },
-            {
-                backgroundColor: '#F1C40F',
-                borderColor: '#F1C40F',
-                borderWidth: 1,
-                hoverBackgroundColor: '#F1C40F',
-                hoverBorderColor: '#F1C40F',
-                label: this.props.graphLabels.legends.thirdLegend,
-                data: this.props.thirdBarData
-            }
-
-
-            ]
-        };
-
+                label: this.props.legends[0],
+                data: this.props.chartData.firstBar
+            });
+        // }
+        // if(this.props.legends[1]){
+            // dta.datasets.push({
+            //     backgroundColor: 'rgba(0, 126, 189, 0.6)',
+            //     borderColor: 'rgba(0, 126, 189, 0.6)',
+            //     borderWidth: 1,
+            //     hoverBackgroundColor: 'rgba(0, 115, 255, 1)',
+            //     hoverBorderColor: 'rgba(0, 115, 255, 1)',
+            //     label: this.props.legends[1],
+            //     data: this.props.chartData.secondBar
+            // });
+        // }
+        // if(this.props.legends[2]){
+            // dta.datasets.push({
+            //     backgroundColor: '#F1C40F',
+            //     borderColor: '#F1C40F',
+            //     borderWidth: 1,
+            //     hoverBackgroundColor: '#F1C40F',
+            //     hoverBorderColor: '#F1C40F',
+            //     label: this.props.legends[2],
+            //     data: this.props.chartData.thirdBar
+            // });
+        // }
         return (
 
             <div className="col-lg-12 bordered" style={{ paddingLeft: "10px", paddingRight: " 10px" }}>

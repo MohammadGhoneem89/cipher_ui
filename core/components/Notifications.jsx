@@ -1,3 +1,4 @@
+
 /*standard imports*/
 import React, { PropTypes } from 'react';
 import { browserHistory } from 'react-router';
@@ -11,6 +12,8 @@ import * as constants from '../constants/Communication.js';
 import * as requestCreator from '../common/request.js';
 import * as utils from '../common/utils';
 import ModalBox from '../../core/common/ModalBox.jsx';
+import DynamicViewCreator from "../common/dynViewCreator.jsx";
+import Handler from './notificationHandlers/generalHandler.jsx';
 
 class Notifications extends React.Component {
 
@@ -24,15 +27,24 @@ class Notifications extends React.Component {
             pageRangeDisplayed: 5,
             isLoading: true,
             modelBoxData: false,
+            modalBoxNotificationData: null,
+            modalBoxNotificationDataIndex: 0,
+            handler: null,
+            duplicateData: [],
+            mappingFields: [],
+            popupdata: {},
+            mappingFieldsSections: [],
+            viewBag: []
+
         };
 
         this.pageChange = this.pageChange.bind(this);
         this.notificationActionHandlers = this.notificationActionHandlers.bind(this);
+        this.slideLeft = this.slideLeft.bind(this);
+        this.slideRight = this.slideRight.bind(this);
     }
 
     getLabelClassByType(type) {
-
-
         switch (type) {
             case "Error":
                 return "label label-sm label-danger";
@@ -44,12 +56,11 @@ class Notifications extends React.Component {
                 return "label label-sm label-success";
 
         }
-
     }
 
     getNotificationHTML(sd, index) {
         return <a key={index.toString()} href="javascript:"
-            onClick={this.navigateNotification.bind(this, sd.action)}>
+            onClick={this.viewNotification.bind(this, sd.action)}>
             <li>
                 <div className="col1">
                     <div className="cont">
@@ -72,8 +83,14 @@ class Notifications extends React.Component {
         </a>
     }
 
-    navigateNotification(url) {
-        browserHistory.push(url);
+    viewNotification(type, index) {
+        let data = this.state.notificationDetailData[index];
+        if (data.handler) {
+            this.setState({
+                popupdata: data, modelBoxData: true
+            })
+        }
+        // browserHistory.push(url);
     }
 
     componentWillMount() {
@@ -88,6 +105,7 @@ class Notifications extends React.Component {
         };
         this.props.actions.generalProcess(constants.getNotificationData, notificationRequest);
     }
+
 
     pageChange(activePage) {
         let notificationRequest = {
@@ -105,6 +123,19 @@ class Notifications extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+
+        nextProps.notificationDetailData.data.forEach(element => {
+            element.actions = [
+                {
+                    "label": "Archive",
+                    "iconName": "fa fa-archive",
+                    "actionType": "COMPONENT_FUNCTION"
+                }, {
+                    "label": "View",
+                    "iconName": "fa fa-eye",
+                    "actionType": "COMPONENT_FUNCTION"
+                }]
+        });
         if (nextProps.notificationDetailData) {
             this.setState({
                 notificationDetailData: nextProps.notificationDetailData.data,
@@ -113,6 +144,25 @@ class Notifications extends React.Component {
                 isLoading: false
             });
         }
+        if (nextProps.getMappingFields) {
+            this.mapMappingFieldData(nextProps.getMappingFields)
+        }
+    }
+
+
+    mapMappingFieldData(mappingFields) {
+        const { result: { fields, sections } } = mappingFields;
+
+        let popUpSections = JSON.parse(JSON.stringify(sections))
+        popUpSections = popUpSections.map(obj => {
+            obj.displayImage = false
+            return obj
+        })
+
+        this.setState({
+            mappingFields: fields,
+            mappingFieldsSections: popUpSections
+        })
     }
 
     calculateNotificationTime(startdate) {
@@ -133,7 +183,6 @@ class Notifications extends React.Component {
             let delta = 0;
             delta = ldifference / YEAR * sCumulative;
             let difference = Math.floor(delta);
-
             if (difference >= 1) {
                 let placeholder = arr2[i];
 
@@ -142,8 +191,6 @@ class Notifications extends React.Component {
                 }
                 //alert(difference + ' ' + placeholder)
                 return difference + ' ' + placeholder;
-
-
             }
         }
     }
@@ -159,9 +206,20 @@ class Notifications extends React.Component {
                 this.props.actions.generalProcess(constants.notificationViewed, requestCreator.createNotificationViewedRequest({
                     _id: data._id
                 }));
+                let notificationRequest = {
+                    "page": {
+                        "currentPageNo": this.state.activePage,
+                        "pageSize": this.state.itemsCountPerPage
+                    },
+                    "sortBy": {
+                        "createdAt": -1
+                    },
+                    isRead: false
+                };
+                this.props.actions.generalProcess(constants.getNotificationData, notificationRequest);
                 break;
             case "View":
-                this.navigateNotification(data.action);
+                this.viewNotification(data.action, index);
                 break;
             default:
                 alert("Action type not found");
@@ -172,13 +230,49 @@ class Notifications extends React.Component {
         this.setState(data);
     }
 
+    bindModalData = (value) => {
+        let { handler, data = null } = value;
+        if (data) {
+            data = JSON.parse(data);
+        }
+
+        console.log(data)
+        this.setState({
+            modalBoxNotificationData: data,
+            modalBoxNotificationDataIndex: 0,
+            handler,
+            duplicateData: data
+        });
+    }
+
+    slideLeft() {
+        let modalBoxNotificationDataIndex = this.state.modalBoxNotificationDataIndex;
+        if (0 <= modalBoxNotificationDataIndex - 1) {
+            modalBoxNotificationDataIndex = modalBoxNotificationDataIndex - 1
+            this.setState({
+                modalBoxNotificationDataIndex
+            })
+        }
+    }
+
+    slideRight() {
+        let modalBoxNotificationDataIndex = this.state.modalBoxNotificationDataIndex;
+        if (this.state.duplicateData.length > modalBoxNotificationDataIndex + 1) {
+            modalBoxNotificationDataIndex = modalBoxNotificationDataIndex + 1
+            this.setState({
+                modalBoxNotificationDataIndex
+            })
+        }
+    }
+
+
     render() {
 
         let modalAction = [
             {
                 type: "modal",
                 className: "btn btn-default",
-                label: utils.getLabelByID("Close"),
+                label: '',
                 icon: "close",
                 actionHandler: this.updateState.bind(this, {
                     modelBoxData: false
@@ -190,63 +284,59 @@ class Notifications extends React.Component {
                 <div>
                     <ModalBox isOpen={this.state.modelBoxData ? true : false}>
                         <Portlet title={utils.getLabelByID("Details")} actions={modalAction}>
-                            {(()=>{
-                                if(this.state.modelBoxData){
-                                    return this.state.modelBoxData.replace(/(.{60})/g, "$1\n");
-                                }
-                            })()}
+                            <Handler handler={this.state.popupdata.handler} data={this.state.popupdata} />
                         </Portlet>
                     </ModalBox>
-                    <div className="row">
+                    <div className="col-sm-12">
+                        <Portlet title={""}>
 
-                        <div className="col-sm-12">
-                            <Portlet title={""}>
+                            <div className="note note-documentation">
+                                <span className={"label label-sm label-danger"}>
+                                    <i className="fa fa-bell-o" />
+                                </span>
+                                <strong >{" Error   "}</strong>
+                                <span style={{ marginLeft: "10px" }} className={"label label-sm label-info"}>
+                                    <i className="fa fa-bell-o" />
+                                </span>
+                                <strong>{" Info  "}</strong>
 
-                                <div className="alert alert-info">
-                                    <span className={"label label-sm label-danger"}>
-                                        <i className="fa fa-bell-o" />
-                                    </span>
-                                    <strong>{" Error   "}</strong>
-                                    <span className={"label label-sm label-info"}>
-                                        <i className="fa fa-bell-o" />
-                                    </span>
-                                    <strong>{" Info  "}</strong>
+                                <span style={{ marginLeft: "10px" }} className={"label label-sm label-warning"}>
+                                    <i className="fa fa-bell-o" />
+                                </span>
+                                <strong>{" Warning  "}</strong>
 
-                                    <span className={"label label-sm label-warning"}>
-                                        <i className="fa fa-bell-o" />
-                                    </span>
-                                    <strong>{" Warning  "}</strong>
-
-                                    <span className={"label label-sm label-success"}>
-                                        <i className="fa fa-bell-o" />
-                                    </span>
-                                    <strong>{" Success"}</strong>
-                                </div>
+                                <span style={{ marginLeft: "10px" }} className={"label label-sm label-success"}>
+                                    <i className="fa fa-bell-o" />
+                                </span>
+                                <strong>{" Success"}</strong>
+                            </div>
 
 
 
 
 
-                                <Table
-                                    pagination={true}
-                                    export={false}
-                                    search={false}
-                                    gridType={"notifications"}
-                                    componentFunction={this.notificationActionHandlers}
-                                    gridColumns={utils.getGridColumnByName("notifications")}
-                                    gridData={this.state.notificationDetailData}
-                                    totalRecords={this.state.totalRecords}
-                                    pageChanged={this.pageChange}
-                                    activePage={this.state.activePage}
-                                    pageSize={this.state.itemsCountPerPage}
-                                    searchCriteria={this.state.filterCriteria}
-                                    headerClick={this.sortList}
-                                    renderPopupBody={(data) => {
-                                        this.updateState({modelBoxData: data});
-                                    }}
-                                />
-                            </Portlet>
-                        </div>
+                            <Table
+                                pagination={true}
+                                export={false}
+                                search={false}
+                                gridType={"notifications"}
+                                componentFunction={this.notificationActionHandlers}
+                                gridColumns={utils.getGridColumnByName("notifications")}
+                                gridData={this.state.notificationDetailData}
+                                totalRecords={this.state.totalRecords}
+                                pageChanged={this.pageChange}
+                                activePage={this.state.activePage}
+                                pageSize={this.state.itemsCountPerPage}
+                                searchCriteria={this.state.filterCriteria}
+                                headerClick={this.sortList}
+                                renderPopupBody={(data) => {
+                                    this.updateState({ modelBoxData: data });
+                                }}
+                            // bindModalData={(data) => {
+                            //     this.bindModalData(data)
+                            // }}
+                            />
+                        </Portlet>
                     </div>
                 </div>
             );
