@@ -2,14 +2,14 @@
 
     /* Theme Colors */
 
-    --Theme-Primary-Color: #ae8b4b;
-    --Theme-Primary-Color-dark: #6c4d14;
-    --Theme-Secondary-Color: #333;
-    --table-Head-Color:  #ae8b4b;
-    --caption-subject: #333;
-    --Tabs-color-hover :#ae8b4b;
-    --tabs-color: #ae8b4b;
-
+    --Theme-Primary-Color: #B42572;
+    --Theme-Secondary-Color: #333;    
+    --Theme-Primary-Color-dark: rgb(110, 6, 61);
+    --table-Head-Color:  #333;
+    --caption-subject: #c20c35;
+    --Tabs-color-hover : rgba(0, 211, 46, 0.51);
+    --tabs-color: #00631a;
+    
     /* Login page */
     --Login-Background: url(ecommerce-bg.jpg);
     --login-Logo: url(logo-default.jpg);

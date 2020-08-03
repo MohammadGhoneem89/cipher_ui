@@ -303,7 +303,7 @@ class Datatable extends React.Component {
           <div className="portlet-body flip-scroll">
             <div className="row">
               <div className="col-md-12 ">
-                <table id={this.props.id ? this.props.id : ""} style={this.props.marginTop == true ? { marginTop: "10px", marginBottom: '120px' } : { marginTop: "10px"}}
+                <table id={this.props.id ? this.props.id : ""} style={this.props.marginTop == true ? { marginTop: "10px", marginBottom: '120px' } : { marginTop: "10px" }}
                   className="table table-bordered table-striped table-condensed flip-content gridTable sdg_tbl">
                   <thead className="flip-content">
                     <tr>
@@ -330,22 +330,22 @@ class Datatable extends React.Component {
                                   recordID={recordID}
                                   rowData={rowData}
                                   // cellData={colData.type === "object" ? (rowData[colData.key] !== null ? rowData[colData.key][colData.property] : "") : rowData[colData.key]}
-                                  cellData={colData.type === "specialObject" ? (rowData[colData.key] !== null ? 
+                                  cellData={colData.type === "specialObject" ? (rowData[colData.key] !== null ?
                                     Object.keys(colData.key).map((item, index) => {
                                       console.log(colData.key);
                                       console.log(item);
                                       console.log(rowData);
-                                    return <div>
-                                      {rowData['actions'] && rowData['actions'].length > 0 ? 
-                                    <a href={`${colData.key['route']+rowData['UTCRefNo']}`}>
-                                    <div className={index === 0 ? 'font-bold' : ''}>{rowData[item]}</div>
-                                    </a> 
-                                    :
-                                    <div className={index === 0 ? 'font-bold' : ''}>{rowData[item]}</div>
-                                    }
-                                      {/* <div>{rowData[item]}</div> */}
-                                    </div> 
-                                  }) : "") : rowData[colData.key]}
+                                      return <div>
+                                        {rowData['actions'] && rowData['actions'].length > 0 ?
+                                          <a href={`${colData.key['route'] + rowData['UTCRefNo']}`}>
+                                            <div className={index === 0 ? 'font-bold' : ''}>{rowData[item]}</div>
+                                          </a>
+                                          :
+                                          <div className={index === 0 ? 'font-bold' : ''}>{rowData[item]}</div>
+                                        }
+                                        {/* <div>{rowData[item]}</div> */}
+                                      </div>
+                                    }) : "") : _.get(rowData, colData.key, "")}
                                   type={colData.type}
                                   rowIndex={index}
                                   componentFunction={this.props.componentFunction}
