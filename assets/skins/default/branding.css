@@ -449,19 +449,19 @@ a:hover {
 }
 
 .tab_active {
-    background-color: #a6266b;
+    background-color: var(--Theme-Primary-Color);
     padding: 6px 12px;
     border-radius: 10px !important;
     -webkit-box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.7);
     -moz-box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.7);
     box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.4);
     margin-right: 15px;
-    border: 2px solid #7d1c5199;
+    border: 2px solid var(--Theme-Primary-Color-dark);
     height: fit-content;
 }
 
 .tab_notactive {
-    background-color: #7a2151;
+    background-color: var(--Theme-Primary-Color);
     padding: 6px 12px;
     border-radius: 10px !important;
     -webkit-box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.7);
@@ -470,7 +470,7 @@ a:hover {
     -webkit-box-shadow: 0px 0px 48px 3px rgba(0, 0, 0, 0.29);
     -moz-box-shadow: 0px 0px 48px 3px rgba(0, 0, 0, 0.29);
     box-shadow: 0px 0px 48px 3px rgba(0, 0, 0, 0.29);
-    border: 2px solid #7d1c51;
+    border: 2px solid var(--Theme-Primary-Color-dark);
     margin-right: 15px;
     height: fit-content;
 }
@@ -506,7 +506,7 @@ a:hover {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #60183F;
+    background-color:  var(--Theme-Primary-Color-dark);
     min-width: 180px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
@@ -524,7 +524,7 @@ a:hover {
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
-    background-color: #9D2164;
+    background-color: var(--Theme-Primary-Color-dark);
     color: #fff !important;
     text-decoration: none;
 }
@@ -542,7 +542,7 @@ li:hover .dropdown-content {
 .tab_dropdownnav:hover {
     padding: 17px 10px 25px;
     cursor: pointer;
-    background: #60183f;
+    background: var(--Theme-Primary-Color-dark);
     border-radius: 4px !important;
 }
 
@@ -552,14 +552,14 @@ li:hover .dropdown-content {
 }
 
 .tab_notactive:hover {
-    background-color: #a6266b;
+    background-color: var(--Theme-Primary-Color);
     padding: 6px 12px;
     border-radius: 10px !important;
     -webkit-box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.7);
     -moz-box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.7);
     box-shadow: inset 0px 0px 41px -9px rgba(0, 0, 0, 0.4);
     margin-right: 15px;
-    border: 2px solid #7d1c5199;
+    border: 2px solid var(--Theme-Primary-Color-dark);
     height: fit-content;
 }
 

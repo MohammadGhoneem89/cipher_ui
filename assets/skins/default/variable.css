@@ -3,12 +3,13 @@
     /* Theme Colors */
 
     --Theme-Primary-Color: #B42572;
-    --Theme-Secondary-Color: #848586;
-    --table-Head-Color:  #666666c7;
+    --Theme-Secondary-Color: #333;    
+    --Theme-Primary-Color-dark: rgb(110, 6, 61);
+    --table-Head-Color:  #333;
     --caption-subject: #c20c35;
     --Tabs-color-hover : rgba(0, 211, 46, 0.51);
     --tabs-color: #00631a;
-
+    
     /* Login page */
     --Login-Background: url(innovations-bg.jpg);
     --login-Logo: url(logo-default.jpg);
