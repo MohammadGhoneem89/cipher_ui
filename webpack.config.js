@@ -1,4 +1,5 @@
-var config = {
+const webpack = require('webpack');
+const config = {
   entry: ['whatwg-fetch', './core/main.js'],
 
   output: {
@@ -9,6 +10,8 @@ var config = {
   devServer: {
     inline: true,
     port: 3000,
+    stats: 'minimal',
+    compress: true,
     historyApiFallback: true,
     disableHostCheck: true
   },
@@ -34,8 +37,12 @@ var config = {
       }
 
     ]
-
-  }
+  },
+  plugins: [
+    // minify output
+    // new webpack.optimize.UglifyJsPlugin()
+  ]
 };
+
 
 module.exports = config;

@@ -45,20 +45,20 @@ class UserSetupContainer extends Component {
           ref={input => this.profilePic = input}
         />
         <br />
-        {/* <span
-                    className="label label-primary"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                        console.log('Upload Image Clicked.')
-                        this.profilePicUploader.click();
-                    }}
-                >
-                    {"Upload Image"}
-                </span> */}
+        <span
+          className="label label-primary"
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            console.log('Upload Image Clicked.')
+            this.profilePicUploader.click();
+          }}
+        >
+          {"Upload Image"}
+        </span>
 
         <button
           className="btn green"
-          style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
+          style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0', display: "none" }}
           onClick={() => {
             this.profilePicUploader.click();
           }}
