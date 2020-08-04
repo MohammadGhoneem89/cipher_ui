@@ -14,6 +14,7 @@ class OrgSearchContainer extends React.Component {
     super(props, context);
     this.submit = this.submit.bind(this);
 
+  
     this.state = {
       filterCriteria: undefined,
       entityList: undefined,

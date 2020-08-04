@@ -1,6 +1,6 @@
 import React from 'react';
 import * as utils from './utils.js';
-import {Select} from "antd";
+import { Select } from "antd";
 
 class Combobox extends React.Component {
 
@@ -27,6 +27,7 @@ class Combobox extends React.Component {
   }
 
   render() {
+   
     if (!this.props.isDDL)
       return (
         <div className={`col-md-${this.props.columns} ${this.getColour(this.props.status)}`}>
@@ -44,9 +45,9 @@ class Combobox extends React.Component {
             onChange={this.props.actionHandler.bind(this, this.props.formname, this.props.fieldname, 'combobox')}
           />
           {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) &&
-          <span className="help-block">{this.props.state.errors[this.props.fieldname]}</span>}
+            <span className="help-block">{this.props.state.errors[this.props.fieldname]}</span>}
           {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) &&
-          <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle"/>
+            <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />
           }
           <datalist id={`id_${this.props.fieldname}`}>
             {this.prepareOptions(_.get(this.props.dataSource, this.props.typeName, []))}
@@ -73,9 +74,9 @@ class Combobox extends React.Component {
             multiple={this.props.multiple}
           >
             {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) &&
-            <span className="help-block">{this.props.state.errors[this.props.fieldname]}</span>}
+              <span className="help-block">{this.props.state.errors[this.props.fieldname]}</span>}
             {(this.props.state.errors && this.props.state.errors[this.props.fieldname]) &&
-            <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle"/>
+              <i style={this.props.errorIconStyle} className="fa fa-exclamation-triangle" />
             }
             <option key="" value="">--select--</option>
             {this.prepareOptions(_.get(this.props.dataSource, this.props.typeName, []))}
