@@ -31,7 +31,7 @@ class UserSetupContainer extends Component {
     this.generalHandler = gen.generalHandler.bind(this);
   }
 
-  addDefaultSrc = e => e.target.src = constants.baseUrl + "/images/image-user.png";
+  addDefaultSrc = e => e.target.src = "/assets/imgs/user.jpg";
 
   imgDiv() {
     return (
