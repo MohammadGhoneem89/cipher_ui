@@ -376,7 +376,9 @@ export default function UserSetupForm(props) {
               actionHandler={comboBoxHandler}
               className="form-control"
               disabled={false}
+              isDDL={true}
             />
+
           </Row>
         </div>
         <div className="control-label col-md-6">

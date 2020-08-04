@@ -191,7 +191,6 @@ class UserSetupContainer extends Component {
           isLoading: false,
           userDetail: {
             ...nextProps.userDetail,
-            firstScreen,
             groups,
             hypUser,
             isActive
