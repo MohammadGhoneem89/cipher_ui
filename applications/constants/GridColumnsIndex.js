@@ -1,5 +1,4 @@
-import SampleAppGridColumns from '../SampleApp/constants/appGridColumns';
+import customs from '../Courier/constants/appGridColumns';
 module.exports= {
-  ...SampleAppGridColumns,
-
+  ...customs,
 };

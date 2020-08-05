@@ -1,7 +1,7 @@
-import SampleAppENResources from '../SampleApp/constants/appENResources';
+import customs from '../Courier/constants/appENResources';
 
 let langResources = {
-  ...SampleAppENResources,
+  ...customs,
 };
 
 module.exports = langResources;

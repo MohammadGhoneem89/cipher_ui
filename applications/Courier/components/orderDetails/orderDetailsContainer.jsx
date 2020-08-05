@@ -173,9 +173,9 @@ class OrderDetailsContainer extends React.Component {
     window.scrollTo(0, 0);
     this.fetchData();
 
-    interval = setInterval(() => {
-      this.fetchData();
-    }, 5000);
+    // interval = setInterval(() => {
+    //   this.fetchData();
+    // }, 5000);
   }
   renderPayload(xml) {
 
