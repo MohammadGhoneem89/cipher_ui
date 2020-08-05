@@ -272,17 +272,19 @@ class Dashboard extends React.Component {
                 <Wrapper daterange={true} onDateChange={this.dateChangeWorkboard} title="Workboard">
 
                     <div className="row">
-                        <TileUnit col="4" data={[{
-                            "id": 1, "title": "Couriers", "value": _.get(this.state, 'getDashboardData.summary.couriers', 0),
-                            "actionURI": "", "overDue": "", "fontClass": "green-steel", "percentageTag": false
-                        }, {
-                            "id": 2, "title": "Orders",
-                            "value": _.get(this.state, 'getDashboardData.summary.orders', 0), "actionURI": "", "overDue": "", "fontClass": "green-turquoise",
-                            "percentageTag": false
-                        }, {
-                            "id": 3, "title": "Returns", "value": _.get(this.state, 'getDashboardData.summary.returns', 0),
-                            "actionURI": "", "overDue": "", "fontClass": "green-meadow", "percentageTag": false
-                        }]} />
+                        <div style={{ marginLeft: "22%" }}>
+                            <TileUnit col="4" data={[{
+                                "id": 1, "title": "Couriers", "value": _.get(this.state, 'getDashboardData.summary.couriers', 0),
+                                "actionURI": "", "overDue": "", "fontClass": "green-steel", "percentageTag": false
+                            }, {
+                                "id": 2, "title": "Orders",
+                                "value": _.get(this.state, 'getDashboardData.summary.orders', 0), "actionURI": "", "overDue": "", "fontClass": "green-turquoise",
+                                "percentageTag": false
+                            }, {
+                                "id": 3, "title": "Returns", "value": _.get(this.state, 'getDashboardData.summary.returns', 0),
+                                "actionURI": "", "overDue": "", "fontClass": "green-meadow", "percentageTag": false
+                            }]} />
+                        </div>
                     </div>
                     <Portlet title="Order Tracking">
                         <Row>
@@ -299,12 +301,12 @@ class Dashboard extends React.Component {
                                     multiple={false} actionHandler={this.generalActionHandler} selected={sessionStorage.orgType == 'ECOMMERCE' ? sessionStorage.orgCode : _.get(this.state.searchCriteria, "ecommerce", "")} />
                             </Col>
                             <Col col="2">
-                                
-                                    <div className="btn-toolbar pull-left">
-                                        <button type="submit" onClick={this.applyFilter} className="btn btn-sm btn btn-success">Apply</button>
-                                        <button type="submit" onClick={this.clearFilter} className="btn btn-sm btn btn-grey">Clear</button>
-                                    </div>
-                                
+
+                                <div className="btn-toolbar pull-left">
+                                    <button type="submit" onClick={this.applyFilter} className="btn btn-sm btn btn-success">Apply</button>
+                                    <button type="submit" onClick={this.clearFilter} className="btn btn-sm btn btn-grey">Clear</button>
+                                </div>
+
                             </Col>
                         </Row>
                         <Row>
@@ -374,7 +376,7 @@ class Dashboard extends React.Component {
                             </Portlet>
                         </Col>
                     </div>
-                </Wrapper >
+                </Wrapper>
             );
         else
             return (<div className="loader" > {utils.getLabelByID("Loading")}</div>)
