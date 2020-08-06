@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 class Auth {
   static loggedIn() {
     // return !!sessionStorage.token;
-    return (!!Cookies.get('login') || !!sessionStorage.getItem('token'))
+    return (!!sessionStorage.getItem('token') || !!Cookies.get('login'))
   }
 
   static logOut() {
