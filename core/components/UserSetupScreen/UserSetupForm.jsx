@@ -12,6 +12,7 @@ import CheckBox from '../../common/CheckBox.jsx';
 import Row from '../../common/Row.jsx';
 import Col from '../../common/Col.jsx';
 import Input from '../../common/Input.jsx';
+import { TextArea } from '../../common/FormControls.jsx';
 
 
 export default function UserSetupForm(props) {
@@ -27,8 +28,10 @@ export default function UserSetupForm(props) {
     userTypeHandler,
     onChangeHandler,
     onSubmit,
+    performActionApproval,
     imgDiv,
-    performAction
+    performAction,
+    disabled
   } = props
 
   console.log("containerState", containerState);
@@ -72,7 +75,7 @@ export default function UserSetupForm(props) {
               multiple={false}
               actionHandler={userTypeHandler}
               className="form-control"
-              disabled={false}
+              disabled={disabled}
               isDDL={true}
             />
           </Row>
@@ -102,7 +105,7 @@ export default function UserSetupForm(props) {
               multiple={false}
               actionHandler={comboBoxHandler}
               className="form-control"
-              disabled={false}
+              disabled={disabled}
               isDDL={true}
             />
           </Row>
@@ -133,7 +136,7 @@ export default function UserSetupForm(props) {
               multiple={false}
               actionHandler={customHandler}
               className="form-control"
-              disabled={false}
+              disabled={disabled}
               isDDL={true}
             />
 
@@ -164,7 +167,7 @@ export default function UserSetupForm(props) {
               multiple={false}
               actionHandler={comboBoxHandler}
               className="form-control"
-              disabled={false}
+              disabled={disabled}
               isDDL={true}
             />
           </Row>
@@ -226,7 +229,7 @@ export default function UserSetupForm(props) {
               type='password'
               actionHandler={inputHandler}
               className="form-control pwd-input"
-              disabled={false} />
+              disabled={disabled} />
 
 
           </Row>}
@@ -261,7 +264,7 @@ export default function UserSetupForm(props) {
               state={containerState}
               actionHandler={inputHandler}
               className="form-control"
-              disabled={false} />
+              disabled={disabled} />
           </Row>
         </div>
         <div className="col-md-6">
@@ -285,7 +288,7 @@ export default function UserSetupForm(props) {
               state={containerState}
               actionHandler={inputHandler}
               className="form-control"
-              disabled={false} />
+              disabled={disabled} />
           </Row>
         </div>
 
@@ -316,7 +319,7 @@ export default function UserSetupForm(props) {
               state={containerState}
               actionHandler={inputHandler}
               className="form-control"
-              disabled={false} />
+              disabled={disabled} />
           </Row>
         </div>
         <div className="col-md-6">
@@ -340,7 +343,7 @@ export default function UserSetupForm(props) {
               state={containerState}
               actionHandler={inputHandler}
               className="form-control"
-              disabled={false} />
+              disabled={disabled} />
           </Row>
         </div>
 
@@ -375,7 +378,7 @@ export default function UserSetupForm(props) {
               multiple={false}
               actionHandler={comboBoxHandler}
               className="form-control"
-              disabled={false}
+              disabled={disabled}
               isDDL={true}
             />
 
@@ -391,7 +394,7 @@ export default function UserSetupForm(props) {
             columns='1'
             style={{}}
             actionHandler={generalHandler}
-            disabled={false}
+            disabled={disabled}
           />
         </div>
 
@@ -428,6 +431,7 @@ export default function UserSetupForm(props) {
                                 name={index}
                                 checked={item.isAssigned ? true : false}
                                 // checked={item.isAssigned}
+                                disabled={disabled}
                                 onChange={onChangeHandler}
                               />
                               <span></span>
@@ -448,6 +452,7 @@ export default function UserSetupForm(props) {
                                 name={index}
                                 checked={item.isAssigned ? true : false}
                                 onChange={onChangeHandler}
+                                disabled={disabled}
                               // checked={item.isAssigned}
                               />
                               <span></span>
@@ -514,7 +519,7 @@ export default function UserSetupForm(props) {
                 multiple={false}
                 actionHandler={comboBoxHandler}
                 className="form-control"
-                disabled={false}
+                disabled={disabled}
               />
 
             </div>
@@ -535,13 +540,30 @@ export default function UserSetupForm(props) {
                 multiple={false}
                 actionHandler={comboBoxHandler}
                 className="form-control"
-                disabled={false}
+                disabled={disabled}
               />
             </div>
           </div>
         </Col>
       </Row>
-
+      {containerState.view == true &&
+        <Row>
+          <Col style={{ marginLeft: "20px" }}>
+            <div className='row' style={{ paddingLeft: '22px', paddingRight: '22px' }}>
+              <div className="control-label col-md-12" >
+                <Label text="Rejection Reason" columns='5' divStyle={{ width: 'auto', paddingRight: '0px' }} />
+                <Label text={""} columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
+              </div>
+              <div className="col-md-12">
+                <div className="col-md-12">
+                  <textarea id="rejectionReason" className="form-control" disabled={!(containerState.userDetail.status == 'PENDING')} name="rejectionReason"
+                    rows="4" >{_.get(containerState, 'userDetail.rejectionReason', '')}</textarea>
+                </div>
+              </div>
+            </div>
+          </Col>
+        </Row>
+      }
       <br></br>
       <div className="clearfix" style={{ padding: "30px" }}>
 
@@ -578,7 +600,7 @@ export default function UserSetupForm(props) {
         </div>
         &nbsp;&nbsp;
 
-        {/*{_.get(containerState, 'userDetail.isActive', true) === false ?*/}
+        {/*{_.get(containerState, 'userDetail.isActive', true) === false ? rejectionReason */}
         {/*  <button*/}
         {/*    type="button"*/}
         {/*    className="btn green"*/}
@@ -592,9 +614,36 @@ export default function UserSetupForm(props) {
         {/*  : null}*/}
         {/*/!* </div> *!/*/}
 
+        {containerState.view &&
+          <div className="btn-toolbar pull-right">
 
-        <ActionButton actionList={containerState.actions}
-        />
+            <button
+              type="button"
+              className="btn green"
+              style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
+              disabled={!(containerState.userDetail.status == "PENDING")}
+              onClick={() => {
+                performActionApproval("Approve")
+              }}
+            >
+              {"Approve"}
+            </button>
+            <button
+              type="button"
+              className="btn green"
+              style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
+              onClick={() => {
+                performActionApproval("Reject")
+              }}
+            >
+              {"Reject"}
+            </button>
+          </div>}
+        {!containerState.view &&
+          <div>
+            <ActionButton actionList={containerState.actions} />
+          </div>}
+
 
 
       </div>
@@ -602,4 +651,5 @@ export default function UserSetupForm(props) {
 
     </form>
   )
+
 }

@@ -244,5 +244,6 @@ module.exports = {
   getTypeSyncOut: baseUrl + "/API/meta/getTypeSyncOut",
   pushTypeData: baseUrl + "/API/general/pushTypeData",
   testPagination: baseUrl + "/API/core/testPagination",
+  userApproveReject:  baseUrl + "/API/UI/userApproveReject",
 }
 

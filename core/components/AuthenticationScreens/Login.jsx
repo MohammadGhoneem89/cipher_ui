@@ -157,28 +157,7 @@ class Login extends React.Component {
 
   componentDidUpdate() {
     isLocked = false
-    if (this.props.LoginResult) {
-      console.log("LoginResult from props ::: ", this.props.LoginResult);
-      var firstPage = this.props.LoginResult.firstScreen;
-      sessionStorage.setItem('firstScreen', firstPage)
-      if (firstPage != undefined) {
-        firstPage = firstPage.replace("/", "");
-      }
 
-      if (this.props.LoginResult.success === true) {
-        if (firstPage != undefined && this.props.LoginResult.firstScreen != "")
-          browserHistory.push(this.props.LoginResult.firstScreen);
-        else
-          browserHistory.push("/home");
-          sessionStorage.setItem('token', this.props.LoginResult.token);
-        // Cookies.set('login', this.props.LoginResult.token);
-        // console.log("token" + this.props.LoginResult.token)
-
-      }
-      // if (this.props.LoginResult.passwordRetriesExceed === false) {
-      //   this.setState({ loginAgain: false, accountIsLocked: false })
-      // }
-    }
     if (this.props.passwordReset !== '' && this.state.isLoading === true) {
       this.setState({
         isLoading: false,
@@ -188,16 +167,22 @@ class Login extends React.Component {
 
   }
   componentWillReceiveProps(nextProps) {
-    // if (nextProps.LoginResult && nextProps.LoginResult.success === false && nextProps.LoginResult.passwordRetriesExceed === true) {
-    //   this.setState({
-    //     accountIsLocked: true
-    //   })
-    // }
-    // if(this.state{
-    //   this.setState({
-    //     accountIsLocked: false
-    //   })
-    // }
+    if (nextProps.LoginResult) {
+
+      console.log("LoginResult from props ::: ", nextProps.LoginResult);
+      var firstPage = nextProps.LoginResult.firstScreen;
+      sessionStorage.setItem('firstScreen', firstPage)
+      if (firstPage != undefined) {
+        firstPage = firstPage.replace("/", "");
+      }
+      if (nextProps.LoginResult.success === true) {
+        if (firstPage != undefined && nextProps.LoginResult.firstScreen != "")
+          browserHistory.push(nextProps.LoginResult.firstScreen);
+        else
+          sessionStorage.setItem('token', nextProps.LoginResult.token);
+      }
+    }
+
   }
 
   handleKeyPress(e) {
@@ -251,12 +236,12 @@ class Login extends React.Component {
 
   imageExists(image_url) {
 
-    var http = new XMLHttpRequest();
+    // var http = new XMLHttpRequest();
 
-    http.open('HEAD', image_url, false);
-    http.send();
+    // // http.open('HEAD', image_url, false);
+    // // http.send();
 
-    return http.status != 404;
+    // return http.status != 404;
 
   }
 

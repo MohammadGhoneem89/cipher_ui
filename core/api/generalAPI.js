@@ -13,7 +13,7 @@ class generalAPI {
     if (sessionStorage.token) {
       header = new Headers({
         'Content-Type': 'application/json',
-        'token': Cookies.get('token') || sessionStorage.getItem('token')
+        'token': sessionStorage.getItem('token')
       })
     } else {
       header = new Headers({
@@ -77,7 +77,7 @@ class generalAPI {
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('lastRequestTime');
         sessionStorage.selectedIndex = 0;
-        Cookies.remove("login");
+        Cookies.set('login', '');
         Cookies.remove("token");
         setTimeout(() => {
           browserHistory.push('/cipher/login')
