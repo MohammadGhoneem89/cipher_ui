@@ -383,7 +383,7 @@ module.exports = {
     { alias: "AL_event", key: "event", type: "string" },
     { alias: "AL_collectionName", key: "collectionName", type: "string" },
     { alias: "AL_ipAddress", key: "ipAddress", type: "string" },
-    { alias: "AL_actionBy", key: "createdBy", type: "object", property: "userID" },
+    { alias: "AL_actionBy", key: "createdBy.userID", type: "string" },
     { alias: "AL_actionOn", key: "createdAt", type: "string" },
     { alias: "AL_action", key: "actions", type: "action" },
 

@@ -13,9 +13,9 @@ class Auth {
     Cookies.remove("token");
     sessionStorage.removeItem('firstScreen');
     sessionStorage.selectedIndex = 0;
-    window.location.reload();
+    // window.location.reload();
     sessionStorage.selectedIndex = 0;
-    // document.location.href ='/cipher/login'
+    document.location.href ='/cipher/login'
   }
 
   static lockedUser() {
