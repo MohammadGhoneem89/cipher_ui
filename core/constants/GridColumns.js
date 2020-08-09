@@ -267,7 +267,7 @@ module.exports = {
     { alias: "USEARCH_lastName", key: "lastName", type: "string" },
     { alias: "USEARCH_isActive", key: "isActive", type: "cbDisabled" },
     { alias: "USEARCH_org", key: "orgType", type: "string" },
-    { alias: "Status", key: "status", type: "string" },
+    { alias: "Status", key: "status", type: "statusBox" },
     { alias: "USEARCH_userType", key: "userType", type: "string" },
     { alias: "USEARCH_userAction", key: "actions", type: "action" }
   ],

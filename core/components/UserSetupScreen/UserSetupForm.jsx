@@ -546,7 +546,7 @@ export default function UserSetupForm(props) {
           </div>
         </Col>
       </Row>
-      {containerState.view == true &&
+      {containerState.userDetail.status != 'APPROVED' &&
         <Row>
           <Col style={{ marginLeft: "20px" }}>
             <div className='row' style={{ paddingLeft: '22px', paddingRight: '22px' }}>

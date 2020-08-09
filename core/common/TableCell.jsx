@@ -11,7 +11,39 @@ class TableCell extends React.Component {
     super();
 
   }
+  getClassForStatusLabel(type) {
+    switch (type) {
+      case "Alive":
+        return " badge badge-success badge-roundless";
+      case "Reachable":
+        return " badge badge-success badge-roundless";
+      case "LINK UP":
+        return " badge badge-success badge-roundless";
+      case "RECIEVED":
+        return " badge badge-success badge-roundless";
+      case "PAID":
+        return " badge badge-warning badge-roundless";
+      case "INITIATED":
+        return " badge badge-info badge-roundless";
+      case "SUCCESS":
+        return " badge badge-success badge-roundless";
+      case "UNCONFIRMED":
+        return " badge badge-danger badge-roundless";
+      case "CONFIRMED":
+        return " badge badge-success badge-roundless";
+      case "FAILED":
+        return " badge badge-danger badge-roundless";
+      case "REJECTED":
+        return " badge badge-danger badge-roundless";
+      case "PENDING":
+        return " badge badge-warning badge-roundless";
+      case "APPROVED":
+        return " badge badge-success badge-roundless";
+      default:
+        return " badge badge-danger badge-roundless";
 
+    }
+  }
   getClassForStatus(type) {
 
     switch (type) {
@@ -60,7 +92,7 @@ class TableCell extends React.Component {
   }
 
   renderIcon(type) {
-    console.log("notification logs............." , type);
+    console.log("notification logs.............", type);
     switch (type) {
       case "Error":
         return (
@@ -68,7 +100,7 @@ class TableCell extends React.Component {
             <i className="fa fa-bell-o" />
           </span>
         );
-        case "ERROR":
+      case "ERROR":
         return (
           <span className={"label label-sm label-danger"}>
             <i className="fa fa-bell-o" />
@@ -167,7 +199,7 @@ class TableCell extends React.Component {
   renderDownloadAttachement(name, UUID) {
     return (<a href={constants.getUploadedFile + "type=FILE&path=" + UUID} download> {name} </a>);
     // return (<a href={`/API/core/download/type=FILE&path=${UUID}`} download> {name} </a>);
-    
+
   }
 
 
@@ -175,7 +207,7 @@ class TableCell extends React.Component {
     browserHistory.push(index);
   }
 
-  onChangeEditColumn(index,e) {
+  onChangeEditColumn(index, e) {
     alert(index)
     alert(e.target.value)
   }
@@ -286,7 +318,7 @@ class TableCell extends React.Component {
         return (<td><h3><span className={this.getClassForStatusBig(this.props.cellData.type)}
           style={{ height: "20px" }}>{this.props.cellData.value}</span></h3></td>);
       case "editableColumn":
-        return (<td><input type="text" className="form-control" value={this.props.cellData.value} onChange={this.onChangeEditColumn.bind(this,this.props.searialNo)} /></td>);
+        return (<td><input type="text" className="form-control" value={this.props.cellData.value} onChange={this.onChangeEditColumn.bind(this, this.props.searialNo)} /></td>);
       case "imageBig":
         return (<td className="ent_nme" align="center" style={{ width: this.props.columnWidth, paddingLeft: "50%" }}><img
           width="50px" height="50px" style={{ width: "50px", height: "50px" }}
@@ -345,8 +377,8 @@ class TableCell extends React.Component {
         return (<td> {parseInt(this.props.searialNo) + "."}</td>);
       case "epochDate":
         return (<td> {utils.UNIXConvertToDate(this.props.cellData)}</td>);
-        case "epochDateMS":
-          return (<td> {utils.UNIXConvertToDateMS(this.props.cellData)}</td>);
+      case "epochDateMS":
+        return (<td> {utils.UNIXConvertToDateMS(this.props.cellData)}</td>);
       case "epochDate1":
         return (<td> {dates.MSddMMyyyy(this.props.cellData)}</td>);
       case "clpVal":
@@ -355,6 +387,9 @@ class TableCell extends React.Component {
         return (<td><span>{this.renderHyperLinkField(this.props.cellData)}</span></td>)
       case "hyperlinkNewTab":
         return (<td><span>{this.renderHyperLinkFieldNewTab(this.props.cellData)}</span></td>)
+      case "statusBox":
+        return (<td><span className={this.getClassForStatusLabel(this.props.cellData)}
+        >{this.props.cellData}</span></td>);
       case "orgType":
         return (<td> {this.props.cellData === "E" ? "Entity" : "Acquirer"} </td>);
       case "errors":
@@ -362,15 +397,15 @@ class TableCell extends React.Component {
           return (<span key={i}>{item}<br /></span>);
         });
 
-        return (<td style={{fontWeight: fontWeightStyle}}> {cellData} </td>);
-        case "longString":
-            let temp = text_truncate(this.props.cellData, 100);
-            return <td style={{fontWeight: fontWeightStyle}}>
-              <a href="javascript:" onClick={() => {
-                this.renderPopupBody(this.props.cellData);
-                this.bindModalData(this.props.rowData);
-              }}> {temp}</a>
-            </td>;
+        return (<td style={{ fontWeight: fontWeightStyle }}> {cellData} </td>);
+      case "longString":
+        let temp = text_truncate(this.props.cellData, 100);
+        return <td style={{ fontWeight: fontWeightStyle }}>
+          <a href="javascript:" onClick={() => {
+            this.renderPopupBody(this.props.cellData);
+            this.bindModalData(this.props.rowData);
+          }}> {temp}</a>
+        </td>;
 
 
       default:
