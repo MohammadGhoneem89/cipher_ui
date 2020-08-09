@@ -13,6 +13,8 @@ class Auth {
     Cookies.remove("token");
     sessionStorage.removeItem('firstScreen');
     sessionStorage.selectedIndex = 0;
+    window.location.reload();
+    sessionStorage.selectedIndex = 0;
     // document.location.href ='/cipher/login'
   }
 
@@ -23,7 +25,8 @@ class Auth {
 
     Cookies.remove("login");
     sessionStorage.selectedIndex = 0;
-    // document.location.href ='/Locked'
+
+    // node document.location.href = '/Locked'
   }
 }
 

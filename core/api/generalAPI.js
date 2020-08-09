@@ -42,7 +42,7 @@ class generalAPI {
             break;
           }
         }
-        if (dataRecv.status == 200 || dataRecv.status == 429 || dataRecv.status == 403 || dataRecv.status == 201) {
+        if (dataRecv.status == 200 || dataRecv.status == 429 || dataRecv.status == 401 || dataRecv.status == 403 || dataRecv.status == 201) {
           let jsonData = await dataRecv.json().then((json) => {
             if (dataRecv.status === 201) {
               setTimeout(() => {
@@ -79,9 +79,11 @@ class generalAPI {
         sessionStorage.selectedIndex = 0;
         Cookies.set('login', '');
         Cookies.remove("token");
-        setTimeout(() => {
-          browserHistory.push('/cipher/login')
-        }, 300);
+
+        window.location.reload();
+        sessionStorage.selectedIndex = 0;
+        // browserHistory.push('/cipher/login')
+
         return {};
       }
 

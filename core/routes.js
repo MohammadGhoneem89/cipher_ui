@@ -265,10 +265,10 @@ function requireAuth(nextState, replace) {
 }
 
 function isAuthorized(nextState, replace) {
-  // if (auth.loggedIn()) {
-  //   replace({
-  //     pathname: sessionStorage.firstScreen,
-  //     state: {nextPathname: nextState.location.pathname}
-  //   })
-  // }
+  if (auth.loggedIn()) {
+    replace({
+      pathname: sessionStorage.firstScreen,
+      state: {nextPathname: nextState.location.pathname}
+    })
+  }
 }
