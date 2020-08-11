@@ -1335,6 +1335,14 @@ module.exports = {
     { alias: "currency", key: "currency", type: "string" },
     { alias: "status", key: "currency", type: "string" },
     { alias: "billingcycle", key: "billingcycle", type: "string" }
+  ],
+  mongoDBChangesGrid: [
+    {alias: "", key: "id", type: "hiddenID"},
+    {alias: "S.No", key: "s_id", type: "float"},
+    {alias: "Model Name", key: "modelName", type: 'string'},
+    {alias: "New Documents", key: "new_documents", type: "string"},
+    {alias: "Updated documents", key: "updated_documents", type: "string"},
+    {alias: "Action", key: "action", type: "string"}
   ]
 };
 
