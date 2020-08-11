@@ -137,7 +137,7 @@ export default (<Router history={browserHistory}>
     <Route path="/groupSetup/:groupID" component={GroupSetup} />
     <Route path="/userList" component={UserSearch} />
     <Route path="/userSetup" component={UserSetup} />
-    
+
     <Route path="/errorCodeList" component={ErrorCodeList} />
     <Route path="/workingCalendarList" component={WorkingCalendarSearch} />
     <Route path="/workingCalendarDetail/:ID" component={WorkingCalendar} />
@@ -257,6 +257,7 @@ function requireAuth(nextState, replace) {
   if (!auth.loggedIn()) {
     Cookies.remove("login");
     Cookies.remove("token");
+    sessionStorage.removeItem('token');
     replace({
       pathname: '/cipher/login',
       state: { nextPathname: nextState.location.pathname }
@@ -268,7 +269,7 @@ function isAuthorized(nextState, replace) {
   if (auth.loggedIn()) {
     replace({
       pathname: sessionStorage.firstScreen,
-      state: {nextPathname: nextState.location.pathname}
+      state: { nextPathname: nextState.location.pathname }
     })
   }
 }

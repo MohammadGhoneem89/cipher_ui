@@ -1,9 +1,8 @@
 import Cookies from 'js-cookie';
-
+import { browserHistory } from 'react-router';
 class Auth {
   static loggedIn() {
-    // return !!sessionStorage.token;
-    return (!!sessionStorage.getItem('token') || !!Cookies.get('login'))
+    return sessionStorage.token || Cookies.get('login')
   }
 
   static logOut() {
@@ -13,16 +12,13 @@ class Auth {
     Cookies.remove("token");
     sessionStorage.removeItem('firstScreen');
     sessionStorage.selectedIndex = 0;
-    // window.location.reload();
-    sessionStorage.selectedIndex = 0;
-    document.location.href ='/cipher/login'
+    browserHistory.push('/cipher/login');
   }
 
   static lockedUser() {
     sessionStorage.removeItem('token');
-    Cookies.remove("login");
-    sessionStorage.removeItem('lastRequestTime');
 
+    sessionStorage.removeItem('lastRequestTime');
     Cookies.remove("login");
     sessionStorage.selectedIndex = 0;
 
