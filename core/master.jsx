@@ -59,8 +59,8 @@ class master extends React.Component {
   }
 
   logout() {
-
     this.props.actions.generalProcess(constants.logout, requestCreator.createEmailTemplateListRequest({}));
+    this.props.actions.updateStore({ LoginResult: {} })
     auth.logOut();
     browserHistory.push('/cipher/login');
   }

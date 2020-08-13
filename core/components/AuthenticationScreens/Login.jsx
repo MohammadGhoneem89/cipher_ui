@@ -132,9 +132,8 @@ class Login extends React.Component {
 
     Cookies.remove("login");
     Cookies.remove("token");
-
-
-    console.log("token" + this.props.LoginResult.token)
+    sessionStorage.removeItem('token');
+    this.props.actions.updateStore({ LoginResult: {} })
   }
 
   changLangButton(langaugeTag) {
@@ -157,18 +156,14 @@ class Login extends React.Component {
 
   componentDidUpdate() {
     isLocked = false
-
     if (this.props.passwordReset !== '' && this.state.isLoading === true) {
       this.setState({
         isLoading: false,
       })
     }
-
-
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.LoginResult) {
-
+    if (nextProps.LoginResult && nextProps.LoginResult.firstScreen) {
       console.log("LoginResult from props ::: ", nextProps.LoginResult);
       var firstPage = nextProps.LoginResult.firstScreen;
       sessionStorage.setItem('firstScreen', firstPage)
@@ -176,14 +171,17 @@ class Login extends React.Component {
         firstPage = firstPage.replace("/", "");
       }
       if (nextProps.LoginResult.success === true) {
-        if (firstPage != undefined && nextProps.LoginResult.firstScreen != "")
-          browserHistory.push(nextProps.LoginResult.firstScreen);
-        else
+        if (firstPage != undefined && nextProps.LoginResult.firstScreen != "") {
+          sessionStorage.removeItem('token');
           sessionStorage.setItem('token', nextProps.LoginResult.token);
+          browserHistory.push(nextProps.LoginResult.firstScreen);
+        } else {
+          console.log(nextProps.LoginResult.token);
+        }
       }
     }
-
   }
+
 
   handleKeyPress(e) {
     if (e.which === 13) {
