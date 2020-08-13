@@ -1337,12 +1337,12 @@ module.exports = {
     { alias: "billingcycle", key: "billingcycle", type: "string" }
   ],
   mongoDBChangesGrid: [
-    {alias: "", key: "id", type: "hiddenID"},
-    {alias: "S.No", key: "s_id", type: "float"},
-    {alias: "Model Name", key: "modelName", type: 'string'},
-    {alias: "New Documents", key: "new_documents", type: "string"},
-    {alias: "Updated documents", key: "updated_documents", type: "string"},
-    {alias: "Action", key: "action", type: "string"}
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "Model Name", key: "modelName", type: 'string' },
+    { alias: "Type", key: "type", type: "string" },
+    { alias: "New Documents", key: "new_documents.count", type: "string" },
+    { alias: "Updated documents", key: "updated_documents.count", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
   ]
 };
 

@@ -17,6 +17,10 @@ class MongoDBChangesContainer extends React.Component {
 
         this.state = {
             schemaProfiles: [],
+            mongodbSchemaChanges: {
+                data: []
+            },
+            schemaChangesList: [],
             filterCriteria: undefined,
             groupList: undefined,
             isLoading: false,
@@ -38,34 +42,40 @@ class MongoDBChangesContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("Component will mount")
-        console.log(nextProps.profiles)
-        let profiles = nextProps.profiles.map((profile)=>{
-            let prof = {}
-            prof.label = profile.name;
-            prof.value = profile._id;
-            return prof;
-        })
-        console.log(profiles)
-        this.setState({
-            schemaProfiles: profiles,
-            isLoading: nextProps.isLoading
-        });
+
+        if (nextProps.profiles) {
+            console.log(nextProps.profiles)
+
+            let profiles = nextProps.profiles.map((profile) => {
+                let prof = {}
+                prof.label = profile.name;
+                prof.value = profile._id;
+                return prof;
+            })
+
+            this.setState({
+                schemaProfiles: profiles,
+                isLoading: nextProps.isLoading
+            });
+
+        }
+        if (nextProps.mongodbSchemaChanges) {
+            nextProps.mongodbSchemaChanges.data.forEach((elem, index) => {
+                elem.actions = [
+                    { "label": "edit", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION" }
+                ]
+
+            })
+            this.setState({
+                mongodbSchemaChanges: nextProps.mongodbSchemaChanges.data,
+                isLoading: nextProps.isLoading
+            });
+        }
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        // var request = {
-        //   "action": "groupList",
-        //   "searchCriteria": {},
-        //   "page": {
-        //     "currentPageNo": this.state.pageNo,
-        //     "pageSize": 10
-        //   }
-        // }
-        console.log("Component did mount")
         this.props.actions.generalProcess(constants.mongodbSchemaProfiles);
-        //this.setState({ isLoading: true });
     }
 
     loadURL(url) {
@@ -73,7 +83,6 @@ class MongoDBChangesContainer extends React.Component {
     }
 
     submit(data) {
-        console.log(data)
         this.props.actions.generalProcess(constants.getMongoDBChanges, requestCreator.createGetMongodbSchemaChanges({
             data
         }));
@@ -114,28 +123,21 @@ class MongoDBChangesContainer extends React.Component {
     }
 
     render() {
-        console.log("Render")
-        console.log(this.state.schemaProfiles)
         if (!this.state.isLoading)
             return (
                 <Portlet title={"Mongo-DB Utility"}>
 
                     <MongoDBChangesForm onSubmit={this.submit} schemaProfiles={this.state.schemaProfiles} />
-
-                    {/* <Portlet title={"Identified Changes"} isPermissioned={true}>
+                    <Portlet title={"Identified Changes"} isPermissioned={true}>
                         <Table
-                        // pagination={false}
-                        // export={true}
-                        // search={false}
-                        // gridType={"entity"}
-                        // gridColumns={utils.getGridColumnByName("mongoDBChangesGrid")}
-                        // gridData={this.state.employeesList.data}
-                        //totalRecords={this.state.employeesList.pageData.totalRecords}
-                        // pageChanged={this.pageChanged}
-                        // activePage={this.state.activePage}
-                        // pageSize={this.state.pageSize}
+                            pagination={false}
+                            export={true}
+                            search={false}
+                            gridColumns={utils.getGridColumnByName("mongoDBChangesGrid")}
+                            gridData={this.state.mongodbSchemaChanges}
+                            //componentFunction={ActionHandlers}
                         />
-                    </Portlet> */}
+                    </Portlet>
                 </Portlet>
             );
         else
@@ -145,16 +147,10 @@ class MongoDBChangesContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
 
-    if (state.app.hasOwnProperty('getMongodbSchemaProfiles')) {
-        return {
-            profiles: state.app.getMongodbSchemaProfiles.data,
-            isLoading: false
-        }
-    } else {
-        return {
-            profiles: [],
-            isLoading: false
-        }
+    return {
+        profiles: _.get(state.app, "getMongodbSchemaProfiles.data", null),
+        mongodbSchemaChanges: _.get(state.app, "mongodbSchemaChanges", null),
+        isLoading: false
     }
 
 }

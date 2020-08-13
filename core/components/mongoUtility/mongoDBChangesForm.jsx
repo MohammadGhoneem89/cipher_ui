@@ -12,9 +12,6 @@ function comboboxHandler(formname, fieldname, type, e) {
 const MongoDBChangesForm = props => {
 
     const { handleSubmit, schemaProfiles } = props;
-    let generalHandler = gen.generalHandler.bind(this);
-
-
     return (
         <form role="form" onSubmit={handleSubmit}>
             <div className="row">
