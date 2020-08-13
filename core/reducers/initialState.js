@@ -2,6 +2,7 @@ import ApplicationsInitialSate from '../../applications/constants/InitialSateInd
 export default {
   userData: { action: "", data: {} },
   enumList: { action: "", data: {} },
+  schemaChangesList: { action: "", data: [], count: 0 },
   entityList: { action: "", data: { searchResult: [], typeData: { entityNames: [] } } },
   acquirerList: { action: "", data: { searchResult: [], typeData: { acquirerNames: [] } } },
   getEndpointListView: {},

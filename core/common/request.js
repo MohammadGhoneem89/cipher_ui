@@ -502,3 +502,9 @@ export function createPickupListDetailRequest(typeDataId) {
     }
 }
 
+export function createGetMongodbSchemaChanges(data) {
+    return {
+        "action": "getMongoDBChanges",
+        data
+    }
+}

@@ -14,9 +14,9 @@ import * as utils from '../../common/utils.js';
 class MongoDBChangesContainer extends React.Component {
     constructor(props, context) {
         super(props, context);
-        this.submit = this.submit.bind(this);
 
         this.state = {
+            schemaProfiles: [],
             filterCriteria: undefined,
             groupList: undefined,
             isLoading: false,
@@ -32,12 +32,23 @@ class MongoDBChangesContainer extends React.Component {
                 "children": []
             }]
         };
+        this.submit = this.submit.bind(this);
         this.pageChanged = this.pageChanged.bind(this);
 
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log("Component will mount")
+        console.log(nextProps.profiles)
+        let profiles = nextProps.profiles.map((profile)=>{
+            let prof = {}
+            prof.label = profile.name;
+            prof.value = profile._id;
+            return prof;
+        })
+        console.log(profiles)
         this.setState({
+            schemaProfiles: profiles,
             isLoading: nextProps.isLoading
         });
     }
@@ -52,8 +63,9 @@ class MongoDBChangesContainer extends React.Component {
         //     "pageSize": 10
         //   }
         // }
-        // this.props.actions.generalProcess(constants.getGroupList, request);
-        // this.setState({isLoading: true});
+        console.log("Component did mount")
+        this.props.actions.generalProcess(constants.mongodbSchemaProfiles);
+        //this.setState({ isLoading: true });
     }
 
     loadURL(url) {
@@ -61,13 +73,10 @@ class MongoDBChangesContainer extends React.Component {
     }
 
     submit(data) {
-        // this.props.actions.generalProcess(constants.getMongoDbSchemaChange, requestCreator.createGroupListRequest({
-        //     "currentPageNo": 1,//this.state.pageNo,
-        //     "pageSize": 10
-        //   },
-        //   data));
-
-        // this.setState({filterCriteria: data, pageNo: 1})
+        console.log(data)
+        this.props.actions.generalProcess(constants.getMongoDBChanges, requestCreator.createGetMongodbSchemaChanges({
+            data
+        }));
     }
 
     pageChanged(pageNo) {
@@ -105,42 +114,46 @@ class MongoDBChangesContainer extends React.Component {
     }
 
     render() {
-
+        console.log("Render")
+        console.log(this.state.schemaProfiles)
         if (!this.state.isLoading)
             return (
                 <Portlet title={"Mongo-DB Utility"}>
-                    <MongoDBChangesForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state} />
-                    <Portlet title={"Identified Changes"} isPermissioned={true}>
-                        {/* <Table
-                            // pagination={false}
-                            // export={true}
-                            // search={false}
-                            // gridType={"entity"}
-                            // gridColumns={utils.getGridColumnByName("mongoDBChangesGrid")}
-                            // gridData={this.state.employeesList.data}
-                            //totalRecords={this.state.employeesList.pageData.totalRecords}
-                            // pageChanged={this.pageChanged}
-                            // activePage={this.state.activePage}
-                            // pageSize={this.state.pageSize}
-                        /> */}
-                    </Portlet>
+
+                    <MongoDBChangesForm onSubmit={this.submit} schemaProfiles={this.state.schemaProfiles} />
+
+                    {/* <Portlet title={"Identified Changes"} isPermissioned={true}>
+                        <Table
+                        // pagination={false}
+                        // export={true}
+                        // search={false}
+                        // gridType={"entity"}
+                        // gridColumns={utils.getGridColumnByName("mongoDBChangesGrid")}
+                        // gridData={this.state.employeesList.data}
+                        //totalRecords={this.state.employeesList.pageData.totalRecords}
+                        // pageChanged={this.pageChanged}
+                        // activePage={this.state.activePage}
+                        // pageSize={this.state.pageSize}
+                        />
+                    </Portlet> */}
                 </Portlet>
             );
         else
-            return (<div className="loader">Loading...</div>)
+            return (<div className="loader" > Loading...</div>)
     }
 }
 
 function mapStateToProps(state, ownProps) {
-    if (state.app.groupList) {
+
+    if (state.app.hasOwnProperty('getMongodbSchemaProfiles')) {
         return {
-            groupList: state.app.groupList,
+            profiles: state.app.getMongodbSchemaProfiles.data,
             isLoading: false
         }
     } else {
         return {
-            groupList: [],
-            isLoading: true
+            profiles: [],
+            isLoading: false
         }
     }
 
