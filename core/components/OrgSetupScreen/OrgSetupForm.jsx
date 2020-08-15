@@ -319,7 +319,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
                       <div className="dashboard-stat2 ">
                         <div className="display">
                           <div className="number">
-                            <h3 className={"font-blued 1-sharp"} style={{ fontSize: "40px" }}><span
+                            <h3 className={"font-blued 1-sharp"} style={{ fontSize: "30px" }}><span
                               data-counter="counterup"
                               data-value="10">{containerState.totalBill}</span></h3>
                             <small>TOTAL</small>
@@ -333,7 +333,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
                       <div className="dashboard-stat2 ">
                         <div className="display">
                           <div className="number">
-                            <h3 className={"font-blued 1-sharp"} style={{ fontSize: "40px" }}><span
+                            <h3 className={"font-blued 1-sharp"} style={{ fontSize: "30px" }}><span
                               data-counter="counterup"
                               data-value="10">{containerState.hits}</span></h3>
                             <small>HIT / API Calls</small>
@@ -347,7 +347,7 @@ const FormSection1 = ({ error, initialValues, updateState, state, containerProps
                       <div className="dashboard-stat2 ">
                         <div className="display">
                           <div className="number">
-                            <h3 className={"font-blued 1-sharp"} style={{ fontSize: "40px" }}><span
+                            <h3 className={"font-blued 1-sharp"} style={{ fontSize: "30px" }}><span
                               data-counter="counterup"
                               data-value="10">{containerState.entityDetail.cycle || "monthly"}</span></h3>
                             <small>CYCLE</small>
