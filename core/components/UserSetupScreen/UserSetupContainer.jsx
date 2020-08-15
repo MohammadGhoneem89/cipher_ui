@@ -162,7 +162,7 @@ class UserSetupContainer extends Component {
   componentWillReceiveProps(nextProps) {
     let perTypeData = this.getPermissionTypeData(nextProps.permission);
     if (nextProps.userDetail && nextProps.userDetail.groups && nextProps.passwordPolicyDetail && nextProps.entityNames && (nextProps.orgTypes || nextProps.callerTypes || nextProps.firstScreens) && nextProps.hyperledgerData && nextProps.quorrumData) {
-     
+
       //allowIncorrectLoginAttempts from passwordPolicy
       const passwordPolicy = nextProps.passwordPolicyDetail;
       const allowIncorrectLoginAttempts = passwordPolicy.passwordPolicy[0].allowIncorrectLoginAttempts;
@@ -210,7 +210,7 @@ class UserSetupContainer extends Component {
       if ((this.props.params.userID || this.props.params.checkerID) && nextProps.userDetail.userID) {
         const checkLocked = this.checkLockedAccount(allowIncorrectLoginAttempts, passwordRetries);
         let isActive = true;
-        if (checkLocked) {
+        if (checkLocked || nextProps.userDetail.isActive === false) {
           isActive = false;
         }
         let value = nextProps.userDetail.orgType

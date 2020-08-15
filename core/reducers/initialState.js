@@ -17,6 +17,7 @@ export default {
       "arabicName": "",
       "shortCode": "",
       "legacyCode": "",
+      "billingMonth":"AUG",
       "services": [],
       "isActive": false,
       "entityLogo": "",

@@ -386,8 +386,6 @@ module.exports = {
     { alias: "AL_actionBy", key: "createdBy.userID", type: "string" },
     { alias: "AL_actionOn", key: "createdAt", type: "string" },
     { alias: "AL_action", key: "actions", type: "action" },
-
-
   ],
   commissionBatchSummaryDataData: [
     { alias: "CD_Summary", key: "summary", type: "string" },
@@ -1329,12 +1327,13 @@ module.exports = {
   // {"id":7,"startdate":"2020-05-31T20:00:00.000Z","enddate":"2020-06-29T20:00:00.000Z","amount":"0.320","currency":"USD","status":"Pending","billingcycle":"Monthly","orgcode":"ORG1"}
   billingGrid: [
     { alias: "S.No", key: "", type: "serialNo" },
-    { alias: "startdate", key: "startdate", type: "string" },
-    { alias: "enddate", key: "enddate", type: "string" },
+    { alias: "route", key: "route", type: "string" },
+    // { alias: "startdate", key: "startdate", type: "string" },
+    // { alias: "enddate", key: "enddate", type: "string" },
     { alias: "amount", key: "amount", type: "string" },
-    { alias: "currency", key: "currency", type: "string" },
-    { alias: "status", key: "currency", type: "string" },
-    { alias: "billingcycle", key: "billingcycle", type: "string" }
+    { alias: "hits", key: "hits", type: "string" },
+    // { alias: "currency", key: "currency", type: "string" },
+    // { alias: "billingcycle", key: "billingcycle", type: "string" }
   ],
   mongoDBChangesGrid: [
     { alias: "S.No", key: "", type: "serialNo" },
@@ -1343,6 +1342,8 @@ module.exports = {
     { alias: "New Documents", key: "new_documents.count", type: "string" },
     { alias: "Updated documents", key: "updated_documents.count", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
+    // { alias: "currency", key: "currency", type: "string" },
+    // { alias: "billingcycle", key: "billingcycle", type: "string" }
   ]
 };
 
