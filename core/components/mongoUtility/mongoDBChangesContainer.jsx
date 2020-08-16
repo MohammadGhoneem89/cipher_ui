@@ -9,6 +9,7 @@ import * as requestCreator from '../../common/request.js';
 import Portlet from '../../common/Portlet.jsx';
 import Table from '../../common/Datatable.jsx';
 import MongoDBChangesForm from './mongoDBChangesForm.jsx';
+import ModalBox from '../../common/ModalBox.jsx';
 import * as utils from '../../common/utils.js';
 
 class MongoDBChangesContainer extends React.Component {
@@ -20,6 +21,7 @@ class MongoDBChangesContainer extends React.Component {
             mongodbSchemaChanges: {
                 data: []
             },
+            loadingSchemaChanges: false,
             schemaChangesList: [],
             filterCriteria: undefined,
             groupList: undefined,
@@ -36,9 +38,20 @@ class MongoDBChangesContainer extends React.Component {
                 "children": []
             }]
         };
+        this.ActionHandlers = this.ActionHandlers.bind(this);
         this.submit = this.submit.bind(this);
         this.pageChanged = this.pageChanged.bind(this);
 
+    }
+
+    ActionHandlers({ actionName, index }) {
+        switch (actionName) {
+            case "viewData":
+                this.setState({ isOpen: true })
+                break;
+            default:
+                break;
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -62,13 +75,14 @@ class MongoDBChangesContainer extends React.Component {
         if (nextProps.mongodbSchemaChanges) {
             nextProps.mongodbSchemaChanges.data.forEach((elem, index) => {
                 elem.actions = [
-                    { "label": "edit", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION" }
+                    { "label": "viewData", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION" }
                 ]
 
             })
             this.setState({
                 mongodbSchemaChanges: nextProps.mongodbSchemaChanges.data,
-                isLoading: nextProps.isLoading
+                isLoading: nextProps.isLoading,
+                loadingSchemaChanges: false
             });
         }
     }
@@ -83,6 +97,9 @@ class MongoDBChangesContainer extends React.Component {
     }
 
     submit(data) {
+        this.setState({
+            loadingSchemaChanges: true
+        });
         this.props.actions.generalProcess(constants.getMongoDBChanges, requestCreator.createGetMongodbSchemaChanges({
             data
         }));
@@ -125,20 +142,35 @@ class MongoDBChangesContainer extends React.Component {
     render() {
         if (!this.state.isLoading)
             return (
-                <Portlet title={"Mongo-DB Utility"}>
+                <div>
+                    <Portlet title={"Mongo-DB Utility"}>
 
-                    <MongoDBChangesForm onSubmit={this.submit} schemaProfiles={this.state.schemaProfiles} />
-                    <Portlet title={"Identified Changes"} isPermissioned={true}>
-                        <Table
-                            pagination={false}
-                            export={true}
-                            search={false}
-                            gridColumns={utils.getGridColumnByName("mongoDBChangesGrid")}
-                            gridData={this.state.mongodbSchemaChanges}
-                            //componentFunction={ActionHandlers}
-                        />
+                        <MongoDBChangesForm onSubmit={this.submit} schemaProfiles={this.state.schemaProfiles} />
+                        <Portlet title={"Identified Changes"} isPermissioned={true}>
+                            {this.state.loadingSchemaChanges ? <div className="loader" > Loading...</div> : <Table
+                                pagination={false}
+                                export={true}
+                                search={false}
+                                gridColumns={utils.getGridColumnByName("mongoDBChangesGrid")}
+                                gridData={this.state.mongodbSchemaChanges}
+                                componentFunction={this.ActionHandlers}
+                            />}
+
+                        </Portlet>
                     </Portlet>
-                </Portlet>
+
+                    <ModalBox isOpen={this.state.isOpen}>
+                        <Portlet title={utils.getLabelByID("Event Details")} isPermissioned={true}>
+                            <div className="row" >
+                                <div className="col-md-12">
+                                    <div className="form-group col-md-12">
+                                        <label className="control-label">{utils.getLabelByID("Event Data")}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </Portlet>
+                    </ModalBox>
+                </div>
             );
         else
             return (<div className="loader" > Loading...</div>)
