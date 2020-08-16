@@ -35,22 +35,22 @@ class Login extends React.Component {
     // this.state = { accountIsLocked: false }
   }
 
-  check(form) {
-
+  check() {
     sessionStorage.setItem('lastRequestTime', new Date());
-    var userId = $('#username').val();
-    var password = $('#password').val();
-
-    console.log("Language : ", sessionStorage.lang)
-    var lang = sessionStorage.lang;
+    let userId = $('#username').val();
+    let password = $('#password').val();
+    let lang = sessionStorage.lang;
     if (userId === "" && password === "") {
       toaster.showToast("Username, Password fields must not be empty please enter username or password.", "INFO");
     } else {
-      //alert("Username, Password are required.");
-      this.setState({ isLocked: true })
-      console.log("LOGIN REQ")
-      this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(userId, sha512(password),
-        lang));
+      if (!this.state.isLocked) {
+        //alert("Username, Password are required.");
+        // this.setState({ isLocked: true });
+        this.state.isLocked = true
+        console.log("LOGIN REQ")
+        this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(userId, sha512(password),
+          lang));
+      }
     }
 
   }
@@ -185,6 +185,7 @@ class Login extends React.Component {
 
 
   handleKeyPress(e) {
+    console.log(e.which)
     if (e.which === 13) {
       this.check();
     }
