@@ -508,3 +508,9 @@ export function createGetMongodbSchemaChanges(data) {
         data
     }
 }
+export function applyMongodbSchemaChanges(data) {
+    return {
+        "action": "getMongoDBChanges",
+        data
+    }
+}

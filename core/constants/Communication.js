@@ -246,6 +246,7 @@ module.exports = {
   testPagination: baseUrl + "/API/core/testPagination",
   userApproveReject: baseUrl + "/API/UI/userApproveReject",
   mongodbSchemaProfiles: baseUrl + "/API/utility/getMongodbSchemaProfiles",
-  getMongoDBChanges: baseUrl + "/API/utility/getMongoDBChanges"
+  getMongoDBChanges: baseUrl + "/API/utility/getMongoDBChanges",
+  applyMongoDBChanges: baseUrl + "/API/utility/upsertMongodbChange"
 }
 

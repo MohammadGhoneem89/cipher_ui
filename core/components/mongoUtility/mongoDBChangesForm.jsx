@@ -11,7 +11,7 @@ function comboboxHandler(formname, fieldname, type, e) {
 }
 const MongoDBChangesForm = props => {
 
-    const { handleSubmit, schemaProfiles } = props;
+    const { handleSubmit, schemaProfiles, updateState } = props;
     return (
         <form role="form" onSubmit={handleSubmit}>
             <div className="row">
@@ -58,29 +58,9 @@ const MongoDBChangesForm = props => {
                             name="db_profiles"
                             id="db_profiles"
                             options={schemaProfiles}
+                            onChange={(e) => { updateState({ selectedProfile: e.target.value }) }}
                         />
-                        {/* <Combobox
-                            status={undefined}
-                            errorIconStyle={{
-                                left: '365px',
-                                top: '10px',
-                                position: 'absolute',
-                                color: 'darkgrey'
-                            }}
-                            fieldname='dbProfile'
-                            formname='schemaProfile'
-                            columns='12'
-                            placeholder='Select'
-                            style={{}}
-                            state={containerState}
-                            typeName="schemaProfiles"
-                            dataSource={schemaProfiles}
-                            multiple={false}
-                            actionHandler={generalHandler}
-                            className="form-control"
-                            disabled={false}
-                            isDDL={true}
-                        /> */}
+
                     </div>
                 </div>
             </div>
