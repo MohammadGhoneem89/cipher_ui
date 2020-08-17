@@ -14,7 +14,7 @@ import Cookies from 'js-cookie';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import * as toaster from '../../common/toaster.js';
-let isLocked = false;
+
 
 class Login extends React.Component {
 
@@ -26,6 +26,7 @@ class Login extends React.Component {
     this.state = {
       isLoading: false,
       emailError: false,
+      isLocked: false
       // loginAgain: false
     }
 
@@ -34,22 +35,21 @@ class Login extends React.Component {
     // this.state = { accountIsLocked: false }
   }
 
-  check(form) {
-    if (isLocked === false) {
-      sessionStorage.setItem('lastRequestTime', new Date());
-      var userId = $('#username').val();
-      var password = $('#password').val();
-
-      console.log("Language : ", sessionStorage.lang)
-      var lang = sessionStorage.lang;
-      if (userId === "" && password === "") {
-        toaster.showToast("Username, Password fields must not be empty please enter username or password.", "INFO");
+  check() {
+    sessionStorage.setItem('lastRequestTime', new Date());
+    let userId = $('#username').val();
+    let password = $('#password').val();
+    let lang = sessionStorage.lang;
+    if (userId === "" && password === "") {
+      toaster.showToast("Username, Password fields must not be empty please enter username or password.", "INFO");
+    } else {
+      if (!this.state.isLocked) {
         //alert("Username, Password are required.");
-      } else {
-        isLocked = true
+        // this.setState({ isLocked: true });
+        this.state.isLocked = true
+        console.log("LOGIN REQ")
         this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(userId, sha512(password),
           lang));
-
       }
     }
 
@@ -155,7 +155,7 @@ class Login extends React.Component {
   }
 
   componentDidUpdate() {
-    isLocked = false
+    this.setState({ isLocked: false })
     if (this.props.passwordReset !== '' && this.state.isLoading === true) {
       this.setState({
         isLoading: false,
@@ -163,6 +163,7 @@ class Login extends React.Component {
     }
   }
   componentWillReceiveProps(nextProps) {
+    this.setState({ isLocked: false })
     if (nextProps.LoginResult && nextProps.LoginResult.firstScreen) {
       console.log("LoginResult from props ::: ", nextProps.LoginResult);
       var firstPage = nextProps.LoginResult.firstScreen;
@@ -184,6 +185,7 @@ class Login extends React.Component {
 
 
   handleKeyPress(e) {
+    console.log(e.which)
     if (e.which === 13) {
       this.check();
     }
@@ -295,7 +297,7 @@ class Login extends React.Component {
 
                         <div className="form-actions">
                           <div>
-                            <button type="submit" className="btn green btn-block uppercase"
+                            <button type="submit" className="btn green btn-block uppercase" disabled={this.state.isLocked}
                               onClick={this.check.bind(this)}>
                               LOGIN
                         </button>
@@ -397,9 +399,7 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  LoginResult: PropTypes.object,
-  passwordReset: '',
-  children: PropTypes.object
+
 };
 
 function mapStateToProps(state, ownProps) {

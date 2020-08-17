@@ -1,5 +1,5 @@
 import initialState from './initialState';
-import {browserHistory} from 'react-router';
+import { browserHistory } from 'react-router';
 
 
 import * as toaster from '../common/toaster.js';
@@ -20,7 +20,9 @@ export default function generalReducer(state = initialState, action) {
 
         }
 
-
+        if (action.resultData && action.resultData.messageStatus == "ERROR") {
+            toaster.showToast(action.resultData.errorDescription, action.resultData.messageStatus);
+        }
         return Object.assign({}, state, action.resultData);
 
     } else {
