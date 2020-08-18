@@ -751,6 +751,8 @@ module.exports = {
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "Code", key: "code", type: "string" },
     { alias: "Description", key: "description", type: "string" },
+     { alias: "Description Ar", key: "descriptionAr", type: "string" },
+    
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
   reportCtr: [

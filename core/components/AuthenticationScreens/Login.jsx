@@ -43,14 +43,12 @@ class Login extends React.Component {
     if (userId === "" && password === "") {
       toaster.showToast("Username, Password fields must not be empty please enter username or password.", "INFO");
     } else {
-      if (!this.state.isLocked) {
-        //alert("Username, Password are required.");
-        // this.setState({ isLocked: true });
-        this.state.isLocked = true
-        console.log("LOGIN REQ")
-        this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(userId, sha512(password),
-          lang));
-      }
+      //alert("Username, Password are required.");
+      // this.setState({ isLocked: true });
+      console.log("LOGIN REQ")
+      this.props.actions.generalProcess(constants.getLogin, requestCreator.createUserRequest(userId, sha512(password),
+        lang));
+
     }
 
   }

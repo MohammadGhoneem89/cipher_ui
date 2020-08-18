@@ -1,7 +1,7 @@
 /*standard imports*/
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import _ from 'lodash';
@@ -35,6 +35,7 @@ class ErrorCodeList extends React.Component {
 
     let code = document.getElementById('code') == null ? "" : document.getElementById('code').value;
     let description = document.getElementById('description') == null ? "" : document.getElementById('description').value;
+    let descriptionAr = document.getElementById('descriptionAr') == null ? "" : document.getElementById('descriptionAr').value;
 
     if (
       _.isEmpty(code) ||
@@ -47,16 +48,17 @@ class ErrorCodeList extends React.Component {
     let tupple = {
       code: code,
       description: description,
+      descriptionAr: descriptionAr,
       bounce: this.state.errorCodeList,
       "actions": [
-        {"label": "edit", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION"}
+        { "label": "edit", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION" }
       ]
     }
 
     if (this.containsObject(tupple, this.state.errorCodeList) === false) {
       this.clearFieldsPeer()
       this.props.actions.generalProcess(constants.updateErrorCodeList, tupple);
-      this.setState({update: false})
+      this.setState({ update: false })
     } else {
       alert("Code Already Exists!!")
     }
@@ -92,9 +94,9 @@ class ErrorCodeList extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.errorCodeList) {
       nextProps.errorCodeList.forEach((elem) => {
-        if(nextProps.isOwner==true) {
+        if (nextProps.isOwner == true) {
           elem.actions = [
-            {"label": "edit", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION"}
+            { "label": "edit", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION" }
           ]
         }
       })
@@ -125,13 +127,13 @@ class ErrorCodeList extends React.Component {
     }
 
     return (<ErrorCode flag={this.state.update} ActionHandlers={this.ActionHandlers}
-                       onInputChange={this.onInputChange} addPeer={this.addPeer}
-                       typeData={this.state.typeData} isOwner={this.props.isOwner}
-                       state={this.state}/>)
+      onInputChange={this.onInputChange} addPeer={this.addPeer}
+      typeData={this.state.typeData} isOwner={this.props.isOwner}
+      state={this.state} />)
 
   }
 
-  ActionHandlers({actionName, index}) {
+  ActionHandlers({ actionName, index }) {
     switch (actionName) {
       case "edit":
         if (this.props.isOwner) {
@@ -139,9 +141,10 @@ class ErrorCodeList extends React.Component {
             let b = this.state.errorCodeList[index];
             document.getElementById('code').value = _.get(b, 'code', '');
             document.getElementById('description').value = _.get(b, 'description', '');
+            document.getElementById('descriptionAr').value = _.get(b, 'descriptionAr', '');
             let tempState = this.state.errorCodeList;
             tempState.splice(index, 1);
-            this.setState({errorCodeList: tempState, update: true});
+            this.setState({ errorCodeList: tempState, update: true });
           }
         } else {
           alert('Cannot Edit');
@@ -169,7 +172,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 }
 
 ErrorCodeList.displayName = "Error Code List";

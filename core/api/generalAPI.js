@@ -33,7 +33,7 @@ class generalAPI {
             mode: "cors",
             credentials: "include",
             headers: header,
-            body: JSON.stringify({ ...data, lang: "AR" })
+            body: JSON.stringify({ ...data })
           });
 
           dataRecv = await fetch(request);
@@ -132,25 +132,23 @@ class generalAPI {
 async function reportErrorToDiagnostics() {
   let nowtime = Math.round((new Date()).getTime() / 1000)
 
-  // if (errorLog.length > 0 && lasterrorreporttime < nowtime) {
-
-  //   let header = new Headers({
-  //     'Content-Type': 'application/json',
-  //     'token': sessionStorage.token
-  //   })
-  //   const request = new Request(baseUrl + "/API/core/logErrors", {
-  //     method: 'POST',
-  //     mode: "cors",
-  //     credentials: "include",
-  //     headers: header,
-  //     body: JSON.stringify({ logList: errorLog })
-  //   });
-  //   let dataRecv = await fetch(request);
-  //   lasterrorreporttime = nowtime + 300000
-  //   errorLog = [];
-  //   console.log(dataRecv)
-
-  // }
+  if (errorLog.length > 0 && lasterrorreporttime < nowtime) {
+    let header = new Headers({
+      'Content-Type': 'application/json',
+      'token': sessionStorage.token
+    })
+    const request = new Request(baseUrl + "/API/core/logErrors", {
+      method: 'POST',
+      mode: "cors",
+      credentials: "include",
+      headers: header,
+      body: JSON.stringify({ logList: errorLog })
+    });
+    let dataRecv = await fetch(request);
+    lasterrorreporttime = nowtime + 300000
+    errorLog = [];
+    console.log(dataRecv)
+  }
 }
 
 // window.onbeforeunload = async function () {
