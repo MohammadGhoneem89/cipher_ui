@@ -1340,7 +1340,7 @@ module.exports = {
   mongoDBChangesGrid: [
     { alias: "S.No", key: "", type: "serialNo" },
     { alias: "Model Name", key: "modelName", type: 'string' },
-    { alias: "Type", key: "type", type: "string" },
+    { alias: "Type", key: "type", type: "statusBox" },
     { alias: "New Documents", key: "new_documents.count", type: "string" },
     { alias: "Updated documents", key: "updated_documents.count", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }

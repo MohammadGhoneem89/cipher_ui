@@ -39,6 +39,10 @@ class TableCell extends React.Component {
         return " badge badge-warning badge-roundless";
       case "APPROVED":
         return " badge badge-success badge-roundless";
+      case "new":
+        return " badge badge-danger badge-roundless";
+      case "updated":
+        return " badge badge-info badge-roundless";
       default:
         return " badge badge-danger badge-roundless";
 

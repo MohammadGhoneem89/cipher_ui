@@ -80,15 +80,18 @@ class MongoDBChangesContainer extends React.Component {
         if (this.state.mongodbSchemaChanges[index].type == "new") {
             this.setState({
                 currentModelName: this.state.mongodbSchemaChanges[index].modelName,
+                currentModelCount: this.state.mongodbSchemaChanges[index].count,
             })
         } else {
             if (this.state.mongodbSchemaChanges[index].new_documents.count > 0) {
                 this.setState({
+                    currentModelName: this.state.mongodbSchemaChanges[index].modelName,
                     currentNewDocIndex: this.state.mongodbSchemaChanges[index].new_documents.data[0],
                 })
             }
             if (this.state.mongodbSchemaChanges[index].updated_documents.count > 0) {
                 this.setState({
+                    currentModelName: this.state.mongodbSchemaChanges[index].modelName,
                     currentUpdatedDocIndex: this.state.mongodbSchemaChanges[index].updated_documents.data[0],
                 })
             }
@@ -200,15 +203,20 @@ class MongoDBChangesContainer extends React.Component {
 
         if (type == "new") {
             this.setState({
+                currentModelName: this.state.mongodbSchemaChanges[index].modelName,
                 currentNewDocIndex: 0,
                 currentNewDoc: this.state.mongodbSchemaChanges[index].new_documents.data[0],
                 isOpenNewDocumentsModal: true,
                 currentModelIndex: index
             })
         } else {
+            let document = this.state.mongodbSchemaChanges[index].updated_documents.data[0];
             this.setState({
+                currentModelName: this.state.mongodbSchemaChanges[index].modelName,
                 currentUpdatedDocIndex: 0,
-                currentUpdatedDoc: this.state.mongodbSchemaChanges[index].updated_documents.data[0],
+                currentUpdatedDoc: document,
+                destinationUpdatedDoc: document.destination,
+                sourceUpdatedDoc: document.source,
                 isOpenUpdatedDocumentsModal: true,
                 currentModelIndex: index
             })
@@ -271,8 +279,10 @@ class MongoDBChangesContainer extends React.Component {
             let index = current - 1,
                 document = this.state.mongodbSchemaChanges[this.state.currentModelIndex].updated_documents.data[index];
             this.setState({
-                currentUpdatedDoc: index,
-                currentUpdatedDoc: document
+                currentUpdatedDocIndex: index,
+                currentUpdatedDoc: document,
+                destinationUpdatedDoc: document.destination,
+                sourceUpdatedDoc: document.source
             })
         }
     }
@@ -287,13 +297,16 @@ class MongoDBChangesContainer extends React.Component {
 
         this.setState({
             currentUpdatedDocIndex: next,
-            currentUpdatedDoc: document
+            currentUpdatedDoc: document,
+            destinationUpdatedDoc: document.destination,
+            sourceUpdatedDoc: document.source
+
         })
     }
 
     migrateDBChange(type) {
 
-        if (type == "new") {
+        if (type == "newCollection") {
             let data = {
                 "source_url": this.state.source,
                 "destination_url": this.state.destination,
@@ -307,8 +320,36 @@ class MongoDBChangesContainer extends React.Component {
             this.props.actions.generalProcess(constants.applyMongoDBChanges, requestCreator.applyMongodbSchemaChanges({
                 data
             }));
-        } else {
-            console.log("upsert")
+        } else if (type == "newDocument") {
+
+            let data = {
+                "source_url": this.state.source,
+                "destination_url": this.state.destination,
+                "modelName": this.state.currentModelName,
+                "type": "updated",
+                "document": this.state.currentNewDoc
+            }
+            // this.setState({
+            //     isMigrating: true
+            // });
+            this.props.actions.generalProcess(constants.applyMongoDBChanges, requestCreator.applyMongodbSchemaChanges({
+                data
+            }));
+        } else if (type == "updatedDocument") {
+            let data = {
+                "source_url": this.state.source,
+                "destination_url": this.state.destination,
+                "modelName": this.state.currentModelName,
+                "type": "updated",
+                "document": this.state.currentUpdatedDoc.source
+            }
+            console.log(this.state.mongodbSchemaChanges[this.state.currentModelIndex].updated_documents.data[this.state.currentUpdatedDocIndex].source)
+            // this.setState({
+            //     isMigrating: true
+            // });
+            this.props.actions.generalProcess(constants.applyMongoDBChanges, requestCreator.applyMongodbSchemaChanges({
+                data
+            }));
         }
 
     }
@@ -336,7 +377,52 @@ class MongoDBChangesContainer extends React.Component {
         }
 
     }
+    diffUsingJS(viewType) {
 
+        if (viewType != 1) {
+            try {
+                document.getElementById("diffoutput").innerHTML = ""
+            }
+            catch (val) {
+
+            }
+            "use strict";
+            var byId = function (id) { return document.getElementById(id); },
+                base = difflib.stringAsLines(byId("baseText") == undefined ? "" : byId("baseText").value),
+                newtxt = difflib.stringAsLines(byId("newText") == undefined ? "" : byId("newText").value),
+                sm = new difflib.SequenceMatcher(base, newtxt),
+                opcodes = sm.get_opcodes(),
+                diffoutputdiv = byId("diffoutput"),
+                contextSize = byId("contextSize") == undefined ? "" : byId("contextSize").value;
+
+            diffoutputdiv.innerHTML = "";
+            contextSize = contextSize || null;
+
+            diffoutputdiv.appendChild(diffview.buildView({
+                baseTextLines: base,
+                newTextLines: newtxt,
+                opcodes: opcodes,
+                baseTextName: "Previous JSON",
+                newTextName: "Current JSON",
+                contextSize: contextSize,
+                viewType: viewType
+            }));
+        }
+    }
+    convertJSONToString(value) {
+        let document = Object.create(value);
+        let key = '_id'
+        for (key in document) {
+            if (document.hasOwnProperty(key) && key == "_id") {
+
+                delete document[key];
+            }
+        }
+        if (document)
+            return JSON.stringify(document, Object.keys(document).sort(), 2)
+        else
+            return '';
+    }
     render() {
         console.log(this.state.mongodbSchemaChanges)
         if (!this.state.isLoading)
@@ -350,7 +436,7 @@ class MongoDBChangesContainer extends React.Component {
                         <Portlet title={"Identified Changes"} isPermissioned={true}>
                             {this.state.loadingSchemaChanges ? <div className="loader" > Loading...</div> : <Table
                                 pagination={false}
-                                export={true}
+                                export={false}
                                 search={false}
                                 gridColumns={utils.getGridColumnByName("mongoDBChangesGrid")}
                                 gridData={this.state.mongodbSchemaChanges}
@@ -363,18 +449,19 @@ class MongoDBChangesContainer extends React.Component {
                             <div className="row" >
                                 <div className="col-md-12">
                                     <div className="form-group col-md-12">
-                                        <h3 className="modal-title">{"Do you want to migrate new collection from source to destination?"}</h3>
+                                        <h3 className="modal-title">{"Do you want to migrate following collection from source to destination?"}</h3>
                                     </div>
                                 </div>
                                 <div className="col-md-12">
                                     <div className="form-group col-md-12">
-                                        <label className="control-label">{"Collection Name: "}{this.state.currentModelName}</label>
+                                        <label className="control-label">{"Collection Name: "}{this.state.currentModelName}</label><br />
+                                        <label className="control-label">{"Documents Count: "}{this.state.currentModelCount}</label>
                                     </div>
                                 </div>
                                 <div className="form-actions right">
                                     <div className="form-group col-md-12">
                                         <div className="btn-toolbar pull-right">
-                                            <button type="button" className="btn btn-default dark" onClick={this.migrateDBChange.bind(this, "new")} >{"Migrate"}</button>
+                                            <button type="button" className="btn btn-default dark" onClick={this.migrateDBChange.bind(this, "newCollection")} >{"Migrate"}</button>
                                             <button type="button" className="btn btn-default" onClick={this.closeMigrationAlertModal} disabled={this.state.isMigrating}>{utils.getLabelByID("Close")}</button>
                                         </div>
                                     </div>
@@ -383,17 +470,23 @@ class MongoDBChangesContainer extends React.Component {
                         </Portlet>
                     </ModalBox>
                     <ModalBox isOpen={this.state.isOpenNewDocumentsModal}>
+
                         <Portlet title={"Collection Difference alert"} isPermissioned={true}>
                             <div className="row" >
                                 <div className="form-actions right">
-                                    <div className="form-group col-md-6">
+                                    <div className="form-group col-md-3">
                                         <div className="btn-toolbar pull-left">
-                                            <button type="button" className="btn btn-default" onClick={this.loadPrevious_NewDocuments} >{"Prev"}</button>
+                                            <button type="button" className="btn btn-default" onClick={this.loadPrevious_NewDocuments} disabled={!this.loadPrevious_NewDocuments}>{"Prev"}</button>
                                         </div>
                                     </div>
                                     <div className="form-group col-md-6">
+                                        <div className="btn-toolbar text-center">
+                                            1/1
+                                        </div>
+                                    </div>
+                                    <div className="form-group col-md-3">
                                         <div className="btn-toolbar pull-right">
-                                            <button type="button" className="btn btn-default" onClick={this.loadNext_NewDocuments} >{"Next"}</button>
+                                            <button type="button" className="btn btn-default" onClick={this.loadNext_NewDocuments} disabled={!this.loadNext_NewDocuments}>{"Next"}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -422,6 +515,7 @@ class MongoDBChangesContainer extends React.Component {
                                 <div className="form-actions right">
                                     <div className="form-group col-md-12">
                                         <div className="btn-toolbar pull-right">
+                                            <button type="button" className="btn btn-default dark" onClick={this.migrateDBChange.bind(this, "newDocument")} >{"Migrate"}</button>
                                             <button type="button" className="btn btn-default" onClick={this.closeNewDocumentsModal} disabled={this.state.isMigrating}>{utils.getLabelByID("Close")}</button>
                                         </div>
                                     </div>
@@ -433,14 +527,19 @@ class MongoDBChangesContainer extends React.Component {
                         <Portlet title={"Collection Difference alert"} isPermissioned={true}>
                             <div className="row" >
                                 <div className="form-actions right">
-                                    <div className="form-group col-md-6">
+                                    <div className="form-group col-md-3">
                                         <div className="btn-toolbar pull-left">
-                                            <button type="button" className="btn btn-default" onClick={this.loadPrevious_UpdatedDocuments} >{"Prev"}</button>
+                                            <button type="button" className="btn btn-default" onClick={this.loadPrevious_UpdatedDocuments} disabled={!this.loadPrevious_UpdatedDocuments}>{"Prev"}</button>
                                         </div>
                                     </div>
                                     <div className="form-group col-md-6">
+                                        <div className="btn-toolbar text-center">
+                                            1/1
+                                        </div>
+                                    </div>
+                                    <div className="form-group col-md-3">
                                         <div className="btn-toolbar pull-right">
-                                            <button type="button" className="btn btn-default" onClick={this.loadNext_UpdatedDocuments} >{"Next"}</button>
+                                            <button type="button" className="btn btn-default" onClick={this.loadNext_UpdatedDocuments} disabled={!this.loadNext_UpdatedDocuments}>{"Next"}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -452,16 +551,20 @@ class MongoDBChangesContainer extends React.Component {
                             </div>
                             <div className="row" >
                                 <div className="form-group col-md-3">
-                                    <label className="control-label bold">{"Model Name:"}</label>
+                                    <label className="control-label bold">{"Model Name: "}{this.state.currentModelName}</label>
                                 </div>
-                                <div className="form-group col-md-9">
-                                    <label className="control-label">{this.state.currentModelName}</label>
+                                <div className="col-md-12 pull-left">
+                                    <div class="viewType">
+                                        <button type="submit" className="btn green" onClick={this.diffUsingJS.bind(this, 0)}>{"View JSON comparison"} </button>
+                                    </div>
                                 </div>
                             </div>
                             <div className="row" >
                                 <div className="col-md-12">
-                                    <div className="form-group col-md-12">
-                                        <pre> <ReactJson src={this.state.currentUpdatedDoc} /></pre>
+                                    <textarea id="newText" style={{ display: "none" }} value={this.convertJSONToString(this.state.sourceUpdatedDoc ? this.state.sourceUpdatedDoc : {})} />
+                                    <textarea id="baseText" style={{ display: "none" }} value={this.convertJSONToString(this.state.destinationUpdatedDoc ? this.state.destinationUpdatedDoc : {})} />
+
+                                    <div id="diffoutput">
                                     </div>
                                 </div>
                             </div>
@@ -469,6 +572,7 @@ class MongoDBChangesContainer extends React.Component {
                                 <div className="form-actions right">
                                     <div className="form-group col-md-12">
                                         <div className="btn-toolbar pull-right">
+                                            <button type="button" className="btn btn-default dark" onClick={this.migrateDBChange.bind(this, "updatedDocument")} >{"Migrate"}</button>
                                             <button type="button" className="btn btn-default" onClick={this.closeUpdatedDocumentsModal} disabled={this.state.isMigrating}>{utils.getLabelByID("Close")}</button>
                                         </div>
                                     </div>
