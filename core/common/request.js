@@ -420,7 +420,7 @@ export function createCommissionTemplateUpdateRequest(data) {
     };
 }
 
-export function createAuditTrailDetailRequest(id, page, searchCriteria, ) {
+export function createAuditTrailDetailRequest(id, page, searchCriteria,) {
     return {
 
         "action": "auditTrailDetails",
@@ -508,6 +508,20 @@ export function createGetMongodbSchemaChanges(data) {
         data
     }
 }
+
+export function encryptData(data) {
+    return {
+        "action": "encrypt",
+        data
+    }
+}
+export function decryptData(data) {
+    return {
+        "action": "decrypt",
+        data
+    }
+}
+
 export function applyMongodbSchemaChanges(data) {
     return {
         "action": "getMongoDBChanges",

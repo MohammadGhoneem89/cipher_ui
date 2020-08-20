@@ -247,6 +247,8 @@ module.exports = {
   userApproveReject: baseUrl + "/API/UI/userApproveReject",
   mongodbSchemaProfiles: baseUrl + "/API/utility/getMongodbSchemaProfiles",
   getMongoDBChanges: baseUrl + "/API/utility/getMongoDBChanges",
-  applyMongoDBChanges: baseUrl + "/API/utility/upsertMongodbChange"
+  applyMongoDBChanges: baseUrl + "/API/utility/upsertMongodbChange",
+  encryptString: baseUrl + "/API/utility/encrypt",
+  decryptString: baseUrl + "/API/utility/decrypt",
 }
 

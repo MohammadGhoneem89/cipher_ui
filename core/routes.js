@@ -118,6 +118,7 @@ import TemplateList from '../core/components/templateEngine/templateList.jsx';
 import DocumentationContainer from "./components/DocumentationCode/DocumentationContainer.jsx";
 
 import MongoDBChangesContainer from './components/mongoUtility/mongoDBChangesContainer.jsx';
+import CryptographyContainer from './components/cryptoUtility/cryptographyContainer.jsx'
 export default (<Router history={browserHistory}>
 
   <Route path="/Documentation/:useCase/:route" component={GeneratePDF} />
@@ -247,6 +248,7 @@ export default (<Router history={browserHistory}>
     <Route path="/fileList/:type" component={FileList} />
     <Route path="/fileData/:id" component={FileData} />
     <Route path="/mongoUtility" component={MongoDBChangesContainer} />
+    <Route path="/cryptoUtility" component={CryptographyContainer} />
 
     <Route path="/templateList" component={TemplateList} />
     {ApplicationsRoute.routesIndex}

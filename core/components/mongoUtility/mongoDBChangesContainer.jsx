@@ -610,6 +610,6 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-MongoDBChangesContainer.displayName = "MongoDBChangesContainer";
+MongoDBChangesContainer.displayName = "MongoDB Utility";
 
 export default connect(mapStateToProps, mapDispatchToProps)(MongoDBChangesContainer)
