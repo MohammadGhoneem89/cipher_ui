@@ -134,6 +134,7 @@ module.exports = {
   getAPIDefinitionID: baseUrl + "/API/core/getAPIDefinitionID",
   getApiListData: baseUrl + "/API/core/getAPIDefinition",
   APIDocs: baseUrl + "/API/core/getActiveAPIList",
+  APIDocsContarct: baseUrl + "/API/core/apiDocsContarct",
   downloadChainCode: baseUrl + "/API/core/downloadChainCode",
   getTypeDataList: baseUrl + "/API/core/getTypeDataList",
   getModuleListData: baseUrl + "/API/core/getModuleList",
