@@ -113,111 +113,53 @@ class Documentation extends React.Component {
 
   componentDidMount() {
     //alert(this.props.useCase)
-
     let req = {
       smartcontract: this.props.smartcontract
     }
-    this.props.actions.generalProcess(constants.APIDocs, req);
+    // request params
+    // response params
+    // ------
+    this.props.actions.generalProcess(constants.APIDocsContarct, req);
     this.props.actions.generalProcess(constants.getTypeDataList)
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.enumList) {
-      this.setState({ enumList: nextProps.enumList })
+    if (nextProps.apiDocsContarct) {
+      let strArr=[];
+      let reqFields = _.get(nextProps.apiDocsContarct, RequestMapping.fields, [])
+      reqFields.forEach(element => {
+        strArr.push(`${element.IN_FIELD} (${element.IN_FIELDDT})`)
+      });
+      console.log(JSON.stringify(nextProps.apiDocsContarct));
+      this.setState({ isloading: false })
     }
-    if (nextProps.generateHMAC) {
-      // alert(nextProps.generateHMAC)
-      this.setState({ generateHMAC: nextProps.generateHMAC })
-    }
-    if (nextProps.RouteListData) {
-      let routemap = nextProps.RouteListData;
-      let reqSample = undefined;
-      for (let useCase in routemap) {
-        for (let route in routemap[useCase]) {
-          let request = {}
-          let requestPG = {}
-          let response = {}
 
-          if (routemap[useCase][route].isValBypass === false) {
-            routemap[useCase][route].RequestMapping.forEach(element => {
-              let id = element.IN_FIELDCOMPLEXTYPEDATA
-              let dt = element.IN_FIELDDT
-              // alert(id)
-              if (id) {
-                routemap[useCase][route].complexList.forEach((data) => {
-                  if (data._id == id)
-                    dt = `${dt}-${data.typeName}`
-                })
-              }
-              element.IN_FIELDDT = dt;
-              _.set(request, element.IN_FIELD, `${dt}`);
-            });
-            routemap[useCase][route].ResponseMapping.forEach(element => {
-              let id = element.MAP_FIELDCOMPLEXTYPEDATA
-              let dt = element.MAP_FIELDDT
-              if (id) {
-                routemap[useCase][route].complexList.forEach((data) => {
-                  if (data._id == id)
-                    dt = `${dt}-${data.typeName}`
-                })
-              }
-              element.MAP_FIELDDT = dt;
-              _.set(response, element.MAP_FIELD, `${dt}`);
-            });
-          } else {
-            routemap[useCase][route].ResponseMapping = [];
-            routemap[useCase][route].RequestMapping = []
-          }
-
-          if (routemap[useCase][route].isSimulated === true) {
-            try {
-              response = JSON.parse(routemap[useCase][route].simulatorResponse);
-            } catch (e) {
-              response = {}
-            }
-          }
-          reqSample = routemap[useCase][route].sampleRequest
-          let variations = _.get(routemap, `${useCase}.${route}.simucases`, undefined);
-
-          let reqSam = _.get(routemap, `${useCase}.${route}.simucases[0].SimulatorRequest`, undefined);
-          console.log('>>>>>>>>>||||', JSON.stringify(reqSam));
-          if (reqSam) {
-            this.setState({ variations: variations })
-            _.set(routemap, `${useCase}.${route}.requestSchema`, JSON.parse(reqSam))
-          } else {
-            _.set(routemap, `${useCase}.${route}.requestSchema`, request)
-          }
-          _.set(routemap, `${useCase}.${route}.responseSchema`, response)
-
-        }
-      }
-      this.setState({ requestSample: reqSample, RouteList: routemap })
-    }
   }
 
 
   getDocumentation() {
-    let resp = [];
-    for (let useCase in this.state.RouteList) {
-      for (let route in this.state.RouteList[useCase]) {
-        let request = this.state.request;
-        if (!this.state.request)
-          request = _.get(this.state.RouteList, `${useCase}.${route}.requestSchema`, null);
+    // let resp = [];
+    // for (let useCase in this.state.RouteList) {
+    //   for (let route in this.state.RouteList[useCase]) {
+    //     let request = this.state.request;
+    //     if (!this.state.request)
+    //       request = _.get(this.state.RouteList, `${useCase}.${route}.requestSchema`, null);
 
-        let response = this.state.response;
-        if (!this.state.response)
-          response = _.get(this.state.RouteList, `${useCase}.${route}.responseSchema`, null);
-        resp.push(<DocumentComponent initialValues={this.state.RouteList[useCase][route]} useCase={useCase}
-          route={route} request={request} response={response} baseurl={constants.baseUrl}
-          PG={request} onEdit={this.onEdit} onDelete={this.onDelete} onAdd={this.onAdd}
-          onLoadSample={this.onLoadSample} onRunApi={this.onRunApi}
-          containerState={this.state}
-          HmacPopUP={this.HmacPopUP}
-          generateHmac={this.generateHmac}
-          closePopUP={this.closePopUP} />);
-      }
-    }
-    return (resp);
+    //     let response = this.state.response;
+    //     if (!this.state.response)
+    //       response = _.get(this.state.RouteList, `${useCase}.${route}.responseSchema`, null);
+    //     resp.push(<DocumentComponent initialValues={this.state.RouteList[useCase][route]} useCase={useCase}
+    //       route={route} request={request} response={response} baseurl={constants.baseUrl}
+    //       PG={request} onEdit={this.onEdit} onDelete={this.onDelete} onAdd={this.onAdd}
+    //       onLoadSample={this.onLoadSample} onRunApi={this.onRunApi}
+    //       containerState={this.state}
+    //       HmacPopUP={this.HmacPopUP}
+    //       generateHmac={this.generateHmac}
+    //       closePopUP={this.closePopUP} />);
+    //   }
+    // }
+    // return (resp);
+    return []
   }
 
   render() {
@@ -229,7 +171,7 @@ class Documentation extends React.Component {
             <div className="portlet light bordered sdg_portlet" style={{ marginBottom: "0px" }}>
               <div className="portlet-title">
                 <div className="caption">
-                  <span className="caption-subject">API Documentation</span>
+                  <span className="caption-subject">SmartContract Documentation</span>
                 </div>
               </div>
               <div className="portlet-body">
@@ -262,7 +204,8 @@ function mapStateToProps(state, ownProps) {
     // useCase: ownProps.params.useCase,
     // route: ownProps.params.route,
     enumList: state.app.enumList.data,
-    generateHMAC: _.get(state.app, 'generateHMAC.data.generatedHMAC', undefined)
+    generateHMAC: _.get(state.app, 'generateHMAC.data.generatedHMAC', undefined),
+    apiDocsContarct: _.get(state.app, 'apiDocsContarct.data', undefined)
   };
 }
 
