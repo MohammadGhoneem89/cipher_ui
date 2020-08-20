@@ -11,24 +11,7 @@ import MongoDBChangesForm from './mongoDBChangesForm.jsx';
 import ModalBox from '../../common/ModalBox.jsx';
 import * as utils from '../../common/utils.js';
 import ReactJson from 'react-json-view';
-
-class newDocumentsModalLayout extends React.Component {
-    render() {
-        return (
-            <div>
-            </div>
-        );
-    }
-}
-
-class updatedDocumentsModalLayout extends React.Component {
-    render() {
-        return (
-            <div>
-            </div>
-        );
-    }
-}
+import * as toaster from '../../common/toaster.js';
 
 class MongoDBChangesContainer extends React.Component {
     constructor(props, context) {
@@ -102,18 +85,24 @@ class MongoDBChangesContainer extends React.Component {
 
         this.setCurrentCollectionName(index);
         switch (actionName) {
-            case "view New Documents":
+            case "View New Documents":
                 this.loadDefaultDocument(index, "new");
                 break;
-            case "view Updated Documents":
+            case "View Updated Documents":
                 this.loadDefaultDocument(index, "updated");
                 break;
-            case "migrateCollection":
+            case "Migrate Collection":
                 this.setState({ isOpenMigrationAlert: true, currentModelIndex: index })
                 break;
             default:
                 break;
         }
+    }
+
+    componentWillUnmount() {
+        console.log("backListener")
+        super.componentWillUnmount();
+        this.backListener();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -135,15 +124,16 @@ class MongoDBChangesContainer extends React.Component {
 
         }
         if (nextProps.mongodbSchemaChanges) {
+
             nextProps.mongodbSchemaChanges.data.forEach((elem, index) => {
                 if (elem.type == "new") {
                     elem.actions = [
-                        { "label": "migrateCollection", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION" }
+                        { "label": "Migrate Collection", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION" }
                     ]
                 } else {
                     elem.actions = [
-                        { "label": "view New Documents", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION" },
-                        { "label": "view Updated Documents", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION" }
+                        { "label": "View New Documents", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION" },
+                        { "label": "View Updated Documents", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION" }
                     ]
                 }
 
@@ -172,12 +162,15 @@ class MongoDBChangesContainer extends React.Component {
     }
 
     componentDidMount() {
+        this.backListener = browserHistory.listen(location => {
+            console.log(location.action)
+            if (location.action === "POP") {
+                browserHistory.push('/mongoUtility');
+                this.state.mongodbSchemaChanges = {}
+            }
+        });
         window.scrollTo(0, 0);
         this.props.actions.generalProcess(constants.mongodbSchemaProfiles);
-    }
-
-    loadURL(url) {
-        browserHistory.push(url);
     }
 
     submit(data) {
@@ -210,13 +203,14 @@ class MongoDBChangesContainer extends React.Component {
                 currentModelIndex: index
             })
         } else {
+
             let document = this.state.mongodbSchemaChanges[index].updated_documents.data[0];
             this.setState({
                 currentModelName: this.state.mongodbSchemaChanges[index].modelName,
                 currentUpdatedDocIndex: 0,
                 currentUpdatedDoc: document,
-                destinationUpdatedDoc: document.destination,
-                sourceUpdatedDoc: document.source,
+                destinationUpdatedDoc: Object.assign({}, document.destination),
+                sourceUpdatedDoc: Object.assign({}, document.source),
                 isOpenUpdatedDocumentsModal: true,
                 currentModelIndex: index
             })
@@ -281,8 +275,8 @@ class MongoDBChangesContainer extends React.Component {
             this.setState({
                 currentUpdatedDocIndex: index,
                 currentUpdatedDoc: document,
-                destinationUpdatedDoc: document.destination,
-                sourceUpdatedDoc: document.source
+                destinationUpdatedDoc: Object.assign({}, document.destination),
+                sourceUpdatedDoc: Object.assign({}, document.source)
             })
         }
     }
@@ -298,8 +292,8 @@ class MongoDBChangesContainer extends React.Component {
         this.setState({
             currentUpdatedDocIndex: next,
             currentUpdatedDoc: document,
-            destinationUpdatedDoc: document.destination,
-            sourceUpdatedDoc: document.source
+            destinationUpdatedDoc: Object.assign({}, document.destination),
+            sourceUpdatedDoc: Object.assign({}, document.source)
 
         })
     }
@@ -343,7 +337,6 @@ class MongoDBChangesContainer extends React.Component {
                 "type": "updated",
                 "document": this.state.currentUpdatedDoc.source
             }
-            console.log(this.state.mongodbSchemaChanges[this.state.currentModelIndex].updated_documents.data[this.state.currentUpdatedDocIndex].source)
             // this.setState({
             //     isMigrating: true
             // });
@@ -378,50 +371,51 @@ class MongoDBChangesContainer extends React.Component {
 
     }
     diffUsingJS(viewType) {
-
-        if (viewType != 1) {
-            try {
-                document.getElementById("diffoutput").innerHTML = ""
-            }
-            catch (val) {
-
-            }
-            "use strict";
-            var byId = function (id) { return document.getElementById(id); },
-                base = difflib.stringAsLines(byId("baseText") == undefined ? "" : byId("baseText").value),
-                newtxt = difflib.stringAsLines(byId("newText") == undefined ? "" : byId("newText").value),
-                sm = new difflib.SequenceMatcher(base, newtxt),
-                opcodes = sm.get_opcodes(),
-                diffoutputdiv = byId("diffoutput"),
-                contextSize = byId("contextSize") == undefined ? "" : byId("contextSize").value;
-
-            diffoutputdiv.innerHTML = "";
-            contextSize = contextSize || null;
-
-            diffoutputdiv.appendChild(diffview.buildView({
-                baseTextLines: base,
-                newTextLines: newtxt,
-                opcodes: opcodes,
-                baseTextName: "Previous JSON",
-                newTextName: "Current JSON",
-                contextSize: contextSize,
-                viewType: viewType
-            }));
+        try {
+            document.getElementById("documentsdiffoutput").innerHTML = ""
         }
+        catch (val) {
+
+        }
+        "use strict";
+        var byId = function (id) { return document.getElementById(id); },
+            base = difflib.stringAsLines(byId("baseText") == undefined ? "" : byId("baseText").value),
+            newtxt = difflib.stringAsLines(byId("newText") == undefined ? "" : byId("newText").value),
+            sm = new difflib.SequenceMatcher(base, newtxt),
+            opcodes = sm.get_opcodes(),
+            diffoutputdiv = byId("documentsdiffoutput"),
+            contextSize = byId("contextSize") == undefined ? "" : byId("contextSize").value;
+
+        diffoutputdiv.innerHTML = "";
+        contextSize = contextSize || null;
+
+        diffoutputdiv.appendChild(diffview.buildView({
+            baseTextLines: base,
+            newTextLines: newtxt,
+            opcodes: opcodes,
+            baseTextName: "Previous JSON",
+            newTextName: "Current JSON",
+            contextSize: contextSize,
+            viewType: viewType
+        }));
+
     }
     convertJSONToString(value) {
-        let document = Object.create(value);
-        let key = '_id'
+
+        let document = value, key = '_id'
         for (key in document) {
             if (document.hasOwnProperty(key) && key == "_id") {
 
                 delete document[key];
             }
         }
-        if (document)
-            return JSON.stringify(document, Object.keys(document).sort(), 2)
-        else
+
+        if (document) {
+            return JSON.stringify(document, null, 4);
+        }
+        else {
             return '';
+        }
     }
     render() {
         console.log(this.state.mongodbSchemaChanges)
@@ -534,7 +528,7 @@ class MongoDBChangesContainer extends React.Component {
                                     </div>
                                     <div className="form-group col-md-6">
                                         <div className="btn-toolbar text-center">
-                                            1/1
+                                            1/2
                                         </div>
                                     </div>
                                     <div className="form-group col-md-3">
@@ -550,21 +544,18 @@ class MongoDBChangesContainer extends React.Component {
                                 </div>
                             </div>
                             <div className="row" >
-                                <div className="form-group col-md-3">
+                                <div className="col-md-12">
                                     <label className="control-label bold">{"Model Name: "}{this.state.currentModelName}</label>
                                 </div>
-                                <div className="col-md-12 pull-left">
-                                    <div class="viewType">
-                                        <button type="submit" className="btn green" onClick={this.diffUsingJS.bind(this, 0)}>{"View JSON comparison"} </button>
-                                    </div>
+                                <div className="form-group col-md-12 pull-left">
+                                    <label className="control-label bold">Documents' difference: </label> <button type="submit" className="btn green" onClick={this.diffUsingJS.bind(this, 0)}>{"View Comparison"} </button>
                                 </div>
                             </div>
                             <div className="row" >
                                 <div className="col-md-12">
-                                    <textarea id="newText" style={{ display: "none" }} value={this.convertJSONToString(this.state.sourceUpdatedDoc ? this.state.sourceUpdatedDoc : {})} />
-                                    <textarea id="baseText" style={{ display: "none" }} value={this.convertJSONToString(this.state.destinationUpdatedDoc ? this.state.destinationUpdatedDoc : {})} />
-
-                                    <div id="diffoutput">
+                                    <textarea id="newText" style={{ display: "none" }} value={this.convertJSONToString(this.state.sourceUpdatedDoc)} />
+                                    <textarea id="baseText" style={{ display: "none" }} value={this.convertJSONToString(this.state.destinationUpdatedDoc)} />
+                                    <div id="documentsdiffoutput">
                                     </div>
                                 </div>
                             </div>
