@@ -4,7 +4,6 @@ import { CheckboxInput, CheckboxList, TextInput, DropdownInput, TextArea } from 
 import Label from '../../common/Lable.jsx';
 
 const CryptographyForm = props => {
-    console.log(props)
     const dropdownOptions = [
         { value: "Encrypt", label: "Encrypt" },
         { value: "Decrypt", label: "Decrypt" }
