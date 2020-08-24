@@ -633,6 +633,10 @@ class APIDefinitionScreen extends React.Component {
       }
 
       if (isChanged) {
+        document.getElementById('sampleArgs').value=nextProps.APIDefinitionAddUpdate.data.sampleArgs
+        document.getElementById('sampleResponse').value=nextProps.APIDefinitionAddUpdate.data.sampleResponse
+        document.getElementById('sampleEvents').value=nextProps.APIDefinitionAddUpdate.data.sampleEvents
+
         this.setState({
           APIDefinitionAddUpdate: cloneDeep(nextProps.APIDefinitionAddUpdate.data),
           rules: nextProps.APIDefinitionAddUpdate.data.rules || [],
@@ -760,6 +764,16 @@ class APIDefinitionScreen extends React.Component {
       }
     }
     //alert(data.billingDate);
+
+    let sampleArgs = document.getElementById('sampleArgs') == null ? "" : document.getElementById('sampleArgs').value;
+    let sampleResponse = document.getElementById('sampleResponse') == null ? "" : document.getElementById('sampleResponse').value;
+    let sampleEvents = document.getElementById('sampleEvents') == null ? "" : document.getElementById('sampleEvents').value;
+
+
+    data.sampleArgs = sampleArgs
+    data.sampleResponse = sampleResponse
+    data.sampleEvents = sampleEvents
+
     data.adaptor = this.state.adaptor;
     data.database = this.state.databaseType;
     data.objectType = this.state.objectType;

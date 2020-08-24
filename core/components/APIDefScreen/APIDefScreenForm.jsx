@@ -535,6 +535,12 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
                           <a href="#tab_1_5" data-toggle="tab"
                             style={{ fontWeight: "Bold", fontSize: "17px" }}>Relay Settings</a>
                         </li>
+
+                        <li>
+                          <a href="#tab_1_10" data-toggle="tab"
+                            style={{ fontWeight: "Bold", fontSize: "17px" }}>Smart Contract Req/Res Docs</a>
+                        </li>
+                        
                       </ul>
                     </div>
                     <div className="tabbable-line">
@@ -1244,6 +1250,51 @@ const APIDefScreenForm = ({ navigateReq, navigateRes, parameters, generateCustom
                         </div>
 
                         {/* End Billing Block */}
+
+
+
+                        <div className="tab-pane" id="tab_1_10">
+                          <div className="col-md-12">
+                            
+                            <div className="col-md-12">
+                              <label className="form-group control-label col-md-12" style={{
+                                textAlign: "left",
+                                fontWeight: "bold"
+                              }}>{utils.getLabelByID("Sample Request Args")}</label>
+                              <div className="col-md-12">
+                                <div className="form-group">
+                                  <textarea className="form-control" id="sampleArgs" rows="4"
+                                    style={{ resize: "none", width: "100%" }} />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-md-12">
+                              <label className="form-group control-label col-md-12" style={{
+                                textAlign: "left",
+                                fontWeight: "bold"
+                              }}>{utils.getLabelByID("Sample Response")}</label>
+                              <div className="col-md-12">
+                                <div className="form-group">
+                                  <textarea className="form-control" id="sampleResponse" rows="4"
+                                    style={{ resize: "none", width: "100%" }} />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-md-12">
+                              <label className="form-group control-label col-md-12" style={{
+                                textAlign: "left",
+                                fontWeight: "bold"
+                              }}>{utils.getLabelByID("Sample Events")}</label>
+                              <div className="col-md-12">
+                                <div className="form-group">
+                                  <textarea className="form-control" id="sampleEvents" rows="4"
+                                    style={{ resize: "none", width: "100%" }} />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                        </div>
                       </div>
                     </div>
                   </div>
