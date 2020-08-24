@@ -235,6 +235,6 @@ function mapDispatchToProps(dispatch) {
   return { actions: bindActionCreators(actions, dispatch) }
 }
 
-Documentation.displayName = "Documentation_Heading";
+Documentation.displayName = "__HIDE";
 export default connect(mapStateToProps, mapDispatchToProps)(Documentation);
 
