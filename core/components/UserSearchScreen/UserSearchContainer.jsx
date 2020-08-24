@@ -1,7 +1,7 @@
-import React, {PropTypes} from 'react';
-import {bindActionCreators} from 'redux';
-import {browserHistory} from 'react-router';
-import {connect} from 'react-redux';
+import React, { PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
@@ -51,7 +51,8 @@ class UserSearchContainer extends React.Component {
       "action": "userList",
       "searchCriteria": {
         "orgType": orgType,
-        "orgCode": orgCode
+        "orgCode": orgCode,
+        "status": "APPROVED"
       },
       "page": {
         "currentPageNo": this.state.pageNo,
@@ -60,7 +61,7 @@ class UserSearchContainer extends React.Component {
     }
 
     this.props.actions.generalProcess(constants.getUserList, request);
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
   }
 
   loadURL(url) {
@@ -77,14 +78,15 @@ class UserSearchContainer extends React.Component {
       data.orgType = sessionStorage.orgType;
       data.orgCode = sessionStorage.orgCode
     }
-
+    if (!data.status) {
+      data.status = "APPROVED"
+    }
     this.props.actions.generalProcess(constants.getUserList, requestCreator.createUserListRequest({
-        "currentPageNo": 1,//this.state.pageNo,
-        "pageSize": 10
-      },
+      "currentPageNo": 1,//this.state.pageNo,
+      "pageSize": 10,
+    },
       data));
-
-    this.setState({filterCriteria: data, pageNo: 1})
+    this.setState({ filterCriteria: data, pageNo: 1 })
   }
 
   pageChanged(pageNo) {
@@ -94,11 +96,6 @@ class UserSearchContainer extends React.Component {
       let orgType = '';
       let orgCode = '';
 
-      if (sessionStorage.orgType == 'Entity' || sessionStorage.orgType == 'Acquirer') {
-        orgType = sessionStorage.orgType;
-        orgCode = sessionStorage.orgCode
-
-      }
 
       if (this.state.filterCriteria == undefined) {
 
@@ -106,15 +103,22 @@ class UserSearchContainer extends React.Component {
           "action": "userList",
           "searchCriteria": {
             "orgType": orgType,
-            "orgCode": orgCode
+            "orgCode": orgCode,
+            status
           },
           "page": {
             "currentPageNo": pageNo,
             "pageSize": 10
           }
         }
+        if (!request.status) {
+          request.searchCriteria.status = "APPROVED"
+        }
       } else {
         var searchCriteria = this.state.filterCriteria
+        if (!searchCriteria.status) {
+          request.status = "APPROVED"
+        }
         request = {
           "action": "userList",
           searchCriteria,
@@ -125,7 +129,7 @@ class UserSearchContainer extends React.Component {
         }
       }
 
-      this.setState({pageNo: pageNo})
+      this.setState({ pageNo: pageNo })
       this.props.actions.generalProcess(constants.getUserList, request)
 
     }
@@ -137,7 +141,7 @@ class UserSearchContainer extends React.Component {
       return (
         <div>
           <Portlet title={"User Seach Filter"}>
-            <UserFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state}/>
+            <UserFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state} />
             {/*<ActionButton actionList={this.props.userList.data.actions} performAction={this.performAction} />*/}
           </Portlet>
           <Portlet title={"User List"} isPermissioned={true} actions={this.props.userList.data.actions}>

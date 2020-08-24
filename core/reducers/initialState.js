@@ -2,6 +2,8 @@ import ApplicationsInitialSate from '../../applications/constants/InitialSateInd
 export default {
   userData: { action: "", data: {} },
   enumList: { action: "", data: {} },
+  getMongodbSchemaProfiles: { action: "", data: [], count: 0 },
+  mongodbSchemaChanges: { action: "", data: [], count: 0 },
   entityList: { action: "", data: { searchResult: [], typeData: { entityNames: [] } } },
   acquirerList: { action: "", data: { searchResult: [], typeData: { acquirerNames: [] } } },
   getEndpointListView: {},
@@ -15,6 +17,7 @@ export default {
       "arabicName": "",
       "shortCode": "",
       "legacyCode": "",
+      "billingMonth":"AUG",
       "services": [],
       "isActive": false,
       "entityLogo": "",
@@ -513,7 +516,7 @@ export default {
       }
     }
   },
-  
+
   getTypeDataDetailByID: {
     action: "",
     data: {}

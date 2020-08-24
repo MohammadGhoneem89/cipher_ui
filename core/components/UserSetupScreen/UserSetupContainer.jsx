@@ -25,9 +25,11 @@ class UserSetupContainer extends Component {
       errors: {},
       groupIndex: 0,
       editPassword: false,
-      isLocked: false
+      isLocked: false,
+      view: false
     };
     this.IsValid = true;
+
     this.generalHandler = gen.generalHandler.bind(this);
   }
 
@@ -48,6 +50,7 @@ class UserSetupContainer extends Component {
         <span
           className="label label-primary"
           style={{ cursor: "pointer" }}
+          disabled={this.state.view}
           onClick={() => {
             console.log('Upload Image Clicked.')
             this.profilePicUploader.click();
@@ -70,6 +73,7 @@ class UserSetupContainer extends Component {
           name="profilePicUploader"
           id='profilePicUploader'
           type='file'
+          disabled={this.state.view}
           style={{ display: 'none' }}
           ref={input => this.profilePicUploader = input}
           onChange={(e) => {
@@ -111,10 +115,18 @@ class UserSetupContainer extends Component {
     this.props.actions.generalProcess(constants.getBlkUserList); // Hyperledger/quorum etc blckchain users (peer admins)
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES', 'CALLER_TYPES', 'First_Screens'])); // Org types (entities)
     this.props.actions.generalProcess(constants.passwordPolicyDetail, { "action": "typeDataDetail" });
+
+
     this.props.actions.generalProcess(constants.getUserDetail, {    // user detail + groups list
       "action": "userDetails",
-      "id": this.props.params.userID
+      "id": this.props.params.userID || this.props.params.checkerID,
+      "mode": this.props.params.checkerID ? "checker" : undefined
     });
+
+    if (this.props.params.checkerID) {
+      this.setState({ view: true })
+    }
+
 
     this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({     // Get Orgs (entities)
       "currentPageNo": 1,
@@ -129,7 +141,24 @@ class UserSetupContainer extends Component {
       return true;
     }
   }
-
+  performActionApproval = (action) => {
+    if (action == "Approve") {
+      this.props.actions.generalProcess(constants.userApproveReject, {
+        data: {
+          id: this.props.params.checkerID,
+          actionTypeACL: "APPROVE"
+        }
+      });
+    } else {
+      let rejectionReason = document.getElementById('rejectionReason') == null ? "" : document.getElementById('rejectionReason').value;
+      this.props.actions.generalProcess(constants.userApproveReject, {
+        data: {
+          id: this.props.params.checkerID,
+          rejectionReason: rejectionReason
+        }
+      });
+    }
+  }
   componentWillReceiveProps(nextProps) {
     let perTypeData = this.getPermissionTypeData(nextProps.permission);
     if (nextProps.userDetail && nextProps.userDetail.groups && nextProps.passwordPolicyDetail && nextProps.entityNames && (nextProps.orgTypes || nextProps.callerTypes || nextProps.firstScreens) && nextProps.hyperledgerData && nextProps.quorrumData) {
@@ -178,16 +207,16 @@ class UserSetupContainer extends Component {
         hypUser = nextProps.userDetail.network + '-' + hypUser
       }
 
-      if (this.props.params.userID && nextProps.userDetail.userID) {
+      if ((this.props.params.userID || this.props.params.checkerID) && nextProps.userDetail.userID) {
         const checkLocked = this.checkLockedAccount(allowIncorrectLoginAttempts, passwordRetries);
         let isActive = true;
-        if (checkLocked) {
+        if (checkLocked || nextProps.userDetail.isActive === false) {
           isActive = false;
         }
         let value = nextProps.userDetail.orgType
         console.log(isActive);
         this.setState({
-          id: this.props.params.userID,
+          id: this.props.params.userID || this.props.params.checkerID,
           isLoading: false,
           userDetail: {
             ...nextProps.userDetail,
@@ -247,6 +276,7 @@ class UserSetupContainer extends Component {
           actions: [...nextProps.userDetailActions]
 
         })
+
       }
     }
   }
@@ -350,7 +380,7 @@ class UserSetupContainer extends Component {
     console.log('hypUserArray', hypUserArray.join('-'));
     let network = hypUserArray && hypUserArray.length ? hypUserArray.join('-') : hypUserArray[0];
 
-    if (this.props.params.userID) {
+    if (this.props.params.userID || this.props.params.checkerID) {
       // this.setState({
       //     isLoading: true
       // })
@@ -360,7 +390,7 @@ class UserSetupContainer extends Component {
       this.props.actions.generalAjxProcess(constants.userUpdate,
         requestCreator.createUserInsertRequest({
           ...this.state.userDetail,
-          id: this.props.params.userID,
+          id: this.props.params.userID || this.props.params.checkerID,
           groups: checkedGroups,
           passwordHashType: "sha512",
           firstScreen,
@@ -412,7 +442,7 @@ class UserSetupContainer extends Component {
   resetPassword = () => {
 
 
-    if (this.state.userDetail.userType === 'Human' && this.props.params.userID) {
+    if (this.state.userDetail.userType === 'Human' && (this.props.params.userID || this.props.params.checkerID)) {
       let request = { "userID": this.state.userDetail.userID, email: this.state.userDetail.email };
       this.props.actions.generalProcess(constants.passwordReset, request);
     } else {
@@ -420,7 +450,7 @@ class UserSetupContainer extends Component {
     }
   }
   unlockAccount = () => {
-    if (this.props.params.userID) {
+    if (this.props.params.userID || this.props.params.checkerID) {
       let request = {
         body: {
           "id": this.state.userDetail.userID
@@ -632,6 +662,8 @@ class UserSetupContainer extends Component {
             imgDiv={this.imgDiv.bind(this)}
             performAction={this.performAction}
             unblock={this.unlockAccount.bind(this)}
+            disabled={this.state.view}
+            performActionApproval={this.performActionApproval}
           />
         </Portlet>
 

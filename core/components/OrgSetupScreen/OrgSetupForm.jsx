@@ -1,5 +1,5 @@
 import React from 'react';
-import {reduxForm} from 'redux-form';
+import { reduxForm } from 'redux-form';
 import validate from './validate';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
@@ -8,15 +8,16 @@ import FileUploader from '../../common/FileUploader.jsx';
 import Portlet from '../../common/Portlet.jsx';
 import ModalBox from '../../common/ModalBox.jsx';
 import EntityServicesForm from './OrgServicesForm.jsx';
+import TileUnit from '../../common/tileUnit.jsx';
 import EntityContactsForm from './OrgContactsForm.jsx';
 import OrgAdditionalPropsForm from './OrgAdditionalPropsForm.jsx';
 import OrgMappedCodesForm from './OrgMappedCodesForm.jsx';
 import * as utils from '../../common/utils.js';
 import ActionButton from '../../common/ActionButtonNew.jsx';
-import {CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput} from '../../common/FormControls.jsx';
+import { CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput } from '../../common/FormControls.jsx';
 
 //https://github.com/erikras/redux-form/issues/369
-const FormSection1 = ({error, initialValues, updateState, state, containerProps, containerState, onInputChange, welcome, handleSubmit}) => {
+const FormSection1 = ({ error, initialValues, updateState, state, containerProps, containerState, onInputChange, welcome, handleSubmit }) => {
   console.log(JSON.stringify(containerState))
   return (
 
@@ -33,57 +34,57 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
               type="text"
               disabled={state.readOnly}
             />
-            <br/>
+            <br />
             <TextInput
               name="arabicName"
               label={utils.getLabelByID("arabicName")}
               type="text"
-              style={{textAlign: "right"}}
+              style={{ textAlign: "right" }}
               disabled={state.readOnly}
             />
-            <br/>
+            <br />
             <TextInput
               name="clientKey"
               label={utils.getLabelByID("Client Key")}
               type="text"
               disabled={state.readOnly}
             />
-            <br/>
+            <br />
             <DropdownInput name="orgType" options={containerState.typeData.ORG_TYPES}
-                           label={utils.getLabelByID("ESEARCH_orgType")}
-                           disabled={state.readOnly}
+              label={utils.getLabelByID("ESEARCH_orgType")}
+              disabled={state.readOnly}
             />
           </div>
-          <br/>
+          <br />
           <div className="col-md-6 col-sm-6 offset4">
 
-            <div className="row" style={{display: "inline"}}>
-              <div className="col-md-6 col-sm-6" style={{textAlign: "center"}}/>
-              <div className="col-md-5 col-sm-5" style={{textAlign: "center"}}>
+            <div className="row" style={{ display: "inline" }}>
+              <div className="col-md-6 col-sm-6" style={{ textAlign: "center" }} />
+              <div className="col-md-5 col-sm-5" style={{ textAlign: "center" }}>
                 <img id="EntityLogo"
-                     src={initialValues.entityLogo ? constants.baseUrl + initialValues.entityLogo.sizeMedium : "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png"}
-                     className="img-responsive img-thumbnail" alt="Entity Logo" width="150px"
-                     height="150px"/>
+                  src={initialValues.entityLogo ? constants.baseUrl + initialValues.entityLogo.sizeMedium : "https://www.thsp.co.uk/wp-content/uploads/2016/11/Icon-Placeholder.png"}
+                  className="img-responsive img-thumbnail" alt="Entity Logo" width="150px"
+                  height="150px" />
                 {!state.readOnly &&
-                <div className="col-md-12 col-sm-12" style={{textAlign: "center"}}>
-                            <span id="ImgUploadBtn" className="label label-primary" style={{cursor: "pointer"}}>
-                              {utils.getLabelByID("ChangeImage")}
-                            </span>
-                  <TextInput name="entityLogo" id='ImgUploader' type='file'
-                             style={{display: "none"}}/>
-                </div>}
+                  <div className="col-md-12 col-sm-12" style={{ textAlign: "center" }}>
+                    <span id="ImgUploadBtn" className="label label-primary" style={{ cursor: "pointer" }}>
+                      {utils.getLabelByID("ChangeImage")}
+                    </span>
+                    <TextInput name="entityLogo" id='ImgUploader' type='file'
+                      style={{ display: "none" }} />
+                  </div>}
               </div>
             </div>
           </div>
         </div>
-        <br/>
+        <br />
         <div className="row">
 
 
           <div className="col-md-3">
             <DropdownInput name="parentEntity" options={containerProps.entityNames}
-                           label={utils.getLabelByID("parentEntity")}
-                           disabled={state.readOnly}
+              label={utils.getLabelByID("parentEntity")}
+              disabled={state.readOnly}
             />
           </div>
           <div className="col-md-3">
@@ -95,25 +96,25 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
             />
           </div>
         </div>
-        <br/>
+        <br />
         <div className="row">
 
 
           <div className="col-md-3">
             <DropdownInput name="cycle" options={containerState.typeData.cycle}
-                           label={utils.getLabelByID("billing cycle")}
-                           disabled={state.readOnly}
+              label={utils.getLabelByID("billing cycle")}
+              disabled={state.readOnly}
             />
           </div>
           <div className="col-md-3">
             <DropdownInput name="currency" options={containerState.typeData.currency}
-                           label={utils.getLabelByID("billing currency")}
-                           disabled={state.readOnly}
+              label={utils.getLabelByID("billing currency")}
+              disabled={state.readOnly}
             />
           </div>
 
           <div className="col-md-3">
-            <div style={{padding: "17px"}}>
+            <div style={{ padding: "17px" }}>
               <CheckboxList>
                 <CheckboxInput
                   name="isActive"
@@ -133,37 +134,37 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
 
           <li className={"active"}>
             <a href="#tab_1_1" data-toggle="tab"
-               style={{fontWeight: "Bold", fontSize: "17px"}}>Contacts</a>
+              style={{ fontWeight: "Bold", fontSize: "17px" }}>Contacts</a>
           </li>
           <li>
             <a href="#tab_1_3" data-toggle="tab"
-               style={{fontWeight: "Bold", fontSize: "17px"}}>Tax Codes</a>
+              style={{ fontWeight: "Bold", fontSize: "17px" }}>Tax Codes</a>
           </li>
           <li>
             <a href="#tab_1_4" data-toggle="tab"
-               style={{fontWeight: "Bold", fontSize: "17px"}}>Additional Properties</a>
+              style={{ fontWeight: "Bold", fontSize: "17px" }}>Additional Properties</a>
           </li>
           <li>
             <a href="#tab_1_5" data-toggle="tab"
-               style={{fontWeight: "Bold", fontSize: "17px"}}>Documents</a>
+              style={{ fontWeight: "Bold", fontSize: "17px" }}>Documents</a>
           </li>
           <li>
             <a href="#tab_1_6" data-toggle="tab"
-               style={{fontWeight: "Bold", fontSize: "17px"}}>Public Key</a>
+              style={{ fontWeight: "Bold", fontSize: "17px" }}>Public Key</a>
           </li>
           <li>
             <a href="#tab_1_7" data-toggle="tab"
-               style={{fontWeight: "Bold", fontSize: "17px"}}>Mapped Codes</a>
+              style={{ fontWeight: "Bold", fontSize: "17px" }}>Mapped Codes</a>
           </li>
           {!state.readOnly &&
-          <li>
-            <a href="#tab_1_8" data-toggle="tab"
-               style={{fontWeight: "Bold", fontSize: "17px"}}>Welcome Kit</a>
-          </li>
+            <li>
+              <a href="#tab_1_8" data-toggle="tab"
+                style={{ fontWeight: "Bold", fontSize: "17px" }}>Welcome Kit</a>
+            </li>
           }
           <li>
             <a href="#tab_1_9" data-toggle="tab"
-               style={{fontWeight: "Bold", fontSize: "17px"}}>Billing</a>
+              style={{ fontWeight: "Bold", fontSize: "17px" }}>Billing</a>
           </li>
         </ul>
       </div>
@@ -172,7 +173,7 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
 
 
           <div className="tab-pane active" id="tab_1_1">
-            <FormSection5 initialValues={initialValues} updateState={updateState} state={state}/>
+            <FormSection5 initialValues={initialValues} updateState={updateState} state={state} />
           </div>
 
           <div className="tab-pane" id="tab_1_3">
@@ -217,12 +218,12 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
           </div>
 
           <div className="tab-pane" id="tab_1_4">
-            <FormSection3 initialValues={initialValues} updateState={updateState} state={state}/>
+            <FormSection3 initialValues={initialValues} updateState={updateState} state={state} />
           </div>
 
           <div className="tab-pane" id="tab_1_5">
             <Portlet title={utils.getLabelByID("Documents")}>
-              <FormSection6 initialValues={initialValues} updateState={updateState} state={state}/>
+              <FormSection6 initialValues={initialValues} updateState={updateState} state={state} />
             </Portlet>
           </div>
 
@@ -233,8 +234,8 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
                 <div className="col-md-12">
                   <div className="col-md-12">
                     <textarea type="text" className="form-control" disabled={state.readOnly} value={state.publicKey}
-                              name="publicKey" id="publicKey" onChange={onInputChange} rows="12"
-                              style={{resize: "none", width: "100%"}}/>
+                      name="publicKey" id="publicKey" onChange={onInputChange} rows="12"
+                      style={{ resize: "none", width: "100%" }} />
                   </div>
                 </div>
               </div>
@@ -242,7 +243,7 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
           </div>
 
           <div className="tab-pane" id="tab_1_7">
-            <FormSection2 initialValues={initialValues} updateState={updateState} state={state}/>
+            <FormSection2 initialValues={initialValues} updateState={updateState} state={state} />
           </div>
 
           <div className="tab-pane" id="tab_1_8">
@@ -252,24 +253,24 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
                   <div className="col-md-3">
                     <label className="bold">Email Address</label>
                     <input type="text" className="form-control" disabled={state.readOnly}
-                           name="welcomeEmail" id="welcomeEmail"/>
+                      name="welcomeEmail" id="welcomeEmail" />
                   </div>
                   <div className="col-md-3">
                     <DropdownInput id="apiGroup" name="apiGroup" options={containerState.groupTypeListAPI}
-                                   label={utils.getLabelByID("Group for API user")}
-                                   disabled={state.readOnly}
+                      label={utils.getLabelByID("Group for API user")}
+                      disabled={state.readOnly}
                     />
                   </div>
                   <div className="col-md-3">
                     <DropdownInput name="userGroup" id="userGroup" options={containerState.groupTypeListUI}
-                                   label={utils.getLabelByID("Group for UI user")}
-                                   disabled={state.readOnly}
+                      label={utils.getLabelByID("Group for UI user")}
+                      disabled={state.readOnly}
                     />
                   </div>
                   <div className="col-md-3">
                     <DropdownInput id="firstScreen" name="firstScreen" options={containerState.typeData.First_Screens}
-                                   label={utils.getLabelByID("First Screen")}
-                                   disabled={state.readOnly}
+                      label={utils.getLabelByID("First Screen")}
+                      disabled={state.readOnly}
                     />
                   </div>
 
@@ -277,8 +278,8 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
                 <div className="col-md-12">
                   <div className="col-md-12">
                     <a type="submit" className="btn btn-default dark pull-right" onClick={handleSubmit}
-                       href={"javascript:;"}
-                       style={{marginTop: "10px"}}> Generate
+                      href={"javascript:;"}
+                      style={{ marginTop: "10px" }}> Generate
                     </a>
                   </div>
                 </div>
@@ -300,10 +301,79 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
           <div className="tab-pane" id="tab_1_9">
             <Portlet title={"Billing"}>
               <div className="row">
+                <div className="col-md-12" style={{ marginBottom: "20px" }}>
+                  <div className="col-md-3 pull-right" >
+                    <select id="billingMonth" name="billingMonth" className="form-control"
+                      disabled={state.readOnly}
+                    >
+                      {[{ label: "AUGUST/2020", value: "AUG" }].map((elem, index) => {
+                        return (<option key={index} value={elem.value}>{elem.label}</option>)
+                      })}
+                    </select>
+                  </div>
+                </div>
+                <div className="col-lg-12">
+                  <div className={"dsh_blued1"}
+                    style={{ cursor: "context-menu" }}>
+                    <div className="col-md-4">
+                      <div className="dashboard-stat2 ">
+                        <div className="display">
+                          <div className="number">
+                            <h3 className={"font-blued 1-sharp"} style={{ fontSize: "30px" }}><span
+                              data-counter="counterup"
+                              data-value="10">{containerState.totalBill}</span></h3>
+                            <small>TOTAL</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={"dsh_blued1"}>
+                    <div className="col-md-4">
+                      <div className="dashboard-stat2 ">
+                        <div className="display">
+                          <div className="number">
+                            <h3 className={"font-blued 1-sharp"} style={{ fontSize: "30px" }}><span
+                              data-counter="counterup"
+                              data-value="10">{containerState.hits}</span></h3>
+                            <small>HIT / API Calls</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={"dsh_blued1"}>
+                    <div className="col-md-4">
+                      <div className="dashboard-stat2 ">
+                        <div className="display">
+                          <div className="number">
+                            <h3 className={"font-blued 1-sharp"} style={{ fontSize: "30px" }}><span
+                              data-counter="counterup"
+                              data-value="10">{containerState.entityDetail.cycle || "monthly"}</span></h3>
+                            <small>CYCLE</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div className="row">
 
 
                 <div className="col-md-12">
 
+                  <div className="col-md-12">
+
+                    <div className="pull-left">
+                      <span className="bold">Start Date:</span> <span className="italic">{containerState.from}</span>
+                    </div>
+                    <div className="pull-right">
+                      <span className="bold">End Date:</span> <span className="italic">{containerState.to}</span>
+                    </div>
+
+                  </div>
                   <div className="col-md-12">
                     <Table
                       pagination={false}
@@ -312,7 +382,6 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
                       gridColumns={utils.getGridColumnByName("billingGrid")}
                       gridData={containerState.billing || []}
                     />
-
                   </div>
                 </div>
               </div>
@@ -321,11 +390,11 @@ const FormSection1 = ({error, initialValues, updateState, state, containerProps,
 
         </div>
       </div>
-    </div>
+    </div >
   )
 };
 
-const FormSection5 = ({initialValues, updateState, state, onInputChange}) => {
+const FormSection5 = ({ initialValues, updateState, state, onInputChange }) => {
   let contactsActions = [
     {
       type: "link",
@@ -341,7 +410,7 @@ const FormSection5 = ({initialValues, updateState, state, onInputChange}) => {
   ];
 
 
-  function contactActionHandlers({actionName, index}) {
+  function contactActionHandlers({ actionName, index }) {
     switch (actionName) {
       case "Edit":
         updateState({
@@ -353,7 +422,7 @@ const FormSection5 = ({initialValues, updateState, state, onInputChange}) => {
         if (index > -1) {
           let a = state.contacts;
           a.splice(index, 1);
-          updateState({contacts: a});
+          updateState({ contacts: a });
         }
         break;
     }
@@ -376,7 +445,7 @@ const FormSection5 = ({initialValues, updateState, state, onInputChange}) => {
   )
 };
 
-const FormSection2 = ({initialValues, updateState, state, onInputChange}) => {
+const FormSection2 = ({ initialValues, updateState, state, onInputChange }) => {
   let mappedCodesActions = [
     {
       type: "link",
@@ -392,7 +461,7 @@ const FormSection2 = ({initialValues, updateState, state, onInputChange}) => {
   ];
 
 
-  function mappedCodesActionHandlers({actionName, index}) {
+  function mappedCodesActionHandlers({ actionName, index }) {
     switch (actionName) {
       case "Edit":
         updateState({
@@ -404,7 +473,7 @@ const FormSection2 = ({initialValues, updateState, state, onInputChange}) => {
         if (index > -1) {
           let a = state.mappedCodes;
           a.splice(index, 1);
-          updateState({mappedCodes: a});
+          updateState({ mappedCodes: a });
         }
         break;
     }
@@ -436,7 +505,7 @@ const FormSection2 = ({initialValues, updateState, state, onInputChange}) => {
   )
 };
 
-const FormSection3 = ({initialValues, updateState, state, onInputChange}) => {
+const FormSection3 = ({ initialValues, updateState, state, onInputChange }) => {
   let additionalPropertiesActions = [
     {
       type: "link",
@@ -452,7 +521,7 @@ const FormSection3 = ({initialValues, updateState, state, onInputChange}) => {
   ];
 
 
-  function contactActionHandlers({actionName, index}) {
+  function contactActionHandlers({ actionName, index }) {
     switch (actionName) {
       case "Edit":
         updateState({
@@ -464,7 +533,7 @@ const FormSection3 = ({initialValues, updateState, state, onInputChange}) => {
         if (index > -1) {
           let a = state.additionalProps;
           a.splice(index, 1);
-          updateState({additionalProps: a});
+          updateState({ additionalProps: a });
         }
         break;
     }
@@ -488,7 +557,7 @@ const FormSection3 = ({initialValues, updateState, state, onInputChange}) => {
 };
 
 
-function mappedCodesActionHandlers({actionName, index}) {
+function mappedCodesActionHandlers({ actionName, index }) {
   switch (actionName) {
     case "Edit":
       updateState({
@@ -500,13 +569,13 @@ function mappedCodesActionHandlers({actionName, index}) {
       if (index > -1) {
         let a = state.contacts;
         a.splice(index, 1);
-        updateState({contacts: a});
+        updateState({ contacts: a });
       }
       break;
   }
 }
 
-function additionalPropsActionHandlers({actionName, index}) {
+function additionalPropsActionHandlers({ actionName, index }) {
   switch (actionName) {
     case "Edit":
       updateState({
@@ -518,13 +587,13 @@ function additionalPropsActionHandlers({actionName, index}) {
       if (index > -1) {
         let a = state.additionalProps;
         a.splice(index, 1);
-        updateState({additionalProps: a});
+        updateState({ additionalProps: a });
       }
       break;
   }
 }
 
-const FormSection6 = ({initialValues, updateState, state}) => {
+const FormSection6 = ({ initialValues, updateState, state }) => {
   function getUploadResponse(data) {
     let documents = [...state.documents];
     for (let i = 0; i < data.contextData.length; i++) {
@@ -538,7 +607,7 @@ const FormSection6 = ({initialValues, updateState, state}) => {
       });
     }
     //documents.push(...data.contextData);
-    updateState({documents})
+    updateState({ documents })
   }
 
   function getRemoveResponse(documents) {
@@ -550,13 +619,13 @@ const FormSection6 = ({initialValues, updateState, state}) => {
     <div className="col-centered col-md-12">
       <div className="form-group">
         <FileUploader type="Document" source="AcquirerSetup"
-                      initialValues={state.documents}
-                      acceptedFiles="image/jpeg,image/png,image/gif,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                      getUploadResponse={getUploadResponse}
-                      getRemoveResponse={getRemoveResponse}
-                      maxFiles="5"
-                      showDropzone={!state.readOnly}
-                      showAttachementGrid={true}/>
+          initialValues={state.documents}
+          acceptedFiles="image/jpeg,image/png,image/gif,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          getUploadResponse={getUploadResponse}
+          getRemoveResponse={getRemoveResponse}
+          maxFiles="5"
+          showDropzone={!state.readOnly}
+          showAttachementGrid={true} />
       </div>
     </div>
   </div>);
@@ -740,7 +809,7 @@ class OrgSetupForm extends React.Component {
     }
 
     if (nextProps.welcomeResp) {
-      this.setState({welcome: nextProps.welcomeResp});
+      this.setState({ welcome: nextProps.welcomeResp });
     }
   }
 
@@ -769,7 +838,7 @@ class OrgSetupForm extends React.Component {
               type: files[0].type
             }
           })).then(result => {
-            _this.setState({entityLogo: result.entityLogo})
+            _this.setState({ entityLogo: result.entityLogo })
           });
         };
 
@@ -830,7 +899,7 @@ class OrgSetupForm extends React.Component {
     wc.forEach((elem) => {
       elem.status = 'PENDING';
     })
-    this.setState({welcome: wc})
+    this.setState({ welcome: wc })
 
     this.props.containerProps.actions.generalAjxProcess(constants.createOnDemandWelCome, {
       "orgType": this.state.orgType,
@@ -847,30 +916,30 @@ class OrgSetupForm extends React.Component {
 
   render() {
     console.log("----------st----------ar--", this.state)
-    const {error, handleSubmit, pristine, reset, submitting, initialValues, containerState, containerProps, welcome} = this.props;
+    const { error, handleSubmit, pristine, reset, submitting, initialValues, containerState, containerProps, welcome } = this.props;
     return (
       <div>
         <ModalBox isOpen={this.state.contactsModalIsOpen}>
           <EntityContactsForm onSubmit={this.updateContacts} initialValues={this.state}
-                              index={this.state.index} updateState={this.updateState}
+            index={this.state.index} updateState={this.updateState}
           />
         </ModalBox>
         <ModalBox isOpen={this.state.mappedCodesModalIsOpen}>
           <OrgMappedCodesForm onSubmit={this.updateMappedCodes} initialValues={this.state}
-                              index={this.state.index} updateState={this.updateState}
+            index={this.state.index} updateState={this.updateState}
           />
         </ModalBox>
 
         <ModalBox isOpen={this.state.additionalPropsModalIsOpen}>
           <OrgAdditionalPropsForm onSubmit={this.updateAdditionalProps} initialValues={this.state}
-                                  index={this.state.index} updateState={this.updateState}
+            index={this.state.index} updateState={this.updateState}
           />
         </ModalBox>
 
         <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)} ref={this._form = this}>
           <FormSection1 initialValues={initialValues} updateState={this.updateState} state={this.state}
-                        containerProps={containerProps} containerState={containerState} welcome={this.state.welcome}
-                        onInputChange={this.onInputChange} handleSubmit={this.generate}/>
+            containerProps={containerProps} containerState={containerState} welcome={this.state.welcome}
+            onInputChange={this.onInputChange} handleSubmit={this.generate} />
           {/* <FormSection5 initialValues={initialValues} updateState={this.updateState} state={this.state}/> */}
           {/* <Portlet title={utils.getLabelByID("Documents")}>
             <FormSection6 initialValues={initialValues} updateState={this.updateState} state={this.state}/>
@@ -878,11 +947,11 @@ class OrgSetupForm extends React.Component {
 
 
           {!this.state.readOnly &&
-          <div className="clearfix">
-            <ActionButton actionList={containerState.entityDetail.actions}
-                          performAction={this.performAction}
-                          submitting={submitting} pristine={pristine}/>
-          </div>
+            <div className="clearfix">
+              <ActionButton actionList={containerState.entityDetail.actions}
+                performAction={this.performAction}
+                submitting={submitting} pristine={pristine} />
+            </div>
           }
         </form>
       </div>

@@ -420,7 +420,7 @@ export function createCommissionTemplateUpdateRequest(data) {
     };
 }
 
-export function createAuditTrailDetailRequest(id, page, searchCriteria, ) {
+export function createAuditTrailDetailRequest(id, page, searchCriteria,) {
     return {
 
         "action": "auditTrailDetails",
@@ -502,3 +502,29 @@ export function createPickupListDetailRequest(typeDataId) {
     }
 }
 
+export function createGetMongodbSchemaChanges(data) {
+    return {
+        "action": "getMongoDBChanges",
+        data
+    }
+}
+
+export function encryptData(data) {
+    return {
+        "action": "encrypt",
+        data
+    }
+}
+export function decryptData(data) {
+    return {
+        "action": "decrypt",
+        data
+    }
+}
+
+export function applyMongodbSchemaChanges(data) {
+    return {
+        "action": "getMongoDBChanges",
+        data
+    }
+}

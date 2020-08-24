@@ -1096,4 +1096,6 @@ module.exports = {
   CL_actionOn: "Created At",
   CL_actionBy: "Created By",
   Working_Calendar_Name: "Calendar Name",
+  Crypto_Utility_text_input: "String Value",
+  Crypto_Utility_encryption_type: "Method Type"
 };

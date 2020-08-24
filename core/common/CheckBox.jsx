@@ -5,6 +5,7 @@ import * as utils from './utils';
 class Checkbox extends React.Component {
 
     render() {
+        console.log('chackbox status', this.props.value)
         return (
 
             <div className={`col-md-${this.props.columns}`}>

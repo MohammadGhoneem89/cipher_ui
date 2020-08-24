@@ -96,7 +96,7 @@ a:hover {
 }
 
 .dsh_blued1:hover .dashboard-stat2, .dsh_blued2:hover .dashboard-stat2, .dsh_blued3:hover .dashboard-stat2, .dsh_blued4:hover .dashboard-stat2, .overDueBlk:hover {
-    background: var(--Theme-Primary-Color) !important;
+    background: #80808059 !important;
 }
 
 .progress-bar.blued1-sharp, .progress-bar.blued2-sharp, .progress-bar.blued3-sharp, .progress-bar.blued4-sharp {

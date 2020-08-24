@@ -137,6 +137,7 @@ module.exports = {
   getAPIDefinitionID: baseUrl + "/API/core/getAPIDefinitionID",
   getApiListData: baseUrl + "/API/core/getAPIDefinition",
   APIDocs: baseUrl + "/API/core/getActiveAPIList",
+  APIDocsContarct: baseUrl + "/API/core/apiDocsContarct",
   downloadChainCode: baseUrl + "/API/core/downloadChainCode",
   getTypeDataList: baseUrl + "/API/core/getTypeDataList",
   getModuleListData: baseUrl + "/API/core/getModuleList",
@@ -247,5 +248,11 @@ module.exports = {
   getTypeSyncOut: baseUrl + "/API/meta/getTypeSyncOut",
   pushTypeData: baseUrl + "/API/general/pushTypeData",
   testPagination: baseUrl + "/API/core/testPagination",
+  userApproveReject: baseUrl + "/API/UI/userApproveReject",
+  mongodbSchemaProfiles: baseUrl + "/API/utility/getMongodbSchemaProfiles",
+  getMongoDBChanges: baseUrl + "/API/utility/getMongoDBChanges",
+  applyMongoDBChanges: baseUrl + "/API/utility/upsertMongodbChange",
+  encryptString: baseUrl + "/API/utility/encrypt",
+  decryptString: baseUrl + "/API/utility/decrypt",
 }
 
