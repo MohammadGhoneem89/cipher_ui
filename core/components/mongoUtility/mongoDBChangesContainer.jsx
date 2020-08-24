@@ -92,7 +92,7 @@ class MongoDBChangesContainer extends React.Component {
                 this.loadDefaultDocument(index, "updated");
                 break;
             case "Migrate Collection":
-                this.setState({ isOpenMigrationAlert: true, currentModelIndex: index })
+                this.setState({ isOpenMigrationAlert: true, currentModelIndex: index, currentModelCount: this.state.mongodbSchemaChanges[index].count, })
                 break;
             default:
                 break;
@@ -126,7 +126,7 @@ class MongoDBChangesContainer extends React.Component {
         if (nextProps.mongodbSchemaChanges) {
 
             nextProps.mongodbSchemaChanges.data.forEach((elem, index) => {
-                if (elem.type == "new") {
+                if (elem.type == "NEW") {
                     elem.actions = [
                         { "label": "Migrate Collection", "iconName": "fa fa-pen", "actionType": "COMPONENT_FUNCTION" }
                     ]
@@ -147,17 +147,6 @@ class MongoDBChangesContainer extends React.Component {
                 profile: nextProps.mongodbSchemaChanges.profile
             });
 
-        }
-        if (nextProps.upsertMongodbChange) {
-            let array = [...this.state.mongodbSchemaChanges];
-            array.splice(this.state.currentModelIndex, 1);
-            this.setState({
-                isMigrating: false,
-                mongodbSchemaChanges: array
-            })
-
-            console.log(this.state.mongodbSchemaChanges);
-            // remove that object from schema changes
         }
     }
 
@@ -308,12 +297,22 @@ class MongoDBChangesContainer extends React.Component {
                 "type": "new",
                 "document": {}
             }
-            // this.setState({
-            //     isMigrating: true
-            // });
-            this.props.actions.generalProcess(constants.applyMongoDBChanges, requestCreator.applyMongodbSchemaChanges({
+            this.setState({
+                isOpenMigrationAlert: false,
+                loadingSchemaChanges: true,
+            });
+
+            this.props.actions.generalAjxProcess(constants.applyMongoDBChanges, requestCreator.applyMongodbSchemaChanges({
                 data
-            }));
+            })).then(res => {
+                let data = { db_profiles: this.state.profile, destination_url: this.state.destination }
+                this.props.actions.generalProcess(constants.getMongoDBChanges, requestCreator.createGetMongodbSchemaChanges({
+                    data
+                }));
+
+            });
+
+
         } else if (type == "newDocument") {
 
             let data = {
@@ -323,12 +322,21 @@ class MongoDBChangesContainer extends React.Component {
                 "type": "updated",
                 "document": this.state.currentNewDoc
             }
-            // this.setState({
-            //     isMigrating: true
-            // });
-            this.props.actions.generalProcess(constants.applyMongoDBChanges, requestCreator.applyMongodbSchemaChanges({
+            this.setState({
+                isOpenNewDocumentsModal: false,
+                loadingSchemaChanges: true,
+            });
+
+            this.props.actions.generalAjxProcess(constants.applyMongoDBChanges, requestCreator.applyMongodbSchemaChanges({
                 data
-            }));
+            })).then(res => {
+                let data = { db_profiles: this.state.profile, destination_url: this.state.destination }
+                this.props.actions.generalProcess(constants.getMongoDBChanges, requestCreator.createGetMongodbSchemaChanges({
+                    data
+                }));
+
+            });
+
         } else if (type == "updatedDocument") {
             let data = {
                 "source_url": this.state.source,
@@ -337,12 +345,20 @@ class MongoDBChangesContainer extends React.Component {
                 "type": "updated",
                 "document": this.state.currentUpdatedDoc.source
             }
-            // this.setState({
-            //     isMigrating: true
-            // });
-            this.props.actions.generalProcess(constants.applyMongoDBChanges, requestCreator.applyMongodbSchemaChanges({
+            this.setState({
+                isOpenUpdatedDocumentsModal: false,
+                loadingSchemaChanges: true,
+            });
+
+            this.props.actions.generalAjxProcess(constants.applyMongoDBChanges, requestCreator.applyMongodbSchemaChanges({
                 data
-            }));
+            })).then(res => {
+                let data = { db_profiles: this.state.profile, destination_url: this.state.destination }
+                this.props.actions.generalProcess(constants.getMongoDBChanges, requestCreator.createGetMongodbSchemaChanges({
+                    data
+                }));
+
+            });
         }
 
     }
@@ -594,6 +610,6 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-MongoDBChangesContainer.displayName = "MongoDBChangesContainer";
+MongoDBChangesContainer.displayName = "MongoDB Utility";
 
 export default connect(mapStateToProps, mapDispatchToProps)(MongoDBChangesContainer)
