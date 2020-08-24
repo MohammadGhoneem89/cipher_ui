@@ -18,11 +18,12 @@ class cryptographyContainer extends React.Component {
         };
 
         this.submit = this.submit.bind(this);
+        this.clearFields = this.clearFields.bind(this);
 
     }
 
     componentWillReceiveProps(nextProps) {
-        
+
         if (nextProps.decryptResponse) {
             if (nextProps.decryptResponse.message.status == 'OK') {
                 this.setState({
@@ -71,6 +72,14 @@ class cryptographyContainer extends React.Component {
         }
 
     }
+    clearFields() {
+        $('#stringValue').find('input:text').val('');
+        $('#resultArea').val('');
+        $('#methodType').find('select').each(function () {
+            $(this)[0].selectedIndex = 0;
+        });
+    }
+
 
     render() {
 
@@ -79,9 +88,9 @@ class cryptographyContainer extends React.Component {
                 <Portlet title={"FORM"}>
                     <CryptographyForm
                         onSubmit={this.submit}
-                        mTypes={this.state.methodTypes} />
+                        clearFields={this.clearFields} />
                     <Portlet title={"RESULT"} isPermissioned={true}>
-                        {this.state.loadingResponse ? <div className="loader" > Loading...</div> : <textarea style={{ "width": "100%" }} name="" id="" cols="" rows="5">{this.state.cryptedValue}</textarea>}
+                        {this.state.loadingResponse ? <div className="loader" > Loading...</div> : <textarea style={{ "width": "100%" }} name="resultArea" id="resultArea" cols="" rows="5">{this.state.cryptedValue}</textarea>}
                     </Portlet>
                 </Portlet>
             </div >

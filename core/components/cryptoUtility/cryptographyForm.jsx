@@ -1,48 +1,49 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-import { CheckboxInput, CheckboxList, TextInput, DropdownInput, TextArea } from '../../common/FormControls.jsx';
-import Label from '../../common/Lable.jsx';
+import { TextInput, DropdownInput } from '../../common/FormControls.jsx';
+import * as utils from '../../common/utils.js';
 
 const CryptographyForm = props => {
     const dropdownOptions = [
         { value: "Encrypt", label: "Encrypt" },
         { value: "Decrypt", label: "Decrypt" }
     ]
-    const { handleSubmit, methodTypes } = props;
+    const { handleSubmit, clearFields } = props;
     return (
-        <form role="form" onSubmit={handleSubmit}>
+        <form autoComplete="off" role="form" onSubmit={handleSubmit}>
             <div className="row">
-                <div className="col-md-6">
-                    <Label text="String Value" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
-                    <div className="col-md-9">
+                <div className="col-md-12">
+
+                    <div className="col-md-6">
                         <TextInput
                             name="stringValue"
                             type="text"
+                            label={utils.getLabelByID("Crypto_Utility_text_input")}
                             id="stringValue"
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <DropdownInput
+                            name="methodType"
+                            id="methodType"
+                            label={utils.getLabelByID("Crypto_Utility_encryption_type")}
+                            options={dropdownOptions}
                         />
                     </div>
 
                 </div>
-                <div className="col-md-6">
-                    <Label text="Method Type" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
-                    <div className="col-md-9">
-                        <DropdownInput
-                            name="methodType"
-                            id="methodType"
-                            options={dropdownOptions}
-                        />
+
+                <div className="col-md-12" style={{ marginTop: "10px" }}>
+                    <div className="form-actions right">
+                        <div className="form-group col-md-12">
+                            <div className="btn-toolbar pull-right">
+                                <button type="submit" className="btn green" >Submit</button>
+                                <button type="button" className="btn default" disabled={true} onClick={clearFields}> Clear </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="row clearfix pull-right">
-                <div className="col-md-6">
-                    <div className="col-md-2"></div>
-                    <div className="col-md-9">
-                        <button type="submit" className="btn green" disabled={false}>
-                            Submit
-                        </button>
-                    </div>
-                </div>
+
             </div>
         </form>
     );
