@@ -80,7 +80,7 @@ const DocumentComponent = ({ containerState }) => {
               targets: await helper.newPeers(peerNames, net_name, username, channelName),
               chaincodeId: chaincodeName,
               fcn: fcn,
-              args: args,
+              args: [userIDJWT, orgType, orgCode, UUID],
               chainId: channelName,
               transientMap: transient_data,
               txId: tx_id
@@ -150,7 +150,7 @@ const DocumentComponent = ({ containerState }) => {
                 <h3 className="pull-left bold">Sample Events</h3>
                 <div className="row">
                   <div className="col-md-12">
-                    <pre>   {elem.sampleEvents || elem.args || "N/A"}</pre>
+                    <pre>   {elem.sampleEvents || "N/A"}</pre>
                   </div>
                 </div>
               </div>
