@@ -5,11 +5,6 @@ import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import Portlet from '../../common/Portlet.jsx';
-import ModalBox from '../../common/ModalBox.jsx';
-import * as utils from '../../common/utils.js';
-import ReactJson from 'react-json-view';
-import * as toaster from '../../common/toaster.js';
-import { TextArea } from '../../common/FormControls.jsx';
 
 import CryptographyForm from './cryptographyForm.jsx';
 
@@ -19,26 +14,21 @@ class cryptographyContainer extends React.Component {
 
         this.state = {
             isLoading: false,
-            methodTypes: [
-                { value: "Encrypt", label: "Encrypt" },
-                { value: "Decrypt", label: "Decrypt" }
-            ]
+
         };
 
         this.submit = this.submit.bind(this);
+        this.clearFields = this.clearFields.bind(this);
 
     }
 
     componentWillReceiveProps(nextProps) {
 
-
-
-        console.log(nextProps)
-        if (nextProps.responseMessage) {
-            if (nextProps.responseMessage.data.message.status == 'OK') {
+        if (nextProps.decryptResponse) {
+            if (nextProps.decryptResponse.message.status == 'OK') {
                 this.setState({
                     loadingResponse: false,
-                    cryptedValue: nextProps.responseMessage.data.encryptedValue
+                    cryptedValue: nextProps.decryptResponse.message.decryptedValue
                 });
             } else {
                 // show toast as well
@@ -48,10 +38,14 @@ class cryptographyContainer extends React.Component {
             }
 
 
+        } else if (nextProps.encryptResponse) {
+            this.setState({
+                loadingResponse: false,
+                cryptedValue: nextProps.encryptResponse.message.encryptedValue
+            });
         } else {
             this.setState({
-                isLoading: nextProps.isLoading ? nextProps.isLoading : false,
-                methodTypes: nextProps.methodTypes
+                isLoading: nextProps.isLoading ? nextProps.isLoading : false
             });
         }
     }
@@ -65,64 +59,50 @@ class cryptographyContainer extends React.Component {
             let data = {
                 unecrypted_value: formData.stringValue
             }
-
-            this.props.actions.generalAjxProcess(constants.encryptString, requestCreator.encryptData({
+            this.props.actions.generalProcess(constants.encryptString, requestCreator.encryptData({
                 data
-            })).then(res => {
-                console.log(res)
-                this.setState({
-                    loadingResponse: false,
-                    cryptedValue: res.encryptResponse.data.encryptedValue
-                });
-            });
+            }))
         } else {
             let data = {
                 encrypted_value: formData.stringValue
             }
-
-            this.props.actions.generalAjxProcess(constants.decryptString, requestCreator.decryptData({
+            this.props.actions.generalProcess(constants.decryptString, requestCreator.decryptData({
                 data
-            })).then(res => {
-                console.log(res)
-                this.setState({
-                    loadingResponse: false,
-                    cryptedValue: nextProps.decryptResponse.data.encryptedValue
-                });
-            });
+            }))
         }
 
     }
+    clearFields() {
+        $('#stringValue').find('input:text').val('');
+        $('#resultArea').val('');
+        $('#methodType').find('select').each(function () {
+            $(this)[0].selectedIndex = 0;
+        });
+    }
+
 
     render() {
 
-        if (!this.state.isLoading)
-            return (
-                <div>
-                    <Portlet title={"FORM"}>
-                        <CryptographyForm
-                            onSubmit={this.submit}
-                            mTypes={this.state.methodTypes} />
-                        <Portlet title={"RESULT"} isPermissioned={true}>
-                            {this.state.loadingResponse ? <div className="loader" > Loading...</div> : <textarea style={{ "width": "100%" }} name="" id="" cols="" rows="5">{this.state.cryptedValue}</textarea>}
-                        </Portlet>
+        return (
+            <div>
+                <Portlet title={"FORM"}>
+                    <CryptographyForm
+                        onSubmit={this.submit}
+                        clearFields={this.clearFields} />
+                    <Portlet title={"RESULT"} isPermissioned={true}>
+                        {this.state.loadingResponse ? <div className="loader" > Loading...</div> : <textarea style={{ "width": "100%" }} name="resultArea" id="resultArea" cols="" rows="5">{this.state.cryptedValue}</textarea>}
                     </Portlet>
-                </div >
-            );
-        else
-            return (<div className="loader" > Loading...</div>)
+                </Portlet>
+            </div >
+        );
     }
 }
 
 function mapStateToProps(state, ownProps) {
-
     return {
-        isLoading: false,
-        methodTypes: [
-            "Encrypt",
-            "Decrypt"
-        ]
+        encryptResponse: _.get(state.app, "encryptResponse.data", null),
+        decryptResponse: _.get(state.app, "decryptResponse.data", null),
     }
-
 }
 
 function mapDispatchToProps(dispatch) {

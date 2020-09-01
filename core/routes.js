@@ -142,7 +142,6 @@ export default (<Router history={browserHistory}>
     <Route path="/groupSetup/:groupID" component={GroupSetup} />
     <Route path="/userList" component={UserSearch} />
     <Route path="/userSetup" component={UserSetup} />
-
     <Route path="/errorCodeList" component={ErrorCodeList} />
     <Route path="/workingCalendarList" component={WorkingCalendarSearch} />
     <Route path="/workingCalendarDetail/:ID" component={WorkingCalendar} />
@@ -151,7 +150,6 @@ export default (<Router history={browserHistory}>
     <Route path="/permissionAdd/:link" component={permissionAdd} />
     <Route path="/userSetup/:userID" component={UserSetup} />
     <Route path="/userChecker/:checkerID" component={UserSetup} />
-
     <Route path="/workingCalendarDetail" component={WorkingCalendar} />
     <Route path="/cipher/blockchain/edit" component={BlockchainEditor} />
     <Route path="/cipher/blockchain/blockSearch" component={BlockSearchScreen} />
@@ -206,7 +204,6 @@ export default (<Router history={browserHistory}>
     <Route path="/NetworkList" component={NetworkList} />
     <Route path="/RelayNetworkList" component={RelayNetworkList} />
     <Route path="/safLogs" component={safLogs} />
-
     <Route path="/ModuleList" component={ModuleList} />
     <Route path="/ReportRender/(:id)" component={ReportRender} />
     <Route path="/ReportAddUpdate/(:id)" component={ReportContainer} />
@@ -217,12 +214,8 @@ export default (<Router history={browserHistory}>
     <Route path="/editDispatcher/:dispatcherName" component={AddUpdateDispatcher} />
     <Route path="/documentList" component={documentList} />
     <Route path="/addDocType/(:id)" component={addDocType} />
-
-
     <Route path="/ConsentProfileList" component={ConsentProfileList} />
     <Route path="/ConsentProfile/(:id)" component={ConsentProfile} />
-
-
     <Route path="/general/userDetail/:id" component={UserDetail} />
     <Route path="/general/userRole/:id" component={UserRole} />
     <Route path="/general/roleUser/:id" component={RoleUser} />

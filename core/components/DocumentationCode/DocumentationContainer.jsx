@@ -28,7 +28,8 @@ const initialState = {
   variations: [],
   isOpen: false,
   isHmacOpen: false,
-  generateHMAC: ""
+  generateHMAC: "",
+  list: []
 };
 
 class Documentation extends React.Component {
@@ -125,19 +126,40 @@ class Documentation extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.apiDocsContarct) {
-      let strArr=[];
-      let reqFields = _.get(nextProps.apiDocsContarct, RequestMapping.fields, [])
-      reqFields.forEach(element => {
-        strArr.push(`${element.IN_FIELD} (${element.IN_FIELDDT})`)
-      });
-      console.log(JSON.stringify(nextProps.apiDocsContarct));
-      this.setState({ isloading: false })
-    }
+      let list = []
+      nextProps.apiDocsContarct.forEach((elem) => {
+        let strArr = [];
+        let reqFields = _.get(elem, 'RequestMapping.fields', [])
+        reqFields.forEach(element => {
+          strArr.push(`${element.IN_FIELD} (${element.IN_FIELDDT})`)
+        });
+        console.log(JSON.stringify(reqFields));
 
+        let rules = _.get(elem, 'rules', [])
+        rules.forEach((elemi) => {
+          list.push({
+            "ruleName": elemi.BlockRuleName,
+            "function": elemi.smartcontractFunc,
+            "consortium": elemi.consortiumText,
+            "channel": elemi.channelText,
+            "smartcontract": elemi.smartcontract,
+            "type": elemi.type,
+            "args": `["${strArr.join("\", \"")}"]`,
+            "sampleArgs": elem.sampleArgs,
+            "sampleResponse": elem.sampleResponse,
+            "sampleEvents": elem.sampleEvents
+          })
+
+        })
+        this.setState({ isloading: false, list })
+      })
+    }
   }
 
 
   getDocumentation() {
+    return (<DocumentComponent containerState={this.state} />);
+    //   }
     // let resp = [];
     // for (let useCase in this.state.RouteList) {
     //   for (let route in this.state.RouteList[useCase]) {
@@ -159,7 +181,7 @@ class Documentation extends React.Component {
     //   }
     // }
     // return (resp);
-    return []
+    // return []
   }
 
   render() {
@@ -213,6 +235,6 @@ function mapDispatchToProps(dispatch) {
   return { actions: bindActionCreators(actions, dispatch) }
 }
 
-Documentation.displayName = "Documentation_Heading";
+Documentation.displayName = "__HIDE";
 export default connect(mapStateToProps, mapDispatchToProps)(Documentation);
 
