@@ -21,7 +21,7 @@ const TemplateListForm = props => {
                                 <button type="submit" className="btn green" disabled={submitting}>
                                     {utils.getLabelByID('Search')}
                                 </button>
-                                <button type="button" className="btn default" disabled={submitting} onClick={() => {newProps.history.push('purehealth/templateList/new')}}>
+                                <button type="button" className="btn default" disabled={submitting} onClick={() => {newProps.history.push('/templateList/new')}}>
                                     {utils.getLabelByID('Add')}
                                 </button>
                             </div>

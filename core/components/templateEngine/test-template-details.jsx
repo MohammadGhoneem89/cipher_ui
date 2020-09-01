@@ -1,20 +1,18 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actions from '../../../../core/actions/generalAction';
-import * as constants from '../../constants/appCommunication.js';
-import * as requestCreator from '../../../../core/common/request.js';
-import Portlet from '../../../../core/common/Portlet.jsx';
-import Table from '../../../../core/common/Datatable.jsx';
+import * as actions from '../../../core/actions/generalAction.js';
+import * as constants from '../../constants/Communication.js';
+import * as requestCreator from '../../../core/common/request.js';
+import Portlet from '../../../core/common/Portlet.jsx';
 // import LabApplicationForm from './lab-application-form.jsx';
-import * as utils from '../../../../core/common/utils.js';
-import Countries from '../../constants/countries.json';
-import Input from './../../../../core/common/Input.jsx';
-import Textarea from './../../../../core/common/Textarea.jsx';
-import Combobox from './../../../../core/common/Select.jsx';
-import * as gen from './../../../../core/common/generalActionHandler';
-import DateControl from '../../../../core/common/DateControl.jsx';
-import Label from '../../../../core/common/Lable.jsx';
+import * as utils from '../../../core/common/utils.js';
+import Input from './../../../core/common/Input.jsx';
+import Textarea from './../../../core/common/Textarea.jsx';
+import Combobox from './../../../core/common/Select.jsx';
+import * as gen from './../../../core/common/generalActionHandler';
+import DateControl from '../../../core/common/DateControl.jsx';
+import Label from '../../../core/common/Lable.jsx';
 import moment from 'moment';
 import axios from 'axios';
 
@@ -225,6 +223,7 @@ class TestTemplateDetails extends React.Component {
     };
 
     testLetterPayload() {
+        console.log(this.state.body);
         let { templatePayload } = this.state.body;
         // console.log(templatePayload, 'TTTTTTTTTTTT');
         // templatePayload.templateId = this.state.body.templateId
@@ -242,7 +241,7 @@ class TestTemplateDetails extends React.Component {
         let body = {
             templatePayload: JSON.parse(templatePayload)
         }
-        body.templatePayload.template.templateId = this.state.body.templateId
+        body.templatePayload.template.templateId = this.props.params.id
         axios.post(constants.testLetter, body, {
             responseType: 'arraybuffer',
             headers: headers

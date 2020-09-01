@@ -280,7 +280,9 @@ class TableCell extends React.Component {
     let cellData;
     let fontWeightStyle = this.props.footerRow ? 'bold' : 'normal'
     switch (this.props.type) {
-
+      case "modal":
+        cellData = this.props.cellData ? this.props.cellData : [];
+        return (this.renderActions(cellData));
       case "action":
         cellData = this.props.cellData ? this.props.cellData : [];
         return (this.renderActions(cellData));

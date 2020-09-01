@@ -258,6 +258,12 @@ module.exports = {
     { alias: "RSEARCH_roleType", key: "type", type: "string" },
     { alias: "RSEARCH_roleAction", key: "actions", type: "action" }
   ],
+  letterTable: [
+    { alias: "", key: "templateId", type: "hiddenID" },
+    { alias: "Template Name", key: "templateName", type: "string" },
+    { alias: "Template Path", key: "templatePath", type: "string" },
+    { alias: "ASEARCH_action", key: "actions", type: "modal" }
+  ],
 
   userSearch: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
