@@ -41,6 +41,8 @@ import CommissionTemplateSearch
 import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
 import AuditLogList from './components/AuditLogScreen/auditLogList.jsx';
 
+import ChangeTrackingLog from "./components/ChangeTrackingLog/changeTrackingList.jsx";
+
 import NotFound from "./components/NotFound.jsx";
 
 import eventList from './components/eventService/eventList.jsx';
@@ -178,6 +180,7 @@ export default (<Router history={browserHistory}>
     <Route path="/APIPayloadSearch" component={APIPayloadSearch} />
     <Route path="/APIPayloadSearch/:payLoadField/:payLoadFieldValue" component={APIPayloadSearch} />
     <Route path="/auditLogList" component={AuditLogList} />
+    <Route path="/ChangeTrackingLog" component={ChangeTrackingLog} />
     <Route path="/healthMonitor" component={HealthMonitor} />
     <Route path="/fileTemplateSearch" component={FileTemplateSearch} />
     <Route path="/fileTemplateSetup" component={FileTemplateSetup} />
