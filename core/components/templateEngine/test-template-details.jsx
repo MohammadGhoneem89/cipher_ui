@@ -15,6 +15,7 @@ import DateControl from '../../../core/common/DateControl.jsx';
 import Label from '../../../core/common/Lable.jsx';
 import moment from 'moment';
 import axios from 'axios';
+import TemplateLoader from './templateLoader.jsx';
 
 class TestTemplateDetails extends React.Component {
     constructor(props, context) {
@@ -233,6 +234,9 @@ class TestTemplateDetails extends React.Component {
         //     this.props.actions.generalAsyncProcess(constants.testLetter, body).then(res => {
         //         console.log(res);
         //     });
+        this.setState({
+            isLoading: true
+        })
 
         const headers = {
             'Content-Type': 'application/json',
@@ -241,12 +245,15 @@ class TestTemplateDetails extends React.Component {
         let body = {
             templatePayload: JSON.parse(templatePayload)
         }
-        body.templatePayload.template.templateId = this.props.params.id
+        body.templatePayload.templateId = this.props.params.id
         axios.post(constants.testLetter, body, {
             responseType: 'arraybuffer',
             headers: headers
         })
             .then(res => {
+                this.setState({
+                    isLoading: false
+                })
                 // this.setState({
                 //     documentLoader: false
                 // })
@@ -401,6 +408,9 @@ class TestTemplateDetails extends React.Component {
                             </button>
                             {/* } */}
                         </div>
+                    </Portlet>
+                    <Portlet title={utils.getLabelByID('Test Letter')}>
+                        <TemplateLoader markup={this.state.body.templateMarkup || ''} />
                     </Portlet>
                 </div>
             );

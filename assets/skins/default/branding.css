@@ -615,4 +615,45 @@ pre {
     white-space: -o-pre-wrap;    /* Opera 7 */
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
+.scroll{
+	display: block;
+	height: 200px;
+   
+	overflow: auto;
+	
+  }
+
+  .scroll ::-webkit-scrollbar {
+	display: none;
+}
+  
+  .scroll-div{
+	white-space: nowrap
+  }
+  
+  .box {
+	display: inline-block;
+    width: 250px;
+    height: 150px;
+	background-color: #004489;
+    margin: 10px;
+    color: white;
+  }
+  .template-title {
+	height: 50px;
+    display: flex;
+	align-items: center;
+    justify-content: space-evenly;
+  }
+  .template-button {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+  }
+  .addEditLab .row {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
 

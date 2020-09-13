@@ -391,6 +391,7 @@ class TemplateDetails extends React.Component {
                                             formname='body'
                                             value={this.state.body.sampleJson}
                                             columns='12'
+                                            style={{height: '80%'}}
                                             placeholder={utils.getLabelByID('')}
                                             state={this.state}
                                             actionHandler={this.generalHandler}
