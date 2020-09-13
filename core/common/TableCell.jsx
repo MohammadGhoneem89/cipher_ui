@@ -45,9 +45,35 @@ class TableCell extends React.Component {
         return " badge badge-info badge-roundless";
       default:
         return " badge badge-danger badge-roundless";
+     
 
     }
   }
+
+
+  getStyleForRev(type){
+    switch (type) {
+      case "NO CHANGE":
+        return {
+          fontWeight:"normal",
+          backgroundColor:"#d4edda",
+          color:"#155724"
+        };
+      case "NOT FOUND":
+        return {
+          fontWeight:"normal",
+          backgroundColor:"rgb(255 202 193)",
+          color:"rgb(200 76 64)"
+        };
+      default:
+        return {
+          fontWeight:"normal",
+          backgroundColor:"#fff3cd",
+          color:"#856404"
+        };
+    }
+  }
+
   getClassForStatus(type) {
 
     switch (type) {
@@ -412,6 +438,12 @@ class TableCell extends React.Component {
             this.bindModalData(this.props.rowData);
           }}> {temp}</a>
         </td>;
+
+      case "revString":
+        return (<td style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())}  >{this.props.cellData}</td>);
+
+        case "revLatest":
+          return (<td style={{fontWeight:fontWeightStyle,color:"grey",backgroundColor:"#fcfc3f9e"}}  >{this.props.cellData}</td>);
 
 
       default:
