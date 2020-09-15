@@ -15,6 +15,7 @@ import * as utils from '../../common/utils.js';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import DateControl from '../../common/DateControl.jsx';
+import Portlet from '../../common/Portlet.jsx';
 
 import flatten from "flat";
 
@@ -122,52 +123,6 @@ class ChangeTracking extends React.Component {
 
   }
 
-  getRequest() {
-    let toDate = $("#toDate").find("input").val()
-    let fromDate = $("#fromDate").find("input").val()
-    let event = (document.getElementById('event') == null || document.getElementById('event') == undefined) ? "" : document.getElementById('event').value;
-    let collectionName = document.getElementById('collectionName') == null ? "" : document.getElementById('collectionName').value;
-    let ipAddress = document.getElementById('ipAddress') == null ? "" : document.getElementById('ipAddress').value;
-    let createdBy = document.getElementById('createdBy') == null ? "" : document.getElementById('createdBy').value;
-
-
-    var searchCriteria = {}
-
-    if (event != "")
-      searchCriteria.event = event
-
-    if (collectionName != "")
-      searchCriteria.collectionName = collectionName
-
-    if (ipAddress != "")
-      searchCriteria.ipAddress = ipAddress
-
-    if (fromDate != "")
-      searchCriteria.fromDate = fromDate;
-
-    if (toDate != "")
-      searchCriteria.toDate = toDate;
-
-    if (createdBy != "")
-      searchCriteria.createdBy = createdBy
-
-
-    this.setState({searchFilters: searchCriteria})
-
-    var request = {
-      "action": "auditLogList",
-      searchCriteria,
-      "page": {
-        "currentPageNo": 1,//this.state.pageNo ? this.state.pageNo : 1,
-        "pageSize": 10
-      }
-    }
-    this.setState({currentPageNo: 1})
-    console.log(JSON.stringify(request))
-
-
-    return request;
-  }
 
   componentWillReceiveProps(nextProps){
     console.log(nextProps,"Next PROPSSSSs")
@@ -191,6 +146,13 @@ class ChangeTracking extends React.Component {
         privateCollection:nextProps.getCollectionList
       })
     }
+    if(nextProps.getRevisionsList){
+      console.log(nextProps.getRevisionsList,"RRRRRRRRRRRrr");
+      this.handleData(nextProps.getRevisionsList)
+      // this.setState({
+      //   privateCollection:nextProps.getCollectionList
+      // })
+    }
   }
 
   // // componentWillMount() {
@@ -208,9 +170,9 @@ class ChangeTracking extends React.Component {
     this.setState({
       gridColumns:[
         { alias: "Field", key: "field", type: "string" },
-        { alias: "REV-NO-3", key: "REV-NO-3", type: "revString" },
-        { alias: "REV-NO-2", key: "REV-NO-2", type: "revString" },
         { alias: "REV-NO-1", key: "REV-NO-1", type: "revString" },
+        { alias: "REV-NO-2", key: "REV-NO-2", type: "revString" },
+        { alias: "REV-NO-3", key: "REV-NO-3", type: "revString" },
         { alias: "Latest", key: "latest", type: "revLatest" }
       ]
     })
@@ -218,38 +180,17 @@ class ChangeTracking extends React.Component {
     this.props.actions.generalProcess(constants.getEndpointListView);
   }
 
-  handleData(){
-    const data = {
-      "latest": {
-          "Foo": "bar",
-          "sampleobjArr": [
-              {
-                  "Test": "op"
-              }
-          ],
-          "sampleobj": {
-              "Test": "top"
-          }
-      },
-      "Rev-1": {
-          "Foo": "barz",
-          "sampleobj": {
-            "Test": "top"
-        }
-          
-      },
-      "Rev-2": {
-          "Foo": "barz"
-      },
-      "Rev-3": {
-        "Foo": "barz"
-      },
-      "Rev-4": {
-        "Foo": "bary"
-      }
-    };
+  handleData(data){
+    
     this.addGridColoumns(data);
-    this.dataMatrix(data,flatten(data.latest));
+    let latest= data.latest;
+    delete latest["_id"];
+    delete latest["_rev"];
+    delete latest["documentName"];
+    delete latest["key"];
+    delete latest["~version"];
+    delete latest["_revisions"];
+    this.dataMatrix(data,flatten(latest));
    
    
 }
@@ -258,6 +199,7 @@ class ChangeTracking extends React.Component {
     console.log("datataaa",data);
     console.log("whole objecttt",flatten(data));
     console.log("fieldssssssss",fields);
+
     let revData=[];
     let prunData= Object.assign({},data);
     delete prunData["latest"];
@@ -267,6 +209,12 @@ class ChangeTracking extends React.Component {
         let record={};
         record["field"]=k;
         record["latest"]=fields[k];
+
+        if(!Object.keys(prunData).length){
+          record["REV-NO-1"]="not found";
+          record["REV-NO-2"]="not found";
+          record["REV-NO-3"]="not found";
+        }
 
         Object.keys(prunData).forEach(j=>{
             let flatData=flatten(prunData[j]);
@@ -303,9 +251,9 @@ class ChangeTracking extends React.Component {
     if(keysLength>=0 && keysLength<3){
       columns=[
         { alias: "Field", key: "field", type: "string" },
-        { alias: "REV-NO-3", key: "REV-NO-3", type: "revString" },
-        { alias: "REV-NO-2", key: "REV-NO-2", type: "revString" },
         { alias: "REV-NO-1", key: "REV-NO-1", type: "revString" },
+        { alias: "REV-NO-2", key: "REV-NO-2", type: "revString" },
+        { alias: "REV-NO-3", key: "REV-NO-3", type: "revString" },
         { alias: "Latest", key: "latest", type: "revLatest" }
       ]
       allColumns.push(columns);
@@ -337,8 +285,54 @@ class ChangeTracking extends React.Component {
   }
 
   formSubmit() {
-    this.handleData()
-    //this.props.actions.generalProcess(constants.getAuditLogListData, this.getRequest());
+    // const data = {
+    //   "latest": {
+    //       "Foo": "bar",
+    //       "sampleobjArr": [
+    //           {
+    //               "Test": "op"
+    //           }
+    //       ],
+    //       "sampleobj": {
+    //           "Test": "top"
+    //       }
+    //   },
+    //   "Rev-4": {
+    //     "Foo": "bary"
+    //   },
+    //   "Rev-3": {
+    //     "Foo": "barz"
+    //   },
+    //   "Rev-2": {
+    //     "Foo": "barz"
+    // },
+    //   "Rev-1": {
+    //       "Foo": "barz",
+    //       "sampleobj": {
+    //         "Test": "top"
+    //     }
+          
+    //   }
+     
+      
+    // };
+    // this.handleData(data);
+    // let body = {
+    //   "channelname":"prwchannel",
+    //   "smartcontract":"dpw",
+    //   "endpoint":"CouchDB-RTA",
+    //   "pvtcollection":"vehiclechannel_rta_vehicle_project%24%24p%24b%24m%24w_%24v%24c%24c",
+    //   "key":"T272276772575"
+    //  }
+     let body = {
+      "channelname":this.state.selectedChannel,
+      "smartcontract":this.state.selectedSmartcontract,
+      "endpoint":this.state.selectedEndpoint,
+      "pvtcollection":this.state.selectedCollection,
+      "key":this.state.smKey
+     }
+    console.log(body,"Bodyyyyyyyyyyyyyyyyyyyy");
+    this.props.actions.generalProcess(constants.getDocumentRevesions,body);
   }
 
   pageChanged(pageNo) {
@@ -367,6 +361,26 @@ class ChangeTracking extends React.Component {
     $('#auditLogList').find('select').each(function () {
       $(this)[0].selectedIndex = 0;
     });
+  }
+
+  handlePrev(){
+    let current = this.state.currentPageNo;
+    if(current<this.state.allColumns.length){
+      this.setState({
+        currentPageNo:current+1,
+        gridColumns:this.state.allColumns[current],
+      })
+    }
+  }
+
+  handleNext(){
+    let current = this.state.currentPageNo;
+    if(current>1){
+      this.setState({
+        currentPageNo:current-1,
+        gridColumns:this.state.allColumns[current-2],
+      })
+    }
   }
 
 
@@ -561,21 +575,33 @@ class ChangeTracking extends React.Component {
           </div>
           <div className="row">
             <div className="col-md-12">
-              <Table title={utils.getLabelByID("ChangeTrackingListData")} fontclass=""
-                     TableClass="portlet light bordered sdg_portlet"
+            <Portlet  title={utils.getLabelByID("ChangeTrackingListData")} >
+              <div className="row">
+                <div className="col-md-6"  style={{display:"flex",justifyContent:"flex-start"}}>
+                <button type="button" disabled={this.state.currentPageNo>=this.state.allColumns.length?true:false} className="btn default" onClick={()=>this.handlePrev()}
+                                   >{utils.getLabelByID("prev")}</button>
+                </div>
+                <div className="col-md-6" style={{display:"flex",justifyContent:"flex-end"}}>
+                <button type="button" disabled={this.state.currentPageNo==1?true:false} className="btn default" onClick={()=>this.handleNext()}
+                                   >{utils.getLabelByID("next")}</button>
+                </div>
+              </div>
+              <Table fontclass=""
+                    //  TableClass="portlet light bordered sdg_portlet"
                      gridColumns={this.state.gridColumns}
                      gridData={this.state.revData}
                      totalRecords={this.state.allColumns.length}
-                     searchCallBack={this.searchCallBack} 
+                    //  searchCallBack={this.searchCallBack} 
                      pageSize={1}
-                     pagination={true} 
-                     pageChanged={this.pageChanged.bind(this)} 
-                     search={true}
+                    //  pagination={true} 
+                    //  pageChanged={this.pageChanged.bind(this)} 
+                    //  search={true}
                     //  renderPopupBody={this.renderPopupBody} 
-                     activePage={this.state.currentPageNo}
+                    //  activePage={this.state.currentPageNo}
                     //  searchCriteria={this.state.searchFilters} 
                      gridType={"auditLogList"} 
               />
+              </Portlet>
             </div>
           </div>
           {/* <div className="modal fade in modal-overflow" id="modelWindows" tabIndex="-1" role="basic" aria-hidden="true"
@@ -617,7 +643,8 @@ function mapStateToProps(state, ownProps) {
     typeData: state.app.typeData.data,
     ConsortiumTypeData: state.app.ConsortiumTypeData,
     getEndpointListView: state.app.getEndpointListView,
-    getCollectionList:state.app["collectionNameList"]?state.app.collectionNameList:""
+    getCollectionList:state.app["collectionNameList"]?state.app.collectionNameList:"",
+    getRevisionsList:state.app["result"]?state.app.result:""
   };
 }
 
