@@ -336,14 +336,14 @@ class ChangeTracking extends React.Component {
       //   "channelname":"prwchannel",
       //   "smartcontract":"dpw",
       //   "endpoint":"CouchDB-RTA",
-      //   "pvtcollection":"vehiclechannel_rta_vehicle_project%24%24p%24b%24m%24w_%24v%24c%24c",
+      //   "pvtcollection":encodeURIComponent("vehiclechannel_rta_vehicle_project$$p$b$m$w_$v$c$c"),
       //   "key":"T272276772575"
       //  }
       let body = {
         "channelname":this.state.selectedChannel,
         "smartcontract":this.state.selectedSmartcontract,
         "endpoint":this.state.selectedEndpoint,
-        "pvtcollection":this.state.selectedCollection,
+        "pvtcollection":encodeURIComponent(this.state.selectedCollection),
         "key":this.state.smKey
       }
       console.log(body,"Bodyyyyyyyyyyyyyyyyyyyy");
