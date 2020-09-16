@@ -11,7 +11,7 @@ function comboboxHandler(formname, fieldname, type, e) {
 }
 const MongoDBChangesForm = props => {
 
-    const { handleSubmit, schemaProfiles, updateState } = props;
+    const { handleSubmit, schemaProfiles, updateState, connectionStrings } = props;
     return (
         <form role="form" onSubmit={handleSubmit}>
             <div className="row">
@@ -19,9 +19,9 @@ const MongoDBChangesForm = props => {
                     <Label text="Source" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
                     <div className="col-md-9">
                         <TextInput
-                            name="source_url"
-                            type="text"
-                            id="source_url"
+                            name={'source_url'}
+                            type={'text'}
+                            id={'source_url'}
                             placeholder={'mongodb://23.97.138.116:10050/master'}
                             value={'mongodb://23.97.138.116:10050/master'}
                             disabled={true}
@@ -32,10 +32,11 @@ const MongoDBChangesForm = props => {
                 <div className="col-md-6">
                     <Label text="Destination" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
                     <div className="col-md-9">
-                        <TextInput
+                        <DropdownInput
                             name="destination_url"
-                            type="text"
                             id="destination_url"
+                            options={connectionStrings}
+                            onChange={(e) => { updateState({ selectedProfile: e.target.value }) }}
                         />
                     </div>
 
@@ -46,21 +47,12 @@ const MongoDBChangesForm = props => {
 
                     <Label text="Profile" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
                     <div className="col-md-9">
-                        {/* <select name="dropdown" id="dropdown" className="form-control">
-                            <option value={""}>SELECT</option>
-                            {schemaProfiles.schemaProfiles.map((option, index) => {
-                                return (
-                                    <option key={index} value={option.value}>{option.label}</option>
-                                );
-                            })}
-                        </select> */}
                         <DropdownInput
                             name="db_profiles"
                             id="db_profiles"
                             options={schemaProfiles}
                             onChange={(e) => { updateState({ selectedProfile: e.target.value }) }}
                         />
-
                     </div>
                 </div>
             </div>
