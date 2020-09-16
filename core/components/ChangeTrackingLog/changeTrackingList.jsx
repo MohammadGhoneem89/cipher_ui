@@ -16,6 +16,7 @@ import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import DateControl from '../../common/DateControl.jsx';
 import Portlet from '../../common/Portlet.jsx';
+import * as Loaders from '../../common/loaders.jsx';
 
 import flatten from "flat";
 
@@ -40,7 +41,8 @@ class ChangeTracking extends React.Component {
       selectedEndpoint:undefined,
       allColumns:[],
       gridColumns:[],
-      revData:[]
+      revData:[],
+      isLoading:false
     }
     // this.pageChanged = this.pageChanged.bind(this);
     // this.formSubmit = this.formSubmit.bind(this);
@@ -147,11 +149,19 @@ class ChangeTracking extends React.Component {
       })
     }
     if(nextProps.getRevisionsList){
+      this.setState({
+        isLoading:false
+      })
       console.log(nextProps.getRevisionsList,"RRRRRRRRRRRrr");
-      this.handleData(nextProps.getRevisionsList)
+      this.handleData(nextProps.getRevisionsList);
       // this.setState({
       //   privateCollection:nextProps.getCollectionList
       // })
+    }
+    if(!nextProps.getRevisionsList){
+      this.setState({
+        isLoading:false
+      })
     }
   }
 
@@ -181,7 +191,7 @@ class ChangeTracking extends React.Component {
   }
 
   handleData(data){
-    
+    if(Object.keys(data).length !== 0 && data.constructor !== Object){
     this.addGridColoumns(data);
     let latest= data.latest;
     delete latest["_id"];
@@ -191,6 +201,7 @@ class ChangeTracking extends React.Component {
     delete latest["~version"];
     delete latest["_revisions"];
     this.dataMatrix(data,flatten(latest));
+    }
    
    
 }
@@ -317,22 +328,27 @@ class ChangeTracking extends React.Component {
       
     // };
     // this.handleData(data);
-    // let body = {
-    //   "channelname":"prwchannel",
-    //   "smartcontract":"dpw",
-    //   "endpoint":"CouchDB-RTA",
-    //   "pvtcollection":"vehiclechannel_rta_vehicle_project%24%24p%24b%24m%24w_%24v%24c%24c",
-    //   "key":"T272276772575"
-    //  }
-     let body = {
-      "channelname":this.state.selectedChannel,
-      "smartcontract":this.state.selectedSmartcontract,
-      "endpoint":this.state.selectedEndpoint,
-      "pvtcollection":this.state.selectedCollection,
-      "key":this.state.smKey
-     }
-    console.log(body,"Bodyyyyyyyyyyyyyyyyyyyy");
-    this.props.actions.generalProcess(constants.getDocumentRevesions,body);
+    if(this.state.selectedChannel && this.state.selectedSmartcontract && this.state.selectedEndpoint && this.state.selectedCollection && this.state.smKey){
+      this.setState({
+        isLoading:true
+      })
+      // let body = {
+      //   "channelname":"prwchannel",
+      //   "smartcontract":"dpw",
+      //   "endpoint":"CouchDB-RTA",
+      //   "pvtcollection":"vehiclechannel_rta_vehicle_project%24%24p%24b%24m%24w_%24v%24c%24c",
+      //   "key":"T272276772575"
+      //  }
+      let body = {
+        "channelname":this.state.selectedChannel,
+        "smartcontract":this.state.selectedSmartcontract,
+        "endpoint":this.state.selectedEndpoint,
+        "pvtcollection":this.state.selectedCollection,
+        "key":this.state.smKey
+      }
+      console.log(body,"Bodyyyyyyyyyyyyyyyyyyyy");
+      this.props.actions.generalProcess(constants.getDocumentRevesions,body);
+    }
   }
 
   pageChanged(pageNo) {
@@ -575,6 +591,7 @@ class ChangeTracking extends React.Component {
           </div>
           <div className="row">
             <div className="col-md-12">
+            {this.state.isLoading && Loaders.dotted()}
             <Portlet  title={utils.getLabelByID("ChangeTrackingListData")} >
               <div className="row">
                 <div className="col-md-6"  style={{display:"flex",justifyContent:"flex-start"}}>
