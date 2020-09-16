@@ -191,7 +191,7 @@ class ChangeTracking extends React.Component {
   }
 
   handleData(data){
-    if(Object.keys(data).length !== 0 && data.constructor !== Object){
+    if(data["latest"]){
     this.addGridColoumns(data);
     let latest= data.latest;
     delete latest["_id"];

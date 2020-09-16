@@ -55,19 +55,19 @@ class TableCell extends React.Component {
     switch (type) {
       case "NO CHANGE":
         return {
-          fontWeight:"normal",
+          fontWeight:"bold",
           backgroundColor:"#d4edda",
           color:"#155724"
         };
       case "NOT FOUND":
         return {
-          fontWeight:"normal",
+          fontWeight:"bold",
           backgroundColor:"rgb(255 202 193)",
           color:"rgb(200 76 64)"
         };
       default:
         return {
-          fontWeight:"normal",
+          fontWeight:"bold",
           backgroundColor:"#fff3cd",
           color:"#856404"
         };
@@ -443,7 +443,7 @@ class TableCell extends React.Component {
         return (<td style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())}  >{this.props.cellData}</td>);
 
         case "revLatest":
-          return (<td style={{fontWeight:fontWeightStyle,color:"grey",backgroundColor:"#fcfc3f9e"}}  >{this.props.cellData}</td>);
+          return (<td style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e"}}  >{this.props.cellData}</td>);
 
 
       default:
