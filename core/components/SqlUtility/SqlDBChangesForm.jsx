@@ -9,50 +9,64 @@ function comboboxHandler(formname, fieldname, type, e) {
     console.log(e)
 
 }
-const MongoDBChangesForm = props => {
+const SqlDBChangesForm = props => {
 
-    const { handleSubmit, schemaProfiles, updateState, connectionStrings } = props;
+    const { handleSubmit, schemaProfiles, updateState } = props;
     return (
         <form role="form" onSubmit={handleSubmit}>
             <div className="row">
-                <div className="col-md-6">
-                    <Label text="Source" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
+                <div className="col-md-7">
+                    <Label text="Source DB" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
                     <div className="col-md-9">
                         <TextInput
-                            name={'source_url'}
-                            type={'text'}
-                            id={'source_url'}
-                            placeholder={'mongodb://23.97.138.116:10050/master'}
-                            value={'mongodb://23.97.138.116:10050/master'}
-                            disabled={true}
+                            name="source_url"
+                            type="text"
+                            id="source_url"
+                            // placeholder={'mongodb://23.97.138.116:10050/master'}
+                            // value={'mongodb://23.97.138.116:10050/master'}
+                            // disabled={true}
                         />
                     </div>
 
                 </div>
-                <div className="col-md-6">
+                {/* <div className="col-md-6">
                     <Label text="Destination" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
                     <div className="col-md-9">
-                        <DropdownInput
+                        <TextInput
                             name="destination_url"
+                            type="text"
                             id="destination_url"
-                            options={connectionStrings}
-                            onChange={(e) => { updateState({ selectedProfile: e.target.value }) }}
                         />
                     </div>
 
-                </div>
+                </div> */}
             </div>
             <div className="row">
-                <div className="col-md-6">
+                <div className="col-md-7">
 
-                    <Label text="Profile" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
+                    <Label text="Destination DB" columns='3' divStyle={{ width: '20%', paddingTop: '20px' }} />
                     <div className="col-md-9">
-                        <DropdownInput
+                        {/* <select name="dropdown" id="dropdown" className="form-control">
+                            <option value={""}>SELECT</option>
+                            {schemaProfiles.schemaProfiles.map((option, index) => {
+                                return (
+                                    <option key={index} value={option.value}>{option.label}</option>
+                                );
+                            })}
+                        </select> */}
+                        {/* <DropdownInput
                             name="db_profiles"
                             id="db_profiles"
                             options={schemaProfiles}
                             onChange={(e) => { updateState({ selectedProfile: e.target.value }) }}
+                        /> */}
+
+                        <TextInput
+                            name="destination_url"
+                            type="text"
+                            id="destination_url"
                         />
+
                     </div>
                 </div>
             </div>
@@ -74,6 +88,6 @@ const MongoDBChangesForm = props => {
 
 
 export default reduxForm({
-    form: 'MongoDBChangesForm', // a unique identifier for this form
+    form: 'SqlDBChangesForm', // a unique identifier for this form
     fields: ['source_url', 'destination_url', 'db_profiles']
-})(MongoDBChangesForm);
+})(SqlDBChangesForm);

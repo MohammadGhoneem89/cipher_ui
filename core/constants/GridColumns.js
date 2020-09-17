@@ -1352,6 +1352,17 @@ module.exports = {
     { alias: "EL_actions", key: "actions", type: "action" }
     // { alias: "currency", key: "currency", type: "string" },
     // { alias: "billingcycle", key: "billingcycle", type: "string" }
+  ],
+  SqlDBChangesGrid: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "Table Name", key: "tableName", type: 'string' },
+    { alias: "Change Type", key: "type", type: "statusBox" },
+    { alias: "Column Details", key: "new", type: "array" },
+    // { alias: "Action", key: "new_documents.count", type: "string" }
+    // { alias: "Updated documents", key: "updated_documents.count", type: "string" },
+    // { alias: "EL_actions", key: "actions", type: "action" }
+    // { alias: "currency", key: "currency", type: "string" },
+    // { alias: "billingcycle", key: "billingcycle", type: "string" }
   ]
 };
 
