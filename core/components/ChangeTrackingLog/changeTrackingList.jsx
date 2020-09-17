@@ -349,6 +349,10 @@ class ChangeTracking extends React.Component {
       console.log(body,"Bodyyyyyyyyyyyyyyyyyyyy");
       this.props.actions.generalProcess(constants.getDocumentRevesions,body);
     }
+    else{
+      alert("All fields are required");
+      return false;
+    }
   }
 
   pageChanged(pageNo) {
@@ -377,6 +381,14 @@ class ChangeTracking extends React.Component {
     $('#auditLogList').find('select').each(function () {
       $(this)[0].selectedIndex = 0;
     });
+    this.setState({
+      selectedConsortium: undefined,
+      selectedChannel: undefined,
+      selectedSmartcontract:undefined,
+      smKey:"",
+      selectedEndpoint:undefined,
+      selectedCollection:undefined
+    })
   }
 
   handlePrev(){
@@ -579,7 +591,7 @@ class ChangeTracking extends React.Component {
                                     onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
                             {"  "}
                             <button type="button" className="btn default"
-                                    onClick={this.clearFields}>{utils.getLabelByID("Clear")}</button>
+                                    onClick={this.clearFields.bind(this)}>{utils.getLabelByID("Clear")}</button>
                           </div>
                         </div>
                       </div>
