@@ -1,7 +1,7 @@
 import React from 'react';
 import {Field} from 'redux-form';
 import * as utils from './utils.js';
-
+import {reduxForm} from 'redux-form';
 const {DOM: {textarea}} = React;
 
 export const renderTextInput = ({input, id, className, type, disabled, isRequired, label, placeholder, style, meta: {touched, error, warning}}) => (
@@ -215,3 +215,8 @@ export const TextArea = (props) => {
     <Field {...props} component={renderTextArea}/>
   </div>);
 };
+
+export default reduxForm({
+  form: 'renderTextArea', 
+  enableReinitialize: false
+})(renderTextArea);
