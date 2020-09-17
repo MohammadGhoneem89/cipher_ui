@@ -177,6 +177,7 @@ module.exports = {
   getActiveAPIs: baseUrl + "/API/core/getActiveAPIs",
 
   getCollectionList:baseUrl + "/API/HyperLedger/getCollectionsList",
+  getDocumentRevesions:baseUrl + "/API/HyperLedger/getDocumentRevesions",
 
   getAdaptorsList: baseUrl + "/API/core/getAdaptorsList",
   getAvailableObjectsList: baseUrl + "/API/core/getAvailableObjectsList",

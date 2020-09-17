@@ -18,6 +18,7 @@ class MongoDBChangesContainer extends React.Component {
         super(props, context);
 
         this.state = {
+            getEndpointListView: [],
             isMigrating: false,
             schemaProfiles: [],
             mongodbSchemaChanges: {
@@ -107,6 +108,18 @@ class MongoDBChangesContainer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
 
+        if (nextProps.getEndpointListView.data) {
+            let getEndpointListView = nextProps.getEndpointListView.data.map((getEndpoint) => {
+                let prof = {}
+                prof.label = getEndpoint.text;
+                prof.value = getEndpoint.value;
+                return prof;
+            })
+            this.setState({
+                getEndpointListView: getEndpointListView
+            });
+        }
+
         if (nextProps.profiles) {
             console.log(nextProps.profiles)
 
@@ -159,6 +172,7 @@ class MongoDBChangesContainer extends React.Component {
             }
         });
         window.scrollTo(0, 0);
+        this.props.actions.generalProcess(constants.getEndpointListView, { "requestType": "dbConnection" });
         this.props.actions.generalProcess(constants.mongodbSchemaProfiles);
     }
 
@@ -166,6 +180,7 @@ class MongoDBChangesContainer extends React.Component {
         this.setState({
             loadingSchemaChanges: true
         });
+        console.log("data", data)
         this.props.actions.generalProcess(constants.getMongoDBChanges, requestCreator.createGetMongodbSchemaChanges({
             data
         }));
@@ -442,7 +457,8 @@ class MongoDBChangesContainer extends React.Component {
                         <MongoDBChangesForm
                             onSubmit={this.submit}
                             schemaProfiles={this.state.schemaProfiles}
-                            updateState={this.updateState} />
+                            updateState={this.updateState}
+                            connectionStrings={this.state.getEndpointListView} />
                         <Portlet title={"Identified Changes"} isPermissioned={true}>
                             {this.state.loadingSchemaChanges ? <div className="loader" > Loading...</div> : <Table
                                 pagination={false}
@@ -599,7 +615,8 @@ function mapStateToProps(state, ownProps) {
     return {
         profiles: _.get(state.app, "getMongodbSchemaProfiles.data", null),
         mongodbSchemaChanges: _.get(state.app, "mongodbSchemaChanges", null),
-        isLoading: false
+        isLoading: false,
+        getEndpointListView: state.app.getEndpointListView
     }
 
 }
