@@ -1,5 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
+import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
@@ -9,6 +10,7 @@ import ModalBox from '../../common/ModalBox.jsx';
 import * as utils from '../../common/utils.js';
 import Label from '../../common/Lable.jsx';
 import * as gen from '../../common/generalActionHandler'
+import { CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput } from '../../common/FormControls.jsx';
 
 class RelationalDBChangesContainer extends React.Component {
     constructor(props, context) {
@@ -108,7 +110,7 @@ class RelationalDBChangesContainer extends React.Component {
       this.props.actions.generalAjxProcess(this.state.DBName=='mssql~orm'?constants.WriteScriptSQL:constants.WriteScriptPostgreSql, body)
         .then(result => {
           this.setState({
-            script:result.response.data
+            script:result.response
           })
         })
         .catch(err => {
@@ -151,7 +153,7 @@ class RelationalDBChangesContainer extends React.Component {
       let val=[]
         this.state.dbType.map((x)=>{
           if (x.dbType==event.target.value) {
-         val.push({text:x.text,value:x.value})
+         val.push({label:x.text,value:x.value})
      }   
      this.setState({
       SelectDBs: val
@@ -191,7 +193,7 @@ ApplyScript(){
                    <ModalBox isOpen={this.state.show}>
                     <Portlet title={"Script"}>
                             <textarea type="text"  className="form-control" id="description"
-                               value={this.state.script.mainQuery} rows="4"
+                               value={this.state.script?this.state.script.map(x=>(x.data)):''} rows="4"
                               style={{resize: "none", width: "100%"}}/>
                             <div className="btn-toolbar">
                                 <button type="submit" onClick={this.closePopup} className="pull-right btn green">
@@ -204,7 +206,7 @@ ApplyScript(){
 
                     </Portlet>
                   </ModalBox>
-                    <Portlet title={"SQL Utility"}>
+                    <Portlet title={"RelationalDBChangesUtility"}>
                     <div>
 
                     <div className="row">
@@ -227,10 +229,14 @@ ApplyScript(){
                 <select onChange={this.SourceDB} style={{ width: '100%', height: '35px' }} id="SourceDB" name="SourceDB">
                                 {this.state.SelectDBs ? this.state.SelectDBs.map((x) => {
                                   return (
-                                    <option value={x.value}>{x.text}</option>
+                                    <option value={x.value}>{x.label}</option>
                                    )
                                  }) : ''}
                               </select>
+
+{/* <DropdownInput onChange={this.SourceDB} id="SourceDB" name="SourceDB" options={this.state.SelectDBs?this.state.SelectDBs:''}
+                            /> */}
+
                     </div>
                   </div>
                   </div>
@@ -241,10 +247,15 @@ ApplyScript(){
                           <select onChange={this.DestinationDB}  style={{ width: '100%', height: '35px' }} id="DestinationDB" name="DestinationDB">
                           {this.state.SelectDBs ? this.state.SelectDBs.map((x) => {
                                   return (
-                                    <option value={x.value}>{x.text}</option>
+                                    <option value={x.value}>{x.label}</option>
                                    )
                                  }) : ''}
                               </select>
+
+{/* <DropdownInput onChange={this.DestinationDB} id="DestinationDB" name="DestinationDB" options={this.state.SelectDBs?this.state.SelectDBs:''}
+                            /> */}
+
+
                     </div>
                   </div>
                   <div className="row clearfix pull-right">
@@ -294,6 +305,21 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-RelationalDBChangesContainer.displayName = "SQL Utility";
+RelationalDBChangesContainer.displayName = "RelationalDBChangesUtility";
 
-export default connect(mapStateToProps, mapDispatchToProps)(RelationalDBChangesContainer)
+// export default connect(mapStateToProps, mapDispatchToProps)(RelationalDBChangesContainer)
+
+
+
+// Decorate with reduxForm(). It will read the initialValues prop provided by connect()
+RelationalDBChangesContainer = reduxForm({
+  form: 'RelationalDBChangesContainer',
+  enableReinitialize: true
+  // a unique identifier for this form
+})(RelationalDBChangesContainer)
+
+// You have to connect() to any reducers that you wish to connect to yourself
+RelationalDBChangesContainer = connect(mapStateToProps, mapDispatchToProps)
+(RelationalDBChangesContainer)
+
+export default RelationalDBChangesContainer;
