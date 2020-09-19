@@ -6,11 +6,11 @@ import * as constants from '../../constants/Communication.js';
 import Portlet from '../../common/Portlet.jsx';
 import Table from '../../common/Datatable.jsx';
 import ModalBox from '../../common/ModalBox.jsx';
-import * as utils from '../../../core/common/utils.js';
+import * as utils from '../../common/utils.js';
 import Label from '../../common/Lable.jsx';
 import * as gen from '../../common/generalActionHandler'
 
-class MongoDBChangesContainer extends React.Component {
+class RelationalDBChangesContainer extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -294,6 +294,6 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-MongoDBChangesContainer.displayName = "SQL Utility";
+RelationalDBChangesContainer.displayName = "SQL Utility";
 
-export default connect(mapStateToProps, mapDispatchToProps)(MongoDBChangesContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(RelationalDBChangesContainer)

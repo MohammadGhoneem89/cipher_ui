@@ -38,39 +38,39 @@ const ExceptionListForm = ({ handleSubmit, updateState, pristine, reset, submitt
     ];
 
     return (
-      <Portlet title={"Exception List"} actions={exceptionsActions} style={{ height: '290px' }}>
-          <form role="form" onSubmit={handleSubmit}>
-              <div className="row" key={index}>
-                  <div className="col-md-4 col-sm-4">
-                      <TextInput
-                        name={"exceptionList[" + index + "].title"}
-                        label="Exception"
-                        type="text"
-                        value=""
-                        placeholder="Event Title"
-                      />
-                  </div>
-                  <div className="col-md-4 col-sm-4">
-                      <Label divStyle={{ padding: "0" }} text={'Start Date'} style={{ fontWeight: 'normal' }}>
-                      </Label>
-                      <DateControl id="start" defaultValue={ utils.UNIXConvertToDate(dates.toEpoch(_.get(initialValues, `exceptionList[${index}].start`), undefined), 'DD/MM/YYYY')} dateChange={startChange.bind(this)} />
-                  </div>
-                  <div className="col-md-4 col-sm-4">
-                      <Label divStyle={{ padding: "0" }} text={'End Date'} style={{ fontWeight: 'normal' }}>
-                      </Label>
-                      <DateControl id="end" defaultValue={utils.UNIXConvertToDate(dates.toEpoch(_.get(initialValues, `exceptionList[${index}].end`, undefined)),'DD/MM/YYYY')} dateChange={endChange.bind(this)} />
-                  </div>
+        <Portlet title={"Exception List"} actions={exceptionsActions} style={{ height: '290px' }}>
+            <form role="form" onSubmit={handleSubmit}>
+                <div className="row" key={index}>
+                    <div className="col-md-4 col-sm-4">
+                        <TextInput
+                            name={"exceptionList[" + index + "].title"}
+                            label="Exception"
+                            type="text"
+                            value=""
+                            placeholder="Event Title"
+                        />
+                    </div>
+                    <div className="col-md-4 col-sm-4">
+                        <Label divStyle={{ padding: "0" }} text={'Start Date'} style={{ fontWeight: 'normal' }}>
+                        </Label>
+                        <DateControl id="start" defaultValue={ utils.UNIXConvertToDate(dates.toEpoch(_.get(initialValues, `exceptionList[${index}].start`), undefined), 'DD/MM/YYYY')} dateChange={startChange.bind(this)} />
+                    </div>
+                    <div className="col-md-4 col-sm-4">
+                        <Label divStyle={{ padding: "0" }} text={'End Date'} style={{ fontWeight: 'normal' }}>
+                        </Label>
+                        <DateControl id="end" defaultValue={utils.UNIXConvertToDate(dates.toEpoch(_.get(initialValues, `exceptionList[${index}].end`, undefined)),'DD/MM/YYYY')} dateChange={endChange.bind(this)} />
+                    </div>
 
-              </div>
-              <br></br>
-              <br></br>
-              <div className="clearfix">
-                  <button type="submit" className="pull-right btn green" disabled={pristine || submitting}>
-                      Submit
-                  </button>
-              </div>
-          </form>
-      </Portlet>
+                </div>
+                <br></br>
+                <br></br>
+                <div className="clearfix">
+                    <button type="submit" className="pull-right btn green" disabled={pristine || submitting}>
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </Portlet>
     );
 };
 
