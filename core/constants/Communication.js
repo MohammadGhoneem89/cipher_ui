@@ -260,5 +260,7 @@ module.exports = {
   applyMongoDBChanges: baseUrl + "/API/utility/upsertMongodbChange",
   encryptString: baseUrl + "/API/utility/encrypt",
   decryptString: baseUrl + "/API/utility/decrypt",
+
+  addDocumentType: baseUrl + "/API/Core/addDocumentType"
 }
 
