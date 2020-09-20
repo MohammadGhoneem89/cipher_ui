@@ -120,7 +120,7 @@ import TemplateList from '../core/components/templateEngine/templateList.jsx';
 import DocumentationContainer from "./components/DocumentationCode/DocumentationContainer.jsx";
 
 import MongoDBChangesContainer from './components/mongoUtility/mongoDBChangesContainer.jsx';
-import SqlDBChangesContainer from './components/SqlUtility/SqlDBChangesContainer.jsx';
+import RelationalDBChangesContainer from './components/RelationalDBChangesUtility/RelationalDBChangesContainer.jsx';
 import CryptographyContainer from './components/cryptoUtility/cryptographyContainer.jsx'
 import templateDetails from './components/templateEngine/template-details.jsx';
 import testTemplateDetails from './components/templateEngine/test-template-details.jsx';
@@ -247,7 +247,7 @@ export default (<Router history={browserHistory}>
     <Route path="/fileList/:type" component={FileList} />
     <Route path="/fileData/:id" component={FileData} />
     <Route path="/mongoUtility" component={MongoDBChangesContainer} />
-    <Route path="/sqlUtility" component={SqlDBChangesContainer} />
+    <Route path="/RelationalDBChangesUtility" component={RelationalDBChangesContainer} />
     <Route path="/cryptoUtility" component={CryptographyContainer} />
 
     <Route path="/templateList" component={TemplateList} />
