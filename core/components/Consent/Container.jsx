@@ -15,7 +15,7 @@ import { timeThursdays } from 'd3';
 const initialState = {
   Container: {},
   List: [],
-  typeData: undefined,
+  typeData: [],
   groupList: [],
   columnList: [],
   resultSet: [],
@@ -51,14 +51,22 @@ class Container extends React.Component {
 
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES'])); // Org types (entities)
     if (this.props.id !== "NEW") {
-      this.props.actions.generalProcess(constants.getADHReportByID, {
-        "_id": this.props.id //"5bf9c9df4cb0c690e4461b89"
-      });
+      this.setState({
+        isLoading:true
+      })
+      // this.props.actions.generalProcess(constants.getADHReportByID, {
+      //   "_id": this.props.id //"5bf9c9df4cb0c690e4461b89"
+      // });
+    
     }
-    this.setState({
-      loadedOnce: false,
-      gridLoading: false
-    })
+    else{
+      this.setState({
+        loadedOnce: false,
+        gridLoading: false,
+        isLoading:false
+      })
+    }
+   
   }
 
   componentWillMount() {
@@ -72,19 +80,13 @@ class Container extends React.Component {
     if (nextProps.typeData) {
       this.setState({
         typeData: nextProps.typeData,
-        isLoading: false
+        // isLoading: false
       });
     }
     if (nextProps.Container) {
       this.setState({
         Container: nextProps.Container
       });
-    }
-    if (nextProps.message) {
-      this.setState({
-        formLoading: false
-      });
-    //  this.props.history.push("/documentList")
     }
   }
 
@@ -137,7 +139,20 @@ class Container extends React.Component {
 
     console.log(body,"yyyyyyyyyyyyyyyy");
 
-    this.props.actions.generalProcess(constants.addDocumentType, body);
+    this.props.actions.generalAsyncProcess(constants.addDocumentType, body).then(res=>{
+      if(res.messageStatus=="OK"){
+            this.setState({
+              formLoading: false
+            });
+          this.props.history.push("/documentList")
+      }
+    }).catch(err=>{
+      this.setState({
+        formLoading: false
+      });
+      alert("Something happened. Please try again.");
+      return false;
+    });
   }
 
 
@@ -145,11 +160,13 @@ class Container extends React.Component {
     if (this.state.isLoading) {
       return (<div className="loader">isLoading...</div>)
     }
+  
 
     return (<Form flag={this.state.update} ActionHandlers={this.ActionHandlers}  formLoading={this.state.formLoading}
                   typeData={this.state.typeData} isOwner={true} onInputChange={this.onInputChange}
                   onSubmit={this.submit} testQuery={this.test}
                   state={this.state}/>)
+
 
   }
 
@@ -174,7 +191,7 @@ Container.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log(state.app,"AAAAAAA");
+  console.log(ownProps,"AAAAAA")
   return {
     Container: _.get(state.app, 'documentContainer.data', undefined),
     typeData: _.get(state.app, 'typeData.data', []),
