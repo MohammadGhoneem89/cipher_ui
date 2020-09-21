@@ -52,18 +52,41 @@ class Container extends React.Component {
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES'])); // Org types (entities)
     if (this.props.id !== "NEW") {
       this.setState({
-        isLoading:true
+        isLoading:false
       })
-      // this.props.actions.generalProcess(constants.getADHReportByID, {
-      //   "_id": this.props.id //"5bf9c9df4cb0c690e4461b89"
-      // });
+      this.props.actions.generalAsyncProcess(constants.getDocumentType, {
+        "body": {
+          "document_type":this.props.id //"COO"
+        }
+      }).then(res=>{
+        console.log(res,"ASDADSDASSA");
+        if(res.result.key){
+          this.setState({
+            isLoading:false,
+            Container:{
+              name:res.result.name,
+              description:res.result.description,
+              ownerOrgType:res.result.ownerOrgCode,
+              documentType:res.result.documentType
+            }
+          })
+        }
+        else{
+          this.setState({
+            isLoading:false
+          })
+          alert("Document Not Found");
+        }
+        
+      });
     
     }
     else{
       this.setState({
         loadedOnce: false,
         gridLoading: false,
-        isLoading:false
+        isLoading:false,
+        Container:{}
       })
     }
    
@@ -139,7 +162,16 @@ class Container extends React.Component {
 
     console.log(body,"yyyyyyyyyyyyyyyy");
 
-    this.props.actions.generalAsyncProcess(constants.addDocumentType, body).then(res=>{
+    let url;
+
+    if(this.props.id !== "NEW"){
+      url=constants.updateDocumentType;
+    }
+    else{
+      url=constants.addDocumentType
+    }
+
+    this.props.actions.generalAsyncProcess(url, body).then(res=>{
       if(res.messageStatus=="OK"){
             this.setState({
               formLoading: false
