@@ -55,7 +55,7 @@ class WorkingCaledarContainer extends React.Component {
     submit(data) {
 
         // Validation
-
+        data.calendarName = _.get(data, 'calendarName', '').replace(/[^a-zA-Z-_.,:?! 0-9]+/g, '')
         if (data.calendarName == "") {
             toaster.showToast('Calendar name not filled', 'ERROR')
             return
@@ -106,7 +106,10 @@ class WorkingCaledarContainer extends React.Component {
         data.holidays = []
 
         for (let i = 0; i < data.exceptionList.length; i++) {
-
+            data.exceptionList[i] = {
+                ...data.exceptionList[i],
+                title: _.get(data.exceptionList[i], 'title', '').replace(/[^a-zA-Z-_.,:?! 0-9]+/g, '')
+            }
             if (data.exceptionList[i].end == undefined) {
                 data.holidays.push(data.exceptionList[i].start)
             } else {
@@ -122,12 +125,12 @@ class WorkingCaledarContainer extends React.Component {
         if (this.props.params.ID) {
             this.setState({ isLoading: true })
             this.props.actions.generalAjxProcess(constants.workingCalendarUpdate, requestCreator.createWorkingCalendarUpdateRequest(data))
-              .then(res => {
-                  this.setState({ isLoading: false })
-              })
-              .catch(err => {
-                  console.log(JSON.stringify(err));
-              })
+                .then(res => {
+                    this.setState({ isLoading: false })
+                })
+                .catch(err => {
+                    console.log(JSON.stringify(err));
+                })
         } else {
             this.props.actions.generalProcess(constants.workingCalendarInsert, requestCreator.createWorkingCalendarInsertRequest(data));
         }
@@ -147,9 +150,9 @@ class WorkingCaledarContainer extends React.Component {
     render() {
         if (!this.state.isLoading) {
             return (
-              <Portlet title={"Working Days Calendar"}>
-                  <WorkingCalSetupForm onSubmit={this.submit} initialValues={this.state.workingCalendarDetail} />
-              </Portlet>
+                <Portlet title={"Working Days Calendar"}>
+                    <WorkingCalSetupForm onSubmit={this.submit} initialValues={this.state.workingCalendarDetail} />
+                </Portlet>
             );
         }
         else

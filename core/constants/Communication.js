@@ -261,6 +261,9 @@ module.exports = {
   encryptString: baseUrl + "/API/utility/encrypt",
   decryptString: baseUrl + "/API/utility/decrypt",
 
-  addDocumentType: baseUrl + "/API/Core/addDocumentType"
+  addDocumentType: baseUrl + "/API/Core/addDocumentType",
+  updateDocumentType: baseUrl + "/API/Core/updateDocumentType",
+  getDocumentTypeList: baseUrl + "/API/Consent/getDocumentTypeList",
+  getDocumentType: baseUrl + "/API/Core/getDocumentType"
 }
 
