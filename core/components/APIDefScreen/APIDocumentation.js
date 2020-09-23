@@ -70,8 +70,11 @@ class APIDocumentation extends React.Component {
         return request;
     }
     getApisList() {
+        this.setState({
+            isLoading: true
+        })
         this.props.actions.generalAjxProcess(constants.getApiListData, this.getRequest()).then(res => {
-            
+
             const headers = {
                 'Content-Type': 'application/json',
                 'token': sessionStorage.getItem('token')
@@ -200,6 +203,9 @@ class APIDocumentation extends React.Component {
                                 <div className="btn-toolbar pull-right">
                                     <button type="submit" className="btn green" onClick={() => this.getApisList()}>Generate</button>
                                 </div>
+                            </div>
+                            <div className="col-md-12">
+                                {this.state.isLoading ? <div className="loader" > Loading...</div> : <div></div>}
                             </div>
                         </div>
                     </div>
