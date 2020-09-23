@@ -9,6 +9,7 @@ import orderlist from "./components/orderDetails/orderlist.jsx";
 import Dashboard from "./components/orderDetails/dashboard.jsx";
 import FileList from "./components/Files/FileList.jsx";
 import FileData from "./components/Files/FileData.jsx";
+import EcommerceDashboard from './components/dashboards/ecommerceDashboard.jsx';
 
 
 let authRoutes = <div>
@@ -18,6 +19,7 @@ let authRoutes = <div>
   <Route path="courier/orderlist" component={orderlist} />
   <Route path="courier/fileList" component={FileList} />
   <Route path="courier/fileData/:id" component={FileData} />
+  <Route path="courier/eCommerceDashboard" component={EcommerceDashboard} />
 </div>;
 
 let unAuthRoutes = <div>
