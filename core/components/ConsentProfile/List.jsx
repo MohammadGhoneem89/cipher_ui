@@ -30,10 +30,34 @@ class List extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.listData && nextProps.pageData) {
+    // if (nextProps.listData && nextProps.pageData) {
+    //   this.setState({
+    //     listData: nextProps.listData,
+    //     pageData: nextProps.pageData
+    //   })
+    // }
+    console.log("cosent profile list ------", nextProps);
+    console.log("cosent profile State ------", this.state);
+    if (nextProps.listData) {
+      console.log("list Data", nextProps.listData);
+      let parsedData = nextProps.listData.map(item=>{
+        return {
+          ...JSON.parse(item.tranxData),
+          createdAt:item.createdAt,
+          actions: [{
+            URI: ["/ConsentProfile"],
+            iconName: "icon-docs",
+            label: "View",
+            params: "",
+            type: "componentAction",
+            value: "1003",
+        }]}
+      })
+
+      console.log("parsed Data", parsedData);
       this.setState({
-        listData: nextProps.listData,
-        pageData: nextProps.pageData
+        pageData: parsedData,
+        listData: parsedData
       })
     }
   }
@@ -49,6 +73,7 @@ class List extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     // this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
+    this.props.actions.generalProcess(constants.getConsentProfileList);
     this.setState({
       actions: [{
         "value": "1002",
@@ -206,15 +231,15 @@ class List extends React.Component {
               </div>
             </div>
           </div>
-
+          {      console.log("cosent profile State ------", this.state)}
           <Portlet title={utils.getLabelByID("Consent Profile List")} isPermissioned={true}
                    actions={this.state.actions}>
             <Table fontclass=""
                    gridColumns={utils.getGridColumnByName("ADHReportList")}
                    gridData={this.state.listData}
-                   totalRecords={this.state.pageData.totalRecords}
+                   totalRecords={this.state.pageData.length}
                    searchCallBack={this.searchCallBack}
-                   pageSize={10}
+                   pageSize={10}  
                    pagination={true} pageChanged={this.pageChanged}
                    export={false}
                    search={true}
@@ -237,8 +262,8 @@ List.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    listData: _.get(state.app, 'ADHReportList.ADHReportList.data.searchResult', undefined),
-    pageData: _.get(state.app, 'ADHReportList.ADHReportList.data.pageData', undefined),
+    listData: _.get(state.app, 'consentProfileList', undefined),
+  //  pageData: _.get(state.app, 'ADHReportList.ADHReportList.data.pageData', undefined),
     typeData: state.app.typeData.data
   };
 }

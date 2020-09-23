@@ -886,10 +886,10 @@ module.exports = {
   ADHReportList: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "", key: "_id", type: "hiddenID" },
-    { alias: "name", key: "name", type: "string" },
-    { alias: "report Type", key: "reportType", type: "string" },
-    { alias: "connection Type", key: "connectionType", type: "string" },
-    { alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string" },
+    { alias: "policy id", key: "policyID", type: "string" },
+    { alias: "document Type", key: "documentType", type: "string" },
+    { alias: "consent Type", key: "consentType", type: "string" },
+    { alias: "created At", key: "createdAt", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
   actionList: [
