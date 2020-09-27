@@ -28,6 +28,7 @@ class List extends React.Component {
       pageData: {}
     }
     this.pageChanged = this.pageChanged.bind(this);
+    this.clearFields = this.clearFields.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -76,9 +77,11 @@ class List extends React.Component {
     // this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
     console.log("currentPageNo----------", this.state);
     let request = {
-      "page": {
-        "currentPageNo": this.state.currentPageNo,
-        "pageSize": 10
+      'body':{
+        "page": {
+          "currentPageNo": this.state.currentPageNo,
+          "pageSize": 10
+        }
       }
     }
 
@@ -98,27 +101,29 @@ class List extends React.Component {
   }
 
   getRequest() {
-    let documentTypeName = document.getElementById('documentTypeName') == null ? "" : document.getElementById('documentTypeName').value;
-    let ownerOrgType = document.getElementById('ownerOrgType') == null ? "" : document.getElementById('ownerOrgType').value;
-    let documentName = document.getElementById('documentName') == null ? "" : document.getElementById('documentName').value;
+    let consentType = document.getElementById('consentType') == null ? "" : document.getElementById('consentType').value;
+//    let ownerOrgType = document.getElementById('ownerOrgType') == null ? "" : document.getElementById('ownerOrgType').value;
+    let documentType = document.getElementById('documentType') == null ? "" : document.getElementById('documentType').value;
 
     var searchCriteria = {}
 
-    if (documentTypeName != "")
-      searchCriteria.documentTypeName = documentTypeName
-    if (ownerOrgType != "")
-      searchCriteria.ownerOrgType = ownerOrgType
-    if (documentName != "")
-      searchCriteria.documentName = documentName
+    if (consentType != "")
+      searchCriteria.consentType = consentType
+    // if (ownerOrgType != "")
+    //   searchCriteria.ownerOrgType = ownerOrgType
+    if (documentType != "")
+      searchCriteria.documentType = documentType
 
     this.setState({searchFilters: searchCriteria})
-
+    console.log("searchCriteria : ", searchCriteria  );
     var request = {
-      "action": "mappingData",
-      searchCriteria,
-      "page": {
-        "currentPageNo": 1,
-        "pageSize": 10
+      'body': {
+        "action": "mappingData",
+        searchCriteria,
+        "page": {
+          "currentPageNo": 1,
+          "pageSize": 10
+        }
       }
     }
     console.log("Request ---------------", request);
@@ -128,7 +133,8 @@ class List extends React.Component {
   }
 
   formSubmit() {
-    this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
+    console.log("Form submit---------------", this.getRequest());
+    this.props.actions.generalProcess(constants.getConsentProfileList, this.getRequest());
   }
 
   pageChanged(pageNo) {
@@ -140,21 +146,24 @@ class List extends React.Component {
       if (this.state.searchFilters == undefined) {
 
         request = {
-          "action": "ApiListData",
-          "searchCriteria": {},
-          "page": {
-            "currentPageNo": pageNo,
-            "pageSize": 10
+          'body':{
+            "action": "ApiListData",
+            "page": {
+              "currentPageNo": pageNo,
+              "pageSize": 10
+            }
           }
         }
       } else {
         var searchCriteria = this.state.searchFilters
         request = {
-          "action": "ApiListData",
-          searchCriteria,
-          "page": {
-            "currentPageNo": pageNo,
-            "pageSize": 10
+          'body':{
+            "action": "ApiListData",
+            searchCriteria,
+            "page": {
+              "currentPageNo": pageNo,
+              "pageSize": 10
+            }
           }
         }
       }
@@ -172,9 +181,20 @@ class List extends React.Component {
     });
 
     this.setState({
-      listData: this.state.pageData,
-      currentPageNo: 1
+      'page':{
+        'currentPageNo':1
+      }
     })
+    let request = {
+      'body':{
+        "action": "ApiListData",
+        "page": {
+          "currentPageNo": 1,
+          "pageSize": 10
+        }
+      }
+    }
+    this.props.actions.generalProcess(constants.getConsentProfileList, request);
   }
 
 
@@ -201,10 +221,10 @@ class List extends React.Component {
                         <div className="row">
                           <div className="col-md-6">
                             <div className="form-group col-md-4">
-                              <label className="control-label">{utils.getLabelByID("Document Name")}</label>
+                              <label className="control-label">{utils.getLabelByID("Document Type")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <input type="text" className="form-control" name="name" id="documentName"/>
+                              <input type="text" className="form-control" name="name" id="documentType"/>
                             </div>
                           </div>
                           <div className="col-md-6">
@@ -212,15 +232,15 @@ class List extends React.Component {
                               <label className="control-label">{utils.getLabelByID("Owner Org Type")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <input type="text" className="form-control" name="route" id="ownerOrgType"/>
+                              <input type="text" disabled className="form-control" name="route" id="ownerOrgType"/>
                             </div>
                           </div>
                           <div className="col-md-6">
                             <div className="form-group col-md-4">
-                              <label className="control-label">{utils.getLabelByID("Document Type")}</label>
+                              <label className="control-label">{utils.getLabelByID("Consent Type")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <input type="text" className="form-control" name="route" id="documentTypeName"/>
+                              <input type="text" className="form-control" name="route" id="consentType"/>
                             </div>
                           </div>
                         </div>

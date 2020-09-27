@@ -8,6 +8,7 @@ import _ from 'lodash';
 import * as requestCreator from '../../common/request.js';
 import Form from './Form.jsx';
 import * as gen from './../../../core/common/generalActionHandler';
+import * as toaster from '../../common/toaster.js';
 
 import cloneDeep from 'lodash/cloneDeep';
 import {forEach} from "react-bootstrap/cjs/ElementChildren";
@@ -23,7 +24,7 @@ const initialState = {
   isLoading: true,
   isCustom: true,
   loadedOnce: false,
-  gridLoading: false,
+  gridLoading: true,
   getEndpointListView: [],
   text: "Please wait while your request is being processed."
 };
@@ -66,7 +67,7 @@ class Container extends React.Component {
         console.log("ConsentProfile By Key RES", res);
         if(res.result.key){
           this.setState({
-//            isLoading:false,
+            isLoading:false,
             gridLoading: false,
             Container:{
               consentProfileId: res.result.policyID,
@@ -260,6 +261,7 @@ class Container extends React.Component {
 
   submit = (e) => {
     
+    this.setState({isLoading:true});
     let errors = {}
     let Container = _.cloneDeep(this.state.Container);
     console.log("Container ------------------ ",Container);
@@ -327,7 +329,8 @@ class Container extends React.Component {
   //  console.lo
     if (Object.keys(errors).length > 0) {
       this.setState({
-          errors
+          errors,
+          isLoading:false
       })
       return
     }
@@ -382,15 +385,17 @@ class Container extends React.Component {
 
       this.props.actions.generalAsyncProcess(url, body).then(res=>{
         if(res.messageStatus=="OK"){
-              this.setState({
-                formLoading: false
-              });
+            this.setState({
+              isLoading: false
+            });
+            toaster.showToast("Successfully Updated!", "SUCCESS");
             this.props.history.push("/ConsentProfileList")
         }
       }).catch(err=>{
         this.setState({
-          formLoading: false
+          isLoading: false
         });
+        toaster.showToast("Error Occured While Adding", "Error");
         alert("Something happened. Please try again.");
         return false;
       });
@@ -459,7 +464,7 @@ class Container extends React.Component {
     if (this.state.isLoading) {
       return (<div className="loader">isLoading...</div>)
     }
-
+    else{
     return (<Form flag={this.state.update} ActionHandlers={this.ActionHandlers} addPeer={this.add}
                   typeData={this.state.typeData} isOwner={true} onInputChange={this.onInputChange}
                   onConsentModeChange={this.onConsentModeChange}
@@ -467,6 +472,7 @@ class Container extends React.Component {
                   onSubmit={this.submit} testQuery={this.test}
                   generalHandler = {this.generalHandler}
                   state={this.state}/>)
+    }
 
   }
 
