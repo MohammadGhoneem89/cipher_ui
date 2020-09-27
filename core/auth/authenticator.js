@@ -12,7 +12,8 @@ class Auth {
     Cookies.remove("token");
     sessionStorage.removeItem('firstScreen');
     sessionStorage.selectedIndex = 0;
-    browserHistory.push('/cipher/login');
+    // browserHistory.push('/cipher/login');
+    document.location.href = '/cipher/login'
   }
 
   static lockedUser() {

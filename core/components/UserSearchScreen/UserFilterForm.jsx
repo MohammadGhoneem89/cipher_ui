@@ -1,13 +1,8 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
-import { CheckboxInput, CheckboxList, TextInput } from '../../common/FormControls.jsx';
-import { DropdownInput } from '../../common/FormControls.jsx';
-
-import Label from '../../common/Lable.jsx';
-import * as utils from "../../common/utils";
+import Combobox from '../../common/Select.jsx';
 
 const UserFilterForm = props => {
-  const { handleSubmit, pristine, reset, submitting } = props;
+  const { handleSubmit, resetform ,state, updateState} = props;
 
   let userType = sessionStorage.orgType
   let orgType = [
@@ -28,17 +23,19 @@ const UserFilterForm = props => {
   ];
 
   return (
-    <form role="form" onSubmit={handleSubmit}>
+    <form id="usersetuplist" role="form" >
       <div className="row">
         <div className="col-md-6">
           <div className="form-group col-md-4">
             <label className='control-label'>User ID</label>
           </div>
           <div className="form-group  col-md-8">
-            <TextInput
+            {/* <TextInput
               name="userID"
+              id="userID"
               type="text"
-            />
+            /> */}
+            <input className="form-control" id="userID"></input>
           </div>
         </div>
         <div className="col-md-6">
@@ -46,10 +43,12 @@ const UserFilterForm = props => {
             <label className='control-label'>First Name</label>
           </div>
           <div className="form-group col-md-8">
-            <TextInput
+            {/* <TextInput
               name="firstName"
+              id="firstName"
               type="text"
-            />
+            /> */}
+            <input className="form-control" id="firstName"></input>
           </div>
 
         </div>
@@ -59,8 +58,29 @@ const UserFilterForm = props => {
           <div className="form-group col-md-4">
             <label className='control-label'>User Type</label>
           </div>
-          <div className="form-group col-md-8">
-            <DropdownInput name="userType" options={callerType}
+          <div className="form-group ">
+            {/* <DropdownInput name="userType" id="userType" options={callerType}
+
+            /> */}
+            <Combobox
+              errorIconStyle={{
+                left: '365px',
+                top: '10px',
+                position: 'absolute',
+                color: 'darkgrey'
+              }}
+              fieldname='userType'
+              formname='search'
+              columns='8'
+              placeholder='Select'
+              style={{}}
+              state={state}
+              typeName="callerType"
+              dataSource={{ callerType: callerType }}
+              multiple={false}
+              actionHandler={updateState}
+              className="form-control"
+              isDDL={true}
             />
           </div>
 
@@ -69,8 +89,28 @@ const UserFilterForm = props => {
           <div className="form-group col-md-4">
             <label className='control-label'>Status</label>
           </div>
-          <div className="form-group col-md-8">
-            <DropdownInput name="status" options={status}
+          <div className="form-group ">
+            {/* <DropdownInput name="status" name="id" options={status}
+            /> */}
+              <Combobox
+              errorIconStyle={{
+                left: '365px',
+                top: '10px',
+                position: 'absolute',
+                color: 'darkgrey'
+              }}
+              fieldname='status'
+              formname='search'
+              columns='8'
+              placeholder='Select'
+              style={{}}
+              state={state}
+              typeName="status"
+              dataSource={{ status: status }}
+              multiple={false}
+              actionHandler={updateState}
+              className="form-control"
+              isDDL={true}
             />
           </div>
 
@@ -79,13 +119,8 @@ const UserFilterForm = props => {
       <div className="form-actions right">
         <div className="form-group col-md-12">
           <div className="btn-toolbar pull-right">
-            <button type="submit" className="btn green" disabled={submitting}>
-              Search
-            </button>
-            <button type="button" className="btn default" disabled={pristine || submitting} onClick={reset}>
-              Clear
-            </button>
-
+            <a href="javascript:;" className="btn green" onClick={handleSubmit}>Search</a>
+            <a href="javascript:;" className="btn default" onClick={resetform}>Clear</a>
           </div>
         </div>
       </div>
@@ -94,6 +129,4 @@ const UserFilterForm = props => {
 };
 
 
-export default reduxForm({
-  form: 'UserFilterForm', // a unique identifier for this form
-})(UserFilterForm);
+export default UserFilterForm;

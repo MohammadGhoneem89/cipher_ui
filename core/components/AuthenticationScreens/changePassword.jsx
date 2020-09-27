@@ -42,7 +42,8 @@ class ChangePassword extends React.Component {
   logout() {
     this.props.actions.generalProcess(constants.logout, requestCreator.createEmailTemplateListRequest({}));
     auth.logOut();
-    browserHistory.push('/cipher/login');
+    document.location.href = '/cipher/login'
+    // browserHistory.push('/cipher/login');
   }
 
   check(form) {
@@ -178,7 +179,7 @@ class ChangePassword extends React.Component {
   render() {
 
     sessionStorage.loginOrgType = this.props.orgType;
-    if (!Cookies.get('login')) {
+    if (!Cookies.get('login') || !sessionStorage.token) {
       return (
 
         <div>
