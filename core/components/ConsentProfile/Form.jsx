@@ -5,7 +5,12 @@ import Portlet from '../../common/Portlet.jsx';
 import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
 import SelectChain from '../../common/SelectChain.jsx';
-const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChange, addPeer, state, ActionHandlers, flag, isOwner, onSubmit, testQuery }) => {
+import Combobox from '../../common/Select.jsx';
+import Textarea from '../../common/Textarea.jsx';
+
+import Input from '../../common/Input.jsx';
+
+const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChange, addPeer, state, ActionHandlers, flag, isOwner, onSubmit, generalHandler, testQuery }) => {
   let options = {
     lineNumbers: true
   };
@@ -22,10 +27,22 @@ const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChan
                     textAlign: "left",
                     fontWeight: "normal"
                   }}>{utils.getLabelByID("Consent Profile Id")}</label>
-                  <div className="form-group col-md-8">
-                    <input type="text" disabled={!isOwner} className="form-control" id="consentProfileId"
-                      onChange={onInputChange}
-                      value={state.Container.consentProfileId} />
+                  <div className="col-md-8">
+                    <Input
+                        divStyle={{ padding: '0px', top: '10px',
+                        position: 'absolute' }}
+                        errorIconStyle={{
+                          display:'none'
+                        }}
+                        status={(state.errors && state.errors.consentProfileId) ? "ERROR" : undefined}
+                        fieldname='consentProfileId'
+                        formname='Container'
+                        disabled={false}
+                        placeholder={utils.getLabelByID('')}
+                        state={state}
+                        actionHandler={generalHandler}
+                        className="form-control"
+                    />
                   </div>
                 </div>
               </div>
@@ -36,24 +53,48 @@ const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChan
                     fontWeight: "normal"
                   }}>{utils.getLabelByID("Description")}</label>
                   <div className="form-group col-md-8">
-                    <textarea type="text" disabled={!isOwner} className="form-control" id="description"
-                      onChange={onInputChange} value={state.Container.description} rows="4"
-                      style={{ resize: "none", width: "100%" }} />
+                    <Textarea
+                        divStyle={{ padding: '0px' }}
+                        disabled={false}
+                        status={(state.errors && state.errors.description) ? "ERROR" : undefined}
+                        fieldname='description'
+                        formname='Container'
+                        columns='12'
+                        placeholder={utils.getLabelByID('')}
+                        state={state}
+                        actionHandler={generalHandler}
+                        className="form-control"
+                    />
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-md-6">
               <div className="form-group">
-                <label className="form-group control-label col-md-4" style={{
-                  textAlign: "left",
-                  fontWeight: "normal"
-                }}>{utils.getLabelByID("Document Type")}</label>
-                <div className="form-group col-md-8">
-                  <input type="text" disabled={!isOwner} className="form-control" id="documentType"
-                    onChange={onInputChange}
-                    value={state.Container.documentType} />
-                </div>
+                  <label className="form-group control-label col-md-4" style={{
+                    textAlign: "left",
+                    fontWeight: "normal"
+                  }}>{utils.getLabelByID("Document")}</label>
+                  <div className="col-md-8">
+                    <Combobox
+                        status={(state.errors && state.errors.documentType) ? "ERROR" : undefined}
+                        errorIconStyle={{
+                          display:'none'
+                        }}
+                        fieldname='documentType'
+                        formname='Container'
+                        allowValue={false}
+                        selected={_.get(_.get(state, 'documentList', []).filter(item =>
+                            item.key == _.get(state.Container, 'documentType', '')
+                        ), `[${0}].label`, undefined)}
+                        placeholder={utils.getLabelByID('Document')}
+                        state={state}
+                        typeName="documentList"
+                        dataSource={state}
+                        actionHandler={generalHandler}
+                        className="form-control"
+                      />
+                  </div> 
               </div>
             </div>
 
@@ -126,10 +167,25 @@ const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChan
                     <label className="form-group control-label col-md-4" style={{
                       textAlign: "left",
                       fontWeight: "normal"
-                    }}>{utils.getLabelByID("Expiry Duration")}</label>
+                    }}>{utils.getLabelByID("Expiry Duration (1- 5 Days)")}</label>
                     <div className="col-md-8">
-                      <input type="text" className="form-control" onChange={onInputChange} placeholder={'5 Days.'}
-                        value={state.Container.expiryDuration} name="expiryDuration" id="expiryDuration" />
+                    <Input
+                        type="number"
+                        divStyle={{ padding: '0px' }}
+                        errorIconStyle={{
+                          display:'none'
+                        }}
+                        status={(state.errors && state.errors.expiryDuration) ? "ERROR" : undefined}
+                        fieldname='expiryDuration'
+                        formname='Container'
+                        disabled={false}
+                        placeholder={utils.getLabelByID('')}
+                        state={state}
+                        actionHandler={generalHandler}
+                        className="form-control"
+                    />
+                      {/* <input type="number" className="form-control" min="1" max="5" onChange={onInputChange} placeholder={'5 Days.'}
+                        value={state.Container.expiryDuration} name="expiryDuration" id="expiryDuration" /> */}
 
 
                     </div>

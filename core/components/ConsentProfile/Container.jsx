@@ -7,6 +7,7 @@ import * as constants from '../../constants/Communication.js';
 import _ from 'lodash';
 import * as requestCreator from '../../common/request.js';
 import Form from './Form.jsx';
+import * as gen from './../../../core/common/generalActionHandler';
 
 import cloneDeep from 'lodash/cloneDeep';
 import {forEach} from "react-bootstrap/cjs/ElementChildren";
@@ -37,6 +38,7 @@ class Container extends React.Component {
     this.onProofRequirementChange = this.onProofRequirementChange.bind(this);
     this.submit = this.submit.bind(this);
     this.state = cloneDeep(initialState);
+    this.generalHandler = gen.generalHandler.bind(this)
   }
 
   clearFieldsPeer() {
@@ -52,7 +54,9 @@ class Container extends React.Component {
       "pageSize": 1
     }));
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES'])); // Org types (entities)
+    this.props.actions.generalProcess(constants.getDocumentTypeList);
     if (this.props.id !== "NEW") {
+      this.setState({isLoading:true});
       this.props.actions.generalAsyncProcess(constants.getConsentProfileByKey, {
         "body": {
           "profileID": this.props.id //"5bf9c9df4cb0c690e4461b89"
@@ -62,7 +66,7 @@ class Container extends React.Component {
         console.log("ConsentProfile By Key RES", res);
         if(res.result.key){
           this.setState({
-            isLoading:false,
+//            isLoading:false,
             gridLoading: false,
             Container:{
               consentProfileId: res.result.policyID,
@@ -114,8 +118,11 @@ class Container extends React.Component {
 
   componentWillReceiveProps(nextProps) {
 
-    if (nextProps.typeData && nextProps.orgTypes && nextProps.entityNames) {
+
+    if (nextProps.typeData && nextProps.orgTypes && nextProps.entityNames && nextProps.documentList) {
       let entityMap = {}
+      console.log("next props ------------ ", nextProps);
+      console.log("entity names --------------- ", nextProps.entityNames);
       nextProps.entityNames.forEach((elem) => {
         let elemEnt = _.get(entityMap, elem.orgType, []);
 
@@ -125,20 +132,36 @@ class Container extends React.Component {
         })
         _.set(entityMap, elem.orgType, elemEnt);
       })
+      let documentList = []
+//      console.log("jkjaklsdjklajslkdj ");
+      nextProps.documentList.forEach((elem) => {
+        let parsedData = JSON.parse(elem.tranxData);  
+        console.log("parsing---------",parsedData);
+         let elemEnt = _.get(documentList, parsedData.key, {});
 
+         elemEnt = {
+          "label": parsedData.key,
+          "value": parsedData.key
+        }
+        documentList.push(elemEnt);
+      })
+
+      console.log("documentList--------------------",documentList);
 
       this.setState({
         orgTypes: nextProps.orgTypes,
         entityMap: entityMap,
         typeData: nextProps.typeData,
+        documentList:documentList,
+//        Container: nextProps.Container,
         isLoading: false
       });
     }
-    if (nextProps.Container) {
-      this.setState({
-        Container: nextProps.Container
-      });
-    }
+    // if (nextProps.Container) {
+    //   this.setState({
+        
+    //   });
+    // }
   }
 
   onInputChange = (e) => {
@@ -237,8 +260,10 @@ class Container extends React.Component {
 
   submit = (e) => {
     
+    let errors = {}
     let Container = _.cloneDeep(this.state.Container);
-
+    console.log("Container ------------------ ",Container);
+    console.log("testing print ------------", _.get(Container, 'consentProfileId', undefined));
     if(!('isSupportExpiry' in Container) || Container.isSupportExpiry === false){
         Container.isSupportExpiry = false
     }
@@ -266,17 +291,57 @@ class Container extends React.Component {
     console.log(Container.expiryDuration);
     console.log(Container.proofRequirement);
 
-    if((!('consentProfileId' in Container) || Container.consentProfileId === '') || 
-       (!('description' in Container) || Container.description === '') ||
-       (!('documentType' in Container) || Container.documentType === '') ||
-       (!('consentMode' in Container) || Container.consentMode === '') ||
-       (!('expiryDuration' in Container) || Container.expiryDuration === '') ||
-       (!('proofRequirement' in Container) || Container.proofRequirement === '')
-    )
-    {
-      alert("All fields are required");
-      return false;
+    if (!Container.consentProfileId) {
+      _.set(errors, 'consentProfileId', 'Field is required')
     }
+    if (!Container.description) {
+      _.set(errors, 'description', 'Field is required')
+    }
+    console.log(Container.expiryDuration);
+    console.log(isNaN(Container.expiryDuration));
+    console.log(Container.expiryDuration);
+    console.log(parseInt(Container.expiryDuration) >= 1 && parseInt(Container.expiryDuration) <= 5);
+    if (!Container.expiryDuration || !(parseInt(Container.expiryDuration) >= 1 && parseInt(Container.expiryDuration) <= 5  )) {
+      _.set(errors, 'expiryDuration', 'Invalid or Empty')
+    }
+    
+    if(Container.documentType){
+      console.log("if condition hit Document list----------------", this.state.documentList);
+      console.log("output of document -----------",_.find(this.state.documentList, {'label': Container.documentType}));
+      let _out = _.find(this.state.documentList, {'label': Container.documentType});
+      if(!_out){
+        _.set(errors, 'documentType', 'Invalid Selection')
+      }
+    }else{
+      _.set(errors, 'documentType', 'Document Selection Required')
+    }
+    
+    console.log("errors------------",errors);
+
+    if((!('consentMode' in Container) || Container.consentMode === '') ||
+      (!('proofRequirement' in Container) || Container.proofRequirement === '')){
+        alert("All fields are required"); 
+    }
+
+
+  //  console.lo
+    if (Object.keys(errors).length > 0) {
+      this.setState({
+          errors
+      })
+      return
+    }
+    // if((!('consentProfileId' in Container) || Container.consentProfileId === '') || 
+    //    (!('description' in Container) || Container.description === '') ||
+    //    (!('documentType' in Container) || Container.documentType === '') ||
+    //    (!('consentMode' in Container) || Container.consentMode === '') ||
+    //    (!('expiryDuration' in Container) || Container.expiryDuration === '') ||
+    //    (!('proofRequirement' in Container) || Container.proofRequirement === '')
+    // )
+    // {
+    //   alert("All fields are required");
+    //   return false;
+    // }
 
 //     if (
 //       _.isEmpty(Container.consentProfileId) ||
@@ -400,6 +465,7 @@ class Container extends React.Component {
                   onConsentModeChange={this.onConsentModeChange}
                   onProofRequirementChange = {this.onProofRequirementChange}
                   onSubmit={this.submit} testQuery={this.test}
+                  generalHandler = {this.generalHandler}
                   state={this.state}/>)
 
   }
@@ -463,11 +529,12 @@ Container.propTypes = {
 function mapStateToProps(state, ownProps) {
   console.log(state)
   return {
-    Container: _.get(state.app, 'documentContainer.data', undefined),
+    Container: _.get(state.app, 'documentContainer.data', []),
     typeData: _.get(state.app, 'typeData.data', []),
-    entityNames: _.get(state.app, 'entityList.data.typeData.entityNames', undefined),
-    orgTypes: _.get(state.app, 'typeData.data.ORG_TYPES', undefined),
-    id: ownProps.params.id
+    entityNames: _.get(state.app, 'entityList.data.typeData.entityNames', []),
+    orgTypes: _.get(state.app, 'typeData.data.ORG_TYPES', []),
+    id: ownProps.params.id,
+    documentList : _.get(state.app, 'documentTypeList', [])
   };
 }
 

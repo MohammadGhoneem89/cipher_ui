@@ -1371,6 +1371,18 @@ module.exports = {
     // { alias: "EL_actions", key: "actions", type: "action" }
     // { alias: "currency", key: "currency", type: "string" },
     // { alias: "billingcycle", key: "billingcycle", type: "string" }
+  ],
+  ConsentStatusList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "Time Stamp", key: "policyID", type: "string" },
+    { alias: "Status", key: "documentType", type: "string" },
+    { alias: "Document Type", key: "consentType", type: "string" },
+    { alias: "Type", key: "createdAt", type: "string" },
+    { alias: "Document No", key: "actions", type: "string" },
+    { alias: "Validity", key: "actions", type: "string" },
+    { alias: "Providied To", key: "actions", type: "string" },
+    { alias: "Details", key: "actions", type: "action" }
   ]
 };
 

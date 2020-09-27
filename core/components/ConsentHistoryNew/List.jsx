@@ -11,7 +11,7 @@ import Portlet from '../../common/Portlet.jsx';
 import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
 import Combobox from '../../common/Select.jsx';
-import * as gen from './../../../core/common/generalActionHandler';
+import * as gen from '../../common/generalActionHandler';
 
 import * as constants from '../../constants/Communication.js';
 
@@ -32,7 +32,7 @@ class List extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("consentStatusNew nextprops -----------", nextProps);
+    console.log("consentHistoryNew nextprops -----------", nextProps);
     // if (nextProps.listData && nextProps.pageData && nextProps.orgTypes) {
     //   console.log("testing print");
     //   this.setState({
@@ -43,36 +43,14 @@ class List extends React.Component {
     //     }
     //   })
     // }
-    if (nextProps.orgTypes && nextProps.documentList) {
-        let documentList = []
-  //      console.log("jkjaklsdjklajslkdj ");
-        nextProps.documentList.forEach((elem) => {
-          let parsedData = JSON.parse(elem.tranxData);  
-          console.log("parsing---------",parsedData);
-          let elemEnt = _.get(documentList, parsedData.key, {});
-
-          elemEnt = {
-            "label": parsedData.key,
-            "value": parsedData.description
-          }
-          documentList.push(elemEnt);
-        })
+    if (nextProps.orgTypes) {
       console.log("testing print");
       this.setState({
         Container:{
-          orgTypes: nextProps.orgTypes,
-          documentList:documentList
+          orgTypes:nextProps.orgTypes          
         }
       })
     }
-    // if (nextProps.documentList) {
-    //   console.log("testing print");
-    //   this.setState({
-    //     Container:{
-    //       ...,
-    //     }
-    //   })
-    // }
   }
 
   componentWillMount() {
@@ -84,7 +62,7 @@ class List extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES'])); // Org types (entities)
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES', 'CONSENT_TYPES'])); // Org types (entities)
     this.props.actions.generalProcess(constants.getDocumentTypeList);
     
   //  window.scrollTo(0, 0);
@@ -134,11 +112,7 @@ class List extends React.Component {
     return request;
   }
 
-
-  
   formSubmit() {
-   // e.preventDefaults();
-    console.log("form submit -------------", this.state);
     this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
   }
 
@@ -195,7 +169,7 @@ class List extends React.Component {
               <div className="portlet light bordered sdg_portlet">
                 <div className="portlet-title">
                   <div className="caption">
-                    <span className="caption-subject">{utils.getLabelByID("Consent Status Type Filters")}</span></div>
+                    <span className="caption-subject">{utils.getLabelByID("Consent History Type Filters")}</span></div>
                   <div className="tools">
                     <a href="javascript:;" className="collapse" data-original-title title> </a>
                   </div>
@@ -232,33 +206,6 @@ class List extends React.Component {
                                 </div>                                
                              </div>
                             </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{
-                                  textAlign: "left",
-                                  fontWeight: "normal"
-                                }}>{utils.getLabelByID("Consent Type")}</label>
-                                <div className="col-md-8">
-                                  <Combobox
-                                      status={(this.state.errors && this.state.errors.consentType) ? "ERROR" : undefined}
-                                      fieldname='consentType'
-                                      formname='Container'
-                                      allowValue={false}
-                                      selected={_.get(_.get(this.state, 'Container.orgTypes', []).filter(item =>
-                                          item.value == _.get(this.state, 'Container.orgTypes', '')
-                                      ), `[${0}].label`, undefined)}
-                                      placeholder={utils.getLabelByID('Consent Type')}
-                                      style={{}}
-                                      state={this.state}
-                                      typeName="orgTypes"
-                                      dataSource={_.get(this.state, 'Container', {})}
-                                      actionHandler={this.generalHandler}
-                                      className="form-control"
-                                    />
-                                </div>
-                                  
-                            </div>
-                          </div>
                         </div>
                         <div className="row">  
                           <div className="col-md-6">
@@ -267,32 +214,6 @@ class List extends React.Component {
                             </div>
                             <div className="form-group col-md-8">
                               <input type="text" className="form-control" name="ID" id="ID"/>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{
-                                  textAlign: "left",
-                                  fontWeight: "normal"
-                                }}>{utils.getLabelByID("Action")}</label>
-                                <div className="col-md-8">
-                                  <Combobox
-                                      status={(this.state.errors && this.state.errors.action) ? "ERROR" : undefined}
-                                      fieldname='action'
-                                      formname='Container'
-                                      allowValue={false}
-                                      selected={_.get(_.get(this.state, 'Container.orgTypes', []).filter(item =>
-                                          item.value == _.get(this.state, 'Container.orgTypes', '')
-                                      ), `[${0}].label`, undefined)}
-                                      placeholder={utils.getLabelByID('Action')}
-                                      style={{}}
-                                      state={this.state}
-                                      typeName="orgTypes"
-                                      dataSource={_.get(this.state, 'Container', {})}
-                                      actionHandler={this.generalHandler}
-                                      className="form-control"
-                                    />
-                                </div> 
                             </div>
                           </div>
                         </div>
@@ -309,13 +230,13 @@ class List extends React.Component {
                                       fieldname='documentType'
                                       formname='Container'
                                       allowValue={false}
-                                      selected={_.get(_.get(this.state, 'Container.documentList', []).filter(item =>
-                                          item.key == _.get(this.state, 'Container.documentList', '')
+                                      selected={_.get(_.get(this.state, 'Container.orgTypes', []).filter(item =>
+                                          item.value == _.get(this.state, 'Container.orgTypes', '')
                                       ), `[${0}].label`, undefined)}
                                       placeholder={utils.getLabelByID('Document')}
                                       style={{}}
                                       state={this.state}
-                                      typeName="documentList"
+                                      typeName="orgTypes"
                                       dataSource={_.get(this.state, 'Container', {})}
                                       actionHandler={this.generalHandler}
                                       className="form-control"
@@ -334,72 +255,6 @@ class List extends React.Component {
                             </div>
                           </div>
                         </div>  
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{
-                                  textAlign: "left",
-                                  fontWeight: "normal"
-                                }}>{utils.getLabelByID("Consent Provided By")}</label>
-                                <div className="col-md-8">
-                                  <Combobox
-                                      status={(this.state.errors && this.state.errors.consentProvidedBy) ? "ERROR" : undefined}
-                                      fieldname='consentProvidedBy'
-                                      formname='Container'
-                                      allowValue={false}
-                                      selected={_.get(_.get(this.state, 'Container.orgTypes', []).filter(item =>
-                                          item.value == _.get(this.state, 'Container.orgTypes', '')
-                                      ), `[${0}].label`, undefined)}
-                                      placeholder={utils.getLabelByID('Consent Provided By')}
-                                      style={{}}
-                                      state={this.state}
-                                      typeName="orgTypes"
-                                      dataSource={_.get(this.state, 'Container', {})}
-                                      actionHandler={this.generalHandler}
-                                      className="form-control"
-                                    />
-                                </div> 
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{
-                                  textAlign: "left",
-                                  fontWeight: "normal"
-                                }}>{utils.getLabelByID("Consent Provided To")}</label>
-                                <div className="col-md-8">
-                                  <Combobox
-                                      status={(this.state.errors && this.state.errors.consentProvidedTo) ? "ERROR" : undefined}
-                                      fieldname='consentProvidedTo'
-                                      formname='Container'
-                                      allowValue={false}
-                                      selected={_.get(_.get(this.state, 'Container.orgTypes', []).filter(item =>
-                                          item.value == _.get(this.state, 'Container.orgTypes', '')
-                                      ), `[${0}].label`, undefined)}
-                                      placeholder={utils.getLabelByID('Consent Provided To')}
-                                      style={{}}
-                                      state={this.state}
-                                      typeName="orgTypes"
-                                      dataSource={_.get(this.state, 'Container', {})}
-                                      actionHandler={this.generalHandler}
-                                      className="form-control"
-                                    />
-                                </div> 
-                            </div>
-                          </div>
-                        </div>
-                        <div className="form-actions right">
-                          <div className="form-group col-md-12">
-                            <div className="btn-toolbar pull-right">
-                              <button type="submit" className="btn green"
-                                      onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
-                              {"  "}
-                              <button type="button" className="btn default"
-                                      onClick={this.clearFields}>{utils.getLabelByID("Clear")}</button>
-
-                            </div>
-                          </div>
-                        </div>                   
                       </div>
                     </div>
                   </div>
@@ -409,7 +264,7 @@ class List extends React.Component {
             </div>
           </div>
 
-          <Portlet title={utils.getLabelByID("Consents Status List")} isPermissioned={true}
+          <Portlet title={utils.getLabelByID("Consents History List")} isPermissioned={true}
                    actions={this.state.actions}>
             <Table fontclass=""
                    gridColumns={utils.getGridColumnByName("ConsentStatusList")}
@@ -443,6 +298,7 @@ function mapStateToProps(state, ownProps) {
     pageData: _.get(state.app, 'ADHReportList.ADHReportList.data.pageData', undefined),
     typeData: state.app.typeData.data,
     orgTypes: _.get(state.app, 'typeData.data.ORG_TYPES', undefined),
+    consentTypes: _.get(state.app, 'typeData.data.CONSENT_TYPES', undefined),
     documentList : _.get(state.app, 'documentTypeList', undefined)
   };
 }
@@ -453,5 +309,5 @@ function mapDispatchToProps(dispatch) {
 
 }
 
-List.displayName = "Consents Status List";
+List.displayName = "Consents History List";
 export default connect(mapStateToProps, mapDispatchToProps)(List);

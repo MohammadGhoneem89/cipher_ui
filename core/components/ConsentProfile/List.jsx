@@ -11,7 +11,6 @@ import Portlet from '../../common/Portlet.jsx';
 import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
 
-
 import * as constants from '../../constants/Communication.js';
 
 
@@ -20,13 +19,15 @@ class List extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [], typeData: undefined,
-      listData: [],
+      searchFilters: "", 
+      currentPageNo: 1, 
+      APIPayloadID: undefined, 
+      actions: [], 
+      typeData: undefined,
+      listData: undefined,
       pageData: {}
     }
     this.pageChanged = this.pageChanged.bind(this);
-
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -73,7 +74,15 @@ class List extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     // this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
-    this.props.actions.generalProcess(constants.getConsentProfileList);
+    console.log("currentPageNo----------", this.state);
+    let request = {
+      "page": {
+        "currentPageNo": this.state.currentPageNo,
+        "pageSize": 10
+      }
+    }
+
+    this.props.actions.generalProcess(constants.getConsentProfileList, request);
     this.setState({
       actions: [{
         "value": "1002",
@@ -84,7 +93,7 @@ class List extends React.Component {
         "iconName": "fa fa-plus",
         "URI": "/ConsentProfile/NEW",
         "children": []
-      }]
+      }] 
     })
   }
 
@@ -97,12 +106,10 @@ class List extends React.Component {
 
     if (documentTypeName != "")
       searchCriteria.documentTypeName = documentTypeName
-
     if (ownerOrgType != "")
       searchCriteria.ownerOrgType = ownerOrgType
     if (documentName != "")
       searchCriteria.documentName = documentName
-
 
     this.setState({searchFilters: searchCriteria})
 
@@ -114,6 +121,7 @@ class List extends React.Component {
         "pageSize": 10
       }
     }
+    console.log("Request ---------------", request);
     this.setState({currentPageNo: 1})
 
     return request;
@@ -124,6 +132,7 @@ class List extends React.Component {
   }
 
   pageChanged(pageNo) {
+    console.log("PageNo -------------------", pageNo);
     if (pageNo != undefined) {
 
       var request = "";
@@ -152,8 +161,7 @@ class List extends React.Component {
 
       this.setState({currentPageNo: pageNo})
 
-      this.props.actions.generalProcess(constants.getADHReportList, request);
-
+      this.props.actions.generalProcess(constants.getConsentProfileList, request);
     }
   }
 
@@ -162,6 +170,11 @@ class List extends React.Component {
     $('#ApiListData').find('select').each(function () {
       $(this)[0].selectedIndex = 0;
     });
+
+    this.setState({
+      listData: this.state.pageData,
+      currentPageNo: 1
+    })
   }
 
 
@@ -238,9 +251,10 @@ class List extends React.Component {
                    gridColumns={utils.getGridColumnByName("ADHReportList")}
                    gridData={this.state.listData}
                    totalRecords={this.state.pageData.length}
-                   searchCallBack={this.searchCallBack}
+              //     searchCallBack={this.searchCallBack}
                    pageSize={10}  
-                   pagination={true} pageChanged={this.pageChanged}
+                   pagination={true} 
+                   pageChanged={this.pageChanged}
                    export={false}
                    search={true}
                    activePage={this.state.currentPageNo}/>
@@ -262,7 +276,7 @@ List.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    listData: _.get(state.app, 'consentProfileList', undefined),
+    listData: _.get(state.app, 'consentProfileList', []),
   //  pageData: _.get(state.app, 'ADHReportList.ADHReportList.data.pageData', undefined),
     typeData: state.app.typeData.data
   };
