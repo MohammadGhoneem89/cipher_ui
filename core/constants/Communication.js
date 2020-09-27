@@ -142,6 +142,7 @@ module.exports = {
   getAllLetters: baseUrl + "/API/core/getAllLetters",
   addUpdateLetter: baseUrl + "/API/core/addUpdateLetter",
   testLetter: baseUrl + "/API/core/testLetter",
+  apiDocumentationLetter: baseUrl + "/API/core/apiDocumentationLetter",
   addUpdateSampleTemplate: baseUrl + "/API/core/addUpdateSampleTemplate",
   getSampleLetters: baseUrl + "/API/core/getSampleLetters",
   getAPIList: baseUrl + "/API/core/getAPIList",
@@ -176,8 +177,8 @@ module.exports = {
 
   getActiveAPIs: baseUrl + "/API/core/getActiveAPIs",
 
-  getCollectionList:baseUrl + "/API/HyperLedger/getCollectionsList",
-  getDocumentRevesions:baseUrl + "/API/HyperLedger/getDocumentRevesions",
+  getCollectionList: baseUrl + "/API/HyperLedger/getCollectionsList",
+  getDocumentRevesions: baseUrl + "/API/HyperLedger/getDocumentRevesions",
 
   getAdaptorsList: baseUrl + "/API/core/getAdaptorsList",
   getAvailableObjectsList: baseUrl + "/API/core/getAvailableObjectsList",

@@ -70,27 +70,32 @@ class APIDocumentation extends React.Component {
         return request;
     }
     getApisList() {
+        this.setState({
+            isLoading: true
+        })
         this.props.actions.generalAjxProcess(constants.getApiListData, this.getRequest()).then(res => {
-            console.log(res)
 
             const headers = {
                 'Content-Type': 'application/json',
                 'token': sessionStorage.getItem('token')
             };
             let body = {
-                templatePayload: res.ApiListData.data.searchResult[0]
+                templatePayload: {
+                    data: res.ApiListData.data.searchResult
+                }
             };
+
             body.templatePayload.templateId = "Let_059b3700-b554-11ea-8c61-ef43ff7b9999";
-            body.templatePayload.templateName = "apiTemplate";
-            ///body.sampleJson = res.ApiListData.data.searchResult;
-            body.templatePayload.templatePath = "../templates/apiTemplate.js"
-            body.templatePayload.filePath = "/av-persistance/SAGP/SAGP-files"
-            body.templatePayload.outputFileName = "invoice-certificate"
-            body.templatePayload.type = "path" 
+            body.templatePayload.template = {}
+            body.templatePayload.template.templateId = "Let_059b3700-b554-11ea-8c61-ef43ff7b9999";
+            body.templatePayload.template.templatePath = "../templates/apiTemplate.js"
+            body.templatePayload.template.filePath = "/av-persistance/SAGP/SAGP-files"
+            body.templatePayload.template.outputFileName = "api_documentation"
+            body.templateName = "api_documentation"
 
             this.setState({ body: body })
 
-            axios.post(constants.testLetter, body, {
+            axios.post(constants.apiDocumentationLetter, body, {
                 responseType: 'arraybuffer',
                 headers: headers
             })
@@ -98,9 +103,6 @@ class APIDocumentation extends React.Component {
                     this.setState({
                         isLoading: false
                     })
-                    // this.setState({
-                    //     documentLoader: false
-                    // })
                     const url = window.URL.createObjectURL(new Blob([res.data]
                         , { type: "application/pdf" }))
                     var link = document.createElement('a');
@@ -201,6 +203,9 @@ class APIDocumentation extends React.Component {
                                 <div className="btn-toolbar pull-right">
                                     <button type="submit" className="btn green" onClick={() => this.getApisList()}>Generate</button>
                                 </div>
+                            </div>
+                            <div className="col-md-12">
+                                {this.state.isLoading ? <div className="loader" > Loading...</div> : <div></div>}
                             </div>
                         </div>
                     </div>
