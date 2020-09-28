@@ -18,16 +18,14 @@ class UserSearchContainer extends React.Component {
     this.submit = this.submit.bind(this);
 
     this.state = {
-      filterCriteria: {},
-      search: {},
+      filterCriteria: undefined,
       userList: undefined,
       isLoading: false,
       pageNo: 1
     };
     this.pageChanged = this.pageChanged.bind(this);
     this.performAction = this.performAction.bind(this);
-    this.resetst = this.resetst.bind(this);
-    this.updatestate = this.updatestate.bind(this);
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -74,17 +72,7 @@ class UserSearchContainer extends React.Component {
     return "";
   }
 
-
-  submit(data, dispatch) {
-
-
-
-    data = this.state.filterCriteria;
-
-    data.userID = document.getElementById('userID') == null ? "" : document.getElementById('userID').value;
-    data.firstName = document.getElementById('firstName') == null ? "" : document.getElementById('firstName').value;
-    data.userType = document.getElementById('userType') == null ? "" : document.getElementById('userType').value;
-    data.status = document.getElementById('status') == null ? "" : document.getElementById('status').value;
+  submit(data) {
 
     if (sessionStorage.orgType == 'Entity' || sessionStorage.orgType == 'Acquirer') {
       data.orgType = sessionStorage.orgType;
@@ -114,9 +102,6 @@ class UserSearchContainer extends React.Component {
         request = {
           "action": "userList",
           "searchCriteria": {
-            "orgType": orgType,
-            "orgCode": orgCode,
-            status
           },
           "page": {
             "currentPageNo": pageNo,
@@ -146,32 +131,14 @@ class UserSearchContainer extends React.Component {
 
     }
   }
-  updatestate(form, fieldname, value) {
-    console.log(form, fieldname, value)
-    let x = {}
-    let obj = _.set(x, fieldname, value)
-    this.setState({ [form]: obj })
-  }
-  resetst() {
-    console.log("CLEAR!!")
-    $('#usersetuplist').find('input:text').val('');
-    $('#usersetuplist').find('select').each(function () {
-      $(this)[0].selectedIndex = 0;
-    });
-    // this.props.resetForm();
-    // this.props.dispatch(reset("UserFilterForm"));
-    // this.props.actions.updateStore({ UserFilterForm: {} })
-  }
+
   render() {
 
     if (!this.state.isLoading && this.state.userList)
       return (
         <div>
           <Portlet title={"User Seach Filter"}>
-            <UserFilterForm onSubmit={this.submit}
-              state={this.state}
-              updateState={this.updatestate}
-              resetform={this.resetst} initialValues={this.state.filterCriteria} state={this.state} />
+            <UserFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state} />
             {/*<ActionButton actionList={this.props.userList.data.actions} performAction={this.performAction} />*/}
           </Portlet>
           <Portlet title={"User List"} isPermissioned={true} actions={this.props.userList.data.actions}>
@@ -185,7 +152,6 @@ class UserSearchContainer extends React.Component {
               pageChanged={this.pageChanged}
               pageSize={10}
               searchCriteria={this.state.filterCriteria}
-
               activePage={this.state.pageNo} gridType={"userList"}
             />
           </Portlet>
