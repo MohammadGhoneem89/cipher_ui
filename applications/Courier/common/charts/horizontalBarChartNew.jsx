@@ -18,7 +18,7 @@ class HorizontalBarChartNew extends React.Component {
         data.forEach(dataElement => {
             console.log(dataElement);
             Object.entries(dataElement).forEach(dataElementObject => {
-                if(dataElementObject[0] == this.props.dataLabelsAttribute) {
+                if(dataElementObject[0] == this.props.dataLabelsAttribute && !dataLabels.includes(dataElementObject[1])) {
                     dataLabels.push(this.getLabel(dataElementObject[1]))
                 }
                 else {

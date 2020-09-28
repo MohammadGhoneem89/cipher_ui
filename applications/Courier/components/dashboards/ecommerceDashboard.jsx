@@ -20,7 +20,7 @@ import Portlet from '../../common/Portlet.jsx';
 import HorizontalBarChartNew from '../../common/charts/horizontalBarChartNew.jsx';
 // import HorizontalStackedBarChart from '../../common/charts/horizontalStackedBarChart.jsx';
 import PieChart from '../../common/charts/PieChart.jsx';
-// import VerticalBarChart from '../../common/charts/VerticalBarChart.jsx';
+import VerticalBarChart from '../../common/charts/VerticalBarChart.jsx';
 // import MultiLineChart from '../../common/charts/multiLineChart.jsx';
 // import TileUnit from '../../../../core/common/tileUnit.jsx';
 import moment from 'moment';
@@ -40,8 +40,11 @@ import countryData from './countries.json';
 import companyData from './companies.json';
 import fcData from './fc-data.json';
 import companyBubbles from './company-data.json';
+import sankeyData from './sankey-data.json';
 // import { bubbleChartFc } from '../../common/charts/bubble-chart-fc';
 import BubbleChart from '../../common/charts/bubbleChart-CSBOX.js';
+import SankeyChart from '../../common/charts/d3-sankey-chart.jsx';
+import MultiLineChart from '../../common/charts/d3-multiLine-chart.jsx';
 // bubbleChartFc
 
 let interval;
@@ -55,7 +58,7 @@ class EcommerceDashboard extends React.Component {
             widget3isLoading: true,
             widget4isLoading: true,
             widget5isLoading: true,
-            widgetIds: [1, 2, 3, 4, 5, 7, 10, 11],
+            widgetIds: [1, 2, 3, 4, 5, 6, 7, 10, 11],
             selectedYears: [],
             options: [{ name: 'Srigar', id: 1 }, { name: 'Sam', id: 2 }],
             selectedQuarters: [],
@@ -105,7 +108,7 @@ class EcommerceDashboard extends React.Component {
     //     chartSelection,
     //     chartSVG,
     //     showTitleOnCircle=false;
-    
+
     //     /**
     //      * The command to actually render the chart after setting the settings.
     //      * @public
@@ -118,7 +121,7 @@ class EcommerceDashboard extends React.Component {
     //         svg = div.selectAll('svg');
     //         svg.attr('width', width).attr('height', height);
     //         chartSVG=svg;
-    
+
     //         var tooltip = selection
     //         .append("div")
     //         .style("position", "absolute")
@@ -131,20 +134,20 @@ class EcommerceDashboard extends React.Component {
     //         .style("font-family", "monospace")
     //         .style("width", "400px")
     //         .text("");
-    
-    
+
+
     //         var simulation = d3.forceSimulation(data)
     //         .force("charge", d3.forceManyBody().strength([forceApart]))
     //         .force("x", d3.forceX())
     //         .force("y", d3.forceY())
     //         .on("tick", ticked);
-    
+
     //         function ticked(e) {
     //             node.attr("transform",function(d) {
     //                 return "translate(" + [d.x+(width / 2), d.y+((height+marginTop) / 2)] +")";
     //             });
     //         }
-    
+
     //         var colorCircles;
     //         if (!customColors) {
     //             colorCircles = d3.scaleOrdinal(d3.schemeCategory10);
@@ -154,7 +157,7 @@ class EcommerceDashboard extends React.Component {
     //             .domain(customDomain)
     //             .range(customRange);
     //         }
-        
+
     //         var minRadiusDomain = d3.min(data, function(d) {
     //             return +d[columnForRadius];
     //         });
@@ -164,14 +167,14 @@ class EcommerceDashboard extends React.Component {
     //         var scaleRadius = d3.scaleLinear()
     //         .domain([minRadiusDomain, maxRadiusDomain])
     //         .range([minRadius, maxRadius])
-    
+
     //         var node = svg.selectAll("circle")
     //         .data(data)
     //         .enter()
     //         .append("g")
     //         .attr('transform', 'translate(' + [width / 2, height / 2] + ')')
     //         .style('opacity',1);
-                
+
     //         node.append("circle")
     //         .attr("id",function(d,i) {
     //             return i;
@@ -227,15 +230,15 @@ class EcommerceDashboard extends React.Component {
     //                 return tooltip.style("visibility", "hidden");
     //             });
     //         }
-    
+
     //         svg.append('text')
     //             .attr('x',width/2).attr('y',marginTop)
     //             .attr("text-anchor", "middle")
     //             .attr("font-size","1.8em")
     //             .text('title');
     //     }
-    
-    
+
+
     //     chart.width = chartWidth;
     //     chart.height = chartHeight;
     //     chart.columnForColors = chartColForColors;
@@ -249,7 +252,7 @@ class EcommerceDashboard extends React.Component {
     //     chart.showTitleOnCircle = chartShowTitleOnCircle;
     //     chart.title=chartTitle;
     //     chart.remove = chartRemove;
-    
+
     //     /**
     //      * Get/set the height of the chart
     //      * Use 'chart.width' to get or set. 
@@ -268,7 +271,7 @@ class EcommerceDashboard extends React.Component {
     //         width = value;
     //         return chart;
     //     };
-    
+
     //     /**
     //      * Get/set the height of the chart.
     //      * Use 'chart.height' to get or set. 
@@ -288,8 +291,8 @@ class EcommerceDashboard extends React.Component {
     //         marginTop=0.05*height;
     //         return chart;
     //     };
-    
-    
+
+
     //     /**
     //      * Get/set the property used to determine the colors of the bubbles. 
     //      * Use 'chart.columnForColors' to get or set. 
@@ -307,7 +310,7 @@ class EcommerceDashboard extends React.Component {
     //         columnForColors = value;
     //         return chart;
     //     };
-        
+
     //     /**
     //      * Get/set the property to determine the titles of the bubbles.
     //      * Use 'chart.columnForTitle' to get or set. 
@@ -325,7 +328,7 @@ class EcommerceDashboard extends React.Component {
     //         columnForTitle = value;
     //         return chart;
     //     };
-    
+
     //     /**
     //      * Get/set the property to determine the radii of the bubbles.
     //      * Use 'chart.columnForRadius' to get or set. 
@@ -344,7 +347,7 @@ class EcommerceDashboard extends React.Component {
     //         columnForRadius = value;
     //         return chart;
     //     };
-        
+
     //     /**
     //      * Get/set the minimum radius of the bubbles.
     //      * Use 'chart.minRadius' to get or set. 
@@ -362,7 +365,7 @@ class EcommerceDashboard extends React.Component {
     //         minRadius = value;
     //         return chart;
     //     };
-        
+
     //     /**
     //      * Get/set the maximum radius of the bubbles.
     //      * Use 'chart.maxRadius' to get or set.
@@ -378,7 +381,7 @@ class EcommerceDashboard extends React.Component {
     //         maxRadius = value;
     //         return chart;
     //     };
-        
+
     //     /**
     //      * Get/set the unit name for the property the is represented by the radius of the bubbles. 
     //      * Used in the tooltip of the bubbles.
@@ -398,7 +401,7 @@ class EcommerceDashboard extends React.Component {
     //         unitName = value;
     //         return chart;
     //     };
-        
+
     //     /**
     //      * Get/set the force the separates and pushes together the bubbles on loading of the chart
     //      * Use 'chart.forceApart' to get or set.
@@ -417,7 +420,7 @@ class EcommerceDashboard extends React.Component {
     //         forceApart = value;
     //         return chart;
     //     };
-        
+
     //     /**
     //      * Get/set the property that determines if we show or hide the title of the data on the bubbles.
     //      * Use 'chart.showTitleOnCircle' to get or set.
@@ -436,7 +439,7 @@ class EcommerceDashboard extends React.Component {
     //         showTitleOnCircle = value;
     //         return chart;
     //     };
-        
+
     //     /**
     //      * Set the domain and range of the colors used for the bubbles. This is only needed if you want to use custom colors in the chart.
     //      * Use 'chart.customColors' to set.
@@ -454,7 +457,7 @@ class EcommerceDashboard extends React.Component {
     //         customRange=range;
     //         return chart;
     //     };
-        
+
     //     /**
     //      * Get/set the property that determines the title of the chart.
     //      * Use 'chart.title' to get or set.
@@ -472,7 +475,7 @@ class EcommerceDashboard extends React.Component {
     //         title = value;
     //         return chart;
     //     }
-        
+
     //     /**
     //      * Animate the removal of data from the chart (and the title)
     //      * @public
@@ -504,7 +507,7 @@ class EcommerceDashboard extends React.Component {
     //         }
     //         return chart;
     //     }
-        
+
     //     return chart;
     // }
 
@@ -637,7 +640,7 @@ class EcommerceDashboard extends React.Component {
             function updateCountryInfo(country) {
                 var info = "";
                 if (country) {
-                    info = [country.CompanyName, formatPopulation(country.Population)].join(": ");
+                    info = [country.CountryName, formatPopulation(country.Population)].join(": ");
                 }
                 d3.select("#country-info").html(info);
             }
@@ -646,7 +649,7 @@ class EcommerceDashboard extends React.Component {
         function updateCircles() {
             circles
                 .attr("fill", function (d) {
-                    return flagFill() ? "url(#" + d.companyType + ")" : continentColorScale(d.ContinentCode);
+                    return flagFill() ? "url(#" + d.CountryCode + ")" : continentColorScale(d.ContinentCode);
                 });
         }
 
@@ -780,7 +783,7 @@ class EcommerceDashboard extends React.Component {
                 .data(countries)
                 .enter()
                 .append("pattern")
-                .attr("id", function (d) { return d.companyType; })
+                .attr("id", function (d) { return d.CountryCode; })
                 .attr("class", "flag")
                 .attr("width", "100%")
                 .attr("height", "100%")
@@ -792,7 +795,7 @@ class EcommerceDashboard extends React.Component {
                 // slice: scale the image to fill the circle
                 .attr("preserveAspectRatio", "xMidYMid slice")
                 .attr("xlink:href", function (d) {
-                    return "flags/" + d.companyType + ".svg";
+                    return "/flags/" + d.CountryCode + ".svg";
                 });
         }
 
@@ -881,9 +884,9 @@ class EcommerceDashboard extends React.Component {
     }
 
     componentDidMount() {
-
+        console.log(sankeyData, 'SANKEY');
         let self = this;
-        self.createBubbleChart('', companyData, continentData); // for tumor chart
+        self.createBubbleChart('', countryData, continentData); // for tumor chart
 
 
         // d3.csv('medium_january.csv', function(error, data) {
@@ -1028,7 +1031,7 @@ class EcommerceDashboard extends React.Component {
             console.log(x);
             let obj = {
                 "body": {
-                    "widgetId": x == 10 ? `widget10-bubbleGraphVertical` : `widget${x}`,
+                    "widgetId": `widget${x}`,
                     "valueType": "", // byCount or byAmount
                     "outputWidgetType": "", // pieChart. 2Value-Bar Horizontal
                     "period": {
@@ -1098,7 +1101,7 @@ class EcommerceDashboard extends React.Component {
 
         let obj = {
             "body": {
-                "widgetId": `widget${id}-betweenDates`,
+                "widgetId": id == 1 ? `widget${id}-betweenDates` : `widget${id}`,
                 "valueType": "", // byCount or byAmount
                 "outputWidgetType": "", // pieChart. 2Value-Bar Horizontal
                 "period": {
@@ -1163,6 +1166,10 @@ class EcommerceDashboard extends React.Component {
         // if (req == 1) {
     }
 
+    onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+    }
+
     graphCreator(graphProps) {
         console.log(graphProps, 'GP');
         // dummyProps.widgetData.map(widget => {
@@ -1223,8 +1230,8 @@ class EcommerceDashboard extends React.Component {
             console.log(x);
             console.log(y);
             console.log(dataArray, 'DATAARRRRRRR');
-            let chart = <HorizontalBarChartNew minRange={10} maxRange={maxRange} stepSize={5} height={180} key={Math.random()}
-                data={dataArray || []} labels={['Companies']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} backgroundColors={['#ae8b4b', '#2196f3']}
+            let chart = <HorizontalBarChartNew minRange={0} maxRange={maxRange} stepSize={5} height={graphProps.widgetData.widgetId == 6 ? 420 : 180} key={Math.random()}
+                data={dataArray || []} labels={graphProps.widgetData.widgetId == 6 ? ['Countries'] : ['Companies']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} backgroundColors={['#ae8b4b', '#2196f3']}
                 options={{
                     responsive: true,
                     maintainAspectRatio: true
@@ -1236,10 +1243,153 @@ class EcommerceDashboard extends React.Component {
                 [stateLabel]: false
             })
         }
+        if (graphProps.widgetData.widgetType == '2ValueBar-Vertical') {
+            let x = [];
+            let y = [];
+            // let z = [];
+            let dataArray = [];
+            let minRange = 0;
+            let maxRange = 0;
+            if (graphProps.widgetData.widgetId.toggle == 'value') {
+                graphProps.widgetData.graphData.byValue.forEach(data => {
+                    // console.log(data);
+                    x.push(data.xIndex.value)
+                    y.push(data.yIndex.value)
+                    // z.push(data.zIndex.value)
+                })
+            } else {
+
+                let sortedValueArray = graphProps.widgetData.graphData.axisData.yAxis.value.sort((a, b) => a - b);
+                maxRange = sortedValueArray[sortedValueArray.length - 1]
+                graphProps.widgetData.graphData.data.forEach((data, index) => {
+                    // console.log(data);
+                    x.push(data.xIndex.value)
+                    y.push(data.yIndex.value)
+                    let obj = {
+                        entityName: data.xIndex.value,
+                        // ['value'+index]: data.yIndex.value,
+                        value: data.yIndex.value,
+                    }
+                    dataArray.push(obj);
+                })
+                this.setState({
+                    dataArray
+                })
+            }
+
+            console.log(x, '2VAlueX');
+            console.log(y, '2ValueY');
+            console.log(dataArray, 'DATAARRRRRRR');
+            let valuesArray = [];
+            // dataArray.map((x, index) => { 
+            //     valuesArray.push(Object.keys(x)[1])
+            // }
+            //     );
+            // console.log(valuesArray, 'VAAA');
+            let chart = <VerticalBarChart key={Math.random()} data={dataArray} labels={['HS']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={["value"]} backgroundColors={['#2196f3']}
+                height={250} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
+            // <HorizontalBarChartNew minRange={10} maxRange={maxRange} stepSize={5} height={180} key={Math.random()}
+            //     data={dataArray || []} labels={['Companies']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} backgroundColors={['#ae8b4b', '#2196f3']}
+            //     options={{
+            //         responsive: true,
+            //         maintainAspectRatio: true
+            //     }} />
+            let widgetIdNumber = graphProps.widgetData.widgetId.split('');
+            let stateLabel = 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
+            this.setState({
+                [graphProps.widgetData.widgetId]: chart,
+                [stateLabel]: false
+            })
+        }
+        if (graphProps.widgetData.widgetType == '3ValueLine-Vertical') {
+            let lineGraphData = [...graphProps.widgetData.graphData.data];
+            let dataPoints = [];
+            let convertedGraphData = [];
+            // let name;
+            lineGraphData.map((data, index) => {
+                let dpObj = {
+                    year: data.zIndex.value,
+                    label: data.xIndex.value,
+                    value: +data.yIndex.value
+                }
+                // name = data.bankCode
+                dataPoints.push(dpObj)
+            })
+
+            graphProps.widgetData.graphData.axisData.zAxis.value.forEach((year, index) => {
+                let dataPointsNew = [];
+                dataPoints.filter(data => {
+                    if (year == data.year) {
+                        dataPointsNew.push(data);
+                    }
+                })
+                let obj = {
+                    type: "line",
+                    name: year,
+                    // color: "#" + ((1 << 24) * Math.random() | 0).toString(16),
+                    color: index == 0 ? '#2196f3' : '#f58709',
+                    showInLegend: true,
+                    dataPoints: dataPointsNew,
+                }
+                convertedGraphData.push(obj);
+            })
+            // let x = [];
+            // let y = [];
+            // let z = [];
+            // let dataArray = [];
+            // if (graphProps.widgetData.widgetId.toggle == 'value') {
+            //     graphProps.widgetData.graphData.byValue.forEach(data => {
+            //         // console.log(data);
+            //         x.push(data.xIndex.value)
+            //         y.push(data.yIndex.value)
+            //         z.push(data.zIndex.value)
+            //     })
+            // } else {
+            //     graphProps.widgetData.graphData.data.forEach(data => {
+            //         // console.log(data);
+            //         x.push(data.xIndex.value)
+            //         y.push(data.yIndex.value)
+            //         if (data.zIndex && !z.includes(data.zIndex.value)) {
+            //             z.push(data.zIndex.value)
+            //         }
+            //         if (data.zIndex && data.zIndex.value == z[0]) {
+            //             let obj = {
+            //                 entityName: data.xIndex.value,
+            //                 value1: data.yIndex.value,
+            //                 type: data.zIndex.value
+            //             }
+            //             dataArray.push(obj);
+            //         } else if (data.zIndex) {
+            //             let obj = {
+            //                 entityName: data.xIndex.value,
+            //                 value2: data.yIndex.value,
+            //                 type: data.zIndex.value
+            //             }
+            //             dataArray.push(obj);
+            //         }
+
+            //     })
+            // }
+            this.setState({
+                dataArray: convertedGraphData
+            })
+
+            // console.log(x);
+            // console.log(y);
+            // console.log(z);
+            console.log(dataArray, 'DATAARRRRRRR');
+            let chart = <MultiLineChart dataPoints={convertedGraphData} />
+
+            this.setState({
+                [graphProps.widgetData.widgetId]: chart
+            })
+        }
         if (graphProps.widgetData.widgetType == '3ValueBar-Horizontal') {
             let x = [];
             let y = [];
             let z = [];
+            let sortedValueArray = [];
+            let maxRange = 0;
             let dataArray = [];
             if (graphProps.widgetData.widgetId.toggle == 'value') {
                 graphProps.widgetData.graphData.byValue.forEach(data => {
@@ -1249,6 +1399,8 @@ class EcommerceDashboard extends React.Component {
                     z.push(data.zIndex.value)
                 })
             } else {
+                sortedValueArray = graphProps.widgetData.graphData.axisData.yAxis.value.sort((a, b) => a - b);
+                maxRange = sortedValueArray[sortedValueArray.length - 1];
                 graphProps.widgetData.graphData.data.forEach(data => {
                     // console.log(data);
                     x.push(data.xIndex.value)
@@ -1263,10 +1415,17 @@ class EcommerceDashboard extends React.Component {
                             type: data.zIndex.value
                         }
                         dataArray.push(obj);
-                    } else if (data.zIndex) {
+                    } else if (data.zIndex.value == z[1]) {
                         let obj = {
                             entityName: data.xIndex.value,
                             value2: data.yIndex.value,
+                            type: data.zIndex.value
+                        }
+                        dataArray.push(obj);
+                    } else {
+                        let obj = {
+                            entityName: data.xIndex.value,
+                            value3: data.yIndex.value,
                             type: data.zIndex.value
                         }
                         dataArray.push(obj);
@@ -1278,12 +1437,15 @@ class EcommerceDashboard extends React.Component {
                 })
             }
 
-            console.log(x);
-            console.log(y);
-            console.log(z);
-            console.log(dataArray, 'DATAARRRRRRR');
-            let chart = <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={300} key={Math.random()}
-                data={dataArray || []} labels={z} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value1', 'value2']} backgroundColors={['#ae8b4b', '#2196f3']}
+            console.log(x, 'X');
+            console.log(y, 'Y');
+            console.log(z, 'Z');
+
+            let unique = z.filter(this.onlyUnique);
+            console.log(unique, 'UNIQUE')
+            console.log(dataArray, 'DATAARRRRRRR - multiple color bar chart');
+            let chart = <HorizontalBarChartNew minRange={sortedValueArray[0]} maxRange={maxRange} stepSize={maxRange / 5} height={300} key={Math.random()}
+                data={dataArray || []} labels={unique} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value1', 'value2', 'value3']} backgroundColors={['#f58709', '#ae8b4b', '#2196f3']}
                 options={{
                     responsive: true,
                     maintainAspectRatio: true
@@ -2117,7 +2279,7 @@ class EcommerceDashboard extends React.Component {
                                                     <div className="controls-dropdown">
                                                         <select className="multiselect" multiple="multiple" id="Server0Vm">
                                                             <optgroup>
-                                                                <option data-img="" value="ctrlr0451483t">All</option>
+                                                                <option data-img="\assets\Resources\images\all.png" value="ctrlr0451483t">All</option>
                                                                 <option data-img="\assets\Resources\images\dafza.png" value="ipr0451483t">DAFZA</option>
                                                                 <option data-img="\assets\Resources\images\dubai-south.png" value="ldap0451483t">Dubai South</option>
                                                                 <option data-img="\assets\Resources\images\jafza.png" value="proxy0451483t">JAFZA</option>
@@ -2132,10 +2294,10 @@ class EcommerceDashboard extends React.Component {
                                                     <div className="controls-dropdown">
                                                         <select className="multiselect" multiple="multiple" id="Server0Vm">
                                                             <optgroup>
-                                                                <option data-img="" value="ctrlr0451483t">All</option>
-                                                                <option data-img="20x20/ffffff/000000" value="ipr0451483t">Custom Warehouse 1</option>
-                                                                <option data-img="20x20/000000/000000" value="ldap0451483t">Custom Warehouse 2</option>
-                                                                <option data-img="20x20" value="proxy0451483t">Custom Warehouse 3</option>
+                                                                <option data-img="\assets\Resources\images\all.png" value="ctrlr0451483t">All</option>
+                                                                <option data-img="\assets\Resources\images\1.png" value="ipr0451483t">Custom Warehouse 1</option>
+                                                                <option data-img="\assets\Resources\images\2.png" value="ldap0451483t">Custom Warehouse 2</option>
+                                                                <option data-img="\assets\Resources\images\3.png" value="proxy0451483t">Custom Warehouse 3</option>
                                                             </optgroup>
                                                         </select>
                                                     </div>
@@ -2164,9 +2326,9 @@ class EcommerceDashboard extends React.Component {
                                             <div className="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                                                 <div className="col-md-12 p-0">
                                                     <a onClick={() => this.selectZone('All')} className={this.state.selectedZone.includes('All') ? "nav-item nav-link active radio-selected" : "nav-item nav-link active"} id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">All</a>
-                                                    <a onClick={() => this.selectZone('eCommerce')} className={this.state.selectedZone.includes('eCommerce') ? "nav-item nav-link active radio-selected" : "nav-item nav-link active"} id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">E-Commerce</a>
-                                                    <a onClick={() => this.selectZone('logistics')} className={this.state.selectedZone.includes('logistics') ? "nav-item nav-link active radio-selected" : "nav-item nav-link active"} id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Logistics</a>
-                                                    <a onClick={() => this.selectZone('courier')} className={this.state.selectedZone.includes('courier') ? "nav-item nav-link active radio-selected" : "nav-item nav-link active"} id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">Courier</a>
+                                                    <a onClick={() => this.selectZone('eCommerce')} className={this.state.selectedZone.includes('eCommerce') ? "nav-item nav-link active radio-selected" : "nav-item nav-link active"} id="nav-ecomm-tab" data-toggle="tab" href="#nav-ecomm" role="tab" aria-controls="nav-ecomm" aria-selected="false">E-Commerce</a>
+                                                    <a onClick={() => this.selectZone('logistics')} className={this.state.selectedZone.includes('logistics') ? "nav-item nav-link active radio-selected" : "nav-item nav-link active"} id="nav-log-tab" data-toggle="tab" href="#nav-log" role="tab" aria-controls="nav-log" aria-selected="false">Logistics</a>
+                                                    <a onClick={() => this.selectZone('courier')} className={this.state.selectedZone.includes('courier') ? "nav-item nav-link active radio-selected" : "nav-item nav-link active"} id="nav-about-tab" data-toggle="tab" href="#nav-courier" role="tab" aria-controls="nav-courier" aria-selected="false">Courier</a>
                                                 </div>
                                             </div>
                                         </nav>
@@ -2178,32 +2340,32 @@ class EcommerceDashboard extends React.Component {
                                                     <div className="col-md-4"></div>
                                                 </div>
                                             </div>
-                                            <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                            <div className="tab-pane fade" id="nav-ecomm" role="tabpanel" aria-labelledby="nav-ecomm-tab">
                                                 <div className="form-group mb-2">
                                                     <input type="hidden" name="data[Server][0][id]" className="form-control" value="1" id="Server0Id" />
                                                     <div className="controls">
-                                                        {/* <input type="hidden" name="data[Server][0][Vm]" value="" id="Server0Vm_">  */}
-                                                        {/* <select className="multiselect" multiple="multiple" id="Server0Vm">
+                                                        <select className="multiselect" multiple="multiple" id="Server0Vm">
                                                             <optgroup>
-                                                                <option data-img="" value="ctrlr0451483t">All</option>
-                                                                <option data-img="20x20/ffffff/000000" value="ipr0451483t">Dubai Airport Freezone</option>
-                                                                <option data-img="20x20/000000/000000" value="ldap0451483t">Dubai South</option>
-                                                                <option data-img="20x20" value="proxy0451483t">Custom Warehouse</option>
+                                                                <option data-img="\assets\Resources\images\all.png" value="ctrlr0451483t">All</option>
+                                                                <option data-img="\assets\Resources\images\namshi.png" value="ipr0451483t">NAMSHI</option>
+                                                                <option data-img="\assets\Resources\images\noon.png" value="proxy0451483t">NOON</option>
+                                                                <option data-img="\assets\Resources\images\jolly-chic.png" value="ldap0451483t">JOLLY CHIC</option>
+                                                                <option data-img="\assets\Resources\images\awok.png" value="ldap0451483t">AWOK</option>
                                                             </optgroup>
-                                                        </select> */}
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                            <div className="tab-pane fade" id="nav-courier" role="tabpanel" aria-labelledby="nav-courier-tab">
                                                 <div className="form-group mb-2">
                                                     {/* <input type="hidden" name="data[Server][0][id]" className="form-control" value="1" id="Server0Id">  */}
                                                     <div className="controls">
                                                         <select className="multiselect" multiple="multiple" id="Server0Vm">
                                                             <optgroup>
-                                                                <option data-img="" value="ctrlr0451483t">All</option>
-                                                                <option data-img="20x20/ffffff/000000" value="ipr0451483t">Dubai Airport Freezone</option>
-                                                                <option data-img="20x20/000000/000000" value="ldap0451483t">Dubai South</option>
-                                                                <option data-img="20x20" value="proxy0451483t">Custom Warehouse</option>
+                                                                <option data-img="\assets\Resources\images\all.png" value="ctrlr0451483t">All</option>
+                                                                <option data-img="\assets\Resources\images\aramex.png" value="ipr0451483t">ARAMEX</option>
+                                                                <option data-img="\assets\Resources\images\dhl.png" value="ldap0451483t">DHL</option>
+                                                                <option data-img="\assets\Resources\images\fedex.png" value="proxy0451483t">FEDEX</option>
                                                             </optgroup>
                                                         </select>
                                                     </div>
@@ -2230,105 +2392,121 @@ class EcommerceDashboard extends React.Component {
                     </Portlet>
 
                     <div className="row">
-                        <div className="">
-                            {/* <div className="col-md-12">
+                        {/* <div className="col-md-12">
                                 <DashboardFilters />
                             </div> */}
-                            <div className="col-md-6">
-                                <Portlet title={"Free Zone Wise Transactions"} style={{ height: '400px', maxHeight: '400px' }} noCollapse={false}>
+                        <div className="col-md-6">
+                            <Portlet title={"Top 3 E-Commerce, Logistics and Courier Companies"} style={{ height: 'auto', maxHeight: 'auto' }} noCollapse={false}>
 
-                                    <div className="refresh-img-div">
-                                        <div className="content-toggle">
-                                            <label htmlFor="">Volume</label>
-                                            <label className="switch">
-                                                <input type="checkbox" />
-                                                <span className="slider round"></span>
-                                            </label>
-                                            <label htmlFor="">Value</label>
-                                        </div>
-                                        <img onClick={() => this.refreshSingleWidget(1)} className="refresh-img" src="\assets\Resources\images\refresh.png" alt="" />
+                                <div className="refresh-img-div">
+                                    <div className="content-toggle">
+                                        <label htmlFor="">Volume</label>
+                                        <label className="switch">
+                                            <input type="checkbox" />
+                                            <span className="slider round"></span>
+                                        </label>
+                                        <label htmlFor="">Value</label>
                                     </div>
-                                    {this.state.widget1isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
-                                        :
-                                        <div>   {this.state.widget1} </div>
-                                    }
-                                    {/* <PieChart key={Math.random()} onElementsClick={() => { console.log('Pie Chart Clicked') }} labels={['FINANCED', 'REJECTED', 'PURGED']} data={[this.state.financedPercentage, this.state.rejectedPercentage, this.state.purgedPercentage]} height={120}
+                                    <img onClick={() => this.refreshSingleWidget(1)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                </div>
+                                {this.state.widget1isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
+                                    :
+                                    <div>   {this.state.widget1} </div>
+                                }
+                                {/* <PieChart key={Math.random()} onElementsClick={() => { console.log('Pie Chart Clicked') }} labels={['FINANCED', 'REJECTED', 'PURGED']} data={[this.state.financedPercentage, this.state.rejectedPercentage, this.state.purgedPercentage]} height={120}
                                         // backgroundColor={['#7aa62d', '#18e244', '#95d22a', '#62920d']} />
                                         backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3']} /> */}
-                                </Portlet>
-                            </div>
-                              
-                            <div className="col-md-6">
-                            <Portlet title={"Rule Performance"} noCollapse={true} style={{ height: '216px' }}>
-                                    <div className="refresh-img-full-div">
-                                        <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
-                                    </div>
-                                    {/* <h2 id="downloadPdf" onClick={() => this.CreatePDFfromHTML('rule-graph')}>DOWNLOAD PDF</h2> */}
-                                   
-                                    <BubbleChart data={companyBubbles} useLabels />
-                                    <div id="rule-graph" className="col-md-12">
-                                        {/* <a href="#" onClick={() => this.downloadRuleCSV(this.props.dashboardData.ruleData)} className="btn-success">Download CSV</a> */}
-                                        {this.state.widget7isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
-                                            :
-                                            <div>   {this.state.widget7} </div>
-                                        }
-                                     
-                                        {/* {this.state.ruleData && (
-                                            <VerticalBarChart key={Math.random()} data={[..._.get(this.state, 'ruleData', [])]} labels={['Hit Count', 'Not Hit Count']} stack="multiple" dataLabelsAttribute="riskname" dataValuesAttributes={["hitcount", "nothitcount"]} backgroundColors={['#ae8b4b', '#2196f3']}
-                                         height={150} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
-                                        )} */}
-                                    </div>
-
-                                </Portlet>
-                            </div>
-                            <div className="col-md-12">
-                                <Portlet title={"Rule Performance"} noCollapse={true} style={{ height: '216px' }}>
-                                    <div className="refresh-img-full-div">
-                                        <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
-                                    </div>
-                                    {/* <h2 id="downloadPdf" onClick={() => this.CreatePDFfromHTML('rule-graph')}>DOWNLOAD PDF</h2> */}
-                                   
-                                    {/* <BubbleChart data={fcData} useLabels /> */}
-                                    <div id="rule-graph" className="col-md-12">
-                                        {/* <a href="#" onClick={() => this.downloadRuleCSV(this.props.dashboardData.ruleData)} className="btn-success">Download CSV</a> */}
-                                        {this.state.widget7isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
-                                            :
-                                            <div>   {this.state.widget7} </div>
-                                        }
-                                        <div id="controls">
-                                            <span>
-                                                <label><input id="combine" type="radio" name="grouping" value="combine" checked />Combine</label>
-                                                <label><input id="continents" type="radio" name="grouping" value="continents" />Continents</label>
-                                                <label><input id="country-centers" type="radio" name="grouping" value="country-centers" />Country Centers</label>
-                                                <label><input id="population" type="radio" name="grouping" value="population" />Population</label>
-                                            </span>
-                                            <span>
-                                                <label><input id="colors" type="radio" name="fill" value="colors" checked />Colors</label>
-                                                <label><input id="flags" type="radio" name="fill" value="flags" />Flags</label>
-                                            </span>
-                                        </div>
-                                        <div id="country-info"></div>
-                                        <div id="bubble-chart"></div>
-                                         {/* {this.state.ruleData && (
-                                            <VerticalBarChart key={Math.random()} data={[..._.get(this.state, 'ruleData', [])]} labels={['Hit Count', 'Not Hit Count']} stack="multiple" dataLabelsAttribute="riskname" dataValuesAttributes={["hitcount", "nothitcount"]} backgroundColors={['#ae8b4b', '#2196f3']}
-                                         height={150} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
-                                        )} */}
-                                    </div>
-
-                                </Portlet>
-                            </div>
-                          
+                            </Portlet>
                         </div>
 
+                        <div className="col-md-6">
+                            <Portlet title={"E-COMMERCE TRANSACTIONS"} noCollapse={false} style={{ height: 'auto' }}>
+                                <div className="refresh-img-div">
+                                    <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                </div>
+                                {/* <h2 id="downloadPdf" onClick={() => this.CreatePDFfromHTML('rule-graph')}>DOWNLOAD PDF</h2> */}
+
+                                <BubbleChart data={companyBubbles} useLabels />
+                                <div id="rule-graph" className="col-md-12">
+                                    {/* <a href="#" onClick={() => this.downloadRuleCSV(this.props.dashboardData.ruleData)} className="btn-success">Download CSV</a> */}
+                                    {/* {this.state.widget7isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
+                                            :
+                                            <div>   {this.state.widget7} </div>
+                                        } */}
+
+                                    {/* {this.state.ruleData && (
+                                            <VerticalBarChart key={Math.random()} data={[..._.get(this.state, 'ruleData', [])]} labels={['Hit Count', 'Not Hit Count']} stack="multiple" dataLabelsAttribute="riskname" dataValuesAttributes={["hitcount", "nothitcount"]} backgroundColors={['#ae8b4b', '#2196f3']}
+                                         height={150} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
+                                        )} */}
+                                </div>
+
+                            </Portlet>
+                        </div>
+
+
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <Portlet title={"E-COMMERCE TRADE (AED)"} noCollapse={false} style={{ height: 'auto' }}>
+                                <div className="refresh-img-div">
+                                    <img onClick={() => this.refreshSingleWidget(2)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                </div>
+                                {this.state.widget1isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
+                                    :
+                                    <div>   {this.state.widget2} </div>
+                                }
+
+                            </Portlet>
+                        </div>
+                        <div className="col-md-6">
+                            <Portlet title={this.state.widget3 ? "CIF VALUE" : "Top Exporting Countries"} noCollapse={false} style={{ height: 'auto' }}>
+                                <div className="refresh-img-div">
+                                    <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                </div>
+                                {/* <h2 id="downloadPdf" onClick={() => this.CreatePDFfromHTML('rule-graph')}>DOWNLOAD PDF</h2> */}
+                                {this.state.widget3 ? <div>{this.state.widget3}</div> : <div>{this.state.widget6}</div>}
+
+                            </Portlet>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <Portlet title={"TRANSACTION BY DESTINATION COUNTRY"} noCollapse={false} style={{ height: '900px' }}>
+                                <div className="refresh-img-div">
+                                    <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                </div>
+                                <div id="rule-graph" className="col-md-12">
+                                    {/* {this.state.widget7isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
+                                            :
+                                            <div>   {this.state.widget7} </div>
+                                        } */}
+                                    <div id="controls-graph">
+                                        <span style={{ visibility: 'hidden' }}>
+                                            <label><input id="combine" type="radio" name="grouping" value="combine" checked />Combine</label>
+                                            <label><input id="continents" type="radio" name="grouping" value="continents" />Continents</label>
+                                            <label><input id="country-centers" type="radio" name="grouping" value="country-centers" />Country Centers</label>
+                                            <label><input id="population" type="radio" name="grouping" value="population" />Population</label>
+                                        </span>
+                                        <span>
+                                            <label><input id="colors" type="radio" name="fill" value="colors" />Colors</label>
+                                            <label><input id="flags" type="radio" name="fill" value="flags" checked />Flags</label>
+                                        </span>
+                                    </div>
+                                    <div id="country-info"></div>
+                                    <div id="bubble-chart"></div>
+                                </div>
+
+                            </Portlet>
+                        </div>
                     </div>
                     <div className="row">
                         <div className="">
                             {/* <Portlet title={"BANKS"} noCollapse={true} style={{ height: '350px' }}> */}
                             <div className="col-md-6">
                                 {this.state.dashboardData && this.state.dashboardData.barGraphAmountData &&
-                                    <Portlet title={"Top 3 E-Commerce, Logistics and Courier Companies"} noCollapse={false}>
+                                    <Portlet title={"Top E-Commerce Companies"} noCollapse={false}>
                                         <div className="refresh-img-div">
-                                            <img className="refresh-img" src="\assets\Resources\images\refresh.png" alt="" />
+                                            <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                         </div>
                                         {this.state.widget5isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                             :
@@ -2345,9 +2523,9 @@ class EcommerceDashboard extends React.Component {
                             </div>
                             <div className="col-md-6">
                                 {this.state.dashboardData && this.state.dashboardData.barGraphAmountData &&
-                                    <Portlet title={"E-Commerce Trade AED"} noCollapse={false}>
+                                    <Portlet title={"FREE ZONE WISE TRANSACTIONS"} noCollapse={false}>
                                         <div className="refresh-img-div">
-                                            <img className="refresh-img" src="\assets\Resources\images\refresh.png" alt="" />
+                                            <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                         </div>
 
                                         {this.state.widget4isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
@@ -2382,7 +2560,7 @@ class EcommerceDashboard extends React.Component {
                                 {this.state.dashboardData && this.state.dashboardData.barGraphAmountData &&
                                     <Portlet title={"Top E-Commerce Companies"} noCollapse={false}>
                                         <div className="refresh-img-div">
-                                            <img className="refresh-img" src="\assets\Resources\images\refresh.png" alt="" />
+                                            <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                         </div>
                                       
 
@@ -2393,7 +2571,7 @@ class EcommerceDashboard extends React.Component {
                                 {this.state.dashboardData && this.state.dashboardData.barGraphAmountData &&
                                     <Portlet title={"Top Exporting Countries"} noCollapse={false}>
                                         <div className="refresh-img-div">
-                                            <img className="refresh-img" src="\assets\Resources\images\refresh.png" alt="" />
+                                            <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                         </div>
                                         <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={180} key={Math.random()} data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#2196f3']}
                                             options={{
@@ -2404,25 +2582,66 @@ class EcommerceDashboard extends React.Component {
                                     </Portlet>
                                 }
                             </div> */}
-                           
+
                         </div>
 
                     </div>
-                    {/* <div className="row">
-                        <Portlet title={"Rule Performance"} noCollapse={true} style={{ height: '550px' }}>
-                            <div className="refresh-img-full-div">
-                                <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
-                            </div>
-                            <div id="rule-graph" className="col-md-12">
-                                {this.state.ruleData && (
+                    <div className="row">
+                        <div className="col-md-6">
+                            <Portlet title={"TOP 5 EXPORT HS CODES"} noCollapse={true} style={{ height: '550px' }}>
+                                <div className="refresh-img-full-div">
+                                    <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                </div>
+                                <div id="rule-graph" className="col-md-12">
+                                    {this.state.widget7}
+                                    {/* {this.state.ruleData && (
                                     <VerticalBarChart key={Math.random()} data={[..._.get(this.state, 'ruleData', [])]} labels={['Hit Count', 'Not Hit Count']} stack="multiple" dataLabelsAttribute="riskname" dataValuesAttributes={["hitcount", "nothitcount"]} backgroundColors={['#ae8b4b', '#2196f3']}
                                        height={100} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
-                                )}
-                            </div>
+                                )} */}
+                                </div>
 
-                        </Portlet>
+                            </Portlet>
+                        </div>
+                        <div className="col-md-6">
+                            <Portlet title={"TOTAL E-COMMERCE TRANSACTIONS"} noCollapse={true} style={{ height: '550px' }}>
+                                <div className="refresh-img-full-div">
+                                    <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                </div>
+                                <div id="rule-graph" className="col-md-12">
+                                    {sankeyData && sankeyData.nodes &&
+                                        <MultiLineChart data={sankeyData} />
+                                    }
+                                    {/* {this.state.widget10} */}
+                                    {/* {this.state.ruleData && (
+                                    <VerticalBarChart key={Math.random()} data={[..._.get(this.state, 'ruleData', [])]} labels={['Hit Count', 'Not Hit Count']} stack="multiple" dataLabelsAttribute="riskname" dataValuesAttributes={["hitcount", "nothitcount"]} backgroundColors={['#ae8b4b', '#2196f3']}
+                                       height={100} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
+                                )} */}
+                                </div>
 
-                    </div> */}
+                            </Portlet>
+                        </div>
+                        <div className="col-md-12">
+                            <Portlet title={"TRANSACTION FLOW (Hover on Elements to View Count)"} noCollapse={true} style={{ height: '550px' }}>
+                                <div className="refresh-img-full-div">
+                                    <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                </div>
+                                <div id="rule-graph" className="col-md-12">
+                                    {sankeyData && sankeyData.nodes &&
+                                        <SankeyChart data={sankeyData} />
+                                    }
+                                    {/* {this.state.widget10} */}
+                                    {/* {this.state.ruleData && (
+                                    <VerticalBarChart key={Math.random()} data={[..._.get(this.state, 'ruleData', [])]} labels={['Hit Count', 'Not Hit Count']} stack="multiple" dataLabelsAttribute="riskname" dataValuesAttributes={["hitcount", "nothitcount"]} backgroundColors={['#ae8b4b', '#2196f3']}
+                                       height={100} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
+                                )} */}
+                                </div>
+
+                            </Portlet>
+                        </div>
+                       
+
+
+                    </div>
                     {/* <Portlet title="Order Tracking">
 
                     </Portlet> */}
@@ -2454,6 +2673,11 @@ function mapStateToProps(state, ownProps) {
         widget3: _.get(state.app, 'widget3', {}),
         widget4: _.get(state.app, 'widget4', {}),
         widget5: _.get(state.app, 'widget5', {}),
+        widget6: _.get(state.app, 'widget6', {}),
+        widget7: _.get(state.app, 'widget7', {}),
+        widget8: _.get(state.app, 'widget8', {}),
+        widget9: _.get(state.app, 'widget9', {}),
+        widget10: _.get(state.app, 'widget10', {}),
         //  dataArray.push(state.app.data && Object.keys(state.app.data).length > 0 ? state.app.data.widgetData : []),
         typeData: _.get(state.app.typeData, 'data', undefined),
         getDashboardData: _.get(state.app, 'getDashboardData', undefined),

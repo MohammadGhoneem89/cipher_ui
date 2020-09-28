@@ -1,5 +1,8 @@
 {
-    "EC": "E-Commerce",
-    "CO": "Courier",
-    "LO": "Logistics"
-  }
+  "AF": "Africa",
+  "AS": "Asia",
+  "EU": "Europe",
+  "NA": "North America",
+  "SA": "South America",
+  "OC": "Oceana"
+}

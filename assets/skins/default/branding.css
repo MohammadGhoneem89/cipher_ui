@@ -1052,7 +1052,7 @@ $blue: #1849AB; */
 .portlet.light>.portlet-title>.caption {
     color: #666;
     padding: 10px 0;
-    width: 250px;
+    width: 55%;
 }
 .switch {
     position: relative;
@@ -1554,5 +1554,31 @@ span.multiselect-native-select select {
   }
 
   .checkbox img {
-    width: 20px;
+    width: 50px;
+  }
+
+  #chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #controls-graph {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #controls-graph span label {
+    margin: 0px 20px;
+  }
+  #controls-graph span label input[type="radio"] {
+      margin: 0px 8px;
+  }
+
+  .link {
+    fill: none;
+    stroke: #000;
+    stroke-opacity: .2;
+  }
+  .link:hover {
+    stroke-opacity: .5;
   }
