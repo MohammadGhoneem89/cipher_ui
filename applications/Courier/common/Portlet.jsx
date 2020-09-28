@@ -65,7 +65,9 @@ const Portlet = props => {
                         <a href="javascript:;" className="collapse" data-original-title title> </a>
                     </div> */}
                 </div>
-                <div className="portlet-body " style={{ marginTop: "20px", padding: "20px", ...style }}>
+                <div className="portlet-body " 
+                // style={{ marginTop: "20px", padding: "20px", ...style }}
+                >
                     {children}
                 </div>
                 {portletAction &&

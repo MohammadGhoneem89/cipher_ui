@@ -1,0 +1,50 @@
+[
+    {
+      "CompanyName": "Amazon",
+      "companyType": "EC",
+      "ContinentCode": "AS",
+      "CenterLongitude": 65,
+      "CenterLatitude": 33,
+      "Population": 32526560
+    },
+    {
+      "CompanyName": "AL-FUTTAIM",
+      "companyType": "LO",
+      "ContinentCode": "EU",
+      "CenterLongitude": 20,
+      "CenterLatitude": 41,
+      "Population": 2896680
+    },
+    {
+      "CompanyName": "ARAMEX",
+      "companyType": "LO",
+      "ContinentCode": "AF",
+      "CenterLongitude": 3,
+      "CenterLatitude": 28,
+      "Population": 39666520
+    },
+    {
+        "CompanyName": "DHL",
+        "companyType": "LO",
+        "ContinentCode": "AS",
+        "CenterLongitude": 65,
+        "CenterLatitude": 33,
+        "Population": 32526560
+      },
+      {
+        "CompanyName": "JOLLY CHIC",
+        "companyType": "CO",
+        "ContinentCode": "EU",
+        "CenterLongitude": 20,
+        "CenterLatitude": 41,
+        "Population": 2896680
+      },
+      {
+        "CompanyName": "NOON",
+        "companyType": "EC",
+        "ContinentCode": "AF",
+        "CenterLongitude": 3,
+        "CenterLatitude": 28,
+        "Population": 39666520
+      }
+]

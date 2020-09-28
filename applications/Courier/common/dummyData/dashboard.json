@@ -1,0 +1,582 @@
+{
+    "dashboardData": {
+        "firstTile": {
+            "rejectedPercentage": 0.07317073170731707,
+            "rejectedAmount": 200
+        },
+        "secondTile": {
+            "financedPercentage": 0.5853658536585366,
+            "financedAmount": 2400
+        },
+        "thirdTile": {
+            "totalFinancedSum": 14300
+        },
+        "fourthTile": {
+            "totalRejectedSum": 200
+        },
+        "lineGraphData": [
+            {
+                "bankCode": "NBF",
+                "date": "2020-09-05T19:00:00.000Z",
+                "count": "1"
+            },
+            {
+                "bankCode": "CBI",
+                "date": "2020-09-05T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ADIB",
+                "date": "2020-09-05T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "FAB",
+                "date": "2020-09-05T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "MASHREQ",
+                "date": "2020-09-05T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBD",
+                "date": "2020-09-05T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "RAKBANK",
+                "date": "2020-09-05T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ENBD",
+                "date": "2020-09-05T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ENBD",
+                "date": "2020-09-06T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "RAKBANK",
+                "date": "2020-09-06T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBD",
+                "date": "2020-09-06T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "MASHREQ",
+                "date": "2020-09-06T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "FAB",
+                "date": "2020-09-06T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ADIB",
+                "date": "2020-09-06T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBI",
+                "date": "2020-09-06T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "NBF",
+                "date": "2020-09-06T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "NBF",
+                "date": "2020-09-07T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ENBD",
+                "date": "2020-09-07T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBI",
+                "date": "2020-09-07T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ADIB",
+                "date": "2020-09-07T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "FAB",
+                "date": "2020-09-07T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "MASHREQ",
+                "date": "2020-09-07T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBD",
+                "date": "2020-09-07T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "RAKBANK",
+                "date": "2020-09-07T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "NBF",
+                "date": "2020-09-08T19:00:00.000Z",
+                "count": "1"
+            },
+            {
+                "bankCode": "RAKBANK",
+                "date": "2020-09-08T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBD",
+                "date": "2020-09-08T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "MASHREQ",
+                "date": "2020-09-08T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "FAB",
+                "date": "2020-09-08T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ADIB",
+                "date": "2020-09-08T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBI",
+                "date": "2020-09-08T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ENBD",
+                "date": "2020-09-08T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "MASHREQ",
+                "date": "2020-09-09T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ADIB",
+                "date": "2020-09-09T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "FAB",
+                "date": "2020-09-09T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "RAKBANK",
+                "date": "2020-09-09T19:00:00.000Z",
+                "count": "1"
+            },
+            {
+                "bankCode": "NBF",
+                "date": "2020-09-09T19:00:00.000Z",
+                "count": "1"
+            },
+            {
+                "bankCode": "CBI",
+                "date": "2020-09-09T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ENBD",
+                "date": "2020-09-09T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBD",
+                "date": "2020-09-09T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBI",
+                "date": "2020-09-10T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "NBF",
+                "date": "2020-09-10T19:00:00.000Z",
+                "count": "1"
+            },
+            {
+                "bankCode": "CBD",
+                "date": "2020-09-10T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "MASHREQ",
+                "date": "2020-09-10T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "FAB",
+                "date": "2020-09-10T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ADIB",
+                "date": "2020-09-10T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "RAKBANK",
+                "date": "2020-09-10T19:00:00.000Z",
+                "count": "2"
+            },
+            {
+                "bankCode": "ENBD",
+                "date": "2020-09-10T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "NBF",
+                "date": "2020-09-11T19:00:00.000Z",
+                "count": "2"
+            },
+            {
+                "bankCode": "RAKBANK",
+                "date": "2020-09-11T19:00:00.000Z",
+                "count": "1"
+            },
+            {
+                "bankCode": "CBD",
+                "date": "2020-09-11T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "MASHREQ",
+                "date": "2020-09-11T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "FAB",
+                "date": "2020-09-11T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ADIB",
+                "date": "2020-09-11T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBI",
+                "date": "2020-09-11T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ENBD",
+                "date": "2020-09-11T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "NBF",
+                "date": "2020-09-12T19:00:00.000Z",
+                "count": "2"
+            },
+            {
+                "bankCode": "CBI",
+                "date": "2020-09-12T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "RAKBANK",
+                "date": "2020-09-12T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBD",
+                "date": "2020-09-12T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "MASHREQ",
+                "date": "2020-09-12T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "FAB",
+                "date": "2020-09-12T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ADIB",
+                "date": "2020-09-12T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ENBD",
+                "date": "2020-09-12T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "RAKBANK",
+                "date": "2020-09-13T19:00:00.000Z",
+                "count": "1"
+            },
+            {
+                "bankCode": "ENBD",
+                "date": "2020-09-13T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBI",
+                "date": "2020-09-13T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "ADIB",
+                "date": "2020-09-13T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "FAB",
+                "date": "2020-09-13T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "MASHREQ",
+                "date": "2020-09-13T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "CBD",
+                "date": "2020-09-13T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "NBF",
+                "date": "2020-09-13T19:00:00.000Z",
+                "count": 0
+            },
+            {
+                "bankCode": "NBF",
+                "date": "2020-09-14T19:00:00.000Z",
+                "count": "18"
+            },
+            {
+                "bankCode": "CBD",
+                "date": "2020-09-14T19:00:00.000Z",
+                "count": "18"
+            },
+            {
+                "bankCode": "MASHREQ",
+                "date": "2020-09-14T19:00:00.000Z",
+                "count": "18"
+            },
+            {
+                "bankCode": "FAB",
+                "date": "2020-09-14T19:00:00.000Z",
+                "count": "21"
+            },
+            {
+                "bankCode": "ADIB",
+                "date": "2020-09-14T19:00:00.000Z",
+                "count": "18"
+            },
+            {
+                "bankCode": "RAKBANK",
+                "date": "2020-09-14T19:00:00.000Z",
+                "count": "18"
+            },
+            {
+                "bankCode": "CBI",
+                "date": "2020-09-14T19:00:00.000Z",
+                "count": "18"
+            },
+            {
+                "bankCode": "ENBD",
+                "date": "2020-09-14T19:00:00.000Z",
+                "count": "18"
+            }
+        ],
+        "pieChartData": [
+            {
+                "bankStatus": "REJECTED",
+                "count": "2"
+            },
+            {
+                "bankStatus": "FINANCED",
+                "count": "143"
+            },
+            {
+                "bankStatus": "PURGED",
+                "count": "15"
+            }
+        ],
+        "barGraphSubmissionData": [
+            {
+                "bankCode": "CBD",
+                "count": "18"
+            },
+            {
+                "bankCode": "MASHREQ",
+                "count": "18"
+            },
+            {
+                "bankCode": "ENBD",
+                "count": "18"
+            },
+            {
+                "bankCode": "ADIB",
+                "count": "18"
+            },
+            {
+                "bankCode": "CBI",
+                "count": "18"
+            },
+            {
+                "bankCode": "FAB",
+                "count": "21"
+            },
+            {
+                "bankCode": "RAKBANK",
+                "count": "23"
+            },
+            {
+                "bankCode": "NBF",
+                "count": "26"
+            }
+        ],
+        "barGraphAmountData": [
+            {
+                "bankCode": "CBD",
+                "sum": "1800"
+            },
+            {
+                "bankCode": "MASHREQ",
+                "sum": "1800"
+            },
+            {
+                "bankCode": "ENBD",
+                "sum": "1800"
+            },
+            {
+                "bankCode": "ADIB",
+                "sum": "1800"
+            },
+            {
+                "bankCode": "CBI",
+                "sum": "1800"
+            },
+            {
+                "bankCode": "FAB",
+                "sum": "2856"
+            },
+            {
+                "bankCode": "RAKBANK",
+                "sum": "4144"
+            },
+            {
+                "bankCode": "NBF",
+                "sum": "5624"
+            }
+        ],
+        "ruleData": [
+            {
+                "riskname": "Stamp Matching",
+                "nothitcount": 108,
+                "totalcount": 108,
+                "hitcount": 0
+            },
+            {
+                "riskname": "Amount is not equal to words",
+                "nothitcount": 106,
+                "totalcount": 157,
+                "hitcount": 51
+            },
+            {
+                "riskname": "Exact Duplicate Found",
+                "nothitcount": 71,
+                "totalcount": 158,
+                "hitcount": 87
+            },
+            {
+                "riskname": "Nomenclature Change",
+                "nothitcount": 156,
+                "totalcount": 156,
+                "hitcount": 0
+            },
+            {
+                "riskname": "Invoice Date with in 60 days",
+                "nothitcount": 34,
+                "totalcount": 159,
+                "hitcount": 125
+            },
+            {
+                "riskname": "Price Check",
+                "nothitcount": 157,
+                "totalcount": 157,
+                "hitcount": 0
+            },
+            {
+                "riskname": "Cluster 1",
+                "nothitcount": 128,
+                "totalcount": 158,
+                "hitcount": 30
+            },
+            {
+                "riskname": "Multiple Fields Match",
+                "nothitcount": 49,
+                "totalcount": 107,
+                "hitcount": 58
+            },
+            {
+                "riskname": "ML Duplicate Check",
+                "nothitcount": 102,
+                "totalcount": 102,
+                "hitcount": 0
+            },
+            {
+                "riskname": "Public Domain Email",
+                "nothitcount": 155,
+                "totalcount": 155,
+                "hitcount": 0
+            },
+            {
+                "riskname": "Counter Party Trade Name Check",
+                "nothitcount": 159,
+                "totalcount": 159,
+                "hitcount": 0
+            },
+            {
+                "riskname": "Invoice Amount Rounded Figure",
+                "nothitcount": 159,
+                "totalcount": 159,
+                "hitcount": 0
+            },
+            {
+                "riskname": "Counter Party Duplicate",
+                "nothitcount": 150,
+                "totalcount": 154,
+                "hitcount": 4
+            }
+        ]
+    }
+}

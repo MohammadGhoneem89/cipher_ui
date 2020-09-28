@@ -996,3 +996,563 @@ label.errorcolr {
     line-height: 1.4;
     background-color: var(--Theme-Primary-Color);
 }
+.refresh-img-div {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    right: 70px;
+}
+
+.refresh-img {
+    height: 25px;
+    width: 25px;
+    padding: 4px;
+}
+.refresh-img-full-div {
+    position: relative;
+    /* left: 0px; */
+    right: 90px;
+    /* top: 0px; */
+    /* bottom: 20px; */
+    float: right;
+    left: 20px;
+    bottom: 65px;
+}
+
+.refresh-img-full {
+    width: 30px;
+    height: 30px;
+    /* background: orange; */
+    padding: 4px;
+}
+
+/* $lightGrey: #F2F2F2;
+$grey: #6E6E6E;
+$white: #FFFFFF;
+$blue: #1849AB; */
+
+/* body {
+  background-color: lightgrey;
+  display: flex;
+  font-family: 'Arial';
+  justify-content: center;
+  padding: 4rem;
+} */
+
+.content-toggle {
+    position: relative;
+    bottom: 10px;
+    right: 60px;
+    display: flex;
+    align-items: center;
+    font-size: 9px;
+}
+.portlet.light>.portlet-title>.caption {
+    color: #666;
+    padding: 10px 0;
+    width: 250px;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 55px;
+    height: 45px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ae8b4b;
+  transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 3px;
+    bottom: 5px;
+    background-color: white;
+    transition: .4s;
+}
+/* .slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+} */
+
+input:checked + .slider {
+  background-color: #1849AB;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 0 4px rgba(21, 156, 228, 0.7);
+  outline: none;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px !important;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.underline {
+
+    border-bottom: 1px solid #e5e5e5 !important;
+}
+
+
+.bg-blue-period {
+    background-color: #ae8b4b;
+    text-align: center;
+    color: white;
+    padding: 6.5rem 0;
+    border-top-right-radius: 8px !important;
+    border-top-left-radius: 8px !important;
+
+}
+
+.bg-blue-year {
+    background-color: #ae8b4b;
+    text-align: center;
+    color: white;
+    padding: 0.75rem;
+    border-top-left-radius: 6px !important;
+    border-bottom-left-radius: 6px !important; 
+  
+}
+
+.bg-grey {
+    background-color: #e5e5e5;
+    text-align: center;
+    color: black;
+    padding: 0.75rem;
+   
+}
+
+.p-0 {
+    padding: 0 !important;
+}
+
+.mb-1 {
+    margin-bottom: 5px !important;
+}
+
+.mt-1 {
+    margin-top: 10px !important;
+}
+.mt-2 {
+    margin-top: 15px !important;
+}
+
+.grid {
+    display: grid !important;
+}
+
+
+
+.btn-primary {
+    background-color: #e5e5e5 !important;
+    border-color: white !important;
+    color: #000 !important;
+}
+
+.btn-primary:hover, .open>.btn-primary.dropdown-toggle {
+    color: white !important;
+    background-color: #0576b2 !important; 
+    border-color: white !important;
+}
+
+.btn-primary:visited {
+    color: white !important;
+    background-color: #0576b2 !important; 
+    border-color: white !important;
+}
+
+
+/*.nav-fill .nav-item {
+    -ms-flex: 1 1 auto;
+    display: flex !important;
+    flex: 1 1 auto !important;
+    text-align: center;
+}
+*/
+
+
+
+nav > .nav.nav-tabs{
+
+  border: none;
+    color:#000;
+   /* background:#081a48;*/
+    border-radius:0;
+    padding-top: 10px;
+
+}
+nav > div a.nav-item.nav-link,
+nav > div a.nav-item.nav-link.active
+{
+  border: none;
+    padding: 8px 25px;
+    color:#000;
+    background:#e5e5e5;
+    border-radius:0;
+}
+
+
+.tab-content{
+  background: #fdfdfd;
+    line-height: 25px;
+    border: 1px solid #ddd; 
+    padding: 10px 15px;
+    min-height: 54px;
+}
+
+nav > div a.nav-item.nav-link:hover,
+nav > div a.nav-item.nav-link:focus
+{
+    border: none;
+    background: #081a48;
+    color: white !important;
+    border-radius:0;
+    text-decoration: none;
+   
+}
+
+
+
+.md-form {
+    position: relative;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+
+.select-wrapper {
+    position: relative;
+}
+
+.d-flex  {
+    display: flex;
+}
+
+.d-inline-flex {
+    display: inline-flex;
+}
+
+
+
+
+span.multiselect-native-select {
+    position: relative
+}
+span.multiselect-native-select select {
+    border: 0!important;
+    clip: rect(0 0 0 0)!important;
+    height: 1px!important;
+    margin: -1px -1px -1px -3px!important;
+    overflow: hidden!important;
+    padding: 0!important;
+    position: absolute!important;
+    width: 1px!important;
+    left: 50%;
+    top: 30px
+}
+.multiselect-container {
+    position: absolute;
+    list-style-type: none;
+    margin: 0;
+    padding: 0
+}
+.multiselect-container .input-group {
+    margin: 5px
+}
+.multiselect-container>li {
+    padding: 0
+}
+.multiselect-container>li>a.multiselect-all label {
+    font-weight: 700
+}
+.multiselect-container>li.multiselect-group label {
+    margin: 0;
+    padding: 3px 20px 3px 20px;
+    height: 100%;
+    font-weight: 700
+}
+.multiselect-container>li.multiselect-group-clickable label {
+    cursor: pointer
+}
+.multiselect-container>li>a {
+    padding: 0
+}
+.multiselect-container>li>a>label {
+    margin: 0;
+    height: 100%;
+    cursor: pointer;
+    font-weight: 400;
+    padding: 3px 0 3px 30px
+}
+.multiselect-container>li>a>label.radio, .multiselect-container>li>a>label.checkbox {
+    margin: 0
+}
+.multiselect-container>li>a>label>input[type=checkbox] {
+    margin-bottom: 5px
+}
+.btn-group>.btn-group:nth-child(2)>.multiselect.btn {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px
+}
+.form-inline .multiselect-container label.checkbox, .form-inline .multiselect-container label.radio {
+    padding: 3px 20px 3px 40px
+}
+.form-inline .multiselect-container li a label.checkbox input[type=checkbox], .form-inline .multiselect-container li a label.radio input[type=radio] {
+    margin-left: -20px;
+    margin-right: 0
+}
+
+.controls ul.multiselect-container li.multiselect-item {
+    display: none;
+}
+
+
+
+.btn-group>.dropdown-menu, .dropdown-toggle>.dropdown-menu, .dropdown>.dropdown-menu {
+    margin-top: 10px;
+    padding: 20px 0;
+    width: 240px;
+}
+
+
+
+
+.controls input[type='checkbox'] {
+    position: absolute !important;
+    height: 32px !important;
+    width: 16px !important;
+    clip: unset !important;
+     margin-left: -26px !important;
+ 
+   
+}
+.zone {
+    padding: 4.2rem;
+}
+.mb-2{margin-bottom: 0!important;}
+
+/* text {
+    font: 24px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+  } */
+  
+  /* circle {
+    fill: #ccc;
+  } */
+  
+  .node:hover circle {
+    fill: orange;
+  }
+
+  /* Center the contents of the bubble chart */
+.bubble-chart-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    user-select: none;
+    justify-content: center;
+  }
+  
+  /* Center text in the circle, and hide any overflow */
+  .bubble-chart-container .bubble-chart-text .bubble-label {
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 50%;
+    will-change: left, top, height, width;
+  }
+  
+  /* Show the overflow when hovering over a label */
+  .bubble-chart-container .bubble-chart-text .bubble-label:hover {
+    overflow: visible;
+    font-weight: bold;
+  }
+  
+  /* Optional, but recommended - reduce the size of text on medium bubbles */
+  .bubble-chart-container .bubble-chart-text .bubble-label.medium {
+    font-size: 0.8em;
+  }
+  
+  /* Optional, but recommended - hide the text on small bubbles */
+  .bubble-chart-container .bubble-chart-text .bubble-label.small {
+    font-size: 0;
+  }
+  /* Make sure to unhide the text when hovering */
+  .bubble-chart-container .bubble-chart-text .bubble-label.small:hover {
+    font-size: 0.8em;
+  }
+  .radio-input {
+    width: 100%;
+    position: absolute;
+    z-index: 9999;
+    background: red;
+    left: 0px;
+    height: 100%;
+    bottom: 0px;
+    opacity: 0;
+    cursor: pointer;
+  }
+.radio-input:hover .open>.btn-primary.dropdown-toggle {
+    color: white !important;
+    background-color: #0576b2 !important; 
+    border-color: white !important;
+}
+  .radio-selected {
+    color: white !important;
+    background-color: #0576b2 !important;
+    border-color: white !important
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+  }
+
+  .search-button {
+    width: 150px;
+    height: 50px;
+  }
+
+  .graphLoader,
+  .graphLoader:before,
+  .graphLoader:after {
+      background: #40496a;
+      -webkit-animation: load1 1s infinite ease-in-out;
+      animation: load1 1s infinite ease-in-out;
+      width: 1em;
+      height: 4em;
+  }
+
+  .graphLoader {
+    height: 40px;
+    max-height: 40px;
+      color: #40496a;
+      text-indent: -9999em;
+      margin: 88px auto;
+      position: relative;
+      font-size: 11px;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+  }
+
+  .DraftEditor-editorContainer {
+      min-height: 250px
+  }
+
+  .graphLoader:before,
+  .graphLoader:after {
+      position: absolute;
+      top: 0;
+      content: '';
+  }
+
+  .graphLoader:before {
+      left: -1.5em;
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+  }
+
+  .graphLoader:after {
+      left: 1.5em;
+  }
+
+
+  /* .btn-primary:hover, .open>.btn-primary.dropdown-toggle {
+    color: white !important;
+    background-color: #0576b2 !important; 
+    border-color: white !important;
+}
+
+.btn-primary:visited {
+    color: white !important;
+    background-color: #0576b2 !important; 
+    border-color: white !important;
+} */
+
+/* html, body {
+    margin: 10px;
+    padding: 0;
+    font-family: sans-serif;
+  } */
+  
+  #controls {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  input[type="radio"] {
+    margin-top: -1px;
+    vertical-align: middle;
+  }
+  
+  span:nth-child(2) {
+    /* margin-left: 20px; */
+  }
+  
+  #country-info {
+    color: #666;
+    font-size: 28px;
+    position: absolute;
+    top: 60px;
+    left: 40px;
+  }
+  label > b {
+    display: none;
+  }
+  
+  svg {
+    /* border: 1px solid #ddd; */
+  }
+  
+  circle {
+    stroke: white;
+    stroke-width: 1.5;
+  }
+  
+  .continent-key-element text {
+    fill: white;
+  }
+
+  .checkbox img {
+    width: 20px;
+  }

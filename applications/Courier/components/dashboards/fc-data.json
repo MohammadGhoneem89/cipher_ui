@@ -1,0 +1,217 @@
+[
+    {
+      "title": "How Flexbox works — explained with big, colorful, animated gifs",
+      "category": "Design",
+      "views": 5700
+    },
+    {
+      "title": "How I went from zero experience to landing a 6-figure San Francisco design job in less than 12 months",
+      "category": "Design",
+      "views": 3700
+    },
+    {
+      "title": "I ranked every Intro to Data Science course on the internet, based on thousands of data points",
+      "category": "Data Science",
+      "views": 1600
+    },
+    {
+      "title": "Nobody wants to use software",
+      "category": "Development",
+      "views": 2700
+    },
+    {
+      "title": "A million requests per second with Python",
+      "category": "Development",
+      "views": 1100
+    },
+    {
+      "title": "Material Design and the Mystery Meat Navigation Problem",
+      "category": "Design",
+      "views": 1100
+    },
+    {
+      "title": "Lossless Web Navigation with Trails",
+      "category": "Design",
+      "views": 688
+    },
+    {
+      "title": "How to use spaced repetition with Anki to learn to code faster",
+      "category": "Development",
+      "views": 756
+    },
+    {
+      "title": "How to commit entire directories to GitHub directly from your browser using GitHub.js",
+      "category": "Development",
+      "views": 82
+    },
+    {
+      "title": "Every time you build a to-do list app, a puppy dies",
+      "category": "Development",
+      "views": 1500
+    },
+    {
+      "title": "How to build your own Uber-for-X application part 2",
+      "category": "Development",
+      "views": 650
+    },
+    {
+      "title": "How we got our 2-year-old repo trending on GitHub in just 48 hours",
+      "category": "Data Science",
+      "views": 718
+    },
+    {
+      "title": "How making hundreds of hip hop beats helped me understand HTML and CSS",
+      "category": "Development",
+      "views": 506
+    },
+    {
+      "title": "Scaling your Redux App with ducks",
+      "category": "Development",
+      "views": 315
+    },
+    {
+      "title": "A Beginner’s JavaScript Study Plan",
+      "category": "Development",
+      "views": 672
+    },
+    {
+      "title": "JavaScript’s Prototypal Inheritance Explained Using CSS",
+      "category": "Development",
+      "views": 519
+    },
+    {
+      "title": "Tree-shaking ES6 Modules in webpack 2",
+      "category": "Development",
+      "views": 86
+    },
+    {
+      "title": "3 JavaScript questions to watch out for during coding interviews",
+      "category": "Development",
+      "views": 1100
+    },
+    {
+      "title": "Build a Node.js API in Under 30 Minutes",
+      "category": "Development",
+      "views": 343
+    },
+    {
+      "title": "npm cache: the unsung hero",
+      "category": "Development",
+      "views": 122
+    },
+    {
+      "title": "Code That Doesn't Exist Is The Code You Don't Need To Debug",
+      "category": "Development",
+      "views": 204
+    },
+    {
+      "title": "A 5-minute Intro to Styled Components",
+      "category": "Design",
+      "views": 760
+    },
+    {
+      "title": "How to land a top-notch tech internship — and a tech job — while you’re still in school",
+      "category": "Development",
+      "views": 1600
+    },
+    {
+      "title": "Firebase: the great, the meh, and the ugly",
+      "category": "Development",
+      "views": 407
+    },
+    {
+      "title": "Which programming languages got the most GitHub stars in 2016?",
+      "category": "Data Science",
+      "views": 100
+    },
+    {
+      "title": "ElasticSearch with Django the easy way",
+      "category": "Development",
+      "views": 115
+    },
+    {
+      "title": "Git Please: how to force push without being a jerk",
+      "category": "Development",
+      "views": 66
+    },
+    {
+      "title": "React Interview Questions",
+      "category": "Development",
+      "views": 389
+    },
+    {
+      "title": "React’s Five Fingers of Death. Master these five concepts, then master React",
+      "category": "Development",
+      "views": 1700
+    },
+    {
+      "title": "How to set up ESLint in Atom so you can contribute to Open Source",
+      "category": "Development",
+      "views": 94
+    },
+    {
+      "title": "If you want a developer job, be fearless and dream big",
+      "category": "Development",
+      "views": 695
+    },
+    {
+      "title": "Understanding Flexbox: Everything you need to know",
+      "category": "Design",
+      "views": 2200
+    },
+    {
+      "title": "How I designed an algorithm that mixes playlists of bands coming to your town",
+      "category": "Design",
+      "views": 47
+    },
+    {
+      "title": "How making hundreds of hip hop beats helped me understand HTML and CSS",
+      "category": "Design",
+      "views": 506
+    },
+    {
+      "title": "WebSlides: a new open source way to build beautiful presentations that run in your browser",
+      "category": "Design",
+      "views": 747
+    },
+    {
+      "title": "What I’ve learned from 18 weeks of vlogging my coding journey",
+      "category": "Design",
+      "views": 276
+    },
+    {
+      "title": "How I used machine learning to explore the differences between British and American literature",
+      "category": "Data Science",
+      "views": 74
+    },
+    {
+      "title": "The Rise of the Data Engineer",
+      "category": "Data Science",
+      "views": 862
+    },
+    {
+      "title": "How to bootstrap your analytics in 1 hour",
+      "category": "Data Science",
+      "views": 90
+    },
+    {
+      "title": "Rolling Stone’s 500 Greatest Albums Visualized Using Pandas and Bokeh",
+      "category": "Data Science",
+      "views": 48
+    },
+    {
+      "title": "Recognizing Traffic Lights With Deep Learning",
+      "category": "Data Science",
+      "views": 1700
+    },
+    {
+      "title": "Women only said 27% of the words in 2016’s biggest movies",
+      "category": "Data Science",
+      "views": 1000
+    },
+    {
+      "title": "What I learned from analyzing the top 252 Medium stories of 2016",
+      "category": "Data Science",
+      "views": 2200
+    }
+   ]

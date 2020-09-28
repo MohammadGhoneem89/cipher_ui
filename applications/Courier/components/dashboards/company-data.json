@@ -1,0 +1,47 @@
+[
+    {
+      "title": "JOLLY CHIC",
+      "category": "COURIER",
+      "views": 5700
+    },
+    {
+      "title": "NOON",
+      "category": "COURIER",
+      "views": 3700
+    },
+    {
+      "title": "AMAZON",
+      "category": "E-COMMERCE",
+      "views": 4600
+    },
+    {
+      "title": "ARAMEX",
+      "category": "COURIER",
+      "views": 5700
+    },
+    {
+      "title": "FEDEX",
+      "category": "COURIER",
+      "views": 3700
+    },
+    {
+      "title": "DHL",
+      "category": "E-COMMERCE",
+      "views": 5600
+    },
+    {
+      "title": "AL-FUTTAIM",
+      "category": "COURIER",
+      "views": 5700
+    },
+    {
+      "title": "ALTRANS",
+      "category": "COURIER",
+      "views": 3700
+    },
+    {
+      "title": "AGILITY",
+      "category": "E-COMMERCE",
+      "views": 3600
+    }
+   ]
