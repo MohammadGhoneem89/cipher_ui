@@ -12,7 +12,7 @@ import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
 import Combobox from '../../common/Select.jsx';
 import * as gen from '../../common/generalActionHandler';
-
+import moment from 'moment';
 import * as constants from '../../constants/Communication.js';
 
 
@@ -24,31 +24,100 @@ class List extends React.Component {
       searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [], typeData: undefined,
       listData: [],
       pageData: {},
-      Container: {}
+      Container: {},
+      documentTypeList: undefined,
+      providedConsentList: undefined,
+      revisionsList : undefined,
+      errors: undefined
     }
     this.pageChanged = this.pageChanged.bind(this);
     this.generalHandler = gen.generalHandler.bind(this)
-
+    this.documentTypeHandler = this.documentTypeHandler.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     console.log("consentHistoryNew nextprops -----------", nextProps);
-    // if (nextProps.listData && nextProps.pageData && nextProps.orgTypes) {
-    //   console.log("testing print");
-    //   this.setState({
-    //     listData: nextProps.listData,
-    //     pageData: nextProps.pageData,
-    //     Container:{
-    //       orgTypes:nextProps.orgTypes          
-    //     }
-    //   })
-    // }
+    
+    let documentTypeList = [];
+    if (nextProps.documentTypeList){     
+      nextProps.documentTypeList.forEach((elem) => {
+        let parsedData = JSON.parse(elem.tranxData);  
+        console.log("parsing---------",parsedData);
+          let elemEnt = _.get(documentTypeList, parsedData.key, {});
+
+          elemEnt = {
+          "label": parsedData.key,
+          "value": parsedData.key
+        }
+        documentTypeList.push(elemEnt);
+      })
+      this.setState({
+        documentTypeList
+      })
+    }
+    let providedConsentList = [];
+    if (nextProps.providedConsentList){  
+         
+      nextProps.providedConsentList.forEach((elem) => {
+        let parsedData = JSON.parse(elem.tranxData);  
+        console.log("parsing providedConsentList---------",parsedData);
+          let elemEnt = _.get(providedConsentList, parsedData.key, {});
+
+          elemEnt = {
+          "label": parsedData.key,
+          "value": parsedData.key
+        }
+        providedConsentList.push(elemEnt);
+      })
+      this.setState({
+        providedConsentList
+      })
+    }
+
     if (nextProps.orgTypes) {
       console.log("testing print");
+      let Container = _.cloneDeep(this.state.Container)
+      Container.orgTypes = nextProps.orgTypes
       this.setState({
-        Container:{
-          orgTypes:nextProps.orgTypes          
-        }
+        Container
+      })
+    }
+
+    let revisionsList = [];
+    if(nextProps.revisionsList){
+      revisionsList = Object.entries(nextProps.revisionsList).map(item => {
+        let test = item[1].consentProvidedTo[0].consentTillDate.split(' ');
+        console.log(moment(test[0] + " " + test[1]));
+        
+        let date_now = moment();
+        let valid_date = moment(test[0] + " " + test[1])
+        let days = valid_date.diff(date_now, 'days')
+        let hrs = valid_date.diff(date_now, 'hours')
+        console.log("dfiff------------", valid_date.diff(date_now));
+        console.log("date_now=======",date_now );
+        console.log("valid_date=======",valid_date );
+        
+        item[1]['status'] = item[1].consentProvidedTo[0].statusOfConsent;
+        item[1]['providedTo'] = item[1].consentProvidedTo[0].toOrgCode;
+        item[1].txtimestamp = new Date(item[1].txtimestamp).toLocaleDateString()
+        item[1]['validity'] = days +  ' d ' + (hrs - (days * 24))
+        console.log(item[1]) 
+        return item[1];
+
+      })
+      console.log("revisionsList---------------", revisionsList);
+        //let parsedData = JSON.parse(elem.tranxData);  
+        
+       //  console.log("revisionList parsing---------",elem);
+        //   let elemEnt = _.get(revisionsList, parsedData.key, {});
+
+        //   elemEnt = {
+        //   "label": parsedData.key,
+        //   "value": parsedData.key
+        // }
+        // documentTypeList.push(elemEnt);
+      this.setState({
+        revisionsList
       })
     }
   }
@@ -64,6 +133,7 @@ class List extends React.Component {
   componentDidMount() {
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES', 'CONSENT_TYPES'])); // Org types (entities)
     this.props.actions.generalProcess(constants.getDocumentTypeList);
+
     
   //  window.scrollTo(0, 0);
     // this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
@@ -113,7 +183,16 @@ class List extends React.Component {
   }
 
   formSubmit() {
-    this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
+    let request = 
+    {
+      "channelname":"prwchannel",
+      "smartcontract":"consent_profile_management",
+      "endpoint":"CouchDB-1",
+      "pvtcollection":"prwchannel_consent_profile_management%24%24pprovidedconsent",
+      "key":this.state.Container.providedConsentID
+    }
+    console.log("submit Request ----------------- ", request)
+    this.props.actions.generalProcess(constants.getDocumentRevesions, request);
   }
 
   pageChanged(pageNo) {
@@ -157,10 +236,54 @@ class List extends React.Component {
     });
   }
 
+  documentTypeHandler(formname, fieldname, type, e){
+    console.log("documentTypeHandler-------------------");
+    console.log("formname = ", formname);
+    console.log("fieldname = ", fieldname);
+    console.log("type = ", type);
+    console.log("e = ", e.target.name,e.target.value);
+
+    let value = e.target.value;
+    let formdata = _.get(this.state, formname, {});
+    let errors = _.get(this.state, 'errors', {});
+    _.set(formdata, e.target.name, value);
+    _.set(errors, e.target.name, undefined);
+    console.log("container------------------", formdata);
+    let documentTypeList = [..._.get(this.state, 'documentTypeList', [])]
+    console.log("documentTypeList-------------",documentTypeList);
+    let _out = _.find(documentTypeList, {'label': value});
+    if(!_out){
+      _.set(errors, 'documentType', 'Invalid Selection')
+      this.setState({
+        [formname]: formdata,
+        errors
+      })
+      return
+    }
+    if(value == ""){
+      _.set(errors, 'documentType', '')
+      this.setState({
+        [formname]: formdata,
+        errors
+      })
+      return
+    }    
+    formdata.providedConsentID = ''
+    this.setState({
+      [formname]: formdata,
+      providedConsentList: [],
+      errors
+    })
+    let request = {
+      "documentType": value
+    }
+    this.props.actions.generalProcess(constants.getProvidedConsentList, request);
+    console.log("documentType state------------------------",this.state);
+  }
 
   render() {
 
-    if (this.state.listData) {
+    if (this.state.documentTypeList) {
       {console.log("render state ======= ", this.state)}
       return (
         <div>
@@ -192,9 +315,6 @@ class List extends React.Component {
                                       fieldname='idType'
                                       formname='Container'
                                       allowValue={false}
-                                      selected={_.get(_.get(this.state, 'Container.orgTypes', []).filter(item =>
-                                          item.value == _.get(this.state, 'Container.orgTypes', '')
-                                      ), `[${0}].label`, undefined)}
                                       placeholder={utils.getLabelByID('')}
                                       style={{}}
                                       state={this.state}
@@ -212,8 +332,20 @@ class List extends React.Component {
                             <div className="form-group col-md-4">
                               <label className="control-label">{utils.getLabelByID("ID")}</label>
                             </div>
-                            <div className="form-group col-md-8">
-                              <input type="text" className="form-control" name="ID" id="ID"/>
+                            <div className="col-md-8">
+                              <Combobox
+                                  status={(this.state.errors && this.state.errors.providedConsentID) ? "ERROR" : undefined}
+                                  fieldname='providedConsentID'
+                                  formname='Container'
+                                  allowValue={false}
+                                  placeholder={utils.getLabelByID('ID')}
+                                  style={{}}
+                                  state={this.state}
+                                  typeName="providedConsentList"
+                                  dataSource={this.state}
+                                  actionHandler={this.generalHandler}
+                                  className="form-control"
+                                />
                             </div>
                           </div>
                         </div>
@@ -223,22 +355,19 @@ class List extends React.Component {
                                 <label className="form-group control-label col-md-4" style={{
                                   textAlign: "left",
                                   fontWeight: "normal"
-                                }}>{utils.getLabelByID("Document")}</label>
+                                }}>{utils.getLabelByID("Document Type")}</label>
                                 <div className="col-md-8">
                                   <Combobox
                                       status={(this.state.errors && this.state.errors.documentType) ? "ERROR" : undefined}
                                       fieldname='documentType'
                                       formname='Container'
                                       allowValue={false}
-                                      selected={_.get(_.get(this.state, 'Container.orgTypes', []).filter(item =>
-                                          item.value == _.get(this.state, 'Container.orgTypes', '')
-                                      ), `[${0}].label`, undefined)}
-                                      placeholder={utils.getLabelByID('Document')}
+                                      placeholder={utils.getLabelByID('Document Type')}
                                       style={{}}
                                       state={this.state}
-                                      typeName="orgTypes"
-                                      dataSource={_.get(this.state, 'Container', {})}
-                                      actionHandler={this.generalHandler}
+                                      typeName="documentTypeList"
+                                      dataSource={this.state}
+                                      actionHandler={this.documentTypeHandler}
                                       className="form-control"
                                     />
                                 </div> 
@@ -252,6 +381,18 @@ class List extends React.Component {
                               <div className="form-group col-md-8">
                                 <input type="text" className="form-control" name="documentNo" id="documentNo"/>
                               </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="form-actions right">
+                          <div className="form-group col-md-12">
+                            <div className="btn-toolbar pull-right">
+                              <button type="submit" className="btn green"
+                                      onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
+                              {"  "}
+                              <button type="button" className="btn default"
+                                      onClick={this.clearFields}>{utils.getLabelByID("Clear")}</button>
+
                             </div>
                           </div>
                         </div>  
@@ -268,14 +409,15 @@ class List extends React.Component {
                    actions={this.state.actions}>
             <Table fontclass=""
                    gridColumns={utils.getGridColumnByName("ConsentStatusList")}
-                   gridData={this.state.listData}
-                   totalRecords={this.state.pageData.totalRecords}
-                   searchCallBack={this.searchCallBack}
-                   pageSize={10}
-                   pagination={true} pageChanged={this.pageChanged}
-                   export={false}
-                   search={true}
-                   activePage={this.state.currentPageNo}/>
+                   gridData={this.state.revisionsList}
+                   totalRecords={this.state.revisionsList.length}
+                //   searchCallBack={this.searchCallBack}
+               //    pageSize={10}
+              //     pagination={true} pageChanged={this.pageChanged}
+              //     export={false}
+              //     search={true}
+              //     activePage={this.state.currentPageNo}
+                   />
           </Portlet>
 
 
@@ -299,7 +441,9 @@ function mapStateToProps(state, ownProps) {
     typeData: state.app.typeData.data,
     orgTypes: _.get(state.app, 'typeData.data.ORG_TYPES', undefined),
     consentTypes: _.get(state.app, 'typeData.data.CONSENT_TYPES', undefined),
-    documentList : _.get(state.app, 'documentTypeList', undefined)
+    documentTypeList : _.get(state.app, 'documentTypeList', []),
+    providedConsentList : _.get(state.app, 'providedConsentList', []),
+    revisionsList : _.get(state.app, 'result', [])    
   };
 }
 

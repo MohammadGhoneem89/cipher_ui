@@ -13,16 +13,20 @@ class Auth {
     sessionStorage.removeItem('firstScreen');
     sessionStorage.selectedIndex = 0;
     // browserHistory.push('/cipher/login');
-    document.location.href = '/cipher/login'
+    setTimeout(() => {
+      document.location.href = '/cipher/login'
+    }, 1500);
+   
   }
 
   static lockedUser() {
     sessionStorage.removeItem('token');
-
     sessionStorage.removeItem('lastRequestTime');
     Cookies.remove("login");
     sessionStorage.selectedIndex = 0;
-
+    setTimeout(() => {
+      document.location.href = '/Locked'
+    }, 1500);
     // node document.location.href = '/Locked'
   }
 }
