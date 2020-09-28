@@ -265,6 +265,11 @@ module.exports = {
   addDocumentType: baseUrl + "/API/Core/addDocumentType",
   updateDocumentType: baseUrl + "/API/Core/updateDocumentType",
   getDocumentTypeList: baseUrl + "/API/Consent/getDocumentTypeList",
-  getDocumentType: baseUrl + "/API/Core/getDocumentType"
+  getDocumentType: baseUrl + "/API/Core/getDocumentType",
+
+  addConsentPolicy: baseUrl + "/API/Core/addConsentPolicy",
+  updateConsentPolicy: baseUrl + "/API/Core/updateConsentPolicy",
+  getConsentProfileList: baseUrl + "/API/Consent/getConsentProfileList",
+  getConsentProfileByKey: baseUrl + "/API/Core/getConsentProfileByKey"
 }
 

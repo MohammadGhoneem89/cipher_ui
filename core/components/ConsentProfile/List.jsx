@@ -11,7 +11,6 @@ import Portlet from '../../common/Portlet.jsx';
 import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
 
-
 import * as constants from '../../constants/Communication.js';
 
 
@@ -20,20 +19,47 @@ class List extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [], typeData: undefined,
-      listData: [],
+      searchFilters: "", 
+      currentPageNo: 1, 
+      APIPayloadID: undefined, 
+      actions: [], 
+      typeData: undefined,
+      listData: undefined,
       pageData: {}
     }
     this.pageChanged = this.pageChanged.bind(this);
-
-
+    this.clearFields = this.clearFields.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.listData && nextProps.pageData) {
+    // if (nextProps.listData && nextProps.pageData) {
+    //   this.setState({
+    //     listData: nextProps.listData,
+    //     pageData: nextProps.pageData
+    //   })
+    // }
+    console.log("cosent profile list ------", nextProps);
+    console.log("cosent profile State ------", this.state);
+    if (nextProps.listData) {
+      console.log("list Data", nextProps.listData);
+      let parsedData = nextProps.listData.map(item=>{
+        return {
+          ...JSON.parse(item.tranxData),
+          createdAt:item.createdAt,
+          actions: [{
+            URI: ["/ConsentProfile"],
+            iconName: "icon-docs",
+            label: "View",
+            params: "",
+            type: "componentAction",
+            value: "1003",
+        }]}
+      })
+
+      console.log("parsed Data", parsedData);
       this.setState({
-        listData: nextProps.listData,
-        pageData: nextProps.pageData
+        pageData: parsedData,
+        listData: parsedData
       })
     }
   }
@@ -49,6 +75,17 @@ class List extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     // this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
+    console.log("currentPageNo----------", this.state);
+    let request = {
+      'body':{
+        "page": {
+          "currentPageNo": this.state.currentPageNo,
+          "pageSize": 10
+        }
+      }
+    }
+
+    this.props.actions.generalProcess(constants.getConsentProfileList, request);
     this.setState({
       actions: [{
         "value": "1002",
@@ -59,46 +96,49 @@ class List extends React.Component {
         "iconName": "fa fa-plus",
         "URI": "/ConsentProfile/NEW",
         "children": []
-      }]
+      }] 
     })
   }
 
   getRequest() {
-    let documentTypeName = document.getElementById('documentTypeName') == null ? "" : document.getElementById('documentTypeName').value;
-    let ownerOrgType = document.getElementById('ownerOrgType') == null ? "" : document.getElementById('ownerOrgType').value;
-    let documentName = document.getElementById('documentName') == null ? "" : document.getElementById('documentName').value;
+    let consentType = document.getElementById('consentType') == null ? "" : document.getElementById('consentType').value;
+//    let ownerOrgType = document.getElementById('ownerOrgType') == null ? "" : document.getElementById('ownerOrgType').value;
+    let documentType = document.getElementById('documentType') == null ? "" : document.getElementById('documentType').value;
 
     var searchCriteria = {}
 
-    if (documentTypeName != "")
-      searchCriteria.documentTypeName = documentTypeName
-
-    if (ownerOrgType != "")
-      searchCriteria.ownerOrgType = ownerOrgType
-    if (documentName != "")
-      searchCriteria.documentName = documentName
-
+    if (consentType != "")
+      searchCriteria.consentType = consentType
+    // if (ownerOrgType != "")
+    //   searchCriteria.ownerOrgType = ownerOrgType
+    if (documentType != "")
+      searchCriteria.documentType = documentType
 
     this.setState({searchFilters: searchCriteria})
-
+    console.log("searchCriteria : ", searchCriteria  );
     var request = {
-      "action": "mappingData",
-      searchCriteria,
-      "page": {
-        "currentPageNo": 1,
-        "pageSize": 10
+      'body': {
+        "action": "mappingData",
+        searchCriteria,
+        "page": {
+          "currentPageNo": 1,
+          "pageSize": 10
+        }
       }
     }
+    console.log("Request ---------------", request);
     this.setState({currentPageNo: 1})
 
     return request;
   }
 
   formSubmit() {
-    this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
+    console.log("Form submit---------------", this.getRequest());
+    this.props.actions.generalProcess(constants.getConsentProfileList, this.getRequest());
   }
 
   pageChanged(pageNo) {
+    console.log("PageNo -------------------", pageNo);
     if (pageNo != undefined) {
 
       var request = "";
@@ -106,29 +146,31 @@ class List extends React.Component {
       if (this.state.searchFilters == undefined) {
 
         request = {
-          "action": "ApiListData",
-          "searchCriteria": {},
-          "page": {
-            "currentPageNo": pageNo,
-            "pageSize": 10
+          'body':{
+            "action": "ApiListData",
+            "page": {
+              "currentPageNo": pageNo,
+              "pageSize": 10
+            }
           }
         }
       } else {
         var searchCriteria = this.state.searchFilters
         request = {
-          "action": "ApiListData",
-          searchCriteria,
-          "page": {
-            "currentPageNo": pageNo,
-            "pageSize": 10
+          'body':{
+            "action": "ApiListData",
+            searchCriteria,
+            "page": {
+              "currentPageNo": pageNo,
+              "pageSize": 10
+            }
           }
         }
       }
 
       this.setState({currentPageNo: pageNo})
 
-      this.props.actions.generalProcess(constants.getADHReportList, request);
-
+      this.props.actions.generalProcess(constants.getConsentProfileList, request);
     }
   }
 
@@ -137,6 +179,22 @@ class List extends React.Component {
     $('#ApiListData').find('select').each(function () {
       $(this)[0].selectedIndex = 0;
     });
+
+    this.setState({
+      'page':{
+        'currentPageNo':1
+      }
+    })
+    let request = {
+      'body':{
+        "action": "ApiListData",
+        "page": {
+          "currentPageNo": 1,
+          "pageSize": 10
+        }
+      }
+    }
+    this.props.actions.generalProcess(constants.getConsentProfileList, request);
   }
 
 
@@ -163,10 +221,10 @@ class List extends React.Component {
                         <div className="row">
                           <div className="col-md-6">
                             <div className="form-group col-md-4">
-                              <label className="control-label">{utils.getLabelByID("Document Name")}</label>
+                              <label className="control-label">{utils.getLabelByID("Document Type")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <input type="text" className="form-control" name="name" id="documentName"/>
+                              <input type="text" className="form-control" name="name" id="documentType"/>
                             </div>
                           </div>
                           <div className="col-md-6">
@@ -174,15 +232,15 @@ class List extends React.Component {
                               <label className="control-label">{utils.getLabelByID("Owner Org Type")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <input type="text" className="form-control" name="route" id="ownerOrgType"/>
+                              <input type="text" disabled className="form-control" name="route" id="ownerOrgType"/>
                             </div>
                           </div>
                           <div className="col-md-6">
                             <div className="form-group col-md-4">
-                              <label className="control-label">{utils.getLabelByID("Document Type")}</label>
+                              <label className="control-label">{utils.getLabelByID("Consent Type")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <input type="text" className="form-control" name="route" id="documentTypeName"/>
+                              <input type="text" className="form-control" name="route" id="consentType"/>
                             </div>
                           </div>
                         </div>
@@ -206,16 +264,17 @@ class List extends React.Component {
               </div>
             </div>
           </div>
-
+          {      console.log("cosent profile State ------", this.state)}
           <Portlet title={utils.getLabelByID("Consent Profile List")} isPermissioned={true}
                    actions={this.state.actions}>
             <Table fontclass=""
                    gridColumns={utils.getGridColumnByName("ADHReportList")}
                    gridData={this.state.listData}
-                   totalRecords={this.state.pageData.totalRecords}
-                   searchCallBack={this.searchCallBack}
-                   pageSize={10}
-                   pagination={true} pageChanged={this.pageChanged}
+                   totalRecords={this.state.pageData.length}
+              //     searchCallBack={this.searchCallBack}
+                   pageSize={10}  
+                   pagination={true} 
+                   pageChanged={this.pageChanged}
                    export={false}
                    search={true}
                    activePage={this.state.currentPageNo}/>
@@ -237,8 +296,8 @@ List.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    listData: _.get(state.app, 'ADHReportList.ADHReportList.data.searchResult', undefined),
-    pageData: _.get(state.app, 'ADHReportList.ADHReportList.data.pageData', undefined),
+    listData: _.get(state.app, 'consentProfileList', []),
+  //  pageData: _.get(state.app, 'ADHReportList.ADHReportList.data.pageData', undefined),
     typeData: state.app.typeData.data
   };
 }

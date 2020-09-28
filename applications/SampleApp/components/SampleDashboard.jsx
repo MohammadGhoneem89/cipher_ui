@@ -172,7 +172,6 @@ class SampleDashboard extends React.Component {
               </div>
 
               <div className="row">
-
                 <TileUnit data={this.state.sampleDashboardData.dashboardTiles} />
               </div>
 
@@ -187,8 +186,6 @@ class SampleDashboard extends React.Component {
                     pageChanged={this.pageChanged}
                     pagination={true} activePage={this.state.pageNumner}
                   />
-
-
                 </div>
               </div>
 
