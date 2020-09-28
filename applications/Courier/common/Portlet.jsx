@@ -66,7 +66,7 @@ const Portlet = props => {
                     </div> */}
                 </div>
                 <div className="portlet-body " 
-                // style={{ marginTop: "20px", padding: "20px", ...style }}
+                style={{ marginTop: "20px", padding: "20px", ...style }}
                 >
                     {children}
                 </div>

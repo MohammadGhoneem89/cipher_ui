@@ -5,7 +5,7 @@ class BubbleChart extends React.Component {
   static defaultProps = {
     data: [],
     useLabels: false,
-    width: 600,
+    width: 400,
     height: 400
   };
 
@@ -54,7 +54,7 @@ class BubbleChart extends React.Component {
   radiusScale = value => {
     const fx = d3
       .scaleSqrt()
-      .range([1, 50])
+      .range([1, 70])
       .domain([this.minValue, this.maxValue]);
 
     return fx(value);
@@ -131,8 +131,8 @@ class BubbleChart extends React.Component {
       return (
         <g
           key={index}
-          transform={`translate(${props.width / 3 + item.x}, ${props.height /
-            3 +
+          transform={`translate(${props.width / 2 + item.x}, ${props.height /
+            2 +
             item.y})`}
         >
           <circle

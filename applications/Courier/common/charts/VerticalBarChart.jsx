@@ -51,6 +51,7 @@ class VerticalBarChart extends React.Component {
             labels: dataLabels,
             datasets: datasets
         }
+        console.log(this.state, 'VERTICAL"S STATE');
     }
 
     getLabel(label) {
