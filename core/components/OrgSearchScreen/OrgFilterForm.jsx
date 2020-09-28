@@ -58,7 +58,7 @@ const OrgFilterForm = props => {
                     <button type="submit" className="btn green" disabled={submitting}>
                         {utils.getLabelByID("Search")}
                     </button>
-                    <button type="button" className="btn default" disabled={pristine || submitting} onClick={reset}>
+                    <button type="button" className="btn default" disabled={submitting} onClick={reset}>
                         {utils.getLabelByID("Clear")}
                     </button>
                 </div>

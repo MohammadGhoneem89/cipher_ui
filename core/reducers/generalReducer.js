@@ -5,6 +5,7 @@ import { browserHistory } from 'react-router';
 import * as toaster from '../common/toaster.js';
 
 export default function generalReducer(state = initialState, action) {
+    let toasted = false;
     if (action.resultData) {
 
 
@@ -12,15 +13,17 @@ export default function generalReducer(state = initialState, action) {
 
         if (rData && rData.data && rData.data.message) {
 
-            if (rData.data.message.displayToUser === true)
+            if (rData.data.message.displayToUser === true) {
+                toasted = true;
                 toaster.showToast(rData.data.message.errorDescription, rData.data.message.status);
+            }
 
             if (rData.data.message.newPageURL && (rData.data.message.status === "OK" || rData.data.message.status === "UNAUTHORIZED") && rData.data.actionProcessor !== "reduxFormProcess")
                 browserHistory.push(rData.data.message.newPageURL);
 
         }
 
-        if (action.resultData && action.resultData.messageStatus == "ERROR") {
+        if (!toasted && action.resultData && action.resultData.messageStatus == "ERROR") {
             toaster.showToast(action.resultData.errorDescription, action.resultData.messageStatus);
         }
         return Object.assign({}, state, action.resultData);
