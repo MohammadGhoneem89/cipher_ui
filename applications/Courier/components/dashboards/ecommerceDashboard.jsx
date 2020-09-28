@@ -16,21 +16,21 @@ import * as constants from '../../../../core/constants/Communication';
 import * as requestCreator from '../../../../core/common/request.js';
 import * as gen from '../../common/generalActionHandler'
 import Portlet from '../../common/Portlet.jsx';
-import Checklist from '../../common/CheckList.jsx';
-import HorizontalBarChartNew from '../../common/charts/HorizontalBarChartNew.jsx';
-import HorizontalStackedBarChart from '../../common/charts/horizontalStackedBarChart.jsx';
+// import Checklist from '../../common/CheckList.jsx';
+import HorizontalBarChartNew from '../../common/charts/horizontalBarChartNew.jsx';
+// import HorizontalStackedBarChart from '../../common/charts/horizontalStackedBarChart.jsx';
 import PieChart from '../../common/charts/PieChart.jsx';
-import VerticalBarChart from '../../common/charts/VerticalBarChart.jsx';
-import MultiLineChart from '../../common/charts/multiLineChart.jsx';
-import TileUnit from '../../../../core/common/tileUnit.jsx';
+// import VerticalBarChart from '../../common/charts/VerticalBarChart.jsx';
+// import MultiLineChart from '../../common/charts/multiLineChart.jsx';
+// import TileUnit from '../../../../core/common/tileUnit.jsx';
 import moment from 'moment';
 import * as d3 from "d3";
-import { Multiselect } from 'multiselect-react-dropdown';
+// import { Multiselect } from 'multiselect-react-dropdown';
 
 import jsonData from '../../common/dummyData/dashboard.json';
 import bankColors from '../../../config/bank-colors';
-import DashboardFilters from './dashboardFilters.jsx';
-import AutomaticallyTextSizingChart from '../../common/charts/automaticallyTextSizingChart.jsx';
+// import DashboardFilters from './dashboardFilters.jsx';
+// import AutomaticallyTextSizingChart from '../../common/charts/automaticallyTextSizingChart.jsx';
 // import BubbleChart from '../../common/charts/react-bubble-chart.jsx';
 import { indexOf } from 'lodash';
 

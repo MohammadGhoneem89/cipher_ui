@@ -17,7 +17,7 @@ import * as requestCreator from '../../../../core/common/request.js';
 import * as gen from '../../common/generalActionHandler'
 import Portlet from '../../common/Portlet.jsx';
 import Checklist from '../../common/CheckList.jsx';
-import HorizontalBarChart from '../../common/charts/HorizontalBarChart.jsx';
+import HorizontalBarChart from '../../common/charts/HorizontalChartBar.jsx';
 import PieChart from '../../common/charts/PieChart.jsx';
 import { Bar, Line } from 'react-chartjs-2';
 import TileUnit from '../../../../core/common/tileUnit.jsx';
