@@ -30,7 +30,7 @@ class List extends React.Component {
       actions: [], 
       typeData: undefined,
       listData: [],
-      pageData: [],
+      pageData: undefined,
     }
     this.pageChanged = this.pageChanged.bind(this);
 
@@ -205,7 +205,7 @@ class List extends React.Component {
 
   render() {
     console.log(this.state,"SSSSS")
-    if (this.state.pageData.length) {
+    if (this.state.pageData) {
       return (
         <div>
           <div className="row">

@@ -3,11 +3,11 @@ import GridColumnsIndex from '../../applications/constants/GridColumnsIndex'
 module.exports = {
   ...GridColumnsIndex,
   DocumentTypeList: [
-    { alias: "", key: "Key", type: "hiddenID" },
-    { alias: "Document Type", key: "DocumentType", type: "string" },
-    { alias: "Owner Org Type", key: "OwnerOrgCode", type: "string" },
-    { alias: "Document Name", key: "Name", type: "string" },
-    { alias: "Description", key: "Description", type: "string" },
+    { alias: "", key: "key", type: "hiddenID" },
+    { alias: "Document Type", key: "documentType", type: "string" },
+    { alias: "Owner Org Type", key: "ownerOrgCode", type: "string" },
+    { alias: "Document Name", key: "name", type: "string" },
+    { alias: "Description", key: "description", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
   exceptionList: [

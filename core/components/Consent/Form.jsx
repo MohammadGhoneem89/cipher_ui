@@ -21,7 +21,7 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
                   fontWeight: "normal"
                 }}>{utils.getLabelByID("Document Name")}</label>
                 <div className="form-group col-md-8">
-                  <input type="text" disabled={!isOwner} className="form-control" name="documentName" id="name" onChange={onInputChange}
+                  <input type="text"  className="form-control" name="documentName" id="name" onChange={onInputChange}
                          value={state.Container.name}/>
                 </div>
               </div>
@@ -33,7 +33,7 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
                   fontWeight: "normal"
                 }}>{utils.getLabelByID("Description")}</label>
                 <div className="form-group col-md-8">
-                    <textarea type="text" disabled={!isOwner} className="form-control" name="description" id="description"
+                    <textarea type="text" className="form-control" name="description" id="description"
                               onChange={onInputChange} value={state.Container.description} rows="4"
                               style={{resize: "none", width: "100%"}}/>
                 </div>

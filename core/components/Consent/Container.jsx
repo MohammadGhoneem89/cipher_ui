@@ -19,7 +19,7 @@ const initialState = {
   groupList: [],
   columnList: [],
   resultSet: [],
-  isEdit: false,
+  isEdit: true,
   isLoading: true,
   formLoading:false,
   isCustom: true,
@@ -52,7 +52,8 @@ class Container extends React.Component {
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES'])); // Org types (entities)
     if (this.props.id !== "NEW") {
       this.setState({
-        isLoading:false
+        isLoading:false,
+        isEdit:false
       })
       this.props.actions.generalAsyncProcess(constants.getDocumentType, {
         "body": {
@@ -195,7 +196,7 @@ class Container extends React.Component {
   
 
     return (<Form flag={this.state.update} ActionHandlers={this.ActionHandlers}  formLoading={this.state.formLoading}
-                  typeData={this.state.typeData} isOwner={true} onInputChange={this.onInputChange}
+                  typeData={this.state.typeData} isOwner={this.state.isEdit} onInputChange={this.onInputChange}
                   onSubmit={this.submit} testQuery={this.test}
                   state={this.state}/>)
 
