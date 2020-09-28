@@ -114,6 +114,7 @@ class HorizontalBarChartNew extends React.Component {
                     options={{
                         scales: {
                             xAxes: [{
+                                barPercentage: 3,
                                 ticks: {
                                     // minRotation: 0,
                                     // maxRotation: 5,

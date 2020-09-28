@@ -27,7 +27,9 @@ const Wrapper = props => {
                         }
                         <div className="actions"></div>
                     </div>
-                    <div className="portlet-body " style={{ marginTop: "20px", padding: "20px", ...style }}>
+                    <div className="portlet-body " 
+                    // style={{ marginTop: "20px", padding: "20px", ...style }}
+                    >
                         {children}
                     </div>
                 </div>

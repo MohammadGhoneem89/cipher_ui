@@ -1,0 +1,1802 @@
+[
+    {
+      "CountryName": "Afghanistan",
+      "CountryCode": "AF",
+      "ContinentCode": "AS",
+      "CenterLongitude": 65,
+      "CenterLatitude": 33,
+      "Population": 32526560
+    },
+    {
+      "CountryName": "Albania",
+      "CountryCode": "AL",
+      "ContinentCode": "EU",
+      "CenterLongitude": 20,
+      "CenterLatitude": 41,
+      "Population": 2896680
+    },
+    {
+      "CountryName": "Algeria",
+      "CountryCode": "DZ",
+      "ContinentCode": "AF",
+      "CenterLongitude": 3,
+      "CenterLatitude": 28,
+      "Population": 39666520
+    },
+    {
+      "CountryName": "American Samoa",
+      "CountryCode": "AS",
+      "ContinentCode": "OC",
+      "CenterLongitude": -170.5,
+      "CenterLatitude": -14.32,
+      "Population": 55540
+    },
+    {
+      "CountryName": "Andorra",
+      "CountryCode": "AD",
+      "ContinentCode": "EU",
+      "CenterLongitude": 1.5,
+      "CenterLatitude": 42.5,
+      "Population": 70470
+    },
+    {
+      "CountryName": "Angola",
+      "CountryCode": "AO",
+      "ContinentCode": "AF",
+      "CenterLongitude": 18.5,
+      "CenterLatitude": -12.5,
+      "Population": 25021970
+    },
+    {
+      "CountryName": "Anguilla",
+      "CountryCode": "AI",
+      "ContinentCode": "NA",
+      "CenterLongitude": -63.05,
+      "CenterLatitude": 18.22,
+      "Population": 14610
+    },
+    {
+      "CountryName": "Antigua and Barbuda",
+      "CountryCode": "AG",
+      "ContinentCode": "NA",
+      "CenterLongitude": -61.8,
+      "CenterLatitude": 17.05,
+      "Population": 91820
+    },
+    {
+      "CountryName": "Argentina",
+      "CountryCode": "AR",
+      "ContinentCode": "SA",
+      "CenterLongitude": -64,
+      "CenterLatitude": -34,
+      "Population": 43416760
+    },
+    {
+      "CountryName": "Armenia",
+      "CountryCode": "AM",
+      "ContinentCode": "AS",
+      "CenterLongitude": 45,
+      "CenterLatitude": 40,
+      "Population": 3017710
+    },
+    {
+      "CountryName": "Aruba",
+      "CountryCode": "AW",
+      "ContinentCode": "NA",
+      "CenterLongitude": -69.97,
+      "CenterLatitude": 12.5,
+      "Population": 103890
+    },
+    {
+      "CountryName": "Australia",
+      "CountryCode": "AU",
+      "ContinentCode": "OC",
+      "CenterLongitude": 135,
+      "CenterLatitude": -25,
+      "Population": 23968970
+    },
+    {
+      "CountryName": "Austria",
+      "CountryCode": "AT",
+      "ContinentCode": "EU",
+      "CenterLongitude": 13.33,
+      "CenterLatitude": 47.33,
+      "Population": 8544590
+    },
+    {
+      "CountryName": "Azerbaijan",
+      "CountryCode": "AZ",
+      "ContinentCode": "AS",
+      "CenterLongitude": 47.5,
+      "CenterLatitude": 40.5,
+      "Population": 9753970
+    },
+    {
+      "CountryName": "Bahamas",
+      "CountryCode": "BS",
+      "ContinentCode": "NA",
+      "CenterLongitude": -76,
+      "CenterLatitude": 24,
+      "Population": 388020
+    },
+    {
+      "CountryName": "Bahrain",
+      "CountryCode": "BH",
+      "ContinentCode": "AS",
+      "CenterLongitude": 50.5,
+      "CenterLatitude": 26,
+      "Population": 1377240
+    },
+    {
+      "CountryName": "Bangladesh",
+      "CountryCode": "BD",
+      "ContinentCode": "AS",
+      "CenterLongitude": 90,
+      "CenterLatitude": 24,
+      "Population": 160995640
+    },
+    {
+      "CountryName": "Barbados",
+      "CountryCode": "BB",
+      "ContinentCode": "NA",
+      "CenterLongitude": -59.53,
+      "CenterLatitude": 13.17,
+      "Population": 284220
+    },
+    {
+      "CountryName": "Belarus",
+      "CountryCode": "BY",
+      "ContinentCode": "EU",
+      "CenterLongitude": 28,
+      "CenterLatitude": 53,
+      "Population": 9495830
+    },
+    {
+      "CountryName": "Belgium",
+      "CountryCode": "BE",
+      "ContinentCode": "EU",
+      "CenterLongitude": 4,
+      "CenterLatitude": 50.83,
+      "Population": 11299190
+    },
+    {
+      "CountryName": "Belize",
+      "CountryCode": "BZ",
+      "ContinentCode": "NA",
+      "CenterLongitude": -88.75,
+      "CenterLatitude": 17.25,
+      "Population": 359290
+    },
+    {
+      "CountryName": "Benin",
+      "CountryCode": "BJ",
+      "ContinentCode": "AF",
+      "CenterLongitude": 2.25,
+      "CenterLatitude": 9.5,
+      "Population": 10879830
+    },
+    {
+      "CountryName": "Bermuda",
+      "CountryCode": "BM",
+      "ContinentCode": "NA",
+      "CenterLongitude": -64.75,
+      "CenterLatitude": 32.33,
+      "Population": 62000
+    },
+    {
+      "CountryName": "Bhutan",
+      "CountryCode": "BT",
+      "ContinentCode": "AS",
+      "CenterLongitude": 90.5,
+      "CenterLatitude": 27.5,
+      "Population": 774830
+    },
+    {
+      "CountryName": "Bolivia",
+      "CountryCode": "BO",
+      "ContinentCode": "SA",
+      "CenterLongitude": -65,
+      "CenterLatitude": -17,
+      "Population": 10724710
+    },
+    {
+      "CountryName": "Bosnia and Herzegovina",
+      "CountryCode": "BA",
+      "ContinentCode": "EU",
+      "CenterLongitude": 17.83,
+      "CenterLatitude": 44.25,
+      "Population": 3810420
+    },
+    {
+      "CountryName": "Botswana",
+      "CountryCode": "BW",
+      "ContinentCode": "AF",
+      "CenterLongitude": 24,
+      "CenterLatitude": -22,
+      "Population": 2262490
+    },
+    {
+      "CountryName": "Brazil",
+      "CountryCode": "BR",
+      "ContinentCode": "SA",
+      "CenterLongitude": -55,
+      "CenterLatitude": -10,
+      "Population": 207847530
+    },
+    {
+      "CountryName": "Brunei Darussalam",
+      "CountryCode": "BN",
+      "ContinentCode": "AS",
+      "CenterLongitude": 114.67,
+      "CenterLatitude": 4.5,
+      "Population": 423190
+    },
+    {
+      "CountryName": "Bulgaria",
+      "CountryCode": "BG",
+      "ContinentCode": "EU",
+      "CenterLongitude": 25,
+      "CenterLatitude": 43,
+      "Population": 7149790
+    },
+    {
+      "CountryName": "Burkina Faso",
+      "CountryCode": "BF",
+      "ContinentCode": "AF",
+      "CenterLongitude": -2,
+      "CenterLatitude": 13,
+      "Population": 18105570
+    },
+    {
+      "CountryName": "Burundi",
+      "CountryCode": "BI",
+      "ContinentCode": "AF",
+      "CenterLongitude": 30,
+      "CenterLatitude": -3.5,
+      "Population": 11178920
+    },
+    {
+      "CountryName": "Cambodia",
+      "CountryCode": "KH",
+      "ContinentCode": "AS",
+      "CenterLongitude": 105,
+      "CenterLatitude": 13,
+      "Population": 15577900
+    },
+    {
+      "CountryName": "Cameroon",
+      "CountryCode": "CM",
+      "ContinentCode": "AF",
+      "CenterLongitude": 12,
+      "CenterLatitude": 6,
+      "Population": 23344180
+    },
+    {
+      "CountryName": "Canada",
+      "CountryCode": "CA",
+      "ContinentCode": "NA",
+      "CenterLongitude": -96,
+      "CenterLatitude": 60,
+      "Population": 35939930
+    },
+    {
+      "CountryName": "Cape Verde",
+      "CountryCode": "CV",
+      "ContinentCode": "AF",
+      "CenterLongitude": -24,
+      "CenterLatitude": 16,
+      "Population": 520500
+    },
+    {
+      "CountryName": "Cayman Islands",
+      "CountryCode": "KY",
+      "ContinentCode": "NA",
+      "CenterLongitude": -80.67,
+      "CenterLatitude": 19.5,
+      "Population": 59970
+    },
+    {
+      "CountryName": "Central African Republic",
+      "CountryCode": "CF",
+      "ContinentCode": "AF",
+      "CenterLongitude": 21,
+      "CenterLatitude": 7,
+      "Population": 4900270
+    },
+    {
+      "CountryName": "Chad",
+      "CountryCode": "TD",
+      "ContinentCode": "AF",
+      "CenterLongitude": 19,
+      "CenterLatitude": 15,
+      "Population": 14037470
+    },
+    {
+      "CountryName": "Chile",
+      "CountryCode": "CL",
+      "ContinentCode": "SA",
+      "CenterLongitude": -71,
+      "CenterLatitude": -30,
+      "Population": 17948140
+    },
+    {
+      "CountryName": "China",
+      "CountryCode": "CN",
+      "ContinentCode": "AS",
+      "CenterLongitude": 105,
+      "CenterLatitude": 35,
+      "Population": 1376048940
+    },
+    {
+      "CountryName": "Colombia",
+      "CountryCode": "CO",
+      "ContinentCode": "SA",
+      "CenterLongitude": -72,
+      "CenterLatitude": 4,
+      "Population": 48228700
+    },
+    {
+      "CountryName": "Comoros",
+      "CountryCode": "KM",
+      "ContinentCode": "AF",
+      "CenterLongitude": 44.25,
+      "CenterLatitude": -12.17,
+      "Population": 788470
+    },
+    {
+      "CountryName": "Congo",
+      "CountryCode": "CG",
+      "ContinentCode": "AF",
+      "CenterLongitude": 15,
+      "CenterLatitude": -1,
+      "Population": 4620330
+    },
+    {
+      "CountryName": "Congo, Democratic Republic",
+      "CountryCode": "CD",
+      "ContinentCode": "AF",
+      "CenterLongitude": 23.42,
+      "CenterLatitude": -3.52,
+      "Population": 77266810
+    },
+    {
+      "CountryName": "Cook Islands",
+      "CountryCode": "CK",
+      "ContinentCode": "OC",
+      "CenterLongitude": -158,
+      "CenterLatitude": -20,
+      "Population": 20830
+    },
+    {
+      "CountryName": "Costa Rica",
+      "CountryCode": "CR",
+      "ContinentCode": "NA",
+      "CenterLongitude": -84,
+      "CenterLatitude": 10,
+      "Population": 4807850
+    },
+    {
+      "CountryName": "Cote D\"Ivoire",
+      "CountryCode": "CI",
+      "ContinentCode": "AF",
+      "CenterLongitude": -5,
+      "CenterLatitude": 8,
+      "Population": 22701560
+    },
+    {
+      "CountryName": "Croatia",
+      "CountryCode": "HR",
+      "ContinentCode": "EU",
+      "CenterLongitude": 15.5,
+      "CenterLatitude": 45.17,
+      "Population": 4240320
+    },
+    {
+      "CountryName": "Cuba",
+      "CountryCode": "CU",
+      "ContinentCode": "NA",
+      "CenterLongitude": -80,
+      "CenterLatitude": 21.5,
+      "Population": 11389560
+    },
+    {
+      "CountryName": "Cyprus",
+      "CountryCode": "CY",
+      "ContinentCode": "AS",
+      "CenterLongitude": 33,
+      "CenterLatitude": 35,
+      "Population": 1165300
+    },
+    {
+      "CountryName": "Czech Republic",
+      "CountryCode": "CZ",
+      "ContinentCode": "EU",
+      "CenterLongitude": 15,
+      "CenterLatitude": 49.75,
+      "Population": 10543190
+    },
+    {
+      "CountryName": "Denmark",
+      "CountryCode": "DK",
+      "ContinentCode": "EU",
+      "CenterLongitude": 10,
+      "CenterLatitude": 56,
+      "Population": 5669080
+    },
+    {
+      "CountryName": "Djibouti",
+      "CountryCode": "DJ",
+      "ContinentCode": "AF",
+      "CenterLongitude": 42.5,
+      "CenterLatitude": 11.5,
+      "Population": 887860
+    },
+    {
+      "CountryName": "Dominica",
+      "CountryCode": "DM",
+      "ContinentCode": "NA",
+      "CenterLongitude": -61.33,
+      "CenterLatitude": 15.5,
+      "Population": 72680
+    },
+    {
+      "CountryName": "Dominican Republic",
+      "CountryCode": "DO",
+      "ContinentCode": "NA",
+      "CenterLongitude": -70.67,
+      "CenterLatitude": 19,
+      "Population": 10528390
+    },
+    {
+      "CountryName": "Ecuador",
+      "CountryCode": "EC",
+      "ContinentCode": "SA",
+      "CenterLongitude": -77.5,
+      "CenterLatitude": -2,
+      "Population": 16144360
+    },
+    {
+      "CountryName": "Egypt",
+      "CountryCode": "EG",
+      "ContinentCode": "AF",
+      "CenterLongitude": 30,
+      "CenterLatitude": 27,
+      "Population": 91508080
+    },
+    {
+      "CountryName": "El Salvador",
+      "CountryCode": "SV",
+      "ContinentCode": "NA",
+      "CenterLongitude": -88.92,
+      "CenterLatitude": 13.83,
+      "Population": 6126580
+    },
+    {
+      "CountryName": "Equatorial Guinea",
+      "CountryCode": "GQ",
+      "ContinentCode": "AF",
+      "CenterLongitude": 10,
+      "CenterLatitude": 2,
+      "Population": 845060
+    },
+    {
+      "CountryName": "Eritrea",
+      "CountryCode": "ER",
+      "ContinentCode": "AF",
+      "CenterLongitude": 39,
+      "CenterLatitude": 15,
+      "Population": 5227790
+    },
+    {
+      "CountryName": "Estonia",
+      "CountryCode": "EE",
+      "ContinentCode": "EU",
+      "CenterLongitude": 26,
+      "CenterLatitude": 59,
+      "Population": 1312560
+    },
+    {
+      "CountryName": "Ethiopia",
+      "CountryCode": "ET",
+      "ContinentCode": "AF",
+      "CenterLongitude": 39,
+      "CenterLatitude": 8,
+      "Population": 99390750
+    },
+    {
+      "CountryName": "Falkland Islands (Malvinas)",
+      "CountryCode": "FK",
+      "ContinentCode": "SA",
+      "CenterLongitude": -59,
+      "CenterLatitude": -51.75,
+      "Population": 2900
+    },
+    {
+      "CountryName": "Faroe Islands",
+      "CountryCode": "FO",
+      "ContinentCode": "EU",
+      "CenterLongitude": -7,
+      "CenterLatitude": 62,
+      "Population": 48200
+    },
+    {
+      "CountryName": "Fiji",
+      "CountryCode": "FJ",
+      "ContinentCode": "OC",
+      "CenterLongitude": 178,
+      "CenterLatitude": -18,
+      "Population": 892150
+    },
+    {
+      "CountryName": "Finland",
+      "CountryCode": "FI",
+      "ContinentCode": "EU",
+      "CenterLongitude": 26,
+      "CenterLatitude": 64,
+      "Population": 5503460
+    },
+    {
+      "CountryName": "France",
+      "CountryCode": "FR",
+      "ContinentCode": "EU",
+      "CenterLongitude": 2,
+      "CenterLatitude": 46,
+      "Population": 64395350
+    },
+    {
+      "CountryName": "French Guiana",
+      "CountryCode": "GF",
+      "ContinentCode": "SA",
+      "CenterLongitude": -53,
+      "CenterLatitude": 4,
+      "Population": 268610
+    },
+    {
+      "CountryName": "French Polynesia",
+      "CountryCode": "PF",
+      "ContinentCode": "OC",
+      "CenterLongitude": -140,
+      "CenterLatitude": -15,
+      "Population": 282760
+    },
+    {
+      "CountryName": "Gabon",
+      "CountryCode": "GA",
+      "ContinentCode": "AF",
+      "CenterLongitude": 11.75,
+      "CenterLatitude": -1,
+      "Population": 1725290
+    },
+    {
+      "CountryName": "Gambia",
+      "CountryCode": "GM",
+      "ContinentCode": "AF",
+      "CenterLongitude": -15.5,
+      "CenterLatitude": 13.5,
+      "Population": 1990920
+    },
+    {
+      "CountryName": "Georgia",
+      "CountryCode": "GE",
+      "ContinentCode": "AS",
+      "CenterLongitude": 43.5,
+      "CenterLatitude": 42,
+      "Population": 3999810
+    },
+    {
+      "CountryName": "Germany",
+      "CountryCode": "DE",
+      "ContinentCode": "EU",
+      "CenterLongitude": 10.5,
+      "CenterLatitude": 51.5,
+      "Population": 80688550
+    },
+    {
+      "CountryName": "Ghana",
+      "CountryCode": "GH",
+      "ContinentCode": "AF",
+      "CenterLongitude": -2,
+      "CenterLatitude": 8,
+      "Population": 27409890
+    },
+    {
+      "CountryName": "Gibraltar",
+      "CountryCode": "GI",
+      "ContinentCode": "EU",
+      "CenterLongitude": -5.35,
+      "CenterLatitude": 36.13,
+      "Population": 32220
+    },
+    {
+      "CountryName": "Greece",
+      "CountryCode": "GR",
+      "ContinentCode": "EU",
+      "CenterLongitude": 22,
+      "CenterLatitude": 39,
+      "Population": 10954620
+    },
+    {
+      "CountryName": "Greenland",
+      "CountryCode": "GL",
+      "ContinentCode": "NA",
+      "CenterLongitude": -40,
+      "CenterLatitude": 72,
+      "Population": 56190
+    },
+    {
+      "CountryName": "Grenada",
+      "CountryCode": "GD",
+      "ContinentCode": "NA",
+      "CenterLongitude": -61.67,
+      "CenterLatitude": 12.12,
+      "Population": 106830
+    },
+    {
+      "CountryName": "Guadeloupe",
+      "CountryCode": "GP",
+      "ContinentCode": "NA",
+      "CenterLongitude": -61.58,
+      "CenterLatitude": 16.25,
+      "Population": 468450
+    },
+    {
+      "CountryName": "Guam",
+      "CountryCode": "GU",
+      "ContinentCode": "OC",
+      "CenterLongitude": 144.83,
+      "CenterLatitude": 13.47,
+      "Population": 169890
+    },
+    {
+      "CountryName": "Guatemala",
+      "CountryCode": "GT",
+      "ContinentCode": "NA",
+      "CenterLongitude": -90.25,
+      "CenterLatitude": 15.5,
+      "Population": 16342900
+    },
+    {
+      "CountryName": "Guinea",
+      "CountryCode": "GN",
+      "ContinentCode": "AF",
+      "CenterLongitude": -10,
+      "CenterLatitude": 11,
+      "Population": 12608590
+    },
+    {
+      "CountryName": "Guinea-Bissau",
+      "CountryCode": "GW",
+      "ContinentCode": "AF",
+      "CenterLongitude": -15,
+      "CenterLatitude": 12,
+      "Population": 1844330
+    },
+    {
+      "CountryName": "Guyana",
+      "CountryCode": "GY",
+      "ContinentCode": "SA",
+      "CenterLongitude": -59,
+      "CenterLatitude": 5,
+      "Population": 767090
+    },
+    {
+      "CountryName": "Haiti",
+      "CountryCode": "HT",
+      "ContinentCode": "NA",
+      "CenterLongitude": -72.42,
+      "CenterLatitude": 19,
+      "Population": 10711070
+    },
+    {
+      "CountryName": "Holy See (Vatican City State)",
+      "CountryCode": "VA",
+      "ContinentCode": "EU",
+      "CenterLongitude": 12.45,
+      "CenterLatitude": 41.9,
+      "Population": 800
+    },
+    {
+      "CountryName": "Honduras",
+      "CountryCode": "HN",
+      "ContinentCode": "NA",
+      "CenterLongitude": -86.5,
+      "CenterLatitude": 15,
+      "Population": 8075060
+    },
+    {
+      "CountryName": "Hong Kong",
+      "CountryCode": "HK",
+      "ContinentCode": "AS",
+      "CenterLongitude": 114.17,
+      "CenterLatitude": 22.25,
+      "Population": 7287980
+    },
+    {
+      "CountryName": "Hungary",
+      "CountryCode": "HU",
+      "ContinentCode": "EU",
+      "CenterLongitude": 20,
+      "CenterLatitude": 47,
+      "Population": 9855020
+    },
+    {
+      "CountryName": "Iceland",
+      "CountryCode": "IS",
+      "ContinentCode": "EU",
+      "CenterLongitude": -18,
+      "CenterLatitude": 65,
+      "Population": 329430
+    },
+    {
+      "CountryName": "India",
+      "CountryCode": "IN",
+      "ContinentCode": "AS",
+      "CenterLongitude": 77,
+      "CenterLatitude": 20,
+      "Population": 1311050530
+    },
+    {
+      "CountryName": "Indonesia",
+      "CountryCode": "ID",
+      "ContinentCode": "AS",
+      "CenterLongitude": 120,
+      "CenterLatitude": -5,
+      "Population": 257563820
+    },
+    {
+      "CountryName": "Iran",
+      "CountryCode": "IR",
+      "ContinentCode": "AS",
+      "CenterLongitude": 53,
+      "CenterLatitude": 32,
+      "Population": 79109270
+    },
+    {
+      "CountryName": "Iraq",
+      "CountryCode": "IQ",
+      "ContinentCode": "AS",
+      "CenterLongitude": 44,
+      "CenterLatitude": 33,
+      "Population": 36423400
+    },
+    {
+      "CountryName": "Ireland",
+      "CountryCode": "IE",
+      "ContinentCode": "EU",
+      "CenterLongitude": -8,
+      "CenterLatitude": 53,
+      "Population": 4688470
+    },
+    {
+      "CountryName": "Isle of Man",
+      "CountryCode": "IM",
+      "ContinentCode": "EU",
+      "CenterLongitude": -4.55,
+      "CenterLatitude": 54.23,
+      "Population": 87780
+    },
+    {
+      "CountryName": "Israel",
+      "CountryCode": "IL",
+      "ContinentCode": "AS",
+      "CenterLongitude": 34.75,
+      "CenterLatitude": 31.5,
+      "Population": 8064040
+    },
+    {
+      "CountryName": "Italy",
+      "CountryCode": "IT",
+      "ContinentCode": "EU",
+      "CenterLongitude": 12.83,
+      "CenterLatitude": 42.83,
+      "Population": 59797690
+    },
+    {
+      "CountryName": "Jamaica",
+      "CountryCode": "JM",
+      "ContinentCode": "NA",
+      "CenterLongitude": -77.5,
+      "CenterLatitude": 18.25,
+      "Population": 2793340
+    },
+    {
+      "CountryName": "Japan",
+      "CountryCode": "JP",
+      "ContinentCode": "AS",
+      "CenterLongitude": 138,
+      "CenterLatitude": 36,
+      "Population": 126573480
+    },
+    {
+      "CountryName": "Jordan",
+      "CountryCode": "JO",
+      "ContinentCode": "AS",
+      "CenterLongitude": 36,
+      "CenterLatitude": 31,
+      "Population": 7594550
+    },
+    {
+      "CountryName": "Kazakhstan",
+      "CountryCode": "KZ",
+      "ContinentCode": "AS",
+      "CenterLongitude": 68,
+      "CenterLatitude": 48,
+      "Population": 17625230
+    },
+    {
+      "CountryName": "Kenya",
+      "CountryCode": "KE",
+      "ContinentCode": "AF",
+      "CenterLongitude": 38,
+      "CenterLatitude": 1,
+      "Population": 46050300
+    },
+    {
+      "CountryName": "Kiribati",
+      "CountryCode": "KI",
+      "ContinentCode": "OC",
+      "CenterLongitude": -170,
+      "CenterLatitude": -5,
+      "Population": 112420
+    },
+    {
+      "CountryName": "Korea (North)",
+      "CountryCode": "KP",
+      "ContinentCode": "AS",
+      "CenterLongitude": 127,
+      "CenterLatitude": 40,
+      "Population": 25155320
+    },
+    {
+      "CountryName": "Korea (South)",
+      "CountryCode": "KR",
+      "ContinentCode": "AS",
+      "CenterLongitude": 127.5,
+      "CenterLatitude": 37,
+      "Population": 50293440
+    },
+    {
+      "CountryName": "Kuwait",
+      "CountryCode": "KW",
+      "ContinentCode": "AS",
+      "CenterLongitude": 47.75,
+      "CenterLatitude": 29.5,
+      "Population": 3892120
+    },
+    {
+      "CountryName": "Kyrgyzstan",
+      "CountryCode": "KG",
+      "ContinentCode": "AS",
+      "CenterLongitude": 75,
+      "CenterLatitude": 41,
+      "Population": 5939960
+    },
+    {
+      "CountryName": "Laos",
+      "CountryCode": "LA",
+      "ContinentCode": "AS",
+      "CenterLongitude": 105,
+      "CenterLatitude": 18,
+      "Population": 6802020
+    },
+    {
+      "CountryName": "Latvia",
+      "CountryCode": "LV",
+      "ContinentCode": "EU",
+      "CenterLongitude": 25,
+      "CenterLatitude": 57,
+      "Population": 1970500
+    },
+    {
+      "CountryName": "Lebanon",
+      "CountryCode": "LB",
+      "ContinentCode": "AS",
+      "CenterLongitude": 35.83,
+      "CenterLatitude": 33.83,
+      "Population": 5850740
+    },
+    {
+      "CountryName": "Lesotho",
+      "CountryCode": "LS",
+      "ContinentCode": "AF",
+      "CenterLongitude": 28.25,
+      "CenterLatitude": -29.5,
+      "Population": 2135020
+    },
+    {
+      "CountryName": "Liberia",
+      "CountryCode": "LR",
+      "ContinentCode": "AF",
+      "CenterLongitude": -9.5,
+      "CenterLatitude": 6.5,
+      "Population": 4503440
+    },
+    {
+      "CountryName": "Libyan Arab Jamahiriya",
+      "CountryCode": "LY",
+      "ContinentCode": "AF",
+      "CenterLongitude": 17,
+      "CenterLatitude": 25,
+      "Population": 6278440
+    },
+    {
+      "CountryName": "Liechtenstein",
+      "CountryCode": "LI",
+      "ContinentCode": "EU",
+      "CenterLongitude": 9.53,
+      "CenterLatitude": 47.17,
+      "Population": 37530
+    },
+    {
+      "CountryName": "Lithuania",
+      "CountryCode": "LT",
+      "ContinentCode": "EU",
+      "CenterLongitude": 24,
+      "CenterLatitude": 56,
+      "Population": 2878410
+    },
+    {
+      "CountryName": "Luxembourg",
+      "CountryCode": "LU",
+      "ContinentCode": "EU",
+      "CenterLongitude": 6.17,
+      "CenterLatitude": 49.75,
+      "Population": 567110
+    },
+    {
+      "CountryName": "Macao",
+      "CountryCode": "MO",
+      "ContinentCode": "AS",
+      "CenterLongitude": 113,
+      "CenterLatitude": 22,
+      "Population": 587610
+    },
+    {
+      "CountryName": "Macedonia",
+      "CountryCode": "MK",
+      "ContinentCode": "EU",
+      "CenterLongitude": 22,
+      "CenterLatitude": 41.83,
+      "Population": 2078449
+    },
+    {
+      "CountryName": "Madagascar",
+      "CountryCode": "MG",
+      "ContinentCode": "AF",
+      "CenterLongitude": 47,
+      "CenterLatitude": -20,
+      "Population": 24235390
+    },
+    {
+      "CountryName": "Malawi",
+      "CountryCode": "MW",
+      "ContinentCode": "AF",
+      "CenterLongitude": 34,
+      "CenterLatitude": -13.5,
+      "Population": 17215230
+    },
+    {
+      "CountryName": "Malaysia",
+      "CountryCode": "MY",
+      "ContinentCode": "AS",
+      "CenterLongitude": 101.97,
+      "CenterLatitude": 4.22,
+      "Population": 30331010
+    },
+    {
+      "CountryName": "Maldives",
+      "CountryCode": "MV",
+      "ContinentCode": "AS",
+      "CenterLongitude": 73,
+      "CenterLatitude": 3.2,
+      "Population": 363660
+    },
+    {
+      "CountryName": "Mali",
+      "CountryCode": "ML",
+      "ContinentCode": "AF",
+      "CenterLongitude": -4,
+      "CenterLatitude": 17,
+      "Population": 17599690
+    },
+    {
+      "CountryName": "Malta",
+      "CountryCode": "MT",
+      "ContinentCode": "EU",
+      "CenterLongitude": 14.42,
+      "CenterLatitude": 35.92,
+      "Population": 418670
+    },
+    {
+      "CountryName": "Marshall Islands",
+      "CountryCode": "MH",
+      "ContinentCode": "OC",
+      "CenterLongitude": 168,
+      "CenterLatitude": 11,
+      "Population": 52990
+    },
+    {
+      "CountryName": "Martinique",
+      "CountryCode": "MQ",
+      "ContinentCode": "NA",
+      "CenterLongitude": -61,
+      "CenterLatitude": 14.67,
+      "Population": 396430
+    },
+    {
+      "CountryName": "Mauritania",
+      "CountryCode": "MR",
+      "ContinentCode": "AF",
+      "CenterLongitude": -12,
+      "CenterLatitude": 20,
+      "Population": 4067560
+    },
+    {
+      "CountryName": "Mauritius",
+      "CountryCode": "MU",
+      "ContinentCode": "AF",
+      "CenterLongitude": 57.58,
+      "CenterLatitude": -20.3,
+      "Population": 1273210
+    },
+    {
+      "CountryName": "Mayotte",
+      "CountryCode": "YT",
+      "ContinentCode": "AF",
+      "CenterLongitude": 45.17,
+      "CenterLatitude": -12.83,
+      "Population": 240020
+    },
+    {
+      "CountryName": "Mexico",
+      "CountryCode": "MX",
+      "ContinentCode": "NA",
+      "CenterLongitude": -102,
+      "CenterLatitude": 23,
+      "Population": 127017220
+    },
+    {
+      "CountryName": "Micronesia",
+      "CountryCode": "FM",
+      "ContinentCode": "OC",
+      "CenterLongitude": 152,
+      "CenterLatitude": 5,
+      "Population": 104460
+    },
+    {
+      "CountryName": "Moldova",
+      "CountryCode": "MD",
+      "ContinentCode": "EU",
+      "CenterLongitude": 29,
+      "CenterLatitude": 47,
+      "Population": 4068900
+    },
+    {
+      "CountryName": "Monaco",
+      "CountryCode": "MC",
+      "ContinentCode": "EU",
+      "CenterLongitude": 7.42,
+      "CenterLatitude": 43.73,
+      "Population": 37730
+    },
+    {
+      "CountryName": "Mongolia",
+      "CountryCode": "MN",
+      "ContinentCode": "AS",
+      "CenterLongitude": 105,
+      "CenterLatitude": 46,
+      "Population": 2959130
+    },
+    {
+      "CountryName": "Montenegro",
+      "CountryCode": "ME",
+      "ContinentCode": "EU",
+      "CenterLongitude": 19.2,
+      "CenterLatitude": 42.8,
+      "Population": 625780
+    },
+    {
+      "CountryName": "Montserrat",
+      "CountryCode": "MS",
+      "ContinentCode": "NA",
+      "CenterLongitude": -62.2,
+      "CenterLatitude": 16.75,
+      "Population": 5130
+    },
+    {
+      "CountryName": "Morocco",
+      "CountryCode": "MA",
+      "ContinentCode": "AF",
+      "CenterLongitude": -5,
+      "CenterLatitude": 32,
+      "Population": 34377510
+    },
+    {
+      "CountryName": "Mozambique",
+      "CountryCode": "MZ",
+      "ContinentCode": "AF",
+      "CenterLongitude": 35,
+      "CenterLatitude": -18.25,
+      "Population": 27977860
+    },
+    {
+      "CountryName": "Myanmar",
+      "CountryCode": "MM",
+      "ContinentCode": "AS",
+      "CenterLongitude": 98,
+      "CenterLatitude": 22,
+      "Population": 53897150
+    },
+    {
+      "CountryName": "Namibia",
+      "CountryCode": "NA",
+      "ContinentCode": "AF",
+      "CenterLongitude": 17,
+      "CenterLatitude": -22,
+      "Population": 2458830
+    },
+    {
+      "CountryName": "Nauru",
+      "CountryCode": "NR",
+      "ContinentCode": "OC",
+      "CenterLongitude": 166.92,
+      "CenterLatitude": -0.53,
+      "Population": 10220
+    },
+    {
+      "CountryName": "Nepal",
+      "CountryCode": "NP",
+      "ContinentCode": "AS",
+      "CenterLongitude": 84,
+      "CenterLatitude": 28,
+      "Population": 28513700
+    },
+    {
+      "CountryName": "Netherlands",
+      "CountryCode": "NL",
+      "ContinentCode": "EU",
+      "CenterLongitude": 5.75,
+      "CenterLatitude": 52.5,
+      "Population": 16924930
+    },
+    {
+      "CountryName": "New Caledonia",
+      "CountryCode": "NC",
+      "ContinentCode": "OC",
+      "CenterLongitude": 165.5,
+      "CenterLatitude": -21.5,
+      "Population": 263120
+    },
+    {
+      "CountryName": "New Zealand",
+      "CountryCode": "NZ",
+      "ContinentCode": "OC",
+      "CenterLongitude": 174,
+      "CenterLatitude": -42,
+      "Population": 4528530
+    },
+    {
+      "CountryName": "Nicaragua",
+      "CountryCode": "NI",
+      "ContinentCode": "NA",
+      "CenterLongitude": -85,
+      "CenterLatitude": 13,
+      "Population": 6082030
+    },
+    {
+      "CountryName": "Niger",
+      "CountryCode": "NE",
+      "ContinentCode": "AF",
+      "CenterLongitude": 8,
+      "CenterLatitude": 16,
+      "Population": 19899120
+    },
+    {
+      "CountryName": "Nigeria",
+      "CountryCode": "NG",
+      "ContinentCode": "AF",
+      "CenterLongitude": 8,
+      "CenterLatitude": 10,
+      "Population": 182201960
+    },
+    {
+      "CountryName": "Niue",
+      "CountryCode": "NU",
+      "ContinentCode": "OC",
+      "CenterLongitude": -169.87,
+      "CenterLatitude": -19.03,
+      "Population": 1610
+    },
+    {
+      "CountryName": "Northern Mariana Islands",
+      "CountryCode": "MP",
+      "ContinentCode": "OC",
+      "CenterLongitude": 145.67,
+      "CenterLatitude": 15.12,
+      "Population": 55070
+    },
+    {
+      "CountryName": "Norway",
+      "CountryCode": "NO",
+      "ContinentCode": "EU",
+      "CenterLongitude": 10,
+      "CenterLatitude": 62,
+      "Population": 5210970
+    },
+    {
+      "CountryName": "Oman",
+      "CountryCode": "OM",
+      "ContinentCode": "AS",
+      "CenterLongitude": 57,
+      "CenterLatitude": 21,
+      "Population": 4490540
+    },
+    {
+      "CountryName": "Pakistan",
+      "CountryCode": "PK",
+      "ContinentCode": "AS",
+      "CenterLongitude": 70,
+      "CenterLatitude": 30,
+      "Population": 188924870
+    },
+    {
+      "CountryName": "Palau",
+      "CountryCode": "PW",
+      "ContinentCode": "OC",
+      "CenterLongitude": 134,
+      "CenterLatitude": 6,
+      "Population": 21290
+    },
+    {
+      "CountryName": "Panama",
+      "CountryCode": "PA",
+      "ContinentCode": "NA",
+      "CenterLongitude": -80,
+      "CenterLatitude": 9,
+      "Population": 3929140
+    },
+    {
+      "CountryName": "Papua New Guinea",
+      "CountryCode": "PG",
+      "ContinentCode": "OC",
+      "CenterLongitude": 147,
+      "CenterLatitude": -6,
+      "Population": 7619320
+    },
+    {
+      "CountryName": "Paraguay",
+      "CountryCode": "PY",
+      "ContinentCode": "SA",
+      "CenterLongitude": -58,
+      "CenterLatitude": -23,
+      "Population": 6639120
+    },
+    {
+      "CountryName": "Peru",
+      "CountryCode": "PE",
+      "ContinentCode": "SA",
+      "CenterLongitude": -76,
+      "CenterLatitude": -10,
+      "Population": 31376670
+    },
+    {
+      "CountryName": "Philippines",
+      "CountryCode": "PH",
+      "ContinentCode": "AS",
+      "CenterLongitude": 122,
+      "CenterLatitude": 13,
+      "Population": 100699400
+    },
+    {
+      "CountryName": "Poland",
+      "CountryCode": "PL",
+      "ContinentCode": "EU",
+      "CenterLongitude": 20,
+      "CenterLatitude": 52,
+      "Population": 38611790
+    },
+    {
+      "CountryName": "Portugal",
+      "CountryCode": "PT",
+      "ContinentCode": "EU",
+      "CenterLongitude": -8,
+      "CenterLatitude": 39.5,
+      "Population": 10349800
+    },
+    {
+      "CountryName": "Puerto Rico",
+      "CountryCode": "PR",
+      "ContinentCode": "NA",
+      "CenterLongitude": -66.55,
+      "CenterLatitude": 18.23,
+      "Population": 3683240
+    },
+    {
+      "CountryName": "Qatar",
+      "CountryCode": "QA",
+      "ContinentCode": "AS",
+      "CenterLongitude": 51.25,
+      "CenterLatitude": 25.5,
+      "Population": 2235360
+    },
+    {
+      "CountryName": "Reunion",
+      "CountryCode": "RE",
+      "ContinentCode": "AF",
+      "CenterLongitude": 55.6,
+      "CenterLatitude": -21.1,
+      "Population": 861150
+    },
+    {
+      "CountryName": "Romania",
+      "CountryCode": "RO",
+      "ContinentCode": "EU",
+      "CenterLongitude": 25,
+      "CenterLatitude": 46,
+      "Population": 19511320
+    },
+    {
+      "CountryName": "Russian Federation",
+      "CountryCode": "RU",
+      "ContinentCode": "EU",
+      "CenterLongitude": 47,
+      "CenterLatitude": 60,
+      "Population": 143456920
+    },
+    {
+      "CountryName": "Rwanda",
+      "CountryCode": "RW",
+      "ContinentCode": "AF",
+      "CenterLongitude": 30,
+      "CenterLatitude": -2,
+      "Population": 11609670
+    },
+    {
+      "CountryName": "Saint Helena",
+      "CountryCode": "SH",
+      "ContinentCode": "AF",
+      "CenterLongitude": -5.7,
+      "CenterLatitude": -15.95,
+      "Population": 3960
+    },
+    {
+      "CountryName": "Saint Kitts and Nevis",
+      "CountryCode": "KN",
+      "ContinentCode": "NA",
+      "CenterLongitude": -62.75,
+      "CenterLatitude": 17.33,
+      "Population": 55570
+    },
+    {
+      "CountryName": "Saint Lucia",
+      "CountryCode": "LC",
+      "ContinentCode": "NA",
+      "CenterLongitude": -60.97,
+      "CenterLatitude": 13.88,
+      "Population": 185000
+    },
+    {
+      "CountryName": "Saint Pierre and Miquelon",
+      "CountryCode": "PM",
+      "ContinentCode": "NA",
+      "CenterLongitude": -56.33,
+      "CenterLatitude": 46.83,
+      "Population": 6290
+    },
+    {
+      "CountryName": "Saint Vincent and the Grenadines",
+      "CountryCode": "VC",
+      "ContinentCode": "NA",
+      "CenterLongitude": -61.2,
+      "CenterLatitude": 13.08,
+      "Population": 109460
+    },
+    {
+      "CountryName": "Samoa",
+      "CountryCode": "WS",
+      "ContinentCode": "OC",
+      "CenterLongitude": -172.33,
+      "CenterLatitude": -13.58,
+      "Population": 193230
+    },
+    {
+      "CountryName": "San Marino",
+      "CountryCode": "SM",
+      "ContinentCode": "EU",
+      "CenterLongitude": 12.42,
+      "CenterLatitude": 43.93,
+      "Population": 31780
+    },
+    {
+      "CountryName": "Sao Tome and Principe",
+      "CountryCode": "ST",
+      "ContinentCode": "AF",
+      "CenterLongitude": 7,
+      "CenterLatitude": 1,
+      "Population": 190340
+    },
+    {
+      "CountryName": "Saudi Arabia",
+      "CountryCode": "SA",
+      "ContinentCode": "AS",
+      "CenterLongitude": 45,
+      "CenterLatitude": 25,
+      "Population": 31540370
+    },
+    {
+      "CountryName": "Senegal",
+      "CountryCode": "SN",
+      "ContinentCode": "AF",
+      "CenterLongitude": -14,
+      "CenterLatitude": 14,
+      "Population": 15129270
+    },
+    {
+      "CountryName": "Serbia",
+      "CountryCode": "RS",
+      "ContinentCode": "EU",
+      "CenterLongitude": 21,
+      "CenterLatitude": 43.8,
+      "Population": 8850980
+    },
+    {
+      "CountryName": "Seychelles",
+      "CountryCode": "SC",
+      "ContinentCode": "AF",
+      "CenterLongitude": 55.67,
+      "CenterLatitude": -4.58,
+      "Population": 96470
+    },
+    {
+      "CountryName": "Sierra Leone",
+      "CountryCode": "SL",
+      "ContinentCode": "AF",
+      "CenterLongitude": -11.5,
+      "CenterLatitude": 8.5,
+      "Population": 6453180
+    },
+    {
+      "CountryName": "Singapore",
+      "CountryCode": "SG",
+      "ContinentCode": "AS",
+      "CenterLongitude": 103.8,
+      "CenterLatitude": 1.37,
+      "Population": 5603740
+    },
+    {
+      "CountryName": "Slovakia",
+      "CountryCode": "SK",
+      "ContinentCode": "EU",
+      "CenterLongitude": 19.5,
+      "CenterLatitude": 48.67,
+      "Population": 5426260
+    },
+    {
+      "CountryName": "Slovenia",
+      "CountryCode": "SI",
+      "ContinentCode": "EU",
+      "CenterLongitude": 15.17,
+      "CenterLatitude": 46.25,
+      "Population": 2067530
+    },
+    {
+      "CountryName": "Solomon Islands",
+      "CountryCode": "SB",
+      "ContinentCode": "OC",
+      "CenterLongitude": 159,
+      "CenterLatitude": -8,
+      "Population": 583590
+    },
+    {
+      "CountryName": "Somalia",
+      "CountryCode": "SO",
+      "ContinentCode": "AF",
+      "CenterLongitude": 48,
+      "CenterLatitude": 6,
+      "Population": 10787100
+    },
+    {
+      "CountryName": "South Africa",
+      "CountryCode": "ZA",
+      "ContinentCode": "AF",
+      "CenterLongitude": 26,
+      "CenterLatitude": -30,
+      "Population": 54490410
+    },
+    {
+      "CountryName": "Spain",
+      "CountryCode": "ES",
+      "ContinentCode": "EU",
+      "CenterLongitude": -4,
+      "CenterLatitude": 40,
+      "Population": 46121700
+    },
+    {
+      "CountryName": "Sri Lanka",
+      "CountryCode": "LK",
+      "ContinentCode": "AS",
+      "CenterLongitude": 81,
+      "CenterLatitude": 7,
+      "Population": 20715010
+    },
+    {
+      "CountryName": "Suriname",
+      "CountryCode": "SR",
+      "ContinentCode": "SA",
+      "CenterLongitude": -56,
+      "CenterLatitude": 4,
+      "Population": 542980
+    },
+    {
+      "CountryName": "Swaziland",
+      "CountryCode": "SZ",
+      "ContinentCode": "AF",
+      "CenterLongitude": 31.5,
+      "CenterLatitude": -26.5,
+      "Population": 1286970
+    },
+    {
+      "CountryName": "Sweden",
+      "CountryCode": "SE",
+      "ContinentCode": "EU",
+      "CenterLongitude": 15,
+      "CenterLatitude": 62,
+      "Population": 9779430
+    },
+    {
+      "CountryName": "Switzerland",
+      "CountryCode": "CH",
+      "ContinentCode": "EU",
+      "CenterLongitude": 8,
+      "CenterLatitude": 47,
+      "Population": 8298660
+    },
+    {
+      "CountryName": "Syrian Arab Republic",
+      "CountryCode": "SY",
+      "ContinentCode": "AS",
+      "CenterLongitude": 38,
+      "CenterLatitude": 35,
+      "Population": 18502410
+    },
+    {
+      "CountryName": "Taiwan, Province of China",
+      "CountryCode": "TW",
+      "ContinentCode": "AS",
+      "CenterLongitude": 121,
+      "CenterLatitude": 23.5,
+      "Population": 23381040
+    },
+    {
+      "CountryName": "Tajikistan",
+      "CountryCode": "TJ",
+      "ContinentCode": "AS",
+      "CenterLongitude": 71,
+      "CenterLatitude": 39,
+      "Population": 8481860
+    },
+    {
+      "CountryName": "Tanzania",
+      "CountryCode": "TZ",
+      "ContinentCode": "AF",
+      "CenterLongitude": 35,
+      "CenterLatitude": -6,
+      "Population": 53470420
+    },
+    {
+      "CountryName": "Thailand",
+      "CountryCode": "TH",
+      "ContinentCode": "AS",
+      "CenterLongitude": 100,
+      "CenterLatitude": 15,
+      "Population": 67959360
+    },
+    {
+      "CountryName": "Timor-Leste",
+      "CountryCode": "TL",
+      "ContinentCode": "AS",
+      "CenterLongitude": 125.72,
+      "CenterLatitude": -8.87,
+      "Population": 1184770
+    },
+    {
+      "CountryName": "Togo",
+      "CountryCode": "TG",
+      "ContinentCode": "AF",
+      "CenterLongitude": 1.17,
+      "CenterLatitude": 8,
+      "Population": 7304580
+    },
+    {
+      "CountryName": "Tokelau",
+      "CountryCode": "TK",
+      "ContinentCode": "OC",
+      "CenterLongitude": -171.75,
+      "CenterLatitude": -9,
+      "Population": 1250
+    },
+    {
+      "CountryName": "Tonga",
+      "CountryCode": "TO",
+      "ContinentCode": "OC",
+      "CenterLongitude": -175,
+      "CenterLatitude": -20,
+      "Population": 106170
+    },
+    {
+      "CountryName": "Trinidad and Tobago",
+      "CountryCode": "TT",
+      "ContinentCode": "NA",
+      "CenterLongitude": -61,
+      "CenterLatitude": 11,
+      "Population": 1360090
+    },
+    {
+      "CountryName": "Tunisia",
+      "CountryCode": "TN",
+      "ContinentCode": "AF",
+      "CenterLongitude": 9,
+      "CenterLatitude": 34,
+      "Population": 11253550
+    },
+    {
+      "CountryName": "Turkey",
+      "CountryCode": "TR",
+      "ContinentCode": "AS",
+      "CenterLongitude": 35,
+      "CenterLatitude": 39,
+      "Population": 78665830
+    },
+    {
+      "CountryName": "Turkmenistan",
+      "CountryCode": "TM",
+      "ContinentCode": "AS",
+      "CenterLongitude": 60,
+      "CenterLatitude": 40,
+      "Population": 5373500
+    },
+    {
+      "CountryName": "Turks and Caicos Islands",
+      "CountryCode": "TC",
+      "ContinentCode": "NA",
+      "CenterLongitude": -71.58,
+      "CenterLatitude": 21.73,
+      "Population": 34340
+    },
+    {
+      "CountryName": "Tuvalu",
+      "CountryCode": "TV",
+      "ContinentCode": "OC",
+      "CenterLongitude": 178,
+      "CenterLatitude": -8,
+      "Population": 9920
+    },
+    {
+      "CountryName": "Uganda",
+      "CountryCode": "UG",
+      "ContinentCode": "AF",
+      "CenterLongitude": 33,
+      "CenterLatitude": 2,
+      "Population": 39032380
+    },
+    {
+      "CountryName": "Ukraine",
+      "CountryCode": "UA",
+      "ContinentCode": "EU",
+      "CenterLongitude": 32,
+      "CenterLatitude": 49,
+      "Population": 44823770
+    },
+    {
+      "CountryName": "United Arab Emirates",
+      "CountryCode": "AE",
+      "ContinentCode": "AS",
+      "CenterLongitude": 54,
+      "CenterLatitude": 24,
+      "Population": 9156960
+    },
+    {
+      "CountryName": "United Kingdom",
+      "CountryCode": "GB",
+      "ContinentCode": "EU",
+      "CenterLongitude": -4.5,
+      "CenterLatitude": 54,
+      "Population": 64715810
+    },
+    {
+      "CountryName": "United States",
+      "CountryCode": "US",
+      "ContinentCode": "NA",
+      "CenterLongitude": -98,
+      "CenterLatitude": 38,
+      "Population": 321773630
+    },
+    {
+      "CountryName": "United States Minor Outlying Islands",
+      "CountryCode": "UM",
+      "ContinentCode": "OC",
+      "CenterLongitude": -175,
+      "CenterLatitude": 10,
+      "Population": 106290
+    },
+    {
+      "CountryName": "Uruguay",
+      "CountryCode": "UY",
+      "ContinentCode": "SA",
+      "CenterLongitude": -56,
+      "CenterLatitude": -33,
+      "Population": 3431560
+    },
+    {
+      "CountryName": "Uzbekistan",
+      "CountryCode": "UZ",
+      "ContinentCode": "AS",
+      "CenterLongitude": 64,
+      "CenterLatitude": 41,
+      "Population": 29893490
+    },
+    {
+      "CountryName": "Vanuatu",
+      "CountryCode": "VU",
+      "ContinentCode": "OC",
+      "CenterLongitude": 167,
+      "CenterLatitude": -16,
+      "Population": 264650
+    },
+    {
+      "CountryName": "Venezuela",
+      "CountryCode": "VE",
+      "ContinentCode": "SA",
+      "CenterLongitude": -66,
+      "CenterLatitude": 8,
+      "Population": 31108080
+    },
+    {
+      "CountryName": "Viet Nam",
+      "CountryCode": "VN",
+      "ContinentCode": "AS",
+      "CenterLongitude": 106,
+      "CenterLatitude": 16,
+      "Population": 93447600
+    },
+    {
+      "CountryName": "Virgin Islands, British",
+      "CountryCode": "VG",
+      "ContinentCode": "NA",
+      "CenterLongitude": -64.5,
+      "CenterLatitude": 18.5,
+      "Population": 30120
+    },
+    {
+      "CountryName": "Wallis and Futuna",
+      "CountryCode": "WF",
+      "ContinentCode": "OC",
+      "CenterLongitude": -177,
+      "CenterLatitude": -14,
+      "Population": 13150
+    },
+    {
+      "CountryName": "Yemen",
+      "CountryCode": "YE",
+      "ContinentCode": "AS",
+      "CenterLongitude": 47.5,
+      "CenterLatitude": 15.5,
+      "Population": 26832220
+    },
+    {
+      "CountryName": "Zambia",
+      "CountryCode": "ZM",
+      "ContinentCode": "AF",
+      "CenterLongitude": 30,
+      "CenterLatitude": -15,
+      "Population": 16211770
+    },
+    {
+      "CountryName": "Zimbabwe",
+      "CountryCode": "ZW",
+      "ContinentCode": "AF",
+      "CenterLongitude": 29,
+      "CenterLatitude": -19,
+      "Population": 15602750
+    }
+   ]
