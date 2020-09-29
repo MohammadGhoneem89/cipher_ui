@@ -260,14 +260,21 @@ class ChangeTracking extends React.Component {
     let keysLength =  Object.keys(rows).length;
 
     if(keysLength>=0 && keysLength<3){
-      columns=[
-        { alias: "Field", key: "field", type: "string" },
-        { alias: "REV-NO-1", key: "REV-NO-1", type: "revString" },
-        { alias: "REV-NO-2", key: "REV-NO-2", type: "revString" },
-        { alias: "REV-NO-3", key: "REV-NO-3", type: "revString" },
-        { alias: "Latest", key: "latest", type: "revLatest" }
-      ]
+      Object.keys(rows).forEach(k=>{
+        columns.push({ alias: `${k}`, key: `${k}`, type: "revString" });
+      });
+      columns.reverse();
+      columns.unshift({ alias: "Field", key: "field", type: "string" });
+      columns.push({ alias: "Latest", key: "latest", type: "revLatest" });
       allColumns.push(columns);
+      // columns=[
+      //   { alias: "Field", key: "field", type: "string" },
+      //   { alias: "REV-NO-1", key: "REV-NO-1", type: "revString" },
+      //   { alias: "REV-NO-2", key: "REV-NO-2", type: "revString" },
+      //   { alias: "REV-NO-3", key: "REV-NO-3", type: "revString" },
+      //   { alias: "Latest", key: "latest", type: "revLatest" }
+      // ]
+      // allColumns.push(columns);
     }
     else{
       Object.keys(rows).forEach(k=>{
