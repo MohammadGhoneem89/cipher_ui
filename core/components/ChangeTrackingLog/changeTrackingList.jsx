@@ -148,21 +148,7 @@ class ChangeTracking extends React.Component {
         privateCollection:nextProps.getCollectionList
       })
     }
-    if(nextProps.getRevisionsList){
-      this.setState({
-        isLoading:false
-      })
-      console.log(nextProps.getRevisionsList,"RRRRRRRRRRRrr");
-      this.handleData(nextProps.getRevisionsList);
-      // this.setState({
-      //   privateCollection:nextProps.getCollectionList
-      // })
-    }
-    if(!nextProps.getRevisionsList){
-      this.setState({
-        isLoading:false
-      })
-    }
+   
   }
 
   // // componentWillMount() {
@@ -303,38 +289,7 @@ class ChangeTracking extends React.Component {
   }
 
   formSubmit() {
-    // const data = {
-    //   "latest": {
-    //       "Foo": "bar",
-    //       "sampleobjArr": [
-    //           {
-    //               "Test": "op"
-    //           }
-    //       ],
-    //       "sampleobj": {
-    //           "Test": "top"
-    //       }
-    //   },
-    //   "Rev-4": {
-    //     "Foo": "bary"
-    //   },
-    //   "Rev-3": {
-    //     "Foo": "barz"
-    //   },
-    //   "Rev-2": {
-    //     "Foo": "barz"
-    // },
-    //   "Rev-1": {
-    //       "Foo": "barz",
-    //       "sampleobj": {
-    //         "Test": "top"
-    //     }
-          
-    //   }
-     
-      
-    // };
-    // this.handleData(data);
+  
     if(this.state.selectedChannel && this.state.selectedSmartcontract && this.state.selectedEndpoint && this.state.selectedCollection && this.state.smKey){
       this.setState({
         isLoading:true
@@ -354,7 +309,34 @@ class ChangeTracking extends React.Component {
         "key":this.state.smKey
       }
       console.log(body,"Bodyyyyyyyyyyyyyyyyyyyy");
-      this.props.actions.generalProcess(constants.getDocumentRevesions,body);
+      this.props.actions.generalAsyncProcess(constants.getDocumentRevesions,body).then(data=>{
+        if(data.result){
+          this.setState({
+            isLoading:false
+          })
+          console.log(data.result,"RRRRRRRRRRRrr");
+          this.handleData(data.result);
+          // this.setState({
+          //   privateCollection:nextProps.getCollectionList
+          // })
+        }
+        if(!Object.keys(data.result).length){
+          this.setState({
+            isLoading:false,
+            allColumns:[],
+            gridColumns:[
+              { alias: "Field", key: "field", type: "string" },
+              { alias: "REV-NO-1", key: "REV-NO-1", type: "revString" },
+              { alias: "REV-NO-2", key: "REV-NO-2", type: "revString" },
+              { alias: "REV-NO-3", key: "REV-NO-3", type: "revString" },
+              { alias: "Latest", key: "latest", type: "revLatest" }
+            ],
+            revData:[],
+          })
+        }
+      }).catch(err=>{
+        console.log(err);
+      });
     }
     else{
       alert("All fields are required");
@@ -680,7 +662,7 @@ function mapStateToProps(state, ownProps) {
     ConsortiumTypeData: state.app.ConsortiumTypeData,
     getEndpointListView: state.app.getEndpointListView,
     getCollectionList:state.app["collectionNameList"]?state.app.collectionNameList:"",
-    getRevisionsList:state.app["result"]?state.app.result:""
+    // getRevisionsList:state.app["result"]?state.app.result:""
   };
 }
 
