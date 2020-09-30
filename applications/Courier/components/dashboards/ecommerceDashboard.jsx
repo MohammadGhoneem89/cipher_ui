@@ -45,6 +45,7 @@ import sankeyData from './sankey-data.json';
 import BubbleChart from '../../common/charts/bubbleChart-CSBOX.js';
 import SankeyChart from '../../common/charts/d3-sankey-chart.jsx';
 import MultiLineChart from '../../common/charts/d3-multiLine-chart.jsx';
+import CountryBubbleChart from '../../common/charts/countryBubbleChart.jsx';
 // bubbleChartFc
 
 let interval;
@@ -58,7 +59,7 @@ class EcommerceDashboard extends React.Component {
             widget3isLoading: true,
             widget4isLoading: true,
             widget5isLoading: true,
-            widgetIds: [1, 2, 3, 4, 5, 6, 7, 10, 11],
+            widgetIds: [1, 2, 3, 4, 5, 6, 7, 10, 11, 20, 21, 22],
             selectedYears: [],
             options: [{ name: 'Srigar', id: 1 }, { name: 'Sam', id: 2 }],
             selectedQuarters: [],
@@ -511,382 +512,382 @@ class EcommerceDashboard extends React.Component {
     //     return chart;
     // }
 
-    createBubbleChart(error, countries, continentNames) {
-        console.log(countries, 'COUNTRIES');
-        var populations = countries.map(function (country) { return +country.Population; });
-        var meanPopulation = d3.mean(populations),
-            populationExtent = d3.extent(populations),
-            populationScaleX,
-            populationScaleY;
+    // createBubbleChart(error, countries, continentNames) {
+    //     console.log(countries, 'COUNTRIES');
+    //     var populations = countries.map(function (country) { return +country.Population; });
+    //     var meanPopulation = d3.mean(populations),
+    //         populationExtent = d3.extent(populations),
+    //         populationScaleX,
+    //         populationScaleY;
 
-        var continents = d3.set(countries.map(function (country) { return country.ContinentCode; }));
-        var continentColorScale = d3.scaleOrdinal(d3.schemeCategory10)
-            .domain(continents.values());
+    //     var continents = d3.set(countries.map(function (country) { return country.ContinentCode; }));
+    //     var continentColorScale = d3.scaleOrdinal(d3.schemeCategory10)
+    //         .domain(continents.values());
 
-        var width = 1200,
-            height = 800;
-        var svg,
-            circles,
-            circleSize = { min: 10, max: 80 };
-        var circleRadiusScale = d3.scaleSqrt()
-            .domain(populationExtent)
-            .range([circleSize.min, circleSize.max]);
+    //     var width = 1200,
+    //         height = 800;
+    //     var svg,
+    //         circles,
+    //         circleSize = { min: 10, max: 80 };
+    //     var circleRadiusScale = d3.scaleSqrt()
+    //         .domain(populationExtent)
+    //         .range([circleSize.min, circleSize.max]);
 
-        var forces,
-            forceSimulation;
+    //     var forces,
+    //         forceSimulation;
 
-        createSVG();
-        toggleContinentKey(!flagFill());
-        createCircles();
-        createForces();
-        createForceSimulation();
-        addFlagDefinitions();
-        addFillListener();
-        addGroupingListeners();
+    //     createSVG();
+    //     toggleContinentKey(!flagFill());
+    //     createCircles();
+    //     createForces();
+    //     createForceSimulation();
+    //     addFlagDefinitions();
+    //     addFillListener();
+    //     addGroupingListeners();
 
-        function createSVG() {
-            svg = d3.select("#bubble-chart")
-                .append("svg")
-                .attr("width", width)
-                .attr("height", height);
-        }
+    //     function createSVG() {
+    //         svg = d3.select("#bubble-chart")
+    //             .append("svg")
+    //             .attr("width", width)
+    //             .attr("height", height);
+    //     }
 
-        function toggleContinentKey(showContinentKey) {
-            var keyElementWidth = 150,
-                keyElementHeight = 30;
-            var onScreenYOffset = keyElementHeight * 1.5,
-                offScreenYOffset = 100;
+    //     function toggleContinentKey(showContinentKey) {
+    //         var keyElementWidth = 150,
+    //             keyElementHeight = 30;
+    //         var onScreenYOffset = keyElementHeight * 1.5,
+    //             offScreenYOffset = 100;
 
-            if (d3.select(".continent-key").empty()) {
-                createContinentKey();
-            }
-            var continentKey = d3.select(".continent-key");
+    //         if (d3.select(".continent-key").empty()) {
+    //             createContinentKey();
+    //         }
+    //         var continentKey = d3.select(".continent-key");
 
-            if (showContinentKey) {
-                translateContinentKey("translate(0," + (height - onScreenYOffset) + ")");
-            } else {
-                translateContinentKey("translate(0," + (height + offScreenYOffset) + ")");
-            }
+    //         if (showContinentKey) {
+    //             translateContinentKey("translate(0," + (height - onScreenYOffset) + ")");
+    //         } else {
+    //             translateContinentKey("translate(0," + (height + offScreenYOffset) + ")");
+    //         }
 
-            function createContinentKey() {
-                var keyWidth = keyElementWidth * continents.values().length;
-                var continentKeyScale = d3.scaleBand()
-                    .domain(continents.values())
-                    .range([(width - keyWidth) / 2, (width + keyWidth) / 2]);
+    //         function createContinentKey() {
+    //             var keyWidth = keyElementWidth * continents.values().length;
+    //             var continentKeyScale = d3.scaleBand()
+    //                 .domain(continents.values())
+    //                 .range([(width - keyWidth) / 2, (width + keyWidth) / 2]);
 
-                svg.append("g")
-                    .attr("class", "continent-key")
-                    .attr("transform", "translate(0," + (height + offScreenYOffset) + ")")
-                    .selectAll("g")
-                    .data(continents.values())
-                    .enter()
-                    .append("g")
-                    .attr("class", "continent-key-element");
+    //             svg.append("g")
+    //                 .attr("class", "continent-key")
+    //                 .attr("transform", "translate(0," + (height + offScreenYOffset) + ")")
+    //                 .selectAll("g")
+    //                 .data(continents.values())
+    //                 .enter()
+    //                 .append("g")
+    //                 .attr("class", "continent-key-element");
 
-                d3.selectAll("g.continent-key-element")
-                    .append("rect")
-                    .attr("width", keyElementWidth)
-                    .attr("height", keyElementHeight)
-                    .attr("x", function (d) { return continentKeyScale(d); })
-                    .attr("fill", function (d) { return continentColorScale(d); });
+    //             d3.selectAll("g.continent-key-element")
+    //                 .append("rect")
+    //                 .attr("width", keyElementWidth)
+    //                 .attr("height", keyElementHeight)
+    //                 .attr("x", function (d) { return continentKeyScale(d); })
+    //                 .attr("fill", function (d) { return continentColorScale(d); });
 
-                d3.selectAll("g.continent-key-element")
-                    .append("text")
-                    .attr("text-anchor", "middle")
-                    .attr("x", function (d) { return continentKeyScale(d) + keyElementWidth / 2; })
-                    .text(function (d) { return continentNames[d]; });
+    //             d3.selectAll("g.continent-key-element")
+    //                 .append("text")
+    //                 .attr("text-anchor", "middle")
+    //                 .attr("x", function (d) { return continentKeyScale(d) + keyElementWidth / 2; })
+    //                 .text(function (d) { return continentNames[d]; });
 
-                // The text BBox has non-zero values only after rendering
-                d3.selectAll("g.continent-key-element text")
-                    .attr("y", function (d) {
-                        var textHeight = this.getBBox().height;
-                        // The BBox.height property includes some extra height we need to remove
-                        var unneededTextHeight = 4;
-                        return ((keyElementHeight + textHeight) / 2) - unneededTextHeight;
-                    });
-            }
+    //             // The text BBox has non-zero values only after rendering
+    //             d3.selectAll("g.continent-key-element text")
+    //                 .attr("y", function (d) {
+    //                     var textHeight = this.getBBox().height;
+    //                     // The BBox.height property includes some extra height we need to remove
+    //                     var unneededTextHeight = 4;
+    //                     return ((keyElementHeight + textHeight) / 2) - unneededTextHeight;
+    //                 });
+    //         }
 
-            function translateContinentKey(translation) {
-                continentKey
-                    .transition()
-                    .duration(500)
-                    .attr("transform", translation);
-            }
-        }
+    //         function translateContinentKey(translation) {
+    //             continentKey
+    //                 .transition()
+    //                 .duration(500)
+    //                 .attr("transform", translation);
+    //         }
+    //     }
 
-        function flagFill() {
-            return isChecked("#flags");
-        }
+    //     function flagFill() {
+    //         return isChecked("#flags");
+    //     }
 
-        function isChecked(elementID) {
-            return d3.select(elementID).property("checked");
-        }
+    //     function isChecked(elementID) {
+    //         return d3.select(elementID).property("checked");
+    //     }
 
-        function createCircles() {
-            var formatPopulation = d3.format(",");
-            circles = svg.selectAll("circle")
-                .data(countries)
-                .enter()
-                .append("circle")
-                .attr("r", function (d) { return circleRadiusScale(d.Population); })
-                .on("mouseover", function (d) {
-                    updateCountryInfo(d);
-                })
-                .on("mouseout", function (d) {
-                    updateCountryInfo();
-                });
-            updateCircles();
+    //     function createCircles() {
+    //         var formatPopulation = d3.format(",");
+    //         circles = svg.selectAll("circle")
+    //             .data(countries)
+    //             .enter()
+    //             .append("circle")
+    //             .attr("r", function (d) { return circleRadiusScale(d.Population); })
+    //             .on("mouseover", function (d) {
+    //                 updateCountryInfo(d);
+    //             })
+    //             .on("mouseout", function (d) {
+    //                 updateCountryInfo();
+    //             });
+    //         updateCircles();
 
-            function updateCountryInfo(country) {
-                var info = "";
-                if (country) {
-                    info = [country.CountryName, formatPopulation(country.Population)].join(": ");
-                }
-                d3.select("#country-info").html(info);
-            }
-        }
+    //         function updateCountryInfo(country) {
+    //             var info = "";
+    //             if (country) {
+    //                 info = [country.CountryName, formatPopulation(country.Population)].join(": ");
+    //             }
+    //             d3.select("#country-info").html(info);
+    //         }
+    //     }
 
-        function updateCircles() {
-            circles
-                .attr("fill", function (d) {
-                    return flagFill() ? "url(#" + d.CountryCode + ")" : continentColorScale(d.ContinentCode);
-                });
-        }
+    //     function updateCircles() {
+    //         circles
+    //             .attr("fill", function (d) {
+    //                 return flagFill() ? "url(#" + d.CountryCode + ")" : continentColorScale(d.ContinentCode);
+    //             });
+    //     }
 
-        function createForces() {
-            var forceStrength = 0.05;
+    //     function createForces() {
+    //         var forceStrength = 0.05;
 
-            forces = {
-                combine: createCombineForces(),
-                countryCenters: createCountryCenterForces(),
-                continent: createContinentForces(),
-                population: createPopulationForces()
-            };
+    //         forces = {
+    //             combine: createCombineForces(),
+    //             countryCenters: createCountryCenterForces(),
+    //             continent: createContinentForces(),
+    //             population: createPopulationForces()
+    //         };
 
-            function createCombineForces() {
-                return {
-                    x: d3.forceX(width / 2).strength(forceStrength),
-                    y: d3.forceY(height / 2).strength(forceStrength)
-                };
-            }
+    //         function createCombineForces() {
+    //             return {
+    //                 x: d3.forceX(width / 2).strength(forceStrength),
+    //                 y: d3.forceY(height / 2).strength(forceStrength)
+    //             };
+    //         }
 
-            function createCountryCenterForces() {
-                var projectionStretchY = 0.25,
-                    projectionMargin = circleSize.max,
-                    projection = d3.geoEquirectangular()
-                        .scale((width / 2 - projectionMargin) / Math.PI)
-                        .translate([width / 2, height * (1 - projectionStretchY) / 2]);
+    //         function createCountryCenterForces() {
+    //             var projectionStretchY = 0.25,
+    //                 projectionMargin = circleSize.max,
+    //                 projection = d3.geoEquirectangular()
+    //                     .scale((width / 2 - projectionMargin) / Math.PI)
+    //                     .translate([width / 2, height * (1 - projectionStretchY) / 2]);
 
-                return {
-                    x: d3.forceX(function (d) {
-                        return projection([d.CenterLongitude, d.CenterLatitude])[0];
-                    }).strength(forceStrength),
-                    y: d3.forceY(function (d) {
-                        return projection([d.CenterLongitude, d.CenterLatitude])[1] * (1 + projectionStretchY);
-                    }).strength(forceStrength)
-                };
-            }
+    //             return {
+    //                 x: d3.forceX(function (d) {
+    //                     return projection([d.CenterLongitude, d.CenterLatitude])[0];
+    //                 }).strength(forceStrength),
+    //                 y: d3.forceY(function (d) {
+    //                     return projection([d.CenterLongitude, d.CenterLatitude])[1] * (1 + projectionStretchY);
+    //                 }).strength(forceStrength)
+    //             };
+    //         }
 
-            function createContinentForces() {
-                return {
-                    x: d3.forceX(continentForceX).strength(forceStrength),
-                    y: d3.forceY(continentForceY).strength(forceStrength)
-                };
+    //         function createContinentForces() {
+    //             return {
+    //                 x: d3.forceX(continentForceX).strength(forceStrength),
+    //                 y: d3.forceY(continentForceY).strength(forceStrength)
+    //             };
 
-                function continentForceX(d) {
-                    if (d.ContinentCode === "EC") {
-                        return left(width);
-                    } else if (d.ContinentCode === "CO") {
-                        return left(width);
-                    } else if (d.ContinentCode === "LO") {
-                        return right(width);
-                    } else if (d.ContinentCode === "EC" || d.ContinentCode === "LO") {
-                        return right(width);
-                    }
-                    return center(width);
-                }
+    //             function continentForceX(d) {
+    //                 if (d.ContinentCode === "EC") {
+    //                     return left(width);
+    //                 } else if (d.ContinentCode === "CO") {
+    //                     return left(width);
+    //                 } else if (d.ContinentCode === "LO") {
+    //                     return right(width);
+    //                 } else if (d.ContinentCode === "EC" || d.ContinentCode === "LO") {
+    //                     return right(width);
+    //                 }
+    //                 return center(width);
+    //             }
 
-                function continentForceY(d) {
-                    if (d.ContinentCode === "EC") {
-                        return top(height);
-                    } else if (d.ContinentCode === "CO") {
-                        return bottom(height);
-                    } else if (d.ContinentCode === "LO") {
-                        return top(height);
-                    } else if (d.ContinentCode === "EC" || d.ContinentCode === "LO") {
-                        return bottom(height);
-                    }
-                    return center(height);
-                }
+    //             function continentForceY(d) {
+    //                 if (d.ContinentCode === "EC") {
+    //                     return top(height);
+    //                 } else if (d.ContinentCode === "CO") {
+    //                     return bottom(height);
+    //                 } else if (d.ContinentCode === "LO") {
+    //                     return top(height);
+    //                 } else if (d.ContinentCode === "EC" || d.ContinentCode === "LO") {
+    //                     return bottom(height);
+    //                 }
+    //                 return center(height);
+    //             }
 
-                function left(dimension) { return dimension / 4; }
-                function center(dimension) { return dimension / 2; }
-                function right(dimension) { return dimension / 4 * 3; }
-                function top(dimension) { return dimension / 4; }
-                function bottom(dimension) { return dimension / 4 * 3; }
-            }
+    //             function left(dimension) { return dimension / 4; }
+    //             function center(dimension) { return dimension / 2; }
+    //             function right(dimension) { return dimension / 4 * 3; }
+    //             function top(dimension) { return dimension / 4; }
+    //             function bottom(dimension) { return dimension / 4 * 3; }
+    //         }
 
-            function createPopulationForces() {
-                var continentNamesDomain = continents.values().map(function (continentCode) {
-                    return continentNames[continentCode];
-                });
-                var scaledPopulationMargin = circleSize.max;
+    //         function createPopulationForces() {
+    //             var continentNamesDomain = continents.values().map(function (continentCode) {
+    //                 return continentNames[continentCode];
+    //             });
+    //             var scaledPopulationMargin = circleSize.max;
 
-                populationScaleX = d3.scaleBand()
-                    .domain(continentNamesDomain)
-                    .range([scaledPopulationMargin, width - scaledPopulationMargin * 2]);
-                populationScaleY = d3.scaleLog()
-                    .domain(populationExtent)
-                    .range([height - scaledPopulationMargin, scaledPopulationMargin * 2]);
+    //             populationScaleX = d3.scaleBand()
+    //                 .domain(continentNamesDomain)
+    //                 .range([scaledPopulationMargin, width - scaledPopulationMargin * 2]);
+    //             populationScaleY = d3.scaleLog()
+    //                 .domain(populationExtent)
+    //                 .range([height - scaledPopulationMargin, scaledPopulationMargin * 2]);
 
-                var centerCirclesInScaleBandOffset = populationScaleX.bandwidth() / 2;
-                return {
-                    x: d3.forceX(function (d) {
-                        return populationScaleX(continentNames[d.ContinentCode]) + centerCirclesInScaleBandOffset;
-                    }).strength(forceStrength),
-                    y: d3.forceY(function (d) {
-                        return populationScaleY(d.Population);
-                    }).strength(forceStrength)
-                };
-            }
+    //             var centerCirclesInScaleBandOffset = populationScaleX.bandwidth() / 2;
+    //             return {
+    //                 x: d3.forceX(function (d) {
+    //                     return populationScaleX(continentNames[d.ContinentCode]) + centerCirclesInScaleBandOffset;
+    //                 }).strength(forceStrength),
+    //                 y: d3.forceY(function (d) {
+    //                     return populationScaleY(d.Population);
+    //                 }).strength(forceStrength)
+    //             };
+    //         }
 
-        }
+    //     }
 
-        function createForceSimulation() {
-            forceSimulation = d3.forceSimulation()
-                .force("x", forces.combine.x)
-                .force("y", forces.combine.y)
-                .force("collide", d3.forceCollide(forceCollide));
-            forceSimulation.nodes(countries)
-                .on("tick", function () {
-                    circles
-                        .attr("cx", function (d) { return d.x; })
-                        .attr("cy", function (d) { return d.y; });
-                });
-        }
+    //     function createForceSimulation() {
+    //         forceSimulation = d3.forceSimulation()
+    //             .force("x", forces.combine.x)
+    //             .force("y", forces.combine.y)
+    //             .force("collide", d3.forceCollide(forceCollide));
+    //         forceSimulation.nodes(countries)
+    //             .on("tick", function () {
+    //                 circles
+    //                     .attr("cx", function (d) { return d.x; })
+    //                     .attr("cy", function (d) { return d.y; });
+    //             });
+    //     }
 
-        function forceCollide(d) {
-            return countryCenterGrouping() || populationGrouping() ? 0 : circleRadiusScale(d.Population) + 1;
-        }
+    //     function forceCollide(d) {
+    //         return countryCenterGrouping() || populationGrouping() ? 0 : circleRadiusScale(d.Population) + 1;
+    //     }
 
-        function countryCenterGrouping() {
-            return isChecked("#country-centers");
-        }
+    //     function countryCenterGrouping() {
+    //         return isChecked("#country-centers");
+    //     }
 
-        function populationGrouping() {
-            return isChecked("#population");
-        }
+    //     function populationGrouping() {
+    //         return isChecked("#population");
+    //     }
 
-        function addFlagDefinitions() {
-            var defs = svg.append("defs");
-            defs.selectAll(".flag")
-                .data(countries)
-                .enter()
-                .append("pattern")
-                .attr("id", function (d) { return d.CountryCode; })
-                .attr("class", "flag")
-                .attr("width", "100%")
-                .attr("height", "100%")
-                .attr("patternContentUnits", "objectBoundingBox")
-                .append("image")
-                .attr("width", 1)
-                .attr("height", 1)
-                // xMidYMid: center the image in the circle
-                // slice: scale the image to fill the circle
-                .attr("preserveAspectRatio", "xMidYMid slice")
-                .attr("xlink:href", function (d) {
-                    return "/flags/" + d.CountryCode + ".svg";
-                });
-        }
+    //     function addFlagDefinitions() {
+    //         var defs = svg.append("defs");
+    //         defs.selectAll(".flag")
+    //             .data(countries)
+    //             .enter()
+    //             .append("pattern")
+    //             .attr("id", function (d) { return d.CountryCode; })
+    //             .attr("class", "flag")
+    //             .attr("width", "100%")
+    //             .attr("height", "100%")
+    //             .attr("patternContentUnits", "objectBoundingBox")
+    //             .append("image")
+    //             .attr("width", 1)
+    //             .attr("height", 1)
+    //             // xMidYMid: center the image in the circle
+    //             // slice: scale the image to fill the circle
+    //             .attr("preserveAspectRatio", "xMidYMid slice")
+    //             .attr("xlink:href", function (d) {
+    //                 return "/flags/" + d.CountryCode + ".svg";
+    //             });
+    //     }
 
-        function addFillListener() {
-            d3.selectAll('input[name="fill"]')
-                .on("change", function () {
-                    toggleContinentKey(!flagFill() && !populationGrouping());
-                    updateCircles();
-                });
-        }
+    //     function addFillListener() {
+    //         d3.selectAll('input[name="fill"]')
+    //             .on("change", function () {
+    //                 toggleContinentKey(!flagFill() && !populationGrouping());
+    //                 updateCircles();
+    //             });
+    //     }
 
-        function addGroupingListeners() {
-            addListener("#combine", forces.combine);
-            addListener("#country-centers", forces.countryCenters);
-            addListener("#continents", forces.continent);
-            addListener("#population", forces.population);
+    //     function addGroupingListeners() {
+    //         addListener("#combine", forces.combine);
+    //         addListener("#country-centers", forces.countryCenters);
+    //         addListener("#continents", forces.continent);
+    //         addListener("#population", forces.population);
 
-            function addListener(selector, forces) {
-                d3.select(selector).on("click", function () {
-                    updateForces(forces);
-                    toggleContinentKey(!flagFill() && !populationGrouping());
-                    togglePopulationAxes(populationGrouping());
-                });
-            }
+    //         function addListener(selector, forces) {
+    //             d3.select(selector).on("click", function () {
+    //                 updateForces(forces);
+    //                 toggleContinentKey(!flagFill() && !populationGrouping());
+    //                 togglePopulationAxes(populationGrouping());
+    //             });
+    //         }
 
-            function updateForces(forces) {
-                forceSimulation
-                    .force("x", forces.x)
-                    .force("y", forces.y)
-                    .force("collide", d3.forceCollide(forceCollide))
-                    .alphaTarget(0.5)
-                    .restart();
-            }
+    //         function updateForces(forces) {
+    //             forceSimulation
+    //                 .force("x", forces.x)
+    //                 .force("y", forces.y)
+    //                 .force("collide", d3.forceCollide(forceCollide))
+    //                 .alphaTarget(0.5)
+    //                 .restart();
+    //         }
 
-            function togglePopulationAxes(showAxes) {
-                var onScreenXOffset = 40,
-                    offScreenXOffset = -40;
-                var onScreenYOffset = 40,
-                    offScreenYOffset = 100;
+    //         function togglePopulationAxes(showAxes) {
+    //             var onScreenXOffset = 40,
+    //                 offScreenXOffset = -40;
+    //             var onScreenYOffset = 40,
+    //                 offScreenYOffset = 100;
 
-                if (d3.select(".x-axis").empty()) {
-                    createAxes();
-                }
-                var xAxis = d3.select(".x-axis"),
-                    yAxis = d3.select(".y-axis");
+    //             if (d3.select(".x-axis").empty()) {
+    //                 createAxes();
+    //             }
+    //             var xAxis = d3.select(".x-axis"),
+    //                 yAxis = d3.select(".y-axis");
 
-                if (showAxes) {
-                    translateAxis(xAxis, "translate(0," + (height - onScreenYOffset) + ")");
-                    translateAxis(yAxis, "translate(" + onScreenXOffset + ",0)");
-                } else {
-                    translateAxis(xAxis, "translate(0," + (height + offScreenYOffset) + ")");
-                    translateAxis(yAxis, "translate(" + offScreenXOffset + ",0)");
-                }
+    //             if (showAxes) {
+    //                 translateAxis(xAxis, "translate(0," + (height - onScreenYOffset) + ")");
+    //                 translateAxis(yAxis, "translate(" + onScreenXOffset + ",0)");
+    //             } else {
+    //                 translateAxis(xAxis, "translate(0," + (height + offScreenYOffset) + ")");
+    //                 translateAxis(yAxis, "translate(" + offScreenXOffset + ",0)");
+    //             }
 
-                function createAxes() {
-                    var numberOfTicks = 10,
-                        tickFormat = ".0s";
+    //             function createAxes() {
+    //                 var numberOfTicks = 10,
+    //                     tickFormat = ".0s";
 
-                    var xAxis = d3.axisBottom(populationScaleX)
-                        .ticks(numberOfTicks, tickFormat);
+    //                 var xAxis = d3.axisBottom(populationScaleX)
+    //                     .ticks(numberOfTicks, tickFormat);
 
-                    svg.append("g")
-                        .attr("class", "x-axis")
-                        .attr("transform", "translate(0," + (height + offScreenYOffset) + ")")
-                        .call(xAxis)
-                        .selectAll(".tick text")
-                        .attr("font-size", "16px");
+    //                 svg.append("g")
+    //                     .attr("class", "x-axis")
+    //                     .attr("transform", "translate(0," + (height + offScreenYOffset) + ")")
+    //                     .call(xAxis)
+    //                     .selectAll(".tick text")
+    //                     .attr("font-size", "16px");
 
-                    var yAxis = d3.axisLeft(populationScaleY)
-                        .ticks(numberOfTicks, tickFormat);
-                    svg.append("g")
-                        .attr("class", "y-axis")
-                        .attr("transform", "translate(" + offScreenXOffset + ",0)")
-                        .call(yAxis);
-                }
+    //                 var yAxis = d3.axisLeft(populationScaleY)
+    //                     .ticks(numberOfTicks, tickFormat);
+    //                 svg.append("g")
+    //                     .attr("class", "y-axis")
+    //                     .attr("transform", "translate(" + offScreenXOffset + ",0)")
+    //                     .call(yAxis);
+    //             }
 
-                function translateAxis(axis, translation) {
-                    axis
-                        .transition()
-                        .duration(500)
-                        .attr("transform", translation);
-                }
-            }
-        }
+    //             function translateAxis(axis, translation) {
+    //                 axis
+    //                     .transition()
+    //                     .duration(500)
+    //                     .attr("transform", translation);
+    //             }
+    //         }
+    //     }
 
-    }
+    // }
 
     componentDidMount() {
         console.log(sankeyData, 'SANKEY');
         let self = this;
-        self.createBubbleChart('', countryData, continentData); // for tumor chart
+        // self.createBubbleChart('', countryData, continentData); // for tumor chart
 
 
         // d3.csv('medium_january.csv', function(error, data) {
@@ -1231,7 +1232,7 @@ class EcommerceDashboard extends React.Component {
             console.log(y);
             console.log(dataArray, 'DATAARRRRRRR');
             let chart = <HorizontalBarChartNew minRange={0} maxRange={maxRange} stepSize={5} height={graphProps.widgetData.widgetId == 6 ? 420 : 180} key={Math.random()}
-                data={dataArray || []} labels={graphProps.widgetData.widgetId == 6 ? ['Countries'] : ['Companies']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} backgroundColors={['#ae8b4b', '#2196f3']}
+                data={dataArray || []} labels={graphProps.widgetData.widgetId == 'widget6' ? ['Countries'] : ['Companies']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} backgroundColors={['#ae8b4b', '#2196f3']}
                 options={{
                     responsive: true,
                     maintainAspectRatio: true
@@ -1457,7 +1458,8 @@ class EcommerceDashboard extends React.Component {
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
             })
-        } if (graphProps.widgetData.widgetType == '3ValueBar-Vertical') {
+        }
+        if (graphProps.widgetData.widgetType == '3ValueBar-Vertical') {
             let x = [];
             let y = [];
             let z = [];
@@ -1509,6 +1511,58 @@ class EcommerceDashboard extends React.Component {
                     responsive: true,
                     maintainAspectRatio: true
                 }} />
+
+            this.setState({
+                [graphProps.widgetData.widgetId]: chart
+            })
+        }
+        if (graphProps.widgetData.widgetType == 'flagChart') {
+            // this.createBubbleChart('', graphProps.widgetData.graphData.data, continentData);
+
+            let chart = <CountryBubbleChart countryData={graphProps.widgetData.graphData.data} continents={continentData} />
+            //  <div> <div id="controls-graph">
+            //     <span style={{ visibility: 'hidden' }}>
+            //         <label><input id="combine" type="radio" name="grouping" value="combine" checked />Combine</label>
+            //         <label><input id="continents" type="radio" name="grouping" value="continents" />Continents</label>
+            //         <label><input id="country-centers" type="radio" name="grouping" value="country-centers" />Country Centers</label>
+            //         <label><input id="population" type="radio" name="grouping" value="population" />Population</label>
+            //     </span>
+            //     <span>
+            //         <label><input id="colors" type="radio" name="fill" value="colors" />Colors</label>
+            //         <label><input id="flags" type="radio" name="fill" value="flags" checked />Flags</label>
+            //     </span>
+            // </div>
+            //     <div id="country-info"></div>
+            //     <div id="bubble-chart"></div>
+            // </div>
+
+            this.setState({
+                [graphProps.widgetData.widgetId]: chart
+            })
+        }
+        if (graphProps.widgetData.widgetType == 'sankeyChart') {
+            // this.createBubbleChart('', graphProps.widgetData.graphData.data, continentData);
+
+            let chart = <SankeyChart data={graphProps.widgetData.graphData} />
+
+            this.setState({
+                [graphProps.widgetData.widgetId]: chart
+            })
+        }
+        if (graphProps.widgetData.widgetType == '3ValueBubble-Vertical') {
+
+            let graphDataArray = [...graphProps.widgetData.graphData.data]
+            let bubbleArray = [];
+            graphDataArray.map(data => {
+                let obj = {
+                    title: data.xIndex.value,
+                    category: data.zIndex.value,
+                    views: data.yIndex.value
+                }
+                bubbleArray.push(obj)
+            })
+            console.log(bubbleArray, "BUBBLE ARRAY");
+            let chart = <BubbleChart data={bubbleArray} useLabels />
 
             this.setState({
                 [graphProps.widgetData.widgetId]: chart
@@ -2422,11 +2476,20 @@ class EcommerceDashboard extends React.Component {
                         <div className="col-md-6">
                             <Portlet title={"E-COMMERCE TRANSACTIONS"} noCollapse={false} style={{ height: 'auto' }}>
                                 <div className="refresh-img-div">
+                                <div className="content-toggle">
+                                        <label htmlFor="">Volume</label>
+                                        <label className="switch">
+                                            <input type="checkbox" />
+                                            <span className="slider round"></span>
+                                        </label>
+                                        <label htmlFor="">Value</label>
+                                    </div>
                                     <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                 </div>
                                 {/* <h2 id="downloadPdf" onClick={() => this.CreatePDFfromHTML('rule-graph')}>DOWNLOAD PDF</h2> */}
 
-                                <BubbleChart data={companyBubbles} useLabels />
+                                {/* <BubbleChart data={companyBubbles} useLabels /> */}
+                                {this.state.widget20}
                                 <div id="rule-graph" className="col-md-12">
                                     {/* <a href="#" onClick={() => this.downloadRuleCSV(this.props.dashboardData.ruleData)} className="btn-success">Download CSV</a> */}
                                     {/* {this.state.widget7isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
@@ -2480,7 +2543,7 @@ class EcommerceDashboard extends React.Component {
                                             :
                                             <div>   {this.state.widget7} </div>
                                         } */}
-                                    <div id="controls-graph">
+                                    {/* <div id="controls-graph">
                                         <span style={{ visibility: 'hidden' }}>
                                             <label><input id="combine" type="radio" name="grouping" value="combine" checked />Combine</label>
                                             <label><input id="continents" type="radio" name="grouping" value="continents" />Continents</label>
@@ -2493,7 +2556,8 @@ class EcommerceDashboard extends React.Component {
                                         </span>
                                     </div>
                                     <div id="country-info"></div>
-                                    <div id="bubble-chart"></div>
+                                    <div id="bubble-chart"></div> */}
+                                    {this.state.widget22}
                                 </div>
 
                             </Portlet>
@@ -2513,6 +2577,26 @@ class EcommerceDashboard extends React.Component {
                                             <div>   {this.state.widget5} </div>
                                         }
                                         {/* <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={120} key={Math.random()} data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#ae8b4b']}
+                                            options={{
+                                                responsive: true,
+                                                maintainAspectRatio: true
+                                            }} /> */}
+
+                                    </Portlet>
+                                }
+                            </div>
+                            <div className="col-md-6">
+                                {this.state.dashboardData && this.state.dashboardData.barGraphAmountData &&
+                                    <Portlet title={"Top Exporting Countries"} noCollapse={false}>
+                                        <div className="refresh-img-div">
+                                            <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                        </div>
+
+                                        {this.state.widget6isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
+                                            :
+                                            <div>   {this.state.widget6} </div>
+                                        }
+                                        {/* <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={120} key={Math.random()} data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#2196f3']}
                                             options={{
                                                 responsive: true,
                                                 maintainAspectRatio: true
@@ -2627,7 +2711,8 @@ class EcommerceDashboard extends React.Component {
                                 </div>
                                 <div id="rule-graph" className="col-md-12">
                                     {sankeyData && sankeyData.nodes &&
-                                        <SankeyChart data={sankeyData} />
+                                        // <SankeyChart data={sankeyData} />
+                                        <div>    {this.state.widget21} </div>
                                     }
                                     {/* {this.state.widget10} */}
                                     {/* {this.state.ruleData && (
@@ -2638,7 +2723,7 @@ class EcommerceDashboard extends React.Component {
 
                             </Portlet>
                         </div>
-                       
+
 
 
                     </div>
@@ -2656,15 +2741,6 @@ class EcommerceDashboard extends React.Component {
 let dataArray = [];
 
 function mapStateToProps(state, ownProps) {
-    console.log(state, 'state =========');
-    console.log(dataArray, 'DaTA ARRAY =========');
-    let widgetId = 0;
-    // if (state.app.data && Object.keys(state.app.data).length > 0) {
-    //     if (widgetId != state.app.data.widgetData.widgetId) {
-    //         widgetId = state.app.data.widgetData.widgetId;
-    //         dataArray.push(state.app.data.widgetData)
-    //     }
-    // }
     return {
         // widgetData: _.get(state.app, 'data.widgetData', []),
         // widgetData: dataArray,
@@ -2678,6 +2754,10 @@ function mapStateToProps(state, ownProps) {
         widget8: _.get(state.app, 'widget8', {}),
         widget9: _.get(state.app, 'widget9', {}),
         widget10: _.get(state.app, 'widget10', {}),
+        widget11: _.get(state.app, 'widget11', {}),
+        widget20: _.get(state.app, 'widget20', {}),
+        widget21: _.get(state.app, 'widget21', {}),
+        widget22: _.get(state.app, 'widget22', {}),
         //  dataArray.push(state.app.data && Object.keys(state.app.data).length > 0 ? state.app.data.widgetData : []),
         typeData: _.get(state.app.typeData, 'data', undefined),
         getDashboardData: _.get(state.app, 'getDashboardData', undefined),
