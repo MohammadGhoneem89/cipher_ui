@@ -79,12 +79,24 @@ class BubbleChart extends React.Component {
       });
   };
 
+  updateCountryInfo(title, view) {
+    //     console.log('VIEW', view)
+    // d3.select("#bubble-info").html(view);
+
+    var info = "";
+    if (title) {
+        info = `${title}: ${view}`;
+    }
+    d3.select("#bubble-info").html(info);
+}
+
   renderBubbles = data => {
     const minValue =
       0.95 *
       d3.min(data, item => {
         return item.views;
       });
+    //   d3.select("#bubble-info").html(item.views);
 
     const maxValue =
       1.05 *
@@ -110,6 +122,8 @@ class BubbleChart extends React.Component {
             fill={color(item.views)}
             stroke={d3.rgb(color(item.views)).brighter(2)}
             strokeWidth="2"
+            onMouseOver={this.updateCountryInfo(item.views)}
+            onMouseOut={this.updateCountryInfo('')}
           />
         );
       });
@@ -123,6 +137,16 @@ class BubbleChart extends React.Component {
         </g>
       );
     }
+
+//     .on("mouseover", function (d) {
+//         updateCountryInfo(d);
+//     })
+//     .on("mouseout", function (d) {
+//         updateCountryInfo();
+//     });
+// updateCircles();
+
+
 
     // render circle and text elements inside a group
     const texts = data.map((item, index) => {
@@ -140,6 +164,8 @@ class BubbleChart extends React.Component {
             fill={color(item.views)}
             stroke={d3.rgb(color(item.views)).brighter(2)}
             strokeWidth="2"
+            onMouseOver={() => this.updateCountryInfo(item.title, item.views)}
+            onMouseOut={() => this.updateCountryInfo('', '')}
           />
           <text
             dy="6"
@@ -162,6 +188,7 @@ class BubbleChart extends React.Component {
       <div>
         {/* <h3>D3 Bubble Chart With react rendering</h3> */}
         <div id="chart">
+            <div id="bubble-info"></div>
           <svg width={this.props.width} height={this.props.height}>
             {this.renderBubbles(this.state.data)}
           </svg>
