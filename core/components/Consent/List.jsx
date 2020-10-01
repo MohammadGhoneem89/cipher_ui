@@ -5,6 +5,7 @@ import {Link, browserHistory} from 'react-router';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../../actions/generalAction';
+import * as requestCreator from '../../common/request.js';
 
 import Portlet from '../../common/Portlet.jsx';
 /*container specific imports*/
@@ -22,9 +23,14 @@ class List extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [], typeData: undefined,
+      Container: {},
+      searchFilters: "", 
+      currentPageNo: 1, 
+      APIPayloadID: undefined, 
+      actions: [], 
+      typeData: undefined,
       listData: [],
-      pageData: {}
+      pageData: undefined,
     }
     this.pageChanged = this.pageChanged.bind(this);
 
@@ -32,10 +38,27 @@ class List extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.listData && nextProps.pageData) {
+    if (nextProps.typeData) {
       this.setState({
-        listData: nextProps.listData,
-        pageData: nextProps.pageData
+        typeData: nextProps.typeData,
+      });
+    }
+    if (nextProps.listData) {
+      let parsedData = nextProps.listData.map(item=>{
+        return {
+          ...JSON.parse(item.tranxData),
+          actions: [{
+            URI: ["/addDocType"],
+            iconName: "icon-docs",
+            label: "View",
+            params: "",
+            type: "componentAction",
+            value: "1003",
+        }]}
+      })
+      this.setState({
+        pageData: parsedData,
+        listData: parsedData
       })
     }
   }
@@ -50,7 +73,8 @@ class List extends React.Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    // this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES'])); 
+    this.props.actions.generalProcess(constants.getDocumentTypeList);
     this.setState({
       actions: [{
         "value": "1002",
@@ -96,8 +120,39 @@ class List extends React.Component {
     return request;
   }
 
+  onInputChange = (e) => {
+    let value;
+    if (e.target.name.indexOf('is') === 0) {
+      value = $("#" + e.target.name).is(":checked");
+    } else {
+      value = e.target.value;
+    }
+    let Container = _.cloneDeep(this.state.Container);
+    if (e.target.id == 'group') {
+      let values = $('#group').val();
+      _.set(Container, e.target.id, values)
+    } else {
+      _.set(Container, e.target.id, value)
+    }
+    // this.state.networkConfig[e.target.name] = e.target.name;
+    console.log(JSON.stringify(Container))
+    this.setState({
+      Container: Container
+    })
+  }
+
   formSubmit() {
-    this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
+    // this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
+    let data = this.state.pageData.filter(item=>{
+      return (item.Name==this.state.Container.documentName && 
+        item.DocumentType==this.state.Container.documentTypeName &&
+        item.OwnerOrgCode==this.state.Container.ownerOrgType)
+    });
+
+    this.setState({
+      listData:data
+    });
+    
   }
 
   pageChanged(pageNo) {
@@ -129,7 +184,8 @@ class List extends React.Component {
 
       this.setState({currentPageNo: pageNo})
 
-      this.props.actions.generalProcess(constants.getADHReportList, request);
+      // this.props.actions.generalProcess(constants.getADHReportList, request);
+      this.props.actions.generalProcess(constants.getDocumentTypeList);
 
     }
   }
@@ -139,12 +195,17 @@ class List extends React.Component {
     $('#ApiListData').find('select').each(function () {
       $(this)[0].selectedIndex = 0;
     });
+    this.setState({
+      currentPageNo: 1,
+      Container:{},
+      listData:this.state.pageData
+    })
   }
 
 
   render() {
-
-    if (this.state.listData) {
+    console.log(this.state,"SSSSS")
+    if (this.state.pageData) {
       return (
         <div>
           <div className="row">
@@ -168,23 +229,38 @@ class List extends React.Component {
                               <label className="control-label">{utils.getLabelByID("Document Name")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <input type="text" className="form-control" name="name" id="documentName"/>
+                              <input type="text"   value={this.state.Container.documentName}
+                                onChange={this.onInputChange} className="form-control" name="documentName" id="documentName"/>
                             </div>
                           </div>
-                          <div className="col-md-6">
+                          {this.state.typeData?<div className="col-md-6">
                             <div className="form-group col-md-4">
                               <label className="control-label">{utils.getLabelByID("Owner Org Type")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <input type="text" className="form-control" name="route" id="ownerOrgType"/>
+                            <select  className="form-control" name="ownerOrgType" id="ownerOrgType"
+                            value={this.state.Container.ownerOrgType}
+                                onChange={this.onInputChange}
+                                >
+                              <option key="" value="">--select--</option>
+                              {
+                                this.state.typeData.ORG_TYPES &&
+                                this.state.typeData.ORG_TYPES.map((option, index) => {
+                                  return (
+                                    <option key={index} value={option.value}>{option.label}</option>
+                                  );
+                                })
+                              }
+                            </select>
                             </div>
-                          </div>
+                          </div>:null}
                           <div className="col-md-6">
                             <div className="form-group col-md-4">
                               <label className="control-label">{utils.getLabelByID("Document Type")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <input type="text" className="form-control" name="route" id="documentTypeName"/>
+                              <input type="text" className="form-control"  value={this.state.Container.documentTypeName}
+                                onChange={this.onInputChange}  name="documentTypeName" id="documentTypeName"/>
                             </div>
                           </div>
                         </div>
@@ -196,7 +272,7 @@ class List extends React.Component {
                                       onClick={this.formSubmit.bind(this)}>{utils.getLabelByID("Search")} </button>
                               {"  "}
                               <button type="button" className="btn default"
-                                      onClick={this.clearFields}>{utils.getLabelByID("Clear")}</button>
+                                      onClick={this.clearFields.bind(this)}>{utils.getLabelByID("Clear")}</button>
 
                             </div>
                           </div>
@@ -212,9 +288,9 @@ class List extends React.Component {
           <Portlet title={utils.getLabelByID("Document List")} isPermissioned={true}
                    actions={this.state.actions}>
             <Table fontclass=""
-                   gridColumns={utils.getGridColumnByName("ADHReportList")}
+                   gridColumns={utils.getGridColumnByName("DocumentTypeList")}
                    gridData={this.state.listData}
-                   totalRecords={this.state.pageData.totalRecords}
+                   totalRecords={this.state.pageData.length}
                    searchCallBack={this.searchCallBack}
                    pageSize={10}
                    pagination={true} pageChanged={this.pageChanged}
@@ -233,14 +309,14 @@ class List extends React.Component {
 }
 
 List.propTypes = {
-  listData: PropTypes.object,
+  listData: PropTypes.array,
   children: PropTypes.object,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    listData: _.get(state.app, 'ADHReportList.ADHReportList.data.searchResult', undefined),
-    pageData: _.get(state.app, 'ADHReportList.ADHReportList.data.pageData', undefined),
+    listData: _.get(state.app, 'documentTypeList', undefined),
+    // pageData: _.get(state.app, 'ADHReportList.ADHReportList.data.pageData', undefined),
     typeData: state.app.typeData.data
   };
 }

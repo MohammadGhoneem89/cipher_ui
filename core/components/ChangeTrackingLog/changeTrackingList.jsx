@@ -19,6 +19,15 @@ import Portlet from '../../common/Portlet.jsx';
 import * as Loaders from '../../common/loaders.jsx';
 
 import flatten from "flat";
+import moment from "moment";
+
+const MetaArray = ["txtimestamp","userID","uuid","txID"]
+const MetaFields={
+  "txtimestamp":"Transaction Date",
+  "userID":"Created By",
+  "uuid":"UUID",
+  "txID":"Blockchain ID"
+}
 
 
 class ChangeTracking extends React.Component {
@@ -148,21 +157,7 @@ class ChangeTracking extends React.Component {
         privateCollection:nextProps.getCollectionList
       })
     }
-    if(nextProps.getRevisionsList){
-      this.setState({
-        isLoading:false
-      })
-      console.log(nextProps.getRevisionsList,"RRRRRRRRRRRrr");
-      this.handleData(nextProps.getRevisionsList);
-      // this.setState({
-      //   privateCollection:nextProps.getCollectionList
-      // })
-    }
-    if(!nextProps.getRevisionsList){
-      this.setState({
-        isLoading:false
-      })
-    }
+   
   }
 
   // // componentWillMount() {
@@ -179,7 +174,7 @@ class ChangeTracking extends React.Component {
     // window.scrollTo(0, 0);
     this.setState({
       gridColumns:[
-        { alias: "Field", key: "field", type: "string" },
+        { alias: "Field", key: "field", type: "revField" },
         { alias: "REV-NO-1", key: "REV-NO-1", type: "revString" },
         { alias: "REV-NO-2", key: "REV-NO-2", type: "revString" },
         { alias: "REV-NO-3", key: "REV-NO-3", type: "revString" },
@@ -218,8 +213,22 @@ class ChangeTracking extends React.Component {
         console.log(k,"KKKKKKKk");
         let previous=fields;
         let record={};
-        record["field"]=k;
-        record["latest"]=fields[k];
+        if(MetaArray.includes(k)){
+          record["field"]=MetaFields[k];
+          if(k=="txtimestamp"){
+            record["latest"]=moment.unix(fields[k]).format("MM/DD/YYYY");
+          }
+          else{
+            record["latest"]=fields[k];
+          }
+       
+        }
+        else{
+          record["field"]=k;
+          record["latest"]=fields[k];
+        }
+  
+       
 
         if(!Object.keys(prunData).length){
           record["REV-NO-1"]="not found";
@@ -239,7 +248,12 @@ class ChangeTracking extends React.Component {
                 console.log(record,"BBBBBBBB")
               }
               else{
-                record[j]=flatData[k];
+                if(k=="txtimestamp"){
+                  record[j]=moment.unix(flatData[k]).format("MM/DD/YYYY")
+                }
+                else{
+                  record[j]=flatData[k];
+                }
                 console.log(record,"CCCCCCCC")
               }
             }
@@ -260,14 +274,21 @@ class ChangeTracking extends React.Component {
     let keysLength =  Object.keys(rows).length;
 
     if(keysLength>=0 && keysLength<3){
-      columns=[
-        { alias: "Field", key: "field", type: "string" },
-        { alias: "REV-NO-1", key: "REV-NO-1", type: "revString" },
-        { alias: "REV-NO-2", key: "REV-NO-2", type: "revString" },
-        { alias: "REV-NO-3", key: "REV-NO-3", type: "revString" },
-        { alias: "Latest", key: "latest", type: "revLatest" }
-      ]
+      Object.keys(rows).forEach(k=>{
+        columns.push({ alias: `${k}`, key: `${k}`, type: "revString" });
+      });
+      columns.reverse();
+      columns.unshift({ alias: "Field", key: "field", type: "revField" });
+      columns.push({ alias: "Latest", key: "latest", type: "revLatest" });
       allColumns.push(columns);
+      // columns=[
+      //   { alias: "Field", key: "field", type: "revField" },
+      //   { alias: "REV-NO-1", key: "REV-NO-1", type: "revString" },
+      //   { alias: "REV-NO-2", key: "REV-NO-2", type: "revString" },
+      //   { alias: "REV-NO-3", key: "REV-NO-3", type: "revString" },
+      //   { alias: "Latest", key: "latest", type: "revLatest" }
+      // ]
+      // allColumns.push(columns);
     }
     else{
       Object.keys(rows).forEach(k=>{
@@ -276,7 +297,7 @@ class ChangeTracking extends React.Component {
         if(count==3){
           let dp = Object.assign([],columns);
           columns.reverse();
-          columns.unshift({ alias: "Field", key: "field", type: "string" });
+          columns.unshift({ alias: "Field", key: "field", type: "revField" });
           columns.push({ alias: "Latest", key: "latest", type: "revLatest" });
           allColumns.push(columns);
           columns=Object.assign([],dp);
@@ -296,38 +317,7 @@ class ChangeTracking extends React.Component {
   }
 
   formSubmit() {
-    // const data = {
-    //   "latest": {
-    //       "Foo": "bar",
-    //       "sampleobjArr": [
-    //           {
-    //               "Test": "op"
-    //           }
-    //       ],
-    //       "sampleobj": {
-    //           "Test": "top"
-    //       }
-    //   },
-    //   "Rev-4": {
-    //     "Foo": "bary"
-    //   },
-    //   "Rev-3": {
-    //     "Foo": "barz"
-    //   },
-    //   "Rev-2": {
-    //     "Foo": "barz"
-    // },
-    //   "Rev-1": {
-    //       "Foo": "barz",
-    //       "sampleobj": {
-    //         "Test": "top"
-    //     }
-          
-    //   }
-     
-      
-    // };
-    // this.handleData(data);
+  
     if(this.state.selectedChannel && this.state.selectedSmartcontract && this.state.selectedEndpoint && this.state.selectedCollection && this.state.smKey){
       this.setState({
         isLoading:true
@@ -347,7 +337,34 @@ class ChangeTracking extends React.Component {
         "key":this.state.smKey
       }
       console.log(body,"Bodyyyyyyyyyyyyyyyyyyyy");
-      this.props.actions.generalProcess(constants.getDocumentRevesions,body);
+      this.props.actions.generalAsyncProcess(constants.getDocumentRevesions,body).then(data=>{
+        if(data.result){
+          this.setState({
+            isLoading:false
+          })
+          console.log(data.result,"RRRRRRRRRRRrr");
+          this.handleData(data.result);
+          // this.setState({
+          //   privateCollection:nextProps.getCollectionList
+          // })
+        }
+        if(!Object.keys(data.result).length){
+          this.setState({
+            isLoading:false,
+            allColumns:[],
+            gridColumns:[
+              { alias: "Field", key: "field", type: "revField" },
+              { alias: "REV-NO-1", key: "REV-NO-1", type: "revString" },
+              { alias: "REV-NO-2", key: "REV-NO-2", type: "revString" },
+              { alias: "REV-NO-3", key: "REV-NO-3", type: "revString" },
+              { alias: "Latest", key: "latest", type: "revLatest" }
+            ],
+            revData:[],
+          })
+        }
+      }).catch(err=>{
+        console.log(err);
+      });
     }
     else{
       alert("All fields are required");
@@ -408,6 +425,12 @@ class ChangeTracking extends React.Component {
         currentPageNo:current-1,
         gridColumns:this.state.allColumns[current-2],
       })
+    }
+  }
+
+  selectedCell(rowData,cellData){
+    if(rowData=="Blockchain ID" && cellData!="no change" && cellData!="not found" ){
+      this.props.history.push(`/hyperledger/hashSearch/${cellData}`)
     }
   }
 
@@ -527,7 +550,7 @@ class ChangeTracking extends React.Component {
                               </div>
                             </div>
 
-                            <div className="col-md-6">
+                            {this.state.privateCollection.length?<div className="col-md-6">
                               <div className="form-group">
                                 <label className="form-group control-label col-md-4" style={{
                                   textAlign: "left",
@@ -547,7 +570,7 @@ class ChangeTracking extends React.Component {
                                   </select>
                                 </div>
                               </div>
-                            </div>
+                            </div>:null}
 
                             {/* <div className="col-md-6">
                               <div className="form-group">
@@ -618,6 +641,7 @@ class ChangeTracking extends React.Component {
               <Table fontclass=""
                     //  TableClass="portlet light bordered sdg_portlet"
                      gridColumns={this.state.gridColumns}
+                     selectedCell={this.selectedCell.bind(this)}
                      gridData={this.state.revData}
                      totalRecords={this.state.allColumns.length}
                     //  searchCallBack={this.searchCallBack} 
@@ -672,8 +696,8 @@ function mapStateToProps(state, ownProps) {
     typeData: state.app.typeData.data,
     ConsortiumTypeData: state.app.ConsortiumTypeData,
     getEndpointListView: state.app.getEndpointListView,
-    getCollectionList:state.app["collectionNameList"]?state.app.collectionNameList:"",
-    getRevisionsList:state.app["result"]?state.app.result:""
+    getCollectionList:state.app["collectionNameList"]?state.app.collectionNameList:[],
+    // getRevisionsList:state.app["result"]?state.app.result:""
   };
 }
 

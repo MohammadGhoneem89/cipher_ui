@@ -249,5 +249,5 @@ function mapDispatchToProps(dispatch) {
 
 }
 
-List.displayName = "Document Type List";
+List.displayName = "Consents Status List";
 export default connect(mapStateToProps, mapDispatchToProps)(List);

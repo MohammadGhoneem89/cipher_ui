@@ -142,6 +142,7 @@ module.exports = {
   getAllLetters: baseUrl + "/API/core/getAllLetters",
   addUpdateLetter: baseUrl + "/API/core/addUpdateLetter",
   testLetter: baseUrl + "/API/core/testLetter",
+  apiDocumentationLetter: baseUrl + "/API/core/apiDocumentationLetter",
   addUpdateSampleTemplate: baseUrl + "/API/core/addUpdateSampleTemplate",
   getSampleLetters: baseUrl + "/API/core/getSampleLetters",
   getAPIList: baseUrl + "/API/core/getAPIList",
@@ -176,8 +177,8 @@ module.exports = {
 
   getActiveAPIs: baseUrl + "/API/core/getActiveAPIs",
 
-  getCollectionList:baseUrl + "/API/HyperLedger/getCollectionsList",
-  getDocumentRevesions:baseUrl + "/API/HyperLedger/getDocumentRevesions",
+  getCollectionList: baseUrl + "/API/HyperLedger/getCollectionsList",
+  getDocumentRevesions: baseUrl + "/API/HyperLedger/getDocumentRevesions",
 
   getAdaptorsList: baseUrl + "/API/core/getAdaptorsList",
   getAvailableObjectsList: baseUrl + "/API/core/getAvailableObjectsList",
@@ -261,6 +262,17 @@ module.exports = {
   encryptString: baseUrl + "/API/utility/encrypt",
   decryptString: baseUrl + "/API/utility/decrypt",
 
-  addDocumentType: baseUrl + "/API/Core/addDocumentType"
+  addDocumentType: baseUrl + "/API/Core/addDocumentType",
+  updateDocumentType: baseUrl + "/API/Core/updateDocumentType",
+  getDocumentTypeList: baseUrl + "/API/Consent/getDocumentTypeList",
+  getDocumentType: baseUrl + "/API/Core/getDocumentType",
+
+  addConsentPolicy: baseUrl + "/API/Core/addConsentPolicy",
+  updateConsentPolicy: baseUrl + "/API/Core/updateConsentPolicy",
+  getConsentProfileList: baseUrl + "/API/Consent/getConsentProfileList",
+  getConsentProfileByKey: baseUrl + "/API/Core/getConsentProfileByKey",
+
+  getProvidedConsentList : baseUrl + "/API/Consent/getProvidedConsentList",
+  fetchConsentStatus: baseUrl + "/API/Core/fetchConsentStatus"
 }
 
