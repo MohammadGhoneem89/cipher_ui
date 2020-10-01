@@ -38,7 +38,6 @@ class Datatable extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.gridData !== nextProps.gridData) {
-      console.log(this.props.gridData);
       this.setState({ isLoading: false });
     }
     this.setState({ activePage: this.props.activePage });
@@ -264,7 +263,6 @@ class Datatable extends React.Component {
   }
 
   returnSingleKey(key, value) {
-    console.log(key, value);
   }
   render() {
     if (this.props.forbiddenColumns) {
@@ -332,9 +330,6 @@ class Datatable extends React.Component {
                                   // cellData={colData.type === "object" ? (rowData[colData.key] !== null ? rowData[colData.key][colData.property] : "") : rowData[colData.key]}
                                   cellData={colData.type === "specialObject" ? (rowData[colData.key] !== null ?
                                     Object.keys(colData.key).map((item, index) => {
-                                      console.log(colData.key);
-                                      console.log(item);
-                                      console.log(rowData);
                                       return <div>
                                         {rowData['actions'] && rowData['actions'].length > 0 ?
                                           <a href={`${colData.key['route'] + rowData['UTCRefNo']}`}>

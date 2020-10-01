@@ -369,6 +369,15 @@ export function createWorkingCalendarUpdateRequest(data) {
         data
     }
 }
+
+export function createWorkingCalendarInsertWithRemove(data) {
+    return {
+        "action": "createWorkingCalendarInsertWithRemove",
+        data,
+        value:true
+    }
+}
+
 export function createWorkingCalendarInsertRequest(data) {
     return {
         "action": "workingCalendarInsert",

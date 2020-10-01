@@ -295,7 +295,7 @@ module.exports = {
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "Working_Calendar_Name", key: "calendarName", type: "string" },
     { alias: "Working_Calendar_Year", key: "calendarYear", type: "string" },
-    { alias: "Working_Calendar_Month", key: "calendarMonth", type: "string" },
+    // { alias: "Working_Calendar_Month", key: "calendarMonth", type: "string" },
     { alias: "CL_actionOn", key: "createdAt", type: "epochDate" },
     { alias: "CL_actionBy", key: "createdBy", type: "object", property: "userID" },
     { alias: "EVNTL_ISACTIVE", key: "isActive", type: "cbDisabled" },
