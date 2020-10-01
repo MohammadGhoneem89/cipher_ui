@@ -550,7 +550,7 @@ class ChangeTracking extends React.Component {
                               </div>
                             </div>
 
-                            <div className="col-md-6">
+                            {this.state.privateCollection.length?<div className="col-md-6">
                               <div className="form-group">
                                 <label className="form-group control-label col-md-4" style={{
                                   textAlign: "left",
@@ -570,7 +570,7 @@ class ChangeTracking extends React.Component {
                                   </select>
                                 </div>
                               </div>
-                            </div>
+                            </div>:null}
 
                             {/* <div className="col-md-6">
                               <div className="form-group">
@@ -696,7 +696,7 @@ function mapStateToProps(state, ownProps) {
     typeData: state.app.typeData.data,
     ConsortiumTypeData: state.app.ConsortiumTypeData,
     getEndpointListView: state.app.getEndpointListView,
-    getCollectionList:state.app["collectionNameList"]?state.app.collectionNameList:"",
+    getCollectionList:state.app["collectionNameList"]?state.app.collectionNameList:[],
     // getRevisionsList:state.app["result"]?state.app.result:""
   };
 }
