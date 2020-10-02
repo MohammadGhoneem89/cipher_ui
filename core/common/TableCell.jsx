@@ -442,10 +442,54 @@ class TableCell extends React.Component {
       case "revString":
         return (<td style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())}  >{this.props.cellData}</td>);
 
-        case "revLatest":
-          return (<td style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e"}}  >{this.props.cellData}</td>);
+      case "revLatest":
+        return (<td style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e"}}  >{this.props.cellData}</td>);
+      case "orgCodeImage":
+        console.log(this.props);
+        if (this.props.url) {
+          console.log("orgCodeImage =============== ", this.props.url);
+          if (_.get(this.props, 'cellData.type', '') === 'PUBLIC') {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="27px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+                href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+            </td>);
+          }
+          else if (_.get(this.props, 'rowData.image.type', '') === 'IPFS') {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="29px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+                href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+            </td>);
+          } else {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="29px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+                href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+            </td>);
+          }
+        }
+        else {
+          console.log(this.props.cellData, " IMAGE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>...")
+          if (_.get(this.props, 'cellData.type', '') === 'PUBLIC') {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="28px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+            </td>);
+          }
+          else if (_.get(this.props, 'rowData.image.type', '') === 'IPFS') {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="28px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+            </td>);
+          } else {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="28px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+            </td>);
+          }
 
-
+        }
       default:
         return (<td style={{ fontWeight: fontWeightStyle }}> {this.props.cellData} </td>);
 

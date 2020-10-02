@@ -26,6 +26,7 @@ const initialState = {
   loadedOnce: false,
   gridLoading: true,
   getEndpointListView: [],
+  profileIdEditable: false,
   text: "Please wait while your request is being processed."
 };
 
@@ -49,6 +50,8 @@ class Container extends React.Component {
 
 
   componentDidMount() {
+    this.setState({
+      isLoading:true})
 
     this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({     // Get Orgs (entities)
       "currentPageNo": 1,
@@ -57,7 +60,9 @@ class Container extends React.Component {
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES'])); // Org types (entities)
     this.props.actions.generalProcess(constants.getDocumentTypeList);
     if (this.props.id !== "NEW") {
-      this.setState({isLoading:true});
+      this.setState({
+        profileIdEditable: true
+      });
       this.props.actions.generalAsyncProcess(constants.getConsentProfileByKey, {
         "body": {
           "profileID": this.props.id //"5bf9c9df4cb0c690e4461b89"
@@ -285,6 +290,14 @@ class Container extends React.Component {
     else{
       Container.isDynamicExpiry = true
     }
+    if(!('isActive' in Container) || Container.isActive === false){
+      Container.isActive = false
+    }
+    else{
+      Container.isActive = true
+    }
+    
+
     console.log("submit",Container);
     console.log(Container.consentProfileId);
     console.log(Container.description);
@@ -303,7 +316,7 @@ class Container extends React.Component {
     console.log(isNaN(Container.expiryDuration));
     console.log(Container.expiryDuration);
     console.log(parseInt(Container.expiryDuration) >= 1 && parseInt(Container.expiryDuration) <= 5);
-    if (!Container.expiryDuration || !(parseInt(Container.expiryDuration) >= 1 && parseInt(Container.expiryDuration) <= 5  )) {
+    if (!Container.expiryDuration || (parseInt(Container.expiryDuration) <= 1  )) {
       _.set(errors, 'expiryDuration', 'Invalid or Empty')
     }
     
@@ -371,6 +384,7 @@ class Container extends React.Component {
         "expiryDuration": parseInt(Container.expiryDuration),
         "proofRequirement": Container.proofRequirement,
         "originalsRequired": Container.isOriginalRequired,
+        "isActive" : Container.isActive,
         "consentProvidedBy": this.state.List
       }
     }
