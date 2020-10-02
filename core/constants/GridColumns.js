@@ -1364,7 +1364,18 @@ module.exports = {
     // { alias: "currency", key: "currency", type: "string" },
     // { alias: "billingcycle", key: "billingcycle", type: "string" }
   ],
-  ...GridColumnsIndex,
+  ConsentStatusList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "Time Stamp", key: "timestamp", type: "string" },
+    { alias: "Status", key: "status", type: "string" },
+    { alias: "Document Type", key: "documentType", type: "string" },
+    { alias: "Consent Type", key: "consentType", type: "string" },
+    { alias: "Document No", key: "documentNo", type: "string" },
+    { alias: "Validity", key: "validity", type: "string" },
+    { alias: "Providied To", key: "providedTo", type: "image" }
+  ],
+  
   DocumentTypeList: [
     { alias: "", key: "key", type: "hiddenID" },
     { alias: "Document Type", key: "documentType", type: "string" },

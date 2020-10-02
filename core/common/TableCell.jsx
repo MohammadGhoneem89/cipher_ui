@@ -487,6 +487,54 @@ class TableCell extends React.Component {
         </td>
         :<td style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())} onClick={this.handleCellSelect.bind(this)}  >{this.props.cellData}</td>);
 
+<<<<<<< HEAD
+      case "revLatest":
+        return (<td style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e"}}  >{this.props.cellData}</td>);
+      case "orgCodeImage":
+        console.log(this.props);
+        if (this.props.url) {
+          console.log("orgCodeImage =============== ", this.props.url);
+          if (_.get(this.props, 'cellData.type', '') === 'PUBLIC') {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="27px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+                href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+            </td>);
+          }
+          else if (_.get(this.props, 'rowData.image.type', '') === 'IPFS') {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="29px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+                href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+            </td>);
+          } else {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="29px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+                href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+            </td>);
+          }
+        }
+        else {
+          console.log(this.props.cellData, " IMAGE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>...")
+          if (_.get(this.props, 'cellData.type', '') === 'PUBLIC') {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="28px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+            </td>);
+          }
+          else if (_.get(this.props, 'rowData.image.type', '') === 'IPFS') {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="28px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+            </td>);
+          } else {
+            return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+              width="28px" height="28px"
+              src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+            </td>);
+          }
+=======
         case "revLatest":
           return (
             this.props.rowData.field=="UUID" && this.props.cellData !="no change" && this.props.cellData != "not found"?
@@ -501,7 +549,9 @@ class TableCell extends React.Component {
       case "revField":
         return (<td style={this.getStyleForRevField(this.props.cellData.toString())}  >{this.props.cellData}</td>);
 
+>>>>>>> a1a62fda780c5aa27411094d1ad8483f7b462f31
 
+        }
       default:
         return (<td style={{ fontWeight: fontWeightStyle }}> {this.props.cellData} </td>);
 

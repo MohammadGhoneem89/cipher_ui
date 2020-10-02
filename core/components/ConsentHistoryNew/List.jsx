@@ -11,9 +11,12 @@ import Portlet from '../../common/Portlet.jsx';
 import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
 import Combobox from '../../common/Select.jsx';
-import * as gen from '../../common/generalActionHandler';
-import moment from 'moment';
+import Input from '../../common/Input.jsx';
+
+import * as gen from './../../../core/common/generalActionHandler';
+
 import * as constants from '../../constants/Communication.js';
+import { sha256 } from 'js-sha256';
 
 
 class List extends React.Component {
@@ -25,10 +28,9 @@ class List extends React.Component {
       listData: [],
       pageData: {},
       Container: {},
-      documentTypeList: undefined,
-      providedConsentList: undefined,
-      revisionsList : undefined,
-      errors: undefined
+      isLoading: true,
+      statusList : [],
+      orgList : undefined
     }
     this.pageChanged = this.pageChanged.bind(this);
     this.generalHandler = gen.generalHandler.bind(this)
@@ -36,86 +38,114 @@ class List extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("consentHistoryNew nextprops -----------", nextProps);
-    
-    let documentTypeList = [];
-    if (nextProps.documentTypeList){     
-      nextProps.documentTypeList.forEach((elem) => {
-        let parsedData = JSON.parse(elem.tranxData);  
-        console.log("parsing---------",parsedData);
-          let elemEnt = _.get(documentTypeList, parsedData.key, {});
-
-          elemEnt = {
-          "label": parsedData.key,
-          "value": parsedData.key
-        }
-        documentTypeList.push(elemEnt);
-      })
-      this.setState({
-        documentTypeList
-      })
-    }
-    let providedConsentList = [];
-    if (nextProps.providedConsentList){  
-         
-      nextProps.providedConsentList.forEach((elem) => {
-        let parsedData = JSON.parse(elem.tranxData);  
-        console.log("parsing providedConsentList---------",parsedData);
-          let elemEnt = _.get(providedConsentList, parsedData.key, {});
-
-          elemEnt = {
-          "label": parsedData.key,
-          "value": parsedData.key
-        }
-        providedConsentList.push(elemEnt);
-      })
-      this.setState({
-        providedConsentList
-      })
-    }
-
-    if (nextProps.orgTypes) {
-      console.log("testing print");
-      let Container = _.cloneDeep(this.state.Container)
-      Container.orgTypes = nextProps.orgTypes
-      this.setState({
-        Container
-      })
-    }
+      console.log("consentStatusNew nextprops -----------", nextProps);
+ 
+      if (nextProps.orgTypes && nextProps.documentList && nextProps.consentType && nextProps.orgList) {
+        
+          let documentList = []
+    //      console.log("jkjaklsdjklajslkdj ");
+          nextProps.documentList.forEach((elem) => {
+            let parsedData = JSON.parse(elem.tranxData);  
+            console.log("parsing---------",parsedData);
+            let elemEnt = _.get(documentList, parsedData.key, {});
+  
+            elemEnt = {
+              "label": parsedData.description,
+              "value": parsedData.key
+            }
+            documentList.push(elemEnt);
+          })
+          
+          let orgList = []
+    //      console.log("jkjaklsdjklajslkdj ");
+          nextProps.orgList.forEach((elem) => {
+          //  let parsedData = JSON.parse(elem.tranxData);  
+          //  console.log("parsing---------",parsedData);
+            let elemEnt = _.get(orgList, elem.value, {});
+  
+            elemEnt = {
+              "label": elem.value,
+              "value": elem.value
+            }
+            orgList.push(elemEnt)
+          })
+  
+        console.log("testing print");
+        let typeData = _.get(this.state, 'typeData', {});
+        typeData.consentType = nextProps.consentType
+        typeData.orgList = orgList;
+        let Container = _.cloneDeep(this.state.Container);
+        Container.orgTypes= nextProps.orgTypes;
+        Container.documentList=documentList;
+        this.setState({
+          Container,
+          typeData : typeData,
+          isLoading: false,
+          orgList : nextProps.orgList
+        })
+      }
+  //    let statusList = [];
+      // if (nextProps.documentList) {
+      //   console.log("testing print");
+      //   this.setState({
+      //     Container:{
+      //       ...,
+      //     }
+      //   })
+      // }  
 
     let revisionsList = [];
     if(nextProps.revisionsList){
       revisionsList = Object.entries(nextProps.revisionsList).map(item => {
-        let test = item[1].consentProvidedTo[0].consentTillDate.split(' ');
-        console.log(moment(test[0] + " " + test[1]));
-        
-        let date_now = moment();
-        let valid_date = moment(test[0] + " " + test[1])
-        let days = valid_date.diff(date_now, 'days')
-        let hrs = valid_date.diff(date_now, 'hours')
-        console.log("dfiff------------", valid_date.diff(date_now));
-        console.log("date_now=======",date_now );
-        console.log("valid_date=======",valid_date );
-        
-        item[1]['status'] = item[1].consentProvidedTo[0].statusOfConsent;
-        item[1]['providedTo'] = item[1].consentProvidedTo[0].toOrgCode;
-        item[1].txtimestamp = new Date(item[1].txtimestamp).toLocaleDateString()
-        item[1]['validity'] = days +  ' d ' + (hrs - (days * 24))
-        console.log(item[1]) 
-        return item[1];
+        console.log("item==========", item[1]);
+        console.log("utc date status=======",moment(item[1].consentDetails.consentDate).format("MM/DD/YYYY"));
+        let cur_date = moment().format("MM/DD/YYYY HH:mm:ss");
+        let grant_date = moment.unix(item[1].consentDetails.consentTillDate).format("MM/DD/YYYY HH:mm:ss");
+        console.log("cur_date=====", cur_date);
+        console.log("grant_date=====", grant_date);
+        let days = moment(grant_date).diff(moment(cur_date), "days");
+        let hours = moment(grant_date).diff(moment(cur_date), "hours");
+        let secs = moment(grant_date).diff(moment(cur_date));
+
+
+        console.log("days =======", days);
+        console.log("hours =======", hours);
+        let mins;
+        let valid;
+        if(secs <= 0){
+          valid = "Expired"
+        }
+        else{
+          if(hours <= 0){
+            mins = moment(grant_date).diff(moment(cur_date), "minutes");
+            valid = hours +  ' hrs ' + (mins - (hours * 60)) + " mins"
+            console.log("minutes ==== ", mins);
+            console.log("valid ==== ", valid);
+            
+          }
+          else{
+            valid = days +  ' d ' + (hours - (days * 24)) + " hrs"
+            console.log("valid ==== ", valid);
+          }
+        }
+        console.log(item[1].consentDetails.toOrgCode)
+        let _imgURL = _.find(this.state.orgList, {"value" : item[1].consentDetails.toOrgCode})
+        console.log("testing imgeURL FETCH =============>>>> ",_imgURL);
+        let obj = {
+          "key": item[1].key,
+          "timestamp": moment.unix(item[1].consentDetails.consentTillDate).format("MM/DD/YYYY HH:mm:ss"),
+          "status": item[1].consentDetails.statusOfConsent,
+          "documentType": item[1].documentType,
+          "documentNo": item[1].consentDetails.relatedDocumentNo,
+          "consentType": item[1].consentDetails.consentType,
+          "validity": valid,
+          "providedTo": { imageURL: _imgURL ? _imgURL.img : '', name: item[1].consentDetails.toOrgCode}
+        }
+        return obj;
 
       })
       console.log("revisionsList---------------", revisionsList);
-        //let parsedData = JSON.parse(elem.tranxData);  
-        
-       //  console.log("revisionList parsing---------",elem);
-        //   let elemEnt = _.get(revisionsList, parsedData.key, {});
 
-        //   elemEnt = {
-        //   "label": parsedData.key,
-        //   "value": parsedData.key
-        // }
-        // documentTypeList.push(elemEnt);
       this.setState({
         revisionsList
       })
@@ -131,6 +161,12 @@ class List extends React.Component {
   }
 
   componentDidMount() {
+    let Container = _.cloneDeep(this.state.Container);
+    Container.idType = "Unified ID"
+    this.setState({
+      Container
+    })
+    this.props.actions.generalProcess(constants.geOrgList, {});
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES', 'CONSENT_TYPES'])); // Org types (entities)
     this.props.actions.generalProcess(constants.getDocumentTypeList);
 
@@ -183,16 +219,123 @@ class List extends React.Component {
   }
 
   formSubmit() {
-    let request = 
-    {
-      "channelname":"prwchannel",
-      "smartcontract":"consent_profile_management",
-      "endpoint":"CouchDB-1",
-      "pvtcollection":"prwchannel_consent_profile_management%24%24pprovidedconsent",
-      "key":this.state.Container.providedConsentID
+    let errors = {}
+    let userID = _.get(this.state.Container, 'userID', undefined)
+    let consentType = _.get(this.state.Container, 'consentType', undefined)
+    let documentType = _.get(this.state.Container, 'documentType', undefined)
+    let consentProvidedBy = _.get(this.state.Container, 'consentProvidedBy', undefined)
+    let consentProvidedTo = _.get(this.state.Container, 'consentProvidedTo', undefined)
+    let documentNo;
+
+    console.log("Container=============", this.state.Container)
+
+    if(!userID){
+      _.set(errors, 'userID', 'Field Required')
     }
-    console.log("submit Request ----------------- ", request)
-    this.props.actions.generalProcess(constants.getDocumentRevesions, request);
+    
+    // else{
+    //   _.set(errors, 'consentType', 'Field Required')
+    // }
+    if(!documentType){
+      _.set(errors, 'documentType', 'Field Required')
+    }
+
+    if(documentType){
+      console.log("if condition hit Document list----------------", this.state.Container.documentList);
+      console.log("output of document -----------",_.find(this.state.Container.documentList, {'value': documentType}));
+      let _out = _.find(this.state.Container.documentList, {'value': documentType});
+      if(!_out){
+        _.set(errors, 'documentType', 'Invalid Selection')
+      }
+    }else{
+      _.set(errors, 'documentType', 'Document Selection Required')
+    }
+
+    if(consentType){
+      console.log("if condition hit Document list----------------", this.state.typeData.consentType);
+      console.log("output of document -----------",_.find(this.state.typeData.consentType, {'label': consentType}));
+      let _out = _.find(this.state.typeData.consentType, {'label': consentType});
+      if(!_out){
+        _.set(errors, 'consentType', 'Invalid Selection')
+      }
+      else{
+        if(consentType === "TRANSACTIONAL"){
+          documentNo = _.get(this.state.Container, 'documentNo', undefined)
+          if(!documentNo){
+            _.set(errors, 'documentNo', `Field Required when ConsentType 'TRANSACTIONAL'`)
+          }
+        }
+      }
+    }else{
+      _.set(errors, 'consentType', 'consentType Selection Required')
+    }
+
+    if(consentProvidedBy){
+      console.log("if condition hit consentProvidedBy----------------", this.state.typeData.orgList);
+      console.log("output of document -----------",_.find(this.state.typeData.orgList, {'value': consentProvidedBy}));
+      let _out = _.find(this.state.typeData.orgList, {'value': consentProvidedBy});
+      if(!_out){
+        _.set(errors, 'consentProvidedBy', 'Invalid Selection')
+      }
+    }
+
+    if(consentProvidedTo){
+      console.log("if condition hit consentProvidedTo---------------", this.state.typeData.orgList);
+      console.log("output of document -----------",_.find(this.state.typeData.orgList, {'value': consentProvidedTo}));
+      let _out = _.find(this.state.typeData.orgList, {'value': consentProvidedTo});
+      if(!_out){
+        _.set(errors, 'consentProvidedTo', 'Invalid Selection')
+      }
+    }
+    else{
+      _.set(errors, 'consentProvidedTo', 'consentType Selection Required')
+    }
+
+    if (Object.keys(errors).length > 0) {
+      this.setState({
+          errors,
+          isLoading:false
+      })
+      return
+    }
+    this.setState({
+      errors: {}
+    })
+      let key, request;
+      console.log("form submit -------------", this.state);
+      if(consentType !== "GLOBAL"){
+        console.log("sha256==================>>",sha256(documentNo))
+        let hash = sha256.hex(documentNo);
+        key = userID + "_" + documentType + "_" + hash + "_" + consentProvidedTo;
+       
+        request = 
+        {
+          "channelname":"prwchannel",
+          "smartcontract":"consent_profile_management",
+          "endpoint":"CouchDB-1",
+          "pvtcollection":"prwchannel_consent_profile_management%24%24pprovidedconsent",
+          "key": key
+        }
+      }
+      else{
+        key = userID + "_" + documentType + "_" + consentType + "_" + consentProvidedTo;
+        request = 
+        {
+          "channelname":"prwchannel",
+          "smartcontract":"consent_profile_management",
+          "endpoint":"CouchDB-1",
+          "pvtcollection":"prwchannel_consent_profile_management%24%24pprovidedconsent",
+          "key": key
+        }
+      }
+
+      console.log("submit Request ----------------- ", request)
+      this.props.actions.generalProcess(constants.getDocumentRevesions, request);
+        
+
+      // console.log("Request === ", request);
+      // this.props.actions.generalProcess(constants.getConsentStatus, request);
+
   }
 
   pageChanged(pageNo) {
@@ -283,7 +426,7 @@ class List extends React.Component {
 
   render() {
 
-    if (this.state.documentTypeList) {
+    if (!this.state.isLoading) {
       {console.log("render state ======= ", this.state)}
       return (
         <div>
@@ -292,7 +435,7 @@ class List extends React.Component {
               <div className="portlet light bordered sdg_portlet">
                 <div className="portlet-title">
                   <div className="caption">
-                    <span className="caption-subject">{utils.getLabelByID("Consent History Type Filters")}</span></div>
+                    <span className="caption-subject">{utils.getLabelByID("Consent Status Type Filters")}</span></div>
                   <div className="tools">
                     <a href="javascript:;" className="collapse" data-original-title title> </a>
                   </div>
@@ -310,43 +453,77 @@ class List extends React.Component {
                                   fontWeight: "normal"
                                 }}>{utils.getLabelByID("Id Type")}</label>
                                 <div className="col-md-8">
-                                  <Combobox
-                                      status={(this.state.errors && this.state.errors.idType) ? "ERROR" : undefined}
-                                      fieldname='idType'
-                                      formname='Container'
-                                      allowValue={false}
-                                      placeholder={utils.getLabelByID('')}
-                                      style={{}}
-                                      state={this.state}
-                                      typeName="orgTypes"
-                                      dataSource={_.get(this.state, 'Container', {})}
-                                      actionHandler={this.generalHandler}
-                                      className="form-control"
-                                    />
+                                  <Input
+                                    divStyle={{ padding: '0px', top: '10px',
+                                    position: 'absolute' }}
+                                    errorIconStyle={{
+                                      display:'none'
+                                    }}
+                                    status={(this.state.errors && this.state.errors.idType) ? "ERROR" : undefined}
+                                    fieldname='idType'
+                                    formname='Container'
+                                    disabled={true}
+                                    placeholder={utils.getLabelByID('')}
+                                    state={this.state}
+                                    actionHandler={this.generalHandler}
+                                    className="form-control"
+                                  />
                                 </div>                                
                              </div>
                             </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                                <label className="form-group control-label col-md-4" style={{
+                                  textAlign: "left",
+                                  fontWeight: "normal"
+                                }}>{utils.getLabelByID("Consent Type")}</label>
+                                <div className="col-md-8">
+                                  <Combobox
+                                      status={(this.state.errors && this.state.errors.consentType) ? "ERROR" : undefined}
+                                      fieldname='consentType'
+                                      formname='Container'
+                                      allowValue={false}
+                                      selected={_.get(_.get(this.state, 'typeData.consentType', []).filter(item =>
+                                          item.value == _.get(this.state, 'Container.consentType', '')
+                                      ), `[${0}].label`, undefined)}
+                                      placeholder={utils.getLabelByID('Consent Type')}
+                                      style={{}}
+                                      state={this.state}
+                                      typeName="consentType"
+                                      dataSource={_.get(this.state, 'typeData', {})}
+                                      actionHandler={this.generalHandler}
+                                      className="form-control"
+                                    />
+                                </div>
+                                  
+                            </div>
+                          </div>
                         </div>
                         <div className="row">  
                           <div className="col-md-6">
                             <div className="form-group col-md-4">
-                              <label className="control-label">{utils.getLabelByID("ID")}</label>
+                              <label className="control-label">{utils.getLabelByID("User ID")}</label>
                             </div>
-                            <div className="col-md-8">
-                              <Combobox
-                                  status={(this.state.errors && this.state.errors.providedConsentID) ? "ERROR" : undefined}
-                                  fieldname='providedConsentID'
-                                  formname='Container'
-                                  allowValue={false}
-                                  placeholder={utils.getLabelByID('ID')}
-                                  style={{}}
-                                  state={this.state}
-                                  typeName="providedConsentList"
-                                  dataSource={this.state}
-                                  actionHandler={this.generalHandler}
-                                  className="form-control"
-                                />
+                            <div className="form-group col-md-8">
+                              <Input
+                                divStyle={{ padding: '0px', top: '10px',
+                                position: 'absolute' }}
+                                errorIconStyle={{
+                                  display:'none'
+                                }}
+                                status={(this.state.errors && this.state.errors.userID) ? "ERROR" : undefined}
+                                fieldname='userID'
+                                formname='Container'
+                                disabled={false}
+                                placeholder={utils.getLabelByID('')}
+                                state={this.state}
+                                actionHandler={this.generalHandler}
+                                className="form-control"
+                              />
                             </div>
+                          </div>
+                          <div className="col-md-6">
+                            
                           </div>
                         </div>
                         <div className="row">
@@ -362,12 +539,15 @@ class List extends React.Component {
                                       fieldname='documentType'
                                       formname='Container'
                                       allowValue={false}
-                                      placeholder={utils.getLabelByID('Document Type')}
+                                      selected={_.get(_.get(this.state, 'Container.documentList', []).filter(item =>
+                                          item.key == _.get(this.state, 'Container.documentType', '')
+                                      ), `[${0}].label`, undefined)}
+                                      placeholder={utils.getLabelByID('Document')}
                                       style={{}}
                                       state={this.state}
-                                      typeName="documentTypeList"
-                                      dataSource={this.state}
-                                      actionHandler={this.documentTypeHandler}
+                                      typeName="documentList"
+                                      dataSource={_.get(this.state, 'Container', {})}
+                                      actionHandler={this.generalHandler}
                                       className="form-control"
                                     />
                                 </div> 
@@ -379,8 +559,53 @@ class List extends React.Component {
                                 <label className="control-label">{utils.getLabelByID("Document No")}</label>
                               </div>
                               <div className="form-group col-md-8">
-                                <input type="text" className="form-control" name="documentNo" id="documentNo"/>
+                                <Input
+                                  divStyle={{ padding: '0px', top: '10px',
+                                  position: 'absolute' }}
+                                  errorIconStyle={{
+                                    display:'none'
+                                  }}
+                                  status={(this.state.errors && this.state.errors.documentNo) ? "ERROR" : undefined}
+                                  fieldname='documentNo'
+                                  formname='Container'
+                                  disabled={false}
+                                  placeholder={utils.getLabelByID('')}
+                                  state={this.state}
+                                  actionHandler={this.generalHandler}
+                                  className="form-control"
+                                />
                               </div>
+                            </div>
+                          </div>
+                        </div>  
+                        <div className="row">
+                          <div className="col-md-6">
+                            
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                                <label className="form-group control-label col-md-4" style={{
+                                  textAlign: "left",
+                                  fontWeight: "normal"
+                                }}>{utils.getLabelByID("Consent Provided To")}</label>
+                                <div className="col-md-8">
+                                  <Combobox
+                                      status={(this.state.errors && this.state.errors.consentProvidedTo) ? "ERROR" : undefined}
+                                      fieldname='consentProvidedTo'
+                                      formname='Container'
+                                      allowValue={false}
+                                      selected={_.get(_.get(this.state, 'typeData.orgList', []).filter(item =>
+                                          item.value == _.get(this.state, 'Container.consentProvidedTo', '')
+                                      ), `[${0}].label`, undefined)}
+                                      placeholder={utils.getLabelByID('Consent Provided To')}
+                                      style={{}}
+                                      state={this.state}
+                                      typeName="orgList"
+                                      dataSource={_.get(this.state, 'typeData', {})}
+                                      actionHandler={this.generalHandler}
+                                      className="form-control"
+                                    />
+                                </div> 
                             </div>
                           </div>
                         </div>
@@ -395,7 +620,7 @@ class List extends React.Component {
 
                             </div>
                           </div>
-                        </div>  
+                        </div>                   
                       </div>
                     </div>
                   </div>
@@ -405,18 +630,18 @@ class List extends React.Component {
             </div>
           </div>
 
-          <Portlet title={utils.getLabelByID("Consents History List")} isPermissioned={true}
+          <Portlet title={utils.getLabelByID("Consents Status List")} isPermissioned={true}
                    actions={this.state.actions}>
             <Table fontclass=""
                    gridColumns={utils.getGridColumnByName("ConsentStatusList")}
                    gridData={this.state.revisionsList}
-                   totalRecords={this.state.revisionsList.length}
-                //   searchCallBack={this.searchCallBack}
-               //    pageSize={10}
-              //     pagination={true} pageChanged={this.pageChanged}
-              //     export={false}
-              //     search={true}
-              //     activePage={this.state.currentPageNo}
+                //   totalRecords={this.state.pageData.totalRecords}
+                   searchCallBack={this.searchCallBack}
+                   pageSize={10}
+                   pagination={false} pageChanged={this.pageChanged}
+                   export={false}
+                   search={true}
+                  // activePage={this.state.currentPageNo}
                    />
           </Portlet>
 
@@ -438,12 +663,12 @@ function mapStateToProps(state, ownProps) {
   return {
     listData: _.get(state.app, 'ADHReportList.ADHReportList.data.searchResult', undefined),
     pageData: _.get(state.app, 'ADHReportList.ADHReportList.data.pageData', undefined),
-    typeData: state.app.typeData.data,
     orgTypes: _.get(state.app, 'typeData.data.ORG_TYPES', undefined),
-    consentTypes: _.get(state.app, 'typeData.data.CONSENT_TYPES', undefined),
-    documentTypeList : _.get(state.app, 'documentTypeList', []),
-    providedConsentList : _.get(state.app, 'providedConsentList', []),
-    revisionsList : _.get(state.app, 'result', [])    
+    documentList : _.get(state.app, 'documentTypeList', undefined),
+    consentType: _.get(state.app, 'typeData.data.CONSENT_TYPES', []),
+    statusList : _.get(state.app, 'result', []),
+    orgList : _.get(state.app, "entityList.data.typeData.entityNames", []),
+    revisionsList : _.get(state.app, 'result', [])
   };
 }
 
