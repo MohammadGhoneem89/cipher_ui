@@ -85,6 +85,8 @@ class APIDocumentation extends React.Component {
                 }
             };
 
+            let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value,
+                group = document.getElementById('orgTypes') == null ? "" : document.getElementById('orgTypes').value;
             body.templatePayload.templateId = "Let_059b3700-b554-11ea-8c61-ef43ff7b9999";
             body.templatePayload.template = {}
             body.templatePayload.template.templateId = "Let_059b3700-b554-11ea-8c61-ef43ff7b9999";
@@ -92,6 +94,8 @@ class APIDocumentation extends React.Component {
             body.templatePayload.template.filePath = "/av-persistance/SAGP/SAGP-files"
             body.templatePayload.template.outputFileName = "api_documentation"
             body.templateName = "api_documentation"
+            body.useCase = useCase
+            body.group = group
 
             this.setState({ body: body })
 

@@ -273,6 +273,8 @@ module.exports = {
   getConsentProfileByKey: baseUrl + "/API/Core/getConsentProfileByKey",
   getProvidedConsentList : baseUrl + "/API/Consent/getProvidedConsentList",
   getConsentStatus: baseUrl + "/API/Core/getConsentStatus",
-  geOrgList : baseUrl + "/API/Consent/getOrgList"
+  geOrgList : baseUrl + "/API/Consent/getOrgList",
+  fetchConsentStatus: baseUrl + "/API/Core/fetchConsentStatus"
+
 }
 

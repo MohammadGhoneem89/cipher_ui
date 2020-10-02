@@ -57,19 +57,51 @@ class TableCell extends React.Component {
         return {
           fontWeight:"bold",
           backgroundColor:"#d4edda",
-          color:"#155724"
+          color:"#155724",
+          cursor:"pointer"
         };
       case "NOT FOUND":
         return {
           fontWeight:"bold",
           backgroundColor:"rgb(255 202 193)",
-          color:"rgb(200 76 64)"
+          color:"rgb(200 76 64)",
+          cursor:"pointer",
         };
       default:
         return {
           fontWeight:"bold",
           backgroundColor:"#fff3cd",
-          color:"#856404"
+          color:"#856404",
+          cursor:"pointer"
+        };
+    }
+  }
+
+  getStyleForRevField(type){
+    switch (type) {
+      case "Transaction Date":
+        return {
+          fontWeight:"bold",
+          color:"#f89822"
+        };
+      case "Created By":
+        return {
+          fontWeight:"bold",
+          color:"#f89822"
+        };
+        case "UUID":
+        return {
+          fontWeight:"bold",
+          color:"#f89822"
+        };
+        case "Blockchain ID":
+        return {
+           fontWeight:"bold",
+          color:"#f89822"
+        };
+      default:
+        return {
+          fontWeight:"normal",
         };
     }
   }
@@ -287,6 +319,14 @@ class TableCell extends React.Component {
       return (<td>N/A</td>)
   }
 
+  handleCellSelect(){
+    console.log("AFDSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
+    var SelectFn = this.props.selectedCell || null;
+    if(SelectFn){
+      SelectFn(this.props.rowData.field,this.props.cellData)
+    }
+  }
+
   render() {
     function text_truncate(str, length, ending) {
       if (length == null) {
@@ -440,8 +480,9 @@ class TableCell extends React.Component {
         </td>;
 
       case "revString":
-        return (<td style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())}  >{this.props.cellData}</td>);
+        return (<td style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())} onClick={this.handleCellSelect.bind(this)}  >{this.props.cellData}</td>);
 
+<<<<<<< HEAD
       case "revLatest":
         return (<td style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e"}}  >{this.props.cellData}</td>);
       case "orgCodeImage":
@@ -488,6 +529,15 @@ class TableCell extends React.Component {
               src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
             </td>);
           }
+=======
+        case "revLatest":
+          return (<td style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e",cursor:"pointer"}} onClick={this.handleCellSelect.bind(this)} >{this.props.cellData}</td>);
+      
+
+      case "revField":
+        return (<td style={this.getStyleForRevField(this.props.cellData.toString())}  >{this.props.cellData}</td>);
+
+>>>>>>> a1a62fda780c5aa27411094d1ad8483f7b462f31
 
         }
       default:

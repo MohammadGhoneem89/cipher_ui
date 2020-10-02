@@ -111,6 +111,7 @@ import ConsentProfile from "./components/ConsentProfile/Container.jsx"
 import ConsentProfileList from "./components/ConsentProfile/List.jsx"
 import ConsentStatus from "./components/ConsentStatusNew/List.jsx"
 import ConsentHistory from "./components/ConsentHistoryNew/List.jsx"
+import CurrentConsentStatus from "./components/CurrentConsentStatus/List.jsx"
 
 import safLogs from "./components/saf/dispatchQueue.jsx"
 import APITemplateList from '../core/components/APITemplate/APITemplateList';
@@ -226,6 +227,7 @@ export default (<Router history={browserHistory}>
     <Route path="/ConsentStatus" component={ConsentStatus} />
 
     <Route path="/ConsentHistory" component={ConsentHistory} />
+    <Route path="/CurrentConsentStatus" component={CurrentConsentStatus} />
 
     <Route path="/general/userDetail/:id" component={UserDetail} />
     <Route path="/general/userRole/:id" component={UserRole} />

@@ -49,15 +49,13 @@ class DateControl extends React.Component {
 
 
   render() {
-
-    console.log("this.props.value ,", this.props.value, "this.date", this.date)
     if (this.props.fromDate == undefined || this.props.toDate == undefined) {
       this.date = false;
     }
     const format = this.props.format || "DD/MM/YYYY";
     const mode = this.props.mode || "date";
     const showToday = this.props.showToday || false;
-    const defaultText = this.props.defaultValue || "";
+    const defaultText = this.props.defaultValue=='Invalid date'? "Select Date": this.props.defaultValue;
     const className = this.props.className || "form-group";
     const dateControlID = this.props.id || "datePicker";
     let finalVal = this.props.isEpochVal ? this.UNIXConvertToDate(this.props.value) : this.props.value;

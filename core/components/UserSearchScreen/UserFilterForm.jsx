@@ -83,7 +83,9 @@ const UserFilterForm = props => {
               Search
             </button>
             <button type="button" className="btn default" disabled={submitting} onClick={()=>{
+              $('#userform').find('input:text').val('');
               $('#userform').find('select').each(function () {
+                
                 $(this)[0].selectedIndex = 0;
                 reset();
               });
