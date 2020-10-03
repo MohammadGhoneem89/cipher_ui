@@ -30,7 +30,7 @@ class List extends React.Component {
       pageData: {},
       Container: {},
       isLoading: true,
-      revisionList : undefined,
+      revisionsList : [],
       orgList : undefined,
       isGridLoading : false
     }
@@ -86,82 +86,7 @@ class List extends React.Component {
           orgList : nextProps.orgList
         })
       }
-  //    let statusList = [];
-      // if (nextProps.documentList) {
-      //   console.log("testing print");
-      //   this.setState({
-      //     Container:{
-      //       ...,
-      //     }
-      //   })
-      // }  
-
-    let revisionsList = [];
-    if(nextProps.revisionsList){
-
-      if(nextProps.revisionsList.errorCode){
-        this.setState({
-          revisionsList : undefined,
-          isGridLoading: false
-        })
-        toaster.showToast("Unable To Find Document", "Error");
-        return;
-      }
-      revisionsList = Object.entries(nextProps.revisionsList).map(item => {
-        console.log("item==========", item[1]);
-        console.log("utc date status=======",moment(item[1].consentDetails.consentDate).format("MM/DD/YYYY"));
-        let cur_date = moment().format("MM/DD/YYYY HH:mm:ss");
-        let grant_date = moment.unix(item[1].consentDetails.consentTillDate).format("MM/DD/YYYY HH:mm:ss");
-        console.log("cur_date=====", cur_date);
-        console.log("grant_date=====", grant_date);
-        let days = moment(grant_date).diff(moment(cur_date), "days");
-        let hours = moment(grant_date).diff(moment(cur_date), "hours");
-        let secs = moment(grant_date).diff(moment(cur_date));
-
-
-        console.log("days =======", days);
-        console.log("hours =======", hours);
-        let mins;
-        let valid;
-        if(secs <= 0){
-          valid = "Expired"
-        }
-        else{
-          if(hours <= 0){
-            mins = moment(grant_date).diff(moment(cur_date), "minutes");
-            valid = hours +  ' hrs ' + (mins - (hours * 60)) + " mins"
-            console.log("minutes ==== ", mins);
-            console.log("valid ==== ", valid);
-            
-          }
-          else{
-            valid = days +  ' d ' + (hours - (days * 24)) + " hrs"
-            console.log("valid ==== ", valid);
-          }
-        }
-        console.log(item[1].consentDetails.toOrgCode)
-        let _imgURL = _.find(this.state.orgList, {"value" : item[1].consentDetails.toOrgCode})
-        console.log("testing imgeURL FETCH =============>>>> ",_imgURL);
-        let obj = {
-          "key": item[1].key,
-          "timestamp": moment.unix(item[1].consentDetails.consentTillDate).format("MM/DD/YYYY HH:mm:ss"),
-          "status": item[1].consentDetails.statusOfConsent,
-          "documentType": item[1].documentType,
-          "documentNo": item[1].consentDetails.relatedDocumentNo,
-          "consentType": item[1].consentDetails.consentType,
-          "validity": valid,
-          "providedTo": { imageURL: _imgURL ? _imgURL.img : '', name: item[1].consentDetails.toOrgCode}
-        }
-        return obj;
-
-      })
-      console.log("revisionsList---------------", revisionsList);
-
-      this.setState({
-        revisionsList,
-        isGridLoading : false
-      })
-    }
+    
   }
 
   componentWillMount() {
@@ -343,7 +268,89 @@ class List extends React.Component {
       }
 
       console.log("submit Request ----------------- ", request)
-      this.props.actions.generalProcess(constants.getDocumentRevesions, request);
+      this.props.actions.generalAsyncProcess(constants.getDocumentRevesions, request)
+                .then(res => {
+                  console.log("Response ================ ", res);
+                  if(res.errorCode !== 200){
+                    this.setState({
+                      revisionsList: [],
+                      isGridLoading: false
+                    })
+                    toaster.showToast("Unable To Find Document", "Error");
+                    return;
+                  }
+                  let revisionsList = [];
+                  if(res.result){
+            
+                    revisionsList = Object.entries(res.result).map(item => {
+                      console.log("item==========", item[1]);
+                      console.log("utc date status=======",moment(item[1].consentDetails.consentDate).format("MM/DD/YYYY"));
+                      let cur_date = moment().format("MM/DD/YYYY HH:mm:ss");
+                      let grant_date = moment.unix(item[1].consentDetails.consentTillDate).format("MM/DD/YYYY HH:mm:ss");
+                      console.log("cur_date=====", cur_date);
+                      console.log("grant_date=====", grant_date);
+                      let days = moment(grant_date).diff(moment(cur_date), "days");
+                      let hours = moment(grant_date).diff(moment(cur_date), "hours");
+                      let secs = moment(grant_date).diff(moment(cur_date));
+              
+              
+                      console.log("days =======", days);
+                      console.log("hours =======", hours);
+                      let mins;
+                      let valid;
+                      if(item[1].consentDetails.statusOfConsent === "GRANT")
+                      {
+                        if(secs <= 0){
+                          valid = "Expired"
+                        }
+                        else{
+                          if(hours <= 0){
+                            mins = moment(grant_date).diff(moment(cur_date), "minutes");
+                            valid = hours +  ' hrs ' + (mins - (hours * 60)) + " mins"
+                            console.log("minutes ==== ", mins);
+                            console.log("valid ==== ", valid);
+                            
+                          }
+                          else{
+                            valid = days +  ' d ' + (hours - (days * 24)) + " hrs"
+                            console.log("valid ==== ", valid);
+                          }
+                        }
+                      }
+                      else{
+                        valid = "-"
+                      }
+                      console.log(item[1].consentDetails.toOrgCode)
+                      let _imgURL = _.find(this.state.orgList, {"value" : item[1].consentDetails.toOrgCode})
+                      console.log("testing imgeURL FETCH =============>>>> ",_imgURL);
+                      let obj = {
+                        "key": item[1].key,
+                        "timestamp": moment.unix(item[1].consentDetails.consentTillDate).format("MM/DD/YYYY HH:mm:ss"),
+                        "status": item[1].consentDetails.statusOfConsent,
+                        "documentType": item[1].documentType,
+                        "documentNo": item[1].consentDetails.relatedDocumentNo,
+                        "consentType": item[1].consentDetails.consentType,
+                        "validity": valid,
+                        "providedTo": { imageURL: _imgURL ? _imgURL.img : '', name: item[1].consentDetails.toOrgCode}
+                      }
+                      return obj;
+              
+                    })
+                    console.log("revisionsList---------------", revisionsList);
+              
+                    this.setState({
+                      revisionsList,
+                      isGridLoading : false
+                    })
+                  }
+                })
+                .catch(err=> {
+                    this.setState({
+                      revisionsList : [],
+                      isGridLoading: false
+                    })
+                    toaster.showToast(err, "Error");
+                })
         
 
       // console.log("Request === ", request);
@@ -685,7 +692,6 @@ function mapStateToProps(state, ownProps) {
     documentList : _.get(state.app, 'documentTypeList', undefined),
     consentType: _.get(state.app, 'typeData.data.CONSENT_TYPES', []),
     orgList : _.get(state.app, "entityList.data.typeData.entityNames", []),
-    revisionsList : _.get(state.app, 'result', [])
   };
 }
 

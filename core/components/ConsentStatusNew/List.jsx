@@ -87,128 +87,7 @@ class List extends React.Component {
         orgList : nextProps.orgList
       })
     }
-    let statusList = [];
-    if(nextProps.statusList){
-      if(nextProps.statusList.errorCode){
-        this.setState({
-          statusList: [],
-          isGridLoading: false
-        })
-        toaster.showToast("Unable To Find Document", "Error");
-        return;
-      }
-      let consentProvidedBy = _.get(this.state.Container, 'consentProvidedBy', '')
-      let consentProvidedTo = _.get(this.state.Container, 'consentProvidedTo', )
-      let actionType = _.get(this.state.Container, 'actionType', )
-      let filterStatusList = []
-      filterStatusList = nextProps.statusList.filter((elem) => {
-//      filterStatusList = data.filter((elem) => {
-        let cond1 = false;
-        let cond2 = false;
-        let cond3 = false;
-        
-        if(consentProvidedBy){
-          if(elem.consentDetails.consentCollectedBy === consentProvidedBy)
-            cond1 = true;
-        }
-        else{
-          cond1 = true;
-        }
-        if(consentProvidedTo){
-          if(elem.consentDetails.toOrgCode === consentProvidedTo)
-            cond2 = true;
-        }
-        else{
-          cond2 = true;
-        }
-        if(actionType){
-          if(elem.consentDetails.statusOfConsent === actionType)
-            cond3 = true;
-        }
-        else{
-          cond3 = true;
-        }
-        if(cond1 && cond2 && cond3)
-          return true
-        return false;
-      })
-      console.log("filterStatusList===========", filterStatusList);
-
-
-      statusList = filterStatusList.map(item => {
-
-    //    if(item.consentDetails.conset)
-     //   console.log("testing time==============", moment(item[1].consentProvidedTo[0].consentTillDate).format("DD/MM/YYYY"));
-        console.log("item==========", item);
-        console.log("utc date status=======",moment(item.consentDetails.consentDate).format("MM/DD/YYYY"));
-        let cur_date = moment().format("MM/DD/YYYY HH:mm:ss");
-        let grant_date = moment.unix(item.consentDetails.consentTillDate).format("MM/DD/YYYY HH:mm:ss");
-        console.log("cur_date=====", cur_date);
-        console.log("grant_date=====", grant_date);
-        let days = moment(grant_date).diff(moment(cur_date), "days");
-        let hours = moment(grant_date).diff(moment(cur_date), "hours");
-        let secs = moment(grant_date).diff(moment(cur_date));
-
-
-        console.log("days =======", days);
-        console.log("hours =======", hours);
-        let mins;
-        let valid;
-        if(secs <= 0){
-          valid = "Expired"
-        }
-        else{
-          if(hours <= 0){
-            mins = moment(grant_date).diff(moment(cur_date), "minutes");
-            valid = hours +  ' hrs ' + (mins - (hours * 60)) + " mins"
-            console.log("minutes ==== ", mins);
-            console.log("valid ==== ", valid);
-            
-          }
-          else{
-            valid = days +  ' d ' + (hours - (days * 24)) + " hrs"
-            console.log("valid ==== ", valid);
-          }
-        }
-        console.log(item.consentDetails.toOrgCode)
-        let _imgURL = _.find(this.state.orgList, {"value" : item.consentDetails.toOrgCode})
-          console.log("testing imgeURL FETCH =============>>>> ",_imgURL);
-        let obj = {
-          "key": item.key,
-          "timestamp": moment.unix(item.consentDetails.consentTillDate).format("MM/DD/YYYY HH:mm:ss"),
-          "status": item.consentDetails.statusOfConsent,
-          "documentType": item.documentType,
-          "documentNo": item.consentDetails.relatedDocumentNo,
-          "consentType": item.consentDetails.consentType,
-          "validity": valid,
-          "providedTo": { imageURL: _imgURL ? _imgURL.img : '', name: item.consentDetails.toOrgCode}
-        }
-        return obj;
-        // let test = item[1].consentProvidedTo[0].consentTillDate.split(' ');
-        // console.log(moment(test[0] + " " + test[1]));
-        
-        // let date_now = moment();
-        // let valid_date = moment(test[0] + " " + test[1])
-        // let days = valid_date.diff(date_now, 'days')
-        // let hrs = valid_date.diff(date_now, 'hours')
-        // console.log("dfiff------------", valid_date.diff(date_now));
-        // console.log("date_now=======",date_now );
-        // console.log("valid_date=======",valid_date );
-        
-        // item[1]['status'] = item[1].consentProvidedTo[0].statusOfConsent;
-        // item[1]['providedTo'] = item[1].consentProvidedTo[0].toOrgCode;
-        // item[1].txtimestamp = moment.unix(item[1].consentDate).format("DD-MM-YYYY HH:mm:ss");
-        // item[1]['validity'] = days +  ' d ' + (hrs - (days * 24))
-        // console.log(item[1]) 
-        // return item[1];
-
-      })
-
-      this.setState({
-        statusList,
-        isGridLoading: false
-      })
-    }
+    
     
     // if (nextProps.documentList) {
     //   console.log("testing print");
@@ -403,7 +282,129 @@ class List extends React.Component {
         
 
       console.log("Request === ", request);
-      this.props.actions.generalProcess(constants.getConsentStatus, request);
+      this.props.actions.generalAsyncProcess(constants.getConsentStatus, request)
+                .then(res => {
+                  console.log("Response ================ ", res);
+                  if(res.errorCode !== 200){
+                    this.setState({
+                      statusList: [],
+                      isGridLoading: false
+                    })
+                    toaster.showToast("Unable To Find Document", "Error");
+                    return;
+                  }
+                  let statusList = [];
+                  if(res.result){
+
+                    let consentProvidedBy = _.get(this.state.Container, 'consentProvidedBy', '')
+                    let consentProvidedTo = _.get(this.state.Container, 'consentProvidedTo', )
+                    let actionType = _.get(this.state.Container, 'actionType', )
+                    let filterStatusList = []
+                    filterStatusList = res.result.filter((elem) => {
+              //      filterStatusList = data.filter((elem) => {
+                      let cond1 = false;
+                      let cond2 = false;
+                      let cond3 = false;
+                      
+                      if(consentProvidedBy){
+                        if(elem.consentDetails.consentCollectedBy === consentProvidedBy)
+                          cond1 = true;
+                      }
+                      else{
+                        cond1 = true;
+                      }
+                      if(consentProvidedTo){
+                        if(elem.consentDetails.toOrgCode === consentProvidedTo)
+                          cond2 = true;
+                      }
+                      else{
+                        cond2 = true;
+                      }
+                      if(actionType){
+                        if(elem.consentDetails.statusOfConsent === actionType)
+                          cond3 = true;
+                      }
+                      else{
+                        cond3 = true;
+                      }
+                      if(cond1 && cond2 && cond3)
+                        return true
+                      return false;
+                    })
+                    console.log("filterStatusList===========", filterStatusList);
+
+
+                    statusList = filterStatusList.map(item => {
+
+                  //    if(item.consentDetails.conset)
+                  //   console.log("testing time==============", moment(item[1].consentProvidedTo[0].consentTillDate).format("DD/MM/YYYY"));
+                      console.log("item==========", item);
+                      console.log("utc date status=======",moment(item.consentDetails.consentDate).format("MM/DD/YYYY"));
+                      let cur_date = moment().format("MM/DD/YYYY HH:mm:ss");
+                      let grant_date = moment.unix(item.consentDetails.consentTillDate).format("MM/DD/YYYY HH:mm:ss");
+                      console.log("cur_date=====", cur_date);
+                      console.log("grant_date=====", grant_date);
+                      let days = moment(grant_date).diff(moment(cur_date), "days");
+                      let hours = moment(grant_date).diff(moment(cur_date), "hours");
+                      let secs = moment(grant_date).diff(moment(cur_date));
+
+
+                      console.log("days =======", days);
+                      console.log("hours =======", hours);
+                      let mins;
+                      let valid;
+                      if(item.consentDetails.statusOfConsent === "GRANT")
+                      {
+                        if(secs <= 0){
+                          valid = "Expired"
+                        }
+                        else{
+                          if(hours <= 0){
+                            mins = moment(grant_date).diff(moment(cur_date), "minutes");
+                            valid = hours +  ' hrs ' + (mins - (hours * 60)) + " mins"
+                            console.log("minutes ==== ", mins);
+                            console.log("valid ==== ", valid);
+                            
+                          }
+                          else{
+                            valid = days +  ' d ' + (hours - (days * 24)) + " hrs"
+                            console.log("valid ==== ", valid);
+                          }
+                        }
+                      }
+                      else{
+                        valid = "-"
+                      }
+                      console.log(item.consentDetails.toOrgCode)
+                      let _imgURL = _.find(this.state.orgList, {"value" : item.consentDetails.toOrgCode})
+                        console.log("testing imgeURL FETCH =============>>>> ",_imgURL);
+                      let obj = {
+                        "key": item.key,
+                        "timestamp": moment.unix(item.consentDetails.consentTillDate).format("MM/DD/YYYY HH:mm:ss"),
+                        "status": item.consentDetails.statusOfConsent,
+                        "documentType": item.documentType,
+                        "documentNo": item.consentDetails.relatedDocumentNo,
+                        "consentType": item.consentDetails.consentType,
+                        "validity": valid,
+                        "providedTo": { imageURL: _imgURL ? _imgURL.img : '', name: item.consentDetails.toOrgCode}
+                      }
+                      return obj;
+
+                    })
+
+                    this.setState({
+                      statusList,
+                      isGridLoading: false
+                    })
+                  }
+                })
+                .catch(err=> {
+                  this.setState({
+                    statusList : [],
+                    isGridLoading: false
+                  })
+                  toaster.showToast(err, "Error");
+                })
 
     }
 
@@ -743,7 +744,6 @@ function mapStateToProps(state, ownProps) {
     documentList : _.get(state.app, 'documentTypeList', undefined),
     consentType: _.get(state.app, 'typeData.data.CONSENT_TYPES', []),
     actionType: _.get(state.app, 'typeData.data.ACTION_TYPES', []),
-    statusList : _.get(state.app, 'result', []),
     orgList : _.get(state.app, "entityList.data.typeData.entityNames", [])
   };
 }
