@@ -313,7 +313,7 @@ class List extends React.Component {
                   
                 </div>
                 <div className="col-md-12 text-center">
-                <img src="assets/imgs/positive-vote.png" style={{height:300,width:300,margin:"10px 0px"}}/>
+                <img src="assets/imgs/thumbsup.png" style={{height:300,width:300,margin:"10px 0px"}}/>
               </div>
               </div>
               }
@@ -323,7 +323,7 @@ class List extends React.Component {
                 
               </div>
               <div className="col-md-12 text-center">
-                <img src="assets/imgs/negative-vote.png" style={{height:300,width:300,margin:"10px 0px"}}/>
+                <img src="assets/imgs/thumbsdown.png" style={{height:300,width:300,margin:"10px 0px"}}/>
               </div>
               </div>
               }
@@ -333,7 +333,7 @@ class List extends React.Component {
                 
               </div>
               <div className="col-md-12 text-center">
-                <img src="assets/imgs/folder.png" style={{height:300,width:300,margin:"10px 0px"}}/>
+                <img src="assets/imgs/ban.png" style={{height:300,width:300,margin:"10px 0px"}}/>
               </div>
               </div>
               }
