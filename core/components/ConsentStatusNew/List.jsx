@@ -12,7 +12,7 @@ import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
 import Combobox from '../../common/Select.jsx';
 import Input from '../../common/Input.jsx';
-import data from './data.json';
+import * as toaster from '../../common/toaster.js';
 
 import * as gen from './../../../core/common/generalActionHandler';
 
@@ -29,8 +29,9 @@ class List extends React.Component {
       pageData: {},
       Container: {},
       isLoading: true,
-      statusList : undefined,
-      orgList : undefined
+      statusList : [],
+      orgList : undefined,
+      isGridLoading : false
     }
     this.pageChanged = this.pageChanged.bind(this);
     this.generalHandler = gen.generalHandler.bind(this)
@@ -39,16 +40,7 @@ class List extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     console.log("consentStatusNew nextprops -----------", nextProps);
-    // if (nextProps.listData && nextProps.pageData && nextProps.orgTypes) {
-    //   console.log("testing print");
-    //   this.setState({
-    //     listData: nextProps.listData,
-    //     pageData: nextProps.pageData,
-    //     Container:{
-    //       orgTypes:nextProps.orgTypes          
-    //     }
-    //   })
-    // }
+
     if (nextProps.orgTypes && nextProps.documentList && nextProps.consentType && nextProps.actionType && nextProps.orgList) {
       
         let documentList = []
@@ -97,7 +89,14 @@ class List extends React.Component {
     }
     let statusList = [];
     if(nextProps.statusList){
-
+      if(nextProps.statusList.errorCode){
+        this.setState({
+          statusList: [],
+          isGridLoading: false
+        })
+        toaster.showToast("Unable To Find Document", "Error");
+        return;
+      }
       let consentProvidedBy = _.get(this.state.Container, 'consentProvidedBy', '')
       let consentProvidedTo = _.get(this.state.Container, 'consentProvidedTo', )
       let actionType = _.get(this.state.Container, 'actionType', )
@@ -204,11 +203,13 @@ class List extends React.Component {
         // return item[1];
 
       })
-    }
-      console.log("statusList---------------", statusList);
+
       this.setState({
-        statusList
+        statusList,
+        isGridLoading: false
       })
+    }
+    
     // if (nextProps.documentList) {
     //   console.log("testing print");
     //   this.setState({
@@ -374,8 +375,10 @@ class List extends React.Component {
       return
     }
     this.setState({
-      errors: {}
+      errors: {},
+      isGridLoading :true
     })
+
       console.log("form submit -------------", this.state);
       let request;
       if(consentType === "TRANSACTIONAL"){
@@ -401,6 +404,7 @@ class List extends React.Component {
 
       console.log("Request === ", request);
       this.props.actions.generalProcess(constants.getConsentStatus, request);
+
     }
 
   pageChanged(pageNo) {
@@ -699,17 +703,22 @@ class List extends React.Component {
 
           <Portlet title={utils.getLabelByID("Consents Status List")} isPermissioned={true}
                    actions={this.state.actions}>
+          {!this.state.isGridLoading ? 
             <Table fontclass=""
-                   gridColumns={utils.getGridColumnByName("ConsentStatusList")}
-                   gridData={this.state.statusList}
-                //   totalRecords={this.state.pageData.totalRecords}
-                   searchCallBack={this.searchCallBack}
-                   pageSize={10}
-                   pagination={false} pageChanged={this.pageChanged}
-                   export={false}
-                   search={true}
-                  // activePage={this.state.currentPageNo}
-                   />
+              gridColumns={utils.getGridColumnByName("ConsentStatusList")}
+              gridData={this.state.statusList}
+          //   totalRecords={this.state.pageData.totalRecords}
+              searchCallBack={this.searchCallBack}
+              pageSize={10}
+              pagination={false} pageChanged={this.pageChanged}
+              export={false}
+              search={true}
+            // activePage={this.state.currentPageNo}
+            />
+            :
+            <div className="loader">{utils.getLabelByID("Loading")}</div>
+          }
+            
           </Portlet>
 
 
