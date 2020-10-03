@@ -223,7 +223,7 @@ export default (<Router history={browserHistory}>
     <Route path="/documentList" component={documentList} />
     <Route path="/addDocType/(:id)" component={addDocType} />
     <Route path="/ConsentProfileList" component={ConsentProfileList} />
-    <Route path="/ConsentProfile/(:id)" component={ConsentProfile} />
+    <Route path="/ConsentProfile/:id" component={ConsentProfile} />
     <Route path="/ConsentStatus" component={ConsentStatus} />
 
     <Route path="/ConsentHistory" component={ConsentHistory} />

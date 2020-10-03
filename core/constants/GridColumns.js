@@ -1385,19 +1385,16 @@ module.exports = {
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
   
-
-ConsentStatusList: [
-  { alias: "COM_SerialNo", key: "", type: "serialNo" },
-  { alias: "", key: "_id", type: "hiddenID" },
-  { alias: "Time Stamp", key: "txtimestamp", type: "string" },
-  { alias: "Status", key: "status", type: "string" },
-  { alias: "Document Type", key: "documentType", type: "string" },
-  { alias: "Type", key: "consentType", type: "string" },
-  { alias: "Document No", key: "relatedDocumentNo", type: "string" },
-  { alias: "Validity", key: "validity", type: "string" },
-  { alias: "Providied To", key: "providedTo", type: "string" },
-  { alias: "Details", key: "actions", type: "action" }
-]
+  ConsentProfileList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "document Type", key: "documentType", type: "string" },
+    { alias: "description", key: "description", type: "string" },
+    { alias: "policy ID", key: "policyID", type: "string" },
+    { alias: "Consent Type", key: "consentType", type: "string" },
+    { alias: "created At", key: "createdAt", type: "string" },
+    { alias: "Details", key: "actions", type: "action" }
+  ]
 };
 
 

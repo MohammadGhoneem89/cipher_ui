@@ -14,6 +14,7 @@ import Combobox from '../../common/Select.jsx';
 import Input from '../../common/Input.jsx';
 
 import * as gen from './../../../core/common/generalActionHandler';
+import * as toaster from '../../common/toaster.js';
 
 import * as constants from '../../constants/Communication.js';
 import { sha256 } from 'js-sha256';
@@ -29,8 +30,9 @@ class List extends React.Component {
       pageData: {},
       Container: {},
       isLoading: true,
-      statusList : [],
-      orgList : undefined
+      revisionList : undefined,
+      orgList : undefined,
+      isGridLoading : false
     }
     this.pageChanged = this.pageChanged.bind(this);
     this.generalHandler = gen.generalHandler.bind(this)
@@ -96,6 +98,15 @@ class List extends React.Component {
 
     let revisionsList = [];
     if(nextProps.revisionsList){
+
+      if(nextProps.revisionsList.errorCode){
+        this.setState({
+          revisionsList : undefined,
+          isGridLoading: false
+        })
+        toaster.showToast("Unable To Find Document", "Error");
+        return;
+      }
       revisionsList = Object.entries(nextProps.revisionsList).map(item => {
         console.log("item==========", item[1]);
         console.log("utc date status=======",moment(item[1].consentDetails.consentDate).format("MM/DD/YYYY"));
@@ -147,7 +158,8 @@ class List extends React.Component {
       console.log("revisionsList---------------", revisionsList);
 
       this.setState({
-        revisionsList
+        revisionsList,
+        isGridLoading : false
       })
     }
   }
@@ -299,7 +311,8 @@ class List extends React.Component {
       return
     }
     this.setState({
-      errors: {}
+      errors: {},
+      isGridLoading :true
     })
       let key, request;
       console.log("form submit -------------", this.state);
@@ -632,17 +645,22 @@ class List extends React.Component {
 
           <Portlet title={utils.getLabelByID("Consents Status List")} isPermissioned={true}
                    actions={this.state.actions}>
-            <Table fontclass=""
-                   gridColumns={utils.getGridColumnByName("ConsentStatusList")}
-                   gridData={this.state.revisionsList}
-                //   totalRecords={this.state.pageData.totalRecords}
-                   searchCallBack={this.searchCallBack}
-                   pageSize={10}
-                   pagination={false} pageChanged={this.pageChanged}
-                   export={false}
-                   search={true}
-                  // activePage={this.state.currentPageNo}
-                   />
+            {!this.state.isGridLoading ? 
+              <Table fontclass=""
+                gridColumns={utils.getGridColumnByName("ConsentStatusList")}
+                gridData={this.state.revisionsList}
+            //   totalRecords={this.state.pageData.totalRecords}
+                searchCallBack={this.searchCallBack}
+                pageSize={10}
+                pagination={false} pageChanged={this.pageChanged}
+                export={false}
+                search={true}
+              // activePage={this.state.currentPageNo}
+              />
+              :
+              <div className="loader">{utils.getLabelByID("Loading")}</div>
+            }
+            
           </Portlet>
 
 
@@ -666,7 +684,6 @@ function mapStateToProps(state, ownProps) {
     orgTypes: _.get(state.app, 'typeData.data.ORG_TYPES', undefined),
     documentList : _.get(state.app, 'documentTypeList', undefined),
     consentType: _.get(state.app, 'typeData.data.CONSENT_TYPES', []),
-    statusList : _.get(state.app, 'result', []),
     orgList : _.get(state.app, "entityList.data.typeData.entityNames", []),
     revisionsList : _.get(state.app, 'result', [])
   };
