@@ -487,8 +487,20 @@ class TableCell extends React.Component {
         </td>
         :<td style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())} onClick={this.handleCellSelect.bind(this)}  >{this.props.cellData}</td>);
 
-      case "revLatest":
-        return (<td style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e"}}  >{this.props.cellData}</td>);
+        case "revLatest":
+          return (
+            this.props.rowData.field=="UUID" && this.props.cellData !="no change" && this.props.cellData != "not found"?
+        <td  style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e",cursor:"pointer"}}>
+        <a href="javascript:;" data-toggle="modal" data-target="#modelWindows" style={{color:"inherit",textDecoration:"none"}}
+        data-id={this.props.cellData}
+        onClick={this.renderPopupBody.bind(this, this.props.cellData)}>{this.props.cellData} </a>
+        </td>:
+          <td style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e",cursor:"pointer"}} onClick={this.handleCellSelect.bind(this)} >{this.props.cellData}</td>);
+      
+
+      case "revField":
+        return (<td style={this.getStyleForRevField(this.props.cellData.toString())}  >{this.props.cellData}</td>);
+
       default:
         return (<td style={{ fontWeight: fontWeightStyle }}> {this.props.cellData} </td>);
 
