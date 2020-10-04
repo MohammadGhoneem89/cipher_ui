@@ -31,7 +31,8 @@ class List extends React.Component {
       isLoading: true,
       statusList : [],
       orgList : undefined,
-      isGridLoading : false
+      isGridLoading : false,
+      intervalID : undefined
     }
     this.pageChanged = this.pageChanged.bind(this);
     this.generalHandler = gen.generalHandler.bind(this)
@@ -103,6 +104,10 @@ class List extends React.Component {
 
   }
 
+  componentWillUnmount() {
+    clearInterval(this.state.intervalID);
+    console.log("ConsentStatus Unmounting")
+  }
   searchCallBack(keyWord) {
 
   }
@@ -131,8 +136,73 @@ class List extends React.Component {
     //     "children": []
     //   }]
     // })
+
   }
 
+  setIntervalForStatus = () => {
+    const intervalID = setInterval(() => {
+      let statusListClone = _.cloneDeep(this.state.statusList)
+      console.log("Interval Clone List ========>>> ", statusListClone);
+      let statusList;
+      statusList = statusListClone ? statusListClone.map(item => {
+
+        //    if(item.consentDetails.conset)
+        //   console.log("testing time==============", moment(item[1].consentProvidedTo[0].consentTillDate).format("DD/MM/YYYY"));
+            console.log("item==========", item);
+    //        console.log("utc date status=======",moment(item..consentDate).format("MM/DD/YYYY"));
+            let cur_date = moment().format("MM/DD/YYYY HH:mm:ss");
+            let grant_date = moment.unix(item.consentTillDate).format("MM/DD/YYYY HH:mm:ss");
+            console.log("cur_date=====", cur_date);
+            console.log("grant_date=====", grant_date);
+            let days = moment(grant_date).diff(moment(cur_date), "days");
+            let hours = moment(grant_date).diff(moment(cur_date), "hours");
+            let secs = moment(grant_date).diff(moment(cur_date));
+
+
+            console.log("days =======", days);
+            console.log("hours =======", hours);
+            let mins;
+            let valid;
+            if(item.status === "GRANT")
+            {
+              if(secs <= 0){
+                valid = "Expired"
+              }
+              else{
+                if(hours <= 0){
+                  mins = moment(grant_date).diff(moment(cur_date), "minutes");
+                  valid = hours +  ' hrs ' + (mins - (hours * 60)) + " mins"
+                  console.log("minutes ==== ", mins);
+                  console.log("valid ==== ", valid);
+                  
+                }
+                else{
+                  valid = days +  ' d ' + (hours - (days * 24)) + " hrs"
+                  console.log("valid ==== ", valid);
+                }
+              }
+            }
+            else{
+              valid = "-"
+            }
+            // console.log(item.consentDetails.toOrgCode)
+            // let _imgURL = _.find(this.state.orgList, {"value" : item.consentDetails.toOrgCode})
+            //   console.log("testing imgeURL FETCH =============>>>> ",_imgURL);
+            item.validity = valid;
+            return item;
+
+          }) : [];
+
+          this.setState({
+            statusList,
+            isGridLoading: false
+          })
+      
+    }, 1000);
+
+    this.setState({intervalID});
+
+  }
   getRequest() {
     let documentTypeName = document.getElementById('documentTypeName') == null ? "" : document.getElementById('documentTypeName').value;
     let ownerOrgType = document.getElementById('ownerOrgType') == null ? "" : document.getElementById('ownerOrgType').value;
@@ -255,8 +325,10 @@ class List extends React.Component {
     }
     this.setState({
       errors: {},
-      isGridLoading :true
+      isGridLoading :true,      
     })
+    clearInterval(this.state.intervalID);
+
 
       console.log("form submit -------------", this.state);
       let request;
@@ -266,7 +338,7 @@ class List extends React.Component {
             "unifiedID": userID,
             "documentType": documentType,
             "consentType": consentType,
-            "orgCode": documentNo
+            "documentNo": documentNo
           }
         }
       }
@@ -380,18 +452,20 @@ class List extends React.Component {
                         console.log("testing imgeURL FETCH =============>>>> ",_imgURL);
                       let obj = {
                         "key": item.key,
-                        "timestamp": moment.unix(item.consentDetails.consentTillDate).format("MM/DD/YYYY HH:mm:ss"),
+                        "timestamp": moment.unix(item.consentDetails.consentDate).format("MM/DD/YYYY HH:mm:ss"),
                         "status": item.consentDetails.statusOfConsent,
                         "documentType": item.documentType,
                         "documentNo": item.consentDetails.relatedDocumentNo,
                         "consentType": item.consentDetails.consentType,
+                        "consentTillDate": item.consentDetails.consentTillDate,
                         "validity": valid,
                         "providedTo": { imageURL: _imgURL ? _imgURL.img : '', name: item.consentDetails.toOrgCode}
                       }
                       return obj;
 
                     })
-
+                    if(statusList.length > 0)
+                      this.setIntervalForStatus();
                     this.setState({
                       statusList,
                       isGridLoading: false
