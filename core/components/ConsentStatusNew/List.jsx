@@ -156,11 +156,12 @@ class List extends React.Component {
             console.log("grant_date=====", grant_date);
             let days = moment(grant_date).diff(moment(cur_date), "days");
             let hours = moment(grant_date).diff(moment(cur_date), "hours");
-            let secs = moment(grant_date).diff(moment(cur_date));
+            let secs = moment(grant_date).diff(moment(cur_date), "seconds");
 
 
             console.log("days =======", days);
             console.log("hours =======", hours);
+            console.log("seconds =======", secs);
             let mins;
             let valid;
             if(item.status === "GRANT")
@@ -170,11 +171,14 @@ class List extends React.Component {
               }
               else{
                 if(hours <= 0){
-                  mins = moment(grant_date).diff(moment(cur_date), "minutes");
-                  valid = hours +  ' hrs ' + (mins - (hours * 60)) + " mins"
-                  console.log("minutes ==== ", mins);
-                  console.log("valid ==== ", valid);
-                  
+                  if(secs <= 60 ){
+                    valid = secs + " secs"
+                  }else{
+                    mins = moment(grant_date).diff(moment(cur_date), "minutes");
+                    valid = hours +  ' hrs ' + (mins - (hours * 60)) + " mins"
+                    console.log("minutes ==== ", mins);
+                    console.log("valid ==== ", valid);
+                  }
                 }
                 else{
                   valid = days +  ' d ' + (hours - (days * 24)) + " hrs"

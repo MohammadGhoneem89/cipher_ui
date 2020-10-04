@@ -165,37 +165,43 @@ class List extends React.Component {
     const intervalID = setInterval(() => {
       let revisionsListClone = _.cloneDeep(this.state.revisionsList)
       console.log("Interval Clone List ========>>> ", revisionsListClone);
-      let revisionsList;
-      revisionsList = revisionsListClone &&  revisionsListClone.length > 0 ? revisionsListClone.slice(0,1).map(item => {
+      for(var i=0; i<1; i++){
 
         //    if(item.consentDetails.conset)
-        //   console.log("testing time==============", moment(item[1].consentProvidedTo[0].consentTillDate).format("DD/MM/YYYY"));
-            console.log("item==========", item);
-    //        console.log("utc date status=======",moment(item..consentDate).format("MM/DD/YYYY"));
+        //   console.log("testing time==============", moment(revisionsListClone[0][1].consentProvidedTo[0].consentTillDate).format("DD/MM/YYYY"));
+            console.log("revisionsListClone[0]==========", revisionsListClone[0]);
+    //        console.log("utc date status=======",moment(revisionsListClone[0]..consentDate).format("MM/DD/YYYY"));
             let cur_date = moment().format("MM/DD/YYYY HH:mm:ss");
-            let grant_date = moment.unix(item.consentTillDate).format("MM/DD/YYYY HH:mm:ss");
+            let grant_date = moment.unix(revisionsListClone[0].consentTillDate).format("MM/DD/YYYY HH:mm:ss");
             console.log("cur_date=====", cur_date);
             console.log("grant_date=====", grant_date);
             let days = moment(grant_date).diff(moment(cur_date), "days");
             let hours = moment(grant_date).diff(moment(cur_date), "hours");
-            let secs = moment(grant_date).diff(moment(cur_date));
+        //    let mins = moment(grant_date).diff(moment(cur_date), "minutes");
+            let secs = moment(grant_date).diff(moment(cur_date), "seconds");
 
 
             console.log("days =======", days);
             console.log("hours =======", hours);
+            console.log("seconds =======", secs);
             let mins;
             let valid;
-            if(item.status === "GRANT")
+            if(revisionsListClone[0].status === "GRANT")
             {
               if(secs <= 0){
                 valid = "Expired"
               }
               else{
                 if(hours <= 0){
-                  mins = moment(grant_date).diff(moment(cur_date), "minutes");
-                  valid = hours +  ' hrs ' + (mins - (hours * 60)) + " mins"
-                  console.log("minutes ==== ", mins);
-                  console.log("valid ==== ", valid);
+                  if(secs <= 60 ){
+                    valid = secs + " secs"
+                  }else{
+                    mins = moment(grant_date).diff(moment(cur_date), "minutes");
+                    valid = hours +  ' hrs ' + (mins - (hours * 60)) + " mins"
+                    console.log("minutes ==== ", mins);
+                    console.log("valid ==== ", valid);
+                  }
+                  
                   
                 }
                 else{
@@ -207,16 +213,16 @@ class List extends React.Component {
             else{
               valid = "-"
             }
-            // console.log(item.consentDetails.toOrgCode)
-            // let _imgURL = _.find(this.state.orgList, {"value" : item.consentDetails.toOrgCode})
+            // console.log(revisionsListClone[0].consentDetails.toOrgCode)
+            // let _imgURL = _.find(this.state.orgList, {"value" : revisionsListClone[0].consentDetails.toOrgCode})
             //   console.log("testing imgeURL FETCH =============>>>> ",_imgURL);
-            item.validity = valid;
-            return item;
+            revisionsListClone[0].validity = valid;
+ //           return revisionsListClone[0];
 
-          }) : [];
+          }
 
           this.setState({
-            revisionsList,
+            revisionsList: revisionsListClone,
             isGridLoading: false
           })
       
