@@ -91,7 +91,7 @@ export function generalAjxProcess(fetchURL, actionData) {
                 return Promise.reject(resultSet.responseMessage.data.error);
             }
             else {
-            return Promise.resolve(resultSet.responseMessage.data);
+            return Promise.resolve(resultSet);
             }
 
         });

@@ -91,10 +91,12 @@ class PickupListSearchContainer extends React.Component {
 
 
   searchTypes = () => {
+
+    let typeName = document.getElementById('typeName') == null ? undefined : document.getElementById('typeName').value;
     this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequest({
       "currentPageNo": 1,
       "pageSize": 10
-    }, { type: this.state.searchCriteria.typeName }));
+    }, { type: "core", typeName: typeName }));
   }
 
   reset = () => {
@@ -115,10 +117,17 @@ class PickupListSearchContainer extends React.Component {
           <Col>
             <Portlet title={utils.getLabelByID("Pickup List Search")}>
               <Row>
-                <Lable columns='2' text={utils.getLabelByID("Categories")} />
-                <Select fieldname='orgtype' className="form-control" formname='searchForm' columns='4' style={{}}
+                <Col>
+                  <div className="col-md-6">
+                    <Lable columns='2' text={utils.getLabelByID("Type Name")} />
+                    <Col>
+                      <input id="typeName" className="form-control" name="typeName" />
+                    </Col>
+                  </div>
+                </Col>
+                {/* <Select fieldname='typeName' className="form-control" formname='searchForm' columns='4' style={{}}
                   state={this.state} typeName="pickupList" dataSource={this.state}
-                  multiple={false} actionHandler={this.generalActionHandler} />
+                  multiple={false} actionHandler={this.generalActionHandler} /> */}
               </Row>
               <br />
               <Row>

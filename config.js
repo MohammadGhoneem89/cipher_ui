@@ -18,6 +18,6 @@ const config = {
     entityGroupList : ["Entity", "API Group for Entities"],
     acquirerGroupList : ["Acquirer", "API Group for Acquirers"],
     allowedUploadFilesMessage : "txt, jpeg, png, gif, xlxs, xls, word, pdf and xml",
-    retryCount : 1
+    retryCount : 0
 };
 export default config;

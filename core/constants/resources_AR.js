@@ -416,6 +416,11 @@ module.exports = {
   SLA_userId: "User ID",
   SLA_Cnt: "Total Count",
   SLA_Actions: "Actions",
-  SLAWorkboard_Heading: "SLA"
+  SLAWorkboard_Heading: "SLA",
+
+  ChangeTrackingFilters:"Change Tracking Filters",
+  PrivateCollection:"Private Collection",
+  KEY:"KEY",
+  ChangeTrackingListData:"Change Tracking List Data"
 
 };

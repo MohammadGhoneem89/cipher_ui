@@ -263,6 +263,8 @@ class Datatable extends React.Component {
     })
   }
 
+  
+
   returnSingleKey(key, value) {
     console.log(key, value);
   }
@@ -323,12 +325,13 @@ class Datatable extends React.Component {
                         let footerRow = (this.props.footerRow && this.props.footerRow == true && this.props.gridData.length - 1 == index) ? true : false;
 
                         return (
-                          <tr key={index.toString()}>
+                          <tr key={index.toString()} >
                             {
                               this.props.gridColumns.map((colData, index2) => (
                                 <TableCell key={index2.toString()}
                                   recordID={recordID}
                                   rowData={rowData}
+                                  selectedCell={this.props.selectedCell || null}
                                   // cellData={colData.type === "object" ? (rowData[colData.key] !== null ? rowData[colData.key][colData.property] : "") : rowData[colData.key]}
                                   cellData={colData.type === "specialObject" ? (rowData[colData.key] !== null ?
                                     Object.keys(colData.key).map((item, index) => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/generalAction.js';
 import * as constants from '../../constants/Communication.js';
 import * as toaster from '../../common/toaster.js';
@@ -9,7 +9,7 @@ import * as utils from "../../common/utils";
 import Cookies from "js-cookie";
 import * as requestCreator from "../../common/request";
 import auth from "../../auth/authenticator";
-import {browserHistory} from "react-router";
+import { browserHistory } from "react-router";
 
 class ChangePassword extends React.Component {
 
@@ -42,7 +42,8 @@ class ChangePassword extends React.Component {
   logout() {
     this.props.actions.generalProcess(constants.logout, requestCreator.createEmailTemplateListRequest({}));
     auth.logOut();
-    browserHistory.push('/cipher/login');
+    document.location.href = '/cipher/login'
+    // browserHistory.push('/cipher/login');
   }
 
   check(form) {
@@ -123,7 +124,7 @@ class ChangePassword extends React.Component {
 
     return (<div>
 
-      </div>
+    </div>
     )
   }
 
@@ -145,7 +146,7 @@ class ChangePassword extends React.Component {
   // }
 
   getLogosForSDGUser() {
-    return (<div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+    return (<div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
       {/* <div className="logo"> </div> */}
       <div className="logo2"></div>
     </div>);
@@ -178,14 +179,14 @@ class ChangePassword extends React.Component {
   render() {
 
     sessionStorage.loginOrgType = this.props.orgType;
-    if (!Cookies.get('login')) {
+    if (!sessionStorage.token && !Cookies.get('login')) {
       return (
 
         <div>
 
           <div className=" login">
-            <div id="particles-js"/>
-            <div className="content" style={{marginTop: "0px"}}>
+            <div id="particles-js" />
+            <div className="content" style={{ marginTop: "0px" }}>
 
 
               <div className="login-form">
@@ -193,48 +194,48 @@ class ChangePassword extends React.Component {
                 {this.getLogosForSDGUser()}
                 <h3 className="form-title">Cipher</h3>
                 <div className="alert alert-danger display-hide">
-                  <button className="close" data-close="alert"/>
+                  <button className="close" data-close="alert" />
                   <span> Enter any username and password. </span>
                 </div>
                 {!!sessionStorage.token &&
-                <div className="form-group">
-                  <label className="control-label visible-ie8 visible-ie9">OLD Password</label>
-                  <div className="input-icon">
-                    <i className="fa fa-lock"/>
-                    <i className="fa fa-eye" onClick={() => this.changeView('oldPassword')}
-                       aria-hidden="true"/>
-                    <input type={'password'}
-                           className="form-control placeholder-no-fix" name="oldPassword"
-                           autoComplete="off" id="oldPassword" placeholder="Old Password"/>
+                  <div className="form-group">
+                    <label className="control-label visible-ie8 visible-ie9">OLD Password</label>
+                    <div className="input-icon">
+                      <i className="fa fa-lock" />
+                      <i className="fa fa-eye" onClick={() => this.changeView('oldPassword')}
+                        aria-hidden="true" />
+                      <input type={'password'}
+                        className="form-control placeholder-no-fix" name="oldPassword"
+                        autoComplete="off" id="oldPassword" placeholder="Old Password" />
+                    </div>
                   </div>
-                </div>
                 }
                 <div className="form-group">
                   <label className="control-label visible-ie8 visible-ie9">New Password</label>
                   <div className="input-icon">
-                    <i className="fa fa-lock"/>
-                    <i className="fa fa-eye" onClick={() => this.changeView('newPassword')} aria-hidden="true"/>
+                    <i className="fa fa-lock" />
+                    <i className="fa fa-eye" onClick={() => this.changeView('newPassword')} aria-hidden="true" />
                     <input type={'password'}
-                           className="form-control placeholder-no-fix"
-                           name="password"
-                           autoComplete="off" id="newPassword" placeholder="New Password"/>
+                      className="form-control placeholder-no-fix"
+                      name="password"
+                      autoComplete="off" id="newPassword" placeholder="New Password" />
                   </div>
                 </div>
                 <div className="form-group">
                   <label className="control-label visible-ie8 visible-ie9">Confirm Password</label>
-                  <div className="input-icon"><i className="fa fa-lock"/>
+                  <div className="input-icon"><i className="fa fa-lock" />
 
-                    <i className="fa fa-eye" onClick={() => this.changeView('confirmPassword')} aria-hidden="true"/>
+                    <i className="fa fa-eye" onClick={() => this.changeView('confirmPassword')} aria-hidden="true" />
                     <input type={'password'}
-                           className="form-control placeholder-no-fix" name="confirmPassword"
-                           autoComplete="off" id="confirmPassword" placeholder="Confirm Password"/>
+                      className="form-control placeholder-no-fix" name="confirmPassword"
+                      autoComplete="off" id="confirmPassword" placeholder="Confirm Password" />
                   </div>
                 </div>
                 <div className="form-actions"><a href="javascript:" onClick={this.check.bind(this)}
-                                                 className="btn green btn-block uppercase"> Change Password </a>
+                  className="btn green btn-block uppercase"> Change Password </a>
                 </div>
                 <a href="javascript:;"
-                   onClick={this.redirectToLoginPage.bind(this)}>{"Back to login?"}</a>
+                  onClick={this.redirectToLoginPage.bind(this)}>{"Back to login?"}</a>
               </div>
 
             </div>
@@ -251,9 +252,9 @@ class ChangePassword extends React.Component {
       return (
 
         <Portlet title={utils.getLabelByID("")}>
-          <div className="row" style={{height: '100%'}}>
+          <div className="row" style={{ height: '100%' }}>
             <h3 className="text-center">Change Password</h3>
-            <br/>
+            <br />
             <div className="col-sm-offset-3 col-md-12">
               <div className="row">
                 <div className="col-md-12">
@@ -263,8 +264,8 @@ class ChangePassword extends React.Component {
                     </div>
                     <div className="form-group col-md-8">
                       <input type={this.state.oldPassword ? 'text' : 'password'}
-                             className="form-control placeholder-no-fix" name="oldPassword"
-                             autoComplete="off" id="oldPassword" placeholder="Old Password"/>
+                        className="form-control placeholder-no-fix" name="oldPassword"
+                        autoComplete="off" id="oldPassword" placeholder="Old Password" />
                     </div>
                   </div>
                 </div>
@@ -275,9 +276,9 @@ class ChangePassword extends React.Component {
                     </div>
                     <div className="form-group col-md-8">
                       <input type={this.state.newPassword ? 'text' : 'password'}
-                             className="form-control placeholder-no-fix"
-                             name="password"
-                             autoComplete="off" id="newPassword" placeholder="New Password"/>
+                        className="form-control placeholder-no-fix"
+                        name="password"
+                        autoComplete="off" id="newPassword" placeholder="New Password" />
                     </div>
                   </div>
                 </div>
@@ -288,8 +289,8 @@ class ChangePassword extends React.Component {
                     </div>
                     <div className="form-group col-md-8">
                       <input type={this.state.confirmPassword ? 'text' : 'password'}
-                             className="form-control placeholder-no-fix" name="confirmPassword"
-                             autoComplete="off" id="confirmPassword" placeholder="Confirm Password"/>
+                        className="form-control placeholder-no-fix" name="confirmPassword"
+                        autoComplete="off" id="confirmPassword" placeholder="Confirm Password" />
                     </div>
                   </div>
                 </div>
@@ -300,7 +301,7 @@ class ChangePassword extends React.Component {
                         <div className="col-md-12">
                           <div className="btn-toolbar pull-right">
                             <button type="submit" onClick={this.check.bind(this)}
-                                    className="btn green">{' '}{utils.getLabelByID("Update Password")}
+                              className="btn green">{' '}{utils.getLabelByID("Update Password")}
                             </button>
                           </div>
                         </div>
@@ -333,7 +334,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
 
-  return {actions: bindActionCreators(actions, dispatch)}
+  return { actions: bindActionCreators(actions, dispatch) }
 
 }
 

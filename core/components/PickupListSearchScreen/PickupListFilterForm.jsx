@@ -11,19 +11,10 @@ const PickupListFilterForm = props => {
         <div className="col-md-12 col-sm-12">
           <div className="row">
             <div className="form-group col-md-4">
-              <label className="control-label">{utils.getLabelByID("Category")}</label>
+              <label className="control-label">{utils.getLabelByID("Type Name")}</label>
             </div>
             <div className="form-group col-md-8">
-              <select id="typeName" className="form-control" name="typeName">
-                <option key="" value="">--select--</option>
-                {
-                  state.pickupList.data.typeData.typeDataListNames.map((option, index) => {
-                    return (
-                      <option key={index} value={option.value}>{option.label}</option>
-                    );
-                  })
-                }
-              </select>
+              <input id="typeName" className="form-control" name="typeName" />
             </div>
           </div>
         </div>

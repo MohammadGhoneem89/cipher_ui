@@ -21,7 +21,7 @@ class generalAPI {
       })
     }
 
-
+    _.set(data, 'isui', true);
 
     return new Promise(async (resolve, reject) => {
       try {
