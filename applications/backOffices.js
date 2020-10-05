@@ -1,4 +1,3 @@
-
 const backOffices = {
     baseUrl: "http://localhost:10001",
     blockChainURL: "http://localhost:10001",

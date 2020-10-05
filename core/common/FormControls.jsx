@@ -112,14 +112,30 @@ export const DropdownInput = (props) => (
   <Field
     {...props}
     component={renderDropdown}>
-    <option value={""}>{utils.getLabelByID("RA_Select")}</option>
+    {/* <option value={""}>{utils.getLabelByID("RA_Select")}</option>
     {props.options.map((option, index) => {
       return (
+        <option key={index} value={option.value}>{option.label}</option> */}
+        <option value={""}>{props.checkVal&&props.checkVal.length>0?props.checkVal[0].label:utils.getLabelByID("RA_Select")}</option>
+        {props.options.map((option, index) => {
+          return (
         <option key={index} value={option.value}>{option.label}</option>
       );
     })}
   </Field>
 );
+
+
+
+
+// <option value={""}>{props.checkVal&&props.checkVal.length>0?props.checkVal[0].value:utils.getLabelByID("RA_Select")}</option>
+// {props.options.map((option, index) => {
+//   return (
+//     <option key={index} value={option.value}>{option.label}</option>
+
+
+
+
 // export const DropdownInputWithoutSelect = (props) => (
 //
 //         <Field

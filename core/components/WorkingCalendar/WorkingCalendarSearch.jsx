@@ -48,14 +48,7 @@ class WorkingCalendarSearch extends Component {
         this.props.actions.generalProcess(constants.workingCalendarList, request);
     }
     componentWillReceiveProps(nextProps) {
-        console.log('nextProps: ', nextProps)
         if (nextProps.workingCalendarList) {
-
-
-console.log("nextProps.workingCalendarList",nextProps.workingCalendarList);
-
-
-            console.log('wotking calender')
             let page = { ...nextProps.workingCalendarList.pageData }
 
             // Grid Data Preperation
@@ -72,8 +65,6 @@ console.log("nextProps.workingCalendarList",nextProps.workingCalendarList);
                 return item
             })
 
-
-            console.log(gridData, ' Grid Data')
             this.setState({
                 isLoading: false,
                 gridData,
@@ -85,11 +76,9 @@ console.log("nextProps.workingCalendarList",nextProps.workingCalendarList);
 
 
     getRequest = (pageNo = 1) => {
-        console.log('page changed 2 : ', pageNo)
         let searchCriteria = {
             ..._.get(this.state, 'searchCriteria', {})
         }
-        console.log(searchCriteria, ' search criteria')
 
         let request = {
             "page": {
@@ -103,7 +92,6 @@ console.log("nextProps.workingCalendarList",nextProps.workingCalendarList);
     }
 
     pageChanged = pageNo => {
-        console.log('page changed : ', pageNo)
         this.updateCurrentPage(pageNo);
         this.props.actions.generalProcess(constants.workingCalendarList, this.getRequest(pageNo));
     };
@@ -118,7 +106,6 @@ console.log("nextProps.workingCalendarList",nextProps.workingCalendarList);
         e.preventDefault()
         //this.setState({isLoading:true})
         this.props.actions.generalProcess(constants.workingCalendarList, this.getRequest());
-        console.log('form submitted')
     }
 
     render() {
@@ -220,7 +207,6 @@ WorkingCalendarSearch.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-    console.log(state.app, ' state')
     return {
         workingCalendarList: _.get(state.app, 'workingCalendarList', undefined)
     }

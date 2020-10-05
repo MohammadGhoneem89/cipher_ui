@@ -268,7 +268,7 @@ class List extends React.Component {
           <Portlet title={utils.getLabelByID("Consent Profile List")} isPermissioned={true}
                    actions={this.state.actions}>
             <Table fontclass=""
-                   gridColumns={utils.getGridColumnByName("ADHReportList")}
+                   gridColumns={utils.getGridColumnByName("ConsentProfileList")}
                    gridData={this.state.listData}
                    totalRecords={this.state.pageData.length}
               //     searchCallBack={this.searchCallBack}

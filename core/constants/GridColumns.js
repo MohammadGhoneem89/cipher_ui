@@ -2,14 +2,6 @@ import GridColumnsIndex from '../../applications/constants/GridColumnsIndex'
 
 module.exports = {
   ...GridColumnsIndex,
-  DocumentTypeList: [
-    { alias: "", key: "key", type: "hiddenID" },
-    { alias: "Document Type", key: "documentType", type: "string" },
-    { alias: "Owner Org Type", key: "ownerOrgCode", type: "string" },
-    { alias: "Document Name", key: "name", type: "string" },
-    { alias: "Description", key: "description", type: "string" },
-    { alias: "EL_actions", key: "actions", type: "action" }
-  ],
   exceptionList: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "", key: "TransactionID", type: "hiddenID" },
@@ -303,7 +295,7 @@ module.exports = {
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "Working_Calendar_Name", key: "calendarName", type: "string" },
     { alias: "Working_Calendar_Year", key: "calendarYear", type: "string" },
-    { alias: "Working_Calendar_Month", key: "calendarMonth", type: "string" },
+    // { alias: "Working_Calendar_Month", key: "calendarMonth", type: "string" },
     { alias: "CL_actionOn", key: "createdAt", type: "epochDate" },
     { alias: "CL_actionBy", key: "createdBy", type: "object", property: "userID" },
     { alias: "EVNTL_ISACTIVE", key: "isActive", type: "cbDisabled" },
@@ -886,10 +878,10 @@ module.exports = {
   ADHReportList: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "", key: "_id", type: "hiddenID" },
-    { alias: "policy id", key: "policyID", type: "string" },
-    { alias: "document Type", key: "documentType", type: "string" },
-    { alias: "consent Type", key: "consentType", type: "string" },
-    { alias: "created At", key: "createdAt", type: "string" },
+    { alias: "name", key: "name", type: "string" },
+    { alias: "report Type", key: "reportType", type: "string" },
+    { alias: "connection Type", key: "connectionType", type: "string" },
+    { alias: "EVNTL_CREATEDBY", key: "createdBy", type: "string" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
   actionList: [
@@ -1375,13 +1367,32 @@ module.exports = {
   ConsentStatusList: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "", key: "_id", type: "hiddenID" },
-    { alias: "Time Stamp", key: "txtimestamp", type: "string" },
+    { alias: "Time Stamp", key: "timestamp", type: "string" },
     { alias: "Status", key: "status", type: "string" },
     { alias: "Document Type", key: "documentType", type: "string" },
-    { alias: "Type", key: "consentType", type: "string" },
-    { alias: "Document No", key: "relatedDocumentNo", type: "string" },
+    { alias: "Consent Type", key: "consentType", type: "string" },
+    { alias: "Document No", key: "documentNo", type: "string" },
     { alias: "Validity", key: "validity", type: "string" },
-    { alias: "Providied To", key: "providedTo", type: "string" },
+    { alias: "Providied To", key: "providedTo", type: "image" }
+  ],
+  
+  DocumentTypeList: [
+    { alias: "", key: "key", type: "hiddenID" },
+    { alias: "Document Type", key: "documentType", type: "string" },
+    { alias: "Owner Org Type", key: "ownerOrgCode", type: "string" },
+    { alias: "Document Name", key: "name", type: "string" },
+    { alias: "Description", key: "description", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
+  
+  ConsentProfileList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "document Type", key: "documentType", type: "string" },
+    { alias: "description", key: "description", type: "string" },
+    { alias: "policy ID", key: "policyID", type: "string" },
+    { alias: "Consent Type", key: "consentType", type: "string" },
+    { alias: "created At", key: "createdAt", type: "string" },
     { alias: "Details", key: "actions", type: "action" }
   ]
 };
