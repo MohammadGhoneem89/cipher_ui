@@ -25,7 +25,8 @@ class List extends React.Component {
       actions: [], 
       typeData: undefined,
       listData: undefined,
-      pageData: {}
+      pageData: {},
+      totalRecords : undefined
     }
     this.pageChanged = this.pageChanged.bind(this);
     this.clearFields = this.clearFields.bind(this);
@@ -40,9 +41,9 @@ class List extends React.Component {
     // }
     console.log("cosent profile list ------", nextProps);
     console.log("cosent profile State ------", this.state);
-    if (nextProps.listData) {
+    if (nextProps.listData.data){
       console.log("list Data", nextProps.listData);
-      let parsedData = nextProps.listData.map(item=>{
+      let parsedData = nextProps.listData.data.map(item=>{
         return {
           ...JSON.parse(item.tranxData),
           createdAt:item.createdAt,
@@ -59,7 +60,8 @@ class List extends React.Component {
       console.log("parsed Data", parsedData);
       this.setState({
         pageData: parsedData,
-        listData: parsedData
+        listData: parsedData,
+        totalRecords :  Object.values(nextProps.listData.record)[0]
       })
     }
   }
@@ -183,7 +185,8 @@ class List extends React.Component {
     this.setState({
       'page':{
         'currentPageNo':1
-      }
+      },
+      searchCriteria : {}
     })
     let request = {
       'body':{
@@ -270,7 +273,7 @@ class List extends React.Component {
             <Table fontclass=""
                    gridColumns={utils.getGridColumnByName("ConsentProfileList")}
                    gridData={this.state.listData}
-                   totalRecords={this.state.pageData.length}
+                   totalRecords={this.state.totalRecords}
               //     searchCallBack={this.searchCallBack}
                    pageSize={10}  
                    pagination={true} 
