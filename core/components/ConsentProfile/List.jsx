@@ -26,7 +26,8 @@ class List extends React.Component {
       typeData: undefined,
       listData: undefined,
       pageData: {},
-      totalRecords : undefined
+      totalRecords : undefined,
+      isGridLoading : true,
     }
     this.pageChanged = this.pageChanged.bind(this);
     this.clearFields = this.clearFields.bind(this);
@@ -61,7 +62,8 @@ class List extends React.Component {
       this.setState({
         pageData: parsedData,
         listData: parsedData,
-        totalRecords :  Object.values(nextProps.listData.record)[0]
+        totalRecords :  Object.values(nextProps.listData.record)[0],
+        isGridLoading : false
       })
     }
   }
@@ -135,6 +137,9 @@ class List extends React.Component {
   }
 
   formSubmit() {
+    this.setState({
+      isGridLoading : true
+    })
     console.log("Form submit---------------", this.getRequest());
     this.props.actions.generalProcess(constants.getConsentProfileList, this.getRequest());
   }
@@ -270,6 +275,7 @@ class List extends React.Component {
           {      console.log("cosent profile State ------", this.state)}
           <Portlet title={utils.getLabelByID("Consent Profile List")} isPermissioned={true}
                    actions={this.state.actions}>
+            {!this.state.isGridLoading ? 
             <Table fontclass=""
                    gridColumns={utils.getGridColumnByName("ConsentProfileList")}
                    gridData={this.state.listData}
@@ -281,6 +287,8 @@ class List extends React.Component {
                    export={false}
                    search={true}
                    activePage={this.state.currentPageNo}/>
+                   :
+            <div className="loader">{utils.getLabelByID("Loading")}</div> }
           </Portlet>
 
 
