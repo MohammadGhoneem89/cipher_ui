@@ -31,7 +31,8 @@ export default function UserSetupForm(props) {
     performActionApproval,
     imgDiv,
     performAction,
-    disabled
+    disabled,
+    isNew
   } = props
 
   console.log("containerState", containerState);
@@ -574,82 +575,84 @@ export default function UserSetupForm(props) {
         &nbsp;
         {/* <div className="col-md-8"></div> */}
         {/* <div className="col-md-4"> */}
-        <div className={"btn-toolbar pull-left"} style={{ marginLeft: "15px" }}>
+        {isNew &&
+          < div className={"btn-toolbar pull-left"} style={{ marginLeft: "15px" }}>
           <button
-            type="button"
-            className="btn green"
-            style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
-            onClick={() => {
-              performAction(resetAction)
+          type="button"
+          className="btn green"
+          style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
+          onClick={() => {
+            performAction(resetAction)
 
-            }}
-          >
-            {"Reset Password"}
-          </button>
-          <button
-            type="button"
-            className="btn green"
-            style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
-            onClick={() => {
-              performAction(unblockAction)
+          }}
+        >
+          {"Reset Password"}
+        </button>
+        <button
+          type="button"
+          className="btn green"
+          style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
+          onClick={() => {
+            performAction(unblockAction)
 
-            }}
-          >
-            {"Unblock"}
-          </button>
-        </div>
+          }}
+        >
+          {"Unblock"}
+        </button>
+      </div>
+}
         &nbsp;&nbsp;
 
-        {/*{_.get(containerState, 'userDetail.isActive', true) === false ? rejectionReason */}
-        {/*  <button*/}
-        {/*    type="button"*/}
-        {/*    className="btn green"*/}
-        {/*    style={{cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0', alignItems: 'right'}}*/}
-        {/*    onClick={() => {*/}
-        {/*      performAction(activateAction)*/}
-        {/*    }}*/}
-        {/*  >*/}
-        {/*    {"Unlock user"}*/}
-        {/*  </button>*/}
-        {/*  : null}*/}
-        {/*/!* </div> *!/*/}
+      {/*{_.get(containerState, 'userDetail.isActive', true) === false ? rejectionReason */}
+      {/*  <button*/}
+      {/*    type="button"*/}
+      {/*    className="btn green"*/}
+      {/*    style={{cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0', alignItems: 'right'}}*/}
+      {/*    onClick={() => {*/}
+      {/*      performAction(activateAction)*/}
+      {/*    }}*/}
+      {/*  >*/}
+      {/*    {"Unlock user"}*/}
+      {/*  </button>*/}
+      {/*  : null}*/}
+      {/*/!* </div> *!/*/}
 
-        {containerState.view &&
-          <div className="btn-toolbar pull-right">
+      {containerState.view &&
+        <div className="btn-toolbar pull-right">
 
-            <button
-              type="button"
-              className="btn green"
-              style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
-              disabled={!(containerState.userDetail.status == "PENDING")}
-              onClick={() => {
-                performActionApproval("Approve")
-              }}
-            >
-              {"Approve"}
-            </button>
-            <button
-              type="button"
-              className="btn green"
-              style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
-              onClick={() => {
-                performActionApproval("Reject")
-              }}
-            >
-              {"Reject"}
-            </button>
-          </div>}
-        {!containerState.view &&
-          <div>
-            <ActionButton actionList={containerState.actions} />
-          </div>}
+          <button
+            type="button"
+            className="btn green"
+            style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
+            disabled={!(containerState.userDetail.status == "PENDING")}
+            onClick={() => {
+              performActionApproval("Approve")
+            }}
+          >
+            {"Approve"}
+          </button>
+          <button
+            type="button"
+            className="btn green"
+            style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
+            onClick={() => {
+              performActionApproval("Reject")
+            }}
+          >
+            {"Reject"}
+          </button>
+        </div>}
+      {!containerState.view &&
+        <div>
+          <ActionButton actionList={containerState.actions} />
+        </div>}
 
 
 
       </div>
 
 
-    </form>
+    </form >
   )
 
 }

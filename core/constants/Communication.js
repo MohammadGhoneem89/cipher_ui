@@ -142,6 +142,12 @@ module.exports = {
   getTypeDataList: baseUrl + "/API/core/getTypeDataList",
   getModuleListData: baseUrl + "/API/core/getModuleList",
   getModuleConfigByID: baseUrl + "/API/core/getModuleConfigByID",
+  getAllLetters: baseUrl + "/API/core/getAllLetters",
+  addUpdateLetter: baseUrl + "/API/core/addUpdateLetter",
+  testLetter: baseUrl + "/API/core/testLetter",
+  apiDocumentationLetter: baseUrl + "/API/core/apiDocumentationLetter",
+  addUpdateSampleTemplate: baseUrl + "/API/core/addUpdateSampleTemplate",
+  getSampleLetters: baseUrl + "/API/core/getSampleLetters",
   getAPIList: baseUrl + "/API/core/getAPIList",
   updateModuleConfig: baseUrl + "/API/core/updateModuleConfig",
   getdispatchListData: baseUrl + "/API/UI/getEventDispatcher",
@@ -174,6 +180,9 @@ module.exports = {
 
   getActiveAPIs: baseUrl + "/API/core/getActiveAPIs",
 
+  getCollectionList: baseUrl + "/API/HyperLedger/getCollectionsList",
+  getDocumentRevesions: baseUrl + "/API/HyperLedger/getDocumentRevesions",
+
   getAdaptorsList: baseUrl + "/API/core/getAdaptorsList",
   getAvailableObjectsList: baseUrl + "/API/core/getAvailableObjectsList",
   getDBFields: baseUrl + "/API/core/getDBFields",
@@ -183,6 +192,12 @@ module.exports = {
   upsertEndpointDefination: baseUrl + "/API/core/upsertEndpointDefination",
   findEndpointDefination: baseUrl + "/API/core/findEndpointDefination",
   getEndpointListView: baseUrl + "/API/core/getEndpointListView",
+  CompareDBSql: baseUrl + "/API/utility/CompareDBSql",
+  WriteScriptSQL: baseUrl + "/API/utility/WriteScriptSQL",
+  ApplyScriptSQL: baseUrl + "/API/utility/ApplyScriptSQL",
+  CompareDBPostgre: baseUrl + "/API/utility/CompareDBPostgre",
+  WriteScriptPostgreSql: baseUrl + "/API/utility/WriteScriptPostgreSql",
+  ApplyScriptPostgreSql: baseUrl + "/API/utility/ApplyScriptPostgreSql",
   getTemplatesListView: baseUrl + "/API/core/getTemplatesListView",
   findAPITemplate: baseUrl + "/API/core/findAPITemplate",
   findAPITemplateById: baseUrl + "/API/core/findAPITemplateById",
@@ -240,11 +255,6 @@ module.exports = {
   updateHealthRuleList: baseUrl + '/API/core/updateHealthRuleList',
   getReportFilters: baseUrl + "/API/UI/getFilter",
   report: baseUrl + "/reports",
-  getAllLetters: baseUrl + "/API/pureHealth/getAllLetters",
-  addUpdateLetter: baseUrl + "/API/pureHealth/addUpdateLetter",
-  testLetter: baseUrl + "/API/pureHealth/testLetter",
-  addUpdateSampleTemplate: baseUrl + "/API/pureHealth/addUpdateSampleTemplate",
-  getSampleLetters: baseUrl + "/API/pureHealth/getSampleLetters",
   getTypeSyncOut: baseUrl + "/API/meta/getTypeSyncOut",
   pushTypeData: baseUrl + "/API/general/pushTypeData",
   testPagination: baseUrl + "/API/core/testPagination",
@@ -254,5 +264,20 @@ module.exports = {
   applyMongoDBChanges: baseUrl + "/API/utility/upsertMongodbChange",
   encryptString: baseUrl + "/API/utility/encrypt",
   decryptString: baseUrl + "/API/utility/decrypt",
+
+  addDocumentType: baseUrl + "/API/Core/addDocumentType",
+  updateDocumentType: baseUrl + "/API/Core/updateDocumentType",
+  getDocumentTypeList: baseUrl + "/API/Consent/getDocumentTypeList",
+  getDocumentType: baseUrl + "/API/Core/getDocumentType",
+
+  addConsentPolicy: baseUrl + "/API/Core/addConsentPolicy",
+  updateConsentPolicy: baseUrl + "/API/Core/updateConsentPolicy",
+  getConsentProfileList: baseUrl + "/API/Consent/getConsentProfileList",
+  getConsentProfileByKey: baseUrl + "/API/Core/getConsentProfileByKey",
+  getProvidedConsentList : baseUrl + "/API/Consent/getProvidedConsentList",
+  getConsentStatus: baseUrl + "/API/Core/getConsentStatus",
+  geOrgList : baseUrl + "/API/Consent/getOrgList",
+  fetchConsentStatus: baseUrl + "/API/Core/fetchConsentStatus"
+
 }
 

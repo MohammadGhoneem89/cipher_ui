@@ -45,9 +45,67 @@ class TableCell extends React.Component {
         return " badge badge-info badge-roundless";
       default:
         return " badge badge-danger badge-roundless";
+     
 
     }
   }
+
+
+  getStyleForRev(type){
+    switch (type) {
+      case "NO CHANGE":
+        return {
+          fontWeight:"bold",
+          backgroundColor:"#d4edda",
+          color:"#155724",
+          cursor:"pointer"
+        };
+      case "NOT FOUND":
+        return {
+          fontWeight:"bold",
+          backgroundColor:"rgb(255 202 193)",
+          color:"rgb(200 76 64)",
+          cursor:"pointer",
+        };
+      default:
+        return {
+          fontWeight:"bold",
+          backgroundColor:"#fff3cd",
+          color:"#856404",
+          cursor:"pointer"
+        };
+    }
+  }
+
+  getStyleForRevField(type){
+    switch (type) {
+      case "Transaction Date":
+        return {
+          fontWeight:"bold",
+          color:"#f89822"
+        };
+      case "Created By":
+        return {
+          fontWeight:"bold",
+          color:"#f89822"
+        };
+        case "UUID":
+        return {
+          fontWeight:"bold",
+          color:"#f89822"
+        };
+        case "Blockchain ID":
+        return {
+           fontWeight:"bold",
+          color:"#f89822"
+        };
+      default:
+        return {
+          fontWeight:"normal",
+        };
+    }
+  }
+
   getClassForStatus(type) {
 
     switch (type) {
@@ -261,6 +319,13 @@ class TableCell extends React.Component {
       return (<td>N/A</td>)
   }
 
+  handleCellSelect(){
+    var SelectFn = this.props.selectedCell || null;
+    if(SelectFn){
+      SelectFn(this.props.rowData.field,this.props.cellData)
+    }
+  }
+
   render() {
     function text_truncate(str, length, ending) {
       if (length == null) {
@@ -280,7 +345,9 @@ class TableCell extends React.Component {
     let cellData;
     let fontWeightStyle = this.props.footerRow ? 'bold' : 'normal'
     switch (this.props.type) {
-
+      case "modal":
+        cellData = this.props.cellData ? this.props.cellData : [];
+        return (this.renderActions(cellData));
       case "action":
         cellData = this.props.cellData ? this.props.cellData : [];
         return (this.renderActions(cellData));
@@ -411,6 +478,28 @@ class TableCell extends React.Component {
           }}> {temp}</a>
         </td>;
 
+      case "revString":
+        return (this.props.rowData.field=="UUID" && this.props.cellData !="no change" && this.props.cellData != "not found"?
+        <td  style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())}>
+        <a href="javascript:;" data-toggle="modal" data-target="#modelWindows" style={{color:"inherit",textDecoration:"none"}}
+        data-id={this.props.cellData}
+        onClick={this.renderPopupBody.bind(this, this.props.cellData)}>{this.props.cellData} </a>
+        </td>
+        :<td style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())} onClick={this.handleCellSelect.bind(this)}  >{this.props.cellData}</td>);
+
+        case "revLatest":
+          return (
+            this.props.rowData.field=="UUID" && this.props.cellData !="no change" && this.props.cellData != "not found"?
+        <td  style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e",cursor:"pointer"}}>
+        <a href="javascript:;" data-toggle="modal" data-target="#modelWindows" style={{color:"inherit",textDecoration:"none"}}
+        data-id={this.props.cellData}
+        onClick={this.renderPopupBody.bind(this, this.props.cellData)}>{this.props.cellData} </a>
+        </td>:
+          <td style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e",cursor:"pointer"}} onClick={this.handleCellSelect.bind(this)} >{this.props.cellData}</td>);
+      
+
+      case "revField":
+        return (<td style={this.getStyleForRevField(this.props.cellData.toString())}  >{this.props.cellData}</td>);
 
       default:
         return (<td style={{ fontWeight: fontWeightStyle }}> {this.props.cellData} </td>);

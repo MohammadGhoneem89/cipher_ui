@@ -5,7 +5,7 @@ import Portlet from '../../common/Portlet.jsx';
 import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
 
-const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwner, onSubmit, testQuery,formLoading}) => {
+const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwner, onSubmit, testQuery}) => {
   let options = {
     lineNumbers: true
   };
@@ -21,7 +21,7 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
                   fontWeight: "normal"
                 }}>{utils.getLabelByID("Document Name")}</label>
                 <div className="form-group col-md-8">
-                  <input type="text"  className="form-control" name="documentName" id="name" onChange={onInputChange}
+                  <input type="text" disabled={!isOwner} className="form-control" id="name" onChange={onInputChange}
                          value={state.Container.name}/>
                 </div>
               </div>
@@ -33,7 +33,7 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
                   fontWeight: "normal"
                 }}>{utils.getLabelByID("Description")}</label>
                 <div className="form-group col-md-8">
-                    <textarea type="text" className="form-control" name="description" id="description"
+                    <textarea type="text" disabled={!isOwner} className="form-control" id="description"
                               onChange={onInputChange} value={state.Container.description} rows="4"
                               style={{resize: "none", width: "100%"}}/>
                 </div>
@@ -51,7 +51,7 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
                 fontWeight: "normal"
               }}>{utils.getLabelByID("Type")}</label>
               <div className="form-group col-md-8">
-                <input type="text" disabled={!isOwner} className="form-control" name="documentType" id="documentType" onChange={onInputChange}
+                <input type="text" disabled={!isOwner} className="form-control" id="documentType" onChange={onInputChange}
                        value={state.Container.documentType}/>
               </div>
             </div>
@@ -65,7 +65,7 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
                 fontWeight: "normal"
               }}>{utils.getLabelByID("Owner Org Type")}</label>
               <div className="form-group col-md-8">
-                <select id="ownerOrgType" className="form-control" name="ownerOrgType" value={state.Container.ownerOrgType}
+                <select id="ownerOrgType" className="form-control" value={state.Container.ownerOrgType}
                         onChange={onInputChange}>
                   <option key="" value="">--select--</option>
                   {
@@ -83,7 +83,7 @@ const ReportForm = ({onInputChange, addPeer, state, ActionHandlers, flag, isOwne
           <div className="col-md-12">
             <div className="col-md-12">
               <div className="btn-toolbar pull-right">
-                <button type="submit" disabled={formLoading} onClick={onSubmit}
+                <button type="submit" onClick={onSubmit}
                         className="btn green">{' '}{utils.getLabelByID("Add / Update Doc Type")}
                 </button>
               </div>

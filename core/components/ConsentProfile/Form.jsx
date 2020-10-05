@@ -5,12 +5,18 @@ import Portlet from '../../common/Portlet.jsx';
 import * as utils from '../../common/utils.js';
 import Table from '../../common/Datatable.jsx';
 import SelectChain from '../../common/SelectChain.jsx';
-const ReportForm = ({ onInputChange, addPeer, state, ActionHandlers, flag, isOwner, onSubmit, testQuery }) => {
+import Combobox from '../../common/Select.jsx';
+import Textarea from '../../common/Textarea.jsx';
+
+import Input from '../../common/Input.jsx';
+
+const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChange, addPeer, state, ActionHandlers, flag, isOwner, onSubmit, generalHandler, testQuery }) => {
   let options = {
     lineNumbers: true
   };
   return (
     <div>
+          {console.log("form = ",state)}
       <Portlet title={utils.getLabelByID("Consent Profile Add/Update")}>
         <div className="row">
           <div className=" col-md-12">
@@ -21,10 +27,22 @@ const ReportForm = ({ onInputChange, addPeer, state, ActionHandlers, flag, isOwn
                     textAlign: "left",
                     fontWeight: "normal"
                   }}>{utils.getLabelByID("Consent Profile Id")}</label>
-                  <div className="form-group col-md-8">
-                    <input type="text" disabled={!isOwner} className="form-control" id="consentProfileId"
-                      onChange={onInputChange}
-                      value={state.Container.name} />
+                  <div className="col-md-8">
+                    <Input
+                        divStyle={{ padding: '0px', top: '10px',
+                        position: 'absolute' }}
+                        errorIconStyle={{
+                          display:'none'
+                        }}
+                        status={(state.errors && state.errors.consentProfileId) ? "ERROR" : undefined}
+                        fieldname='consentProfileId'
+                        formname='Container'
+                        disabled={state.profileIdEditable}
+                        placeholder={utils.getLabelByID('')}
+                        state={state}
+                        actionHandler={generalHandler}
+                        className="form-control"
+                    />
                   </div>
                 </div>
               </div>
@@ -35,24 +53,49 @@ const ReportForm = ({ onInputChange, addPeer, state, ActionHandlers, flag, isOwn
                     fontWeight: "normal"
                   }}>{utils.getLabelByID("Description")}</label>
                   <div className="form-group col-md-8">
-                    <textarea type="text" disabled={!isOwner} className="form-control" id="description"
-                      onChange={onInputChange} value={state.Container.description} rows="4"
-                      style={{ resize: "none", width: "100%" }} />
+                    <Textarea
+                        divStyle={{ padding: '0px' }}
+                        disabled={false}
+                        status={(state.errors && state.errors.description) ? "ERROR" : undefined}
+                        fieldname='description'
+                        formname='Container'
+                        columns='12'
+                        placeholder={utils.getLabelByID('')}
+                        state={state}
+                        actionHandler={generalHandler}
+                        className="form-control"
+                    />
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-md-6">
               <div className="form-group">
-                <label className="form-group control-label col-md-4" style={{
-                  textAlign: "left",
-                  fontWeight: "normal"
-                }}>{utils.getLabelByID("Document Type")}</label>
-                <div className="form-group col-md-8">
-                  <input type="text" disabled={!isOwner} className="form-control" id="documentType"
-                    onChange={onInputChange}
-                    value={state.Container.documentType} />
-                </div>
+                  <label className="form-group control-label col-md-4" style={{
+                    textAlign: "left",
+                    fontWeight: "normal"
+                  }}>{utils.getLabelByID("Document")}</label>
+                  <div className="col-md-8">
+                    <Combobox
+                        status={(state.errors && state.errors.documentType) ? "ERROR" : undefined}
+                        errorIconStyle={{
+                          display:'none'
+                        }}
+                        fieldname='documentType'
+                        formname='Container'
+                        allowValue={false}
+                        isDDL={true}
+                        selected={_.get(_.get(state, 'documentList', []).filter(item =>
+                            item.key == _.get(state.Container, 'documentType', '')
+                        ), `[${0}].value`, undefined)}
+                        placeholder={utils.getLabelByID('Document Type')}
+                        state={state}
+                        typeName="documentList"
+                        dataSource={state}
+                        actionHandler={generalHandler}
+                        className="form-control"
+                      />
+                  </div> 
               </div>
             </div>
 
@@ -70,9 +113,9 @@ const ReportForm = ({ onInputChange, addPeer, state, ActionHandlers, flag, isOwn
                         <label className="mt-checkbox mt-checkbox-outline"
                           style={{ marginBottom: "0px", marginTop: "10px" }}>Global
                           <label />
-                          <input type="radio" className="form-control" onChange={onInputChange}
-                            value={'global'} name="consentMode"
-                            checked={state.Container.consentMode == 'global' ? true : false}
+                          <input type="checkbox" className="form-control" onChange={onConsentModeChange}
+                            value={'GLOBAL'} name="consentMode_global" id="consentMode"
+                            checked={state.Container.consentMode == 'GLOBAL' || state.Container.consentMode == 'BOTH' ? true : false}
                             id="consentMode" />
                           <span />
                         </label>
@@ -83,9 +126,9 @@ const ReportForm = ({ onInputChange, addPeer, state, ActionHandlers, flag, isOwn
                         <label className="mt-checkbox mt-checkbox-outline"
                           style={{ marginBottom: "0px", marginTop: "10px" }}>Transactional
                           <label />
-                          <input type="radio" className="form-control" onChange={onInputChange}
-                            value={'transactional'} name="consentMode"
-                            checked={state.Container.consentMode == 'transactional' ? true : false}
+                          <input type="checkbox" className="form-control" onChange={onConsentModeChange}
+                            value={'TRANSACTIONAL'} name="consentMode_tansactional" id="consentMode"
+                            checked={state.Container.consentMode == 'TRANSACTIONAL' || state.Container.consentMode == 'BOTH'? true : false}
                             id="consentMode" />
                           <span />
                         </label>
@@ -125,10 +168,25 @@ const ReportForm = ({ onInputChange, addPeer, state, ActionHandlers, flag, isOwn
                     <label className="form-group control-label col-md-4" style={{
                       textAlign: "left",
                       fontWeight: "normal"
-                    }}>{utils.getLabelByID("Expiry Duration")}</label>
+                    }}>{utils.getLabelByID("Expiry Duration Days")}</label>
                     <div className="col-md-8">
-                      <input type="text" className="form-control" onChange={onInputChange} placeholder={'5 Days.'}
-                        checked={state.Container.expiryDuration} name="expiryDuration" id="expiryDuration" />
+                    <Input
+                        type="number"
+                        divStyle={{ padding: '0px' }}
+                        errorIconStyle={{
+                          display:'none'
+                        }}
+                        status={(state.errors && state.errors.expiryDuration) ? "ERROR" : undefined}
+                        fieldname='expiryDuration'
+                        formname='Container'
+                        disabled={false}
+                        placeholder={utils.getLabelByID('')}
+                        state={state}
+                        actionHandler={generalHandler}
+                        className="form-control"
+                    />
+                      {/* <input type="number" className="form-control" min="1" max="5" onChange={onInputChange} placeholder={'5 Days.'}
+                        value={state.Container.expiryDuration} name="expiryDuration" id="expiryDuration" /> */}
 
 
                     </div>
@@ -153,9 +211,9 @@ const ReportForm = ({ onInputChange, addPeer, state, ActionHandlers, flag, isOwn
                         <label className="mt-checkbox mt-checkbox-outline"
                           style={{ marginBottom: "0px", marginTop: "10px" }}>Document
                           <label />
-                          <input type="radio" className="form-control" onChange={onInputChange}
-                            value={'Document'} name="proofRequirement"
-                            checked={state.Container.proofRequirement == 'Document' ? true : false}
+                          <input type="checkbox" className="form-control" onChange={onProofRequirementChange}
+                            value={'DOCUMENT'} name="proofRequirement_doc"
+                            checked={state.Container.proofRequirement == 'DOCUMENT' || state.Container.proofRequirement == 'BOTH' ? true : false}
                             id="proofRequirement" />
                           <span />
                         </label>
@@ -165,15 +223,34 @@ const ReportForm = ({ onInputChange, addPeer, state, ActionHandlers, flag, isOwn
                         <label className="mt-checkbox mt-checkbox-outline"
                           style={{ marginBottom: "0px", marginTop: "10px" }}>Data
                           <label />
-                          <input type="radio" className="form-control" onChange={onInputChange}
-                            value={'Data'} name="proofRequirement"
-                            checked={state.Container.proofRequirement == 'Data' ? true : false}
+                          <input type="checkbox" className="form-control" onChange={onProofRequirementChange}
+                            value={'DATA'} name="proofRequirement_data"
+                            checked={state.Container.proofRequirement == 'DATA' || state.Container.proofRequirement == 'BOTH'  ? true : false}
                             id="proofRequirement" />
                           <span />
                         </label>
                       </div>
 
 
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label className="form-group control-label col-md-4" style={{
+                      textAlign: "left",
+                      fontWeight: "normal"
+                    }}>{utils.getLabelByID("Dynamic Expiry")}</label>
+                    <div className="form-group col-md-8">
+                      <div className="icheck-list">
+                        <label className="mt-checkbox mt-checkbox-outline"
+                          style={{ marginBottom: "0px", marginTop: "10px" }}>
+                          <label />
+                          <input type="checkbox" className="form-control" onChange={onInputChange}
+                            checked={state.Container.isDynamicExpiry} name="isDynamicExpiry" id="isDynamicExpiry" />
+                          <span />
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -206,7 +283,28 @@ const ReportForm = ({ onInputChange, addPeer, state, ActionHandlers, flag, isOwn
 
                   </div>
                 </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label className="form-group control-label col-md-4" style={{
+                      textAlign: "left",
+                      fontWeight: "normal"
+                    }}>{utils.getLabelByID("Is Active")}</label>
+                    <div className="form-group col-md-8">
 
+                      <div className="icheck-list">
+                        <label className="mt-checkbox mt-checkbox-outline"
+                          style={{ marginBottom: "0px", marginTop: "10px" }}>
+                          <label />
+                          <input type="checkbox" className="form-control" onChange={onInputChange}
+                            checked={state.Container.isActive} name="isActive" id="isActive" />
+                          <span />
+                        </label>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
 
               </div>
             </div>
@@ -232,6 +330,7 @@ const ReportForm = ({ onInputChange, addPeer, state, ActionHandlers, flag, isOwn
                   fontWeight: "normal"
                 }}>{utils.getLabelByID("Org Types")}</label>
                 <div className="form-group col-md-8">
+                {console.log("orgCode = ",state.Container)}
                   <select id="orgType" name="orgType" value={state.Container.orgType}
                     onChange={onInputChange} className="form-control">
                     <option value="">--select--</option>
@@ -253,8 +352,11 @@ const ReportForm = ({ onInputChange, addPeer, state, ActionHandlers, flag, isOwn
                   fontWeight: "normal"
                 }}>{utils.getLabelByID("Org Code")}</label>
                 <div className="form-group col-md-8">
-                  <select id="orgCode" name="orgCode"
-                    className="form-control">
+                {console.log("orgtype = ",state.Container)}
+                {console.log("orgtype entityMap= ",state.entityMap)}
+
+                  <select id="orgCode" name="orgCode" value={state.Container.orgCode}
+                    onChange={onInputChange} className="form-control">
                     <option value="">--select--</option>
                     {
                       _.get(state.entityMap, state.Container.orgType, []).map((option, index) => {
@@ -306,6 +408,7 @@ const ReportForm = ({ onInputChange, addPeer, state, ActionHandlers, flag, isOwn
               </div>
             </div>
             <div className="col-md-12">
+              {console.log('state----: ',state.List)}
               <div className="col-md-12">
                 <Table fontclass=""
                   gridColumns={utils.getGridColumnByName("consentListPolicy")}

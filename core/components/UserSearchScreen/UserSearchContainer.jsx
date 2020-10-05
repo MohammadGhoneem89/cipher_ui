@@ -102,9 +102,6 @@ class UserSearchContainer extends React.Component {
         request = {
           "action": "userList",
           "searchCriteria": {
-            "orgType": orgType,
-            "orgCode": orgCode,
-            status
           },
           "page": {
             "currentPageNo": pageNo,

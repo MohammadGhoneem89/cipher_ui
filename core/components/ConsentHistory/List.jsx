@@ -21,7 +21,7 @@ class List extends React.Component {
     super(props);
     this.state = {
       searchFilters: "", currentPageNo: 1, APIPayloadID: undefined, actions: [], typeData: undefined,
-      listData: [],
+      documentTypeList: undefined,
       pageData: {}
     }
     this.pageChanged = this.pageChanged.bind(this);
@@ -237,7 +237,7 @@ List.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    listData: _.get(state.app, 'ADHReportList.ADHReportList.data.searchResult', undefined),
+    documentTypeList: _.get(state.app, 'ADHReportList.ADHReportList.data.searchResult', []),
     pageData: _.get(state.app, 'ADHReportList.ADHReportList.data.pageData', undefined),
     typeData: state.app.typeData.data
   };
