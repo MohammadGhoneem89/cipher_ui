@@ -335,7 +335,7 @@ class List extends React.Component {
                 
               </div>
               <div className="col-md-12 text-center">
-                <img src="assets/imgs/thumbsdown.png" style={{height:300,width:300,margin:"10px 0px"}}/>
+                <img src="assets/imgs/exclaimation-sign-01.png" style={{height:300,width:300,margin:"10px 0px"}}/>
               </div>
               </div>
               }
