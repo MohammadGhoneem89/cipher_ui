@@ -55,7 +55,7 @@ class ChangeTracking extends React.Component {
       revData:[],
       isLoading:false,
       APIPayloadID:undefined,
-      display:"none"
+      collectionLoading:false
     }
     // this.pageChanged = this.pageChanged.bind(this);
     // this.formSubmit = this.formSubmit.bind(this);
@@ -129,7 +129,8 @@ class ChangeTracking extends React.Component {
       // }
       console.log("bodyyyyyyy",body);
       this.setState({
-        selectedEndpoint: value
+        selectedEndpoint: value,
+        collectionLoading:true
       })
       // get pvcollections
       this.props.actions.generalProcess(constants.getCollectionList,body);
@@ -159,7 +160,8 @@ class ChangeTracking extends React.Component {
     if(nextProps.getCollectionList){
       console.log(nextProps.getCollectionList,"MMMMMMMMMMMMMMMMM")
       this.setState({
-        privateCollection:nextProps.getCollectionList
+        privateCollection:nextProps.getCollectionList,
+        collectionLoading:false
       })
     }
    
@@ -470,6 +472,7 @@ class ChangeTracking extends React.Component {
                   </div>
                 </div>
                 <div className="portlet-body">
+                {this.state.collectionLoading && Loaders.dotted()}
                   <div className="form-body" id="auditLogList">
                     <div className="row">
                       {/* <div className="col-md-6">
