@@ -69,6 +69,7 @@ class APIDocumentation extends React.Component {
 
         return request;
     }
+
     getApisList() {
         this.setState({
             isLoading: true
@@ -84,9 +85,18 @@ class APIDocumentation extends React.Component {
                     data: res.ApiListData.data.searchResult
                 }
             };
+            let dateObjectTo = new Date()
+                , dd = dateObjectTo.getDate()
+                , mm = dateObjectTo.getMonth() + 1 //January is 0!
+                , yyyy = dateObjectTo.getFullYear()
+                , date = dd + '/' + mm + '/' + yyyy;
+
 
             let useCase = document.getElementById('useCase') == null ? "" : document.getElementById('useCase').value,
-                group = document.getElementById('orgTypes') == null ? "" : document.getElementById('orgTypes').value;
+                group = document.getElementById('orgTypes') == null ? "" : document.getElementById('orgTypes').value,
+                projectName = document.getElementById('projectName') == null ? "" : document.getElementById('projectName').value,
+                publisherName = document.getElementById('publisherName') == null ? "" : document.getElementById('publisherName').value
+
             body.templatePayload.templateId = "Let_059b3700-b554-11ea-8c61-ef43ff7b9999";
             body.templatePayload.template = {}
             body.templatePayload.template.templateId = "Let_059b3700-b554-11ea-8c61-ef43ff7b9999";
@@ -96,9 +106,13 @@ class APIDocumentation extends React.Component {
             body.templateName = "api_documentation"
             body.useCase = useCase
             body.group = group
+            body.publisherName = publisherName
+            body.projectName = projectName
+            body.date = date;
 
             this.setState({ body: body })
 
+            console.log(body)
             axios.post(constants.apiDocumentationLetter, body, {
                 responseType: 'arraybuffer',
                 headers: headers
@@ -177,7 +191,7 @@ class APIDocumentation extends React.Component {
             <div>
                 <div className="row">
                     <div className="row">
-                        <div className="form-group col-md-6">
+                        <div className="form-group col-md-3">
                             <label className="form-group control-label col-md-4">{utils.getLabelByID("UseCase")}</label>
                             <select name="useCase" id="useCase" className="form-control">
                                 <option key="-1" value="">{utils.getLabelByID("RA_Select")} </option>
@@ -188,8 +202,7 @@ class APIDocumentation extends React.Component {
                                 })}
                             </select>
                         </div>
-
-                        <div className="form-group col-md-6">
+                        <div className="form-group col-md-3">
                             <label className="form-group control-label col-md-4">{utils.getLabelByID("Organization")}</label>
                             <select name="orgTypes" id="orgTypes" className="form-control">
                                 <option key="-1" value="">{utils.getLabelByID("RA_Select")} </option>
@@ -199,6 +212,14 @@ class APIDocumentation extends React.Component {
                                     );
                                 })}
                             </select>
+                        </div>
+                        <div className="form-group col-md-3">
+                            <label className="form-group control-label col-md-12">{utils.getLabelByID("ProjectName")}</label>
+                            <input type="text" className="form-control" id="projectName" name="projectName" />
+                        </div>
+                        <div className="form-group col-md-3">
+                            <label className="form-group control-label col-md-12">{utils.getLabelByID("PublisherName")}</label>
+                            <input type="text" className="form-control" id="publisherName" name="publisherName" />
                         </div>
                     </div>
                     <div className="row">
