@@ -146,7 +146,7 @@ class Container extends React.Component {
          let elemEnt = _.get(documentList, parsedData.key, {});
 
          elemEnt = {
-          "label": parsedData.key,
+          "label": `${parsedData.name} - ${parsedData.key}`,
           "value": parsedData.key
         }
         documentList.push(elemEnt);
@@ -322,8 +322,8 @@ class Container extends React.Component {
     
     if(Container.documentType){
       console.log("if condition hit Document list----------------", this.state.documentList);
-      console.log("output of document -----------",_.find(this.state.documentList, {'label': Container.documentType}));
-      let _out = _.find(this.state.documentList, {'label': Container.documentType});
+      console.log("output of document -----------",_.find(this.state.documentList, {'value': Container.documentType}));
+      let _out = _.find(this.state.documentList, {'value': Container.documentType});
       if(!_out){
         _.set(errors, 'documentType', 'Invalid Selection')
       }

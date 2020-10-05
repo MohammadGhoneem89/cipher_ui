@@ -84,10 +84,11 @@ const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChan
                         fieldname='documentType'
                         formname='Container'
                         allowValue={false}
+                        isDDL={true}
                         selected={_.get(_.get(state, 'documentList', []).filter(item =>
                             item.key == _.get(state.Container, 'documentType', '')
-                        ), `[${0}].label`, undefined)}
-                        placeholder={utils.getLabelByID('Document')}
+                        ), `[${0}].value`, undefined)}
+                        placeholder={utils.getLabelByID('Document Type')}
                         state={state}
                         typeName="documentList"
                         dataSource={state}
