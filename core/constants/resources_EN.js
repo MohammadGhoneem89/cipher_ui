@@ -1102,5 +1102,7 @@ module.exports = {
   ChangeTrackingFilters:"Change Tracking Filters",
   PrivateCollection:"Private Collection",
   KEY:"KEY",
-  ChangeTrackingListData:"Change Tracking List Data"
+  ChangeTrackingListData:"Change Tracking List Data",
+  ProjectName: "Project Name",
+  PublisherName: "Publisher Name"
 };
