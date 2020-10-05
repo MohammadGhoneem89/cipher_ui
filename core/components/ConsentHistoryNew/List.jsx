@@ -32,7 +32,8 @@ class List extends React.Component {
       isLoading: true,
       revisionsList : [],
       orgList : undefined,
-      isGridLoading : false
+      isGridLoading : false,
+      intervalID : undefined
     }
     this.pageChanged = this.pageChanged.bind(this);
     this.generalHandler = gen.generalHandler.bind(this)
@@ -52,7 +53,7 @@ class List extends React.Component {
             let elemEnt = _.get(documentList, parsedData.key, {});
   
             elemEnt = {
-              "label": parsedData.description,
+              "label": `${parsedData.name} - ${parsedData.key}`,
               "value": parsedData.key
             }
             documentList.push(elemEnt);
@@ -91,6 +92,11 @@ class List extends React.Component {
 
   componentWillMount() {
 
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalID);
+    console.log("ConsentHistory Unmounting")
   }
 
   searchCallBack(keyWord) {
@@ -153,6 +159,76 @@ class List extends React.Component {
     this.setState({currentPageNo: 1})
 
     return request;
+  }
+
+  setIntervalForStatus = () => {
+    const intervalID = setInterval(() => {
+      let revisionsListClone = _.cloneDeep(this.state.revisionsList)
+      console.log("Interval Clone List ========>>> ", revisionsListClone);
+      for(var i=0; i<1; i++){
+
+        //    if(item.consentDetails.conset)
+        //   console.log("testing time==============", moment(revisionsListClone[0][1].consentProvidedTo[0].consentTillDate).format("DD/MM/YYYY"));
+            console.log("revisionsListClone[0]==========", revisionsListClone[0]);
+    //        console.log("utc date status=======",moment(revisionsListClone[0]..consentDate).format("MM/DD/YYYY"));
+            let cur_date = moment().format("MM/DD/YYYY HH:mm:ss");
+            let grant_date = moment.unix(revisionsListClone[0].consentTillDate).format("MM/DD/YYYY HH:mm:ss");
+            console.log("cur_date=====", cur_date);
+            console.log("grant_date=====", grant_date);
+            let days = moment(grant_date).diff(moment(cur_date), "days");
+            let hours = moment(grant_date).diff(moment(cur_date), "hours");
+        //    let mins = moment(grant_date).diff(moment(cur_date), "minutes");
+            let secs = moment(grant_date).diff(moment(cur_date), "seconds");
+
+
+            console.log("days =======", days);
+            console.log("hours =======", hours);
+            console.log("seconds =======", secs);
+            let mins;
+            let valid;
+            if(revisionsListClone[0].status === "GRANT")
+            {
+              if(secs <= 0){
+                valid = "Expired"
+              }
+              else{
+                if(hours <= 0){
+                  if(secs <= 60 ){
+                    valid = secs + " secs"
+                  }else{
+                    mins = moment(grant_date).diff(moment(cur_date), "minutes");
+                    valid = hours +  ' hrs ' + (mins - (hours * 60)) + " mins"
+                    console.log("minutes ==== ", mins);
+                    console.log("valid ==== ", valid);
+                  }
+                  
+                  
+                }
+                else{
+                  valid = days +  ' d ' + (hours - (days * 24)) + " hrs"
+                  console.log("valid ==== ", valid);
+                }
+              }
+            }
+            else{
+              valid = "-"
+            }
+            // console.log(revisionsListClone[0].consentDetails.toOrgCode)
+            // let _imgURL = _.find(this.state.orgList, {"value" : revisionsListClone[0].consentDetails.toOrgCode})
+            //   console.log("testing imgeURL FETCH =============>>>> ",_imgURL);
+            revisionsListClone[0].validity = valid;
+ //           return revisionsListClone[0];
+
+          }
+
+          this.setState({
+            revisionsList: revisionsListClone,
+            isGridLoading: false
+          })
+      
+    }, 1000);
+
+    this.setState({intervalID});
   }
 
   formSubmit() {
@@ -239,6 +315,7 @@ class List extends React.Component {
       errors: {},
       isGridLoading :true
     })
+    clearInterval(this.state.intervalID);
       let key, request;
       console.log("form submit -------------", this.state);
       if(consentType !== "GLOBAL"){
@@ -325,11 +402,12 @@ class List extends React.Component {
                       console.log("testing imgeURL FETCH =============>>>> ",_imgURL);
                       let obj = {
                         "key": item[1].key,
-                        "timestamp": moment.unix(item[1].consentDetails.consentTillDate).format("MM/DD/YYYY HH:mm:ss"),
+                        "timestamp": moment.unix(item[1].consentDetails.consentDate).format("MM/DD/YYYY HH:mm:ss"),
                         "status": item[1].consentDetails.statusOfConsent,
                         "documentType": item[1].documentType,
                         "documentNo": item[1].consentDetails.relatedDocumentNo,
                         "consentType": item[1].consentDetails.consentType,
+                        "consentTillDate": item[1].consentDetails.consentTillDate,
                         "validity": valid,
                         "providedTo": { imageURL: _imgURL ? _imgURL.img : '', name: item[1].consentDetails.toOrgCode}
                       }
@@ -337,7 +415,8 @@ class List extends React.Component {
               
                     })
                     console.log("revisionsList---------------", revisionsList);
-              
+                    if(revisionsList.length > 0)
+                      this.setIntervalForStatus();
                     this.setState({
                       revisionsList,
                       isGridLoading : false
@@ -455,7 +534,7 @@ class List extends React.Component {
               <div className="portlet light bordered sdg_portlet">
                 <div className="portlet-title">
                   <div className="caption">
-                    <span className="caption-subject">{utils.getLabelByID("Consent Status Type Filters")}</span></div>
+                    <span className="caption-subject">{utils.getLabelByID("Consent History Type Filters")}</span></div>
                   <div className="tools">
                     <a href="javascript:;" className="collapse" data-original-title title> </a>
                   </div>
@@ -466,60 +545,6 @@ class List extends React.Component {
                       <div className="col-md-12">
 
                         <div className="row">                          
-                          <div className="col-md-6">
-                             <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{
-                                  textAlign: "left",
-                                  fontWeight: "normal"
-                                }}>{utils.getLabelByID("Id Type")}</label>
-                                <div className="col-md-8">
-                                  <Input
-                                    divStyle={{ padding: '0px', top: '10px',
-                                    position: 'absolute' }}
-                                    errorIconStyle={{
-                                      display:'none'
-                                    }}
-                                    status={(this.state.errors && this.state.errors.idType) ? "ERROR" : undefined}
-                                    fieldname='idType'
-                                    formname='Container'
-                                    disabled={true}
-                                    placeholder={utils.getLabelByID('')}
-                                    state={this.state}
-                                    actionHandler={this.generalHandler}
-                                    className="form-control"
-                                  />
-                                </div>                                
-                             </div>
-                            </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="form-group control-label col-md-4" style={{
-                                  textAlign: "left",
-                                  fontWeight: "normal"
-                                }}>{utils.getLabelByID("Consent Type")}</label>
-                                <div className="col-md-8">
-                                  <Combobox
-                                      status={(this.state.errors && this.state.errors.consentType) ? "ERROR" : undefined}
-                                      fieldname='consentType'
-                                      formname='Container'
-                                      allowValue={false}
-                                      selected={_.get(_.get(this.state, 'typeData.consentType', []).filter(item =>
-                                          item.value == _.get(this.state, 'Container.consentType', '')
-                                      ), `[${0}].label`, undefined)}
-                                      placeholder={utils.getLabelByID('Consent Type')}
-                                      style={{}}
-                                      state={this.state}
-                                      typeName="consentType"
-                                      dataSource={_.get(this.state, 'typeData', {})}
-                                      actionHandler={this.generalHandler}
-                                      className="form-control"
-                                    />
-                                </div>
-                                  
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">  
                           <div className="col-md-6">
                             <div className="form-group col-md-4">
                               <label className="control-label">{utils.getLabelByID("User ID")}</label>
@@ -542,9 +567,38 @@ class List extends React.Component {
                               />
                             </div>
                           </div>
+                             
                           <div className="col-md-6">
-                            
+                            <div className="form-group">
+                                <label className="form-group control-label col-md-4" style={{
+                                  textAlign: "left",
+                                  fontWeight: "normal"
+                                }}>{utils.getLabelByID("Consent Type")}</label>
+                                <div className="col-md-8">
+                                  <Combobox
+                                      status={(this.state.errors && this.state.errors.consentType) ? "ERROR" : undefined}
+                                      fieldname='consentType'
+                                      formname='Container'
+                                      allowValue={false}
+                                      isDDL={true}
+                                      selected={_.get(_.get(this.state, 'typeData.consentType', []).filter(item =>
+                                          item.value == _.get(this.state, 'Container.consentType', '')
+                                      ), `[${0}].label`, undefined)}
+                                      placeholder={utils.getLabelByID('Consent Type')}
+                                      style={{}}
+                                      state={this.state}
+                                      typeName="consentType"
+                                      dataSource={_.get(this.state, 'typeData', {})}
+                                      actionHandler={this.generalHandler}
+                                      className="form-control"
+                                    />
+                                </div>
+                                  
+                            </div>
                           </div>
+                        </div>
+                        <div className="row">  
+                          
                         </div>
                         <div className="row">
                           <div className="col-md-6">
@@ -559,6 +613,7 @@ class List extends React.Component {
                                       fieldname='documentType'
                                       formname='Container'
                                       allowValue={false}
+                                      isDDL={true}
                                       selected={_.get(_.get(this.state, 'Container.documentList', []).filter(item =>
                                           item.key == _.get(this.state, 'Container.documentType', '')
                                       ), `[${0}].label`, undefined)}
@@ -600,9 +655,6 @@ class List extends React.Component {
                         </div>  
                         <div className="row">
                           <div className="col-md-6">
-                            
-                          </div>
-                          <div className="col-md-6">
                             <div className="form-group">
                                 <label className="form-group control-label col-md-4" style={{
                                   textAlign: "left",
@@ -614,6 +666,7 @@ class List extends React.Component {
                                       fieldname='consentProvidedTo'
                                       formname='Container'
                                       allowValue={false}
+                                      isDDL={true}
                                       selected={_.get(_.get(this.state, 'typeData.orgList', []).filter(item =>
                                           item.value == _.get(this.state, 'Container.consentProvidedTo', '')
                                       ), `[${0}].label`, undefined)}
@@ -626,6 +679,9 @@ class List extends React.Component {
                                       className="form-control"
                                     />
                                 </div> 
+                            </div>
+                            <div className="col-md-6">
+                            
                             </div>
                           </div>
                         </div>
