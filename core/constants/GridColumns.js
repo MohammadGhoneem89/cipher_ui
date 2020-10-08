@@ -1398,5 +1398,22 @@ module.exports = {
     { alias: "Consent Type", key: "consentType", type: "string" },
     { alias: "created At", key: "createdAt", type: "string" },
     { alias: "Details", key: "actions", type: "action" }
+  ],
+  BusinessTransaction: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "", key: "orderNo", type: "hiddenID" },
+    { alias: "submitted By", key: "submittedBy", type: "string" },
+    { alias: "last Activity Date", key: "lastActivity", type: "criticalWarn" },
+    { alias: "order / Invoice / Declaration", key: "orderInvoiceDecl", type: "string" },
+    { alias: "Stage", key: "currentStage", type: "string" },
+    { alias: "Document Type", key: "documentType", type: "string" },
+    { alias: "Errors", key: "errorDescription", type: "actionCustom" },
+    { alias: "Err Ct.", key: "errorCt", type: "string" },
+    { alias: "Details", key: "actions", type: "action" }
+  ],
+  BusinessTransactionError: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "Code", key: "errorCode", type: "string" },
+    { alias: "Message", key: "errorDescription", type: "string" }
   ]
 };

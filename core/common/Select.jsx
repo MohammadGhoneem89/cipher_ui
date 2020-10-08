@@ -27,7 +27,8 @@ class Combobox extends React.Component {
   }
 
   render() {
-   
+    console.log("props combobox", this.props)
+
     if (!this.props.isDDL)
       return (
         <div className={`col-md-${this.props.columns} ${this.getColour(this.props.status)}`}>
@@ -57,6 +58,7 @@ class Combobox extends React.Component {
         </div>
       );
     else
+    
       return (
         <div className={`col-md-${this.props.columns} ${this.getColour(this.props.status)}`}>
           <select

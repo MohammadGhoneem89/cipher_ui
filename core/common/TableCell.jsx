@@ -188,10 +188,9 @@ class TableCell extends React.Component {
         );
 
     }
-
-
   }
 
+  
   renderActionButton(cellData) {
 
     if (cellData == null)

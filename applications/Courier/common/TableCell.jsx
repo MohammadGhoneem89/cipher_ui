@@ -111,6 +111,17 @@ class TableCell extends React.Component {
     }
   }
 
+  getCriticalWarnStatus(type){
+    switch (type) {
+      case "critical":
+        return "#FF0000";
+      case "warn":
+        return "#FFCC00";
+      default:
+        return '';
+    }
+  }
+
   renderIcon(type) {
     switch (type) {
       case "Error":
@@ -405,8 +416,16 @@ class TableCell extends React.Component {
         return <td style={{ fontWeight: fontWeightStyle }}>
           <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
         </td>;
+      case "criticalWarn":
+        console.log("Condition criticalWarn");
+        return (<td style={{fontWeight:"normal",backgroundColor:this.getCriticalWarnStatus(this.props.cellData.type),cursor:"pointer"}}>
+          {this.props.cellData.value}
+        </td>);
 
-
+      case "actionCustom":
+        console.log("actionCustom");
+        return (<td style={{fontWeight: "normal"}} onClick={()=>this.props.cellData.action(this.props.cellData.errors)}>
+          {utils.getLabelByID(this.props.cellData.errorDescription)}</td>);
       default:
         return (<td style={{ fontWeight: fontWeightStyle }}> {this.props.cellData} </td>);
 
