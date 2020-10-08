@@ -90,7 +90,7 @@ class VerticalBarChart extends React.Component {
                             }],
                             xAxes: [{
                                 scaleLabel: this.props.xAxesLabel || {},
-                                barPercentage: 1,
+                                barPercentage: 0.8,
                                 ticks: {
                                     stepSize: 1
                                 }
