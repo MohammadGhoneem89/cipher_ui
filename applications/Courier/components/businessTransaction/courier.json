@@ -1,0 +1,25 @@
+{​​​
+"declarationProcessors": [
+    {
+        "name": "ALL",
+        "logo": ""
+    },
+    {​​​
+        "name": "DHL",
+        "logo": "./logos/DHL.png"
+    }​​​,
+    {​​​
+        "name": "Dubai Customs",
+        "logo": "./dubaicustoms.jpg"
+    }​​​,
+    {​​​
+        "name": "Amazon",
+        "logo": "./dubaicustoms.jpg"
+    }​​​,
+    {​​​
+        "name": "FedEx",
+        "logo": "./fedex.jpg"
+    }​​​
+    ]
+}​​​
+

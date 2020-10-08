@@ -112,7 +112,34 @@ class BusinessTransaction extends React.Component {
                     "isMonitor" : true,
                     "isOptional" : true
                 }
-            ]
+            ],
+            declarationProcessors: [
+                {
+                  "name": "ALL",
+                  "imageURL": "/assets/Resources/images/all.png"
+                },
+                {
+                  "name": "DHL",
+                  "imageURL": "/assets/Resources/images/dhl.png"
+                },
+                {
+                  "name": "Dubai Customs",
+                  "imageURL": "/assets/Resources/images/dubai-south.png"
+                },
+                {
+                  "name": "Amazon",
+                  "imageURL": "/assets/Resources/images/noon.png"
+                },
+                {
+                  "name": "FedEx",
+                  "imageURL": "/assets/Resources/images/fedex.jpg"
+                },
+                ,
+                {
+                  "name": "NOON",
+                  "imageURL": "/assets/Resources/images/noon.png"
+                }
+              ]
 
         };
         this.generalHandler = gen.generalHandler.bind(this);
@@ -156,8 +183,6 @@ class BusinessTransaction extends React.Component {
           this.setState({currentPageNo: pageNo})
     
           this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))
-
-    
         }
       }
 
@@ -182,6 +207,12 @@ class BusinessTransaction extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
+
+        let courier = _.cloneDeep(courier);
+
+        // courier.map((item)=>{
+        //     console.log("item ==== ",item)
+        // })
         
         this.setState({
             jsonData : {
@@ -292,7 +323,9 @@ class BusinessTransaction extends React.Component {
                     console.log("length ======= ",item.errors.length)
                     let _item = _.cloneDeep(item);
                     let target = -1;
-                    _item.orderInvoiceDecl = _item.orderNo || "" +  _item.invoiceNo  || "" +  _item.declarationNo || "";
+
+                    _item.imageData = _.find(this.state.declarationProcessors, {"name":_item.submittedBy}) ? _.find(this.state.declarationProcessors, {"name":_item.submittedBy}) : {"name":_item.submittedBy, "imageURL": ""}
+                    _item.orderInvoiceDecl = {"orderNo":_item.orderNo, "invoiceNo": _item.invoiceNo, "declarationNo" : _item.declarationNo};
                     for(var i=0; i<transactionMonitoringScale.length; i++){
                         if(transactionMonitoringScale[i].fromState === _item.lastStage && transactionMonitoringScale[i].toState === _item.currentStage)
                         {
@@ -559,7 +592,6 @@ class BusinessTransaction extends React.Component {
                                     <span className="caption-subject">DashBoard</span>
                             </div>
                             <div className="col-md-6" style={{ display: "flex",justifyContent: "flex-end"}}>
-                                {this.state.jsonData ? 
                                     <Combobox
                                         status={(this.state.errors && this.state.errors.process) ? "ERROR" : undefined}
                                         style={{marginTop: "14px"}}
@@ -577,8 +609,7 @@ class BusinessTransaction extends React.Component {
                                         typeName="processorData"
                                         dataSource={_.get(this.state, "jsonData", {})}
                                         actionHandler={this.processorHandler}
-                                    />:
-                                    "loading" }
+                                    />
                             </div>
                         </div>
                     </div>
@@ -611,7 +642,7 @@ class BusinessTransaction extends React.Component {
                         />
                     </div>
 
-                    <div className="row">
+                    <div className="row"  style={{ marginTop:"20px"}}>
                         <div className="col-md-6 form-group" style={{fontSize: "16px", fontWeight: "700", textTransform: "uppercase"}}>
                             <span className="caption-subject">Declaration Processor</span>
                         </div>
@@ -687,20 +718,20 @@ class BusinessTransaction extends React.Component {
                         </div>
                     </div>
                     
-                    <div className="row formgroup"></div>
+                    <div className="row formgroup" ></div>
 
-                    <div className="tab-pane in active">
+                    <div className="tab-pane in active" style={{ marginTop:"20px"}}>
                         <div className={'ui-regulartabs'}>
                             <ul id="adHocTabs" className="nav nav-tabs">
-                                <li id="filtersTabLink" className={this.state.currentActiveTab === "Declaration" ? "active" : ""} ><a style={{ fontSize: '10px', display: this.state.selectedDocuments.includes('Declaration') ? "block" : "none" }} href="#declarationTab" data-toggle="tab"> <span> Declaration </span></a></li>
-                                <li id="filtersTabLink" className={this.state.currentActiveTab === "NR Claim" ? "active" : ""} ><a style={{ fontSize: '10px', display: this.state.selectedDocuments.includes('NR Claim') ? "block" : "none" }} href="#nrClaimnTab" data-toggle="tab"> <span> NR Claim </span></a></li>
-                                <li id="filtersTabLink" className={this.state.currentActiveTab === "Deposit Claim" ? "active" : ""} ><a style={{ fontSize: '10px', display: this.state.selectedDocuments.includes('Deposit Claim') ? "block" : "none"  }} href="#depositClaimTab" data-toggle="tab"> <span> Deposit Claim </span></a></li>
+                                <li id="filtersTabLink" className={this.state.currentActiveTab === "Declaration" ? "active" : ""} ><a style={{ fontSize: '14px', display: this.state.selectedDocuments.includes('Declaration') ? "block" : "none" }} href="#declarationTab" data-toggle="tab"> <span> Declaration </span></a></li>
+                                <li id="filtersTabLink" className={this.state.currentActiveTab === "NR Claim" ? "active" : ""} ><a style={{ fontSize: '14px', display: this.state.selectedDocuments.includes('NR Claim') ? "block" : "none" }} href="#nrClaimnTab" data-toggle="tab"> <span> NR Claim </span></a></li>
+                                <li id="filtersTabLink" className={this.state.currentActiveTab === "Deposit Claim" ? "active" : ""} ><a style={{ fontSize: '14px', display: this.state.selectedDocuments.includes('Deposit Claim') ? "block" : "none"  }} href="#depositClaimTab" data-toggle="tab"> <span> Deposit Claim </span></a></li>
                             </ul>
                         </div>
                         <div style={{ height: '450px'}} className="tab-content ui-tabcontentbody filetabs">
                             <div id={'declarationTab'} className={this.state.currentActiveTab === "Declaration" ? "tab-pane in active ui-fieldtable" : "tab-pane in ui-fieldtable"}>
                                 <div className="col-md-12">
-                                    <h3>Declaration Pipeline</h3>
+                                    <h3 style={{ textAlign: "center", paddingTop: "20px", paddingBottom: "20px" }}>Declaration Pipeline</h3>
                                 </div>
                                 <div className="col-md-12">
                                     {!this.state.widget2Loading ? 
@@ -717,7 +748,7 @@ class BusinessTransaction extends React.Component {
                             </div>
                             <div id={'nrClaimnTab'} className={this.state.currentActiveTab === "NR Claim" ? "tab-pane in active ui-fieldtable" : "tab-pane in ui-fieldtable"}>
                                 <div className="col-md-12">
-                                    <h3>NR Claim Pipeline</h3>
+                                    <h3 style={{ textAlign: "center", paddingTop: "20px", paddingBottom: "20px" }}>NR Claim Pipeline</h3>
                                 </div>
                                 <div className="col-md-12">
                                     {!this.state.widget2Loading ? 
@@ -734,7 +765,7 @@ class BusinessTransaction extends React.Component {
                             </div>
                             <div id={'depositClaimTab'}  className={this.state.currentActiveTab === "Deposit Claim" ? "tab-pane in active ui-fieldtable" : "tab-pane in ui-fieldtable"}>
                                 <div className="col-md-12">
-                                    <h3>Deposit Claim Pipeline</h3>
+                                    <h3 style={{ textAlign: "center", paddingTop: "20px", paddingBottom: "20px" }}>Deposit Claim Pipeline</h3>
                                 </div>
                                 <div className="col-md-12">
                                     {!this.state.widget2Loading ? 
@@ -761,7 +792,7 @@ class BusinessTransaction extends React.Component {
                    
                                             <label className="control-label">{utils.getLabelByID("Critical")}</label>
                                             {"  "}
-                                            <button type="submit" className="btn btn-danger"
+                                            <button type="button" className="btn btn-danger" style={{width: "70px", background: "red", marginLeft: "10px", marginRight: "20px", borderRadius: "5px!important"}}
                                                 onClick={this.submitCriticalBtn.bind(this)}>
                                                     {console.log(_.get(_.find(this.state.attentionItems, {label:"Critical"}), 'value', 0))}
                                                     {_.get(_.find(this.state.attentionItems, {label:"Critical"}), 'value', 0)}
@@ -770,7 +801,7 @@ class BusinessTransaction extends React.Component {
                                             {"  "}     
                                             <label className="control-label">{utils.getLabelByID("Warn")}</label>
                                             {"  "}
-                                                <button type="button" className="btn btn-warning"
+                                                <button type="button" className="btn btn-warning" style={{width: "70px", marginLeft: "10px", marginRight: "20px", borderRadius: "5px!important"}}
                                                     onClick={this.submitWarnBtn.bind(this)}>
                                                         {_.get(_.find(this.state.attentionItems, {label:"Warn"}), 'value', 0)}
                                                 </button>

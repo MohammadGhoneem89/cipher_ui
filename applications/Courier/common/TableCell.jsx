@@ -426,6 +426,27 @@ class TableCell extends React.Component {
         console.log("actionCustom");
         return (<td style={{fontWeight: "normal"}} onClick={()=>this.props.cellData.action(this.props.cellData.errors)}>
           {utils.getLabelByID(this.props.cellData.errorDescription)}</td>);
+      
+      case "stringCustom":
+        console.log("actionCustom");
+        return (
+          <td style={{fontSize: "12px"}}><span style={{color:"#ae8b4b"}}>{this.props.cellData.orderNo}</span><br/><span style={{color:"black"}}>{this.props.cellData.invoiceNo}</span> - <span style={{color:"grey"}}>{this.props.cellData.declarationNo}</span> </td>
+        )
+
+      case "imageCustom":
+      if (this.props.url) {
+        return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+          width="28px" height="28px"
+          src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+            href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+        </td>);
+      }
+      else {
+        return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+          width="28px" height="28px"
+          src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+        </td>);
+      }
       default:
         return (<td style={{ fontWeight: fontWeightStyle }}> {this.props.cellData} </td>);
 
