@@ -1399,30 +1399,6 @@ module.exports = {
     { alias: "created At", key: "createdAt", type: "string" },
     { alias: "Details", key: "actions", type: "action" }
   ],
-<<<<<<< HEAD
-  LogisticsInformationProvider: [
-    { alias: "COM_SerialNo", key: "", type: "serialNo" },
-    { alias: "code", key: "code", type: "string" },
-    { alias: "name", key: "value", type: "string" },
-  ],
-  tradeLicenses: [
-    { alias: "COM_SerialNo", key: "", type: "serialNo" },
-    { alias: "code", key: "code", type: "string" },
-    { alias: "name", key: "value", type: "string" },
-    { alias: "action", key: "actions", type: "action" }
-  ],
-  Facilities: [
-    { alias: "COM_SerialNo", key: "", type: "serialNo" },
-    { alias: "type", key: "FacilityType", type: "string" },
-    { alias: "name", key: "Mode", type: "string" },
-    { alias: "action", key: "actions", type: "action" }
-  ],
-  BusinessTypes: [
-    { alias: "COM_SerialNo", key: "", type: "serialNo" },
-    { alias: "type", key: "type", type: "string" },
-    { alias: "name", key: "value", type: "string" },
-    { alias: "action", key: "actions", type: "action" }
-=======
   BusinessTransaction: [
     { alias: "S.No", key: "", type: "serialNo" },
     { alias: "", key: "orderNo", type: "hiddenID" },
@@ -1439,6 +1415,5 @@ module.exports = {
     { alias: "S.No", key: "", type: "serialNo" },
     { alias: "Code", key: "errorCode", type: "string" },
     { alias: "Message", key: "errorDescription", type: "string" }
->>>>>>> a9e960c7350cdd56d23a4af119943570ba4e05cb
   ]
 };
