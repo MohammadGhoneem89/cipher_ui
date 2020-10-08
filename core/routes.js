@@ -10,6 +10,7 @@ import EmailTemplateSearch from './components/EmailTemplateSearchScreen/EmailTem
 import EmailTemplateSetup from './components/EmailTemplateSetupScreen/EmailTemplateSetupContainer.jsx';
 import OrgSearch from './components/OrgSearchScreen/OrgSearchContainer.jsx';
 import OrgSetup from './components/OrgSetupScreen/OrgSetupContainer.jsx';
+import BusinessOrgSetup from './components/OrgSetupScreen/BusinessOrgSetup.jsx';
 import GroupSearch from './components/GroupSearchScreen/GroupSearchContainer.jsx';
 import ErrorCodeList from './components/errorCode/errorCodeList.jsx';
 import GroupSetup from './components/GroupSetupScreen/GroupSetupContainer.jsx';
@@ -199,6 +200,8 @@ export default (<Router history={browserHistory}>
     <Route path="/emailTemplateSetup/edit/:emailTemplateID" component={EmailTemplateSetup} />
     <Route path="/orgSearch" component={OrgSearch} />
     <Route path="/orgSetup" component={OrgSetup} />
+    <Route path="/BusinessOrgSetup" component={BusinessOrgSetup} />
+    <Route path="/BusinessOrgSetup/:mode/:orgID" component={BusinessOrgSetup} />
     <Route path="/orgSetup/:mode/:orgID" component={OrgSetup} />
     <Route path="/eventList" component={eventList} />
     <Route path="/editEventRegistry/:eventName" component={AddUpdateEventList} />
