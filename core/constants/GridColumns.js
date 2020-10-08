@@ -1398,5 +1398,28 @@ module.exports = {
     { alias: "Consent Type", key: "consentType", type: "string" },
     { alias: "created At", key: "createdAt", type: "string" },
     { alias: "Details", key: "actions", type: "action" }
+  ],
+  LogisticsInformationProvider: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "code", key: "code", type: "string" },
+    { alias: "name", key: "value", type: "string" },
+  ],
+  tradeLicenses: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "code", key: "code", type: "string" },
+    { alias: "name", key: "value", type: "string" },
+    { alias: "action", key: "actions", type: "action" }
+  ],
+  Facilities: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "type", key: "FacilityType", type: "string" },
+    { alias: "name", key: "Mode", type: "string" },
+    { alias: "action", key: "actions", type: "action" }
+  ],
+  BusinessTypes: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "type", key: "type", type: "string" },
+    { alias: "name", key: "value", type: "string" },
+    { alias: "action", key: "actions", type: "action" }
   ]
 };

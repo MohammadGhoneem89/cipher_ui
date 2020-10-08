@@ -57,6 +57,10 @@ module.exports = {
             "displayText": "Add",
             "displayClass": "btn btn-default"
         },
+        Onboard_Add: {
+            "displayText": "Onboard",
+            "displayClass": "btn btn-default"
+        },
         COM_AB_Save: {
             "displayText": "Save",
             "displayClass": "pull-right btn green"
