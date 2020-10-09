@@ -5,12 +5,7 @@ import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../../../core/actions/generalAction';
 import Wrapper from '../../common/Wrapper.jsx';
-import Row from '../../common/Row.jsx';
-import Input from '../../common/Input.jsx';
-import Label from '../../common/Lable.jsx';;
-import Combobox from '../../common/Select.jsx';
-import Col from '../../common/Col.jsx';;
-import Table from '../../common/Datatable.jsx';
+
 import * as utils from '../../../../core/common/utils.js';
 import * as constants from '../../../../core/constants/Communication';
 import * as requestCreator from '../../../../core/common/request.js';
@@ -25,31 +20,17 @@ import VerticalBarChart from '../../common/charts/VerticalBarChart.jsx';
 // import TileUnit from '../../../../core/common/tileUnit.jsx';
 import moment from 'moment';
 import * as d3 from "d3";
-// import { Multiselect } from 'multiselect-react-dropdown';
 
-import jsonData from '../../common/dummyData/dashboard.json';
-import bankColors from '../../../config/bank-colors';
-// import DashboardFilters from './dashboardFilters.jsx';
-// import AutomaticallyTextSizingChart from '../../common/charts/automaticallyTextSizingChart.jsx';
-// import BubbleChart from '../../common/charts/react-bubble-chart.jsx';
 import { indexOf } from 'lodash';
-
-// import countryData from './countries.csv';
-import continentData from './continent-names.json';
-import countryData from './countries.json';
-import companyData from './companies.json';
-import fcData from './fc-data.json';
-import companyBubbles from './company-data.json';
-import sankeyData from './sankey-data.json';
-// import { bubbleChartFc } from '../../common/charts/bubble-chart-fc';
-import BubbleChart from '../../common/charts/bubbleChart-CSBOX.js';
+import Input from '../../../../core/common/Input.jsx';
+import TextArea from '../../../../core/common/Textarea.jsx';
+import Combobox from '../../../../core/common/Select.jsx';
+import ComboBoxNew from '../../../../core/common/SelectNew.jsx';
 import SankeyChart from '../../common/charts/d3-sankey-chart.jsx';
-import MultiLineChart from '../../common/charts/d3-multiLine-chart.jsx';
-import CountryBubbleChart from '../../common/charts/countryBubbleChart.jsx';
-// bubbleChartFc
+import BubbleChart from '../../common/charts/bubbleChart-CSBOX.js';
 
 let interval;
-class EcommerceDashboard extends React.Component {
+class CreateWidget extends React.Component {
 
     constructor(props) {
         super(props);
@@ -81,14 +62,33 @@ class EcommerceDashboard extends React.Component {
             selectedToDate: moment().format('DD/MM/YYYY'),
             CBVLabels: undefined,
             CBVData: undefined,
+            contentToggle: false,
             hsTitile: 'E-Commerce Company',
             topHS: { option: 'E-Commerce Company' },
+            graphTypeArray: [
+                {
+                    label: 'Single-Value-Horizontal-Bar-Graph',
+                    value: { "widgetData": { "widgetId": "widget5", "widgetType": "2ValueBar-Horizontal", "graphTitle": "Top 3 E-Commerce Companies", "graphData": { "axisData": { "xAxis": { "type": "string", "value": ["NAMSHI", "AL TAYER", "ARAMEX", "JOLLY CHIC", "NOON", "AMAZON"] }, "yAxis": { "type": "integer", "value": [0, 5000, 10000, 15000] } }, "data": [{ "xIndex": { "type": "string", "value": "JOLLY CHIC" }, "yIndex": { "type": "integer", "value": 5145 } }, { "xIndex": { "type": "string", "value": "NOON" }, "yIndex": { "type": "integer", "value": 9145 } }, { "xIndex": { "type": "string", "value": "AMAZON" }, "yIndex": { "type": "integer", "value": 11475 } }, { "xIndex": { "type": "string", "value": "ARAMEX" }, "yIndex": { "type": "integer", "value": 4147 } }, { "xIndex": { "type": "string", "value": "NAMSHI" }, "yIndex": { "type": "integer", "value": 457 } }, { "xIndex": { "type": "string", "value": "AL TAYER" }, "yIndex": { "type": "integer", "value": 2157 } }] } } }
+                },
+                {
+                    label: 'Triple-Value-Horizontal-Bar-Graph',
+                    value: { "widgetData": { "widgetId": "widget5", "widgetType": "3ValueBar-Horizontal", "graphTitle": "Top 3 E-Commerce, Logistics & Courier Companies", "graphData": { "axisData": { "xAxis": { "type": "string", "value": ["JOLLY CHIC", "NOON", "AMAZON", "ARAMEX", "FEDEX", "DHL", "AL FUTTAIM", "ALTRANS", "AGILITY"] }, "yAxis": { "type": "integer", "value": [0, 20, 40, 60, 80, 100] }, "zAxiz": { "type": "string", "value": ["E-Commerce", "Courier", "Logistics"] } }, "data": [{ "xIndex": { "type": "string", "value": "JOLLY CHIC" }, "yIndex": { "type": "integer", "value": 88 }, "zIndex": { "type": "string", "value": "E-Commerce" } }, { "xIndex": { "type": "string", "value": "NOON" }, "yIndex": { "type": "integer", "value": 77 }, "zIndex": { "type": "string", "value": "E-Commerce" } }, { "xIndex": { "type": "string", "value": "AMAZON" }, "yIndex": { "type": "integer", "value": 66 }, "zIndex": { "type": "string", "value": "E-Commerce" } }, { "xIndex": { "type": "string", "value": "ARAMEX" }, "yIndex": { "type": "integer", "value": 33 }, "zIndex": { "type": "string", "value": "Courier" } }, { "xIndex": { "type": "string", "value": "FEDEX" }, "yIndex": { "type": "integer", "value": 22 }, "zIndex": { "type": "string", "value": "Courier" } }, { "xIndex": { "type": "string", "value": "DHL" }, "yIndex": { "type": "integer", "value": 11 }, "zIndex": { "type": "string", "value": "Courier" } }, { "xIndex": { "type": "string", "value": "AL FUTTAIM" }, "yIndex": { "type": "integer", "value": 44 }, "zIndex": { "type": "string", "value": "Logistics" } }, { "xIndex": { "type": "string", "value": "ALTRANS" }, "yIndex": { "type": "integer", "value": 55 }, "zIndex": { "type": "string", "value": "Logistics" } }, { "xIndex": { "type": "string", "value": "AGILITY" }, "yIndex": { "type": "integer", "value": 33 }, "zIndex": { "type": "string", "value": "Logistics" } }] } } }
+                },
+                {
+                    label: 'Double-Value-Horizontal-Bar-Graph',
+                    value: { "widgetData": { "widgetId": "widget5", "widgetType": "2ValueBar-Vertical", "graphTitle": "Top 5 Export HS Codes", "graphData": { "axisData": { "xAxis": { "type": "string", "value": ["Gold", "Electronic", "Wood", "Auto", "Glass"] }, "yAxis": { "type": "float", "value": [0, 20000, 40000, 60000, 80000, 100000] } }, "data": [{ "xIndex": { "type": "string", "value": "Gold" }, "yIndex": { "type": "integer", "value": 74400 } }, { "xIndex": { "type": "string", "value": "Electronic" }, "yIndex": { "type": "integer", "value": 86100 } }, { "xIndex": { "type": "string", "value": "Wood" }, "yIndex": { "type": "integer", "value": 60800 } }, { "xIndex": { "type": "string", "value": "Auto" }, "yIndex": { "type": "float", "value": 70500 } }, { "xIndex": { "type": "string", "value": "Glass" }, "yIndex": { "type": "float", "value": 34700 } }] } } }
+                },
+                {
+                    label: 'Pie-Chart',
+                    value: { "widgetData": { "widgetId": "widget5", "widgetType": "pieChart", "graphTitle": "Free Zone Wise Transactions", "graphData": { "data": [{ "label": "Dubai south", "count": 19 }, { "label": "DAFZA", "count": 30 }, { "label": "JAFZA", "count": 51 }] } } }
+                }
+            ],
             isLoading: false,
             ecommerce: '001',
             tracking: {
                 courier: "",
                 ecommerce: ""
-            }
+            },
         };
         this.generalHandler = gen.generalHandler.bind(this);
         this.customActionHandler = customActionHandler.bind(this);
@@ -99,813 +99,10 @@ class EcommerceDashboard extends React.Component {
         this.clearFilter = this.clearFilter.bind(this);
     }
 
-    // bubbleChartFc = () => {
-    //     var width = 960,
-    //     height = 960,
-    //     marginTop = 96,
-    //     minRadius = 6,
-    //     maxRadius = 20,
-    //     columnForColors = "category",
-    //     columnForTitle = "title",
-    //     columnForRadius = "views",
-    //     forceApart = -50,
-    //     unitName="hearts",
-    //     customColors=false,
-    //     customRange,
-    //     customDomain,
-    //     chartSelection,
-    //     chartSVG,
-    //     showTitleOnCircle=false;
 
-    //     /**
-    //      * The command to actually render the chart after setting the settings.
-    //      * @public
-    //      * @param {string} selection - The div ID that you want to render in 
-    //      */
-    //     function chart(selection) {
-    //         var data = selection.datum();
-    //         chartSelection=selection;
-    //         var div = selection,
-    //         svg = div.selectAll('svg');
-    //         svg.attr('width', width).attr('height', height);
-    //         chartSVG=svg;
-
-    //         var tooltip = selection
-    //         .append("div")
-    //         .style("position", "absolute")
-    //         .style("visibility", "hidden")
-    //         .style("color", "white")
-    //         .style("padding", "8px")
-    //         .style("background-color", "#626D71")
-    //         .style("border-radius", "6px")
-    //         .style("text-align", "center")
-    //         .style("font-family", "monospace")
-    //         .style("width", "400px")
-    //         .text("");
-
-
-    //         var simulation = d3.forceSimulation(data)
-    //         .force("charge", d3.forceManyBody().strength([forceApart]))
-    //         .force("x", d3.forceX())
-    //         .force("y", d3.forceY())
-    //         .on("tick", ticked);
-
-    //         function ticked(e) {
-    //             node.attr("transform",function(d) {
-    //                 return "translate(" + [d.x+(width / 2), d.y+((height+marginTop) / 2)] +")";
-    //             });
-    //         }
-
-    //         var colorCircles;
-    //         if (!customColors) {
-    //             colorCircles = d3.scaleOrdinal(d3.schemeCategory10);
-    //         } 
-    //         else {
-    //             colorCircles = d3.scaleOrdinal()
-    //             .domain(customDomain)
-    //             .range(customRange);
-    //         }
-
-    //         var minRadiusDomain = d3.min(data, function(d) {
-    //             return +d[columnForRadius];
-    //         });
-    //         var maxRadiusDomain = d3.max(data, function(d) {
-    //             return +d[columnForRadius];
-    //         });
-    //         var scaleRadius = d3.scaleLinear()
-    //         .domain([minRadiusDomain, maxRadiusDomain])
-    //         .range([minRadius, maxRadius])
-
-    //         var node = svg.selectAll("circle")
-    //         .data(data)
-    //         .enter()
-    //         .append("g")
-    //         .attr('transform', 'translate(' + [width / 2, height / 2] + ')')
-    //         .style('opacity',1);
-
-    //         node.append("circle")
-    //         .attr("id",function(d,i) {
-    //             return i;
-    //         })
-    //         .attr('r', function(d) {
-    //             return scaleRadius(d[columnForRadius]);
-    //         })
-    //         .style("fill", function(d) {
-    //             return colorCircles(d[columnForColors]);
-    //         })
-    //         .on("mouseover", function(d) {
-    //             tooltip.html(d[columnForTitle] + "<br/>" + d[columnForColors] + "<br/>" + d[columnForRadius] + " "+ unitName);
-    //             return tooltip.style("visibility", "visible");
-    //         })
-    //         .on("mousemove", function() {
-    //             return tooltip.style("top", (d3.event.pageY - 10) + "px").style("left", (d3.event.pageX + 10) + "px");
-    //         })
-    //         .on("mouseout", function() {
-    //             return tooltip.style("visibility", "hidden");
-    //         });
-    //         node.append("clipPath")
-    //         .attr("id",function(d,i) {
-    //             return "clip-"+i;
-    //         })
-    //         .append("use")
-    //         .attr("xlink:href",function(d,i) {
-    //             return "#" + i;
-    //         });
-    //         if (showTitleOnCircle) {
-    //             node.append("text")
-    //             .attr("clip-path",function(d,i) {
-    //                 return "url(#clip-" + i + ")"
-    //             })
-    //             .attr("text-anchor", "middle")
-    //             .append("tspan")
-    //             .attr("x",function(d) {
-    //                 return 0;//-1*scaleRadius(d[columnForRadius])/3;
-    //             })
-    //             .attr("y",function(d) {
-    //                 return ".3em";//scaleRadius(d[columnForRadius])/4;
-    //             })
-    //             .text(function(d) {
-    //                 return d[columnForTitle];
-    //             })
-    //             .on("mouseover", function(d) {
-    //                 tooltip.html(d[columnForTitle] + "<br/>" + d[columnForColors] + "<br/>" + d[columnForRadius] + " "+ unitName);
-    //                 return tooltip.style("visibility", "visible");
-    //             })
-    //             .on("mousemove", function() {
-    //                 return tooltip.style("top", (d3.event.pageY - 10) + "px").style("left", (d3.event.pageX + 10) + "px");
-    //             })
-    //             .on("mouseout", function() {
-    //                 return tooltip.style("visibility", "hidden");
-    //             });
-    //         }
-
-    //         svg.append('text')
-    //             .attr('x',width/2).attr('y',marginTop)
-    //             .attr("text-anchor", "middle")
-    //             .attr("font-size","1.8em")
-    //             .text('title');
-    //     }
-
-
-    //     chart.width = chartWidth;
-    //     chart.height = chartHeight;
-    //     chart.columnForColors = chartColForColors;
-    //     chart.columnForRadius = chartColForRadius;
-    //     chart.columnForTitle = chartColForTitle;
-    //     chart.minRadius = chartMinRadius;
-    //     chart.maxRadius = chartMaxRadius;
-    //     chart.forceApart = chartForceApart;
-    //     chart.unitName = chartUnitName;
-    //     chart.customColors = chartCustomColors;
-    //     chart.showTitleOnCircle = chartShowTitleOnCircle;
-    //     chart.title=chartTitle;
-    //     chart.remove = chartRemove;
-
-    //     /**
-    //      * Get/set the height of the chart
-    //      * Use 'chart.width' to get or set. 
-    //      * @example
-    //      * chart.columnForColors(960);	// Sets the width of the SVG to 960
-    //      * chart.columnForColors();	// returns 960
-    //      * 
-    //      * @public
-    //      * @param {number} [value] - The width of the chart 
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartWidth(value) {
-    //         if (!arguments.length) {
-    //             return width;
-    //         }
-    //         width = value;
-    //         return chart;
-    //     };
-
-    //     /**
-    //      * Get/set the height of the chart.
-    //      * Use 'chart.height' to get or set. 
-    //      * @example
-    //      * chart.height(960);	// Sets the height of the SVG to 960
-    //      * chart.height();		// returns 960
-    //      * 
-    //      * @public
-    //      * @param {number} [value] - The height of the chart
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartHeight(value) {
-    //         if (!arguments.length) {
-    //             return height;
-    //         }
-    //         height = value;
-    //         marginTop=0.05*height;
-    //         return chart;
-    //     };
-
-
-    //     /**
-    //      * Get/set the property used to determine the colors of the bubbles. 
-    //      * Use 'chart.columnForColors' to get or set. 
-    //      * @example
-    //      * chart.columnForColors("Sex");	// Sets the column to birthCount
-    //      * chart.columnForColors();	// returns "Sex"
-    //      * @public
-    //      * @param {string} [value] - Property name to bind the bubble color to.
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartColForColors(value) {
-    //         if (!arguments.length) {
-    //             return columnForColors;
-    //         }
-    //         columnForColors = value;
-    //         return chart;
-    //     };
-
-    //     /**
-    //      * Get/set the property to determine the titles of the bubbles.
-    //      * Use 'chart.columnForTitle' to get or set. 
-    //      * @example
-    //      * chart.columnForTitle("Name");	// Sets the column to birthCount
-    //      * chart.columnForTitle();		// returns "Name"
-    //      * 
-    //      * @param {string} [value] - Property name to bind the bubble title to.
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartColForTitle(value) {
-    //         if (!arguments.length) {
-    //             return columnForTitle;
-    //         }
-    //         columnForTitle = value;
-    //         return chart;
-    //     };
-
-    //     /**
-    //      * Get/set the property to determine the radii of the bubbles.
-    //      * Use 'chart.columnForRadius' to get or set. 
-    //      * 
-    //      * @example
-    //      * chart.columnForRadius("birthCount");	// Sets the column to birthCount
-    //      * chart.columnForRadius();		// returns "birthCount"
-    //      * @public
-    //      * @param {string} [value] - Property name to bind the bubble radius to. Requires a numerical property.
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartColForRadius (value) {
-    //         if (!arguments.length) {
-    //             return columnForRadius;
-    //         }
-    //         columnForRadius = value;
-    //         return chart;
-    //     };
-
-    //     /**
-    //      * Get/set the minimum radius of the bubbles.
-    //      * Use 'chart.minRadius' to get or set. 
-    //      * @example
-    //      * 	chart.columnForColors(3); 	// Sets the column to birthCount
-    //      *  chart.columnForColors();	// returns 3
-    //      * 
-    //      * @param {number} [value] - The minimum radius for the width of the bubbles
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartMinRadius(value) {
-    //         if (!arguments.length) {
-    //             return minRadius;
-    //         }
-    //         minRadius = value;
-    //         return chart;
-    //     };
-
-    //     /**
-    //      * Get/set the maximum radius of the bubbles.
-    //      * Use 'chart.maxRadius' to get or set.
-    //      * 
-    //      * @public
-    //      * @param {number} [value] - The maximum radius of the bubbles for the largest value in the dataset
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartMaxRadius(value) {
-    //         if (!arguments.length) {
-    //             return maxRadius;
-    //         }
-    //         maxRadius = value;
-    //         return chart;
-    //     };
-
-    //     /**
-    //      * Get/set the unit name for the property the is represented by the radius of the bubbles. 
-    //      * Used in the tooltip of the bubbles.
-    //      * Use 'chart.unitName' to get or set.
-    //      * @example
-    //      * chart.unitName(" babies");	// Sets the column to birthCount
-    //      * chart.unitName();		// returns " babies"
-    //      * 
-    //      * @public
-    //      * @param {any} [value] - The unit name to display on the tooltip when hovering over a bubble
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartUnitName(value) {
-    //         if (!arguments.length) {
-    //             return unitName;
-    //         }
-    //         unitName = value;
-    //         return chart;
-    //     };
-
-    //     /**
-    //      * Get/set the force the separates and pushes together the bubbles on loading of the chart
-    //      * Use 'chart.forceApart' to get or set.
-    //      * @example
-    //      * chart.forceApart(150);	// Sets the column to birthCount
-    //      * chart.forceApart();	// returns 150
-    //      * 
-    //      * @public
-    //      * @param {any} [value] - Determines the force to separate the bubbles from each other when loading the chart
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartForceApart(value) {
-    //         if (!arguments.length) {
-    //             return forceApart;
-    //         }
-    //         forceApart = value;
-    //         return chart;
-    //     };
-
-    //     /**
-    //      * Get/set the property that determines if we show or hide the title of the data on the bubbles.
-    //      * Use 'chart.showTitleOnCircle' to get or set.
-    //      * @example
-    //      * chart.showTitleOnCircle(true); 	
-    //      * chart.forceApart();	// returns true
-    //      * 
-    //      * @public
-    //      * @param {boolean} [value] - Determines whether to show or hide the title of the data on the bubbles
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartShowTitleOnCircle(value) {
-    //         if (!arguments.length) {
-    //             return showTitleOnCircle;
-    //         }
-    //         showTitleOnCircle = value;
-    //         return chart;
-    //     };
-
-    //     /**
-    //      * Set the domain and range of the colors used for the bubbles. This is only needed if you want to use custom colors in the chart.
-    //      * Use 'chart.customColors' to set.
-    //      * @example
-    //      * chart.customColors(["M","F"], ["#70b7f0","#e76486"]); 	// Sets the custom colors domain and range
-    //      * 
-    //      * @param {any[]} domain - The domain. This is the set of categories used for binding the colors.
-    //      * @param {string[]} range - The range. This is an array of color codes that you want to represent each category in the domain.
-    //      * 							 Note: The length of the array must perfectly match the length of the domain array.
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartCustomColors(domain,range) {
-    //         customColors=true;
-    //         customDomain=domain;
-    //         customRange=range;
-    //         return chart;
-    //     };
-
-    //     /**
-    //      * Get/set the property that determines the title of the chart.
-    //      * Use 'chart.title' to get or set.
-    //      * @example
-    //      * chart.title("Birth Count in the U.S. in 2016"); // Sets the chart title
-    //      * chart.title();	// returns "Birth Count in the U.S. in 2016"
-    //      * @public
-    //      * @param {string} value - The title of the chart
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartTitle(value) {
-    //         if (!arguments.length) {
-    //             return title;
-    //         }
-    //         title = value;
-    //         return chart;
-    //     }
-
-    //     /**
-    //      * Animate the removal of data from the chart (and the title)
-    //      * @public
-    //      * @param {function} [callback] - At the end of each node animation call this function for each node
-    //      * @returns function - Chart, allowing chaining of commands
-    //      */
-    //     function chartRemove(callback) {
-    //         chartSVG.selectAll("text")
-    //         .style("opacity",1)
-    //         .transition()
-    //         .duration(500)
-    //         .style("opacity", "0")
-    //         .remove();	
-    //         if (!arguments.length) {	
-    //             chartSVG.selectAll("g")
-    //             .style("opacity",1)
-    //             .transition()
-    //             .duration(500)
-    //             .style("opacity", "0")
-    //             .remove();		
-    //         }
-    //         else {			
-    //             chartSVG.selectAll("g")
-    //             .style("opacity",1)
-    //             .duration(500)
-    //             .style("opacity", "0")
-    //             .remove()
-    //             .on("end", callback);
-    //         }
-    //         return chart;
-    //     }
-
-    //     return chart;
-    // }
-
-    // createBubbleChart(error, countries, continentNames) {
-    //     console.log(countries, 'COUNTRIES');
-    //     var populations = countries.map(function (country) { return +country.Population; });
-    //     var meanPopulation = d3.mean(populations),
-    //         populationExtent = d3.extent(populations),
-    //         populationScaleX,
-    //         populationScaleY;
-
-    //     var continents = d3.set(countries.map(function (country) { return country.ContinentCode; }));
-    //     var continentColorScale = d3.scaleOrdinal(d3.schemeCategory10)
-    //         .domain(continents.values());
-
-    //     var width = 1200,
-    //         height = 800;
-    //     var svg,
-    //         circles,
-    //         circleSize = { min: 10, max: 80 };
-    //     var circleRadiusScale = d3.scaleSqrt()
-    //         .domain(populationExtent)
-    //         .range([circleSize.min, circleSize.max]);
-
-    //     var forces,
-    //         forceSimulation;
-
-    //     createSVG();
-    //     toggleContinentKey(!flagFill());
-    //     createCircles();
-    //     createForces();
-    //     createForceSimulation();
-    //     addFlagDefinitions();
-    //     addFillListener();
-    //     addGroupingListeners();
-
-    //     function createSVG() {
-    //         svg = d3.select("#bubble-chart")
-    //             .append("svg")
-    //             .attr("width", width)
-    //             .attr("height", height);
-    //     }
-
-    //     function toggleContinentKey(showContinentKey) {
-    //         var keyElementWidth = 150,
-    //             keyElementHeight = 30;
-    //         var onScreenYOffset = keyElementHeight * 1.5,
-    //             offScreenYOffset = 100;
-
-    //         if (d3.select(".continent-key").empty()) {
-    //             createContinentKey();
-    //         }
-    //         var continentKey = d3.select(".continent-key");
-
-    //         if (showContinentKey) {
-    //             translateContinentKey("translate(0," + (height - onScreenYOffset) + ")");
-    //         } else {
-    //             translateContinentKey("translate(0," + (height + offScreenYOffset) + ")");
-    //         }
-
-    //         function createContinentKey() {
-    //             var keyWidth = keyElementWidth * continents.values().length;
-    //             var continentKeyScale = d3.scaleBand()
-    //                 .domain(continents.values())
-    //                 .range([(width - keyWidth) / 2, (width + keyWidth) / 2]);
-
-    //             svg.append("g")
-    //                 .attr("class", "continent-key")
-    //                 .attr("transform", "translate(0," + (height + offScreenYOffset) + ")")
-    //                 .selectAll("g")
-    //                 .data(continents.values())
-    //                 .enter()
-    //                 .append("g")
-    //                 .attr("class", "continent-key-element");
-
-    //             d3.selectAll("g.continent-key-element")
-    //                 .append("rect")
-    //                 .attr("width", keyElementWidth)
-    //                 .attr("height", keyElementHeight)
-    //                 .attr("x", function (d) { return continentKeyScale(d); })
-    //                 .attr("fill", function (d) { return continentColorScale(d); });
-
-    //             d3.selectAll("g.continent-key-element")
-    //                 .append("text")
-    //                 .attr("text-anchor", "middle")
-    //                 .attr("x", function (d) { return continentKeyScale(d) + keyElementWidth / 2; })
-    //                 .text(function (d) { return continentNames[d]; });
-
-    //             // The text BBox has non-zero values only after rendering
-    //             d3.selectAll("g.continent-key-element text")
-    //                 .attr("y", function (d) {
-    //                     var textHeight = this.getBBox().height;
-    //                     // The BBox.height property includes some extra height we need to remove
-    //                     var unneededTextHeight = 4;
-    //                     return ((keyElementHeight + textHeight) / 2) - unneededTextHeight;
-    //                 });
-    //         }
-
-    //         function translateContinentKey(translation) {
-    //             continentKey
-    //                 .transition()
-    //                 .duration(500)
-    //                 .attr("transform", translation);
-    //         }
-    //     }
-
-    //     function flagFill() {
-    //         return isChecked("#flags");
-    //     }
-
-    //     function isChecked(elementID) {
-    //         return d3.select(elementID).property("checked");
-    //     }
-
-    //     function createCircles() {
-    //         var formatPopulation = d3.format(",");
-    //         circles = svg.selectAll("circle")
-    //             .data(countries)
-    //             .enter()
-    //             .append("circle")
-    //             .attr("r", function (d) { return circleRadiusScale(d.Population); })
-    //             .on("mouseover", function (d) {
-    //                 updateCountryInfo(d);
-    //             })
-    //             .on("mouseout", function (d) {
-    //                 updateCountryInfo();
-    //             });
-    //         updateCircles();
-
-    //         function updateCountryInfo(country) {
-    //             var info = "";
-    //             if (country) {
-    //                 info = [country.CountryName, formatPopulation(country.Population)].join(": ");
-    //             }
-    //             d3.select("#country-info").html(info);
-    //         }
-    //     }
-
-    //     function updateCircles() {
-    //         circles
-    //             .attr("fill", function (d) {
-    //                 return flagFill() ? "url(#" + d.CountryCode + ")" : continentColorScale(d.ContinentCode);
-    //             });
-    //     }
-
-    //     function createForces() {
-    //         var forceStrength = 0.05;
-
-    //         forces = {
-    //             combine: createCombineForces(),
-    //             countryCenters: createCountryCenterForces(),
-    //             continent: createContinentForces(),
-    //             population: createPopulationForces()
-    //         };
-
-    //         function createCombineForces() {
-    //             return {
-    //                 x: d3.forceX(width / 2).strength(forceStrength),
-    //                 y: d3.forceY(height / 2).strength(forceStrength)
-    //             };
-    //         }
-
-    //         function createCountryCenterForces() {
-    //             var projectionStretchY = 0.25,
-    //                 projectionMargin = circleSize.max,
-    //                 projection = d3.geoEquirectangular()
-    //                     .scale((width / 2 - projectionMargin) / Math.PI)
-    //                     .translate([width / 2, height * (1 - projectionStretchY) / 2]);
-
-    //             return {
-    //                 x: d3.forceX(function (d) {
-    //                     return projection([d.CenterLongitude, d.CenterLatitude])[0];
-    //                 }).strength(forceStrength),
-    //                 y: d3.forceY(function (d) {
-    //                     return projection([d.CenterLongitude, d.CenterLatitude])[1] * (1 + projectionStretchY);
-    //                 }).strength(forceStrength)
-    //             };
-    //         }
-
-    //         function createContinentForces() {
-    //             return {
-    //                 x: d3.forceX(continentForceX).strength(forceStrength),
-    //                 y: d3.forceY(continentForceY).strength(forceStrength)
-    //             };
-
-    //             function continentForceX(d) {
-    //                 if (d.ContinentCode === "EC") {
-    //                     return left(width);
-    //                 } else if (d.ContinentCode === "CO") {
-    //                     return left(width);
-    //                 } else if (d.ContinentCode === "LO") {
-    //                     return right(width);
-    //                 } else if (d.ContinentCode === "EC" || d.ContinentCode === "LO") {
-    //                     return right(width);
-    //                 }
-    //                 return center(width);
-    //             }
-
-    //             function continentForceY(d) {
-    //                 if (d.ContinentCode === "EC") {
-    //                     return top(height);
-    //                 } else if (d.ContinentCode === "CO") {
-    //                     return bottom(height);
-    //                 } else if (d.ContinentCode === "LO") {
-    //                     return top(height);
-    //                 } else if (d.ContinentCode === "EC" || d.ContinentCode === "LO") {
-    //                     return bottom(height);
-    //                 }
-    //                 return center(height);
-    //             }
-
-    //             function left(dimension) { return dimension / 4; }
-    //             function center(dimension) { return dimension / 2; }
-    //             function right(dimension) { return dimension / 4 * 3; }
-    //             function top(dimension) { return dimension / 4; }
-    //             function bottom(dimension) { return dimension / 4 * 3; }
-    //         }
-
-    //         function createPopulationForces() {
-    //             var continentNamesDomain = continents.values().map(function (continentCode) {
-    //                 return continentNames[continentCode];
-    //             });
-    //             var scaledPopulationMargin = circleSize.max;
-
-    //             populationScaleX = d3.scaleBand()
-    //                 .domain(continentNamesDomain)
-    //                 .range([scaledPopulationMargin, width - scaledPopulationMargin * 2]);
-    //             populationScaleY = d3.scaleLog()
-    //                 .domain(populationExtent)
-    //                 .range([height - scaledPopulationMargin, scaledPopulationMargin * 2]);
-
-    //             var centerCirclesInScaleBandOffset = populationScaleX.bandwidth() / 2;
-    //             return {
-    //                 x: d3.forceX(function (d) {
-    //                     return populationScaleX(continentNames[d.ContinentCode]) + centerCirclesInScaleBandOffset;
-    //                 }).strength(forceStrength),
-    //                 y: d3.forceY(function (d) {
-    //                     return populationScaleY(d.Population);
-    //                 }).strength(forceStrength)
-    //             };
-    //         }
-
-    //     }
-
-    //     function createForceSimulation() {
-    //         forceSimulation = d3.forceSimulation()
-    //             .force("x", forces.combine.x)
-    //             .force("y", forces.combine.y)
-    //             .force("collide", d3.forceCollide(forceCollide));
-    //         forceSimulation.nodes(countries)
-    //             .on("tick", function () {
-    //                 circles
-    //                     .attr("cx", function (d) { return d.x; })
-    //                     .attr("cy", function (d) { return d.y; });
-    //             });
-    //     }
-
-    //     function forceCollide(d) {
-    //         return countryCenterGrouping() || populationGrouping() ? 0 : circleRadiusScale(d.Population) + 1;
-    //     }
-
-    //     function countryCenterGrouping() {
-    //         return isChecked("#country-centers");
-    //     }
-
-    //     function populationGrouping() {
-    //         return isChecked("#population");
-    //     }
-
-    //     function addFlagDefinitions() {
-    //         var defs = svg.append("defs");
-    //         defs.selectAll(".flag")
-    //             .data(countries)
-    //             .enter()
-    //             .append("pattern")
-    //             .attr("id", function (d) { return d.CountryCode; })
-    //             .attr("class", "flag")
-    //             .attr("width", "100%")
-    //             .attr("height", "100%")
-    //             .attr("patternContentUnits", "objectBoundingBox")
-    //             .append("image")
-    //             .attr("width", 1)
-    //             .attr("height", 1)
-    //             // xMidYMid: center the image in the circle
-    //             // slice: scale the image to fill the circle
-    //             .attr("preserveAspectRatio", "xMidYMid slice")
-    //             .attr("xlink:href", function (d) {
-    //                 return "/flags/" + d.CountryCode + ".svg";
-    //             });
-    //     }
-
-    //     function addFillListener() {
-    //         d3.selectAll('input[name="fill"]')
-    //             .on("change", function () {
-    //                 toggleContinentKey(!flagFill() && !populationGrouping());
-    //                 updateCircles();
-    //             });
-    //     }
-
-    //     function addGroupingListeners() {
-    //         addListener("#combine", forces.combine);
-    //         addListener("#country-centers", forces.countryCenters);
-    //         addListener("#continents", forces.continent);
-    //         addListener("#population", forces.population);
-
-    //         function addListener(selector, forces) {
-    //             d3.select(selector).on("click", function () {
-    //                 updateForces(forces);
-    //                 toggleContinentKey(!flagFill() && !populationGrouping());
-    //                 togglePopulationAxes(populationGrouping());
-    //             });
-    //         }
-
-    //         function updateForces(forces) {
-    //             forceSimulation
-    //                 .force("x", forces.x)
-    //                 .force("y", forces.y)
-    //                 .force("collide", d3.forceCollide(forceCollide))
-    //                 .alphaTarget(0.5)
-    //                 .restart();
-    //         }
-
-    //         function togglePopulationAxes(showAxes) {
-    //             var onScreenXOffset = 40,
-    //                 offScreenXOffset = -40;
-    //             var onScreenYOffset = 40,
-    //                 offScreenYOffset = 100;
-
-    //             if (d3.select(".x-axis").empty()) {
-    //                 createAxes();
-    //             }
-    //             var xAxis = d3.select(".x-axis"),
-    //                 yAxis = d3.select(".y-axis");
-
-    //             if (showAxes) {
-    //                 translateAxis(xAxis, "translate(0," + (height - onScreenYOffset) + ")");
-    //                 translateAxis(yAxis, "translate(" + onScreenXOffset + ",0)");
-    //             } else {
-    //                 translateAxis(xAxis, "translate(0," + (height + offScreenYOffset) + ")");
-    //                 translateAxis(yAxis, "translate(" + offScreenXOffset + ",0)");
-    //             }
-
-    //             function createAxes() {
-    //                 var numberOfTicks = 10,
-    //                     tickFormat = ".0s";
-
-    //                 var xAxis = d3.axisBottom(populationScaleX)
-    //                     .ticks(numberOfTicks, tickFormat);
-
-    //                 svg.append("g")
-    //                     .attr("class", "x-axis")
-    //                     .attr("transform", "translate(0," + (height + offScreenYOffset) + ")")
-    //                     .call(xAxis)
-    //                     .selectAll(".tick text")
-    //                     .attr("font-size", "16px");
-
-    //                 var yAxis = d3.axisLeft(populationScaleY)
-    //                     .ticks(numberOfTicks, tickFormat);
-    //                 svg.append("g")
-    //                     .attr("class", "y-axis")
-    //                     .attr("transform", "translate(" + offScreenXOffset + ",0)")
-    //                     .call(yAxis);
-    //             }
-
-    //             function translateAxis(axis, translation) {
-    //                 axis
-    //                     .transition()
-    //                     .duration(500)
-    //                     .attr("transform", translation);
-    //             }
-    //         }
-    //     }
-
-    // }
 
     componentDidMount() {
-        console.log(sankeyData, 'SANKEY');
         let self = this;
-        // self.createBubbleChart('', countryData, continentData); // for tumor chart
-
-
-        // d3.csv('medium_january.csv', function(error, data) {
-        //     if (error) {
-        //         console.error('Error getting or parsing the data.');
-        //         throw error;
-        //     }
-        // var chart = this.bubbleChartFc().width(600).height(400);
-        // selection.datum() returns the bound datum for the first element in the selection and doesn't join the specified array of data with the selected elements
-        // d3.select('#chart').datum(fcData).call(chart);
-        //   });
 
 
         $(document).ready(function () {
@@ -921,50 +118,19 @@ class EcommerceDashboard extends React.Component {
                         var valueAttr = $(this).attr('value');
                         if (element.attr('value') == valueAttr) {
                             var checkParent = $(this).parent().parent().parent().hasClass('active');
-                            // if (checkParent == false) {
-                            //     $(this).removeAttr('disabled')
-                            // }else{
-                            //     $(this).attr('disabled','disabled')
-                            // }
                         }
                     });
                 }
             });
         });
-        document.getElementById('selectedToDate').value = this.state.selectedToDate
-        document.getElementById('selectedFromDate').value = this.state.selectedFromDate
-        //  for (let req = 0; req <= 4;) {
-        //     console.log(req);
-        this.getGraphData()
-        // }
-        //  }
+        // this.getGraphData()
         window.scrollTo(0, 0);
         this.props.actions.generalProcess(constants.getTypeData,
             requestCreator.createTypeDataRequest([
-                'dc-hsCodeFilter',
+                'graph_types'
             ]));
 
         this.props.actions.generalProcess(constants.orgList, { action: "entityList", page: { currentPageNo: 1, pageSize: 100 } });
-        // this.props.actions.generalProcess(constants.getDashboardData, {
-        //     action: 'getDashboardData',
-        //     searchCriteria: {
-        //         startDate: this.state.fromDateWrkBrd,
-        //         endDate: this.state.toDateWrkBrd,
-        //         ecommerce: this.state.ecommerce
-        //     }
-        // })
-        // interval = setInterval(() => {
-        //     this.props.actions.generalProcess(constants.getDashboardData, {
-        //         action: 'getDashboardData',
-        //         searchCriteria: {
-        //             startDate: this.state.fromDateWrkBrd,
-        //             endDate: this.state.toDateWrkBrd,
-        //             ecommerce: this.state.ecommerce,
-        //             trackCourier: this.state.tracking.courier,
-        //             trackEcommerce: this.state.tracking.ecommerce
-        //         }
-        //     })
-        // }, 10000);
     }
 
     graphRequestBody(widget) {
@@ -1031,9 +197,7 @@ class EcommerceDashboard extends React.Component {
     }
 
     async getGraphData() {
-        // for (let req = 0; req <=2;) {
-        //     console.log(req);
-        // }
+
         let array = [...this.state.widgetIds];
         array.filter(async x => {
             console.log(x);
@@ -1112,67 +276,13 @@ class EcommerceDashboard extends React.Component {
                 "widgetId": id == 1 ? `widget${id}-betweenDates` : `widget${id}`,
                 "valueType": "", // byCount or byAmount
                 "outputWidgetType": "", // pieChart. 2Value-Bar Horizontal
-                 "searchCritera": searchCriteria
-                // "period": {
-                //     "year": this.state.selectedYears,
-                //     "quarter": this.state.selectedQuarters,
-                //     "month": this.state.selectedMonths,
-                //     "fromDate": this.state.selectedFromDate,
-                //     "toDate": this.state.selectedToDate
-                // },
-                // "zone": {
-                //     "freezone": {
-                //         "freezoneAll": false,
-                //         "freezones": [
-                //             "",
-                //             "",
-                //             ""
-                //         ]
-                //     },
-                //     "warehouse": {
-                //         "warehouseAll": false,
-                //         "warehouses": [
-                //             "",
-                //             "",
-                //             ""
-                //         ]
-                //     },
-                //     "isMainland": false
-                // },
-                // "providers": {
-                //     "providerAll": true,
-                //     "eCommmerce": {
-                //         "eCommerceAll": false,
-                //         "eCommerce": [
-                //             "",
-                //             "",
-                //             ""
-                //         ]
-                //     },
-                //     "logistics": {
-                //         "logisticsAll": false,
-                //         "logistics": [
-                //             "",
-                //             "",
-                //             ""
-                //         ]
-                //     },
-                //     "courier": {
-                //         "courierAll": false,
-                //         "couriers": [
-                //             "",
-                //             "",
-                //             ""
-                //         ]
-                //     }
-                // }
+                "searchCritera": searchCriteria
+
             }
         }
         await this.props.actions.generalAjxProcess(constants.getGraphDashboardData, obj).then(res => {
             // req++
         });
-        //  req++
-        // if (req == 1) {
     }
 
     onlyUnique(value, index, self) {
@@ -1196,7 +306,7 @@ class EcommerceDashboard extends React.Component {
                 backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3']} />
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1239,14 +349,14 @@ class EcommerceDashboard extends React.Component {
             console.log(x);
             console.log(y);
             console.log(dataArray, 'DATAARRRRRRR');
-            let chart = <HorizontalBarChartNew minRange={0} maxRange={maxRange} stepSize={5} height={graphProps.widgetData.widgetId == 6 ? 420 : 180} 
+            let chart = <HorizontalBarChartNew minRange={0} maxRange={maxRange} stepSize={5} height={graphProps.widgetData.widgetId == 6 ? 420 : 180}
                 data={dataArray || []} labels={graphProps.widgetData.widgetId == 'widget6' ? ['Countries'] : ['Companies']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} backgroundColors={['#ae8b4b', '#2196f3']}
                 options={{
                     responsive: true,
                     maintainAspectRatio: true
                 }} />
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1295,7 +405,7 @@ class EcommerceDashboard extends React.Component {
             // }
             //     );
             // console.log(valuesArray, 'VAAA');
-            let chart = <VerticalBarChart  data={dataArray} labels={['HS']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={["value"]} backgroundColors={['#2196f3']}
+            let chart = <VerticalBarChart data={dataArray} labels={['HS']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={["value"]} backgroundColors={['#2196f3']}
                 height={250} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
             // <HorizontalBarChartNew minRange={10} maxRange={maxRange} stepSize={5} height={180} 
             //     data={dataArray || []} labels={['Companies']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} backgroundColors={['#ae8b4b', '#2196f3']}
@@ -1304,7 +414,7 @@ class EcommerceDashboard extends React.Component {
             //         maintainAspectRatio: true
             //     }} />
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1390,7 +500,7 @@ class EcommerceDashboard extends React.Component {
             let chart = <MultiLineChart dataPoints={convertedGraphData} />
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1456,7 +566,7 @@ class EcommerceDashboard extends React.Component {
             let unique = z.filter(this.onlyUnique);
             console.log(unique, 'UNIQUE')
             console.log(dataArray, 'DATAARRRRRRR - multiple color bar chart');
-            let chart = <HorizontalBarChartNew minRange={sortedValueArray[0]} maxRange={maxRange} stepSize={maxRange / 5} height={300} 
+            let chart = <HorizontalBarChartNew minRange={sortedValueArray[0]} maxRange={maxRange} stepSize={maxRange / 5} height={300}
                 data={dataArray || []} labels={unique} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value1', 'value2', 'value3']} backgroundColors={['#f58709', '#ae8b4b', '#2196f3']}
                 options={{
                     responsive: true,
@@ -1464,7 +574,7 @@ class EcommerceDashboard extends React.Component {
                 }} />
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1516,42 +626,28 @@ class EcommerceDashboard extends React.Component {
             console.log(y);
             console.log(z);
             console.log(dataArray, 'DATAARRRRRRR');
-            let chart = <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={180} 
+            let chart = <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={180}
                 data={dataArray || []} labels={z} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value1', 'value2']} backgroundColors={['#ae8b4b', '#2196f3']}
                 options={{
                     responsive: true,
                     maintainAspectRatio: true
                 }} />
 
-                let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-                 let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
-                this.setState({
-                    [graphProps.widgetData.widgetId]: chart,
-                    [stateLabel]: false
-                })
+            let widgetIdNumber = graphProps.widgetData.widgetId.split('');
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
+            this.setState({
+                [graphProps.widgetData.widgetId]: chart,
+                [stateLabel]: false
+            })
         }
         if (graphProps.widgetData.widgetType == 'flagChart') {
             // this.createBubbleChart('', graphProps.widgetData.graphData.data, continentData);
 
             let chart = <CountryBubbleChart countryData={graphProps.widgetData.graphData.data} continents={continentData} />
-            //  <div> <div id="controls-graph">
-            //     <span style={{ visibility: 'hidden' }}>
-            //         <label><input id="combine" type="radio" name="grouping" value="combine" checked />Combine</label>
-            //         <label><input id="continents" type="radio" name="grouping" value="continents" />Continents</label>
-            //         <label><input id="country-centers" type="radio" name="grouping" value="country-centers" />Country Centers</label>
-            //         <label><input id="population" type="radio" name="grouping" value="population" />Population</label>
-            //     </span>
-            //     <span>
-            //         <label><input id="colors" type="radio" name="fill" value="colors" />Colors</label>
-            //         <label><input id="flags" type="radio" name="fill" value="flags" checked />Flags</label>
-            //     </span>
-            // </div>
-            //     <div id="country-info"></div>
-            //     <div id="bubble-chart"></div>
-            // </div>
+
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1562,11 +658,11 @@ class EcommerceDashboard extends React.Component {
 
             let chart = <SankeyChart data={graphProps.widgetData.graphData} />
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
-           this.setState({
-               [graphProps.widgetData.widgetId]: chart,
-               [stateLabel]: false
-           })
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
+            this.setState({
+                [graphProps.widgetData.widgetId]: chart,
+                [stateLabel]: false
+            })
         }
         if (graphProps.widgetData.widgetType == '3ValueBubble-Vertical') {
 
@@ -1584,7 +680,7 @@ class EcommerceDashboard extends React.Component {
             let chart = <BubbleChart data={bubbleArray} useLabels />
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1592,251 +688,6 @@ class EcommerceDashboard extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps, 'NextProps');
-        // let dummyProps = {
-        //     widgetData: {
-        //         "widgetId": "widget1",
-        //         "widgetType": "pieChart",
-        //         "graphTitle": "Free Zone Wise Transactions",
-        //         "graphData": {
-        //             "data": [
-        //                 {
-        //                     "label": "Dubai south",
-        //                     "count": 19
-        //                 },
-        //                 {
-        //                     "label": "DAFZA",
-        //                     "count": 30
-        //                 },
-        //                 {
-        //                     "label": "JAFZA",
-        //                     "count": 51
-        //                 }
-        //             ]
-        //         }
-        //     }
-        // }
-        Object.keys(nextProps).map((key, index) => {
-            if (key.startsWith('widget') && Object.keys(nextProps[key]).length != 0) {
-                this.graphCreator(nextProps[key]);
-            }
-        })
-        // if (nextProps.widgetData.startsWith('widget')) {
-        //     // graphCreator
-        //     // dummyProps.widgetData.map(widget => {
-        //     if (nextProps.widgetData.widgetType == 'pieChart') {
-        //         let labels = [];
-        //         let values = [];
-
-        //         nextProps.widgetData.graphData.data.forEach(data => {
-        //             // console.log(data);
-        //             labels.push(data.label)
-        //             values.push(data.count)
-        //         })
-        //         let chart = <PieChart  onElementsClick={() => { console.log('Pie Chart Clicked') }} labels={labels} data={values} height={120}
-        //             // backgroundColor={['#7aa62d', '#18e244', '#95d22a', '#62920d']} />
-        //             backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3']} />
-
-        //         this.setState({
-        //             [nextProps.widgetData.widgetId]: chart
-        //         })
-        //         if (nextProps.widgetData.widgetType == '3ValueBar-Horizontal') {
-        //             let x = [];
-        //             let y = [];
-        //             let z = [];
-        //             let dataArray = [];
-        //             if (nextProps.widgetData.widgetId.toggle == 'value') {
-        //                 nextProps.widgetData.graphData.byValue.forEach(data => {
-        //                     // console.log(data);
-        //                     x.push(data.xIndex.value)
-        //                     y.push(data.yIndex.value)
-        //                     z.push(data.zIndex.value)
-        //                 })
-        //             } else {
-        //                 nextProps.widgetData.graphData.byCount.forEach(data => {
-        //                     // console.log(data);
-        //                     x.push(data.xIndex.value)
-        //                     y.push(data.yIndex.value)
-        //                     if (!z.includes(data.zIndex.value)) {
-        //                         z.push(data.zIndex.value)
-        //                     }
-        //                     if (data.zIndex.value == z[0]) {
-        //                         let obj = {
-        //                             entityName: data.xIndex.value,
-        //                             value1: data.yIndex.value,
-        //                             type: data.zIndex.value
-        //                         }
-        //                         dataArray.push(obj);
-        //                     } else {
-        //                         let obj = {
-        //                             entityName: data.xIndex.value,
-        //                             value2: data.yIndex.value,
-        //                             type: data.zIndex.value
-        //                         }
-        //                         dataArray.push(obj);
-        //                     }
-
-        //                 })
-        //                 this.setState({
-        //                     dataArray
-        //                 })
-        //             }
-
-        //             // console.log(x);
-        //             // console.log(y);
-        //             // console.log(z);
-        //             // console.log(dataArray);
-        //             let chart = <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={120} 
-        //                 data={dataArray || []} labels={z} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value1', 'value2']} backgroundColors={['#ae8b4b', '#2196f3']}
-        //                 options={{
-        //                     responsive: true,
-        //                     maintainAspectRatio: true
-        //                 }} />
-
-        //             this.setState({
-        //                 [nextProps.widgetData.widgetId]: chart
-        //             })
-        //         }
-        //     }
-
-        // }
-        // if (dummyProps.widgetData) {
-        //     // dummyProps.widgetData.map(widget => {
-        //         if (dummyProps.widgetData.widgetType == 'pieChart') {
-        //             let labels = [];
-        //             let  values = [];
-
-        //             dummyProps.widgetData.graphData.data.forEach(data => {
-        //                 if (data.label) {
-        //                     labels.push(data.label)
-        //                 } else {
-        //                     values.push(data.count)
-        //                 }
-        //             })
-        //            let chart = <PieChart  onElementsClick={() => { console.log('Pie Chart Clicked') }} labels={[labels.toString()]} data={[values.toString()]} height={120}
-        //             // backgroundColor={['#7aa62d', '#18e244', '#95d22a', '#62920d']} />
-        //             backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3']} />
-
-        //             this.setState({
-        //                 [dummyProps.widgetData.widgetId]: chart
-        //             })
-        //         }
-        //     // })
-        // }
-        if (jsonData.dashboardData && jsonData.dashboardData.barGraphAmountData) {
-            this.setState({
-                isLoading: false
-            })
-            let bankNames = []
-            jsonData.dashboardData.barGraphAmountData.map(bank => {
-                bankNames.push(bank.bankCode)
-            })
-            this.setState({
-                bankNames,
-                dashboardData: {
-                    barGraphAmountData: jsonData.dashboardData.barGraphAmountData,
-                    barGraphSubmissionData: jsonData.dashboardData.barGraphSubmissionData
-                }
-            })
-        }
-
-        if (jsonData.dashboardData) {
-            this.setState({
-                firstTile: jsonData.dashboardData.firstTile,
-                secondTile: jsonData.dashboardData.secondTile,
-                thirdTile: jsonData.dashboardData.thirdTile,
-                fourthTile: jsonData.dashboardData.fourthTile,
-            })
-        }
-
-        if (jsonData.dashboardData && jsonData.dashboardData.lineGraphData && this.state.bankNames && this.state.bankNames.length > 0) {
-            this.setState({
-                isLoading: false
-            })
-            let lineGraphData = [...jsonData.dashboardData.lineGraphData];
-            let dataPoints = [];
-            let convertedGraphData = [];
-            // let name;
-            lineGraphData.map((data, index) => {
-                let dpObj = {
-                    bankCode: data.bankCode,
-                    label: moment(data.date.split('T')[0]).format('Do') + ' ' + moment(data.date.split('T')[0]).format('MMMM'),
-                    y: +data.count
-                }
-                // name = data.bankCode
-                dataPoints.push(dpObj)
-            })
-
-            this.state.bankNames.forEach((bank, index) => {
-                let dataPointsNew = [];
-                dataPoints.filter(data => {
-                    if (bank == data.bankCode) {
-                        dataPointsNew.push(data);
-                    }
-                })
-                // console.log(this.getBankColors(bank))
-                let obj = {
-                    type: "line",
-                    name: bank,
-                    // color: "#" + ((1 << 24) * Math.random() | 0).toString(16),
-                    color: this.getBankColors(bank)[0].color,
-                    showInLegend: true,
-                    dataPoints: dataPointsNew,
-                }
-                convertedGraphData.push(obj);
-            })
-            // console.log(convertedGraphData, "CGGGGG");
-            this.setState({
-                convertedGraphData
-            })
-        }
-        if (jsonData.dashboardData && jsonData.dashboardData.pieChartData) {
-            let financedCount = 0;
-            let rejectedCount = 0;
-            let purgedCount = 0;
-            this.setState({
-                isLoading: false
-            })
-            jsonData.dashboardData.pieChartData.map(data => {
-                if (data.bankStatus == 'FINANCED') {
-                    financedCount = + data.count;
-                }
-                if (data.bankStatus == 'REJECTED') {
-                    rejectedCount = + data.count;
-                }
-                if (data.bankStatus == 'PURGED') {
-                    purgedCount = + data.count;
-                }
-
-            })
-            let calculatedScore = financedCount + rejectedCount + purgedCount;
-            let financedRemainder = financedCount / calculatedScore;
-            let rejectedRemainder = rejectedCount / calculatedScore;
-            let purgedRemainder = purgedCount / calculatedScore;
-
-            let financedPercentage = Math.round(financedRemainder * 100);
-            let rejectedPercentage = Math.round(rejectedRemainder * 100);
-            let purgedPercentage = Math.round(purgedRemainder * 100);
-
-            this.setState({
-                financedPercentage,
-                rejectedPercentage,
-                purgedPercentage
-            })
-        }
-
-        if (jsonData.dashboardData != null && jsonData.dashboardData.ruleData.length == 0) {
-            this.setState({
-                ruleData: []
-            })
-        } else if (jsonData.dashboardData != null) {
-            this.setState({
-                ruleData: jsonData.dashboardData.ruleData
-            })
-        }
-
-    }
 
 
     ActionHandlers({ actionName, index }) {
@@ -1954,6 +805,16 @@ class EcommerceDashboard extends React.Component {
 
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+
+        this.setState({
+            graphTypes: nextProps.typeData.graph_types
+        })
+    }
+
+    component
+
     applyFilter() {
         this.props.actions.generalProcess(constants.getDashboardData, {
             action: 'getDashboardData',
@@ -2050,19 +911,99 @@ class EcommerceDashboard extends React.Component {
         })
         let searchCriteria;
         if (widgetId == 'widgetId2') {
-            searchCriteria = {filter: {place: 'old', number: 7}};
-        } 
+            searchCriteria = { filter: { place: 'old', number: 7 } };
+        }
         if (widgetId == 'widgetId3') {
-            searchCriteria =  {filter: {date: '12/2/1994', toDate: '01/10/1994'}};
-        } 
+            searchCriteria = { filter: { date: '12/2/1994', toDate: '01/10/1994' } };
+        }
         if (widgetId == 'widgetId4') {
-            searchCriteria =  {filter: {some: '12/2/1994', thing: '01/10/1994'}};
-        } 
+            searchCriteria = { filter: { some: '12/2/1994', thing: '01/10/1994' } };
+        }
         if (widgetId == 'widgetId5') {
-            searchCriteria =  {body: {key: '12/2/1994', value: '01/10/1994'}};
-        } 
+            searchCriteria = { body: { key: '12/2/1994', value: '01/10/1994' } };
+        }
         this.getSingleGraphData(widgetId, searchCriteria);
 
+    }
+
+    renderGraph() {
+        // let graphProps = {};
+        if (!this.state.response) {
+            alert('Please Select Graph Type');
+            return;
+        }
+        this.setState({
+            widget5isLoading: true
+        })
+        let graphProps;
+        if (this.state.body && this.state.body.response) {
+            graphProps = JSON.parse(this.state.body.response);
+        } else {
+            graphProps = JSON.parse(this.state.response);
+        }
+        setTimeout(() => {
+            this.graphCreator(graphProps)
+        }, 1000);
+        // this.render();
+    }
+
+    graphTypeHandler = (formname, fieldname, type, e) => {
+        console.log(formname, fieldname, type, e);
+        if (type == "textbox" || type == "radiolist" || type == "combobox" || type == "textarea") {
+            let value = e.target.value;
+            let formdata = _.get(this.state, formname, {});
+            let errors = _.get(this.state, 'errors', {});
+            this.state.graphTypes.filter(graph => {
+                console.log(graph);
+                console.log(value);
+                let graphValue;
+                if (graph.label == value) {
+                    graphValue = JSON.stringify(graph.value);
+                    console.log(graphValue);
+                    this.setState({
+                        body: {
+                            response: graphValue
+                        }
+                    })
+                    this.setState({
+                        response: graphValue,
+                    })
+                }
+            })
+            console.log(value);
+            _.set(formdata, e.target.name, value);
+            _.set(errors, e.target.name, undefined);
+            this.setState({
+                [formname]: formdata,
+                errors
+            }, () => {
+                // console.log('DATA-->', JSON.stringify(this.state[formname]));
+            });
+        }
+    }
+
+    toggleChange(e) {
+        console.log(e.target.value);
+        console.log(e.target.name);
+        this.setState({
+            contentToggle: !this.state.contentToggle
+        })
+    }
+
+    scrollRight() {
+        document.getElementById('scroll-container').scrollLeft += 350;
+    }
+
+    scrollLeft() {
+        document.getElementById('scroll-container').scrollLeft -= 350;
+    }
+
+    selectSample(value) {
+        this.setState({
+            body: {
+                response: JSON.stringify(value)
+            }
+        })
     }
 
     render() {
@@ -2071,10 +1012,175 @@ class EcommerceDashboard extends React.Component {
         if (!this.state.isLoading)
             return (
                 <Wrapper title="E-Commerce Dashboard">
-                    <Portlet title={"Search Filters"} noCollapse={false}>
+                    <Portlet title={'Widget Mk'}>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="col-md-4"><label>Widget ID</label></div>
+                                <div className="col-md-8">
+                                    <Input
+                                        divStyle={{ padding: '0' }}
+                                        status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
+                                        fieldname='passportNo'
+                                        // placeholder={utils.getLabelByID('Passport Number*')}
+                                        formname='editBody'
+                                        columns='12'
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="col-md-4"><label>Name</label></div>
+                                <div className="col-md-8">
+                                    <Input
+                                        divStyle={{ padding: '0' }}
+                                        status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
+                                        fieldname='passportNo'
+                                        // placeholder={utils.getLabelByID('Passport Number*')}
+                                        formname='editBody'
+                                        columns='12'
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-md-12">
+                                <div className="col-md-2"><label>Graph Type</label></div>
+                                <div style={{ display: 'flex', alignItems: 'center' }} className="col-md-10">
+                                    <div className="scroll-icons">
+                                        <img onClick={this.scrollLeft} style={{ position: 'relative', right: '35px' }} src="\assets\Resources\images\left-chevron.png" alt="" />
+                                    </div>
+                                    <div id="scroll-container" className="scroll-container">
+                                        {this.state.graphTypes && this.state.graphTypes.map(type => {
+                                            return (
+                                                <div className="item">
+                                                    <div className="graph-title">
+                                                        {type.label}
+                                                    </div>
+                                                    <div className="graph-select">
+                                                        <button onClick={() => this.selectSample(type.value)} style={{ width: '120px' }} className="btn btn-primary">Select</button>
+                                                    </div>
+                                                    <img className="graph-img-preview" src={type.image} alt="" />
+                                                </div>
+                                            )
+                                        })}
+                                        {/* <div className="item">
+                                            <img className="graph-img-preview" src="\assets\Resources\images\bar-graph1.png" alt="" />
+                                        </div>
+                                        <div className="item">
+                                            <img className="graph-img-preview" src="\assets\Resources\images\bar-graph1.png" alt="" />
+                                        </div>
+                                        <div className="item">
+                                            <img className="graph-img-preview" src="\assets\Resources\images\bar-graph1.png" alt="" />
+                                        </div>
+                                        <div className="item">
+                                            <img className="graph-img-preview" src="\assets\Resources\images\bar-graph1.png" alt="" />
+                                        </div> */}
+                                    </div>
+                                    <div className="scroll-icons">
+                                        <img onClick={this.scrollRight} style={{ position: 'relative', left: '10px' }} src="\assets\Resources\images\right-chevron.png" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="col-md-4"><label>Caption</label></div>
+                                <div className="col-md-8">
+                                    <Input
+                                        divStyle={{ padding: '0' }}
+                                        status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
+                                        fieldname='caption'
+                                        // placeholder={utils.getLabelByID('Passport Number*')}
+                                        formname='body'
+                                        columns='12'
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="col-md-4"><label>Caption</label></div>
+                                <div className="col-md-8">
+                                    <Input
+                                        divStyle={{ padding: '0' }}
+                                        status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
+                                        fieldname='passportNo'
+                                        // placeholder={utils.getLabelByID('Passport Number*')}
+                                        formname='editBody'
+                                        columns='12'
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-md-6">
 
-                        {/* <div className="portlet light bordered sdg_portlet"> */}
-
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center' }} className="col-md-12">
+                                <div className="col-md-4"><label>X-Value Toggle</label></div>
+                                <div className="col-md-1">
+                                    <input name="valueToggle" onChange={e => this.toggleChange(e)} checked={this.state.contentToggle} type="checkbox" /></div>
+                                <div style={{ display: 'flex', alignItems: 'center' }} className="col-md-3">
+                                    <label htmlFor="">Label 1</label>
+                                    <Input
+                                        divStyle={{ padding: '0' }}
+                                        status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
+                                        fieldname='label1'
+                                        // placeholder={utils.getLabelByID('Passport Number*')}
+                                        formname='body'
+                                        columns='9'
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center' }} className="col-md-3">
+                                    <label htmlFor="">Label 2</label>
+                                    <Input
+                                        divStyle={{ padding: '0' }}
+                                        status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
+                                        fieldname='label2'
+                                        // placeholder={utils.getLabelByID('Passport Number*')}
+                                        formname='body'
+                                        columns='9'
+                                        state={this.state}
+                                        actionHandler={this.generalHandler}
+                                        className="form-control"
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-md-2">
+                                <label>Response</label>
+                            </div>
+                            <div className="col-md-10">
+                                <TextArea
+                                    divStyle={{ padding: '0px' }}
+                                    status={(this.state.errors && this.state.errors.response) ? "ERROR" : undefined}
+                                    fieldname='response'
+                                    rows="6"
+                                    cols="10"
+                                    formname='body'
+                                    value={this.state.body && this.state.body.response ? this.state.body.response : this.state.response}
+                                    columns='12'
+                                    placeholder={utils.getLabelByID('')}
+                                    state={this.state}
+                                    actionHandler={this.generalHandler}
+                                    className="form-control"
+                                />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div style={{ display: 'flex', justifyContent: 'flex-end' }} className="col-md-12">
+                                <div style={{ marginTop: '25px' }}>
+                                    <button className="btn btn-primary" onClick={() => this.renderGraph()}>Preview</button>
+                                </div>
+                            </div>
+                        </div>
+                    </Portlet>
+                    {/* <Portlet title={"Search Filters"} noCollapse={false}>
                         <div className="row p-0">
                             <div className="col-md-2">
                                 <div className="bg-blue-period">
@@ -2379,7 +1485,6 @@ class EcommerceDashboard extends React.Component {
                                             </div>
                                             <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                                 <div className="form-group mb-2">
-                                                    {/* <input type="hidden" name="data[Server][0][id]" className="form-control" value="1" id="Server0Id">  */}
                                                     <div className="controls-dropdown">
                                                         <select className="multiselect" multiple="multiple" id="Server0Vm">
                                                             <optgroup>
@@ -2447,7 +1552,6 @@ class EcommerceDashboard extends React.Component {
                                             </div>
                                             <div className="tab-pane fade" id="nav-courier" role="tabpanel" aria-labelledby="nav-courier-tab">
                                                 <div className="form-group mb-2">
-                                                    {/* <input type="hidden" name="data[Server][0][id]" className="form-control" value="1" id="Server0Id">  */}
                                                     <div className="controls">
                                                         <select className="multiselect" multiple="multiple" id="Server0Vm">
                                                             <optgroup>
@@ -2478,13 +1582,11 @@ class EcommerceDashboard extends React.Component {
 
 
 
-                    </Portlet>
+                    </Portlet> */}
 
                     <div className="row">
-                        {/* <div className="col-md-12">
-                                <DashboardFilters />
-                            </div> */}
-                        <div className="col-md-6">
+
+                        {/* <div className="col-md-6">
                             <Portlet title={"Top 3 E-Commerce, Logistics and Courier Companies"} style={{ height: 'auto', maxHeight: 'auto' }} noCollapse={false}>
 
                                 <div className="refresh-img-div">
@@ -2502,13 +1604,11 @@ class EcommerceDashboard extends React.Component {
                                     :
                                     <div>   {this.state.widget1} </div>
                                 }
-                                {/* <PieChart  onElementsClick={() => { console.log('Pie Chart Clicked') }} labels={['FINANCED', 'REJECTED', 'PURGED']} data={[this.state.financedPercentage, this.state.rejectedPercentage, this.state.purgedPercentage]} height={120}
-                                        // backgroundColor={['#7aa62d', '#18e244', '#95d22a', '#62920d']} />
-                                        backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3']} /> */}
-                            </Portlet>
-                        </div>
 
-                        <div className="col-md-6">
+                            </Portlet>
+                        </div> */}
+
+                        {/* <div className="col-md-6">
                             <Portlet title={"E-COMMERCE TRANSACTIONS"} noCollapse={false} style={{ height: 'auto' }}>
                                 <div className="refresh-img-div">
                                     <div className="content-toggle">
@@ -2526,25 +1626,16 @@ class EcommerceDashboard extends React.Component {
                                     <div>   {this.state.widget20} </div>
                                 }
                                 <div id="rule-graph" className="col-md-12">
-                                    {/* <a href="#" onClick={() => this.downloadRuleCSV(this.props.dashboardData.ruleData)} className="btn-success">Download CSV</a> */}
-                                    {/* {this.state.widget7isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
-                                            :
-                                            <div>   {this.state.widget7} </div>
-                                        } */}
 
-                                    {/* {this.state.ruleData && (
-                                            <VerticalBarChart  data={[..._.get(this.state, 'ruleData', [])]} labels={['Hit Count', 'Not Hit Count']} stack="multiple" dataLabelsAttribute="riskname" dataValuesAttributes={["hitcount", "nothitcount"]} backgroundColors={['#ae8b4b', '#2196f3']}
-                                         height={150} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
-                                        )} */}
                                 </div>
 
                             </Portlet>
-                        </div>
+                        </div> */}
 
 
                     </div>
                     <div className="row">
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <Portlet title={"E-COMMERCE TRADE (AED)"} noCollapse={false} style={{ height: 'auto' }}>
                                 <div className="refresh-img-div">
                                     <img onClick={() => this.refreshSingleWidget(2)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
@@ -2555,8 +1646,8 @@ class EcommerceDashboard extends React.Component {
                                 }
 
                             </Portlet>
-                        </div>
-                        <div className="col-md-6">
+                        </div> */}
+                        {/* <div className="col-md-6">
                             <Portlet title={this.state.widget3 ? "CIF VALUE" : "Top Exporting Countries"} noCollapse={false} style={{ height: 'auto' }}>
                                 <div className="refresh-img-div">
                                     <img onClick={() => this.refreshSingleWidget(3)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
@@ -2566,13 +1657,13 @@ class EcommerceDashboard extends React.Component {
                                     <div>   {this.state.widget3} </div>
                                 }
                             </Portlet>
-                        </div>
+                        </div> */}
                     </div>
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col-md-12">
                             <Portlet title={"TRANSACTION BY DESTINATION COUNTRY"} noCollapse={false} style={{ height: '900px' }}>
                                 <div className="refresh-img-div">
-                                <img onClick={() => this.refreshSingleWidget(22)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    <img onClick={() => this.refreshSingleWidget(22)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                 </div>
                                 {this.state.widget22isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
@@ -2580,113 +1671,74 @@ class EcommerceDashboard extends React.Component {
                                 }
                             </Portlet>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="row">
                         <div className="">
-                            {/* <Portlet title={"BANKS"} noCollapse={true} style={{ height: '350px' }}> */}
                             <div className="col-md-6">
-                                {this.state.dashboardData && this.state.dashboardData.barGraphAmountData &&
-                                    <Portlet title={"Top E-Commerce Companies"} noCollapse={false}>
+                                {this.state.widget5 && !this.state.widget5isLoading &&
+                                    <Portlet title={this.state.body.caption} noCollapse={false}>
                                         <div className="refresh-img-div">
+                                            {this.state.contentToggle && <div className="content-toggle">
+                                                <label htmlFor="">{this.state.body.label1}</label>
+                                                <label className="switch">
+                                                    <input type="checkbox" />
+                                                    <span className="slider round"></span>
+                                                </label>
+                                                <label htmlFor="">{this.state.body.label2}</label>
+                                            </div>}
                                             <img onClick={() => this.refreshSingleWidget(5)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                         </div>
                                         {this.state.widget5isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                             :
                                             <div>   {this.state.widget5} </div>
                                         }
-                                        {/* <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={120}  data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#ae8b4b']}
-                                            options={{
-                                                responsive: true,
-                                                maintainAspectRatio: true
-                                            }} /> */}
+
 
                                     </Portlet>
                                 }
                             </div>
-                            <div className="col-md-6">
-                                    <Portlet title={"Top Exporting Countries"} noCollapse={false}>
-                                        <div className="refresh-img-div">
-                                            <img onClick={() => this.refreshSingleWidget(6)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
-                                        </div>
-                                        {this.state.widget6isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
-                                            :
-                                            <div>   {this.state.widget6} </div>
-                                        }
-                                        {/* <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={120}  data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#2196f3']}
-                                            options={{
-                                                responsive: true,
-                                                maintainAspectRatio: true
-                                            }} /> */}
-
-                                    </Portlet>
-                            </div>
-                            <div className="col-md-6">
-                                    <Portlet title={"FREE ZONE WISE TRANSACTIONS"} noCollapse={false}>
-                                        <div className="refresh-img-div">
-                                            <img onClick={() => this.refreshSingleWidget(4)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
-                                        </div>
-                                        {this.state.widget4isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
-                                            :
-                                            <div>   {this.state.widget4} </div>
-                                        }
-                                        {/* <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={120}  data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#2196f3']}
-                                            options={{
-                                                responsive: true,
-                                                maintainAspectRatio: true
-                                            }} /> */}
-
-                                    </Portlet>
-                            </div>
                             {/* <div className="col-md-6">
-                                <Portlet title={"Top 5 Banks by Invoice Submission Amount"} noCollapse={false}>
-                                    <HorizontalStackedBarChart minRange={100} maxRange={6500} stepSize={50} height={120}  data={_.get(this.state.dashboardData, 'barGraphAmountData', [])} labels={['sum']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["sum"]} backgroundColors={['#ae8b4b']}
-                                        options={{
-                                            responsive: true,
-                                            maintainAspectRatio: true
-                                        }} />
+                                <Portlet title={"Top Exporting Countries"} noCollapse={false}>
+                                    <div className="refresh-img-div">
+                                        <img onClick={() => this.refreshSingleWidget(6)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    </div>
+                                    {this.state.widget6isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
+                                        :
+                                        <div>   {this.state.widget6} </div>
+                                    }
+
+
+                                </Portlet>
+                            </div>
+                            <div className="col-md-6">
+                                <Portlet title={"FREE ZONE WISE TRANSACTIONS"} noCollapse={false}>
+                                    <div className="refresh-img-div">
+                                        <img onClick={() => this.refreshSingleWidget(4)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    </div>
+                                    {this.state.widget4isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
+                                        :
+                                        <div>   {this.state.widget4} </div>
+                                    }
+
 
                                 </Portlet>
                             </div> */}
+
                         </div>
 
                     </div>
                     <div className="row">
                         <div className="">
-                            {/* <div className="col-md-6">
-                                {this.state.dashboardData && this.state.dashboardData.barGraphAmountData &&
-                                    <Portlet title={"Top E-Commerce Companies"} noCollapse={false}>
-                                        <div className="refresh-img-div">
-                                            <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
-                                        </div>
-                                      
 
-                                    </Portlet>
-                                }
-                            </div> */}
-                            {/* <div className="col-md-6">
-                                {this.state.dashboardData && this.state.dashboardData.barGraphAmountData &&
-                                    <Portlet title={"Top Exporting Countries"} noCollapse={false}>
-                                        <div className="refresh-img-div">
-                                            <img className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
-                                        </div>
-                                        <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={180}  data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#2196f3']}
-                                            options={{
-                                                responsive: true,
-                                                maintainAspectRatio: true
-                                            }} />
-
-                                    </Portlet>
-                                }
-                            </div> */}
 
                         </div>
 
                     </div>
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col-md-6">
                             <Portlet title={"TOP 5 EXPORT HS CODES"} noCollapse={true}>
                                 <div className="refresh-img-div">
-                                <img onClick={() => this.refreshSingleWidget(7)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    <img onClick={() => this.refreshSingleWidget(7)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                 </div>
                                 {this.state.widget7isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
@@ -2697,49 +1749,31 @@ class EcommerceDashboard extends React.Component {
                         <div className="col-md-6">
                             <Portlet title={"TOTAL E-COMMERCE TRANSACTIONS"} noCollapse={true}>
                                 <div className="refresh-img-div">
-                                <img onClick={() => this.refreshSingleWidget(10)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    <img onClick={() => this.refreshSingleWidget(10)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                 </div>
                                 {this.state.widget10isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
                                     <div>   {this.state.widget10} </div>
                                 }
-                                {/* <div id="rule-graph" className="col-md-12"> */}
-                                    {/* {sankeyData && sankeyData.nodes &&
-                                        <MultiLineChart data={sankeyData} />
-                                    } */}
-                                    {/* {this.state.widget10} */}
-                                    {/* {this.state.ruleData && (
-                                    <VerticalBarChart  data={[..._.get(this.state, 'ruleData', [])]} labels={['Hit Count', 'Not Hit Count']} stack="multiple" dataLabelsAttribute="riskname" dataValuesAttributes={["hitcount", "nothitcount"]} backgroundColors={['#ae8b4b', '#2196f3']}
-                                       height={100} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
-                                )} */}
-                                {/* </div> */}
 
                             </Portlet>
                         </div>
                         <div className="col-md-12">
                             <Portlet title={"TRANSACTION FLOW (Hover on Elements to View Count)"} noCollapse={true}>
                                 <div className="refresh-img-div">
-                                <img onClick={() => this.refreshSingleWidget(21)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    <img onClick={() => this.refreshSingleWidget(21)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                 </div>
                                 {this.state.widget21isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
                                     <div>   {this.state.widget21} </div>
                                 }
-                                    {/* {this.state.widget10} */}
-                                    {/* {this.state.ruleData && (
-                                    <VerticalBarChart  data={[..._.get(this.state, 'ruleData', [])]} labels={['Hit Count', 'Not Hit Count']} stack="multiple" dataLabelsAttribute="riskname" dataValuesAttributes={["hitcount", "nothitcount"]} backgroundColors={['#ae8b4b', '#2196f3']}
-                                       height={100} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
-                                )} */}
 
                             </Portlet>
                         </div>
 
 
 
-                    </div>
-                    {/* <Portlet title="Order Tracking">
-
-                    </Portlet> */}
+                    </div> */}
 
                 </Wrapper>
             );
@@ -2752,22 +1786,6 @@ let dataArray = [];
 
 function mapStateToProps(state, ownProps) {
     return {
-        // widgetData: _.get(state.app, 'data.widgetData', []),
-        // widgetData: dataArray,
-        widget1: _.get(state.app, 'widget1', {}),
-        widget2: _.get(state.app, 'widget2', {}),
-        widget3: _.get(state.app, 'widget3', {}),
-        widget4: _.get(state.app, 'widget4', {}),
-        widget5: _.get(state.app, 'widget5', {}),
-        widget6: _.get(state.app, 'widget6', {}),
-        widget7: _.get(state.app, 'widget7', {}),
-        widget8: _.get(state.app, 'widget8', {}),
-        widget9: _.get(state.app, 'widget9', {}),
-        widget10: _.get(state.app, 'widget10', {}),
-        widget11: _.get(state.app, 'widget11', {}),
-        widget20: _.get(state.app, 'widget20', {}),
-        widget21: _.get(state.app, 'widget21', {}),
-        widget22: _.get(state.app, 'widget22', {}),
         //  dataArray.push(state.app.data && Object.keys(state.app.data).length > 0 ? state.app.data.widgetData : []),
         typeData: _.get(state.app.typeData, 'data', undefined),
         getDashboardData: _.get(state.app, 'getDashboardData', undefined),
@@ -2783,5 +1801,5 @@ function customActionHandler(formname, fieldname, type, e) {
     let value = e.target.value;
     this.sendCall(value)
 }
-EcommerceDashboard.displayName = "__HIDE";
-export default connect(mapStateToProps, mapDispatchToProps)(EcommerceDashboard);
+CreateWidget.displayName = "__HIDE";
+export default connect(mapStateToProps, mapDispatchToProps)(CreateWidget);

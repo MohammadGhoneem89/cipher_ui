@@ -78,9 +78,9 @@ class CountryBubbleChart extends Component {
             var onScreenYOffset = keyElementHeight * 1.5,
                 offScreenYOffset = 100;
 
-            if (d3.select(".continent-key").empty()) {
-                createContinentKey();
-            }
+            // if (d3.select(".continent-key").empty()) {
+            //     createContinentKey();
+            // }
             var continentKey = d3.select(".continent-key");
 
             if (showContinentKey) {
@@ -140,6 +140,8 @@ class CountryBubbleChart extends Component {
         }
 
         function isChecked(elementID) {
+            console.log(d3.select(elementID), 'ElementId');
+            console.log(d3.select(elementID).property("checked"), 'CHECKED');
             return d3.select(elementID).property("checked");
         }
 
@@ -163,14 +165,17 @@ class CountryBubbleChart extends Component {
                 if (country) {
                     info = [country.CountryName, formatPopulation(country.Transactions)].join(": ");
                 }
-                d3.select("#country-info").html(info);
+                d3.select("#country-info").html(info).style("visibility", function() {
+                    return (info != '') ? "visible" : "hidden";
+                })
             }
         }
 
         function updateCircles() {
             circles
                 .attr("fill", function (d) {
-                    return flagFill() ? "url(#" + d.CountryCode + ")" : continentColorScale(d.ContinentCode);
+                    // return flagFill() ? "url(#" + d.CountryCode + ")" : continentColorScale(d.ContinentCode);
+                    return  "url(#" + d.CountryCode + ")";
                 });
         }
 
@@ -416,10 +421,10 @@ class CountryBubbleChart extends Component {
                     </span>
                     <span style={{visibility: 'hidden'}}>
                         <label><input id="colors" type="radio" name="fill" value="colors" />Colors</label>
-                        <label><input id="flags" type="radio" name="fill" value="flags" checked />Flags</label>
+                        <label><input id="flags" type="radio" name="fill" value="flags" checked={true} readOnly="true" checked="true" />Flags</label>
                     </span>
                 </div>
-                <div id="country-info"></div>
+                <div style={{visibility: 'hidden'}} id="country-info"></div>
                 <div id="bubble-chart"></div>
             </div>
         )
