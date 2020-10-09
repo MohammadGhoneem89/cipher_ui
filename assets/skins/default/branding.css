@@ -774,7 +774,7 @@ label.errorcolr {
 
 .ui-regulartabs .nav>li>a {
 	padding: 10px 20px;
-	background: #dddddd;
+	background: #908f8f;
 	font-size: 12px;
 	font-weight: 600;
 	border-radius: 0;
@@ -789,7 +789,7 @@ label.errorcolr {
 }
 
 .ui-regulartabs .nav-tabs>li {
-	cursor: pointer;
+cursor: pointer;
 }
 
 .ui-Warning-text {
@@ -821,7 +821,7 @@ label.errorcolr {
 }
 
 .ui-regulartabs .nav>li>a:hover {
-	color: #2f353b!important;
+	color: #ffffff!important;
 }
 
 .ui-tabcontentbody {
@@ -1640,6 +1640,27 @@ span.multiselect-native-select select {
     font-size: 12px!important;
 }
 
+.btn-danger_cus{
+    color: #fff;
+    background-color: #f31a28;
+    border-color: #f31a28;
+}
+
+.btn-danger_cus:focus, .btn-danger.focus {
+    color: #fff;
+    background-color: #a91520;
+    border-color: #a91520; }
+  .btn-danger_cus:hover {
+    color: #fff;
+    background-color: #a91520;
+    border-color: #a91520; }
+  .btn-danger_cus:active, .btn-danger_cus.active,
+  .open > .btn-danger_cus.dropdown-toggle {
+    color: #fff;
+    background-color: #a91520;
+    border-color: #a91520; }
+
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 var(--hover); }
 }
+
