@@ -10,16 +10,18 @@ import Form from './Form.jsx';
 
 import cloneDeep from 'lodash/cloneDeep';
 import {forEach} from "react-bootstrap/cjs/ElementChildren";
+import { timeThursdays } from 'd3';
 
 const initialState = {
   Container: {},
   List: [],
-  typeData: undefined,
+  typeData: [],
   groupList: [],
   columnList: [],
   resultSet: [],
-  isEdit: false,
+  isEdit: true,
   isLoading: true,
+  formLoading:false,
   isCustom: true,
   loadedOnce: false,
   gridLoading: false,
@@ -45,18 +47,48 @@ class Container extends React.Component {
 
   componentDidMount() {
 
-
-
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES'])); // Org types (entities)
     if (this.props.id !== "NEW") {
-      this.props.actions.generalProcess(constants.getADHReportByID, {
-        "_id": this.props.id //"5bf9c9df4cb0c690e4461b89"
+      this.setState({
+        isLoading:false,
+        isEdit:false
+      })
+      this.props.actions.generalAsyncProcess(constants.getDocumentType, {
+        "body": {
+          "document_type":this.props.id //"COO"
+        }
+      }).then(res=>{
+        console.log(res,"ASDADSDASSA");
+        if(res.result.key){
+          this.setState({
+            isLoading:false,
+            Container:{
+              name:res.result.name,
+              description:res.result.description,
+              ownerOrgType:res.result.ownerOrgCode,
+              documentType:res.result.documentType
+            }
+          })
+        }
+        else{
+          this.setState({
+            isLoading:false
+          })
+          alert("Document Not Found");
+        }
+        
       });
+    
     }
-    this.setState({
-      loadedOnce: false,
-      gridLoading: false
-    })
+    else{
+      this.setState({
+        loadedOnce: false,
+        gridLoading: false,
+        isLoading:false,
+        Container:{}
+      })
+    }
+   
   }
 
   componentWillMount() {
@@ -70,7 +102,7 @@ class Container extends React.Component {
     if (nextProps.typeData) {
       this.setState({
         typeData: nextProps.typeData,
-        isLoading: false
+        // isLoading: false
       });
     }
     if (nextProps.Container) {
@@ -87,17 +119,17 @@ class Container extends React.Component {
     } else {
       value = e.target.value;
     }
-    let reportContainer = _.cloneDeep(this.state.reportContainer);
+    let Container = _.cloneDeep(this.state.Container);
     if (e.target.id == 'group') {
       let values = $('#group').val();
-      _.set(reportContainer, e.target.id, values)
+      _.set(Container, e.target.id, values)
     } else {
-      _.set(reportContainer, e.target.id, value)
+      _.set(Container, e.target.id, value)
     }
     // this.state.networkConfig[e.target.name] = e.target.name;
-    console.log(JSON.stringify(reportContainer))
+    console.log(JSON.stringify(Container))
     this.setState({
-      reportContainer: reportContainer
+      Container: Container
     })
   }
 
@@ -105,7 +137,6 @@ class Container extends React.Component {
 
     let Container = _.cloneDeep(this.state.Container);
     if (
-      _.isEmpty(Container.ownerOrgType) ||
       _.isEmpty(Container.documentType) ||
       _.isEmpty(Container.ownerOrgType) ||
       _.isEmpty(Container.description) ||
@@ -114,8 +145,45 @@ class Container extends React.Component {
       alert("All fields are required");
       return false;
     }
+    
+    this.setState({
+      formLoading:true
+    })
+    
+    let body = {
+      "body":{
+      "document_name":Container.name,
+      "description":Container.description,
+      "owner_org_type":Container.ownerOrgType,
+      "document_type":Container.documentType
+      }
+    }
 
-    // this.props.actions.generalProcess(constants.updateADHReport, reportContainer);
+    console.log(body,"yyyyyyyyyyyyyyyy");
+
+    let url;
+
+    if(this.props.id !== "NEW"){
+      url=constants.updateDocumentType;
+    }
+    else{
+      url=constants.addDocumentType
+    }
+
+    this.props.actions.generalAsyncProcess(url, body).then(res=>{
+      if(res.messageStatus=="OK"){
+            this.setState({
+              formLoading: false
+            });
+          this.props.history.push("/documentList")
+      }
+    }).catch(err=>{
+      this.setState({
+        formLoading: false
+      });
+      alert("Something happened. Please try again.");
+      return false;
+    });
   }
 
 
@@ -123,11 +191,13 @@ class Container extends React.Component {
     if (this.state.isLoading) {
       return (<div className="loader">isLoading...</div>)
     }
+  
 
-    return (<Form flag={this.state.update} ActionHandlers={this.ActionHandlers} addPeer={this.add}
-                  typeData={this.state.typeData} isOwner={true} onInputChange={this.onInputChange}
+    return (<Form flag={this.state.update} ActionHandlers={this.ActionHandlers}  formLoading={this.state.formLoading}
+                  typeData={this.state.typeData} isOwner={this.state.isEdit} onInputChange={this.onInputChange}
                   onSubmit={this.submit} testQuery={this.test}
                   state={this.state}/>)
+
 
   }
 
@@ -152,10 +222,12 @@ Container.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
+  console.log(ownProps,"AAAAAA")
   return {
     Container: _.get(state.app, 'documentContainer.data', undefined),
     typeData: _.get(state.app, 'typeData.data', []),
-    id: ownProps.params.id
+    id: ownProps.params.id,
+    message: _.get(state.app, 'Message', undefined),
   };
 }
 

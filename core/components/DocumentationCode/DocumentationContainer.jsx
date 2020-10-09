@@ -144,7 +144,7 @@ class Documentation extends React.Component {
             "channel": elemi.channelText,
             "smartcontract": elemi.smartcontract,
             "type": elemi.type,
-            "args": `["${strArr.join("\", ")}"]`,
+            "args": `["${strArr.join("\", \"")}"]`,
             "sampleArgs": elem.sampleArgs,
             "sampleResponse": elem.sampleResponse,
             "sampleEvents": elem.sampleEvents

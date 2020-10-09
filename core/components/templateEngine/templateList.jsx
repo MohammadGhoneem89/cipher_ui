@@ -79,7 +79,7 @@ class TemplateList extends React.Component {
             "label": "View",
             "params": "",
             "iconName": "fa fa-eye",
-            "URI": ["/purehealth/templateList/"]
+            "URI": ["/templateList/"]
         },
         {
             "value": "4014",
@@ -87,7 +87,7 @@ class TemplateList extends React.Component {
             "label": "Test",
             "params": "",
             "iconName": "fa fa-eye",
-            "URI": ["/purehealth/templateList/test"]
+            "URI": ["/templateList/test"]
         }];
         // let searchData = [];
         let data = {};

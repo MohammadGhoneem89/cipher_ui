@@ -663,6 +663,7 @@ class UserSetupContainer extends Component {
             performAction={this.performAction}
             unblock={this.unlockAccount.bind(this)}
             disabled={this.state.view}
+            isNew={this.props.params.userID}
             performActionApproval={this.performActionApproval}
           />
         </Portlet>

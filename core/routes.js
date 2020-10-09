@@ -10,6 +10,7 @@ import EmailTemplateSearch from './components/EmailTemplateSearchScreen/EmailTem
 import EmailTemplateSetup from './components/EmailTemplateSetupScreen/EmailTemplateSetupContainer.jsx';
 import OrgSearch from './components/OrgSearchScreen/OrgSearchContainer.jsx';
 import OrgSetup from './components/OrgSetupScreen/OrgSetupContainer.jsx';
+import BusinessOrgSetup from './components/OrgSetupScreen/BusinessOrgSetup.jsx';
 import GroupSearch from './components/GroupSearchScreen/GroupSearchContainer.jsx';
 import ErrorCodeList from './components/errorCode/errorCodeList.jsx';
 import GroupSetup from './components/GroupSetupScreen/GroupSetupContainer.jsx';
@@ -40,6 +41,8 @@ import CommissionTemplateSearch
   from './components/CommissionTemplateSearchScreen/CommissionTemplateSearchContainer.jsx';
 import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/CommissionTemplateSetupContainer.jsx';
 import AuditLogList from './components/AuditLogScreen/auditLogList.jsx';
+
+import ChangeTrackingLog from "./components/ChangeTrackingLog/changeTrackingList.jsx";
 
 import NotFound from "./components/NotFound.jsx";
 
@@ -107,6 +110,10 @@ import documentList from "./components/Consent/List.jsx"
 import addDocType from "./components/Consent/Container.jsx"
 import ConsentProfile from "./components/ConsentProfile/Container.jsx"
 import ConsentProfileList from "./components/ConsentProfile/List.jsx"
+import ConsentStatus from "./components/ConsentStatusNew/List.jsx"
+import ConsentHistory from "./components/ConsentHistoryNew/List.jsx"
+import CurrentConsentStatus from "./components/CurrentConsentStatus/List.jsx"
+
 import safLogs from "./components/saf/dispatchQueue.jsx"
 import APITemplateList from '../core/components/APITemplate/APITemplateList';
 import APITemplateEdit from '../core/components/APITemplate/APITemplateEdit';
@@ -118,7 +125,10 @@ import TemplateList from '../core/components/templateEngine/templateList.jsx';
 import DocumentationContainer from "./components/DocumentationCode/DocumentationContainer.jsx";
 
 import MongoDBChangesContainer from './components/mongoUtility/mongoDBChangesContainer.jsx';
+import RelationalDBChangesContainer from './components/RelationalDBChangesUtility/RelationalDBChangesContainer.jsx';
 import CryptographyContainer from './components/cryptoUtility/cryptographyContainer.jsx'
+import templateDetails from './components/templateEngine/template-details.jsx';
+import testTemplateDetails from './components/templateEngine/test-template-details.jsx';
 export default (<Router history={browserHistory}>
 
   <Route path="/Documentation/:useCase/:route" component={GeneratePDF} />
@@ -176,6 +186,7 @@ export default (<Router history={browserHistory}>
     <Route path="/APIPayloadSearch" component={APIPayloadSearch} />
     <Route path="/APIPayloadSearch/:payLoadField/:payLoadFieldValue" component={APIPayloadSearch} />
     <Route path="/auditLogList" component={AuditLogList} />
+    <Route path="/ChangeTrackingLog" component={ChangeTrackingLog} />
     <Route path="/healthMonitor" component={HealthMonitor} />
     <Route path="/fileTemplateSearch" component={FileTemplateSearch} />
     <Route path="/fileTemplateSetup" component={FileTemplateSetup} />
@@ -189,6 +200,8 @@ export default (<Router history={browserHistory}>
     <Route path="/emailTemplateSetup/edit/:emailTemplateID" component={EmailTemplateSetup} />
     <Route path="/orgSearch" component={OrgSearch} />
     <Route path="/orgSetup" component={OrgSetup} />
+    <Route path="/BusinessOrgSetup" component={BusinessOrgSetup} />
+    <Route path="/BusinessOrgSetup/:mode/:orgID" component={BusinessOrgSetup} />
     <Route path="/orgSetup/:mode/:orgID" component={OrgSetup} />
     <Route path="/eventList" component={eventList} />
     <Route path="/editEventRegistry/:eventName" component={AddUpdateEventList} />
@@ -213,7 +226,12 @@ export default (<Router history={browserHistory}>
     <Route path="/documentList" component={documentList} />
     <Route path="/addDocType/(:id)" component={addDocType} />
     <Route path="/ConsentProfileList" component={ConsentProfileList} />
-    <Route path="/ConsentProfile/(:id)" component={ConsentProfile} />
+    <Route path="/ConsentProfile/:id" component={ConsentProfile} />
+    <Route path="/ConsentStatus" component={ConsentStatus} />
+
+    <Route path="/ConsentHistory" component={ConsentHistory} />
+    <Route path="/CurrentConsentStatus" component={CurrentConsentStatus} />
+
     <Route path="/general/userDetail/:id" component={UserDetail} />
     <Route path="/general/userRole/:id" component={UserRole} />
     <Route path="/general/roleUser/:id" component={RoleUser} />
@@ -241,9 +259,12 @@ export default (<Router history={browserHistory}>
     <Route path="/fileList/:type" component={FileList} />
     <Route path="/fileData/:id" component={FileData} />
     <Route path="/mongoUtility" component={MongoDBChangesContainer} />
+    <Route path="/RelationalDBChangesUtility" component={RelationalDBChangesContainer} />
     <Route path="/cryptoUtility" component={CryptographyContainer} />
 
     <Route path="/templateList" component={TemplateList} />
+    <Route path="/templateList/:id" component={templateDetails} />
+    <Route path="/templateList/test/:id" component={testTemplateDetails} />
     {ApplicationsRoute.routesIndex}
   </Route>
   <Route path="*" components={NotFound} />

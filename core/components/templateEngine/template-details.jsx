@@ -1,18 +1,17 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actions from '../../../../core/actions/generalAction';
-import * as constants from '../../constants/appCommunication.js';
-import * as requestCreator from '../../../../core/common/request.js';
-import Portlet from '../../../../core/common/Portlet.jsx';
-import Table from '../../../../core/common/Datatable.jsx';
+import * as actions from '../../../core/actions/generalAction';
+import * as constants from '../../constants/Communication.js';
+import * as requestCreator from '../../../core/common/request.js';
+import Portlet from '../../../core/common/Portlet.jsx';
+import Table from '../../../core/common/Datatable.jsx';
 // import LabApplicationForm from './lab-application-form.jsx';
-import * as utils from '../../../../core/common/utils.js';
-import Countries from '../../constants/countries.json';
-import Input from './../../../../core/common/Input.jsx';
-import Textarea from './../../../../core/common/Textarea.jsx';
-import Combobox from './../../../../core/common/Select.jsx';
-import * as gen from './../../../../core/common/generalActionHandler';
+import * as utils from '../../../core/common/utils.js';
+import Input from './../../../core/common/Input.jsx';
+import Textarea from './../../../core/common/Textarea.jsx';
+import Combobox from './../../../core/common/Select.jsx';
+import * as gen from './../../../core/common/generalActionHandler';
 import moment from 'moment';
 import { Base64 } from 'js-base64';
 // import JSONPretty from 'react-json-pretty';
@@ -392,6 +391,7 @@ class TemplateDetails extends React.Component {
                                             formname='body'
                                             value={this.state.body.sampleJson}
                                             columns='12'
+                                            style={{height: '80%'}}
                                             placeholder={utils.getLabelByID('')}
                                             state={this.state}
                                             actionHandler={this.generalHandler}

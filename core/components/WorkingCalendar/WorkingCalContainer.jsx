@@ -9,16 +9,22 @@ import Portlet from '../../common/Portlet.jsx';
 import WorkingCalSetupForm from './WorkingCalSetupForm.jsx'
 import * as utils from '../../common/utils.js';
 import * as toaster from '../../common/toaster.js';
+import ModalBox from '../../common/ModalBox.jsx';
+const moment = require('moment');
 
 class WorkingCaledarContainer extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
             workingCalendarDetail: initialState.workingCalendarDetail.data,
-            isLoading: this.props.params.ID ? true : false
+            isLoading: this.props.params.ID ? true : false,
+            show:false,
+            toInsert:[]
         };
 
         this.submit = this.submit.bind(this);
+        this.submit2 = this.submit2.bind(this);
+        this.closePopup = this.closePopup.bind(this);
     }
 
     componentWillMount() {
@@ -53,9 +59,8 @@ class WorkingCaledarContainer extends React.Component {
 
 
     submit(data) {
-
         // Validation
-
+        data.calendarName = _.get(data, 'calendarName', '').replace(/[^a-zA-Z-_.,:?! 0-9]+/g, '')
         if (data.calendarName == "") {
             toaster.showToast('Calendar name not filled', 'ERROR')
             return
@@ -101,35 +106,74 @@ class WorkingCaledarContainer extends React.Component {
                 data.workinghours[value] = null;
             }
         }
-
-
         data.holidays = []
-
         for (let i = 0; i < data.exceptionList.length; i++) {
-
-            if (data.exceptionList[i].end == undefined) {
+            data.exceptionList[i] = {
+                ...data.exceptionList[i],
+                title: _.get(data.exceptionList[i], 'title', '').replace(/[^a-zA-Z-_.,:?! 0-9]+/g, '')
+            }
+            if (data.exceptionList[i].end == undefined&& data.exceptionList[i].type=='publicHoliday') {
                 data.holidays.push(data.exceptionList[i].start)
-            } else {
+            } else if (data.exceptionList[i].type=='publicHoliday') {
                 let dateArray = this.getDates(new Date(data.exceptionList[i].start), (new Date(data.exceptionList[i].end))).map(validDate => {
                     return utils.UNIXConvertToDate(Date.parse(validDate), 'YYYY-MM-DD')
                 });
-                data.holidays = [...data.holidays.concat(dateArray)];
+            data.holidays = [...data.holidays.concat(dateArray)];
+            }
+
+            }
+            data.holidays = new Array(...new Set(data.holidays))
+
+            data.shortWorkingTime = []
+        for (let i = 0; i < data.exceptionList.length; i++) {
+            data.exceptionList[i] = {
+                ...data.exceptionList[i],
+                title: _.get(data.exceptionList[i], 'title', '').replace(/[^a-zA-Z-_.,:?! 0-9]+/g, '')
+            }
+            if (data.exceptionList[i].end == undefined&& data.exceptionList[i].type=='workingTime') {
+                data.shortWorkingTime.push(data.exceptionList[i].start)
+            } else if (data.exceptionList[i].type=='workingTime') {
+                let dateArray = this.getDates(new Date(data.exceptionList[i].start), (new Date(data.exceptionList[i].end))).map(validDate => {
+                    return utils.UNIXConvertToDate(Date.parse(validDate), 'YYYY-MM-DD')
+                });
+            data.shortWorkingTime = [...data.shortWorkingTime.concat(dateArray)];
             }
 
         }
-        data.holidays = new Array(...new Set(data.holidays))
+        data.shortWorkingTime = new Array(...new Set(data.shortWorkingTime))
 
+        data.shortWorkingTimes = []
+        for (let i = 0; i < data.shortWorkingTime.length; i++) {
+            const date = moment(data.shortWorkingTime[i]); // Thursday Feb 2015
+            data.shortWorkingTimes.push({day:moment(date,'YYYY-MM-DD').format('dddd'),date:data.shortWorkingTime[i]})
+        }
+        data.shortWorkingTimes = new Array(...new Set(data.shortWorkingTimes))
         if (this.props.params.ID) {
             this.setState({ isLoading: true })
             this.props.actions.generalAjxProcess(constants.workingCalendarUpdate, requestCreator.createWorkingCalendarUpdateRequest(data))
-              .then(res => {
-                  this.setState({ isLoading: false })
-              })
-              .catch(err => {
-                  console.log(JSON.stringify(err));
-              })
+                .then(res => {
+                    this.setState({ isLoading: false })
+                })
+                .catch(err => {
+                    console.log(JSON.stringify(err));
+                })
         } else {
-            this.props.actions.generalProcess(constants.workingCalendarInsert, requestCreator.createWorkingCalendarInsertRequest(data));
+            // this.props.actions.generalProcess(constants.workingCalendarInsert, requestCreator.createWorkingCalendarInsertRequest(data));
+            this.setState({ isLoading: true })
+            this.props.actions.generalAjxProcess(constants.workingCalendarInsert, requestCreator.createWorkingCalendarInsertRequest(data))
+                .then(res => {
+                if (res.responseMessage.data.isAlreadyExists==true) {
+                    this.setState({
+                        show:true,
+                        toInsert:data
+                    })
+                }
+                    this.setState({ isLoading: false })
+                })
+                .catch(err => {
+                    console.log(JSON.stringify(err));
+                })
+
         }
 
     }
@@ -144,12 +188,52 @@ class WorkingCaledarContainer extends React.Component {
         }
     }
 
+
+    closePopup() {
+        this.setState({
+            show: false
+        })
+      }
+    submit2() {
+        
+        this.setState({ isLoading: true })
+        this.props.actions.generalAjxProcess(constants.workingCalendarInsert, requestCreator.createWorkingCalendarInsertWithRemove(this.state.toInsert))
+            .then(res => {
+                console.log("response");
+                this.setState({ isLoading: false,show:false })
+            })
+            .catch(err => {
+                console.log(JSON.stringify(err));
+            })
+    }
+
+
+
+
     render() {
         if (!this.state.isLoading) {
             return (
-              <Portlet title={"Working Days Calendar"}>
-                  <WorkingCalSetupForm onSubmit={this.submit} initialValues={this.state.workingCalendarDetail} />
-              </Portlet>
+                <div>
+                    <Portlet title={"Working Days Calendar"}>
+                        <WorkingCalSetupForm onSubmit={this.submit} initialValues={this.state.workingCalendarDetail} />
+                    </Portlet>
+                    <ModalBox isOpen={this.state.show}>
+                        <Portlet title={"Warning"}>
+                                <textarea type="text"  className="form-control" id="description"
+                                value={"The Calendar with this name already exists, do you want to update it?"} rows="4"
+                                style={{resize: "none", width: "100%"}}/>
+                                <div className="btn-toolbar"style={{marginTop:'20px'}}>
+                                    <button type="submit" onClick={this.closePopup} className="pull-right btn green">
+                                        {utils.getLabelByID("No")}
+                                    </button>
+                                    <button type="submit" onClick={this.submit2} className="pull-right btn green">
+                                        {utils.getLabelByID("Yes")}
+                                    </button>
+                                </div>
+
+                            </Portlet>
+                    </ModalBox>
+                </div>
             );
         }
         else

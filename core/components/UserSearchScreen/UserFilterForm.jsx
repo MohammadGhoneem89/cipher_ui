@@ -28,7 +28,7 @@ const UserFilterForm = props => {
   ];
 
   return (
-    <form role="form" onSubmit={handleSubmit}>
+    <form role="form" id="userform" onSubmit={handleSubmit}>
       <div className="row">
         <div className="col-md-6">
           <div className="form-group col-md-4">
@@ -82,7 +82,14 @@ const UserFilterForm = props => {
             <button type="submit" className="btn green" disabled={submitting}>
               Search
             </button>
-            <button type="button" className="btn default" disabled={pristine || submitting} onClick={reset}>
+            <button type="button" className="btn default" disabled={submitting} onClick={()=>{
+              $('#userform').find('input:text').val('');
+              $('#userform').find('select').each(function () {
+                
+                $(this)[0].selectedIndex = 0;
+                reset();
+              });
+              }}>
               Clear
             </button>
 

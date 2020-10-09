@@ -1,0 +1,7 @@
+[
+    {"label": "ALL" , "value": "ALL"},
+    {"label": "DHL" , "value": "DHL"},
+    {"label": "Dubai Customs" , "value": "Dubai Customs"},
+    {"label": "Amazon" , "value": "Amazon"},
+    {"label": "FedEx" , "value": "FedEx"}
+]

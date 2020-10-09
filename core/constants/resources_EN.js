@@ -1097,5 +1097,12 @@ module.exports = {
   CL_actionBy: "Created By",
   Working_Calendar_Name: "Calendar Name",
   Crypto_Utility_text_input: "String Value",
-  Crypto_Utility_encryption_type: "Method Type"
+  Crypto_Utility_encryption_type: "Method Type",
+
+  ChangeTrackingFilters:"Change Tracking Filters",
+  PrivateCollection:"Private Collection",
+  KEY:"KEY",
+  ChangeTrackingListData:"Change Tracking List Data",
+  ProjectName: "Project Name",
+  PublisherName: "Publisher Name"
 };

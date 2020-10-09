@@ -111,6 +111,17 @@ class TableCell extends React.Component {
     }
   }
 
+  getCriticalWarnStatus(type){
+    switch (type) {
+      case "critical":
+        return "#FF0000";
+      case "warn":
+        return "#FFCC00";
+      default:
+        return '';
+    }
+  }
+
   renderIcon(type) {
     switch (type) {
       case "Error":
@@ -405,8 +416,37 @@ class TableCell extends React.Component {
         return <td style={{ fontWeight: fontWeightStyle }}>
           <a href="javascript:" onClick={this.renderPopupBody.bind(this, this.props.cellData)}> {temp}</a>
         </td>;
+      case "criticalWarn":
+        console.log("Condition criticalWarn");
+        return (<td style={{fontWeight:"normal",backgroundColor:this.getCriticalWarnStatus(this.props.cellData.type),cursor:"pointer"}}>
+          {this.props.cellData.value}
+        </td>);
 
+      case "actionCustom":
+        console.log("actionCustom");
+        return (<td style={{fontWeight: "normal"}} onClick={()=>this.props.cellData.action(this.props.cellData.errors)}>
+          {utils.getLabelByID(this.props.cellData.errorDescription)}</td>);
+      
+      case "stringCustom":
+        console.log("actionCustom");
+        return (
+          <td style={{fontSize: "12px"}}><span style={{color:"#ae8b4b"}}>{this.props.cellData.orderNo}</span><br/><span style={{color:"black"}}>{this.props.cellData.invoiceNo}</span> - <span style={{color:"grey"}}>{this.props.cellData.declarationNo}</span> </td>
+        )
 
+      case "imageCustom":
+      if (this.props.url) {
+        return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+          width="28px" height="28px"
+          src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
+            href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+        </td>);
+      }
+      else {
+        return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+          width="28px" height="28px"
+          src={(this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+        </td>);
+      }
       default:
         return (<td style={{ fontWeight: fontWeightStyle }}> {this.props.cellData} </td>);
 

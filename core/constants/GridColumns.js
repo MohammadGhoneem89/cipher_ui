@@ -263,6 +263,12 @@ module.exports = {
     { alias: "RSEARCH_roleType", key: "type", type: "string" },
     { alias: "RSEARCH_roleAction", key: "actions", type: "action" }
   ],
+  letterTable: [
+    { alias: "", key: "templateId", type: "hiddenID" },
+    { alias: "Template Name", key: "templateName", type: "string" },
+    { alias: "Template Path", key: "templatePath", type: "string" },
+    { alias: "ASEARCH_action", key: "actions", type: "modal" }
+  ],
 
   userSearch: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
@@ -294,7 +300,7 @@ module.exports = {
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     { alias: "Working_Calendar_Name", key: "calendarName", type: "string" },
     { alias: "Working_Calendar_Year", key: "calendarYear", type: "string" },
-    { alias: "Working_Calendar_Month", key: "calendarMonth", type: "string" },
+    // { alias: "Working_Calendar_Month", key: "calendarMonth", type: "string" },
     { alias: "CL_actionOn", key: "createdAt", type: "epochDate" },
     { alias: "CL_actionBy", key: "createdBy", type: "object", property: "userID" },
     { alias: "EVNTL_ISACTIVE", key: "isActive", type: "cbDisabled" },
@@ -1350,5 +1356,87 @@ module.exports = {
     { alias: "EL_actions", key: "actions", type: "action" }
     // { alias: "currency", key: "currency", type: "string" },
     // { alias: "billingcycle", key: "billingcycle", type: "string" }
+  ],
+  SqlDBChangesGrid: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "Table Name", key: "tableName", type: 'string' },
+    { alias: "Change Type", key: "type", type: "statusBox" },
+    { alias: "Column Details", key: "new", type: "array" },
+    // { alias: "Action", key: "new_documents.count", type: "string" }
+    // { alias: "Updated documents", key: "updated_documents.count", type: "string" },
+    // { alias: "EL_actions", key: "actions", type: "action" }
+    // { alias: "currency", key: "currency", type: "string" },
+    // { alias: "billingcycle", key: "billingcycle", type: "string" }
+  ],
+  ConsentStatusList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "Time Stamp", key: "timestamp", type: "string" },
+    { alias: "Status", key: "status", type: "string" },
+    { alias: "Document Type", key: "documentType", type: "string" },
+    { alias: "Consent Type", key: "consentType", type: "string" },
+    { alias: "Document No", key: "documentNo", type: "string" },
+    { alias: "Validity", key: "validity", type: "string" },
+    { alias: "Providied To", key: "providedTo", type: "image" }
+  ],
+  
+  DocumentTypeList: [
+    { alias: "", key: "key", type: "hiddenID" },
+    { alias: "Document Type", key: "documentType", type: "string" },
+    { alias: "Owner Org Type", key: "ownerOrgCode", type: "string" },
+    { alias: "Document Name", key: "name", type: "string" },
+    { alias: "Description", key: "description", type: "string" },
+    { alias: "EL_actions", key: "actions", type: "action" }
+  ],
+  
+  ConsentProfileList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "document Type", key: "documentType", type: "string" },
+    { alias: "description", key: "description", type: "string" },
+    { alias: "policy ID", key: "policyID", type: "string" },
+    { alias: "Consent Type", key: "consentType", type: "string" },
+    { alias: "created At", key: "createdAt", type: "string" },
+    { alias: "Details", key: "actions", type: "action" }
+  ],
+  LogisticsInformationProvider: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "code", key: "code", type: "string" },
+    { alias: "name", key: "value", type: "string" },
+  ],
+  tradeLicenses: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "code", key: "code", type: "string" },
+    { alias: "name", key: "value", type: "string" },
+    { alias: "action", key: "actions", type: "action" }
+  ],
+  Facilities: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "type", key: "FacilityType", type: "string" },
+    { alias: "name", key: "Mode", type: "string" },
+    { alias: "action", key: "actions", type: "action" }
+  ],
+  BusinessTypes: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "type", key: "type", type: "string" },
+    { alias: "name", key: "value", type: "string" },
+    { alias: "action", key: "actions", type: "action" }
+  ],
+  BusinessTransaction: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "", key: "orderNo", type: "hiddenID" },
+    { alias: "submitted Byc", key: "imageData", type: "imageCustom" },
+    { alias: "last Activity Date", key: "lastActivity", type: "criticalWarn" },
+    { alias: "order / Invoice / Declaration", key: "orderInvoiceDecl", type: "stringCustom" },
+    { alias: "Stage", key: "currentStage", type: "string" },
+    { alias: "Document Type", key: "documentType", type: "string" },
+    { alias: "Errors", key: "errorDescription", type: "actionCustom" },
+    { alias: "Err Ct.", key: "errorCt", type: "string" },
+    { alias: "Details", key: "actions", type: "action" }
+  ],
+  BusinessTransactionError: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "Code", key: "errorCode", type: "string" },
+    { alias: "Message", key: "errorDescription", type: "string" }
   ]
 };
