@@ -928,10 +928,10 @@ class CreateWidget extends React.Component {
 
     renderGraph() {
         // let graphProps = {};
-        if (!this.state.response) {
-            alert('Please Select Graph Type');
-            return;
-        }
+        // if (!this.state.response) {
+        //     alert('Please Select Graph Type');
+        //     return;
+        // }
         this.setState({
             widget5isLoading: true
         })
@@ -1046,7 +1046,7 @@ class CreateWidget extends React.Component {
                                     />
                                 </div>
                             </div>
-                            <div className="col-md-12">
+                            <div style={{ marginTop: '20px' }} className="col-md-12">
                                 <div className="col-md-2"><label>Graph Type</label></div>
                                 <div style={{ display: 'flex', alignItems: 'center' }} className="col-md-10">
                                     <div className="scroll-icons">
@@ -1101,7 +1101,7 @@ class CreateWidget extends React.Component {
                                 </div>
                             </div>
                             <div className="col-md-6">
-                                <div className="col-md-4"><label>Caption</label></div>
+                                <div className="col-md-4"><label>Data Endpoint</label></div>
                                 <div className="col-md-8">
                                     <Input
                                         divStyle={{ padding: '0' }}
@@ -1120,10 +1120,10 @@ class CreateWidget extends React.Component {
 
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center' }} className="col-md-12">
-                                <div className="col-md-4"><label>X-Value Toggle</label></div>
+                                <div className="col-md-3"><label>X-Value Toggle</label></div>
                                 <div className="col-md-1">
                                     <input name="valueToggle" onChange={e => this.toggleChange(e)} checked={this.state.contentToggle} type="checkbox" /></div>
-                                <div style={{ display: 'flex', alignItems: 'center' }} className="col-md-3">
+                                {this.state.contentToggle && <div style={{ display: 'flex', alignItems: 'center' }} className="col-md-3">
                                     <label htmlFor="">Label 1</label>
                                     <Input
                                         divStyle={{ padding: '0' }}
@@ -1137,7 +1137,8 @@ class CreateWidget extends React.Component {
                                         className="form-control"
                                     />
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center' }} className="col-md-3">
+                                }
+                                {this.state.contentToggle && <div style={{ display: 'flex', alignItems: 'center' }} className="col-md-3">
                                     <label htmlFor="">Label 2</label>
                                     <Input
                                         divStyle={{ padding: '0' }}
@@ -1151,6 +1152,7 @@ class CreateWidget extends React.Component {
                                         className="form-control"
                                     />
                                 </div>
+                                }
                             </div>
                             <div className="col-md-2">
                                 <label>Response</label>
