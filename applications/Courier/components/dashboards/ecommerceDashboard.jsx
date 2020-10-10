@@ -18,6 +18,7 @@ import * as gen from '../../common/generalActionHandler'
 import Portlet from '../../common/Portlet.jsx';
 // import Checklist from '../../common/CheckList.jsx';
 import HorizontalBarChartNew from '../../common/charts/horizontalBarChartNew.jsx';
+import HorizontalBarChartWithDifferentColors from '../../common/charts/horizontalBarChartWithDifferentColors.jsx';
 // import HorizontalStackedBarChart from '../../common/charts/horizontalStackedBarChart.jsx';
 import PieChart from '../../common/charts/PieChart.jsx';
 import VerticalBarChart from '../../common/charts/VerticalBarChart.jsx';
@@ -36,16 +37,19 @@ import { indexOf } from 'lodash';
 
 // import countryData from './countries.csv';
 import continentData from './continent-names.json';
-import countryData from './countries.json';
-import companyData from './companies.json';
-import fcData from './fc-data.json';
-import companyBubbles from './company-data.json';
+import heatMapData from './worldheatMap1.json';
+// import countryData from './countries.json';
+// import companyData from './companies.json';
+// import fcData from './fc-data.json';
+// import companyBubbles from './company-data.json';
 import sankeyData from './sankey-data.json';
 // import { bubbleChartFc } from '../../common/charts/bubble-chart-fc';
 import BubbleChart from '../../common/charts/bubbleChart-CSBOX.js';
 import SankeyChart from '../../common/charts/d3-sankey-chart.jsx';
 import MultiLineChart from '../../common/charts/d3-multiLine-chart.jsx';
 import CountryBubbleChart from '../../common/charts/countryBubbleChart.jsx';
+import WorldHeatChart from '../../common/charts/world-heat-chart.jsx';
+import WorldHeatChart2 from '../../common/charts/world-heat-chart2.jsx';
 // bubbleChartFc
 
 let interval;
@@ -1112,7 +1116,7 @@ class EcommerceDashboard extends React.Component {
                 "widgetId": id == 1 ? `widget${id}-betweenDates` : `widget${id}`,
                 "valueType": "", // byCount or byAmount
                 "outputWidgetType": "", // pieChart. 2Value-Bar Horizontal
-                 "searchCritera": searchCriteria
+                "searchCritera": searchCriteria
                 // "period": {
                 //     "year": this.state.selectedYears,
                 //     "quarter": this.state.selectedQuarters,
@@ -1191,12 +1195,12 @@ class EcommerceDashboard extends React.Component {
                 labels.push(data.label)
                 values.push(data.count)
             })
-            let chart = <PieChart onElementsClick={() => { console.log('Pie Chart Clicked') }} labels={labels} data={values} height={180}
+            let chart = <PieChart onElementsClick={() => { console.log('Pie Chart Clicked') }} labels={labels} data={values} height={120}
                 // backgroundColor={['#7aa62d', '#18e244', '#95d22a', '#62920d']} />
                 backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3']} />
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1239,14 +1243,14 @@ class EcommerceDashboard extends React.Component {
             console.log(x);
             console.log(y);
             console.log(dataArray, 'DATAARRRRRRR');
-            let chart = <HorizontalBarChartNew minRange={0} maxRange={maxRange} stepSize={5} height={graphProps.widgetData.widgetId == 6 ? 420 : 180} 
+            let chart = <HorizontalBarChartNew minRange={0} maxRange={maxRange} stepSize={5} height={120}
                 data={dataArray || []} labels={graphProps.widgetData.widgetId == 'widget6' ? ['Countries'] : ['Companies']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} backgroundColors={['#ae8b4b', '#2196f3']}
                 options={{
                     responsive: true,
                     maintainAspectRatio: true
                 }} />
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1295,8 +1299,8 @@ class EcommerceDashboard extends React.Component {
             // }
             //     );
             // console.log(valuesArray, 'VAAA');
-            let chart = <VerticalBarChart  data={dataArray} labels={['HS']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={["value"]} backgroundColors={['#2196f3']}
-                height={250} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
+            let chart = <VerticalBarChart data={dataArray} labels={['HS']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={["value"]} backgroundColors={['#2196f3']}
+                height={120} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
             // <HorizontalBarChartNew minRange={10} maxRange={maxRange} stepSize={5} height={180} 
             //     data={dataArray || []} labels={['Companies']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} backgroundColors={['#ae8b4b', '#2196f3']}
             //     options={{
@@ -1304,7 +1308,7 @@ class EcommerceDashboard extends React.Component {
             //         maintainAspectRatio: true
             //     }} />
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1390,7 +1394,7 @@ class EcommerceDashboard extends React.Component {
             let chart = <MultiLineChart dataPoints={convertedGraphData} />
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1417,6 +1421,39 @@ class EcommerceDashboard extends React.Component {
                     // console.log(data);
                     x.push(data.xIndex.value)
                     y.push(data.yIndex.value)
+                    if (graphProps.widgetData.widgetId == 'widget1') {
+                        if (data.zIndex && !z.includes(data.zIndex.value)) {
+                            z.push(data.zIndex.value)
+                        }
+                        if (data.zIndex && data.zIndex.value == z[0]) {
+                            let obj = {
+                                entityName: data.xIndex.value,
+                                value: data.yIndex.value,
+                                type: data.zIndex.value,
+                                color: '#f58709'
+                            }
+                            dataArray.push(obj);
+                        } else if (data.zIndex.value == z[1]) {
+                            let obj = {
+                                entityName: data.xIndex.value,
+                                value: data.yIndex.value,
+                                type: data.zIndex.value,
+                                color: '#ae8b4b'
+                            }
+                            dataArray.push(obj);
+                        } else {
+                            let obj = {
+                                entityName: data.xIndex.value,
+                                value: data.yIndex.value,
+                                type: data.zIndex.value,
+                                color: '#2196f3'
+                            }
+    
+                            dataArray.push(obj);
+                        }
+
+                    } else {
+
                     if (data.zIndex && !z.includes(data.zIndex.value)) {
                         z.push(data.zIndex.value)
                     }
@@ -1424,24 +1461,29 @@ class EcommerceDashboard extends React.Component {
                         let obj = {
                             entityName: data.xIndex.value,
                             value1: data.yIndex.value,
-                            type: data.zIndex.value
+                            type: data.zIndex.value,
+                            color: '#f58709'
                         }
                         dataArray.push(obj);
                     } else if (data.zIndex.value == z[1]) {
                         let obj = {
                             entityName: data.xIndex.value,
                             value2: data.yIndex.value,
-                            type: data.zIndex.value
+                            type: data.zIndex.value,
+                            color: '#ae8b4b'
                         }
                         dataArray.push(obj);
                     } else {
                         let obj = {
                             entityName: data.xIndex.value,
                             value3: data.yIndex.value,
-                            type: data.zIndex.value
+                            type: data.zIndex.value,
+                            color: '#2196f3'
                         }
+
                         dataArray.push(obj);
                     }
+                }
 
                 })
                 this.setState({
@@ -1456,15 +1498,27 @@ class EcommerceDashboard extends React.Component {
             let unique = z.filter(this.onlyUnique);
             console.log(unique, 'UNIQUE')
             console.log(dataArray, 'DATAARRRRRRR - multiple color bar chart');
-            let chart = <HorizontalBarChartNew minRange={sortedValueArray[0]} maxRange={maxRange} stepSize={maxRange / 5} height={300} 
-                data={dataArray || []} labels={unique} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value1', 'value2', 'value3']} backgroundColors={['#f58709', '#ae8b4b', '#2196f3']}
+            let sortedColors = dataArray.map(x => x.color);
+            let sortedLabels = dataArray.map(x => x.type);
+            let chart;
+            if (graphProps.widgetData.widgetId == 'widget1') {
+                chart = <HorizontalBarChartWithDifferentColors minRange={sortedValueArray[0]} maxRange={maxRange} stepSize={maxRange / 5} height={120}
+                data={dataArray || []} labels={unique} sortedLabels={sortedLabels} sortedColors={sortedColors} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} separateColors={true} backgroundColors={['#f58709', '#ae8b4b', '#2196f3']}
                 options={{
                     responsive: true,
                     maintainAspectRatio: true
                 }} />
+            } else {
+                chart = <HorizontalBarChartNew minRange={sortedValueArray[0]} maxRange={maxRange} stepSize={maxRange / 5} height={120}
+                    data={dataArray || []} labels={unique} stack="multiple" dataLabelsAttribute="entityName" separateColors={false} dataValuesAttributes={['value1', 'value2', 'value3']} backgroundColors={['#f58709', '#ae8b4b', '#2196f3']}
+                    options={{
+                        responsive: true,
+                        maintainAspectRatio: true
+                    }} />
+            }
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1516,19 +1570,19 @@ class EcommerceDashboard extends React.Component {
             console.log(y);
             console.log(z);
             console.log(dataArray, 'DATAARRRRRRR');
-            let chart = <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={180} 
-                data={dataArray || []} labels={z} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value1', 'value2']} backgroundColors={['#ae8b4b', '#2196f3']}
+            let chart = <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={180}
+                data={dataArray || []} separateColors={false} labels={z} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value1', 'value2']} backgroundColors={['#ae8b4b', '#2196f3']}
                 options={{
                     responsive: true,
                     maintainAspectRatio: true
                 }} />
 
-                let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-                 let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
-                this.setState({
-                    [graphProps.widgetData.widgetId]: chart,
-                    [stateLabel]: false
-                })
+            let widgetIdNumber = graphProps.widgetData.widgetId.split('');
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
+            this.setState({
+                [graphProps.widgetData.widgetId]: chart,
+                [stateLabel]: false
+            })
         }
         if (graphProps.widgetData.widgetType == 'flagChart') {
             // this.createBubbleChart('', graphProps.widgetData.graphData.data, continentData);
@@ -1551,7 +1605,7 @@ class EcommerceDashboard extends React.Component {
             // </div>
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -1562,11 +1616,11 @@ class EcommerceDashboard extends React.Component {
 
             let chart = <SankeyChart data={graphProps.widgetData.graphData} />
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
-           this.setState({
-               [graphProps.widgetData.widgetId]: chart,
-               [stateLabel]: false
-           })
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
+            this.setState({
+                [graphProps.widgetData.widgetId]: chart,
+                [stateLabel]: false
+            })
         }
         if (graphProps.widgetData.widgetType == '3ValueBubble-Vertical') {
 
@@ -1584,7 +1638,7 @@ class EcommerceDashboard extends React.Component {
             let chart = <BubbleChart data={bubbleArray} useLabels />
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
-             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2]+widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1]  + 'isLoading' ;
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [stateLabel]: false
@@ -2050,17 +2104,17 @@ class EcommerceDashboard extends React.Component {
         })
         let searchCriteria;
         if (widgetId == 'widgetId2') {
-            searchCriteria = {filter: {place: 'old', number: 7}};
-        } 
+            searchCriteria = { filter: { place: 'old', number: 7 } };
+        }
         if (widgetId == 'widgetId3') {
-            searchCriteria =  {filter: {date: '12/2/1994', toDate: '01/10/1994'}};
-        } 
+            searchCriteria = { filter: { date: '12/2/1994', toDate: '01/10/1994' } };
+        }
         if (widgetId == 'widgetId4') {
-            searchCriteria =  {filter: {some: '12/2/1994', thing: '01/10/1994'}};
-        } 
+            searchCriteria = { filter: { some: '12/2/1994', thing: '01/10/1994' } };
+        }
         if (widgetId == 'widgetId5') {
-            searchCriteria =  {body: {key: '12/2/1994', value: '01/10/1994'}};
-        } 
+            searchCriteria = { body: { key: '12/2/1994', value: '01/10/1994' } };
+        }
         this.getSingleGraphData(widgetId, searchCriteria);
 
     }
@@ -2569,10 +2623,10 @@ class EcommerceDashboard extends React.Component {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-md-12">
-                            <Portlet title={"TRANSACTION BY DESTINATION COUNTRY"} noCollapse={false} style={{ height: '900px' }}>
+                        <div className="col-md-6">
+                            <Portlet title={"TRANSACTION BY DESTINATION COUNTRY"} noCollapse={false} style={{ height: '250px' }}>
                                 <div className="refresh-img-div">
-                                <img onClick={() => this.refreshSingleWidget(22)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    <img onClick={() => this.refreshSingleWidget(22)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                 </div>
                                 {this.state.widget22isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
@@ -2580,62 +2634,63 @@ class EcommerceDashboard extends React.Component {
                                 }
                             </Portlet>
                         </div>
+                        <div className="col-md-6">
+                            {this.state.dashboardData && this.state.dashboardData.barGraphAmountData &&
+                                <Portlet title={"Top E-Commerce Companies"} noCollapse={false}>
+                                    <div className="refresh-img-div">
+                                        <img onClick={() => this.refreshSingleWidget(5)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    </div>
+                                    {this.state.widget5isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
+                                        :
+                                        <div>   {this.state.widget5} </div>
+                                    }
+                                    {/* <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={120}  data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#ae8b4b']}
+                                            options={{
+                                                responsive: true,
+                                                maintainAspectRatio: true
+                                            }} /> */}
+
+                                </Portlet>
+                            }
+                        </div>
                     </div>
                     <div className="row">
                         <div className="">
                             {/* <Portlet title={"BANKS"} noCollapse={true} style={{ height: '350px' }}> */}
+
                             <div className="col-md-6">
-                                {this.state.dashboardData && this.state.dashboardData.barGraphAmountData &&
-                                    <Portlet title={"Top E-Commerce Companies"} noCollapse={false}>
-                                        <div className="refresh-img-div">
-                                            <img onClick={() => this.refreshSingleWidget(5)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
-                                        </div>
-                                        {this.state.widget5isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
-                                            :
-                                            <div>   {this.state.widget5} </div>
-                                        }
-                                        {/* <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={120}  data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#ae8b4b']}
+                                <Portlet title={"Top Exporting Countries"} noCollapse={false}>
+                                    <div className="refresh-img-div">
+                                        <img onClick={() => this.refreshSingleWidget(6)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    </div>
+                                    {this.state.widget6isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
+                                        :
+                                        <div>   {this.state.widget6} </div>
+                                    }
+                                    {/* <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={120}  data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#2196f3']}
                                             options={{
                                                 responsive: true,
                                                 maintainAspectRatio: true
                                             }} /> */}
 
-                                    </Portlet>
-                                }
+                                </Portlet>
                             </div>
                             <div className="col-md-6">
-                                    <Portlet title={"Top Exporting Countries"} noCollapse={false}>
-                                        <div className="refresh-img-div">
-                                            <img onClick={() => this.refreshSingleWidget(6)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
-                                        </div>
-                                        {this.state.widget6isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
-                                            :
-                                            <div>   {this.state.widget6} </div>
-                                        }
-                                        {/* <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={120}  data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#2196f3']}
+                                <Portlet title={"FREE ZONE WISE TRANSACTIONS"} noCollapse={false}>
+                                    <div className="refresh-img-div">
+                                        <img onClick={() => this.refreshSingleWidget(4)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    </div>
+                                    {this.state.widget4isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
+                                        :
+                                        <div>   {this.state.widget4} </div>
+                                    }
+                                    {/* <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={120}  data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#2196f3']}
                                             options={{
                                                 responsive: true,
                                                 maintainAspectRatio: true
                                             }} /> */}
 
-                                    </Portlet>
-                            </div>
-                            <div className="col-md-6">
-                                    <Portlet title={"FREE ZONE WISE TRANSACTIONS"} noCollapse={false}>
-                                        <div className="refresh-img-div">
-                                            <img onClick={() => this.refreshSingleWidget(4)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
-                                        </div>
-                                        {this.state.widget4isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
-                                            :
-                                            <div>   {this.state.widget4} </div>
-                                        }
-                                        {/* <HorizontalBarChartNew minRange={10} maxRange={100} stepSize={5} height={120}  data={[..._.get(this.state.dashboardData, 'barGraphSubmissionData', [])]} labels={['count']} stack="single" dataLabelsAttribute="bankCode" dataValuesAttributes={["count"]} backgroundColors={['#2196f3']}
-                                            options={{
-                                                responsive: true,
-                                                maintainAspectRatio: true
-                                            }} /> */}
-
-                                    </Portlet>
+                                </Portlet>
                             </div>
                             {/* <div className="col-md-6">
                                 <Portlet title={"Top 5 Banks by Invoice Submission Amount"} noCollapse={false}>
@@ -2686,7 +2741,7 @@ class EcommerceDashboard extends React.Component {
                         <div className="col-md-6">
                             <Portlet title={"TOP 5 EXPORT HS CODES"} noCollapse={true}>
                                 <div className="refresh-img-div">
-                                <img onClick={() => this.refreshSingleWidget(7)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    <img onClick={() => this.refreshSingleWidget(7)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                 </div>
                                 {this.state.widget7isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
@@ -2697,18 +2752,18 @@ class EcommerceDashboard extends React.Component {
                         <div className="col-md-6">
                             <Portlet title={"TOTAL E-COMMERCE TRANSACTIONS"} noCollapse={true}>
                                 <div className="refresh-img-div">
-                                <img onClick={() => this.refreshSingleWidget(10)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    <img onClick={() => this.refreshSingleWidget(10)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                 </div>
                                 {this.state.widget10isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
                                     <div>   {this.state.widget10} </div>
                                 }
                                 {/* <div id="rule-graph" className="col-md-12"> */}
-                                    {/* {sankeyData && sankeyData.nodes &&
+                                {/* {sankeyData && sankeyData.nodes &&
                                         <MultiLineChart data={sankeyData} />
                                     } */}
-                                    {/* {this.state.widget10} */}
-                                    {/* {this.state.ruleData && (
+                                {/* {this.state.widget10} */}
+                                {/* {this.state.ruleData && (
                                     <VerticalBarChart  data={[..._.get(this.state, 'ruleData', [])]} labels={['Hit Count', 'Not Hit Count']} stack="multiple" dataLabelsAttribute="riskname" dataValuesAttributes={["hitcount", "nothitcount"]} backgroundColors={['#ae8b4b', '#2196f3']}
                                        height={100} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
                                 )} */}
@@ -2719,18 +2774,26 @@ class EcommerceDashboard extends React.Component {
                         <div className="col-md-12">
                             <Portlet title={"TRANSACTION FLOW (Hover on Elements to View Count)"} noCollapse={true}>
                                 <div className="refresh-img-div">
-                                <img onClick={() => this.refreshSingleWidget(21)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    <img onClick={() => this.refreshSingleWidget(21)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                 </div>
                                 {this.state.widget21isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
                                     <div>   {this.state.widget21} </div>
                                 }
-                                    {/* {this.state.widget10} */}
-                                    {/* {this.state.ruleData && (
-                                    <VerticalBarChart  data={[..._.get(this.state, 'ruleData', [])]} labels={['Hit Count', 'Not Hit Count']} stack="multiple" dataLabelsAttribute="riskname" dataValuesAttributes={["hitcount", "nothitcount"]} backgroundColors={['#ae8b4b', '#2196f3']}
-                                       height={100} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
-                                )} */}
+                            </Portlet>
+                        </div>
 
+                        <div className="col-md-12">
+                            <Portlet title={"HEAT MAP"} noCollapse={true}>
+                                <div className="refresh-img-div">
+                                    <img onClick={() => this.refreshSingleWidget(21)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                </div>
+                                {/* {heatMapData &&
+                                    <WorldHeatChart data={heatMapData} />
+                                } */}
+                                <WorldHeatChart2 />
+
+                                {/* insert chart here */}
                             </Portlet>
                         </div>
 

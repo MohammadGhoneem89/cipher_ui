@@ -1083,7 +1083,7 @@ $blue: #1849AB; */
 .content-toggle {
     position: relative;
     bottom: 10px;
-    right: 60px;
+    right: 15px;
     display: flex;
     align-items: center;
     font-size: 9px;
@@ -1091,7 +1091,7 @@ $blue: #1849AB; */
 .portlet.light>.portlet-title>.caption {
     color: #666;
     padding: 10px 0;
-    width: 55%;
+    width: 60%;
 }
 .switch {
     position: relative;
@@ -1569,10 +1569,10 @@ span.multiselect-native-select select {
   }
   
   #country-info {
-    font-size: 28px;
+    font-size: 13px;
     position: absolute;
-    top: 100px;
-    left: 80px;
+    top: 80px;
+    left: 65px;
     background: #ae8b4b;
     color: white;
     border: 4px solid black;
@@ -1603,6 +1603,7 @@ span.multiselect-native-select select {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 220px;
   }
   #controls-graph {
     display: flex;
@@ -1632,7 +1633,7 @@ span.multiselect-native-select select {
     position: absolute;
     top: 70px;
     left: 40px;
-    font-size: 25px;
+    font-size: 13px;
     padding: 10px 15px;
   }
 
@@ -1700,6 +1701,28 @@ span.multiselect-native-select select {
     width: 100%;
     text-align: center;
 }
+
+.subunit {
+    fill: none;
+    stroke: #FFF;
+    stroke-width: 1px;
+}
+text.subunit-label {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    text-anchor: middle;
+    fill: #000;
+}
+.subunit-label {
+    display: none;
+}
+.graticule {
+    fill: none;
+    stroke: #aaa;
+    stroke-opacity: .5;
+    stroke-width: .5px;
+}
 /* .scroll-icons {
     display: flex;
     width: 100%;
@@ -1717,3 +1740,81 @@ span.multiselect-native-select select {
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 var(--hover); }
 }
+
+
+/* World Heat Chart starts */
+
+.names {
+    fill: none;
+    stroke: #fff;
+    stroke-linejoin: round;
+    }
+  
+      /* Tooltip CSS */
+      .d3-tip {
+      line-height: 1.5;
+      font-weight: 400;
+      font-family:"avenir next", Arial, sans-serif;
+      padding: 6px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #FFA500;
+      border-radius: 1px;
+      pointer-events: none;
+      }
+  
+      /* Creates a small triangle extender for the tooltip */
+      .d3-tip:after {      
+        box-sizing: border-box;
+        display: inline;
+        font-size: 8px;
+        width: 100%;
+        line-height: 1.5;
+        color: rgba(0, 0, 0, 0.6);
+        position: absolute;
+        pointer-events: none;
+        
+      }
+  
+      /* Northward tooltips */
+      .d3-tip.n:after {
+        content: "\25BC";
+        margin: -1px 0 0 0;
+        top: 100%;
+        left: 0;
+        text-align: center;
+      }
+  
+      /* Eastward tooltips */
+      .d3-tip.e:after {
+        content: "\25C0";
+        margin: -4px 0 0 0;
+        top: 50%;
+        left: -8px;
+      }
+  
+      /* Southward tooltips */
+      .d3-tip.s:after {
+        content: "\25B2";
+        margin: 0 0 1px 0;
+        top: -8px;
+        left: 0;
+        text-align: center;
+      }
+  
+      /* Westward tooltips */
+      .d3-tip.w:after {
+        content: "\25B6";
+        margin: -4px 0 0 -1px;
+        top: 50%;
+        left: 100%;
+      }
+  
+  /*    text{
+        pointer-events:none;
+      }*/
+  
+      .details{
+        color:white;
+      }
+      
+/* World Heat Chart ends */
