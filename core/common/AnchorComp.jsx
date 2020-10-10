@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Contentcomp from './Contentcomp.jsx';
 import { Link, browserHistory } from 'react-router';
 
 class AnchorComp extends React.Component {

@@ -418,19 +418,33 @@ class TableCell extends React.Component {
         </td>;
       case "criticalWarn":
         console.log("Condition criticalWarn");
-        return (<td style={{fontWeight:"normal",backgroundColor:this.getCriticalWarnStatus(this.props.cellData.type),cursor:"pointer"}}>
-          {this.props.cellData.value}
-        </td>);
-
+        if(this.getCriticalWarnStatus(this.props.cellData.type) !== ""){
+          return (<td style={{ fontSize:"12px", color:"white", width: this.props.columnWidth, backgroundColor:this.getCriticalWarnStatus(this.props.cellData.type)}}>
+                    {this.props.cellData.value}
+                  </td>);
+        }
+        else{
+          return (<td style={{ fontSize:"12px", width: this.props.columnWidth}}>
+                    {this.props.cellData.value}
+                  </td>);
+        }
+        
       case "actionCustom":
         console.log("actionCustom");
-        return (<td style={{fontWeight: "normal"}} onClick={()=>this.props.cellData.action(this.props.cellData.errors)}>
-          {utils.getLabelByID(this.props.cellData.errorDescription)}</td>);
+        temp = text_truncate(this.props.cellData.errorDescription, 20);
+        if(temp !== "-"){
+          return (<td style={{fontWeight: "normal", width: this.props.columnWidth}} onClick={()=>this.props.cellData.action(this.props.cellData.errors)}>
+                {temp}</td>);
+        }
+        else if(temp !== "-"){
+          return (<td style={{fontWeight: "normal", width: this.props.columnWidth}} onClick={()=>this.props.cellData.action(this.props.cellData.errors)}>
+                {temp}</td>);
+        }        
       
       case "stringCustom":
         console.log("actionCustom");
         return (
-          <td style={{fontSize: "12px"}}><span style={{color:"#ae8b4b"}}>{this.props.cellData.orderNo}</span><br/><span style={{color:"black"}}>{this.props.cellData.invoiceNo}</span> - <span style={{color:"grey"}}>{this.props.cellData.declarationNo}</span> </td>
+          <td style={{fontSize: "10px", width: this.props.columnWidth}}><span style={{color:"#ae8b4b"}}>{this.props.cellData.orderNo}</span><br/><span style={{color:"black"}}>{this.props.cellData.invoiceNo}</span> - <span style={{color:"grey"}}>{this.props.cellData.declarationNo}</span> </td>
         )
 
       case "imageCustom":

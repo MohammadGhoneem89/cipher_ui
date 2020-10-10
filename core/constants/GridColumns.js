@@ -1425,12 +1425,12 @@ module.exports = {
   BusinessTransaction: [
     { alias: "S.No", key: "", type: "serialNo" },
     { alias: "", key: "orderNo", type: "hiddenID" },
-    { alias: "submitted Byc", key: "imageData", type: "imageCustom" },
-    { alias: "last Activity Date", key: "lastActivity", type: "criticalWarn" },
+    { alias: "submitted By", key: "imageData", type: "imageCustom", width: "15%"},
+    { alias: "last Activity Date", key: "lastActivity", type: "criticalWarn", width: "20%" },
     { alias: "order / Invoice / Declaration", key: "orderInvoiceDecl", type: "stringCustom" },
     { alias: "Stage", key: "currentStage", type: "string" },
     { alias: "Document Type", key: "documentType", type: "string" },
-    { alias: "Errors", key: "errorDescription", type: "actionCustom" },
+    { alias: "Errors", key: "errorDescription", type: "actionCustom", width: "15%" },
     { alias: "Err Ct.", key: "errorCt", type: "string" },
     { alias: "Details", key: "actions", type: "action" }
   ],
