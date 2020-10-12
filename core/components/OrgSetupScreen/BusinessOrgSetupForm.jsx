@@ -15,12 +15,14 @@ import OrgMappedCodesForm from './OrgMappedCodesForm.jsx';
 import * as utils from '../../common/utils.js';
 import ActionButton from '../../common/ActionButtonNew.jsx';
 import { CheckboxInput, CheckboxList, DateInput, DropdownInput, TextInput } from '../../common/FormControls.jsx';
+import Input from '../../common/Input.jsx';
 import Combobox from '../../common/Select.jsx';
 import * as gen from '../../common/generalActionHandler'
 import Label from '../../common/Lable.jsx';;
+import DateControl from '../../common/DateControl.jsx';
 
 //https://github.com/erikras/redux-form/issues/369
-const FormSection1 = ({ generalHandler, error, initialValues, updateState, state, containerProps, containerState, onInputChange, welcome, handleSubmit, fetchOCR, addBusinessType, addLogisticsInformation, addDeclarationInformation, addTradeLicenses, addFacilities }) => {
+const FormSection1 = ({ generalHandler, error, initialValues, updateState, state, containerProps, containerState, onInputChange, welcome, handleSubmit, fetchOCR, addBusinessType, addLogisticsInformation, addDeclarationInformation, addTradeLicenses, addFacilities, issueDate, expiryDate, renewalDate, rowSelect }) => {
     console.log(JSON.stringify(containerState))
     return (
 
@@ -31,28 +33,60 @@ const FormSection1 = ({ generalHandler, error, initialValues, updateState, state
             <Portlet title={"Basic Information"}>
                 <div className="row">
                     <div className="col-md-6 col-sm-6">
-                        <DropdownInput name="orgType" options={containerState.typeData.ORG_TYPES}
+                        {/* <DropdownInput name="orgType" options={containerState.typeData ? containerState.typeData.ORG_TYPES : []}
                             label={utils.getLabelByID("ESEARCH_orgType")}
                             disabled={state.readOnly}
+                        /> */}
+                        <Label text="Org Type"></Label>
+                        <Combobox fieldname='orgType' formname='body' style={{}}
+                            state={state} typeName="ORG_TYPES"
+                            isDDL={true}
+                            dataSource={state} actionHandler={generalHandler} />
+                        <br />
+                        <Input
+                            divStyle={{ padding: '0px' }}
+                            status={(state.errors && state.errors.spCode) ? "ERROR" : undefined}
+                            fieldname='spCode'
+                            formname='body'
+                            placeholder={utils.getLabelByID('ES_spCode')}
+                            state={state}
+                            actionHandler={generalHandler}
+                            className="form-control"
+                            label={utils.getLabelByID("ESEARCH_orgType")}
                         />
                         <br />
-                        <TextInput
-                            name="spCode"
-                            label={utils.getLabelByID("ES_spCode")}
-                            type="text"
-                            disabled={state.readOnly}
-                        />
+                        {!state.readOnly && (
+                            <Input
+                                divStyle={{ padding: '0px' }}
+                                status={(state.errors && state.errors.BCode) ? "ERROR" : undefined}
+                                fieldname='BCode'
+                                formname='body'
+                                placeholder={utils.getLabelByID('Business Code')}
+                                state={state}
+                                actionHandler={generalHandler}
+                                className="form-control"
+                            />
+                        )}
                         <br />
-                        <TextInput
-                            name="BCode"
-                            label={utils.getLabelByID("Business Code")}
-                            type="text"
-                            disabled={state.readOnly}
-                        />
-                        <br />
-                        <button type="submit" className="btn green pull-right" onClick={handleSubmit}>
-                            {utils.getLabelByID("Get Business Profile")}
-                        </button>
+                        {!state.readOnly && (
+                            <button type="submit" className="btn green pull-right" onClick={handleSubmit}>
+                                {utils.getLabelByID("Get Business Profile")}
+                            </button>
+                        )}
+
+                        {state.readOnly && (
+                            <Table
+                                selectRow={rowSelect}
+                                index={state.index}
+                                pagination={false}
+                                export={false}
+                                search={false}
+                                gridColumns={utils.getGridColumnByName("LinkedBusinessCode")}
+                                // componentFunction={contactActionHandlers}
+                                gridData={state.list ? state.list : []}
+                                totalRecords={state.LogisticsInformationList ? state.LogisticsInformationList.length : 0}
+                            />
+                        )}
                     </div>
                     <br />
                     {fetchOCR && (
@@ -75,17 +109,6 @@ const FormSection1 = ({ generalHandler, error, initialValues, updateState, state
                                         </div>}
                                 </div>
                                 <div className="col-md-6 col-sm-6" style={{ textAlign: "center" }} />
-
-                            </div>
-                            <div className="col-md-6" style={{ marginTop: '50px' }}>
-                                <CheckboxList>
-                                    <CheckboxInput
-                                        name="is Active"
-                                        label={utils.getLabelByID("Is Active")}
-                                        type="checkbox"
-                                        disabled={state.readOnly}
-                                    />
-                                </CheckboxList>
 
                             </div>
                         </div>
@@ -181,7 +204,18 @@ const FormSection1 = ({ generalHandler, error, initialValues, updateState, state
                                 </CheckboxList>
                             </div>
                         </div>
-
+                        <div className="row" style={{ display: 'flex', alignItems: 'center' }}>
+                            <div className="col-md-6">
+                                <CheckboxList>
+                                    <CheckboxInput
+                                        name="is Active"
+                                        label={utils.getLabelByID("Is Active")}
+                                        type="checkbox"
+                                        disabled={state.readOnly}
+                                    />
+                                </CheckboxList>
+                            </div>
+                        </div>
                         <br />
 
                         {/* <div className="row">
@@ -256,22 +290,22 @@ const FormSection1 = ({ generalHandler, error, initialValues, updateState, state
 
 
                             <li className={state.BusinessType && "active"}>
-                                <a href="#tab_1_0" data-toggle="tab" onClick={() => updateState({ BusinessType: true, ProcessorTab: false, TradeLicenseTab: false, FacilityTab: false })}
+                                <a href="#tab_1_0" data-toggle="tab"
                                     style={{ fontWeight: "Bold", fontSize: "17px" }}>Business Type
                                 </a>
                             </li>
                             <li className={state.ProcessorTab && "active"}>
-                                <a href="#tab_1_1" data-toggle="tab" onClick={() => updateState({ BusinessType: false, ProcessorTab: true, TradeLicenseTab: false, FacilityTab: false })}
+                                <a href="#tab_1_1" data-toggle="tab"
                                     style={{ fontWeight: "Bold", fontSize: "17px" }}>Processor
                                 </a>
                             </li>
                             <li className={state.TradeLicenseTab && "active"}>
-                                <a href="#tab_1_3" data-toggle="tab" onClick={() => updateState({ BusinessType: false, ProcessorTab: false, TradeLicenseTab: true, FacilityTab: false })}
+                                <a href="#tab_1_3" data-toggle="tab"
                                     style={{ fontWeight: "Bold", fontSize: "17px" }}>Trade license
                                 </a>
                             </li>
                             <li className={state.FacilityTab && "active"}>
-                                <a href="#tab_1_4" data-toggle="tab" onClick={() => updateState({ BusinessType: false, ProcessorTab: false, TradeLicenseTab: false, FacilityTab: true })}
+                                <a href="#tab_1_4" data-toggle="tab"
                                     style={{ fontWeight: "Bold", fontSize: "17px" }}>Facility</a>
                             </li>
                             {/* <li>
@@ -331,7 +365,7 @@ const FormSection1 = ({ generalHandler, error, initialValues, updateState, state
 
                             <div className="tab-pane" id="tab_1_3">
                                 <div>
-                                    <FormSection3 generalHandler={generalHandler} initialValues={initialValues} updateState={updateState} state={state} addTradeLicenses={addTradeLicenses} />
+                                    <FormSection3 generalHandler={generalHandler} initialValues={initialValues} updateState={updateState} state={state} addTradeLicenses={addTradeLicenses} issueDate={issueDate} expiryDate={expiryDate} renewalDate={renewalDate} />
                                 </div>
                                 <a className="btn green pull-right" href="#tab_1_4" data-toggle="tab" onClick={() => updateState({ BusinessType: false, ProcessorTab: false, TradeLicenseTab: false, FacilityTab: true })}
                                     style={{ marginTop: "10px" }}> Next
@@ -342,8 +376,9 @@ const FormSection1 = ({ generalHandler, error, initialValues, updateState, state
                                 <div>
                                     <FormSection2 addFacilities={addFacilities} generalHandler={generalHandler} initialValues={initialValues} updateState={updateState} state={state} />
                                 </div>
-                                <button type="submit" className="btn green pull-right" onClick={handleSubmit}>
+                                <button disabled={state.readOnly} type="submit" className="btn green pull-right" onClick={handleSubmit}>
                                     {utils.getLabelByID("Finish")}
+
                                 </button>
                             </div>
 
@@ -353,165 +388,8 @@ const FormSection1 = ({ generalHandler, error, initialValues, updateState, state
                                 </Portlet>
                             </div>
 
-                            <div className="tab-pane" id="tab_1_6">
-                                <Portlet title={"Public Key"}>
-                                    <div className="row">
-
-                                        <div className="col-md-12">
-                                            <div className="col-md-12">
-                                                <textarea type="text" className="form-control" disabled={state.readOnly} value={state.publicKey}
-                                                    name="publicKey" id="publicKey" onChange={onInputChange} rows="12"
-                                                    style={{ resize: "none", width: "100%" }} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Portlet>
-                            </div>
-
                             <div className="tab-pane" id="tab_1_7">
                                 <FormSection2 addFacilities={addFacilities} generalHandler={generalHandler} initialValues={initialValues} updateState={updateState} state={state} />
-                            </div>
-
-                            <div className="tab-pane" id="tab_1_8">
-                                <Portlet title={"Welcome Kit"}>
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="col-md-3">
-                                                <label className="bold">Email Address</label>
-                                                <input type="text" className="form-control" disabled={state.readOnly}
-                                                    name="welcomeEmail" id="welcomeEmail" />
-                                            </div>
-                                            <div className="col-md-3">
-                                                <DropdownInput id="apiGroup" name="apiGroup" options={containerState.groupTypeListAPI}
-                                                    label={utils.getLabelByID("Group for API user")}
-                                                    disabled={state.readOnly}
-                                                />
-                                            </div>
-                                            <div className="col-md-3">
-                                                <DropdownInput name="userGroup" id="userGroup" options={containerState.groupTypeListUI}
-                                                    label={utils.getLabelByID("Group for UI user")}
-                                                    disabled={state.readOnly}
-                                                />
-                                            </div>
-                                            <div className="col-md-3">
-                                                <DropdownInput id="firstScreen" name="firstScreen" options={containerState.typeData.First_Screens}
-                                                    label={utils.getLabelByID("First Screen")}
-                                                    disabled={state.readOnly}
-                                                />
-                                            </div>
-
-                                        </div>
-                                        <div className="col-md-12">
-                                            <div className="col-md-12">
-                                                <a type="submit" className="btn btn-default dark pull-right" onClick={handleSubmit}
-                                                    href={"javascript:;"}
-                                                    style={{ marginTop: "10px" }}> Generate
-                    </a>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                            <div className="col-md-12">
-                                                <Table
-                                                    pagination={false}
-                                                    export={false}
-                                                    search={false}
-                                                    gridColumns={utils.getGridColumnByName("welcomeKit")}
-                                                    gridData={welcome || []}
-                                                />
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Portlet>
-                            </div>
-                            <div className="tab-pane" id="tab_1_9">
-                                <Portlet title={"Billing"}>
-                                    <div className="row">
-                                        <div className="col-md-12" style={{ marginBottom: "20px" }}>
-                                            <div className="col-md-3 pull-right" >
-                                                <select id="billingMonth" name="billingMonth" className="form-control"
-                                                    disabled={state.readOnly}
-                                                >
-                                                    {[{ label: "AUGUST/2020", value: "AUG" }].map((elem, index) => {
-                                                        return (<option key={index} value={elem.value}>{elem.label}</option>)
-                                                    })}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-12">
-                                            <div className={"dsh_blued1"}
-                                                style={{ cursor: "context-menu" }}>
-                                                <div className="col-md-4">
-                                                    <div className="dashboard-stat2 ">
-                                                        <div className="display">
-                                                            <div className="number">
-                                                                <h3 className={"font-blued 1-sharp"} style={{ fontSize: "30px" }}><span
-                                                                    data-counter="counterup"
-                                                                    data-value="10">{containerState.totalBill}</span></h3>
-                                                                <small>TOTAL</small>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className={"dsh_blued1"}>
-                                                <div className="col-md-4">
-                                                    <div className="dashboard-stat2 ">
-                                                        <div className="display">
-                                                            <div className="number">
-                                                                <h3 className={"font-blued 1-sharp"} style={{ fontSize: "30px" }}><span
-                                                                    data-counter="counterup"
-                                                                    data-value="10">{containerState.hits}</span></h3>
-                                                                <small>HIT / API Calls</small>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className={"dsh_blued1"}>
-                                                <div className="col-md-4">
-                                                    <div className="dashboard-stat2 ">
-                                                        <div className="display">
-                                                            <div className="number">
-                                                                <h3 className={"font-blued 1-sharp"} style={{ fontSize: "30px" }}><span
-                                                                    data-counter="counterup"
-                                                                    data-value="10">{containerState.entityDetail.cycle || "monthly"}</span></h3>
-                                                                <small>CYCLE</small>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div className="row">
-
-
-                                        <div className="col-md-12">
-
-                                            <div className="col-md-12">
-
-                                                <div className="pull-left">
-                                                    <span className="bold">Start Date:</span> <span className="italic">{containerState.from}</span>
-                                                </div>
-                                                <div className="pull-right">
-                                                    <span className="bold">End Date:</span> <span className="italic">{containerState.to}</span>
-                                                </div>
-
-                                            </div>
-                                            <div className="col-md-12">
-                                                <Table
-                                                    pagination={false}
-                                                    export={false}
-                                                    search={false}
-                                                    gridColumns={utils.getGridColumnByName("billingGrid")}
-                                                    gridData={containerState.billing || []}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Portlet>
                             </div>
                         </div>
                     </div>
@@ -540,10 +418,7 @@ const FormSection5 = ({ generalHandler, initialValues, updateState, state, onInp
     function contactActionHandlers({ actionName, index }) {
         switch (actionName) {
             case "Edit":
-                updateState({
-                    contactsModalIsOpen: true,
-                    index
-                });
+
                 break;
             case "Delete":
                 if (index > -1) {
@@ -563,7 +438,7 @@ const FormSection5 = ({ generalHandler, initialValues, updateState, state, onInp
                     name="is Active"
                     label={utils.getLabelByID("SELF")}
                     type="checkbox"
-                    disabled={state.readOnly}
+                // disabled={state.readOnly}
                 />
             </CheckboxList>
             <div className="row">
@@ -571,6 +446,7 @@ const FormSection5 = ({ generalHandler, initialValues, updateState, state, onInp
                     <Combobox fieldname='value' formname='LogisticsInformation' style={{}}
                         state={state} typeName="list"
                         isDDL={true}
+                        // disabled={state.readOnly}
                         dataSource={state} actionHandler={generalHandler} />
                 </div>
             </div>
@@ -633,7 +509,7 @@ const FormSection7 = ({ initialValues, updateState, state, onInputChange, addDec
                     name="is Active"
                     label={utils.getLabelByID("SELF")}
                     type="checkbox"
-                    disabled={state.readOnly}
+                // disabled={state.readOnly}
                 />
             </CheckboxList>
             <div className="row">
@@ -641,6 +517,7 @@ const FormSection7 = ({ initialValues, updateState, state, onInputChange, addDec
                     <Combobox fieldname='value' formname='DeclarationInformation' style={{}}
                         state={state} typeName="list"
                         isDDL={true}
+                        // disabled={state.readOnly}
                         dataSource={state} actionHandler={generalHandler} />
                 </div>
             </div>
@@ -681,10 +558,10 @@ const FormSection8 = ({ generalHandler, initialValues, updateState, state, onInp
     function contactActionHandlers({ actionName, index }) {
         switch (actionName) {
             case "Edit":
-                updateState({
-                    contactsModalIsOpen: true,
-                    index
-                });
+                updateState({ BusinessTypes: state.BusinessTypeList[index] });
+                let array = state.BusinessTypeList
+                array.splice(index, 1)
+                updateState({ BusinessTypeList: array })
                 break;
             case "Delete":
                 if (index > -1) {
@@ -701,13 +578,14 @@ const FormSection8 = ({ generalHandler, initialValues, updateState, state, onInp
         <Portlet title={"Business Types"}>
             <div className="row">
                 <div className="col-md-12">
-                    <Combobox fieldname='value' formname='BusinessTypes' columns='8' style={{}}
+                    <Combobox fieldname='value' formname='BusinessTypes' columns='6' style={{}}
                         state={state} typeName="list"
                         isDDL={true}
+                        disabled={state.readOnly}
                         dataSource={state} actionHandler={generalHandler} />
                 </div>
             </div>
-            <a className="btn green pull-right" onClick={addBusinessType}
+            <a disabled={state.readOnly} className="btn green pull-right" onClick={addBusinessType}
                 style={{ marginTop: "10px" }}> Add
             </a>
             <Table
@@ -743,10 +621,13 @@ const FormSection2 = ({ addFacilities, initialValues, updateState, state, onInpu
     function mappedCodesActionHandlers({ actionName, index }) {
         switch (actionName) {
             case "Edit":
-                updateState({
-                    mappedCodesModalIsOpen: true,
-                    index
-                });
+                if (index > -1) {
+                    console.log('FacilityList:  ', state.FacilitiesList[index]);
+                    updateState({ Facilities: state.FacilitiesList[index] });
+                    let array = state.FacilitiesList
+                    array.splice(index, 1)
+                    updateState({ FacilitiesList: array })
+                }
                 break;
             case "Delete":
                 if (index > -1) {
@@ -768,15 +649,21 @@ const FormSection2 = ({ addFacilities, initialValues, updateState, state, onInpu
                     <Combobox fieldname='FacilityType' formname='Facilities'
                         state={state} typeName="list"
                         isDDL={true}
+                        disabled={state.readOnly}
                         dataSource={state} actionHandler={generalHandler} />
 
                 </div>
                 <div className="col-md-6">
-                    <TextInput
-                        name="IssueDate"
-                        id="IssueDate"
-                        label={utils.getLabelByID("Facility Name")}
-                        type="text"
+                    <Label text="Facility Name"></Label>
+                    <Input
+                        divStyle={{ padding: '0px' }}
+                        status={(state.errors && state.errors.BCode) ? "ERROR" : undefined}
+                        fieldname='FacilityName'
+                        formname='Facilities'
+                        placeholder={utils.getLabelByID('Facility Name')}
+                        state={state}
+                        actionHandler={generalHandler}
+                        className="form-control"
                         disabled={state.readOnly}
                     />
                 </div>
@@ -788,6 +675,7 @@ const FormSection2 = ({ addFacilities, initialValues, updateState, state, onInpu
                     <Combobox fieldname='Status' formname='Facilities'
                         state={state} typeName="list"
                         isDDL={true}
+                        disabled={state.readOnly}
                         dataSource={state} actionHandler={generalHandler} />
 
                 </div>
@@ -796,11 +684,12 @@ const FormSection2 = ({ addFacilities, initialValues, updateState, state, onInpu
                     <Combobox fieldname='Mode' formname='Facilities'
                         state={state} typeName="list"
                         isDDL={true}
+                        disabled={state.readOnly}
                         dataSource={state} actionHandler={generalHandler} />
 
                 </div>
             </div>
-            <a className="btn green pull-right" onClick={addFacilities}
+            <a disabled={state.readOnly} className="btn green pull-right" onClick={addFacilities}
                 style={{ marginTop: "10px" }}> Add
             </a>
             <br />
@@ -827,7 +716,7 @@ const FormSection2 = ({ addFacilities, initialValues, updateState, state, onInpu
     )
 };
 
-const FormSection3 = ({ initialValues, updateState, state, onInputChange, generalHandler, addTradeLicenses }) => {
+const FormSection3 = ({ initialValues, updateState, state, onInputChange, generalHandler, addTradeLicenses, issueDate, expiryDate, renewalDate }) => {
     let additionalPropertiesActions = [
         {
             type: "link",
@@ -841,6 +730,24 @@ const FormSection3 = ({ initialValues, updateState, state, onInputChange, genera
 
         }
     ];
+
+    function additionalPropsActionHandlers({ actionName, index }) {
+        switch (actionName) {
+            case "Edit":
+                updateState({ TradeLicenses: state.TradeLicensesList[index] });
+                let array = state.TradeLicensesList
+                array.splice(index, 1)
+                updateState({ TradeLicensesList: array })
+                break;
+            case "Delete":
+                if (index > -1) {
+                    let a = state.additionalProps;
+                    a.splice(index, 1);
+                    updateState({ additionalProps: a });
+                }
+                break;
+        }
+    }
 
 
     function contactActionHandlers({ actionName, index }) {
@@ -868,46 +775,67 @@ const FormSection3 = ({ initialValues, updateState, state, onInputChange, genera
             <div className="row">
                 <div className="col-md-6">
                     <Label text="Issuing Authority"></Label>
-                    <Combobox fieldname='value' formname='TradeLicenses' style={{ marginTop: -4 }}
+                    <Combobox fieldname='IssueAuth' formname='TradeLicenses' style={{ marginTop: -4 }}
                         state={state} typeName="list"
                         isDDL={true}
+                        disabled={state.readOnly}
                         dataSource={state} actionHandler={generalHandler} />
                 </div>
                 <div className="col-md-6">
-                    <TextInput
-                        name="IssueDate"
-                        id="IssueDate"
-                        label={utils.getLabelByID("Issue Date")}
-                        type="text"
+                    <Label text="Issue Date"></Label>
+                    <DateControl disabled={state.readOnly} value={state.TradeLicenses.issueDate} dateChange={issueDate} />
+                    {/* <Input
+                        divStyle={{ padding: '0px' }}
+                        status={(state.errors && state.errors.IssueDate) ? "ERROR" : undefined}
+                        fieldname='IssueDate'
+                        formname='TradeLicenses'
+                        placeholder={utils.getLabelByID('Issue Date')}
+                        state={state}
+                        actionHandler={generalHandler}
+                        className="form-control"
                         disabled={state.readOnly}
-                    />
+                    /> */}
                 </div>
             </div>
             <br />
             <div className="row">
                 <div className="col-md-6">
-                    <TextInput
-                        name="ExpiryDate"
-                        id="ExpiryDate"
-                        label={utils.getLabelByID("Expiry Date")}
-                        type="text"
+                    <Label text="Expiry Date"></Label>
+                    <DateControl disabled={state.readOnly} value={state.TradeLicenses.expiryDate} dateChange={expiryDate} />
+                    {/* <Input
+                        divStyle={{ padding: '0px' }}
+                        status={(state.errors && state.errors.ExpiryDate) ? "ERROR" : undefined}
+                        fieldname='ExpiryDate'
+                        formname='TradeLicenses'
+                        placeholder={utils.getLabelByID('Expiry Date')}
+                        state={state}
+                        actionHandler={generalHandler}
+                        className="form-control"
                         disabled={state.readOnly}
-                    />
+                    /> */}
                 </div>
                 <div className="col-md-6">
-                    <TextInput
-                        name="OperationalEmail"
-                        id="OperationalEmail"
-                        label={utils.getLabelByID("Renewal Date")}
-                        type="text"
+                    <Label text="Renewal Date"></Label>
+                    <DateControl disabled={state.readOnly} value={state.TradeLicenses.renewalDate} dateChange={renewalDate} />
+                    {/* <Input
+                        divStyle={{ padding: '0px' }}
+                        status={(state.errors && state.errors.OperationalEmail) ? "ERROR" : undefined}
+                        fieldname='RenewalDate'
+                        formname='TradeLicenses'
+                        placeholder={utils.getLabelByID('Renewal Date')}
+                        state={state}
+                        actionHandler={generalHandler}
+                        className="form-control"
                         disabled={state.readOnly}
-                    />
+                    /> */}
                 </div>
             </div>
             <br />
-            <a className="btn green pull-right" onClick={addTradeLicenses}
-                style={{ marginTop: "10px" }}> Add
-            </a>
+            {!state.readOnly && (
+                <a className="btn green pull-right" onClick={addTradeLicenses}
+                    style={{ marginTop: "10px" }}> Add
+                </a>
+            )}
             <br />
             <Table
                 pagination={false}
@@ -937,24 +865,6 @@ function mappedCodesActionHandlers({ actionName, index }) {
                 let a = state.contacts;
                 a.splice(index, 1);
                 updateState({ contacts: a });
-            }
-            break;
-    }
-}
-
-function additionalPropsActionHandlers({ actionName, index }) {
-    switch (actionName) {
-        case "Edit":
-            updateState({
-                additionalPropsModalIsOpen: true,
-                index
-            });
-            break;
-        case "Delete":
-            if (index > -1) {
-                let a = state.additionalProps;
-                a.splice(index, 1);
-                updateState({ additionalProps: a });
             }
             break;
     }
@@ -1016,13 +926,19 @@ class OrgSetupForm extends React.Component {
             additionalProps: [],
             documents: [],
             fetchOCR: false,
-            list: [{ label: "CORE", value: "CORE" }],
+            list: [{ label: "DHL", value: "DHL", businessCode: 100123 }, { label: "TNT", value: "TNT", businessCode: 100100 }],
+            // list: this.props.entityList,
             BusinessType: true,
+            ProcessorTab: false,
+            TradeLicenseTab: false,
+            FacilityTab: false,
             BusinessTypeList: [],
             LogisticsInformationList: [],
             DeclarationInformationList: [],
             TradeLicensesList: [],
-            FacilitiesList: []
+            FacilitiesList: [],
+            containerProps: {},
+            TradeLicenses: {}
 
         };
 
@@ -1075,33 +991,49 @@ class OrgSetupForm extends React.Component {
     }
 
     addBusinessType = () => {
-        let array = this.state.BusinessTypeList
-        array.push(this.state.BusinessTypes)
-        this.setState({ BusinessTypeList: array })
+        let type = this.state.BusinessTypes
+        type.actions = [{
+            label: "Edit",
+            iconName: "fa fa-edit",
+            actionType: "COMPONENT_FUNCTION"
+        }]
+        this.setState({ BusinessTypes: {}, BusinessTypeList: [...this.state.BusinessTypeList, type] })
     }
 
     addLogisticsInformation = () => {
         let array = this.state.LogisticsInformationList
-        array.push(this.state.LogisticsInformation)
-        this.setState({ LogisticsInformationList: array })
+        let obj = this.state.LogisticsInformation
+        obj.code = 'Courier'
+        array.push(obj)
+        this.setState({ LogisticsInformation: {}, LogisticsInformationList: array })
     }
 
     addDeclarationInformation = () => {
         let array = this.state.DeclarationInformationList
-        array.push(this.state.DeclarationInformation)
-        this.setState({ DeclarationInformationList: array })
+        let obj = this.state.DeclarationInformation
+        obj.code = 'Courier'
+        array.push(obj)
+        this.setState({ DeclarationInformation: {}, DeclarationInformationList: array })
     }
 
     addTradeLicenses = () => {
-        let array = this.state.TradeLicensesList
-        array.push(this.state.TradeLicenses)
-        this.setState({ TradeLicensesList: array })
+        let type = this.state.TradeLicenses
+        type.actions = [{
+            label: "Edit",
+            iconName: "fa fa-edit",
+            actionType: "COMPONENT_FUNCTION"
+        }]
+        this.setState({ TradeLicenses: {}, TradeLicensesList: [...this.state.TradeLicensesList, type] })
     }
 
     addFacilities = () => {
-        let array = this.state.FacilitiesList
-        array.push(this.state.Facilities)
-        this.setState({ FacilitiesList: array })
+        let type = this.state.Facilities
+        type.actions = [{
+            label: "Edit",
+            iconName: "fa fa-edit",
+            actionType: "COMPONENT_FUNCTION"
+        }]
+        this.setState({ Facilities: {}, FacilitiesList: [...this.state.FacilitiesList, type] })
     }
 
 
@@ -1162,62 +1094,62 @@ class OrgSetupForm extends React.Component {
 
 
     componentWillReceiveProps(nextProps) {
-        let details = {
-            "taxNO1": "",
-            "taxNO2": "",
-            "address": "",
-            "publicKey": "",
-            "entityName": "",
-            "arabicName": "",
-            "spCode": "",
-            "shortCode": "",
-            "orgType": "",
-            "isActive": false,
-            "entityLogo": {
-                "sizeSmall": "",
-                "sizeMedium": ""
-            },
-            "parentEntity": "",
-            "commissionTemplate": "",
-            "contacts": [],
-            "mappedCodes": [],
-            "additionalProps": [],
-            "documents": [],
-            "clientKey": "",
-            "lastReconDate": "",
-            "contactType": "",
-            "services": [],
-            "welcomeEmail": "",
+        // let details = {
+        //     "taxNO1": "",
+        //     "taxNO2": "",
+        //     "address": "",
+        //     "publicKey": "",
+        //     "entityName": "",
+        //     "arabicName": "",
+        //     "spCode": "",
+        //     "shortCode": "",
+        //     "orgType": "",
+        //     "isActive": false,
+        //     "entityLogo": {
+        //         "sizeSmall": "",
+        //         "sizeMedium": ""
+        //     },
+        //     "parentEntity": "",
+        //     "commissionTemplate": "",
+        //     "contacts": [],
+        //     "mappedCodes": [],
+        //     "additionalProps": [],
+        //     "documents": [],
+        //     "clientKey": "",
+        //     "lastReconDate": "",
+        //     "contactType": "",
+        //     "services": [],
+        //     "welcomeEmail": "",
 
-        }
+        // }
 
-        console.log("------------------->>>>>>>>>>. Props", nextProps)
+        // console.log("------------------->>>>>>>>>>. Props", nextProps)
 
-        if (this.state.commissionTemplateID !== nextProps.initialValues.commissionTemplate && nextProps.welcome) {
-            this.setState({
-                //commissionTemplateID: nextProps.initialValues.commissionTemplate,
-                services: nextProps.initialValues.services,
-                contacts: nextProps.initialValues.contacts,
-                documents: nextProps.initialValues.documents,
-                readOnly: nextProps.containerState.readOnly,
-                ...details,
-                ...nextProps.initialValues
-            });
-        } else {
-            this.setState({
-                ...details
-            })
-        }
+        // if (this.state.commissionTemplateID !== nextProps.initialValues.commissionTemplate && nextProps.welcome) {
+        //     this.setState({
+        //         //commissionTemplateID: nextProps.initialValues.commissionTemplate,
+        //         services: nextProps.initialValues.services,
+        //         contacts: nextProps.initialValues.contacts,
+        //         documents: nextProps.initialValues.documents,
+        //         readOnly: nextProps.containerState.readOnly,
+        //         ...details,
+        //         ...nextProps.initialValues
+        //     });
+        // } else {
+        //     this.setState({
+        //         ...details
+        //     })
+        // }
 
-        if (nextProps.welcome) {
-            this.setState({
-                welcome: nextProps.welcome
-            })
-        }
+        // if (nextProps.welcome) {
+        //     this.setState({
+        //         welcome: nextProps.welcome
+        //     })
+        // }
 
-        if (nextProps.welcomeResp) {
-            this.setState({ welcome: nextProps.welcomeResp });
-        }
+        // if (nextProps.welcomeResp) {
+        //     this.setState({ welcome: nextProps.welcomeResp });
+        // }
     }
 
     componentWillMount() {
@@ -1225,37 +1157,41 @@ class OrgSetupForm extends React.Component {
     }
 
     componentDidMount() {
-        console.log("------------------->>>>>>>>>>. Props DID ", this.props)
-        let _this = this;
-        this.disableFileds();
-        document.getElementById('ImgUploadBtn').addEventListener('click', openDialog);
-        document.getElementById('ImgUploader').onchange = function (e) {
-            let reader = new FileReader();
-            let files = e.target.files;
+        console.log('---props---', this.props.containerProps.params.orgID);
+        let props = this.props.containerProps.params.orgID ? true : false
+        this.setState({ id: this.props.containerProps.params.orgID, readOnly: props })
+        this.setState({ ORG_TYPES: this.props.containerProps.typeData.ORG_TYPES }, () => console.log('---typeData---', this.state.ORG_TYPES))
+        // console.log("------------------->>>>>>>>>>. Props DID ", this.props)
+        // let _this = this;
+        // this.disableFileds();
+        // document.getElementById('ImgUploadBtn').addEventListener('click', openDialog);
+        // document.getElementById('ImgUploader').onchange = function (e) {
+        //     let reader = new FileReader();
+        //     let files = e.target.files;
 
-            if (files && files[0]) {
-                reader.onload = function (fileReader) {
-                    $('#EntityLogo').attr('src', fileReader.target.result);
+        //     if (files && files[0]) {
+        //         reader.onload = function (fileReader) {
+        //             $('#EntityLogo').attr('src', fileReader.target.result);
 
-                    _this.props.containerProps.actions.generalAjxProcess(constants.uploadImg, requestCreator.createImgUploadRequest({
-                        byteData: fileReader.target.result,
-                        context: {
-                            name: files[0].name,
-                            size: files[0].size,
-                            type: files[0].type
-                        }
-                    })).then(result => {
-                        _this.setState({ entityLogo: result.entityLogo })
-                    });
-                };
+        //             _this.props.containerProps.actions.generalAjxProcess(constants.uploadImg, requestCreator.createImgUploadRequest({
+        //                 byteData: fileReader.target.result,
+        //                 context: {
+        //                     name: files[0].name,
+        //                     size: files[0].size,
+        //                     type: files[0].type
+        //                 }
+        //             })).then(result => {
+        //                 _this.setState({ entityLogo: result.entityLogo })
+        //             });
+        //         };
 
-                reader.readAsDataURL(files[0]);
-            }
-        };
+        //         reader.readAsDataURL(files[0]);
+        //     }
+        // };
 
-        function openDialog() {
-            document.getElementById('ImgUploader').click();
-        }
+        // function openDialog() {
+        //     document.getElementById('ImgUploader').click();
+        // }
     }
 
     disableFileds() {
@@ -1267,6 +1203,30 @@ class OrgSetupForm extends React.Component {
         if (actionObj.label === "Reset") {
             this.props.reset();
         }
+    }
+
+    issueDate = (date) => {
+        let TradeLicenses = this.state.TradeLicenses
+        TradeLicenses.issueDate = moment.unix(date / 1000).format('DD/MM/YYYY')
+        this.setState({
+            TradeLicenses
+        })
+    }
+    expiryDate = (date) => {
+        let TradeLicenses = this.state.TradeLicenses
+        TradeLicenses.expiryDate = moment.unix(date / 1000).format('DD/MM/YYYY')
+        this.setState({
+            TradeLicenses
+        })
+    }
+
+    renewalDate = (date) => {
+        let TradeLicenses = this.state.TradeLicenses
+        console.log('---date---', date);
+        TradeLicenses.renewalDate = moment.unix(date / 1000).format('DD/MM/YYYY')
+        this.setState({
+            TradeLicenses
+        })
     }
 
     submit(data) {
@@ -1290,6 +1250,10 @@ class OrgSetupForm extends React.Component {
         data.publicKey = publicKey;
         console.log("-------------------------->>>>>>>>>>>>>>>>>>>>", data)
         return this.props.onSubmit(data);
+    }
+
+    rowSelect = (x) => {
+        this.setState({ fetchOCR: true, index: x })
     }
 
     ECRFetch(data) {
@@ -1346,7 +1310,8 @@ class OrgSetupForm extends React.Component {
                 <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)} ref={this._form = this}>
                     <FormSection1 generalHandler={this.generalHandler} initialValues={initialValues} updateState={this.updateState} state={this.state}
                         containerProps={containerProps} containerState={containerState} welcome={this.state.welcome}
-                        onInputChange={this.onInputChange} handleSubmit={this.ECRFetch} fetchOCR={this.state.fetchOCR} addBusinessType={this.addBusinessType} addLogisticsInformation={this.addLogisticsInformation} addDeclarationInformation={this.addDeclarationInformation} addTradeLicenses={this.addTradeLicenses} addFacilities={this.addFacilities} />
+                        onInputChange={this.onInputChange} handleSubmit={this.ECRFetch} fetchOCR={this.state.fetchOCR} addBusinessType={this.addBusinessType} addLogisticsInformation={this.addLogisticsInformation} addDeclarationInformation={this.addDeclarationInformation} addTradeLicenses={this.addTradeLicenses} addFacilities={this.addFacilities}
+                        issueDate={this.issueDate} expiryDate={this.expiryDate} renewalDate={this.renewalDate} rowSelect={this.rowSelect} />
                     {/* <FormSection5 initialValues={initialValues} updateState={this.updateState} state={this.state}/> */}
                     {/* <Portlet title={utils.getLabelByID("Documents")}>
             <FormSection6 initialValues={initialValues} updateState={this.updateState} state={this.state}/>
