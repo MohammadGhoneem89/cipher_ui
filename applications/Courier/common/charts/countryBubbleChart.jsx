@@ -44,11 +44,11 @@ class CountryBubbleChart extends Component {
         var continentColorScale = d3.scaleOrdinal(d3.schemeCategory10)
             .domain(continents.values());
 
-        var width = 1200,
-            height = 800;
+        var width = 400,
+            height = 200;
         var svg,
             circles,
-            circleSize = { min: 10, max: 80 };
+            circleSize = { min: 10, max: 40 };
         var circleRadiusScale = d3.scaleSqrt()
             .domain(populationExtent)
             .range([circleSize.min, circleSize.max]);
@@ -411,7 +411,7 @@ class CountryBubbleChart extends Component {
 
     render() {
         return (
-            <div style={{ border: '3px dashed' }}>
+            <div>
                 <div id="controls-graph">
                     <span style={{ visibility: 'hidden' }}>
                         <label><input id="combine" type="radio" name="grouping" value="combine" checked />Combine</label>
