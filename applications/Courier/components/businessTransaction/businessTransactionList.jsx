@@ -34,8 +34,6 @@ import documentData from './documentData.json';
 import jsonData from '../../common/dummyData/dashboard.json';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 
-import { indexOf, random } from 'lodash';
-import { variance } from 'd3';
 
 let interval;
 class BusinessTransaction extends React.Component {
@@ -894,7 +892,7 @@ class BusinessTransaction extends React.Component {
                             </div>
                             <div id={'nrClaimnTab'} className={this.state.currentActiveTab === "NR Claim" ? "tab-pane in active ui-fieldtable" : "tab-pane in ui-fieldtable"}>
                                 <div className="col-md-12">
-                                    <h3 style={{ textAlign: "center", paddingTop: "20px", paddingBottom: "20px" }}>NR Claim Pipeline</h3>
+                                    <h3 style={{ display: "flex", justifyContent: "center", minHeight: "100px"}}>NR Claim Pipeline</h3>
                                 </div>
                                 <div className="col-md-12">
                                     {!this.state.widget2Loading ? 
@@ -911,7 +909,7 @@ class BusinessTransaction extends React.Component {
                             </div>
                             <div id={'depositClaimTab'}  className={this.state.currentActiveTab === "Deposit Claim" ? "tab-pane in active ui-fieldtable" : "tab-pane in ui-fieldtable"}>
                                 <div className="col-md-12">
-                                    <h3 style={{ textAlign: "center", paddingTop: "20px", paddingBottom: "20px" }}>Deposit Claim Pipeline</h3>
+                                    <h3 style={{ display: "flex", justifyContent: "center", minHeight: "100px"}}>Deposit Claim Pipeline</h3>
                                 </div>
                                 <div className="col-md-12">
                                     {!this.state.widget2Loading ? 
@@ -1097,9 +1095,6 @@ class BusinessTransaction extends React.Component {
                                     }
                                 </div>
                             </div>
-                            <Portlet title={""} noCollapse={true}>
-                                
-                            </Portlet>
                     </Portlet>
 
                     {/* <Portlet title={utils.getLabelByID("Business Transactions")} isPermissioned={true}
