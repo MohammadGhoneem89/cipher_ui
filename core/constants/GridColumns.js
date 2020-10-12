@@ -1437,12 +1437,12 @@ module.exports = {
   BusinessTransaction: [
     { alias: "S.No", key: "", type: "serialNo" },
     { alias: "", key: "orderNo", type: "hiddenID" },
-    { alias: "submitted By", key: "submittedBy", type: "string" },
-    { alias: "last Activity Date", key: "lastActivity", type: "criticalWarn" },
-    { alias: "order / Invoice / Declaration", key: "orderInvoiceDecl", type: "string" },
+    { alias: "submitted By", key: "imageData", type: "imageCustom", width: "15%"},
+    { alias: "last Activity Date", key: "lastActivity", type: "criticalWarn", width: "20%" },
+    { alias: "order / Invoice / Declaration", key: "orderInvoiceDecl", type: "stringCustom" },
     { alias: "Stage", key: "currentStage", type: "string" },
     { alias: "Document Type", key: "documentType", type: "string" },
-    { alias: "Errors", key: "errorDescription", type: "actionCustom" },
+    { alias: "Errors", key: "errorDescription", type: "actionCustom", width: "15%" },
     { alias: "Err Ct.", key: "errorCt", type: "string" },
     { alias: "Details", key: "actions", type: "action" }
   ],

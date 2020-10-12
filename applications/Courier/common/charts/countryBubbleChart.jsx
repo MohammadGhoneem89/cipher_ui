@@ -44,11 +44,11 @@ class CountryBubbleChart extends Component {
         var continentColorScale = d3.scaleOrdinal(d3.schemeCategory10)
             .domain(continents.values());
 
-        var width = 1200,
-            height = 800;
+        var width = 400,
+            height = 200;
         var svg,
             circles,
-            circleSize = { min: 10, max: 80 };
+            circleSize = { min: 10, max: 40 };
         var circleRadiusScale = d3.scaleSqrt()
             .domain(populationExtent)
             .range([circleSize.min, circleSize.max]);
@@ -78,9 +78,9 @@ class CountryBubbleChart extends Component {
             var onScreenYOffset = keyElementHeight * 1.5,
                 offScreenYOffset = 100;
 
-            if (d3.select(".continent-key").empty()) {
-                createContinentKey();
-            }
+            // if (d3.select(".continent-key").empty()) {
+            //     createContinentKey();
+            // }
             var continentKey = d3.select(".continent-key");
 
             if (showContinentKey) {
@@ -140,6 +140,8 @@ class CountryBubbleChart extends Component {
         }
 
         function isChecked(elementID) {
+            console.log(d3.select(elementID), 'ElementId');
+            console.log(d3.select(elementID).property("checked"), 'CHECKED');
             return d3.select(elementID).property("checked");
         }
 
@@ -163,14 +165,17 @@ class CountryBubbleChart extends Component {
                 if (country) {
                     info = [country.CountryName, formatPopulation(country.Transactions)].join(": ");
                 }
-                d3.select("#country-info").html(info);
+                d3.select("#country-info").html(info).style("visibility", function() {
+                    return (info != '') ? "visible" : "hidden";
+                })
             }
         }
 
         function updateCircles() {
             circles
                 .attr("fill", function (d) {
-                    return flagFill() ? "url(#" + d.CountryCode + ")" : continentColorScale(d.ContinentCode);
+                    // return flagFill() ? "url(#" + d.CountryCode + ")" : continentColorScale(d.ContinentCode);
+                    return  "url(#" + d.CountryCode + ")";
                 });
         }
 
@@ -406,7 +411,7 @@ class CountryBubbleChart extends Component {
 
     render() {
         return (
-            <div style={{ border: '3px dashed' }}>
+            <div>
                 <div id="controls-graph">
                     <span style={{ visibility: 'hidden' }}>
                         <label><input id="combine" type="radio" name="grouping" value="combine" checked />Combine</label>
@@ -416,10 +421,10 @@ class CountryBubbleChart extends Component {
                     </span>
                     <span style={{visibility: 'hidden'}}>
                         <label><input id="colors" type="radio" name="fill" value="colors" />Colors</label>
-                        <label><input id="flags" type="radio" name="fill" value="flags" checked />Flags</label>
+                        <label><input id="flags" type="radio" name="fill" value="flags" checked={true} readOnly="true" checked="true" />Flags</label>
                     </span>
                 </div>
-                <div id="country-info"></div>
+                <div style={{visibility: 'hidden'}} id="country-info"></div>
                 <div id="bubble-chart"></div>
             </div>
         )

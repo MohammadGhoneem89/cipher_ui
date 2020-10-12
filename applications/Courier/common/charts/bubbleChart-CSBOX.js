@@ -87,7 +87,10 @@ class BubbleChart extends React.Component {
     if (title) {
         info = `${title}: ${view}`;
     }
-    d3.select("#bubble-info").html(info);
+    d3.select("#bubble-info").html(info).style("visibility", function() {
+        return (info != '') ? "visible" : "hidden";
+    })
+    // d3.select("#bubble-info").html(info);
 }
 
   renderBubbles = data => {
@@ -108,7 +111,8 @@ class BubbleChart extends React.Component {
       .scaleLinear()
       .domain([minValue, maxValue])
       .interpolate(d3.interpolateHcl)
-      .range(["#eb001b", "#f79e1b", "#0576b2"]);
+      // .range(["#eb001b", "#f79e1b", "#0576b2"]);
+      .range(["#f79e1b"]);
 
     // render simple circle element
     if (!this.props.useLabels) {
@@ -188,7 +192,7 @@ class BubbleChart extends React.Component {
       <div>
         {/* <h3>D3 Bubble Chart With react rendering</h3> */}
         <div id="chart">
-            <div id="bubble-info"></div>
+            <div style={{visibility: 'hidden'}} id="bubble-info"></div>
           <svg width={this.props.width} height={this.props.height}>
             {this.renderBubbles(this.state.data)}
           </svg>

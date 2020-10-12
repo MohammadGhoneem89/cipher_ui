@@ -9,6 +9,8 @@ import Row from '../../common/Row.jsx';
 import Input from '../../common/Input.jsx';
 import Label from '../../common/Lable.jsx';;
 import Combobox from '../../../../core/common/Select.jsx';
+import AnchorComp from '../../common/AnchorComp.jsx';
+
 import Col from '../../common/Col.jsx';;
 import Table from '../../common/Datatable.jsx';
 import * as utils from '../../../../core/common/utils.js';
@@ -32,7 +34,7 @@ import documentData from './documentData.json';
 import jsonData from '../../common/dummyData/dashboard.json';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 
-import { indexOf } from 'lodash';
+import { indexOf, random } from 'lodash';
 import { variance } from 'd3';
 
 let interval;
@@ -56,6 +58,8 @@ class BusinessTransaction extends React.Component {
             depClaimBarCharts: [],
             tilesData: {},
             businessTransDataList : [],
+            businessTransCriticalList : [],
+            businessTransWarnList : [],
             widget2Loading: true,
             widget3Loading : true,
             attentionItems : [],
@@ -75,43 +79,101 @@ class BusinessTransaction extends React.Component {
                 {
                     "fromState" : "Signature Pending",
                     "toState" : "Signed-Ready Submission",
-                    "warnInterval" : 3,
-                    "criticalInterval" : 5,
+                    "warnInterval" : 180,
+                    "criticalInterval" : 300,
                     "isMonitor" : true,
                     "isOptional" : false
                 },
                 {
                     "fromState" : "Signed-Ready Submission",
                     "toState" : "Submission Failure",
-                    "warnInterval" : 3,
-                    "criticalInterval" : 5,
+                    "warnInterval" : 180,
+                    "criticalInterval" : 300,
                     "isMonitor" : true,
                     "isOptional" : false
                 },
                 {
                     "fromState" : "Signed-Ready Submission",
                     "toState" : "Submission Success",
-                    "warnInterval" : 3,
-                    "criticalInterval" : 5,
+                    "warnInterval" : 180,
+                    "criticalInterval" : 300,
                     "isMonitor" : false,
                     "isOptional" : false
                 },
                 {
                     "fromState" : "Submission Failure",
                     "toState" : "Waiting Generation",
-                    "warnInterval" : 3,
-                    "criticalInterval" : 5,
+                    "warnInterval" : 180,
+                    "criticalInterval" : 300,
                     "isMonitor" : true,
                     "isOptional" : true
                 },
                 {
                     "fromState" : "Submission Success",
                     "toState" : "Pending Status",
-                    "warnInterval" : 3,
-                    "criticalInterval" : 5,
+                    "warnInterval" : 86400,
+                    "criticalInterval" : 172800,
                     "isMonitor" : true,
                     "isOptional" : true
                 }
+            ],
+            declarationProcessors: [
+                {
+                  "name": "ALL",
+                  "imageURL": "/assets/Resources/images/all.png"
+                },
+                {
+                  "name": "DHL",
+                  "imageURL": "/assets/Resources/images/dhl.png"
+                },
+                {
+                  "name": "Dubai Customs",
+                  "imageURL": "/assets/Resources/images/dubai-south.png"
+                },
+                {
+                  "name": "Amazon",
+                  "imageURL": "/assets/Resources/images/noon.png"
+                },
+                {
+                  "name": "FedEx",
+                  "imageURL": "/assets/Resources/images/fedex.jpg"
+                },
+                ,
+                {
+                  "name": "Noon",
+                  "imageURL": "/assets/Resources/images/noon.png"
+                },
+                {
+                    "name": "Agility",
+                    "imageURL": "/assets/Resources/images/agility_logo_appicon.png"
+                },
+                {
+                    "name": "Aramex",
+                    "imageURL": "/assets/Resources/images/aramex_icon.png"
+                }
+              ],
+            demoIntervalTime:[
+                [2, 0], // 1  mins
+                [2, 1], // 2  hours
+                [5, 0], // 3  mins
+                [2, 0], // 4  mins
+                [2, 1], // 5 hours
+                [2, 1], // 6 hours  
+                [2, 0], // 7 mins
+                [2, 1], // 8 hours
+                [2, 0], // 9 mins
+                [2, 1], // 10 hours
+                [2, 1], // 11 hours
+                [20, 1], // 12 hours
+                [2, 1], // 13 hours
+                [2, 1], // 14 hours
+                [2, 0], // 15 mins
+                [2, 0], // 16 mins
+                [2, 1], // 17 hours
+                [2, 1], // 18  hours 
+                [2, 0], // 19 mins
+                [2, 1], // 20 hours
+                [1, 2], // 21 days
             ]
 
         };
@@ -119,6 +181,8 @@ class BusinessTransaction extends React.Component {
         this.pageChanged = this.pageChanged.bind(this);
         this.closePopUP = this.closePopUP.bind(this);
         this.showPopUP = this.showPopUP.bind(this);
+        this.clearFields = this.clearFields.bind(this);
+
     //    this.processorHandler = this.processorHandler(this);
 //        this.customActionHandler = customActionHandler.bind(this);
 //        this.dateChangeWorkboard = this.dateChangeWorkboard.bind(this)
@@ -127,6 +191,51 @@ class BusinessTransaction extends React.Component {
         // this.applyFilter = this.applyFilter.bind(this);
         // this.clearFilter = this.clearFilter.bind(this);
     }
+
+    downloadDummyCSV = (CSV) => {
+        let keys = []
+        if (CSV.length > 0) {
+            keys = Object.keys(CSV[0])
+        } else {
+            toaster.showToast(utils.getLabelByID("No Records found for the selected booking date"), "ERROR")
+            return
+        }
+        keys.splice(keys.indexOf("imageData"),1);
+        keys.splice(keys.indexOf("errors"),1);
+        keys.splice(keys.indexOf("orderInvoiceDecl"),1);
+        keys.splice(keys.indexOf("lastActivity"),1);
+        keys.splice(keys.indexOf("actions"),1);
+        keys.splice(keys.indexOf("errorCt"),1);
+        keys.splice(keys.indexOf("errorDescription"),1);
+        // for(var i=0; i < keys.length; i++){
+        //     if(typeof keys[i] === 'object' && keys[i] !== null)
+        //         keys.splice(i,1);
+        // }
+        
+
+        console.log("keys === ", keys);
+        CSV = CSV.map((obj) => {
+            let row = ``
+            keys.forEach((key, index) => {
+                if (index == keys.length - 1) {
+                    row += `${obj[key]}`
+                } else {
+                    row += `${obj[key]},`
+                }
+            })
+            return row
+        })
+        CSV.unshift(keys.join(","))
+        CSV = CSV.join('\n');
+        // const url = window.URL.createObjectURL(new Blob([CSV], { type: "application/vnd.ms-excel" }));
+        const url = window.URL.createObjectURL(new Blob([CSV], { type: "text/plain" }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `exporting_${moment().format("MM_DD_YYYY_HH_mm_ss")}.csv`);
+        document.body.appendChild(link);
+        link.click();
+    }
+
 
 
     setIntervalForMonitoring = () => {
@@ -156,8 +265,6 @@ class BusinessTransaction extends React.Component {
           this.setState({currentPageNo: pageNo})
     
           this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))
-
-    
         }
       }
 
@@ -178,10 +285,20 @@ class BusinessTransaction extends React.Component {
         }
     }
 
+    soapPayloadHandler = () => {
+        console.log("SOAP Payload Handler")
+    }
+
     
 
     componentDidMount() {
         window.scrollTo(0, 0);
+
+        let courier = _.cloneDeep(courier);
+
+        // courier.map((item)=>{
+        //     console.log("item ==== ",item)
+        // })
         
         this.setState({
             jsonData : {
@@ -192,7 +309,6 @@ class BusinessTransaction extends React.Component {
         })
         this.commonActionExecutor()
     //    this.setIntervalForMonitoring();
-
     }
 
     componentWillUnmount() {
@@ -214,7 +330,7 @@ class BusinessTransaction extends React.Component {
             this.setState({
                 tilesData: data,
                 widget1Loading: false,
-                isLoading : false
+                isLoading : false,
             });
         }
 
@@ -279,61 +395,83 @@ class BusinessTransaction extends React.Component {
                 nrClaimBarCharts,
                 depClaimBarCharts,
                 widget2Loading: false
-            });
+            }); 
         }
 
-        if(nextProps.widget3.data && nextProps.widget3.data.searchResult){
-            let businessTransDataList = []
+        if(nextProps.widget3.pageData && nextProps.widget3.data.searchResult){
+            let businessTransDataList = [];
+            let businessTransCriticalList = [];
+            let businessTransWarnList = [];
             console.log("next Props businessTransDataList = ", nextProps.widget3.data.searchResult);
             let transactionMonitoringScale = _.cloneDeep(this.state.transactionMonitoringScale);
-
+            let index = 0;
             nextProps.widget3.data.searchResult.forEach((item) => {
-                    console.log("items === ", item);
-                    console.log("length ======= ",item.errors.length)
-                    let _item = _.cloneDeep(item);
-                    let target = -1;
-                    _item.orderInvoiceDecl = _item.orderNo || "" +  _item.invoiceNo  || "" +  _item.declarationNo || "";
-                    for(var i=0; i<transactionMonitoringScale.length; i++){
-                        if(transactionMonitoringScale[i].fromState === _item.lastStage && transactionMonitoringScale[i].toState === _item.currentStage)
-                        {
-                            target = i;
-                            break;
+            //    searchResult.lenth()
+                console.log("items === ", item);
+                console.log("length ======= ",item.errors.length)
+                let _item = _.cloneDeep(item);
+                let target = -1;
+
+                _item.imageData = _.find(this.state.declarationProcessors, {"name":_item.submittedBy}) ? _.find(this.state.declarationProcessors, {"name":_item.submittedBy}) : {"name":_item.submittedBy, "imageURL": ""}
+                _item.orderInvoiceDecl = {"orderNo":_item.orderNo, "invoiceNo": _item.invoiceNo, "declarationNo" : _item.declarationNo};
+                for(var i=0; i<transactionMonitoringScale.length; i++){
+                    if(transactionMonitoringScale[i].fromState === _item.lastStage && transactionMonitoringScale[i].toState === _item.currentStage)
+                    {
+                        target = i;
+                        break;
+                    }
+                }
+                console.log("target ============ ", target)
+                let format_arr = ["minutes", "hours", "days"];
+         //       let lastDate = moment().subtract(parseInt((Math.random() * 10) + 1),format_arr[parseInt((Math.random() * 3))]).format("MM/DD/YYYY HH:mm:ss");  // dummy date
+                let lastDate = moment().subtract(parseInt(this.state.demoIntervalTime[index][0]),format_arr[this.state.demoIntervalTime[index][1]]).format("MM/DD/YYYY HH:mm:ss");  // dummy date
+                index++;
+              //  let lastDate = moment.unix(item.lastActivityDateTime).format("MM/DD/YYYY HH:mm:ss") // actual logic
+
+                let currTime = moment().format("MM/DD/YYYY HH:mm:ss")
+                let seconds = moment(currTime).diff(moment(lastDate), "seconds")
+
+                let years = moment(currTime).diff(moment(lastDate), "years")
+                let months = moment(currTime).diff(moment(lastDate), "months")
+                let weeks = moment(currTime).diff(moment(lastDate), "weeks")           
+                let days = moment(currTime).diff(moment(lastDate), "days")
+                let hours = moment(currTime).diff(moment(lastDate), "hours")
+                let mins = moment(currTime).diff(moment(lastDate), "minutes")
+                if(years > 0)
+                    lastDate +=  " - " + years + " yr ago";
+                else if(months > 0)
+                    lastDate +=  " - " + months + " month ago";   
+                else if(weeks > 0)
+                    lastDate +=  " - " + weeks + " week ago";      
+                else if(days > 0)
+                    lastDate +=  " - " + days + " day ago" ;
+                else if(hours > 0)
+                    lastDate +=  " - " + hours + " hr ago";        
+                else if(mins > 0)
+                    lastDate +=  " - " + mins + " min ago";
+                console.log("seconds -==== ", seconds);
+                if(target !== -1){
+                    if(seconds <= 0)
+                    {
+                        _item.lastActivity = {
+                            "type": "",
+                            "value": lastDate
                         }
                     }
-                    console.log("target ============ ", target)
-                    let lastDate = moment.unix(item.lastActivityDateTime).format("MM/DD/YYYY HH:mm:ss")
-                    let currTime = moment().format("MM/DD/YYYY HH:mm:ss")
-                    let seconds = moment(currTime).diff(moment(lastDate), seconds)
-                    console.log("seconds -==== ", seconds);
-                    if(target !== -1){
-                        if(seconds <= 0)
-                        {
-                            _item.lastActivity = {
-                                "type": "",
-                                "value": lastDate
-                            }
+                    
+                    else
+                    if(transactionMonitoringScale[i].criticalInterval <= seconds){
+                        _item.lastActivity = {
+                            "type": "critical",
+                            "value": lastDate
                         }
-                        
-                        else
-                        if(transactionMonitoringScale[i].criticalInterval <= seconds){
-                            _item.lastActivity = {
-                                "type": "critical",
-                                "value": lastDate
-                            }
-                        }
-                        else
-                        if(transactionMonitoringScale[i].warnInterval <= seconds){
+                    }
+                    else
+                    if(transactionMonitoringScale[i].warnInterval <= seconds){
 
-                            _item.lastActivity = {
-                                "type": "warn",
-                                "value": lastDate
-                            }
-                        }
-                        else{
-                            _item.lastActivity = {
-                                "type": "",
-                                "value": lastDate
-                            }
+                        _item.lastActivity = {
+                            "type": "warn",
+                            "value": lastDate
                         }
                     }
                     else{
@@ -342,34 +480,44 @@ class BusinessTransaction extends React.Component {
                             "value": lastDate
                         }
                     }
-                    
-                    if(_item.errors.length > 0){
-                        _item.errorCt = _item.errors.length ,
-                        _item.errorDescription={
-                                errorDescription:_item.errors[0].errorDescription,
-                                action : this.showPopUP,
-                                errors:_item.errors
-
-                            }
+                }
+                else{
+                    _item.lastActivity = {
+                        "type": "",
+                        "value": lastDate
                     }
-                    else{
-                        _item.errorCount = "0",
-                        _item.errorDescription={
-                            errorDescription: "-",
-                            action : this.showPopUP
+                }
+                
+                if(_item.errors.length > 0){
+                    _item.errorCt = _item.errors.length ,
+                    _item.errorDescription={
+                            errorDescription:_item.errors[0].errorDescription,
+                            action : this.showPopUP,
+                            errors:_item.errors
                         }
+                }
+                else{
+                    _item.errorCt = "0",
+                    _item.errorDescription={
+                        errorDescription: "-",
+                        action : this.showPopUP
                     }
+                }
 
-                    _item.actions = [{
-                        URI: ["/orderDetails"],
-                        iconName: "icon-docs",
-                        label: "View",
-                        params: "",
-                        type: "componentAction",
-                        value: "1003",
-                    }]
-                    console.log("_item ===== ",_item)
-                    businessTransDataList.push(_item);
+                _item.actions = [{
+                    URI: ["/courier/orderDetails"],
+                    iconName: "icon-docs",
+                    label: "View",
+                    params: "",
+                    type: "componentAction",
+                    value: "1003",
+                }]
+                console.log("_item ===== ",_item)
+                if(_item.lastActivity.type === "critical")
+                    businessTransCriticalList.push(_item);
+                else if(_item.lastActivity.type === "warn")
+                    businessTransWarnList.push(_item);                   
+                businessTransDataList.push(_item);
             })
             
 
@@ -382,6 +530,8 @@ class BusinessTransaction extends React.Component {
             // })
             this.setState({
                 businessTransDataList,
+                businessTransCriticalList,
+                businessTransWarnList,
                 widget3Loading: false,
                 totalRecords: nextProps.widget3.pageData.totalRecords 
             });
@@ -412,7 +562,7 @@ class BusinessTransaction extends React.Component {
 
     submitStageDocumentBtn(){
 //        if(this.state.selectedStages.length > 0 || this.state.selectedDocuments.length > 0){
-            this.commonActionExecutor()
+        this.commonActionExecutor()
 //        }
     }
 
@@ -446,25 +596,27 @@ class BusinessTransaction extends React.Component {
     selectDocuments(value) {
         console.log(value);
         let hit = false;
-            let array = [...this.state.selectedDocuments];
-            if (array.find((x, index) => value == x)) {
-                if(array.length > 1){
-                    array.splice(array.indexOf(value), 1)
-                    hit = true;
-                }
-            } else {
-                array.push(value);
+        let array = [...this.state.selectedDocuments];
+        if (array.find((x, index) => value == x)) {
+            if(array.length > 1){
+                array.splice(array.indexOf(value), 1)
                 hit = true;
             }
-            console.log(array);
-            if(hit){
-                this.setState({
-                    selectedDocuments: array,
-                    currentActiveTab : array[0] 
-                })
+        } else {
+            array.push(value);
+            hit = true;
+        }
+        console.log(array);
+        if(hit){
+            this.setState({
+                selectedDocuments: array,
+                currentActiveTab : array[0] 
+            }, () => { console.log("state updated") })
+            if(this.state.selectedStages.includes("Pre Submission") && this.state.selectedDocuments.includes("NR Claim"))
+                this.props.actions.generalAsyncProcess(constants.monitoringScreenData, this.applyFilter("widget1-stage-document", "listing"))
+            else
                 this.submitStageDocumentBtn();
-            }
-            
+        } 
     }
 
     ActionHandlers({ actionName, index }) {
@@ -499,17 +651,36 @@ class BusinessTransaction extends React.Component {
         this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))     
     }
 
+    exportBtnHandler = () => {
+        this.downloadDummyCSV(this.state.businessTransDataList);
+
+    }
+
     submitCriticalBtn(){
         this.setState({
-            widget3Loading: true
+            widget3Loading: true,
+            businessTransDataList : this.state.businessTransCriticalList
         })
-        this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing", "critical"))     
+
+        setTimeout(() => {
+            this.setState({
+                widget3Loading: false
+            })
+        }, 1000);
+    //    this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3-processor-critical", "listing", "critical"))     
     }
     submitWarnBtn(){
         this.setState({
-            widget3Loading: true
+            widget3Loading: true,
+            businessTransDataList : this.state.businessTransWarnList
         })
-        this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing", "warn"))     
+
+        setTimeout(() => {
+            this.setState({
+                widget3Loading: false
+            })
+        }, 1000);
+    //    this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3-processor-warning", "listing", "warn"))     
     }
     applyFilter(widgetId, widgetTitle, filter) {
 
@@ -531,7 +702,7 @@ class BusinessTransaction extends React.Component {
                         "declarationNo": declarationNo,
                         "eCommOrgCode": eCommOrgCode,
                         "pageNo": this.state.currentPageNo,
-                        "pageSize": 10,
+                        "pageSize": 20,
                         "showWarningRecords": filter === "critical" ? true : false,
                         "showCriticalRecords": filter === "warn" ? true : false
                     }
@@ -539,15 +710,29 @@ class BusinessTransaction extends React.Component {
         }
     }
 
-    clearFilter() {
+    clearFields() {
+        $('#ApiListData').find('input:text').val('');
+        $('#ApiListData').find('select').each(function () {
+          $(this)[0].selectedIndex = 0;
+        });
+    
         this.setState({
-            tracking: {
-                courier: "",
-                ecommerce: ""
-            }
+          'page':{
+            'currentPageNo':1
+          },
+          searchCriteria : {}
         })
+        let request = {
+          'body':{
+            "action": "ApiListData",
+            "page": {
+              "currentPageNo": 1,
+              "pageSize": 20
+            }
+          }
+        }
+        this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))
     }
-
     render() {
         console.log("state-->", this.state)
         if (!this.state.isLoading)
@@ -556,10 +741,9 @@ class BusinessTransaction extends React.Component {
                     <div className="row daterange_con">
                         <div className="col-md-12" style={{height:"60px", display:"flex", alignItems: "center", }}>
                             <div className="col-md-6" style={{fontSize: "16px", fontWeight: "700", textTransform: "uppercase"}}>
-                                    <span className="caption-subject">DashBoard</span>
+                                    <span className="caption-subject">Declaration Processor</span>
                             </div>
                             <div className="col-md-6" style={{ display: "flex",justifyContent: "flex-end"}}>
-                                {this.state.jsonData ? 
                                     <Combobox
                                         status={(this.state.errors && this.state.errors.process) ? "ERROR" : undefined}
                                         style={{marginTop: "14px"}}
@@ -577,45 +761,16 @@ class BusinessTransaction extends React.Component {
                                         typeName="processorData"
                                         dataSource={_.get(this.state, "jsonData", {})}
                                         actionHandler={this.processorHandler}
-                                    />:
-                                    "loading" }
+                                    /> 
                             </div>
                         </div>
-                    </div>
-      
-                    <div className="row">
-                        <div className="col-md-12">
-                            
-                            
-                        </div>
-                    </div>
+                    </div>                    
 
-                    <div className="row">
-                        <TileUnitNew col="col-auto" data={[{
-                                "id": 1, "title": "Pre Submission-Declaration Queue", 
-                                "value": _.find(this.state.tilesData, 'Pre Submission-Declaration Queue', 0) ? _.get(_.find(this.state.tilesData, 'Pre Submission-Declaration Queue', 0), 'Pre Submission-Declaration Queue',0) : 0,
-                                "actionURI": "", "overDue": "", "fontClass": "green-steel", "percentageTag": false
-                            }, {
-                                "id": 2, "title": "Post Submission-Declaration Queue",
-                                "value": _.find(this.state.tilesData, 'Post Submission-Declaration Queue', 0) ? _.get(_.find(this.state.tilesData, 'Post Submission-Declaration Queue', 0), 'Post Submission-Declaration Queue',0) : 0,
-                                "percentageTag": false
-                            }, {
-                                "id": 3, "title": "Pre Submission-Claim Queue", 
-                                "value": _.find(this.state.tilesData, 'Pre Submission-Claim Queue', 0) ? _.get(_.find(this.state.tilesData, 'Pre Submission-Claim Queue', 0), 'Pre Submission-Claim Queue',0) : 0,
-                                "actionURI": "", "overDue": "", "fontClass": "green-meadow", "percentageTag": false
-                            }, {
-                                "id": 4, "title": "Post Submission-Claim Queue", 
-                                "value": _.find(this.state.tilesData, 'Post Submission-Claim Queue', 0) ? _.get(_.find(this.state.tilesData, 'Post Submission-Claim Queue', 0), 'Post Submission-Claim Queue',0) : 0,
-                                "actionURI": "", "overDue": "", "fontClass": "green-meadow", "percentageTag": false
-                            }]} 
-                        />
-                    </div>
-
-                    <div className="row">
+                    {/* <div className="row"  style={{ marginTop:"20px"}}>
                         <div className="col-md-6 form-group" style={{fontSize: "16px", fontWeight: "700", textTransform: "uppercase"}}>
-                            <span className="caption-subject">Declaration Processor</span>
+                            <span className="caption-subject"></span>
                         </div>
-                    </div>
+                    </div> */}
 
                      <div className="col-md-12">
                         <div className="row mb-1">
@@ -686,22 +841,44 @@ class BusinessTransaction extends React.Component {
                             </div>
                         </div>
                     </div>
-                    
-                    <div className="row formgroup"></div>
 
-                    <div className="tab-pane in active">
+                    <div className="row">
+                        <TileUnitNew col="col-auto" data={[{
+                                "id": 1, "title": "Pre Submission-Declaration Queue", 
+                                "value": _.find(this.state.tilesData, 'Pre Submission-Declaration Queue', 0) ? _.get(_.find(this.state.tilesData, 'Pre Submission-Declaration Queue', 0), 'Pre Submission-Declaration Queue',0) : 0,
+                                "actionURI": "", "overDue": "", "fontClass": "green-steel", "percentageTag": false
+                            }, {
+                                "id": 2, "title": "Post Submission-Declaration Queue",
+                                "value": _.find(this.state.tilesData, 'Post Submission-Declaration Queue', 0) ? _.get(_.find(this.state.tilesData, 'Post Submission-Declaration Queue', 0), 'Post Submission-Declaration Queue',0) : 0,
+                                "percentageTag": false
+                            }, {
+                                "id": 3, "title": "Pre Submission-Claim Queue", 
+                                "value": _.find(this.state.tilesData, 'Pre Submission-Claim Queue', 0) ? _.get(_.find(this.state.tilesData, 'Pre Submission-Claim Queue', 0), 'Pre Submission-Claim Queue',0) : 0,
+                                "actionURI": "", "overDue": "", "fontClass": "green-meadow", "percentageTag": false
+                            }, {
+                                "id": 4, "title": "Post Submission-Claim Queue", 
+                                "value": _.find(this.state.tilesData, 'Post Submission-Claim Queue', 0) ? _.get(_.find(this.state.tilesData, 'Post Submission-Claim Queue', 0), 'Post Submission-Claim Queue',0) : 0,
+                                "actionURI": "", "overDue": "", "fontClass": "green-meadow", "percentageTag": false
+                            }]} 
+                        />
+                    </div>
+                    
+                    <div className="row formgroup" ></div>
+
+                    <div className="tab-pane in active formgroup" style={{ marginTop:"20px", marginBottom:"15px"}}>
                         <div className={'ui-regulartabs'}>
                             <ul id="adHocTabs" className="nav nav-tabs">
-                                <li id="filtersTabLink" className={this.state.currentActiveTab === "Declaration" ? "active" : ""} ><a style={{ fontSize: '10px', display: this.state.selectedDocuments.includes('Declaration') ? "block" : "none" }} href="#declarationTab" data-toggle="tab"> <span> Declaration </span></a></li>
-                                <li id="filtersTabLink" className={this.state.currentActiveTab === "NR Claim" ? "active" : ""} ><a style={{ fontSize: '10px', display: this.state.selectedDocuments.includes('NR Claim') ? "block" : "none" }} href="#nrClaimnTab" data-toggle="tab"> <span> NR Claim </span></a></li>
-                                <li id="filtersTabLink" className={this.state.currentActiveTab === "Deposit Claim" ? "active" : ""} ><a style={{ fontSize: '10px', display: this.state.selectedDocuments.includes('Deposit Claim') ? "block" : "none"  }} href="#depositClaimTab" data-toggle="tab"> <span> Deposit Claim </span></a></li>
+                                <li id="filtersTabLink" className={this.state.currentActiveTab === "Declaration" ? "active" : ""} ><a style={{ fontSize: '14px', color:"white", display: this.state.selectedDocuments.includes('Declaration') ? "block" : "none" }} href="#declarationTab" onClick= { ()=> this.setState({currentActiveTab: "Declaration"})} data-toggle="tab"> <span> Declaration </span></a></li>
+                                <li id="filtersTabLink" className={this.state.currentActiveTab === "NR Claim" ? "active" : ""} ><a style={{ fontSize: '14px', color:"white", display: this.state.selectedDocuments.includes('NR Claim') ? "block" : "none" }} href="#nrClaimnTab" onClick= { ()=> this.setState({currentActiveTab: "NR Claim"})} data-toggle="tab"> <span> NR Claim </span></a></li>
+                                <li id="filtersTabLink" className={this.state.currentActiveTab === "Deposit Claim" ? "active" : ""} ><a style={{ fontSize: '14px', color:"white", display: this.state.selectedDocuments.includes('Deposit Claim') ? "block" : "none"  }} href="#depositClaimTab" onClick= {()=> this.setState({currentActiveTab: "Deposit Claim"})} data-toggle="tab"> <span> Deposit Claim </span></a></li>
                             </ul>
                         </div>
-                        <div style={{ height: '450px'}} className="tab-content ui-tabcontentbody filetabs">
+                        <div style={{ display: "flex", flexFlow: "column", height: "450px"}} className="tab-content ui-tabcontentbody filetabs">
                             <div id={'declarationTab'} className={this.state.currentActiveTab === "Declaration" ? "tab-pane in active ui-fieldtable" : "tab-pane in ui-fieldtable"}>
                                 <div className="col-md-12">
-                                    <h3>Declaration Pipeline</h3>
-                                </div>
+                                    <h3 style={{ display: "flex", justifyContent: "center", minHeight: "100px"}}>Declaration Pipeline</h3>
+                                </div> 
+                                
                                 <div className="col-md-12">
                                     {!this.state.widget2Loading ? 
                                     <VerticalBarChart key="barChartWidget1" data={[..._.get(this.state, 'declarationBarCharts', [])]} labels={['Waiting Generation', 'Signature Pending', 'Signed-Ready Submission', 'Submission Failure']} stack="multiple" dataLabelsAttribute="riskName" 
@@ -717,7 +894,7 @@ class BusinessTransaction extends React.Component {
                             </div>
                             <div id={'nrClaimnTab'} className={this.state.currentActiveTab === "NR Claim" ? "tab-pane in active ui-fieldtable" : "tab-pane in ui-fieldtable"}>
                                 <div className="col-md-12">
-                                    <h3>NR Claim Pipeline</h3>
+                                    <h3 style={{ textAlign: "center", paddingTop: "20px", paddingBottom: "20px" }}>NR Claim Pipeline</h3>
                                 </div>
                                 <div className="col-md-12">
                                     {!this.state.widget2Loading ? 
@@ -734,7 +911,7 @@ class BusinessTransaction extends React.Component {
                             </div>
                             <div id={'depositClaimTab'}  className={this.state.currentActiveTab === "Deposit Claim" ? "tab-pane in active ui-fieldtable" : "tab-pane in ui-fieldtable"}>
                                 <div className="col-md-12">
-                                    <h3>Deposit Claim Pipeline</h3>
+                                    <h3 style={{ textAlign: "center", paddingTop: "20px", paddingBottom: "20px" }}>Deposit Claim Pipeline</h3>
                                 </div>
                                 <div className="col-md-12">
                                     {!this.state.widget2Loading ? 
@@ -748,179 +925,198 @@ class BusinessTransaction extends React.Component {
                                     <div className="loader">{utils.getLabelByID("Loading")}</div>
                                     }
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
-                    
-                    <div className="row">
-                        <div className="col-md-12 ">
+                    <Portlet title={"Business Transactions"} noCollapse={false}>
+                        <div className="form-group col-md-12">
+            
+                                <label style={{fontSize: "16px", marginRight: "20px", textTransform: "uppercase"}}>
+                                    <span className="caption-subject">Attention Items</span>
+                                </label>
+                                <label className="control-label">{utils.getLabelByID("Critical")}</label>
+                                {"  "}
+                                <button type="button" className="btn btn-danger_cus" style={{width: "70px", marginLeft: "10px", marginRight: "20px", borderRadius: "5px !important"}}
+                                    onClick={this.submitCriticalBtn.bind(this)}>
+                                        {console.log(_.get(_.find(this.state.attentionItems, {label:"Critical"}), 'value', 0))}
+                                        {_.get(_.find(this.state.attentionItems, {label:"Critical"}), 'value', 0)}
+                                </button>
 
-                            <Portlet title={"Important Attention Items"} noCollapse={false}>
-                                <div className="form-group col-md-12">
-                   
-                                            <label className="control-label">{utils.getLabelByID("Critical")}</label>
-                                            {"  "}
-                                            <button type="submit" className="btn btn-danger"
-                                                onClick={this.submitCriticalBtn.bind(this)}>
-                                                    {console.log(_.get(_.find(this.state.attentionItems, {label:"Critical"}), 'value', 0))}
-                                                    {_.get(_.find(this.state.attentionItems, {label:"Critical"}), 'value', 0)}
-                                            </button>
+                                {"  "}     
+                                <label className="control-label">{utils.getLabelByID("Warn")}</label>
+                                {"  "}
+                                <button type="button" className="btn btn-warning" style={{width: "70px", marginLeft: "10px", marginRight: "20px", borderRadius: "5px !important"}}
+                                    onClick={this.submitWarnBtn.bind(this)}>
+                                        {_.get(_.find(this.state.attentionItems, {label:"Warn"}), 'value', 0)}
+                                </button>
+                        </div>
+                        <div className="col-md-12" style={{fontSize: "16px", fontWeight: "600", marginLeft:"-35px", textTransform: "uppercase", marginTop: "10px", marginBottom: "15px"}}>
+                            <span className="caption-subject">DashBoard</span>
+                        </div>
+                        <div className="form-body" id="ApiListData">
+                                <div className="row">
+                                    <div className="col-md-12">
 
-                                            {"  "}     
-                                            <label className="control-label">{utils.getLabelByID("Warn")}</label>
-                                            {"  "}
-                                                <button type="button" className="btn btn-warning"
-                                                    onClick={this.submitWarnBtn.bind(this)}>
-                                                        {_.get(_.find(this.state.attentionItems, {label:"Warn"}), 'value', 0)}
-                                                </button>
+                                        <div className="row">                          
+                                            <div className="col-md-6">
+                                                <div className="form-group col-md-4">
+                                                    <label className="control-label">{utils.getLabelByID("Order No")}</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                    <Input
+                                                        divStyle={{ padding: '0px', top: '10px',
+                                                        position: 'absolute' }}
+                                                        errorIconStyle={{
+                                                        display:'none'
+                                                        }}
+                                                        status={(this.state.errors && this.state.errors.orderNo) ? "ERROR" : undefined}
+                                                        fieldname='orderNo'
+                                                        formname='Container'
+                                                        disabled={false}
+                                                        placeholder={utils.getLabelByID('')}
+                                                        state={this.state}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="form-group col-md-4">
+                                                <label className="control-label">{utils.getLabelByID("E-Commerce")}</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                    <Input
+                                                        divStyle={{ padding: '0px', top: '10px',
+                                                        position: 'absolute' }}
+                                                        errorIconStyle={{
+                                                        display:'none'
+                                                        }}
+                                                        status={(this.state.errors && this.state.errors.eCommOrgCode) ? "ERROR" : undefined}
+                                                        fieldname='eCommOrgCode'
+                                                        formname='Container'
+                                                        disabled={false}
+                                                        placeholder={utils.getLabelByID('')}
+                                                        state={this.state}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>    
 
-                                </div>
-                                <div className="col-md-12" style={{fontSize: "16px", fontWeight: "600", textTransform: "uppercase", marginLeft: "-15px", marginTop: "10px", marginBottom: "15px"}}>
-                                        <span className="caption-subject">DashBoard</span>
+                                        <div className="row">                          
+                                            <div className="col-md-6">
+                                                <div className="form-group col-md-4">
+                                                <label className="control-label">{utils.getLabelByID("Inovice No")}</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                    <Input
+                                                        divStyle={{ padding: '0px', top: '10px',
+                                                        position: 'absolute' }}
+                                                        errorIconStyle={{
+                                                        display:'none'
+                                                        }}
+                                                        status={(this.state.errors && this.state.errors.invoiceNo) ? "ERROR" : undefined}
+                                                        fieldname='invoiceNo'
+                                                        formname='Container'
+                                                        disabled={false}
+                                                        placeholder={utils.getLabelByID('')}
+                                                        state={this.state}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="form-group col-md-4">
+                                                <label className="control-label">{utils.getLabelByID("Declaration ID")}</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                    <Input
+                                                        divStyle={{ padding: '0px', top: '10px',
+                                                        position: 'absolute' }}
+                                                        errorIconStyle={{
+                                                        display:'none'
+                                                        }}
+                                                        status={(this.state.errors && this.state.errors.declarationNo) ? "ERROR" : undefined}
+                                                        fieldname='declarationNo'
+                                                        formname='Container'
+                                                        disabled={false}
+                                                        placeholder={utils.getLabelByID('')}
+                                                        state={this.state}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>  
+
+                                        <div className="form-actions right">
+                                            <div className="form-group col-md-12">
+                                                <div className="btn-toolbar pull-right">
+                                                <button type="submit" className="btn green"
+                                                        onClick={this.submitListBtn.bind(this)}>{utils.getLabelByID("Search")} </button>
+                                                {"  "}
+                                                <button type="button" className="btn default"
+                                                        onClick={this.clearFields}>{utils.getLabelByID("Clear")}</button>
+
+                                                </div>
+                                            </div>
+                                            </div>                     
                                     </div>
-                                <div className="form-body" id="ApiListData">
-                                        <div className="row">
-                                            <div className="col-md-12">
-
-                                                <div className="row">                          
-                                                    <div className="col-md-6">
-                                                        <div className="form-group col-md-4">
-                                                            <label className="control-label">{utils.getLabelByID("Order No")}</label>
-                                                        </div>
-                                                        <div className="form-group col-md-8">
-                                                            <Input
-                                                                divStyle={{ padding: '0px', top: '10px',
-                                                                position: 'absolute' }}
-                                                                errorIconStyle={{
-                                                                display:'none'
-                                                                }}
-                                                                status={(this.state.errors && this.state.errors.orderNo) ? "ERROR" : undefined}
-                                                                fieldname='orderNo'
-                                                                formname='Container'
-                                                                disabled={false}
-                                                                placeholder={utils.getLabelByID('')}
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <div className="form-group col-md-4">
-                                                        <label className="control-label">{utils.getLabelByID("E-Commerce")}</label>
-                                                        </div>
-                                                        <div className="form-group col-md-8">
-                                                            <Input
-                                                                divStyle={{ padding: '0px', top: '10px',
-                                                                position: 'absolute' }}
-                                                                errorIconStyle={{
-                                                                display:'none'
-                                                                }}
-                                                                status={(this.state.errors && this.state.errors.eCommOrgCode) ? "ERROR" : undefined}
-                                                                fieldname='eCommOrgCode'
-                                                                formname='Container'
-                                                                disabled={false}
-                                                                placeholder={utils.getLabelByID('')}
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>    
-
-                                                <div className="row">                          
-                                                    <div className="col-md-6">
-                                                        <div className="form-group col-md-4">
-                                                        <label className="control-label">{utils.getLabelByID("Inovice No")}</label>
-                                                        </div>
-                                                        <div className="form-group col-md-8">
-                                                            <Input
-                                                                divStyle={{ padding: '0px', top: '10px',
-                                                                position: 'absolute' }}
-                                                                errorIconStyle={{
-                                                                display:'none'
-                                                                }}
-                                                                status={(this.state.errors && this.state.errors.invoiceNo) ? "ERROR" : undefined}
-                                                                fieldname='invoiceNo'
-                                                                formname='Container'
-                                                                disabled={false}
-                                                                placeholder={utils.getLabelByID('')}
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <div className="form-group col-md-4">
-                                                        <label className="control-label">{utils.getLabelByID("Declaration ID")}</label>
-                                                        </div>
-                                                        <div className="form-group col-md-8">
-                                                            <Input
-                                                                divStyle={{ padding: '0px', top: '10px',
-                                                                position: 'absolute' }}
-                                                                errorIconStyle={{
-                                                                display:'none'
-                                                                }}
-                                                                status={(this.state.errors && this.state.errors.declarationNo) ? "ERROR" : undefined}
-                                                                fieldname='declarationNo'
-                                                                formname='Container'
-                                                                disabled={false}
-                                                                placeholder={utils.getLabelByID('')}
-                                                                state={this.state}
-                                                                actionHandler={this.generalHandler}
-                                                                className="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>  
-
-                                                <div className="form-actions right">
-                                                    <div className="form-group col-md-12">
-                                                        <div className="btn-toolbar pull-right">
-                                                        <button type="submit" className="btn green"
-                                                                onClick={this.submitListBtn.bind(this)}>{utils.getLabelByID("Search")} </button>
-                                                        {"  "}
-                                                        <button type="button" className="btn default"
-                                                                onClick={this.clearFields}>{utils.getLabelByID("Clear")}</button>
-
-                                                        </div>
-                                                    </div>
-                                                    </div>                     
+                                </div>
+                            </div>
+                            <div className="portlet light bordered sdg_portlet">
+                                <div className="portlet-body">
+                                    <Row>
+                                        <div className="form-actions right">
+                                            <div className="form-group col-md-12">
+                                                <div className="btn-toolbar pull-right" style={{marginBottom:"-15px", marginRight:"-15px"}}>
+                                                    <button type="submit" className="btn red btn-outline btn-circle" onClick={this.exportBtnHandler}>
+                                                        <i className="fa fa-share" style={{fontSize: "14px", fontWeight: "700", marginRight:"5px"}} aria-hidden="true"></i>                                                        
+                                                        <span className="hidden-xs">export</span>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-
+                                    </Row>                            
+                                    {!this.state.widget3Loading ? 
+                                    <Table fontclass=""
+                                        gridColumns={utils.getGridColumnByName("BusinessTransaction")}
+                                        gridData={this.state.businessTransDataList}
+                                        totalRecords={this.state.totalRecords}
+                                        searchCallBack={this.searchCallBack}
+                                        pageSize={20}
+                                        pagination={true} pageChanged={this.pageChanged}
+                                        export={false}
+                                        search={true}
+                                        activePage={this.state.currentPageNo}
+                                    />
+                                    :
+                                    <div className="loader">{utils.getLabelByID("Loading")}</div>
+                                    }
+                                </div>
+                            </div>
+                            <Portlet title={""} noCollapse={true}>
+                                
                             </Portlet>
-                        </div>
-                    </div>
-
-                    <Portlet title={utils.getLabelByID("Business Transactions")} isPermissioned={true}
-                        actions={this.state.actions}>
-                        {!this.state.widget3Loading ? 
-                        <Table fontclass=""
-                            gridColumns={utils.getGridColumnByName("BusinessTransaction")}
-                            gridData={this.state.businessTransDataList}
-                            totalRecords={this.state.totalRecords}
-                            searchCallBack={this.searchCallBack}
-                            pageSize={10}
-                            pagination={true} pageChanged={this.pageChanged}
-                            export={false}
-                            search={true}
-                            activePage={this.state.currentPageNo}
-                        />
-                        :
-                        <div className="loader">{utils.getLabelByID("Loading")}</div>
-                        }
                     </Portlet>
+
+                    {/* <Portlet title={utils.getLabelByID("Business Transactions")} isPermissioned={true}
+                        actions={this.state.actions}>
+                        
+                    </Portlet> */}
                     <ModalBox isOpen={this.state.isOpen}>
-                        <Portlet title={utils.getLabelByID("Errors")} isPermissioned={true}>
+                        <Portlet title={utils.getLabelByID("Errors")} isPermissioned={true}>                            
+                            <Row>
+                                <AnchorComp
+                                    anchotDisplayName = {"SOAP Payload"}
+                                    invokeAnchorButtonhandlar = {this.soapPayloadHandler}
+                                />
+                            </Row>
                             <Row>
                                 <Label text="Exceptions" />
-                            </Row>
-                            
+                            </Row>                            
                             <Row>
                                 <Table fontclass=""
                                     gridColumns={utils.getGridColumnByName("BusinessTransactionError")}

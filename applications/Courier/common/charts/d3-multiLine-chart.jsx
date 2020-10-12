@@ -31,8 +31,8 @@ class MultiLineChart extends Component {
     componentDidMount() {
         // set the dimensions and margins of the graph
         var margin = { top: 10, right: 100, bottom: 30, left: 30 },
-            width = 540 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
+            width = 520 - margin.left - margin.right,
+            height = 220 - margin.top - margin.bottom;
 
         // append the svg object to the body of the page
         var svg = d3.select("#my_datavizLine")
