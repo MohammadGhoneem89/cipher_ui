@@ -71,48 +71,48 @@ class BusinessTransaction extends React.Component {
                 {
                     "fromState" : "Waiting Generation",
                     "toState" : "Signature Pending",
-                    "warnInterval" : 1,
-                    "criticalInterval" : 7,
+                    "warnInterval" : 180,
+                    "criticalInterval" : 300,
                     "isMonitor" : true,
                     "isOptional" : false
                 },
                 {
                     "fromState" : "Signature Pending",
                     "toState" : "Signed-Ready Submission",
-                    "warnInterval" : 1,
-                    "criticalInterval" : 7,
+                    "warnInterval" : 180,
+                    "criticalInterval" : 300,
                     "isMonitor" : true,
                     "isOptional" : false
                 },
                 {
                     "fromState" : "Signed-Ready Submission",
                     "toState" : "Submission Failure",
-                    "warnInterval" : 1,
-                    "criticalInterval" : 7,
+                    "warnInterval" : 180,
+                    "criticalInterval" : 300,
                     "isMonitor" : true,
                     "isOptional" : false
                 },
                 {
                     "fromState" : "Signed-Ready Submission",
                     "toState" : "Submission Success",
-                    "warnInterval" : 1,
-                    "criticalInterval" : 7,
+                    "warnInterval" : 180,
+                    "criticalInterval" : 300,
                     "isMonitor" : false,
                     "isOptional" : false
                 },
                 {
                     "fromState" : "Submission Failure",
                     "toState" : "Waiting Generation",
-                    "warnInterval" : 1,
-                    "criticalInterval" : 7,
+                    "warnInterval" : 180,
+                    "criticalInterval" : 300,
                     "isMonitor" : true,
                     "isOptional" : true
                 },
                 {
                     "fromState" : "Submission Success",
                     "toState" : "Pending Status",
-                    "warnInterval" : 7,
-                    "criticalInterval" : 1,
+                    "warnInterval" : 86400,
+                    "criticalInterval" : 172800,
                     "isMonitor" : true,
                     "isOptional" : true
                 }
@@ -151,7 +151,30 @@ class BusinessTransaction extends React.Component {
                     "name": "Aramex",
                     "imageURL": "/assets/Resources/images/aramex_icon.png"
                 }
-              ]
+              ],
+            demoIntervalTime:[
+                [2, 0], // 1  mins
+                [2, 1], // 2  hours
+                [5, 0], // 3  mins
+                [2, 0], // 4  mins
+                [2, 1], // 5 hours
+                [2, 1], // 6 hours  
+                [2, 0], // 7 mins
+                [2, 1], // 8 hours
+                [2, 0], // 9 mins
+                [2, 1], // 10 hours
+                [2, 1], // 11 hours
+                [20, 1], // 12 hours
+                [2, 1], // 13 hours
+                [2, 1], // 14 hours
+                [2, 0], // 15 mins
+                [2, 0], // 16 mins
+                [2, 1], // 17 hours
+                [2, 1], // 18  hours 
+                [2, 0], // 19 mins
+                [2, 1], // 20 hours
+                [1, 2], // 21 days
+            ]
 
         };
         this.generalHandler = gen.generalHandler.bind(this);
@@ -381,7 +404,7 @@ class BusinessTransaction extends React.Component {
             let businessTransWarnList = [];
             console.log("next Props businessTransDataList = ", nextProps.widget3.data.searchResult);
             let transactionMonitoringScale = _.cloneDeep(this.state.transactionMonitoringScale);
-
+            let index = 0;
             nextProps.widget3.data.searchResult.forEach((item) => {
             //    searchResult.lenth()
                 console.log("items === ", item);
@@ -399,13 +422,14 @@ class BusinessTransaction extends React.Component {
                     }
                 }
                 console.log("target ============ ", target)
-                let format_arr = ["hours", "minutes", "days"];
-                let lastDate = moment().subtract(parseInt((Math.random() * 10) + 1),format_arr[parseInt((Math.random() * 3))]).format("MM/DD/YYYY HH:mm:ss");  // dummy date
-
+                let format_arr = ["minutes", "hours", "days"];
+         //       let lastDate = moment().subtract(parseInt((Math.random() * 10) + 1),format_arr[parseInt((Math.random() * 3))]).format("MM/DD/YYYY HH:mm:ss");  // dummy date
+                let lastDate = moment().subtract(parseInt(this.state.demoIntervalTime[index][0]),format_arr[this.state.demoIntervalTime[index][1]]).format("MM/DD/YYYY HH:mm:ss");  // dummy date
+                index++;
               //  let lastDate = moment.unix(item.lastActivityDateTime).format("MM/DD/YYYY HH:mm:ss") // actual logic
 
                 let currTime = moment().format("MM/DD/YYYY HH:mm:ss")
-                let seconds = moment(currTime).diff(moment(lastDate), "days")
+                let seconds = moment(currTime).diff(moment(lastDate), "seconds")
 
                 let years = moment(currTime).diff(moment(lastDate), "years")
                 let months = moment(currTime).diff(moment(lastDate), "months")
@@ -737,19 +761,10 @@ class BusinessTransaction extends React.Component {
                                         typeName="processorData"
                                         dataSource={_.get(this.state, "jsonData", {})}
                                         actionHandler={this.processorHandler}
-                                    />
+                                    /> 
                             </div>
                         </div>
-                    </div>
-      
-                    <div className="row">
-                        <div className="col-md-12">
-                            
-                            
-                        </div>
-                    </div>
-
-                    
+                    </div>                    
 
                     {/* <div className="row"  style={{ marginTop:"20px"}}>
                         <div className="col-md-6 form-group" style={{fontSize: "16px", fontWeight: "700", textTransform: "uppercase"}}>
@@ -858,11 +873,12 @@ class BusinessTransaction extends React.Component {
                                 <li id="filtersTabLink" className={this.state.currentActiveTab === "Deposit Claim" ? "active" : ""} ><a style={{ fontSize: '14px', color:"white", display: this.state.selectedDocuments.includes('Deposit Claim') ? "block" : "none"  }} href="#depositClaimTab" onClick= {()=> this.setState({currentActiveTab: "Deposit Claim"})} data-toggle="tab"> <span> Deposit Claim </span></a></li>
                             </ul>
                         </div>
-                        <div style={{ height: '500px'}} className="tab-content ui-tabcontentbody filetabs">
+                        <div style={{ display: "flex", flexFlow: "column", height: "450px"}} className="tab-content ui-tabcontentbody filetabs">
                             <div id={'declarationTab'} className={this.state.currentActiveTab === "Declaration" ? "tab-pane in active ui-fieldtable" : "tab-pane in ui-fieldtable"}>
                                 <div className="col-md-12">
-                                    <h3 style={{ textAlign: "center", paddingTop: "20px", paddingBottom: "20px" }}>Declaration Pipeline</h3>
-                                </div>
+                                    <h3 style={{ display: "flex", justifyContent: "center", minHeight: "100px"}}>Declaration Pipeline</h3>
+                                </div> 
+                                
                                 <div className="col-md-12">
                                     {!this.state.widget2Loading ? 
                                     <VerticalBarChart key="barChartWidget1" data={[..._.get(this.state, 'declarationBarCharts', [])]} labels={['Waiting Generation', 'Signature Pending', 'Signed-Ready Submission', 'Submission Failure']} stack="multiple" dataLabelsAttribute="riskName" 
@@ -909,7 +925,6 @@ class BusinessTransaction extends React.Component {
                                     <div className="loader">{utils.getLabelByID("Loading")}</div>
                                     }
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
