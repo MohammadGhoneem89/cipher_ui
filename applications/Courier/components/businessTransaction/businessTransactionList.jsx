@@ -55,6 +55,7 @@ class BusinessTransaction extends React.Component {
             nrClaimBarCharts: [],
             depClaimBarCharts: [],
             tilesData: {},
+            businessTransOrigList : [],
             businessTransDataList : [],
             businessTransCriticalList : [],
             businessTransWarnList : [],
@@ -65,6 +66,8 @@ class BusinessTransaction extends React.Component {
             businessTransDataError:[],
             monitoringInterval:undefined,
             currentActiveTab: 'Declaration',
+            criticalBtn: false,
+            warnBtn: false,
             transactionMonitoringScale : [
                 {
                     "fromState" : "Waiting Generation",
@@ -527,6 +530,7 @@ class BusinessTransaction extends React.Component {
             //     return obj;
             // })
             this.setState({
+                businessTransOrigList : businessTransDataList,
                 businessTransDataList,
                 businessTransCriticalList,
                 businessTransWarnList,
@@ -655,27 +659,87 @@ class BusinessTransaction extends React.Component {
     }
 
     submitCriticalBtn(){
-        this.setState({
-            widget3Loading: true,
-            businessTransDataList : this.state.businessTransCriticalList
-        })
+        
+
+        let critical = !this.state.criticalBtn;
+        let warn = this.state.warnBtn;
+
+        if(!critical && !warn){
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : this.state.businessTransOrigList,
+                criticalBtn : critical
+            })
+        }
+        else if(critical && warn){
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : _.cloneDeep(this.state.businessTransCriticalList).concat(_.cloneDeep(this.state.businessTransWarnList)),
+                criticalBtn : critical
+            })
+        }
+        else if(!critical && warn){
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : this.state.businessTransWarnList,
+                criticalBtn : critical
+            })
+        }
+        else{
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : this.state.businessTransCriticalList,
+                criticalBtn : critical
+            })
+        }
 
         setTimeout(() => {
             this.setState({
-                widget3Loading: false
+                widget3Loading: false,
+                criticalBtn:critical
             })
         }, 1000);
     //    this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3-processor-critical", "listing", "critical"))     
     }
     submitWarnBtn(){
-        this.setState({
-            widget3Loading: true,
-            businessTransDataList : this.state.businessTransWarnList
-        })
+
+        let critical = this.state.criticalBtn;
+        let warn = !this.state.warnBtn;
+        if(!critical && !warn){
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : this.state.businessTransOrigList,
+                warnBtn : warn
+            })
+        }
+        else if(critical && warn){
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : _.cloneDeep(this.state.businessTransCriticalList).concat(_.cloneDeep(this.state.businessTransWarnList)),
+                warnBtn : warn
+            })
+        }
+        else if(!critical && warn){
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : this.state.businessTransWarnList,
+                warnBtn : warn
+            })
+        }
+        else{
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : this.state.businessTransCriticalList,
+                warnBtn : warn
+            })
+        }
+
+        
 
         setTimeout(() => {
             this.setState({
-                widget3Loading: false
+                widget3Loading: false,
+                warnBtn: warn
             })
         }, 1000);
     //    this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3-processor-warning", "listing", "warn"))     
@@ -934,19 +998,19 @@ class BusinessTransaction extends React.Component {
                                 </label>
                                 <label className="control-label">{utils.getLabelByID("Critical")}</label>
                                 {"  "}
-                                <button type="button" className="btn btn-danger_cus" style={{width: "70px", marginLeft: "10px", marginRight: "20px", borderRadius: "5px !important"}}
+                                <label type="button" className={!this.state.criticalBtn ? "btn btn-danger_cus" : "btn btn-danger_cus active"} style={{width: "70px", marginLeft: "10px", marginRight: "20px"}}
                                     onClick={this.submitCriticalBtn.bind(this)}>
                                         {console.log(_.get(_.find(this.state.attentionItems, {label:"Critical"}), 'value', 0))}
                                         {_.get(_.find(this.state.attentionItems, {label:"Critical"}), 'value', 0)}
-                                </button>
+                                </label>
 
                                 {"  "}     
                                 <label className="control-label">{utils.getLabelByID("Warn")}</label>
                                 {"  "}
-                                <button type="button" className="btn btn-warning" style={{width: "70px", marginLeft: "10px", marginRight: "20px", borderRadius: "5px !important"}}
+                                <label type="button" className={!this.state.warnBtn ? "btn btn-warning" : "btn btn-warning active" } style={{width: "70px", marginLeft: "10px", marginRight: "20px", borderRadius: "5px !important"}}
                                     onClick={this.submitWarnBtn.bind(this)}>
                                         {_.get(_.find(this.state.attentionItems, {label:"Warn"}), 'value', 0)}
-                                </button>
+                                </label>
                         </div>
                         <div className="col-md-12" style={{fontSize: "16px", fontWeight: "600", marginLeft:"-35px", textTransform: "uppercase", marginTop: "10px", marginBottom: "15px"}}>
                             <span className="caption-subject">DashBoard</span>
