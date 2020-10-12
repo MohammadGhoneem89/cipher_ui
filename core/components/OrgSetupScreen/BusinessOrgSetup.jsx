@@ -22,7 +22,8 @@ class BusinessOrgSetup extends React.Component {
             status: "No Action",
             groupTypeListUI: [],
             groupTypeListAPI: [],
-            billing: []
+            billing: [],
+            entityList: []
         };
 
         this.submit = this.submit.bind(this);
@@ -33,22 +34,9 @@ class BusinessOrgSetup extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actions.generalProcess(constants.getEntityDetail, requestCreator.createEntityDetailRequest(this.props.orgID));
-        if (!this.props.entityNames.length > 0) {
-            this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({
-                "currentPageNo": 1,
-                "pageSize": 1
-            }));
-        }
-        if (!this.props.fileTemplateNames.length > 0) {
-            this.props.actions.generalProcess(constants.getFileTemplateList, requestCreator.createFileTemplateListRequest({
-                "currentPageNo": 1,
-                "pageSize": 1
-            }));
-        }
-
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES', 'First_Screens', 'currency', 'cycle']));
-        this.props.actions.generalProcess(constants.groupTypeList);
+        this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({}));
+        this.setState({ isLoading: true });
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES']));
     }
 
     componentWillUnmount() {
@@ -56,40 +44,16 @@ class BusinessOrgSetup extends React.Component {
 
     componentWillReceiveProps(nextProps) {
 
-        if (nextProps.entityDetail && nextProps.entityNames && nextProps.fileTemplateNames && nextProps.typeData && nextProps.groupTypeList) {
-            //Add permissions
-            console.log(JSON.stringify(nextProps.entityDetail))
-            let entityDetail = this.props.orgID ? nextProps.entityDetail : {
-                ...this.state.entityDetail,
-                actions: nextProps.entityDetail.actions
-            };
+        if(nextProps.entityList){
+            console.log(nextProps.entityList.data.searchResult);
+            this.setState({entityList: nextProps.entityList.data.searchResult})
+        }
 
-            let sum = 0;
-            let hits = 0;
-            let currency = nextProps.entityDetail.currency;
-            let list = _.get(nextProps, 'entityDetail.billing', [])
-            list.forEach((elem, index) => {
-                sum = sum + parseFloat(elem.amount)
-                hits = hits + parseFloat(elem.hits)
-            })
-            console.log(`${sum} ${currency}`)
-
+        if (nextProps.typeData) {
 
             this.setState({
-                orgID: this.props.orgID,
-                entityDetail: entityDetail,
-                readOnly: nextProps.readOnly,
-                entityNames: nextProps.entityNames,
                 typeData: nextProps.typeData,
                 isLoading: false,
-                from: nextProps.entityDetail.from,
-                to: nextProps.entityDetail.to,
-                billing: list,
-                hits: hits,
-                totalBill: `${sum} ${currency}`,
-                groupTypeListUI: nextProps.groupTypeList.UI || [],
-                groupTypeListAPI: nextProps.groupTypeList.API || []
-
             })
         }
     }
@@ -100,19 +64,19 @@ class BusinessOrgSetup extends React.Component {
     }
 
     submit(data) {
-        console.log('working');
-        if (this.state.orgID) {
-            data._id = this.state.orgID; //Hack to avoid replication.
+        // console.log('working');
+        // if (this.state.orgID) {
+        //     data._id = this.state.orgID; //Hack to avoid replication.
 
-            return this.props.actions.reduxFormProcess(constants.entityUpdate, requestCreator.createEntityUpdateRequest(data))
-                .catch((error) => {
-                    throw new SubmissionError(error);
-                });
-        } else
-            return this.props.actions.reduxFormProcess(constants.entityInsert, requestCreator.createEntityInsertRequest(data))
-                .catch((error) => {
-                    throw new SubmissionError(error);
-                });
+        //     return this.props.actions.reduxFormProcess(constants.entityUpdate, requestCreator.createEntityUpdateRequest(data))
+        //         .catch((error) => {
+        //             throw new SubmissionError(error);
+        //         });
+        // } else
+        //     return this.props.actions.reduxFormProcess(constants.entityInsert, requestCreator.createEntityInsertRequest(data))
+        //         .catch((error) => {
+        //             throw new SubmissionError(error);
+        //         });
     }
 
     render() {
@@ -142,7 +106,7 @@ class BusinessOrgSetup extends React.Component {
                 <div>
                     <EntitySetupForm onSubmit={this.submit} initialValues={this.state.entityDetail}
                         containerState={this.state} containerProps={this.props} welcome={welcome}
-                        welcomeResp={this.props.welcomeResp} />
+                        welcomeResp={this.props.welcomeResp} entityList={this.state.entityList} />
                 </div>
             );
         } else {
@@ -152,17 +116,17 @@ class BusinessOrgSetup extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    let orgID = ownProps.params.orgID;
 
     return {
-        entityDetail: state.app.entityDetail.data,
-        orgID: orgID,
-        entityNames: state.app.entityList.data.typeData.entityNames,
-        fileTemplateNames: state.app.fileTemplateList.data.typeData.fileTemplateNames,
+        // entityDetail: state.app.entityDetail.data,
+        // orgID: orgID,
+        // entityNames: state.app.entityList.data.typeData.entityNames,
+        // fileTemplateNames: state.app.fileTemplateList.data.typeData.fileTemplateNames,
         typeData: state.app.typeData.data,
-        groupTypeList: _.get(state.app, 'groupTypeList.data', undefined),
-        readOnly: ownProps.params.mode === "view",
-        welcomeResp: _.get(state.app, 'createOnDemandWelCome.data', undefined),
+        entityList: state.app.entityList,
+        // groupTypeList: _.get(state.app, 'groupTypeList.data', undefined),
+        // readOnly: ownProps.params.mode === "view",
+        // welcomeResp: _.get(state.app, 'createOnDemandWelCome.data', undefined),
     };
 }
 

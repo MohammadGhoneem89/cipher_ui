@@ -201,6 +201,7 @@ export default (<Router history={browserHistory}>
     <Route path="/orgSearch" component={OrgSearch} />
     <Route path="/orgSetup" component={OrgSetup} />
     <Route path="/BusinessOrgSetup" component={BusinessOrgSetup} />
+    <Route path="/BusinessOrgSetup/:orgID" component={BusinessOrgSetup} />
     <Route path="/BusinessOrgSetup/:mode/:orgID" component={BusinessOrgSetup} />
     <Route path="/orgSetup/:mode/:orgID" component={OrgSetup} />
     <Route path="/eventList" component={eventList} />

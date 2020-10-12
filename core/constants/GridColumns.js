@@ -1406,20 +1406,32 @@ module.exports = {
   ],
   tradeLicenses: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
-    { alias: "code", key: "code", type: "string" },
-    { alias: "name", key: "value", type: "string" },
+    { alias: "Issuing Authority", key: "IssueAuth", type: "string" },
+    { alias: "Issue Date", key: "issueDate", type: "string" },
+    { alias: "Expiry Date", key: "expiryDate", type: "string" },
+    { alias: "Renewal Date", key: "renewalDate", type: "string" },
     { alias: "action", key: "actions", type: "action" }
   ],
   Facilities: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
-    { alias: "type", key: "FacilityType", type: "string" },
-    { alias: "name", key: "Mode", type: "string" },
+    { alias: "Facility Type", key: "FacilityType", type: "string" },
+    { alias: "Facility Name", key: "FacilityName", type: "string" },
+    { alias: "Status", key: "Status", type: "string" },
+    { alias: "Mode", key: "Mode", type: "string" },
     { alias: "action", key: "actions", type: "action" }
   ],
   BusinessTypes: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
-    { alias: "type", key: "type", type: "string" },
+    // { alias: "type", key: "type", type: "string" },
     { alias: "name", key: "value", type: "string" },
+    { alias: "action", key: "actions", type: "action" }
+  ],
+  LinkedBusinessCode: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    // { alias: "type", key: "type", type: "string" },
+    { alias: "Business Code", key: "businessCode", type: "string" },
+    { alias: "Resgistration Category", key: "value", type: "string" },
+    { alias: "Business Category", key: "label", type: "string" },
     { alias: "action", key: "actions", type: "action" }
   ],
   BusinessTransaction: [
