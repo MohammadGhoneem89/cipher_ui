@@ -1438,5 +1438,14 @@ module.exports = {
     { alias: "S.No", key: "", type: "serialNo" },
     { alias: "Code", key: "errorCode", type: "string" },
     { alias: "Message", key: "errorDescription", type: "string" }
-  ]
+  ],
+  WidgetList: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "", key: "id", type: "hiddenID" },
+    { alias: "Widget Name", key: "widgetName", type: "string" },
+    { alias: "Widget Caption", key: "widgetCaption", type: "string" },
+    { alias: "Widget Type", key: "widgetType", type: "string" },
+    { alias: "Status", key: "status", type: "statusBox" },
+    { alias: "Action", key: "action", type: "action" },
+  ],
 };
