@@ -947,6 +947,22 @@ class CreateWidget extends React.Component {
         // this.render();
     }
 
+    saveGraph() {
+        const { body } = this.state;
+        let widgetPayload = JSON.parse(this.state.body.response);
+        let obj = {
+            widgetName: body.widgetName,
+            widgetType: widgetPayload.widgetData.widgetType,
+            widgetCaption: body.widgetCaption,
+            status: 'Active',
+            widgetEndpoint: body.widgetEndpoint,
+            toggleValues: [body.label1, body.label2]
+        }
+        console.log('OBJ', obj);
+
+        this.props.actions.generalProcess(constants.addWidgets, obj);
+    }
+
     graphTypeHandler = (formname, fieldname, type, e) => {
         console.log(formname, fieldname, type, e);
         if (type == "textbox" || type == "radiolist" || type == "combobox" || type == "textarea") {
@@ -1012,7 +1028,7 @@ class CreateWidget extends React.Component {
         if (!this.state.isLoading)
             return (
                 <Wrapper title="E-Commerce Dashboard">
-                    <Portlet title={'Widget Mk'}>
+                    <Portlet title={'Widget Creator'}>
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="col-md-4"><label>Widget ID</label></div>
@@ -1022,7 +1038,7 @@ class CreateWidget extends React.Component {
                                         status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
                                         fieldname='passportNo'
                                         // placeholder={utils.getLabelByID('Passport Number*')}
-                                        formname='editBody'
+                                        formname='body'
                                         columns='12'
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1035,10 +1051,10 @@ class CreateWidget extends React.Component {
                                 <div className="col-md-8">
                                     <Input
                                         divStyle={{ padding: '0' }}
-                                        status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
-                                        fieldname='passportNo'
+                                        status={(this.state.errors && this.state.errors.widgetName) ? "ERROR" : undefined}
+                                        fieldname='widgetName'
                                         // placeholder={utils.getLabelByID('Passport Number*')}
-                                        formname='editBody'
+                                        formname='body'
                                         columns='12'
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1046,7 +1062,7 @@ class CreateWidget extends React.Component {
                                     />
                                 </div>
                             </div>
-                            <div style={{ marginTop: '20px' }} className="col-md-12">
+                            <div style={{ marginBottom: '20px' }} className="col-md-12">
                                 <div className="col-md-2"><label>Graph Type</label></div>
                                 <div style={{ display: 'flex', alignItems: 'center' }} className="col-md-10">
                                     <div className="scroll-icons">
@@ -1090,7 +1106,7 @@ class CreateWidget extends React.Component {
                                     <Input
                                         divStyle={{ padding: '0' }}
                                         status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
-                                        fieldname='caption'
+                                        fieldname='widgetCaption'
                                         // placeholder={utils.getLabelByID('Passport Number*')}
                                         formname='body'
                                         columns='12'
@@ -1105,10 +1121,10 @@ class CreateWidget extends React.Component {
                                 <div className="col-md-8">
                                     <Input
                                         divStyle={{ padding: '0' }}
-                                        status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
-                                        fieldname='passportNo'
+                                        status={(this.state.errors && this.state.errors.widgetEndpoint) ? "ERROR" : undefined}
+                                        fieldname='widgetEndpoint'
                                         // placeholder={utils.getLabelByID('Passport Number*')}
-                                        formname='editBody'
+                                        formname='body'
                                         columns='12'
                                         state={this.state}
                                         actionHandler={this.generalHandler}
@@ -1127,7 +1143,7 @@ class CreateWidget extends React.Component {
                                     <label htmlFor="">Label 1</label>
                                     <Input
                                         divStyle={{ padding: '0' }}
-                                        status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
+                                        status={(this.state.errors && this.state.errors.label1) ? "ERROR" : undefined}
                                         fieldname='label1'
                                         // placeholder={utils.getLabelByID('Passport Number*')}
                                         formname='body'
@@ -1142,7 +1158,7 @@ class CreateWidget extends React.Component {
                                     <label htmlFor="">Label 2</label>
                                     <Input
                                         divStyle={{ padding: '0' }}
-                                        status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
+                                        status={(this.state.errors && this.state.errors.label2) ? "ERROR" : undefined}
                                         fieldname='label2'
                                         // placeholder={utils.getLabelByID('Passport Number*')}
                                         formname='body'
@@ -1154,10 +1170,16 @@ class CreateWidget extends React.Component {
                                 </div>
                                 }
                             </div>
-                            <div className="col-md-2">
+                            <div style={{
+                                marginLeft: '15px',
+                                marginTop: '10px'
+                            }} className="col-md-1">
                                 <label>Response</label>
                             </div>
-                            <div className="col-md-10">
+                            <div style={{
+                                marginLeft: '100px',
+                                width: '920px'
+                            }} className="col-md-9">
                                 <TextArea
                                     divStyle={{ padding: '0px' }}
                                     status={(this.state.errors && this.state.errors.response) ? "ERROR" : undefined}
@@ -1178,6 +1200,9 @@ class CreateWidget extends React.Component {
                             <div style={{ display: 'flex', justifyContent: 'flex-end' }} className="col-md-12">
                                 <div style={{ marginTop: '25px' }}>
                                     <button className="btn btn-primary" onClick={() => this.renderGraph()}>Preview</button>
+                                </div>
+                                <div style={{ marginTop: '25px' }}>
+                                    <button className="btn btn-primary" onClick={() => this.saveGraph()}>Save</button>
                                 </div>
                             </div>
                         </div>
@@ -1675,10 +1700,10 @@ class CreateWidget extends React.Component {
                         </div>
                     </div> */}
                     <div className="row">
-                        <div className="">
+                        <div className="" style={{display: 'flex', justifyContent: 'center'}}>
                             <div className="col-md-6">
                                 {this.state.widget5 && !this.state.widget5isLoading &&
-                                    <Portlet title={this.state.body.caption} noCollapse={false}>
+                                    <Portlet title={this.state.body.widgetCaption} noCollapse={false}>
                                         <div className="refresh-img-div">
                                             {this.state.contentToggle && <div className="content-toggle">
                                                 <label htmlFor="">{this.state.body.label1}</label>

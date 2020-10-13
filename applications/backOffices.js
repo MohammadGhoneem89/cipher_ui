@@ -1,6 +1,5 @@
 const backOffices = {
     baseUrl: "http://23.97.138.116:20001",
-    blockChainURL: "http://23.97.138.116:20001",
     webSocketURL: "ws://23.97.138.116:20001/Socket",
     repostActionURL: "http://23.97.138.116:20001/API",
     blockChainViewerURL: "http://23.97.138.116:20001",

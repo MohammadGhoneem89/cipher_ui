@@ -7,18 +7,21 @@ import Login from "../../core/components/AuthenticationScreens/Login.jsx";
 import OrderDetails from "./components/orderDetails/orderDetailsContainer.jsx";
 import orderlist from "./components/orderDetails/orderlist.jsx";
 import Dashboard from "./components/orderDetails/dashboard.jsx";
+import DynamicDashboardCreator from "./components/dashboards/dynamicDashboardCreator.jsx";
 import FileList from "./components/Files/FileList.jsx";
 import FileData from "./components/Files/FileData.jsx";
 import EcommerceDashboard from './components/dashboards/ecommerceDashboard.jsx';
 import createWidget from './components/addWidget/createWidget.jsx';
 import BusinessTransactionList from './components/businessTransaction/businessTransactionList.jsx';
 import orderlistMock from "./components/order_Mockup/orderlist.jsx";
+import widgetList from './components/addWidget/widgetList.jsx';
 
 
 let authRoutes = <div>
   <Route path="courier/orderDetails" component={OrderDetails} />
   <Route path="courier/orderDetails/:id" component={OrderDetails} />
   <Route path="courier/dashboard" component={Dashboard} />
+  <Route path="courier/createDashboard" component={DynamicDashboardCreator} />
   <Route path="courier/orderlist" component={orderlist} />
   <Route path="courier/fileList" component={FileList} />
   <Route path="courier/fileData/:id" component={FileData} />
@@ -26,6 +29,7 @@ let authRoutes = <div>
   <Route path="courier/createWidget" component={createWidget} />
   <Route path="courier/businessTransactionMonitoring" component={BusinessTransactionList} />
   <Route path="courier/orderlistmock" component={orderlistMock} />
+  <Route path="courier/widgetList" component={widgetList} />
 </div>;
 
 let unAuthRoutes = <div>
