@@ -1844,3 +1844,20 @@ text.subunit-label {
       }
       
 /* World Heat Chart ends */
+
+.monitoringTab{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 80%;
+}
+
+.monitoringHeading{
+    display: flex !important;
+    justify-content: center;
+    min-height: 20%;
+    font-size: 25px;
+    font-weight: 700;
+    padding-top: 15px;
+    padding-bottom: 15px
+}
