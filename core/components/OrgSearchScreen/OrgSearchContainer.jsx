@@ -1,6 +1,6 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import * as actions from '../../actions/generalAction';
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
@@ -14,7 +14,7 @@ class OrgSearchContainer extends React.Component {
     super(props, context);
     this.submit = this.submit.bind(this);
 
-  
+
     this.state = {
       filterCriteria: undefined,
       entityList: undefined,
@@ -39,8 +39,26 @@ class OrgSearchContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.entityList) {
+      let list = nextProps.entityList.data.searchResult.map(e => {
+        let view = {
+          "value": "1003",
+          "type": "pageAction",
+          "label": "Onboard",
+          "labelName": "Onboard",
+          "actionType": "PORTLET_LINK",
+          "iconName": "fa fa-eye",
+          "URI": ["/BusinessOrgSetup"],
+          "children": []
+        }
+        let element = e
+        console.log(element);
+        element.actions.push(view)
+        console.log(element);
+        return element
+      })
       this.setState({
         entityList: nextProps.entityList,
+        list: list,
         isLoading: nextProps.isLoading
       });
     }
@@ -58,7 +76,7 @@ class OrgSearchContainer extends React.Component {
       pageSize: this.state.pageSize
 
     }));
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
   }
 
   //
@@ -68,29 +86,29 @@ class OrgSearchContainer extends React.Component {
 
   submit(data) {
     this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({
-        currentPageNo: 1,
-        pageSize: this.state.pageSize
-      },
+      currentPageNo: 1,
+      pageSize: this.state.pageSize
+    },
       data));
-    this.setState({filterCriteria: data, activePage: 1});
+    this.setState({ filterCriteria: data, activePage: 1 });
   }
 
   pageChanged(pageNo) {
     this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({
-        currentPageNo: pageNo,
-        pageSize: this.state.pageSize,
-        sortData: this.state.sortData
-      },
+      currentPageNo: pageNo,
+      pageSize: this.state.pageSize,
+      sortData: this.state.sortData
+    },
       this.state.filterCriteria));
-    this.setState({activePage: pageNo});
+    this.setState({ activePage: pageNo });
   }
 
   sortList(sortData) {
     this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({
-        currentPageNo: this.state.activePage,
-        pageSize: this.state.pageSize,
-        sortData
-      },
+      currentPageNo: this.state.activePage,
+      pageSize: this.state.pageSize,
+      sortData
+    },
       this.state.filterCriteria));
   }
 
@@ -100,11 +118,11 @@ class OrgSearchContainer extends React.Component {
         <div>
           <Portlet title={utils.getLabelByID("Organization")}>
             <EntityFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria}
-                              state={this.state}/>
+              state={this.state} />
           </Portlet>
           <Portlet title={utils.getLabelByID("List")} isPermissioned={true}
             // actions={this.state.actions}
-                   actions={this.state.entityList.data.actions}
+            actions={this.state.entityList.data.actions}
           >
             <Table
               pagination={true}
@@ -112,7 +130,7 @@ class OrgSearchContainer extends React.Component {
               search={false}
               gridType={"entity"}
               gridColumns={utils.getGridColumnByName("entitySearch")}
-              gridData={this.state.entityList.data.searchResult}
+              gridData={this.state.list}
               totalRecords={this.state.entityList.pageData.totalRecords}
               pageChanged={this.pageChanged}
               activePage={this.state.activePage}

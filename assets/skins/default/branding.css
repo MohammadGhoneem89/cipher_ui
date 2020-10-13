@@ -1741,12 +1741,18 @@ text.subunit-label {
     color: #fff;
     background-color: #f31a28;
     border-color: #f31a28;
+    font-weight: 600;
+    border-radius: 13px !important;
+    border: 0px solid !important;
+    padding: 8px;
 }
 
-.btn-danger_cus:focus, .btn-danger.focus {
-    color: #fff;
-    background-color: #a91520;
-    border-color: #a91520; }
+.btn-warning{
+    font-weight: 600;
+    border-radius: 13px !important;
+    border: 0px solid !important;
+    padding: 8px;
+}
   .btn-danger_cus:hover {
     color: #fff;
     background-color: #a91520;
