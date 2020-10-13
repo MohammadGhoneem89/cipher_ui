@@ -85,7 +85,7 @@ class WidgetList extends React.Component {
                             </div>
                         </div>
                         <div style={{ textAlign: 'right' }} className="row">
-                            <button className="btn btn-primary">Add</button>
+                            <button onClick={() => this.props.history.push('/courier/createWidget')} className="btn btn-primary">Add</button>
                         </div>
                     </Portlet>
 
