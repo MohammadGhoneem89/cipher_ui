@@ -57,8 +57,19 @@ module.exports = {
     { alias: "Ecommerce", key: "ecommerceCompanyName", type: "string" },
     { alias: "Ship To", key: "shipTo", type: "string" },
     { alias: "Status", key: "orderStatus", type: "statusBox" },
-    { alias: "Action", key: "actions", type: "action" },
+    { alias: "Action", key: "actions", type: "action" }
 
+  ],
+  orderListMockup: [
+    { alias: "", key: "key", type: "hiddenID" },
+    { alias: "Order #", key: "orderNumber", type: "string" },
+    { alias: "Inovices Count", key: "invoiceCount", type: "string" },
+    { alias: "Order Date", key: "orderDate", type: "epochDate" },
+    { alias: "Courier", key: "courierCompanyName", type: "string" },
+    { alias: "Ecommerce", key: "ecommerceCompanyName", type: "string" },
+    { alias: "Ship To", key: "shipTo", type: "string" },
+    { alias: "Status", key: "orderStatus", type: "statusBox" },
+    { alias: "Action", key: "actions", type: "action" }
   ],
   fileList: [
     { alias: "S.No", key: "", type: "serialNo" },

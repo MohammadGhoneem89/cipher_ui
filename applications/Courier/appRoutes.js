@@ -13,8 +13,8 @@ import FileData from "./components/Files/FileData.jsx";
 import EcommerceDashboard from './components/dashboards/ecommerceDashboard.jsx';
 import createWidget from './components/addWidget/createWidget.jsx';
 import BusinessTransactionList from './components/businessTransaction/businessTransactionList.jsx';
+import orderlistMock from "./components/order_Mockup/orderlist.jsx";
 import widgetList from './components/addWidget/widgetList.jsx';
-
 
 
 let authRoutes = <div>
@@ -28,6 +28,7 @@ let authRoutes = <div>
   <Route path="courier/eCommerceDashboard" component={EcommerceDashboard} />
   <Route path="courier/createWidget" component={createWidget} />
   <Route path="courier/businessTransactionMonitoring" component={BusinessTransactionList} />
+  <Route path="courier/orderlistmock" component={orderlistMock} />
   <Route path="courier/widgetList" component={widgetList} />
 </div>;
 

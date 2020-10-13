@@ -75,7 +75,7 @@ class VerticalBarChart extends React.Component {
 
     render() {
         return (
-            <div id="chart">
+            <div id="chart" style={this.props.style ? this.props.style : {}}>
                 <Bar
                     data={{
                         labels: this.state.labels,
