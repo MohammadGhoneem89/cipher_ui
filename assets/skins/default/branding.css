@@ -1845,7 +1845,6 @@ text.subunit-label {
       
 /* World Heat Chart ends */
 
-<<<<<<< HEAD
 .monitoringTab{
 	display: flex;
 	flex-direction: column;
@@ -1862,7 +1861,6 @@ text.subunit-label {
     padding-top: 15px;
     padding-bottom: 15px
 }
-=======
 /* Drag and Drop Starts */
 
 .container-drag {
@@ -1912,4 +1910,3 @@ text.subunit-label {
   }
   
 /* Drag and Drop Ends */
->>>>>>> ffb8c992b6812447c91b7b830d1609cbb35241f0
