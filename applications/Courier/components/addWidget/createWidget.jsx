@@ -948,7 +948,7 @@ class CreateWidget extends React.Component {
     }
 
     saveGraph() {
-        const { body } = this.state; 
+        const { body } = this.state;
         let widgetPayload = JSON.parse(this.state.body.response);
         let obj = {
             widgetName: body.widgetName,
@@ -1028,7 +1028,7 @@ class CreateWidget extends React.Component {
         if (!this.state.isLoading)
             return (
                 <Wrapper title="E-Commerce Dashboard">
-                    <Portlet title={'Widget Mk'}>
+                    <Portlet title={'Widget Creator'}>
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="col-md-4"><label>Widget ID</label></div>
@@ -1170,10 +1170,16 @@ class CreateWidget extends React.Component {
                                 </div>
                                 }
                             </div>
-                            <div className="col-md-2">
+                            <div style={{
+                                marginLeft: '15px',
+                                marginTop: '10px'
+                            }} className="col-md-1">
                                 <label>Response</label>
                             </div>
-                            <div className="col-md-10">
+                            <div style={{
+                                marginLeft: '100px',
+                                width: '920px'
+                            }} className="col-md-9">
                                 <TextArea
                                     divStyle={{ padding: '0px' }}
                                     status={(this.state.errors && this.state.errors.response) ? "ERROR" : undefined}
@@ -1694,7 +1700,7 @@ class CreateWidget extends React.Component {
                         </div>
                     </div> */}
                     <div className="row">
-                        <div className="">
+                        <div className="" style={{display: 'flex', justifyContent: 'center'}}>
                             <div className="col-md-6">
                                 {this.state.widget5 && !this.state.widget5isLoading &&
                                     <Portlet title={this.state.body.widgetCaption} noCollapse={false}>

@@ -1458,6 +1458,6 @@ module.exports = {
     { alias: "Widget Caption", key: "widgetCaption", type: "string" },
     { alias: "Widget Type", key: "widgetType", type: "string" },
     { alias: "Status", key: "status", type: "statusBox" },
-    { alias: "Action", key: "action", type: "action" },
+    // { alias: "Action", key: "action", type: "action" },
   ],
 };
