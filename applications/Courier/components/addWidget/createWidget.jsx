@@ -28,6 +28,9 @@ import Combobox from '../../../../core/common/Select.jsx';
 import ComboBoxNew from '../../../../core/common/SelectNew.jsx';
 import SankeyChart from '../../common/charts/d3-sankey-chart.jsx';
 import BubbleChart from '../../common/charts/bubbleChart-CSBOX.js';
+import CountryBubbleChart from '../../common/charts/countryBubbleChart.jsx';
+import WorldHeatChart2 from '../../common/charts/world-heat-chart2.jsx';
+import continentData from '../dashboards/continent-names.json';
 
 let interval;
 class CreateWidget extends React.Component {
@@ -304,6 +307,25 @@ class CreateWidget extends React.Component {
             let chart = <PieChart onElementsClick={() => { console.log('Pie Chart Clicked') }} labels={labels} data={values} height={180}
                 // backgroundColor={['#7aa62d', '#18e244', '#95d22a', '#62920d']} />
                 backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3']} />
+
+            let widgetIdNumber = graphProps.widgetData.widgetId.split('');
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
+            this.setState({
+                [graphProps.widgetData.widgetId]: chart,
+                [stateLabel]: false
+            })
+        }
+
+        if (graphProps.widgetData.widgetType == 'WorldHeatMap') {
+            let labels = [];
+            let values = [];
+
+            graphProps.widgetData.graphData.data.forEach(data => {
+                // console.log(data);
+                labels.push(data.label)
+                values.push(data.count)
+            })
+            let chart = <WorldHeatChart2 />
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
@@ -933,7 +955,8 @@ class CreateWidget extends React.Component {
         //     return;
         // }
         this.setState({
-            widget5isLoading: true
+            widget5isLoading: true,
+            columns: this.state.graphColumns
         })
         let graphProps;
         if (this.state.body && this.state.body.response) {
@@ -1014,8 +1037,9 @@ class CreateWidget extends React.Component {
         document.getElementById('scroll-container').scrollLeft -= 350;
     }
 
-    selectSample(value) {
+    selectSample(columns, value) {
         this.setState({
+            graphColumns: columns,
             body: {
                 response: JSON.stringify(value)
             }
@@ -1076,7 +1100,7 @@ class CreateWidget extends React.Component {
                                                         {type.label}
                                                     </div>
                                                     <div className="graph-select">
-                                                        <button onClick={() => this.selectSample(type.value)} style={{ width: '120px' }} className="btn btn-primary">Select</button>
+                                                        <button onClick={() => this.selectSample(type.columns, type.value)} style={{ width: '120px' }} className="btn btn-primary">Select</button>
                                                     </div>
                                                     <img className="graph-img-preview" src={type.image} alt="" />
                                                 </div>
@@ -1178,7 +1202,7 @@ class CreateWidget extends React.Component {
                             </div>
                             <div style={{
                                 marginLeft: '100px',
-                                width: '920px'
+                                width: '77%'
                             }} className="col-md-9">
                                 <TextArea
                                     divStyle={{ padding: '0px' }}
@@ -1701,7 +1725,7 @@ class CreateWidget extends React.Component {
                     </div> */}
                     <div className="row">
                         <div className="" style={{display: 'flex', justifyContent: 'center'}}>
-                            <div className="col-md-6">
+                            <div className={`col-md-${this.state.columns}`}>
                                 {this.state.widget5 && !this.state.widget5isLoading &&
                                     <Portlet title={this.state.body.widgetCaption} noCollapse={false}>
                                         <div className="refresh-img-div">
