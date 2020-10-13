@@ -111,6 +111,38 @@ export default function UserSetupForm(props) {
             />
           </Row>
 
+          {containerState.userDetail.authType=="LDAP"?<Row>
+            <div className="control-label col-md-5">
+            <Label text="Endpoint" columns='4' style={{ textAlign: 'right' }}
+                divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
+              <Label text="*" columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
+            </div>
+            <Combobox
+              status={(containerState.errors && containerState.errors.endpoint) ? "ERROR" : undefined}
+              errorIconStyle={{
+                left: '365px',
+                top: '10px',
+                position: 'absolute',
+                color: 'darkgrey'
+              }}
+              fieldname='endpoint'
+              formname='userDetail'
+              columns='7'
+              placeholder='Select'
+              style={{}}
+              state={containerState}
+              typeName="endpointList"
+              dataSource={typeData}
+              multiple={false}
+              actionHandler={comboBoxHandler}
+              className="form-control"
+              disabled={disabled}
+              isDDL={true}
+            />
+          </Row>:null}
+
+          
+
           <Row>
 
             <div className="control-label col-md-5">
