@@ -36,7 +36,7 @@ class BusinessOrgSetup extends React.Component {
     componentDidMount() {
         this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({}));
         this.setState({ isLoading: true });
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES','Export_entity_freezone_code']));
     }
 
     componentWillUnmount() {
@@ -50,7 +50,7 @@ class BusinessOrgSetup extends React.Component {
         }
 
         if (nextProps.typeData) {
-
+            console.log('---props---' , nextProps.typeData);
             this.setState({
                 typeData: nextProps.typeData,
                 isLoading: false,
@@ -106,7 +106,7 @@ class BusinessOrgSetup extends React.Component {
                 <div>
                     <EntitySetupForm onSubmit={this.submit} initialValues={this.state.entityDetail}
                         containerState={this.state} containerProps={this.props} welcome={welcome}
-                        welcomeResp={this.props.welcomeResp} entityList={this.state.entityList} />
+                        welcomeResp={this.props.welcomeResp} entityList={this.state.entityList} typeData={this.state.typeData} />
                 </div>
             );
         } else {
@@ -116,7 +116,6 @@ class BusinessOrgSetup extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-
     return {
         // entityDetail: state.app.entityDetail.data,
         // orgID: orgID,
