@@ -1434,23 +1434,6 @@ module.exports = {
     { alias: "Business Category", key: "label", type: "string" },
     { alias: "action", key: "actions", type: "action" }
   ],
-  BusinessTransaction: [
-    { alias: "S.No", key: "", type: "serialNo" },
-    { alias: "", key: "orderNo", type: "hiddenID" },
-    { alias: "submitted By", key: "imageData", type: "imageCustom", width: "15%"},
-    { alias: "last Activity Date", key: "lastActivity", type: "criticalWarn", width: "20%" },
-    { alias: "order / Invoice / Declaration", key: "orderInvoiceDecl", type: "stringCustom" },
-    { alias: "Stage", key: "currentStage", type: "string" },
-    { alias: "Document Type", key: "documentType", type: "string" },
-    { alias: "Errors", key: "errorDescription", type: "actionCustom", width: "15%" },
-    { alias: "Err Ct.", key: "errorCt", type: "string" },
-    { alias: "Details", key: "actions", type: "action" }
-  ],
-  BusinessTransactionError: [
-    { alias: "S.No", key: "", type: "serialNo" },
-    { alias: "Code", key: "errorCode", type: "string" },
-    { alias: "Message", key: "errorDescription", type: "string" }
-  ],
   WidgetList: [
     { alias: "S.No", key: "", type: "serialNo" },
     { alias: "", key: "id", type: "hiddenID" },
