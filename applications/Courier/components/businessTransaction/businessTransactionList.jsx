@@ -412,7 +412,7 @@ class BusinessTransaction extends React.Component {
                 console.log("length ======= ",item.errors.length)
                 let _item = _.cloneDeep(item);
                 let target = -1;
-
+                _item.orderDetailsId = "OT200018LUXC";
                 _item.imageData = _.find(this.state.declarationProcessors, {"name":_item.submittedBy}) ? _.find(this.state.declarationProcessors, {"name":_item.submittedBy}) : {"name":_item.submittedBy, "imageURL": ""}
                 _item.orderInvoiceDecl = {"orderNo":_item.orderNo, "invoiceNo": _item.invoiceNo, "declarationNo" : _item.declarationNo};
                 for(var i=0; i<transactionMonitoringScale.length; i++){
@@ -804,7 +804,7 @@ class BusinessTransaction extends React.Component {
                     <div className="row daterange_con">
                         <div className="col-md-12" style={{height:"60px", display:"flex", alignItems: "center", }}>
                             <div className="col-md-6" style={{fontSize: "16px", fontWeight: "700", textTransform: "uppercase"}}>
-                                    <span className="caption-subject">Declaration Processor</span>
+                                    <span style={{ color: "white" }}>Declaration Processor</span>
                             </div>
                             <div className="col-md-6" style={{ display: "flex",justifyContent: "flex-end"}}>
                                     <Combobox

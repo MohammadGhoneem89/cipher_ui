@@ -14,6 +14,9 @@ import EcommerceDashboard from './components/dashboards/ecommerceDashboard.jsx';
 import createWidget from './components/addWidget/createWidget.jsx';
 import BusinessTransactionList from './components/businessTransaction/businessTransactionList.jsx';
 import orderlistMock from "./components/order_Mockup/orderlist.jsx";
+import orderInvoiceList from "./components/order_Mockup/orderInvoiceList.jsx";
+import invoiceDetails from "./components/order_Mockup/invoiceDetails.jsx";
+
 import widgetList from './components/addWidget/widgetList.jsx';
 
 
@@ -29,6 +32,9 @@ let authRoutes = <div>
   <Route path="courier/createWidget" component={createWidget} />
   <Route path="courier/businessTransactionMonitoring" component={BusinessTransactionList} />
   <Route path="courier/orderlistmock" component={orderlistMock} />
+  <Route path="courier/orderInvoiceList/:id" component={orderInvoiceList} />
+  <Route path="courier/invoiceDetails/:id" component={invoiceDetails} />
+
   <Route path="courier/widgetList" component={widgetList} />
 </div>;
 

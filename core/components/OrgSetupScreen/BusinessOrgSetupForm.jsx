@@ -22,7 +22,7 @@ import Label from '../../common/Lable.jsx';;
 import DateControl from '../../common/DateControl.jsx';
 
 //https://github.com/erikras/redux-form/issues/369
-const FormSection1 = ({ generalHandler, error, initialValues, updateState, state, containerProps, containerState, onInputChange, welcome, handleSubmit, fetchOCR, addBusinessType, addLogisticsInformation, addDeclarationInformation, addTradeLicenses, addFacilities, issueDate, expiryDate, renewalDate, rowSelect }) => {
+const FormSection1 = ({ CustomsgeneralHandler, generalHandler, error, initialValues, updateState, state, containerProps, containerState, onInputChange, welcome, handleSubmit, fetchOCR, addBusinessType, addLogisticsInformation, addDeclarationInformation, addTradeLicenses, addFacilities, issueDate, expiryDate, renewalDate, rowSelect }) => {
     console.log(JSON.stringify(containerState))
     return (
 
@@ -340,7 +340,7 @@ const FormSection1 = ({ generalHandler, error, initialValues, updateState, state
 
                                 <div className="row">
                                     <div className="col-md-12">
-                                        <FormSection8 addBusinessType={addBusinessType} generalHandler={generalHandler} initialValues={initialValues} updateState={updateState} state={state} />
+                                        <FormSection8 addBusinessType={addBusinessType} CustomsgeneralHandler={CustomsgeneralHandler} initialValues={initialValues} updateState={updateState} state={state} />
                                     </div>
                                     <a className="btn green pull-right" href="#tab_1_1" data-toggle="tab" onClick={() => updateState({ BusinessType: false, ProcessorTab: true, TradeLicenseTab: false, FacilityTab: false })}
                                         style={{ marginTop: "10px" }}> Next
@@ -539,7 +539,7 @@ const FormSection7 = ({ initialValues, updateState, state, onInputChange, addDec
 };
 
 
-const FormSection8 = ({ generalHandler, initialValues, updateState, state, onInputChange, addBusinessType }) => {
+const FormSection8 = ({ CustomsgeneralHandler, initialValues, updateState, state, onInputChange, addBusinessType }) => {
     let contactsActions = [
         {
             type: "link",
@@ -579,10 +579,10 @@ const FormSection8 = ({ generalHandler, initialValues, updateState, state, onInp
             <div className="row">
                 <div className="col-md-12">
                     <Combobox fieldname='value' formname='BusinessTypes' columns='6' style={{}}
-                        state={state} typeName="list"
+                        state={state} typeName="Export_entity_freezone_code"
                         isDDL={true}
                         disabled={state.readOnly}
-                        dataSource={state} actionHandler={generalHandler} />
+                        dataSource={state} actionHandler={CustomsgeneralHandler} />
                 </div>
             </div>
             <a disabled={state.readOnly} className="btn green pull-right" onClick={addBusinessType}
@@ -938,7 +938,8 @@ class OrgSetupForm extends React.Component {
             TradeLicensesList: [],
             FacilitiesList: [],
             containerProps: {},
-            TradeLicenses: {}
+            TradeLicenses: {},
+            Export_entity_freezone_code: this.props.typeData.Export_entity_freezone_code
 
         };
 
@@ -1252,6 +1253,24 @@ class OrgSetupForm extends React.Component {
         return this.props.onSubmit(data);
     }
 
+    CustomsgeneralHandler = (formname, fieldname, type, e) => {
+        var label = this.state.Export_entity_freezone_code.filter(function (el) {
+            if (el.value == e.target.value) {
+                return el.label
+            }
+        });
+        let value = e.target.value;
+        console.log('--e--', e.target.name);
+        let formdata = _.get(this.state, formname, {});
+        _.set(formdata, 'label', label[0].label);
+        _.set(formdata, e.target.name, value);
+        this.setState({
+            [formname]: formdata
+        }, () => {
+            // console.log('DATA-->', JSON.stringify(this.state[formname]));
+        });
+    }
+
     rowSelect = (x) => {
         this.setState({ fetchOCR: true, index: x })
     }
@@ -1308,7 +1327,7 @@ class OrgSetupForm extends React.Component {
                 </ModalBox>
 
                 <form autoComplete="off" role="form" onSubmit={handleSubmit(this.submit)} ref={this._form = this}>
-                    <FormSection1 generalHandler={this.generalHandler} initialValues={initialValues} updateState={this.updateState} state={this.state}
+                    <FormSection1 generalHandler={this.generalHandler} CustomsgeneralHandler={this.CustomsgeneralHandler} initialValues={initialValues} updateState={this.updateState} state={this.state}
                         containerProps={containerProps} containerState={containerState} welcome={this.state.welcome}
                         onInputChange={this.onInputChange} handleSubmit={this.ECRFetch} fetchOCR={this.state.fetchOCR} addBusinessType={this.addBusinessType} addLogisticsInformation={this.addLogisticsInformation} addDeclarationInformation={this.addDeclarationInformation} addTradeLicenses={this.addTradeLicenses} addFacilities={this.addFacilities}
                         issueDate={this.issueDate} expiryDate={this.expiryDate} renewalDate={this.renewalDate} rowSelect={this.rowSelect} />

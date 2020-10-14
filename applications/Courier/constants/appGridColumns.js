@@ -71,6 +71,20 @@ module.exports = {
     { alias: "Status", key: "orderStatus", type: "statusBox" },
     { alias: "Action", key: "actions", type: "action" }
   ],
+  orderInvoice: [
+    { alias: "", key: "key", type: "hiddenID" },
+    { alias: "invoice #", key: "invoiceValue", type: "string" },
+    { alias: "invoice Value", key: "invoiceValue", type: "string" },
+    { alias: "currency", key: "currency", type: 'string' },
+    { alias: "Exporter Code", key: "exporter", type: "string" },
+    { alias: "FZ code", key: "fzCode", type: "string" },
+    { alias: "warehouse", key: "warehouse", type: "string" },
+    { alias: "item cnt", key: "itemCount", type: "string" },
+    { alias: "Export Declaration", key: "exportDeclaration", type: "string" },
+    { alias: "type", key: "type", type: "string" },
+    { alias: "Status", key: "orderStatus", type: "statusBox" },
+    { alias: "Action", key: "actions", type: "action" }
+  ],
   fileList: [
     { alias: "S.No", key: "", type: "serialNo" },
     { alias: "", key: "id", type: "hiddenID" },
@@ -98,4 +112,26 @@ module.exports = {
     { alias: "Status", key: "status", type: "statusBox" },
     { alias: "Action", key: "action", type: "action" },
   ],
+  charges:[
+    { alias: "#", key: "", type: "serialNo" },
+    { alias: "Charge Type", key: "chargeType", type: "string" },
+    { alias: "Charge Amount", key: "chargeAmount", type: "string" }
+  ],
+  BusinessTransaction: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "", key: "orderDetailsId", type: "hiddenID" },
+    { alias: "submitted By", key: "imageData", type: "imageCustom", width: "15%"},
+    { alias: "last Activity Date", key: "lastActivity", type: "criticalWarn", width: "20%" },
+    { alias: "order / Invoice / Declaration", key: "orderInvoiceDecl", type: "stringCustom" },
+    { alias: "Stage", key: "currentStage", type: "string" },
+    { alias: "Document Type", key: "documentType", type: "string" },
+    { alias: "Errors", key: "errorDescription", type: "actionCustom", width: "15%" },
+    { alias: "Err Ct.", key: "errorCt", type: "string" },
+    { alias: "Details", key: "actions", type: "action" }
+  ],
+  BusinessTransactionError: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "Code", key: "errorCode", type: "string" },
+    { alias: "Message", key: "errorDescription", type: "string" }
+  ]
 };
