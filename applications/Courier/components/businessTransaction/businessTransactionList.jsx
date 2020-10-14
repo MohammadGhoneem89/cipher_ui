@@ -804,7 +804,7 @@ class BusinessTransaction extends React.Component {
                     <div className="row daterange_con">
                         <div className="col-md-12" style={{height:"60px", display:"flex", alignItems: "center", }}>
                             <div className="col-md-6" style={{fontSize: "16px", fontWeight: "700", textTransform: "uppercase"}}>
-                                    <span className="caption-subject">Declaration Processor</span>
+                                    <span style={{ color: "white" }}>Declaration Processor</span>
                             </div>
                             <div className="col-md-6" style={{ display: "flex",justifyContent: "flex-end"}}>
                                     <Combobox
