@@ -1741,12 +1741,18 @@ text.subunit-label {
     color: #fff;
     background-color: #f31a28;
     border-color: #f31a28;
+    font-weight: 600;
+    border-radius: 13px !important;
+    border: 0px solid !important;
+    padding: 8px;
 }
 
-.btn-danger_cus:focus, .btn-danger.focus {
-    color: #fff;
-    background-color: #a91520;
-    border-color: #a91520; }
+.btn-warning{
+    font-weight: 600;
+    border-radius: 13px !important;
+    border: 0px solid !important;
+    padding: 8px;
+}
   .btn-danger_cus:hover {
     color: #fff;
     background-color: #a91520;
@@ -1838,3 +1844,72 @@ text.subunit-label {
       }
       
 /* World Heat Chart ends */
+
+<<<<<<< HEAD
+.monitoringTab{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 80%;
+}
+
+.monitoringHeading{
+    display: flex !important;
+    justify-content: center;
+    min-height: 20%;
+    font-size: 25px;
+    font-weight: 700;
+    padding-top: 15px;
+    padding-bottom: 15px
+}
+=======
+/* Drag and Drop Starts */
+
+.container-drag {
+    text-align: center;
+  }
+  
+  .wip {
+    position: absolute;
+    width: 150px;
+    height: 100vh;
+    left: 0;
+    top: 10;
+    background-color: #EEEEEE;
+    border-right: 1px dotted;
+  }
+  
+  .header {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    background-color: #E0E0E0;
+    width:100%;
+  }
+  
+  .task-header {
+    display: inline-block;
+    background-color: skyblue;
+    width:100%;
+  }
+  
+  .droppable {
+    position: absolute;
+    width: 150px;
+    height: 100vh;
+    right: 0;
+    top: 10;
+    background-color: #9E9E9E;
+    border-left: 1px dotted;
+  }
+  
+  .draggable {
+    width: 100px;
+    height: 100px;
+    background-color: yellow;
+    margin: 5px auto;
+    line-height: 5em;
+  }
+  
+/* Drag and Drop Ends */
+>>>>>>> ffb8c992b6812447c91b7b830d1609cbb35241f0

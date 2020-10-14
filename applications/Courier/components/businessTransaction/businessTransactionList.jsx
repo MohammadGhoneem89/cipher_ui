@@ -34,8 +34,6 @@ import documentData from './documentData.json';
 import jsonData from '../../common/dummyData/dashboard.json';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
 
-import { indexOf, random } from 'lodash';
-import { variance } from 'd3';
 
 let interval;
 class BusinessTransaction extends React.Component {
@@ -57,6 +55,7 @@ class BusinessTransaction extends React.Component {
             nrClaimBarCharts: [],
             depClaimBarCharts: [],
             tilesData: {},
+            businessTransOrigList : [],
             businessTransDataList : [],
             businessTransCriticalList : [],
             businessTransWarnList : [],
@@ -67,6 +66,8 @@ class BusinessTransaction extends React.Component {
             businessTransDataError:[],
             monitoringInterval:undefined,
             currentActiveTab: 'Declaration',
+            criticalBtn: false,
+            warnBtn: false,
             transactionMonitoringScale : [
                 {
                     "fromState" : "Waiting Generation",
@@ -264,7 +265,7 @@ class BusinessTransaction extends React.Component {
     
           this.setState({currentPageNo: pageNo})
     
-          this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))
+          this.props.actions.generalAsyncProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))
         }
       }
 
@@ -529,6 +530,7 @@ class BusinessTransaction extends React.Component {
             //     return obj;
             // })
             this.setState({
+                businessTransOrigList : businessTransDataList,
                 businessTransDataList,
                 businessTransCriticalList,
                 businessTransWarnList,
@@ -568,15 +570,16 @@ class BusinessTransaction extends React.Component {
 
     commonActionExecutor = () => {
         this.setState({
+            
             widget1Loading: true,
             widget2Loading: true,
             widget3Loading : true,
             widget4Loading : true
         })
-        this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget1", "tiles"))
-        this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget2", "Declaration Pipeline"))
-        this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))
-        this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget4", "actionitems"))
+        this.props.actions.generalAsyncProcess(constants.monitoringScreenData, this.applyFilter("widget1", "tiles"))
+        this.props.actions.generalAsyncProcess(constants.monitoringScreenData, this.applyFilter("widget2", "Declaration Pipeline"))
+        this.props.actions.generalAsyncProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))
+        this.props.actions.generalAsyncProcess(constants.monitoringScreenData, this.applyFilter("widget4", "actionitems"))
     }
 
     selectStages(value) {
@@ -648,7 +651,7 @@ class BusinessTransaction extends React.Component {
         this.setState({
             widget3Loading: true
         })
-        this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))     
+        this.props.actions.generalAsyncProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))     
     }
 
     exportBtnHandler = () => {
@@ -657,27 +660,87 @@ class BusinessTransaction extends React.Component {
     }
 
     submitCriticalBtn(){
-        this.setState({
-            widget3Loading: true,
-            businessTransDataList : this.state.businessTransCriticalList
-        })
+        
+
+        let critical = !this.state.criticalBtn;
+        let warn = this.state.warnBtn;
+
+        if(!critical && !warn){
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : this.state.businessTransOrigList,
+                criticalBtn : critical
+            })
+        }
+        else if(critical && warn){
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : _.cloneDeep(this.state.businessTransCriticalList).concat(_.cloneDeep(this.state.businessTransWarnList)),
+                criticalBtn : critical
+            })
+        }
+        else if(!critical && warn){
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : this.state.businessTransWarnList,
+                criticalBtn : critical
+            })
+        }
+        else{
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : this.state.businessTransCriticalList,
+                criticalBtn : critical
+            })
+        }
 
         setTimeout(() => {
             this.setState({
-                widget3Loading: false
+                widget3Loading: false,
+                criticalBtn:critical
             })
         }, 1000);
     //    this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3-processor-critical", "listing", "critical"))     
     }
     submitWarnBtn(){
-        this.setState({
-            widget3Loading: true,
-            businessTransDataList : this.state.businessTransWarnList
-        })
+
+        let critical = this.state.criticalBtn;
+        let warn = !this.state.warnBtn;
+        if(!critical && !warn){
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : this.state.businessTransOrigList,
+                warnBtn : warn
+            })
+        }
+        else if(critical && warn){
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : _.cloneDeep(this.state.businessTransCriticalList).concat(_.cloneDeep(this.state.businessTransWarnList)),
+                warnBtn : warn
+            })
+        }
+        else if(!critical && warn){
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : this.state.businessTransWarnList,
+                warnBtn : warn
+            })
+        }
+        else{
+            this.setState({
+                widget3Loading: true,
+                businessTransDataList : this.state.businessTransCriticalList,
+                warnBtn : warn
+            })
+        }
+
+        
 
         setTimeout(() => {
             this.setState({
-                widget3Loading: false
+                widget3Loading: false,
+                warnBtn: warn
             })
         }, 1000);
     //    this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3-processor-warning", "listing", "warn"))     
@@ -731,7 +794,7 @@ class BusinessTransaction extends React.Component {
             }
           }
         }
-        this.props.actions.generalProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))
+        this.props.actions.generalAsyncProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))
     }
     render() {
         console.log("state-->", this.state)
@@ -873,15 +936,15 @@ class BusinessTransaction extends React.Component {
                                 <li id="filtersTabLink" className={this.state.currentActiveTab === "Deposit Claim" ? "active" : ""} ><a style={{ fontSize: '14px', color:"white", display: this.state.selectedDocuments.includes('Deposit Claim') ? "block" : "none"  }} href="#depositClaimTab" onClick= {()=> this.setState({currentActiveTab: "Deposit Claim"})} data-toggle="tab"> <span> Deposit Claim </span></a></li>
                             </ul>
                         </div>
-                        <div style={{ display: "flex", flexFlow: "column", height: "450px"}} className="tab-content ui-tabcontentbody filetabs">
-                            <div id={'declarationTab'} className={this.state.currentActiveTab === "Declaration" ? "tab-pane in active ui-fieldtable" : "tab-pane in ui-fieldtable"}>
-                                <div className="col-md-12">
-                                    <h3 style={{ display: "flex", justifyContent: "center", minHeight: "100px"}}>Declaration Pipeline</h3>
+                        <div style={{ display: "flex", flexFlow: "column" }} className="tab-content ui-tabcontentbody filetabs">
+                            <div id={'declarationTab'} className={this.state.currentActiveTab === "Declaration" ? "monitoringTab tab-pane in active ui-fieldtable" : "monitoringTab tab-pane in ui-fieldtable"}>
+                                <div className="monitoringHeading">
+                                    Declaration Pipeline
                                 </div> 
                                 
                                 <div className="col-md-12">
                                     {!this.state.widget2Loading ? 
-                                    <VerticalBarChart key="barChartWidget1" data={[..._.get(this.state, 'declarationBarCharts', [])]} labels={['Waiting Generation', 'Signature Pending', 'Signed-Ready Submission', 'Submission Failure']} stack="multiple" dataLabelsAttribute="riskName" 
+                                    <VerticalBarChart style={{height: "auto"}} key="barChartWidget1" data={[..._.get(this.state, 'declarationBarCharts', [])]} labels={['Waiting Generation', 'Signature Pending', 'Signed-Ready Submission', 'Submission Failure']} stack="multiple" dataLabelsAttribute="riskName" 
                                                     dataValuesAttributes={['Waiting Generation', 'Signature Pending', 'Signed-Ready Submission', 'Submission Failure']} backgroundColors={['#4682B4', '#DC143C','#228B22', '#FFD700']}
                                     /* options={{
                                         responsive: true,
@@ -892,13 +955,13 @@ class BusinessTransaction extends React.Component {
                                     }
                                 </div>
                             </div>
-                            <div id={'nrClaimnTab'} className={this.state.currentActiveTab === "NR Claim" ? "tab-pane in active ui-fieldtable" : "tab-pane in ui-fieldtable"}>
-                                <div className="col-md-12">
-                                    <h3 style={{ textAlign: "center", paddingTop: "20px", paddingBottom: "20px" }}>NR Claim Pipeline</h3>
+                            <div id={'nrClaimnTab'} className={this.state.currentActiveTab === "NR Claim" ? "monitoringTab tab-pane in active ui-fieldtable" : "monitoringTab tab-pane in ui-fieldtable"}>
+                                <div className="monitoringHeading" >
+                                    NR Claim Pipeline
                                 </div>
                                 <div className="col-md-12">
                                     {!this.state.widget2Loading ? 
-                                    <VerticalBarChart key="barChartWidget2" data={[..._.get(this.state, 'nrClaimBarCharts', [])]} labels={['Waiting Generation', 'Signature Pending', 'Signed-Ready Submission', 'Submission Failure']} stack="multiple" dataLabelsAttribute="riskName" 
+                                    <VerticalBarChart style={{height: "auto"}} key="barChartWidget2" data={[..._.get(this.state, 'nrClaimBarCharts', [])]} labels={['Waiting Generation', 'Signature Pending', 'Signed-Ready Submission', 'Submission Failure']} stack="multiple" dataLabelsAttribute="riskName" 
                                                     dataValuesAttributes={['Waiting Generation', 'Signature Pending', 'Signed-Ready Submission', 'Submission Failure']} backgroundColors={['#4682B4', '#DC143C','#228B22', '#FFD700']}
                                     /* options={{
                                         responsive: true,
@@ -909,13 +972,13 @@ class BusinessTransaction extends React.Component {
                                     }
                                 </div>
                             </div>
-                            <div id={'depositClaimTab'}  className={this.state.currentActiveTab === "Deposit Claim" ? "tab-pane in active ui-fieldtable" : "tab-pane in ui-fieldtable"}>
-                                <div className="col-md-12">
-                                    <h3 style={{ textAlign: "center", paddingTop: "20px", paddingBottom: "20px" }}>Deposit Claim Pipeline</h3>
+                            <div id={'depositClaimTab'}  className={this.state.currentActiveTab === "Deposit Claim" ? "monitoringTab tab-pane in active ui-fieldtable" : "monitoringTab tab-pane in ui-fieldtable"}>
+                                <div className="monitoringHeading">
+                                    Deposit Claim Pipeline
                                 </div>
                                 <div className="col-md-12">
                                     {!this.state.widget2Loading ? 
-                                    <VerticalBarChart key="barChartWidget3" data={[..._.get(this.state, 'depClaimBarCharts', [])]} labels={['Waiting Generation', 'Signature Pending', 'Signed-Ready Submission', 'Submission Failure']} stack="multiple" dataLabelsAttribute="riskName" 
+                                    <VerticalBarChart style={{height: "auto"}} key="barChartWidget3" data={[..._.get(this.state, 'depClaimBarCharts', [])]} labels={['Waiting Generation', 'Signature Pending', 'Signed-Ready Submission', 'Submission Failure']} stack="multiple" dataLabelsAttribute="riskName" 
                                                     dataValuesAttributes={['Waiting Generation', 'Signature Pending', 'Signed-Ready Submission', 'Submission Failure']} backgroundColors={['#4682B4', '#DC143C','#228B22', '#FFD700']}
                                     /* options={{
                                         responsive: true,
@@ -936,19 +999,19 @@ class BusinessTransaction extends React.Component {
                                 </label>
                                 <label className="control-label">{utils.getLabelByID("Critical")}</label>
                                 {"  "}
-                                <button type="button" className="btn btn-danger_cus" style={{width: "70px", marginLeft: "10px", marginRight: "20px", borderRadius: "5px !important"}}
+                                <label type="button" className={!this.state.criticalBtn ? "btn btn-danger_cus" : "btn btn-danger_cus active"} style={{width: "70px", marginLeft: "10px", marginRight: "20px"}}
                                     onClick={this.submitCriticalBtn.bind(this)}>
                                         {console.log(_.get(_.find(this.state.attentionItems, {label:"Critical"}), 'value', 0))}
                                         {_.get(_.find(this.state.attentionItems, {label:"Critical"}), 'value', 0)}
-                                </button>
+                                </label>
 
                                 {"  "}     
                                 <label className="control-label">{utils.getLabelByID("Warn")}</label>
                                 {"  "}
-                                <button type="button" className="btn btn-warning" style={{width: "70px", marginLeft: "10px", marginRight: "20px", borderRadius: "5px !important"}}
+                                <label type="button" className={!this.state.warnBtn ? "btn btn-warning" : "btn btn-warning active" } style={{width: "70px", marginLeft: "10px", marginRight: "20px", borderRadius: "5px !important"}}
                                     onClick={this.submitWarnBtn.bind(this)}>
                                         {_.get(_.find(this.state.attentionItems, {label:"Warn"}), 'value', 0)}
-                                </button>
+                                </label>
                         </div>
                         <div className="col-md-12" style={{fontSize: "16px", fontWeight: "600", marginLeft:"-35px", textTransform: "uppercase", marginTop: "10px", marginBottom: "15px"}}>
                             <span className="caption-subject">DashBoard</span>
@@ -1062,7 +1125,7 @@ class BusinessTransaction extends React.Component {
 
                                                 </div>
                                             </div>
-                                            </div>                     
+                                        </div>                     
                                     </div>
                                 </div>
                             </div>
@@ -1084,7 +1147,7 @@ class BusinessTransaction extends React.Component {
                                     <Table fontclass=""
                                         gridColumns={utils.getGridColumnByName("BusinessTransaction")}
                                         gridData={this.state.businessTransDataList}
-                                        totalRecords={this.state.totalRecords}
+                                        totalRecords={this.state.businessTransDataList.length}
                                         searchCallBack={this.searchCallBack}
                                         pageSize={20}
                                         pagination={true} pageChanged={this.pageChanged}
@@ -1097,9 +1160,6 @@ class BusinessTransaction extends React.Component {
                                     }
                                 </div>
                             </div>
-                            <Portlet title={""} noCollapse={true}>
-                                
-                            </Portlet>
                     </Portlet>
 
                     {/* <Portlet title={utils.getLabelByID("Business Transactions")} isPermissioned={true}

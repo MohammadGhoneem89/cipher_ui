@@ -57,8 +57,19 @@ module.exports = {
     { alias: "Ecommerce", key: "ecommerceCompanyName", type: "string" },
     { alias: "Ship To", key: "shipTo", type: "string" },
     { alias: "Status", key: "orderStatus", type: "statusBox" },
-    { alias: "Action", key: "actions", type: "action" },
+    { alias: "Action", key: "actions", type: "action" }
 
+  ],
+  orderListMockup: [
+    { alias: "", key: "key", type: "hiddenID" },
+    { alias: "Order #", key: "orderNumber", type: "string" },
+    { alias: "Inovices Count", key: "invoiceCount", type: "string" },
+    { alias: "Order Date", key: "orderDate", type: "epochDate" },
+    { alias: "Courier", key: "courierCompanyName", type: "string" },
+    { alias: "Ecommerce", key: "ecommerceCompanyName", type: "string" },
+    { alias: "Ship To", key: "shipTo", type: "string" },
+    { alias: "Status", key: "orderStatus", type: "statusBox" },
+    { alias: "Action", key: "actions", type: "action" }
   ],
   fileList: [
     { alias: "S.No", key: "", type: "serialNo" },
@@ -75,6 +86,15 @@ module.exports = {
     { alias: "Column 1", key: "column1", type: "string" },
     { alias: "Column 2", key: "column2", type: "string" },
     { alias: "Column 3", key: "column3", type: "string" },
+    { alias: "Status", key: "status", type: "statusBox" },
+    { alias: "Action", key: "action", type: "action" },
+  ],
+  WidgetList: [
+    { alias: "S.No", key: "", type: "serialNo" },
+    { alias: "", key: "id", type: "hiddenID" },
+    { alias: "Widget Name", key: "widgetName", type: "string" },
+    { alias: "Widget Caption", key: "widgetCaption", type: "string" },
+    { alias: "Widget Type", key: "widgetType", type: "string" },
     { alias: "Status", key: "status", type: "statusBox" },
     { alias: "Action", key: "action", type: "action" },
   ],
