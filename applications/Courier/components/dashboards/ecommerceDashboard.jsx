@@ -50,6 +50,7 @@ import MultiLineChart from '../../common/charts/d3-multiLine-chart.jsx';
 import CountryBubbleChart from '../../common/charts/countryBubbleChart.jsx';
 import WorldHeatChart from '../../common/charts/world-heat-chart.jsx';
 import WorldHeatChart2 from '../../common/charts/world-heat-chart2.jsx';
+import GroupedDendogramBarChart from '../../common/charts/groupedDendoGramBarChart.jsx';
 // bubbleChartFc
 
 let interval;
@@ -2792,6 +2793,20 @@ class EcommerceDashboard extends React.Component {
                                     <WorldHeatChart data={heatMapData} />
                                 } */}
                                 <WorldHeatChart2 />
+
+                                {/* insert chart here */}
+                            </Portlet>
+                        </div>
+
+                        <div className="col-md-12">
+                            <Portlet title={"HEAT MAP"} noCollapse={true}>
+                                <div className="refresh-img-div">
+                                    <img onClick={() => this.refreshSingleWidget(21)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                </div>
+                                {/* {heatMapData &&
+                                    <WorldHeatChart data={heatMapData} />
+                                } */}
+                                <GroupedDendogramBarChart />
 
                                 {/* insert chart here */}
                             </Portlet>
