@@ -1423,7 +1423,7 @@ module.exports = {
   BusinessTypes: [
     { alias: "COM_SerialNo", key: "", type: "serialNo" },
     // { alias: "type", key: "type", type: "string" },
-    { alias: "name", key: "value", type: "string" },
+    { alias: "name", key: "label", type: "string" },
     { alias: "action", key: "actions", type: "action" }
   ],
   LinkedBusinessCode: [
