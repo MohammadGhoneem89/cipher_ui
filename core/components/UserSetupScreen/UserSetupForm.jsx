@@ -52,10 +52,10 @@ export default function UserSetupForm(props) {
       <Row>
         <div className="col-md-6">
           <Row>
-            <div className="control-label col-md-5">
-              <Label text="User Type" columns='4' style={{ textAlign: 'right' }}
+            <div className="control-label col-md-5" style={{display:"flex",justifyContent:"flex-start"}}>
+              <Label text="User Type" columns='auto'
                 divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
-              <Label text="*" columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
+              <Label text="*"columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
             </div>
             <Combobox
               status={(containerState.errors && containerState.errors.userType) ? "ERROR" : undefined}
@@ -82,10 +82,10 @@ export default function UserSetupForm(props) {
           </Row>
 
           <Row>
-            <div className="control-label col-md-5">
-              <Label text="Auth Type" columns='4' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
+            <div className="control-label col-md-5" style={{display:"flex",justifyContent:"flex-start"}}>
+              <Label text="Auth Type" columns='auto' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
               <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""}
-                style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
+                style={{ color: 'red', marginLeft: '-10px' }}columns='1' />
             </div>
             <Combobox
               status={(containerState.errors && containerState.errors.authType) ? "ERROR" : undefined}
@@ -112,10 +112,10 @@ export default function UserSetupForm(props) {
           </Row>
 
           {containerState.userDetail.authType=="LDAP"?<Row>
-            <div className="control-label col-md-5">
-            <Label text="Endpoint" columns='4' style={{ textAlign: 'right' }}
+            <div className="control-label col-md-5" style={{display:"flex",justifyContent:"flex-start"}}>
+            <Label text="Endpoint" columns='auto'
                 divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
-              <Label text="*" columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
+              <Label text="*"columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
             </div>
             <Combobox
               status={(containerState.errors && containerState.errors.endpoint) ? "ERROR" : undefined}
@@ -145,10 +145,10 @@ export default function UserSetupForm(props) {
 
           <Row>
 
-            <div className="control-label col-md-5">
-              <Label text="Organization Type" columns='6'
-                divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
-              <Label text="*" style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
+            <div className="control-label col-md-5" style={{display:"flex",justifyContent:"flex-start"}}>
+              <Label text="Organization Type" columns='auto'
+                divStyle={{ width: 'auto', padding:0,paddingLeft:"30%" }} />
+              <Label text="*" style={{ color: 'red', marginLeft: '-10px' }}columns='1' />
             </div>
             <Combobox
               status={(containerState.errors && containerState.errors.orgType) ? "ERROR" : undefined}
@@ -176,8 +176,8 @@ export default function UserSetupForm(props) {
           </Row>
 
           <Row>
-            <div className="control-label col-md-5">
-              <Label text="Organization Name" columns='6'
+            <div className="control-label col-md-5" style={{display:"flex",justifyContent:"flex-start"}}>
+              <Label text="Organization Name" columns='auto'
                 divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
               <Label text="*" style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
             </div>
@@ -215,9 +215,9 @@ export default function UserSetupForm(props) {
       <Row>
         <div className="col-md-6">
           <Row>
-            <div className="control-label  col-md-5">
-              <Label text="User ID" columns='8' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
-              <Label text="*" style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
+            <div className="control-label  col-md-5" style={{display:"flex",justifyContent:"flex-start"}}>
+              <Label text="User ID" columns='auto' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
+              <Label text="*" style={{ color: 'red', marginLeft: '-10px' }}columns='1' />
             </div>
             <Input
               status={(containerState.errors && containerState.errors.userID) ? "ERROR" : undefined}
@@ -240,8 +240,8 @@ export default function UserSetupForm(props) {
         </div>
         <div className="col-md-6">
           {(!containerState.id || containerState.editPassword) && <Row>
-            <div className="control-label col-md-5" style={{ width: '23%' }}>
-              <Label text="Password" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }} />
+            <div className="control-label col-md-5" style={{display:"flex",justifyContent:"flex-start",width: '23%'}} >
+              <Label text="Password" columns='auto' divStyle={{ width: 'auto', paddingRight: '0px' }} />
               <Label text="*" style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
 
             </div>
@@ -277,10 +277,10 @@ export default function UserSetupForm(props) {
       <Row>
         <div className="col-md-6">
           <Row>
-            <div className="control-label col-md-5">
-              <Label text="First Name" columns='4' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
+            <div className="control-label col-md-5" style={{display:"flex",justifyContent:"flex-start"}}>
+              <Label text="First Name" columns='auto' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
               <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""}
-                style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
+                style={{ color: 'red', marginLeft: '-10px' }}columns='1' />
             </div>
             <Input
               status={(containerState.errors && containerState.errors.firstName) ? "ERROR" : undefined}
@@ -302,9 +302,9 @@ export default function UserSetupForm(props) {
         </div>
         <div className="col-md-6">
           <Row>
-            <div className="control-label col-md-5" style={{ width: '23%' }}>
-              <Label text="Last Name" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }} />
-              <Label text="" columns='1' />
+            <div className="control-label col-md-5" style={{display:"flex",justifyContent:"flex-start",width: '23%'}}>
+              <Label text="Last Name" columns='auto' divStyle={{ width: 'auto', paddingRight: '0px' }} />
+              <Label text=""columns='1' />
             </div>
             <Input
               status={(containerState.errors && containerState.errors.lastName) ? "ERROR" : undefined}
@@ -332,9 +332,9 @@ export default function UserSetupForm(props) {
       <Row>
         <div className="col-md-6">
           <Row>
-            <div className="control-label col-md-5">
-              <Label text="Email" columns='4' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
-              <Label text={"*"} style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
+            <div className="control-label col-md-5" style={{display:"flex",justifyContent:"flex-start"}}>
+              <Label text="Email" columns='auto' divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
+              <Label text={"*"} style={{ color: 'red', marginLeft: '-10px' }}columns='1' />
 
             </div>
             <Input
@@ -357,9 +357,9 @@ export default function UserSetupForm(props) {
         </div>
         <div className="col-md-6">
           <Row>
-            <div className="control-label col-md-5" style={{ width: '23%' }}>
-              <Label text="Allowed IP" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }} />
-              <Label text={"*"} style={{ color: 'red', marginLeft: '-10px' }} columns='1' />
+            <div className="control-label col-md-5" style={{display:"flex",justifyContent:"flex-start",width: '23%'}} >
+              <Label text="Allowed IP" columns='auto' divStyle={{ width: 'auto', paddingRight: '0px' }} />
+              <Label text={"*"} style={{ color: 'red', marginLeft: '-10px' }}columns='1' />
             </div>
             <Input
               status={(containerState.errors && containerState.errors.allowedIPRange) ? "ERROR" : undefined}
@@ -386,10 +386,10 @@ export default function UserSetupForm(props) {
       <Row>
         <div className="col-md-6">
           <Row>
-            <div className="control-label col-md-5">
-              <Label text="Landing Page" columns='4'
+            <div className="control-label col-md-5" style={{display:"flex",justifyContent:"flex-start"}}>
+              <Label text="Landing Page" columns='auto'
                 divStyle={{ width: 'auto', paddingRight: '0px', paddingLeft: '30%' }} />
-              <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""} columns='1'
+              <Label text={_.get(containerState, 'userDetail.userType', '') === 'Human' ? "*" : ""}columns='1'
                 style={{ color: 'red', marginLeft: '-10px' }} />
             </div>
             <Combobox
@@ -418,13 +418,13 @@ export default function UserSetupForm(props) {
           </Row>
         </div>
         <div className="control-label col-md-6">
-          <Label text="Is Active" columns='8' divStyle={{ width: 'auto', paddingRight: '0px' }}
-            style={{ paddingLeft: '2px' }} />
+          <Label text="Is Active" columns='8' divStyle={{ width: 'auto', paddingRight: '0px',paddingLeft: '2px' }}
+            style={{  }} />
           <CheckBox
             fieldname='isActive'
             formname='userDetail'
             value={_.get(containerState, 'userDetail.isActive', false)}
-            columns='1'
+           columns='2'
             style={{}}
             actionHandler={generalHandler}
             disabled={disabled}
@@ -525,7 +525,7 @@ export default function UserSetupForm(props) {
 
               <div className="control-label  col-md-5">
                 <Label text="User Association Hyperledger" columns='5' divStyle={{ width: 'auto', paddingRight: '0px' }} />
-                <Label text={""} columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
+                <Label text={""}columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
               </div>
 
               <Combobox
@@ -557,9 +557,9 @@ export default function UserSetupForm(props) {
 
             </div>
             <div className='row' style={{ paddingLeft: '22px', paddingRight: '22px' }}>
-              <div className="control-label col-md-5">
+              <div className="control-label col-md-5" style={{display:"flex",justifyContent:"flex-start"}}>
                 <Label text="User Association Quorrum" columns='5' divStyle={{ width: 'auto', paddingRight: '0px' }} />
-                <Label text={""} columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
+                <Label text={""}columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
               </div>
               <Combobox
                 fieldname='quorrumUser'
@@ -585,7 +585,7 @@ export default function UserSetupForm(props) {
             <div className='row' style={{ paddingLeft: '22px', paddingRight: '22px' }}>
               <div className="control-label col-md-12" >
                 <Label text="Rejection Reason" columns='5' divStyle={{ width: 'auto', paddingRight: '0px' }} />
-                <Label text={""} columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
+                <Label text={""}columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
               </div>
               <div className="col-md-12">
                 <div className="col-md-12">
@@ -620,7 +620,7 @@ export default function UserSetupForm(props) {
         >
           {"Reset Password"}
         </button>
-        <button
+        {/* <button
           type="button"
           className="btn green"
           style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0' }}
@@ -630,7 +630,19 @@ export default function UserSetupForm(props) {
           }}
         >
           {"Unblock"}
-        </button>
+        </button> */}
+          {_.get(containerState, 'userDetail.isActive', true) === false ?
+     <button
+       type="button"
+        className="btn green"
+        style={{cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0', alignItems: 'right'}}
+        onClick={() => {
+          performAction(activateAction)
+        }}
+      >
+        {"Unblock"}
+      </button>
+      : null}
       </div>
 }
         &nbsp;&nbsp;

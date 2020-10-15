@@ -7,7 +7,7 @@ import Label from '../../common/Lable.jsx';
 import * as utils from "../../common/utils";
 
 const UserFilterForm = props => {
-  const { handleSubmit, pristine, reset, submitting } = props;
+  const { handleSubmit, pristine, reset, submitting,handleClear } = props;
 
   let userType = sessionStorage.orgType
   let orgType = [
@@ -85,10 +85,10 @@ const UserFilterForm = props => {
             <button type="button" className="btn default" disabled={submitting} onClick={()=>{
               $('#userform').find('input:text').val('');
               $('#userform').find('select').each(function () {
-                
                 $(this)[0].selectedIndex = 0;
                 reset();
               });
+              handleClear()
               }}>
               Clear
             </button>
