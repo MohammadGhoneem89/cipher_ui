@@ -78,14 +78,17 @@ class UserSearchContainer extends React.Component {
       data.orgType = sessionStorage.orgType;
       data.orgCode = sessionStorage.orgCode
     }
-    if (!data.status) {
-      data.status = "APPROVED"
-    }
+    // if (!data.status) {
+    //   data.status = "APPROVED"
+    // }
     this.props.actions.generalProcess(constants.getUserList, requestCreator.createUserListRequest({
       "currentPageNo": 1,//this.state.pageNo,
       "pageSize": 10,
     },
-      data));
+      {
+        ...data,
+        status:!data.status? "APPROVED":data.status
+      }));
     this.setState({ filterCriteria: data, pageNo: 1 })
   }
 
@@ -132,13 +135,41 @@ class UserSearchContainer extends React.Component {
     }
   }
 
+  handleClear(){
+    console.log("i called");
+    let orgType = '';
+    let orgCode = '';
+
+    if (sessionStorage.orgType == 'Entity' || sessionStorage.orgType == 'Acquirer') {
+      orgType = sessionStorage.orgType;
+      orgCode = sessionStorage.orgCode
+
+    }
+
+    var request = {
+      "action": "userList",
+      "searchCriteria": {
+        "orgType": orgType,
+        "orgCode": orgCode,
+        "status": "APPROVED"
+      },
+      "page": {
+        "currentPageNo": this.state.pageNo,
+        "pageSize": 10
+      }
+    }
+
+    this.props.actions.generalProcess(constants.getUserList, request);
+    this.setState({ filterCriteria:undefined});
+  }
+
   render() {
 
     if (!this.state.isLoading && this.state.userList)
       return (
         <div>
           <Portlet title={"User Seach Filter"}>
-            <UserFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state} />
+            <UserFilterForm onSubmit={this.submit} handleClear={this.handleClear.bind(this)} initialValues={this.state.filterCriteria} state={this.state} />
             {/*<ActionButton actionList={this.props.userList.data.actions} performAction={this.performAction} />*/}
           </Portlet>
           <Portlet title={"User List"} isPermissioned={true} actions={this.props.userList.data.actions}>
