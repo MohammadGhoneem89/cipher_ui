@@ -274,7 +274,7 @@ module.exports = {
   getProvidedConsentList : baseUrl + "/API/Consent/getProvidedConsentList",
   getConsentStatus: baseUrl + "/API/Core/getConsentStatus",
   geOrgList : baseUrl + "/API/Consent/getOrgList",
-  fetchConsentStatus: baseUrl + "/API/Core/fetchConsentStatus"
-
+  fetchConsentStatus: baseUrl + "/API/Core/fetchConsentStatus",
+  getNetworkStatus: baseUrl + "/API/Cipher/getNetworkStatus"
 }
 
