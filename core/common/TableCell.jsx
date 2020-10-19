@@ -254,7 +254,7 @@ class TableCell extends React.Component {
   }
 
   getCheckedItems(element) {
-    this.props.getCheckedItems(element.ID, element.checked)
+    this.props.getCheckedItems(element.target.value, element.target.checked)
   }
 
 
@@ -412,7 +412,7 @@ class TableCell extends React.Component {
       case "cb":
         return (<td><label
           className="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox"
-            className="checkboxes"
+            className="checkboxes"  onClick={this.getCheckedItems.bind(this)}
             value={this.props.rowData[this.props.recordID]} /><span /></label>
         </td>);
       case "cbDisabled":

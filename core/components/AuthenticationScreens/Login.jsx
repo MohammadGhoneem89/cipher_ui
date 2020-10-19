@@ -348,8 +348,10 @@ class Login extends React.Component {
 
                         <div className="login-password">
                           <ul className="lng">
+                          {/* <h4 data-target="#loginCarousel" data-slide-to="0" >
+                            <a href="javascript:" >Back To Login</a></h4> */}
                             <li data-target="#loginCarousel" data-slide-to="0" >
-                              <a href="javascript:">Remember your password ?</a></li>
+                              <a style={{color:'#000000'}} href="javascript:">Back To Login</a></li>
                           </ul>
                         </div>
                       </div>

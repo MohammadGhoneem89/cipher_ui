@@ -721,7 +721,8 @@ module.exports = {
     { alias: "EL_Status", key: "status", type: "statusLabel" },
     { alias: "EL_actions", key: "actions", type: "action" }
   ], DispatchQueueDataSAF: [
-    { alias: "", key: "internalid", type: "hiddenID" },
+    { alias: "", key: "", type: "cb" },
+    { alias: "", key: "id", type: "hiddenID" },
     { alias: "EVNTL_ID", key: "id", type: "string" },
     { alias: "Function Name", key: "functionname", type: "string" },
     { alias: "SAF Date", key: "createdon", type: "string" },

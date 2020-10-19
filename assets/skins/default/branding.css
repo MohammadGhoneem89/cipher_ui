@@ -657,3 +657,7 @@ pre {
 }
 
 
+.notification-hit-grid table thead tr th a {
+	color: white !important;
+	text-decoration: none !important;
+}
