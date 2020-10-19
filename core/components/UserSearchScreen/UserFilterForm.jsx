@@ -2,12 +2,16 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { CheckboxInput, CheckboxList, TextInput } from '../../common/FormControls.jsx';
 import { DropdownInput } from '../../common/FormControls.jsx';
-
+import * as actions from '../../actions/generalAction';
 import Label from '../../common/Lable.jsx';
 import * as utils from "../../common/utils";
 
 const UserFilterForm = props => {
+<<<<<<< HEAD
+  const { handleSubmit, pristine, reset, submitting,actions } = props;
+=======
   const { handleSubmit, pristine, reset, submitting,handleClear } = props;
+>>>>>>> 6170ed4de716199def3c9f00525e2ccefee8eadd
 
   let userType = sessionStorage.orgType
   let orgType = [
@@ -34,6 +38,7 @@ const UserFilterForm = props => {
           <div className="form-group col-md-4">
             <label className='control-label'>User ID</label>
           </div>
+
           <div className="form-group  col-md-8">
             <TextInput
               name="userID"
@@ -83,13 +88,14 @@ const UserFilterForm = props => {
               Search
             </button>
             <button type="button" className="btn default" disabled={submitting} onClick={()=>{
-              $('#userform').find('input:text').val('');
-              $('#userform').find('select').each(function () {
-                $(this)[0].selectedIndex = 0;
-                reset();
-              });
-              handleClear()
-              }}>
+              // $('#userform').find('input:text').val('');
+              // $('#userform').find('select').each(function () {
+              //   $(this)[0].selectedIndex = 0;
+              //   reset();
+                actions('UserFilterForm');
+              // });
+              }}
+              >
               Clear
             </button>
 

@@ -634,9 +634,11 @@ class APIDefinitionScreen extends React.Component {
       }
 
       if (isChanged) {
-        document.getElementById('sampleArgs').value=nextProps.APIDefinitionAddUpdate.data.sampleArgs
-        document.getElementById('sampleResponse').value=nextProps.APIDefinitionAddUpdate.data.sampleResponse
-        document.getElementById('sampleEvents').value=nextProps.APIDefinitionAddUpdate.data.sampleEvents
+        if(document.getElementById('sampleArgs') && document.getElementById('sampleResponse') &&  document.getElementById('sampleEvents')){
+          document.getElementById('sampleArgs').value=_.get(nextProps,'APIDefinitionAddUpdate.data.sampleArgs',"")
+          document.getElementById('sampleResponse').value=_.get(nextProps,'APIDefinitionAddUpdate.data.sampleResponse',"")
+          document.getElementById('sampleEvents').value=_.get(nextProps,'APIDefinitionAddUpdate.data.sampleEvents',"")
+        }
 
         this.setState({
           APIDefinitionAddUpdate: cloneDeep(nextProps.APIDefinitionAddUpdate.data),
