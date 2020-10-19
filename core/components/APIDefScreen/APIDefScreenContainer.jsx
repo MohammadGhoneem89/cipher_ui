@@ -29,6 +29,7 @@ const initialState = {
     "isRelay": false,
     "isSimulated": false,
     "isRouteOveride": false,
+    "isCached":false,
     "fieldName": "",
     "isCustomMapping": false,
     "MappingfunctionName": "",
