@@ -2799,7 +2799,7 @@ class EcommerceDashboard extends React.Component {
                         </div>
 
                         <div className="col-md-12">
-                            <Portlet title={"HEAT MAP"} noCollapse={true}>
+                            <Portlet title={"OUTBOUND DISTRIBUTION"} noCollapse={true}>
                                 <div className="refresh-img-div">
                                     <img onClick={() => this.refreshSingleWidget(21)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
                                 </div>
