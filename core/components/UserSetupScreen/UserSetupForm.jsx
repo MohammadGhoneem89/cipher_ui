@@ -579,7 +579,7 @@ export default function UserSetupForm(props) {
           </div>
         </Col>
       </Row>
-      {containerState.userDetail.status != 'APPROVED' &&
+      {containerState.userDetail.status != 'APPROVED' || !isNew ?
         <Row>
           <Col style={{ marginLeft: "20px" }}>
             <div className='row' style={{ paddingLeft: '22px', paddingRight: '22px' }}>
@@ -595,7 +595,7 @@ export default function UserSetupForm(props) {
               </div>
             </div>
           </Col>
-        </Row>
+        </Row>:null
       }
       <br></br>
       <div className="clearfix" style={{ padding: "30px" }}>
