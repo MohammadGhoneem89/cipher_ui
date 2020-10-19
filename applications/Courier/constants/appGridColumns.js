@@ -13,6 +13,21 @@ module.exports = {
     { alias: "Net Weight", key: "netWeight", type: "string" },
     { alias: "Delivery Proof", key: "actions", type: "action" }
   ],
+  orderLineTraversal: [
+    { alias: "Line No.", key: "", type: "serialNo" },
+    { alias: "Quantity", key: "quantity", type: 'string' },
+    { alias: "Description", key: "description", type: "string" },
+    { alias: "HS Code", key: "hscode", type: "string" },
+    { alias: "Unit Price", key: "unitPrice", type: "string" },
+    { alias: "COO", key: "countryOfOrigin", type: "string" },
+    { alias: "Discount", key: "discount", type: "string" },
+    { alias: "Total", key: "total", type: "string" },
+    { alias: "Stat Qty", key: "statQuantity", type: "string" },
+    { alias: "Stat Unit", key: "statUOM", type: "string" },
+    { alias: "Net Weight", key: "netWeight", type: "string" },
+    { alias: "Delivery Proof", key: "actions", type: "action" },
+    { alias: "action", key: "actionsPage", type: "action" }
+  ],
   delivery: [
     { alias: "Line No.", key: "", type: "serialNo" },
     { alias: "Quantity", key: "quantity", type: 'string' },
@@ -72,18 +87,18 @@ module.exports = {
     { alias: "Action", key: "actions", type: "action" }
   ],
   orderInvoice: [
-    { alias: "", key: "key", type: "hiddenID" },
-    { alias: "invoice #", key: "invoiceValue", type: "string" },
-    { alias: "invoice Value", key: "invoiceValue", type: "string" },
+    { alias: "", key: "invoiceNumber", type: "hiddenID" },
+    { alias: "invoice #", key: "invoiceNumber", type: "string" },
+    { alias: "invoice Value", key: "totalValue", type: "string" },
     { alias: "currency", key: "currency", type: 'string' },
-    { alias: "Exporter Code", key: "exporter", type: "string" },
+    { alias: "Exporter Code", key: "exporterCode", type: "string" },
     { alias: "FZ code", key: "fzCode", type: "string" },
-    { alias: "warehouse", key: "warehouse", type: "string" },
-    { alias: "item cnt", key: "itemCount", type: "string" },
+    { alias: "warehouse", key: "wareHouse", type: "string" },
+    { alias: "item cnt", key: "itmCnt", type: "string" },
     { alias: "Export Declaration", key: "exportDeclaration", type: "string" },
-    { alias: "type", key: "type", type: "string" },
-    { alias: "Status", key: "orderStatus", type: "statusBox" },
-    { alias: "Action", key: "actions", type: "action" }
+    { alias: "type", key: "invoiceType", type: "string" },
+    { alias: "Status", key: "invoiceStatus", type: "statusBox" },
+    { alias: "Action", key: "action", type: "action" }
   ],
   fileList: [
     { alias: "S.No", key: "", type: "serialNo" },
@@ -133,5 +148,51 @@ module.exports = {
     { alias: "S.No", key: "", type: "serialNo" },
     { alias: "Code", key: "errorCode", type: "string" },
     { alias: "Message", key: "errorDescription", type: "string" }
+  ],
+  RelatedDocument: [
+    { alias: "#", key: "", type: "serialNo" },
+    { alias: "Document", key: "Document", type: "string" },
+    { alias: "Availability Status", key: "availabilityStatus", type: "string" },
+    { alias: "Non Availability", key: "nonAvailability", type: "string" }
+  ],
+  PaymentDetails: [
+    { alias: "#", key: "", type: "serialNo" },
+    { alias: "Payment Mode", key: "paymentMode", type: "string" },
+    { alias: "Payment Ref", key: "paymentRef", type: "string" }
+  ],
+  DeclarationSubmissionLogs: [
+    { alias: "Delcaration # / Batch Id.", key: "delcarationNo", type: "serialNo" },
+    { alias: "action", key: "currAction", type: 'string' },
+    { alias: "Date Time", key: "dateTime", type: "string" },
+    { alias: "Type", key: "type", type: "string" },
+    { alias: "invoice #", key: "invoiceValue", type: "string" },
+    { alias: "Reason", key: "reason", type: "string" },
+    { alias: "Status", key: "status", type: "statusBox" },
+    { alias: "view", key: "viewAction", type: "action" },
+    { alias: "payload", key: "payloadAction", type: "action" }
+  ],
+  Permits: [
+    { alias: "#", key: "S.No", type: "serialNo" },
+    { alias: "Issuing Authority Code", key: "issuingAuthorityCode", type: "string" },
+    { alias: "Ref No", key: "referenceNo", type: "string" },
+    { alias: "Expiry Date", key: "expiryDate", type: "string" },
+    { alias: "Not Required", key: "notRequiredFlag", type: "string" }
+  ],
+  Exemptions: [
+    { alias: "#", key: "S.No", type: "serialNo" },
+    { alias: "Exemption Type", key: "exemptionType", type: "string" },
+    { alias: "Ref No", key: "exemptionRefNo", type: "string" }
+  ],
+  InvoiceTrackingLogs: [
+    { alias: "S.No", key: "S.No", type: "serialNo"  },
+    { alias: "Message", key: "message", type: 'string' },
+    { alias: "Date Time", key: "txTimeStamp", type: "string" },
+    { alias: "Sender", key: "senderOrg", type: "string" },
+    { alias: "Status", key: "status", type: "string" },
+    { alias: "Document #", key: "documentNo", type: "string" },
+    { alias: "HAWB", key: "HAWB", type: "string" },
+    { alias: "Declaration", key: "declarationNo", type: "string" },
+    { alias: "View", key: "action", type: "action" }
   ]
+  
 };

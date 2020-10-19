@@ -2,7 +2,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import _ from 'lodash';
+import _, { constant } from 'lodash';
 import { browserHistory } from 'react-router';
 import unescapejs from 'unescape-js';
 import ShadowBox from '../../common/ShadowBox.jsx'
@@ -19,6 +19,8 @@ import moment from 'moment'
 import backOffices from '../../../backOffices';
 import Lable from '../../common/Lable.jsx';
 import lov from './typedata.js';
+import AnchorComp from '../../common/AnchorComp.jsx';
+import * as constantsApp from '../../constants/appCommunication.js';
 
 let baseUrl = backOffices.baseUrl;
 let interval;
@@ -152,17 +154,77 @@ class InvoiceDetails extends React.Component {
             "legend": "Canceled"
           }
         ]
+      ],
+      invoiceStatus : [
+        [
+          {"label": "FINALIZED" , "value":"FINALIZED"},
+          {"label": "TRANSPORTED" , "value": "TRANSPORTED"},
+          {"label": "DECLARED", "value": "DECLARED"},
+          {"label": "DELIVERED", "value": "DELIVERED"}
+        ], // stage1: FINALIZED, TRANSPORTED,DECLARED, EXIT,DELIVERED
+        [
+          {"label": "FINALIZED" , "value":"FINALIZED"},
+          {"label": "CANCELLED" , "value":"CANCELLED"}
+        ] , //stage2: CANCELLED
+        [
+          {"label": "FINALIZED" , "value":"FINALIZED"},
+          {"label": "TRANSPORTED" , "value": "TRANSPORTED"},
+          {"label": "DECLARED", "value": "DECLARED"},
+          {"label": "UNDELIVERED", "value": "UNDELIVERED"},
+          {"label": "RET_TRANSPORTED" , "value": "RET_TRANSPORTED"},
+          {"label": "RET_DECLARED" , "value": "RET_DECLARED"},
+          {"label": "FULL RETURN", "value": "FULL RETURN"}
+        ] , //stage3: UNDELIVERED,
+        [
+          {"label": "FINALIZED" , "value":"FINALIZED"},
+          {"label": "TRANSPORTED" , "value": "TRANSPORTED"},
+          {"label": "DECLARED", "value": "DECLARED"},
+          {"label": "UNDELIVERED", "value": "UNDELIVERED"},
+          {"label": "RET_TRANSPORTED" , "value": "RET_TRANSPORTED"},
+          {"label": "RET_DECLARED" , "value": "RET_DECLARED"},
+          {"label": "FULL RETURN", "value": "FULL RETURN"}
+        ] , //stage4: RETURN_BY_CUSTOMER and FULL RETURN"
+        [
+          {"label": "FINALIZED" , "value":"FINALIZED"},
+          {"label": "TRANSPORTED" , "value": "TRANSPORTED"},
+          {"label": "DECLARED", "value": "DECLARED"},
+          {"label": "UNDELIVERED", "value": "UNDELIVERED"},
+          {"label": "RET_TRANSPORTED" , "value": "RET_TRANSPORTED"},
+          {"label": "RET_DECLARED" , "value": "RET_DECLARED"},
+          {"label": "PARTIAL  RETURN", "value": "PARTIAL  RETURN"}
+        ] //stage5: RETURN_BY_CUSTOMER and FULL RETURN"
       ]
     };
-
-
+    
     this.DeliveryProofHandler = this.DeliveryProofHandler.bind(this);
     this.ReturnProofHandler = this.ReturnProofHandler.bind(this);
   }
   componentWillUnmount() {
     clearInterval(interval)
-
   }
+
+  getActiveInvoiceStatusList(label){
+    label = label.toUpperCase();
+        
+    if (label == "FINALIZED" || label == "TRANSPORTED" || label == "DECLARED" || label == "EXIT" || label == "DELIVERED") {
+      return this.state.invoiceStatus[0]; 
+    }
+    else
+    if (label == "CANCELLED") {
+      return this.state.invoiceStatus[1]; 
+    }
+    else
+    if (label == "UNDELIVERED") {
+      return this.state.invoiceStatus[2]; 
+    }else
+    if (label == "RETURN_BY_CUSTOMER") {
+      return this.state.invoiceStatus[3]; 
+    }
+    else{
+      return this.state.invoiceStatus[0]; 
+    }
+  }
+
   fetchData() {
     let request = {
       "internalid": this.props.params.id
@@ -172,7 +234,14 @@ class InvoiceDetails extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.fetchData();
-
+    console.log("componentDIdMount ============= ", this);
+    let request = {
+        "body" : {
+            "orderId":"OR123456"
+        }
+    }
+    this.props.actions.generalProcess(constantsApp.getEndToEndTrackingInformation, request);
+    
     // interval = setInterval(() => {
     //   this.fetchData();
     // }, 5000);
@@ -182,7 +251,217 @@ class InvoiceDetails extends React.Component {
     this.setState({ modalIsOpenXML: true, xml: xml })
   }
   componentWillReceiveProps(nextProps) {
+    console.log("nextProps ============= ", nextProps)
     let stateCopy = _.clone(this.state)
+
+    let invoiceDetailsContainer = {};
+    if (nextProps.orderInvoiceDetails) {
+      let invoiceData = nextProps.orderInvoiceDetails.invoices[0];
+      invoiceDetailsContainer.orderID = nextProps.orderInvoiceDetails.orderID;
+      invoiceDetailsContainer.invoiceNumber = invoiceData.invoiceNumber;
+      invoiceDetailsContainer.invoiceDate = moment.unix(invoiceData.invoiceDate/1000).format("DD/MM/YYYY HH:mm:ss")
+      invoiceDetailsContainer.totalNumberOfInvoicePages = invoiceData.totalNumberOfInvoicePages;
+      invoiceDetailsContainer.invoiceStatus = invoiceData.invoiceStatus;
+      invoiceDetailsContainer.txID = invoiceData.txID;
+      invoiceDetailsContainer.invoiceType = invoiceData.invoiceType;
+      invoiceDetailsContainer.paymentType = invoiceData.paymentType;
+      invoiceDetailsContainer.totalValue = invoiceData.totalValue;
+      invoiceDetailsContainer.incoTerms = invoiceData.incoTerms;
+      
+      invoiceDetailsContainer.freightAmount = invoiceData.freightAmount;
+      invoiceDetailsContainer.freightCurrency = invoiceData.freightCurrency;
+
+      invoiceDetailsContainer.currency = invoiceData.currency;
+      invoiceDetailsContainer.insuranceAmount = invoiceData.insuranceAmount;
+      invoiceDetailsContainer.insuranceCurrency = invoiceData.insuranceCurrency
+
+      invoiceDetailsContainer.exporterCode = invoiceData.exporterCode;
+      invoiceDetailsContainer.exporterName= invoiceData.exporterName;
+
+
+      invoiceDetailsContainer.fzCode = invoiceData.fzCode ? invoiceData.fzCode : "-";
+      invoiceDetailsContainer.wareHouse = invoiceData.wareHouse ? invoiceData.wareHouse : "-";
+
+      // content For Tab1 (OrderLine)
+      let lineItems = invoiceData.lineItems ? invoiceData.lineItems : [];
+      let lineItemsTemp = []
+      lineItems.forEach( item => {;
+        let obj={
+          "quantity": item.quantity,
+          "description": item.description,
+          "hscode": item.hscode,
+          "unitPrice": item.originalValueOfItem,
+          "countryOfOrigin" : item.countryOfOrigin,
+          "statUOM": item.statUOM,
+          "discount": item.discount.value,
+          "total": item.valueOfGoods,
+          "statQuantity": item.supplementaryQty,
+          "statUOM": item.supplementaryQtyUOM,
+          "netWeight": item.netWeight,
+          "actionsPage": [{
+                  "label": "View",
+                  "URI": ["/courier/itemDetails"],
+                  "params": "",
+                  "iconName": "icon-docs"
+              }]
+        }
+        lineItemsTemp.push(obj)
+      })
+
+      invoiceDetailsContainer.lineItems = lineItemsTemp;
+
+      // content For Tab2 (Transport)
+      let transportTemp = [];
+      let transport = invoiceData.transport ? invoiceData.transport : {};
+ //   let transport = [];
+    let item = transport;
+//      transport.forEach( item => {
+        let obj = {
+          "mode": _.get(item, 'mode', ""),
+          "masterTransportNo": _.get(item, 'masterTransportNo', ""),
+          "houseTransportNo":  _.get(item, 'houseTransportNo', ""),
+          "cargoType":         _.get(item, 'cargoType', ""),
+          "packageType":       _.get(item.packageDetails, 'packageType', ""),
+          "noOfPackages":      _.get(item.packageDetails, 'numberOfPackages', ""),
+          "grossWeight":       _.get(item.transportDetails, 'grossWeight', ""),
+          "netWeight":         _.get(item.transportDetails, 'netWeight', ""),
+          "volumetricWeight":  _.get(item.transportDetails, 'volumetricWeight', ""),
+          "transportImage":    _.get(item.transportDetails.document, 'path', ""),
+          "shippingCode":      _.get(item, 'shippingCode', ""),
+          "shippingBCode":     _.get(item, 'shippingBCode', ""),
+          "shippingName":      _.get(item, 'shippingName', ""),
+
+          "CargoCode":         _.get(item, 'CargoCode', ""),
+          "CargoBCode":        _.get(item, 'CargoBCode', ""),
+          "CargoName":         _.get(item, 'CargoName', ""),
+          
+          "brokerCode":        _.get(item, 'brokerCode', ""),
+          "brokerBCode":       _.get(item, 'brokerBCode', ""),
+          "brokerName":        _.get(item, 'brokerName', ""),
+
+          "modeOfTransport":   _.get(item, 'modeOfTransport', ""),
+          "carrierNumber":     _.get(item, 'carrierNumber', ""),
+          "carrierRegistrationNumber": _.get(item, 'carrierRegistrationNumber', ""),
+
+          "dateOfDeparture":   _.get(item, 'dateOfDeparture', ""),
+
+          "portLoad":          _.get(item.shippingDetails, 'portOfLoad', ""),
+          "portOfDischarge":   _.get(item.shippingDetails, 'portOfDischarge', ""),
+          "originalLoadPort":  _.get(item.shippingDetails, 'originalLoadPort', ""),
+
+          "destinationCountry": _.get(item, 'destinationCountry', ""),
+          "destinationCountryFlagImage": _.get(item, 'destinationCountryFlagImage', ""),
+          "submissionChannel": _.get(item, "submissionChannel", "")
+        }
+        transportTemp.push(obj);
+        transportTemp.push(obj);
+//      })
+      invoiceDetailsContainer.transport = transportTemp;
+
+
+      let exitConfirmation = invoiceData.exitConfirmation ? 
+        
+        {
+          "payload": _.get(invoiceData.exitConfirmation, 'payload', ""),
+          "annualDepartureDate": _.get(invoiceData.exitConfirmation, 'annualDepartureDate', ""),
+          "cardNumber":  _.get(invoiceData.exitConfirmation, 'cardNumber', ""),
+          "claimType":         _.get(invoiceData.exitConfirmation, 'claimType', ""),
+          "NRClaimNo":       _.get(invoiceData.exitConfirmation, 'NRClaimNo', ""),
+          "claimSubmitStatus":      _.get(invoiceData.exitConfirmation, 'claimSubmitStatus', ""),
+          "claimSubmissionDate":       _.get(invoiceData.exitConfirmation, 'claimSubmissionDate', ""),
+          "totalCharges":         _.get(invoiceData.exitConfirmation, 'totalCharges', ""),
+          "currency" : _.get(invoiceData.exitConfirmation, 'currency', ""),
+          "chargesList" : _.get(invoiceData.exitConfirmation, 'charges', [])
+        } 
+        
+        : 
+        
+        {};
+//      transport.forEach( item => {
+      invoiceDetailsContainer.exitConfirmation = exitConfirmation;
+
+      let exportDeclaration = invoiceData.exportDeclaration ? 
+        
+        {
+          "lastAction": _.get(invoiceData.exportDeclaration, 'lastAction', ""),
+          "actionTimeStamp": _.get(invoiceData.exportDeclaration, 'actionTimeStamp', ""),
+          "declarationStatus":  _.get(invoiceData.exportDeclaration, 'declarationStatus', ""),
+          "SOAPPayload":         _.get(invoiceData.exportDeclaration, 'SOAPPayload', ""),
+          "totalCharges":         _.get(invoiceData.exportDeclaration, 'totalCharges', ""),
+          "currency" : _.get(invoiceData.exportDeclaration, 'currency', ""),
+          "chargesList" : _.get(invoiceData.exportDeclaration, 'charges', []),
+          "version":       _.get(invoiceData.exportDeclaration, 'version', ""),
+          "batchID":      _.get(invoiceData.exportDeclaration, 'batchID', ""),
+          "status":       _.get(invoiceData.exportDeclaration, 'status', ""),
+          "declarationNo":         _.get(invoiceData.exportDeclaration, 'declarationNo', ""),
+          "requestID" : _.get(invoiceData.exportDeclaration, 'requestID', ""),
+          "regionType":         _.get(invoiceData.exportDeclaration, 'regimeType', ""),
+          "declarationType":         _.get(invoiceData.exportDeclaration, 'declarationType', ""),
+          "exportCodeMirsal2":         _.get(invoiceData.exportDeclaration, 'declarationType', ""),
+          "declarationPurpose":         _.get(invoiceData.exportDeclaration, 'declarationType', ""),
+          "relatedDocumentList": _.get(invoiceData.exportDeclaration, 'RelatedDocument', []),
+          "paymentDetailsList": _.get(invoiceData.exportDeclaration, 'paymentDetails', []),
+          "declarationItemList": _.get(invoiceData.exportDeclaration, 'declarationItem', [])
+        } 
+        : 
+        // charges total
+        {};
+//      transport.forEach( item => {
+      invoiceDetailsContainer.exportDeclaration = exportDeclaration;
+
+      let delivered = [];
+      delivered = invoiceData.delivered.map(item => {
+        return item;
+      })
+
+      invoiceData.returnRequest.forEach(item => {
+        console.log("item delivered ===== ", item)
+        delivered = delivered.concat(item.delivered.map(item => {
+          return item;
+        }))
+      })
+
+      delivered.forEach(item=> {
+        let lineItemsDelivered = [];
+        item.lineItems.forEach(item=>{
+          let obj={
+            "quantity": item.quantity,
+            "description": item.description,
+            "hscode": item.hscode,
+            "unitPrice": item.originalValueOfItem,
+            "countryOfOrigin" : item.countryOfOrigin,
+            "statUOM": item.statUOM,
+            "discount": item.discount.value ? item.valueOfGoods :  item.valueOfGoods  * item.discount.percentage,
+            "total": item.valueOfGoods,
+            "statQuantity": item.supplementaryQty,
+            "statUOM": item.supplementaryQtyUOM,
+            "netWeight": item.netWeight
+          }
+          lineItemsDelivered.push(obj)
+        })
+        item.lineItems = lineItemsDelivered
+      })
+
+      invoiceDetailsContainer.delivered = delivered;
+
+
+
+      let returnRequest = [];
+      returnRequest = invoiceData.returnRequest.map(item => {
+        return item.request;
+      })
+
+      invoiceDetailsContainer.returnRequest = returnRequest;
+
+      // content For Tab8 (InvoiceTrackingLogs)
+      invoiceDetailsContainer.invoiceTrackingLogs = invoiceData.InvoiceTrackingLogs;
+      stateCopy.invoiceDetailsContainer = invoiceDetailsContainer
+      console.log("stateCopy props udpate ===== ", stateCopy);
+      stateCopy.isLoading = false
+      this.setState(stateCopy)
+    }
+
+
 
     if (nextProps.orgDetailByCode) {
       stateCopy.orgDetailByCode = nextProps.orgDetailByCode
@@ -223,7 +502,7 @@ class InvoiceDetails extends React.Component {
         })
       })
 
-      stateCopy.isLoading = false;
+    //  stateCopy.isLoading = false;
       stateCopy.orderDetails = nextProps.orderDetails;
       stateCopy.lineItems = lineItems;
       stateCopy.returnItems = returnItems;
@@ -396,7 +675,7 @@ class InvoiceDetails extends React.Component {
           </Portlet>
         </ModalBox>
         <ModalBox isOpen={this.state.modalIsOpen}>
-          <Portlet title={utils.getLabelByID("Proof")} noCollapse={true} actions={modalActions}>
+          {/* <Portlet title={utils.getLabelByID("Proof")} noCollapse={true} actions={modalActions}>
             <div className="row">
               <div className="col-md-12">
                 <div className="form-group">
@@ -421,35 +700,36 @@ class InvoiceDetails extends React.Component {
                 <img style={{ border: "1px solid black", display: "block", marginLeft: "auto", marginRight: "auto" }} src={baseUrl + '/API/core/download?type=IMAGE&path=' + this.state.showData.deliveryImagePath} height="50%" />
               </div>
             </div>
-          </Portlet>
+          </Portlet> */}
         </ModalBox>
+        
         <div className="portlet light" style={{ "min-height": "854px" }}>
 
           <div className="row">
             <div className="col-md-12">
               <ul id="progressbar">
-                {this.state.statusList[this.state.orderDetails.tranxData.deliveryStatus].map((item, key) => {
-                  let width = (100 / this.state.statusList[this.state.orderDetails.tranxData.deliveryStatus].length).toString() + "%"
-                  if (item.legend.toUpperCase() == this.state.orderDetails.tranxData.orderStatus) {
+                {this.getActiveInvoiceStatusList(this.state.invoiceDetailsContainer.invoiceStatus).map((item, key) => {
+                  let width = (100 / this.getActiveInvoiceStatusList(this.state.invoiceDetailsContainer.invoiceStatus).length).toString() + "%"
+                  if (item.label.toUpperCase() == this.state.invoiceDetailsContainer.invoiceStatus) {
                     statusBarClass = "notPassed"
                   }
-                  return <li key={key} style={{ width: width }} className={item.legend.toUpperCase() == this.state.orderDetails.tranxData.orderStatus ? this.getActiveClass(item.label) : statusBarClass}>{item.label}</li>
+                  return <li key={key} style={{ width: width }} className={item.label.toUpperCase() == this.state.invoiceDetailsContainer.invoiceStatus ? this.getActiveClass(item.label) : statusBarClass}>{item.label}</li>
                 })}
               </ul>
             </div>
           </div>
 
-          <div className="row">
+        <div className="row">
             <div className="col-md-12">
               <div className="orderno">
                 <img src="/assets/Resources/ordericon.png" width="18px" /><label>Invoice
-                 #: <span>{this.state.orderDetails.tranxData.orderID}</span></label>
-              </div>
-              <div className="hashno">
-                <label>{this.state.orderDetails.txnid}</label>
+                 #: <span>{this.state.invoiceDetailsContainer.invoiceNumber}</span></label>
               </div>
               <div>
-                <label>Order #: <span>{this.state.orderDetails.tranxData.orderID}</span></label>
+                <label>Order #: <span>{this.state.invoiceDetailsContainer.orderID}</span></label>
+              </div>
+              <div className="hashno">
+                <label>{this.state.invoiceDetailsContainer.txID}</label>
               </div>
             </div>
           </div>
@@ -461,7 +741,7 @@ class InvoiceDetails extends React.Component {
                             <label className="bold">Invoice Date :</label>
                         </div>
                         <div className="col-md-6">
-                            <span>10/10/2020 10:10:00</span>
+                            <span>{ this.state.invoiceDetailsContainer.invoiceDate}</span>
                         </div>
                     </div>
             </div>
@@ -471,7 +751,7 @@ class InvoiceDetails extends React.Component {
                             <label className="bold">Total No of Pages:</label>
                         </div>
                         <div className="col-md-6">
-                            <span>5</span>
+                            <span>{this.state.invoiceDetailsContainer.totalNumberOfInvoicePages}</span>
                         </div>
                     </div>
             </div>
@@ -479,6 +759,7 @@ class InvoiceDetails extends React.Component {
                 
             </div>
         </div>
+        
         <div className="row form-group">
             <div className="col-md-4">
                     <div className="form-group">
@@ -486,7 +767,7 @@ class InvoiceDetails extends React.Component {
                             <label className="bold">Invoice Type :</label>
                         </div>
                         <div className="col-md-6">
-                            <span>COMMERCIAL</span>
+                            <span>{this.state.invoiceDetailsContainer.invoiceType}</span>
                         </div>
                 </div>
             </div>
@@ -496,7 +777,7 @@ class InvoiceDetails extends React.Component {
                             <label className="bold">Payment Type :</label>
                         </div>
                         <div className="col-md-6">
-                            <span>-</span>
+                            <span>{this.state.invoiceDetailsContainer.paymentType}</span>
                         </div>
                     </div>
             </div>
@@ -512,7 +793,7 @@ class InvoiceDetails extends React.Component {
                             <label className="bold">Total Value :</label>
                         </div>
                         <div className="col-md-6">
-                            <span>500000 AED</span>
+                            <span>{this.state.invoiceDetailsContainer.totalValue} {this.state.invoiceDetailsContainer.currency}</span>
                         </div>
                 </div>
             </div>
@@ -531,7 +812,7 @@ class InvoiceDetails extends React.Component {
                             <label className="bold">INCO Terms :</label>
                         </div>
                         <div className="col-md-6">
-                            <span>CIF</span>
+                            <span>{this.state.invoiceDetailsContainer.incoTerms}</span>
                         </div>
                     </div>
             </div>
@@ -541,7 +822,7 @@ class InvoiceDetails extends React.Component {
                             <label className="bold">Insurance Amount :</label>
                         </div>
                         <div className="col-md-6">
-                            <span>0 AED</span>
+                          <span>{this.state.invoiceDetailsContainer.insuranceAmount} {this.state.invoiceDetailsContainer.insuranceCurrency}</span>
                         </div>
                     </div>
             </div>
@@ -551,7 +832,7 @@ class InvoiceDetails extends React.Component {
                             <label className="bold">Freight Amount :</label>
                         </div>
                         <div className="col-md-6">
-                            <span>0 AED</span>
+                            <span>{this.state.invoiceDetailsContainer.freightAmount} {this.state.invoiceDetailsContainer.freightCurrency}</span>
                         </div>
                     </div>
             </div>
@@ -564,7 +845,7 @@ class InvoiceDetails extends React.Component {
                             <label className="bold">Exporter :</label>
                         </div>
                         <div className="col-md-6">
-                            <span>{"{{Code}} {{name}}"}</span>
+                            <span>{this.state.invoiceDetailsContainer.exporterCode } {this.state.invoiceDetailsContainer.exporterName }</span>
                         </div>
                 </div>
             </div>
@@ -574,7 +855,7 @@ class InvoiceDetails extends React.Component {
                             <label className="bold">Free Zone :</label>
                         </div>
                         <div className="col-md-6">
-                            <span>JAFZA (Jebel Ali Free Zone)</span>
+                            <span>{ this.state.invoiceDetailsContainer.fzCode }</span>
                         </div>
                     </div>
             </div>
@@ -584,7 +865,7 @@ class InvoiceDetails extends React.Component {
                             <label className="bold">Warehouse :</label>
                         </div>
                         <div className="col-md-6">
-                            <span>{"{{Code}} {{name}}"}</span>
+                            <span>{ this.state.invoiceDetailsContainer.wareHouse }</span>
                         </div>
                     </div>
             </div>
@@ -595,33 +876,26 @@ class InvoiceDetails extends React.Component {
               <div className="tab-pane in active">
                 <div className="ui-regulartabs">
                   <ul id="adHocTabs" className="nav nav-tabs">
-                    <li id="fieldsTabLink" className="active"><a href="#orderLine" data-toggle="tab">
-                      <span> Order Line</span></a>
-                    </li>
-                    <li id="filtersTabLink"><a href="#transport" data-toggle="tab"> <span> Transport</span></a></li>
-                    <li id="fieldsTabLink"><a href="#exportDeclaration" data-toggle="tab">
-                      <span> Export Declaration</span></a>
-                    </li>
+                    <li id="fieldsTabLink" className="active"><a href="#orderLine" data-toggle="tab"><span> Order Line</span></a></li>
+                    <li id="filtersTabLink"><a href="#transport" data-toggle="tab"><span> Transport</span></a></li>
+                    <li id="fieldsTabLink"><a href="#exportDeclaration" data-toggle="tab"><span> Export Declaration</span></a></li>
                     <li id="groupsTabLink"><a href="#exitConfirmation" data-toggle="tab"> <span> Exit Confirmation</span></a></li>
-                    <li id="filtersTabLink"><a href="#delivered" data-toggle="tab"> <span> Delivered</span></a>
-                    </li>
-                    <li id="fieldsTabLink"><a href="#importDeclaration" data-toggle="tab">
-                      <span> Import Declaration</span></a>
-                    </li>
-                    <li id="groupsTabLink"><a href="#returnDetails" data-toggle="tab">
-                      <span> Return Details</span></a></li>
-                  </ul>
+                    <li id="filtersTabLink"><a href="#delivered" data-toggle="tab"> <span> Delivered</span></a></li>
+                    <li id="fieldsTabLink"><a href="#importDeclaration" data-toggle="tab"><span> Import Declaration</span></a></li>
+                    <li id="groupsTabLink"><a href="#returnDetails" data-toggle="tab"><span> Return Details</span></a></li>
+                    <li id="groupsTabLink"><a href="#invoiceTrackingLogs" data-toggle="tab"><span> Logs</span></a></li>                  </ul>
                 </div>
                 <div className="tab-content ui-innertab ui-tabcontentbody">
+                  
                   <div id="orderLine" className="tab-pane in active ui-fieldtable">
                     <Table
                       componentFunction={this.DeliveryProofHandler}
                       pagination={false}
                       export={false}
                       search={false}
-                      gridColumns={utils.getGridColumnByName("orderLine")}
-                      gridData={this.state.orderDetails.tranxData.lineItems || []}
-                      totalRecords={5}
+                      gridColumns={utils.getGridColumnByName("orderLineTraversal")}
+                      gridData={ this.state.invoiceDetailsContainer.lineItems }
+                      totalRecords={ 1 }
                       pageChanged={() => {
                       }}
                       activePage={1}
@@ -630,248 +904,351 @@ class InvoiceDetails extends React.Component {
                   </div>
                   
                   <div id="transport" className="tab-pane">
-                    <div className="row">
-                      <div className="col-md-12">
-                            <div className="col-md-6">
-                                <label>OUTBOUND {"10/10/2020 12:12:12"}</label>
+                    { this.state.invoiceDetailsContainer.transport.map( item => {
+                      console.log("transport ==== ", item);
+                      return (
+                      <div className="shadowBox" style={{ padding:"5px", marginBottom: "15px"}}>
+                        <div className="row">
+                          <div className="col-md-12" style={{marginTop:"10px" }}>
+                            <div className="col-md-2">
+                              <label>OUTBOUND</label>
+                            </div>
+                            <div className="col-md-4">
+                              <span>{"10/10/2020 12:12:12"}</span>
                             </div>
                             <div className="col-md-6" style={{textAlign:"right"}}>
                                 <label>asaaabbbbccc12321312312312312312</label>
                             </div>
-                      </div>
-                      <div className="col-md-12">
-                            <div className="col-md-4">
+                          </div>
+
+                          <div className="col-md-12">
+                            <div className="col-md-2">
                                 <label>Master Transport Doc#</label>
-                                <span> {"M00001"}</span>
                             </div>
-                            <div className="col-md-4">
+                            <div className="col-md-2">
+                                <span>{item.masterTransportNo}</span>
+                            </div>
+                            
+                            <div className="col-md-2">
                                 <label>House Transport Doc#</label>
-                                <span> {"H00001"}</span>
                             </div>
-                      </div>
-                      <div className="col-md-12">
-                            <div className="col-md-4">
-                                <label>Cargo Type: </label>
-                                <span> {"BOXES"}</span>
+                            <div className="col-md-2">
+                                <span> {item.houseTransportNo}</span>
                             </div>
-                      </div>
-                      <div className="col-md-12">
-                            <div className="col-md-4">
-                                <label>Package Type: </label>
-                                <span> {"GENERAL"}</span>
+                          </div>
+                          
+                          <div className="col-md-12">
+                            <div className="col-md-2">
+                              <label>Cargo Type: </label>
                             </div>
-                            <div className="col-md-4">
-                                <label>No of Packages: </label>
-                                <span> {1}</span>
+                            <div className="col-md-2">
+                              <span> {item.cargoType}</span>
                             </div>
-                      </div>
-                        <div className="col-md-12">
-                            <div className="col-md-4">
-                                <label>Gross Weight: </label>
-                                <span> {"10 Kg"}</span>
+                          </div>
+
+                          <div className="col-md-12">
+                            <div className="col-md-2">
+                              <label>Package Type: </label>
+                            </div>  
+                            <div className="col-md-2">
+                              <span> {item.packageType}</span>
                             </div>
-                            <div className="col-md-4">
-                                <label>Net Weight: </label>
-                                <span> {"10 Kg"}</span>
+                            <div className="col-md-2">
+                              <label>No of Packages: </label>
                             </div>
-                            <div className="col-md-4">
-                                <label>Volumetric Weight: </label>
-                                <span> {"10 Kg"}</span>
+                            <div className="col-md-2">  
+                              <span> {item.noOfPackages}</span>
                             </div>
+                          </div>
+
+                          <div className="col-md-12">
+                            <div className="col-md-2">
+                              <label>Gross Weight: </label>
+                            </div>
+                            <div className="col-md-2">
+                              <span> {item.grossWeight}</span>
+                            </div>
+
+                            <div className="col-md-2">
+                              <label>Net Weight: </label>
+                            </div>
+                            <div className="col-md-2">   
+                              <span> {item.netWeight}</span>
+                            </div>
+
+                            <div className="col-md-2">
+                              <label>Volumetric Weight: </label>
+                            </div>
+                            <div className="col-md-2">  
+                              <span> {item.volumetricWeight}</span>
+                            </div>
+                          </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-12 text-center">
-                            <div className="shadowBox recipt">
-                                <img src={baseUrl + '/API/core/download?type=IMAGE&path=' + this.state.orderDetails.tranxData.ExportHAWB.HAWBHash} onError={this.addDefaultHAWBSrc} height="30%" />
+
+                        <div className="row">
+                          <div className="col-md-12 text-center">
+                            <div className="shadowBox recipt" style={{ margin:"5px 15px 5px 15px" }}>
+                                <img src={baseUrl + item.transportImage} onError={this.addDefaultHAWBSrc} height="30%" />
                             </div>
+                          </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="form-group">
-                            <div className="col-md-12">
-                                <Lable text={utils.getLabelByID("Shipping / Airline Agent")} columns="12" style={{marginBottom:"3px"}}></Lable>
-                                <div className="col-md-4">
-                                    <label>Code: </label>
-                                    <span> {"6543"}</span>
-                                </div>
-                                <div className="col-md-4">
+
+                        <div className="row">
+                          <div className="form-group">
+                              <div className="col-md-12">
+                                  <Lable text={utils.getLabelByID("Shipping / Airline Agent")} columns="12" style={{marginBottom:"3px"}}></Lable>
+                                  <div className="col-md-2">
+                                      <label>Code: </label>
+                                  </div>    
+                                  <div className="col-md-2">
+                                    <span> {item.shippingBCode}</span>
+                                  </div>
+                                  <div className="col-md-2">
                                     <label>Business Code: </label>
-                                    <span> {"1234"}</span>
-                                </div>
-                                <div className="col-md-4">
+                                  </div>
+                                  <div className="col-md-2">
+                                    <span> {item.shippingBCode}</span>
+                                  </div>
+                                  <div className="col-md-2">
                                     <label>Name: </label>
-                                    <span> {"code_name"}</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div className="form-group"></div>
+                                  </div>
+                                  <div className="col-md-2">
+                                    <span> {item.shippingName}</span>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div className="form-group"></div>
 
-                        <div className="form-group">
-                            <div className="col-md-12">
-                                <Lable text={utils.getLabelByID("Cargo Handler")} columns="12" style={{marginBottom:"3px"}}></Lable>
-
-                                <div className="col-md-4">
-                                    <label>Code: </label>
-                                    <span> {"6543"}</span>
-                                </div>
-                                <div className="col-md-4">
+                          <div className="form-group">
+                              <div className="col-md-12">
+                                  <Lable text={utils.getLabelByID("Cargo Handler")} columns="12" style={{marginBottom:"3px"}}></Lable>
+                                  <div className="col-md-2">
+                                      <label>Code: </label>
+                                  </div>    
+                                  <div className="col-md-2">
+                                    <span> {item.CargoCode}</span>
+                                  </div>
+                                  <div className="col-md-2">
                                     <label>Business Code: </label>
-                                    <span> {"1234"}</span>
-                                </div>
-                                <div className="col-md-4">
+                                  </div>
+                                  <div className="col-md-2">
+                                    <span> {item.CargoBCode}</span>
+                                  </div>
+                                  <div className="col-md-2">
                                     <label>Name: </label>
-                                    <span> {"code_name"}</span>
-                                </div>
-                            </div>
-                        </div>
+                                  </div>
+                                  <div className="col-md-2">
+                                    <span> {item.CargoName}</span>
+                                  </div>
+                              </div>
+                          </div>
 
-                        <div className="form-group"></div>
+                          <div className="form-group"></div>
 
-                        <div className="form-group">
+                          <div className="form-group">
                             <div className="col-md-12">
-                                <Lable text={utils.getLabelByID("Broker")} columns="12" style={{marginBottom:"3px"}}></Lable>
-
-                                <div className="col-md-4">
-                                    <label>Code: </label>
-                                    <span> {"6543"}</span>
-                                </div>
-                                <div className="col-md-4">
+                                  <Lable text={utils.getLabelByID("Broker")} columns="12" style={{marginBottom:"3px"}}></Lable>
+                                  <div className="col-md-2">
+                                      <label>Code: </label>
+                                  </div>    
+                                  <div className="col-md-2">
+                                    <span> {item.brokerCode}</span>
+                                  </div>
+                                  <div className="col-md-2">
                                     <label>Business Code: </label>
-                                    <span> {"1234"}</span>
-                                </div>
-                                <div className="col-md-4">
+                                  </div>
+                                  <div className="col-md-2">
+                                    <span> {item.brokerBCode}</span>
+                                  </div>
+                                  <div className="col-md-2">
                                     <label>Name: </label>
-                                    <span> {"code_name"}</span>
+                                  </div>
+                                  <div className="col-md-2">
+                                    <span> {item.brokerName}</span>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div className="form-group">
+                            <div className="col-md-12">
+                                <div className="col-md-2">
+                                  <label>Mode Of transport: </label>
+                                </div>
+                                <div className="col-md-2">
+                                  <span> {item.modeOfTransport}</span>
                                 </div>
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <div className="col-md-12">
-                                <div className="col-md-6">
-                                    <label>Mode Of transport: </label>
-                                    <span> {"Courier Air"}</span>
+                          </div>
+                          
+                          <div className="form-group">
+                              <div className="col-md-12">
+                                <div className="col-md-2">
+                                  <label>Carrier Number: </label>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <div className="col-md-12">
-                                <div className="col-md-4">
-                                    <label>Carrier Number: </label>
-                                    <span> {"Courier Air"}</span>
+                                <div className="col-md-2">
+                                  <span> {item.carrierNumber}</span>
                                 </div>
-                                <div className="col-md-4">
-                                    <label>Carrier Registration Number: </label>
-                                    <span> {"EK123"}</span>
+                                <div className="col-md-2">
+                                  <label>Carrier Registration Number: </label>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <div className="col-md-12">
-                                <div className="col-md-4">
+                                <div className="col-md-2">
+                                  <span> {item.carrierRegistrationNumber}</span>
+                                </div>
+                              </div>
+                          </div>
+                          
+                          <div className="form-group">
+                              <div className="col-md-12">
+                                  <div className="col-md-2">
                                     <label>Date of Departure: </label>
-                                    <span> {"10/10/2020 12:12:12"}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <div className="col-md-12">
-                                <div className="col-md-4">
+                                  </div>
+                                  <div className="col-md-2">
+                                    <span> {item.dateOfDeparture}</span>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div className="form-group">
+                              <div className="col-md-12">
+                                  <div className="col-md-2">
                                     <label>Port of Load: </label>
-                                    <span> {"--"}</span>
-                                </div>
-                                <div className="col-md-4">
+                                  </div>
+                                  <div className="col-md-2">
+                                    <span> {item.portLoad}</span>
+                                  </div>
+                                  <div className="col-md-2">
                                     <label>Port of Discharge: </label>
-                                    <span> {"--"}</span>
-                                </div>
-                                <div className="col-md-4">
+                                  </div>
+                                  <div className="col-md-2">
+                                    <span> {item.portOfDischarge}</span>
+                                  </div>
+                                  <div className="col-md-2">
                                     <label>Original Load Port: </label>
-                                    <span> {"--"}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <div className="col-md-12">
-                                <div className="col-md-6">
+                                  </div>
+                                  <div className="col-md-2">
+                                    <span> {item.originalLoadPort}</span>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div className="form-group">
+                              <div className="col-md-12">
+                                  <div className="col-md-2">
                                     <label>Destination Country: </label>
-                                    <span>BAHRAIN (BH) FLAG</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <div className="col-md-12">
-                                <div className="col-md-6">
+                                  </div>
+                                  <div className="col-md-2">
+                                    <span>{item.destinationCountry} </span>
+                                    <img style={{ width: "20px", height: "20px" }} src={baseUrl + item.destinationCountryFlagImage} />
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div className="form-group">
+                              <div className="col-md-12">
+                                  <div className="col-md-2">
                                     <label>Submission Channel: </label>
-                                    <span>API</span>
-                                </div>
-                            </div>
+                                  </div>
+                                  <div className="col-md-2">
+                                    <span>{item.submissionChannel}</span>
+                                  </div>
+                              </div>
+                          </div>
                         </div>
-                    </div>
-
+                      </div>
+                      )
+                      })
+                    }
                   </div>
                   
                   <div id="exitConfirmation" className="tab-pane">
                     <div className="row">
-                        <div className="col-md-12">
-                            <div className="col-md-4">
-                                <Lable text={utils.getLabelByID("Actual Departure Date:")} columns="12" style={{marginBottom:"3px"}}></Lable>
-                            </div>
-                            <div className="col-md-4">
-                                <span> {"10/10/10 12:12:12"}</span>
-                            </div>
-                        </div>
-                        <div className="col-md-12">
-                            <div className="form-group">
-                                <Lable text={utils.getLabelByID("Debit / Credit Account #")} columns="12" style={{marginBottom:"3px"}}></Lable>
-                                <span> {"999-9999-999"}</span>
+                      <div className="form-actions right">
+                        <div className="form-group col-md-12">
+                            <div className="btn-toolbar pull-right">
+                              <button type="submit" className="btn green"
+                                    onClick={this.renderPayload.bind(this, this.state.invoiceDetailsContainer.exitConfirmation.payload)}>{utils.getLabelByID("View SOAP Payload")} </button>
                             </div>
                         </div>
-                        <div className="form-group"></div>
-                        <div className="form-group">
-                            <div className="col-md-12">
-                                <div className="col-md-12">
-                                    <label>CLAIM</label>
-                                </div>    
+                      </div>
+
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="col-md-5">
+                                <label>Annual Departure Date: </label>
                             </div>
-                            <div className="col-md-12">
-                                <div className="col-md-4">
-                                    <label>Claim Type: </label>
-                                    <span> {"NR Claim"}</span>
-                                </div>
+                            <div className="col-md-7">
+                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.annualDepartureDate}</span>
                             </div>
-                            <div className="col-md-12">
-                                <div className="col-md-6">
-                                    <label>NR Claim No: </label>
-                                    <span> {2687871231567}</span>
-                                </div>
-                                <div className="col-md-6">
-                                    <label>Claim Submit Status: </label>
-                                    <span> {"REQUEST CREATED"}</span>
-                                </div>
-                            </div>
-                            <div className="col-md-12">
-                                <div className="col-md-6">
-                                    <label>Claim Submission Date: </label>
-                                    <span> {"10/10/10 12:12:12"}</span>
-                                </div>
-                            </div>
+                          </div>
                         </div>
-                        <div className="form-group">
-                            <div className="col-md-12">
-                                <div className="col-md-6">
-                                    <label>CHARGES: </label>
-                                    <span> (Total = {500}) AED</span>
-                                </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="col-md-5">
+                                <label>Debit / Credit Account # : </label>
                             </div>
+                            <div className="col-md-7">
+                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.cardNumber}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <Lable text="CLAIM" />
+                        <div className="row">
+                          <div className="col-md-4">
+                            <div className="col-md-6">
+                                <label>Claim Type: </label>
+                            </div>
+                            <div className="col-md-6">
+                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.claimType}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-4">
+                            <div className="col-md-6">
+                                <label>NR Claim No:</label>
+                            </div>
+                            <div className="col-md-6">
+                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.NRClaimNo}</span>
+                            </div>
+                          </div> 
+                         <div className="col-md-4">
+                            <div className="col-md-6">
+                                <label>Claim Submit Status: </label>
+                            </div>
+                            <div className="col-md-6">
+                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.claimSubmitStatus}</span>
+                            </div>
+                          </div>                  
+                        </div>
+                        <div className="row">
+                          <div className="col-md-4">
+                            <div className="col-md-6">
+                                <label>Claim Submission Date: </label>
+                            </div>
+                            <div className="col-md-6">
+                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.claimSubmissionDate}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-4">
+                            <div className="col-md-6">
+                                <label>CHARGES: </label>
+                            </div>
+                            <div className="col-md-6">
+                              <span>Total = {this.state.invoiceDetailsContainer.exitConfirmation.totalCharges} {this.state.invoiceDetailsContainer.exitConfirmation.currency}</span>
+                            </div>
+                          </div>
                         </div>
                         <div className="col-md-12">
                             <Table
-                               pagination={false}
+                                pagination={false}
                                 export={false}
                                 search={false}
                                 gridColumns={utils.getGridColumnByName("charges")}
-                                gridData={_.get(this.state, 'orderDetails.tranxData.exportDeclaration[0].invoiceList', [])}
+                                gridData={this.state.invoiceDetailsContainer.exitConfirmation.totalCharges}
                                 totalRecords={5}
                                 pageChanged={() => {
                                 }}
@@ -884,270 +1261,288 @@ class InvoiceDetails extends React.Component {
                   </div>
                   
                   <div id="exportDeclaration" className="tab-pane">
-                    {this.state.orderDetails.tranxData.exportDeclaration == null && <div className="row">
-                      <text className="col-md-12" style={{ textAlign: "center", color: "#3064f0c4", fontWeight: "bold", fontSize: "18px" }}>Export Declaration Not Found</text>
-                    </div>}
-                    {this.state.orderDetails.tranxData.exportDeclaration && this.state.orderDetails.tranxData.exportDeclaration.map(item => {
-                      return <div>
-                        <div className="form-group">
+                    <div className="tab-pane in active">
+                      <div className="ui-regulartabs">
+                        <ul id="exportDeclarationTab" className="nav nav-tabs">
+                          <li id="fieldsTabLink" className="active"><a href="#exportDeclarationLogs" data-toggle="tab">
+                            <span> Declaration Submission Logs</span></a>
+                          </li>
+                          <li id="filtersTabLink"><a href="#exportDeclarationView" data-toggle="tab"> <span> View Declarations</span></a></li>
+                        </ul>
+                      </div>
+                      <div className="tab-content ui-innertab ui-tabcontentbody">
+                        <div id="exportDeclarationLogs" className="tab-pane in active ui-fieldtable">
                           <div className="row">
-                            <div className="col-md-2">
-                              <label className="bold">Declaration No</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.declarationNo}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Request ID</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.Id}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Version</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.version}</label>
+                            <div className="col-md-12">
+                              <Table fontclass=""
+                                  gridColumns={utils.getGridColumnByName("DeclarationSubmissionLogs")}
+                                  gridData={[]}
+                                  totalRecords={this.state.length}
+                                  searchCallBack={this.searchCallBack}
+                                  pageSize={10}
+                                  pagination={false} pageChanged={this.pageChanged}
+                                  export={false}
+                                  search={true}
+                              />
                             </div>
                           </div>
-                        </div>
-                        <div className="form-group">
+                      </div>
+                        <div id="exportDeclarationView" className="tab-pane in ui-fieldtable">
                           <div className="row">
-                            <div className="col-md-2">
-                              <label className="bold">Flight No</label>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="row">
+                                      <div className="col-md-12">
+                                        <Lable text={utils.getLabelByID("Last Action : ")} columns="6"></Lable>
+                                        <span>{this.state.invoiceDetailsContainer.exportDeclaration.lastAction}</span>
+                                      </div>
+                                    </div>
+                                    <div className="row">
+                                      <div className="col-md-12">
+                                        <Lable text={utils.getLabelByID("Action Timestamp : ")} columns="6"></Lable>
+                                        <span>{this.state.invoiceDetailsContainer.exportDeclaration.actionTimeStamp}</span>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                  <div className="form-group col-md-12">
+                                      <div className="pull-right">
+                                        <span style={{ border: "1px solid", padding: "8px 15px 8px 15px", background: "#ed0707", color: "white", letterSpacing: "1px", fontWeight: "600" }}>{this.state.invoiceDetailsContainer.exportDeclaration.declarationStatus}</span>  
+                                      </div>
+                                  </div>
+                                </div>
                             </div>
-                            <div className="col-md-2">
-                              <label>{item.flightNo}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Batch Id</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.ackNo}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Status</label>
+                            <div className="col-md-12">
+                                <AnchorComp
+                                    anchotDisplayName = {"SOAP Payload"}
+                                    invokeAnchorButtonhandlar = {this.soapPayloadHandler}
+                                />
                             </div>
 
-                            <div className="col-md-2">
-                              <label>{(item.status == "-1" || item.status == "1") ? "HAWB CREATED" : this.getStatus(item.status)}</label>
+                            <Lable text = {"Charges Total = " + this.state.invoiceDetailsContainer.exitConfirmation.totalCharges + this.state.invoiceDetailsContainer.exitConfirmation.currency} />
+                            <div className="col-md-12">
+                                <Table fontclass=""
+                                    gridColumns={utils.getGridColumnByName("charges")}
+                                    gridData={_.get(this.state.invoiceDetailsContainer.exportDeclaration,'chargesList', [])}
+                                    totalRecords={100}
+                       //           totalRecords={this.state.invoiceDetailsContainer.exportDeclaration.chargesList.length}
+                                    searchCallBack={this.searchCallBack}
+                                    pageSize={10}
+                                    pagination={false} pageChanged={this.pageChanged}
+                                    export={false}
+                                    search={true}
+                                />
                             </div>
-                          </div>
-                        </div>
-                        {item.exception && item.exception.length > 0 && item.exception[0].exceptionCode !== "000" && <div className="alertbox">
-                          <label className="errorcolr">Error</label>
-                          <div className="errorbox">
-                            {item.exception.map((elem, index) => {
-                              if (elem.exceptionCode == "000") {
-                                return
-                              }
+                            <div className="row">
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Version</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.version}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Batch Id</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.batchID}</span>
+                                </div>
+                              </div>
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Status</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.status}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Declaration No</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.declarationNo}</span>
+                                </div>
+                              </div>
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Request ID</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.requestID}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Region Type</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.regionType}</span>
+                                </div>
+                              </div>
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Declaration Type</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.declarationType}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Export Code Mirsal 2</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.exportCodeMirsal2}</span>
+                                </div>
+                              </div>
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Declaration Purpose</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.declarationPurpose}</span>
+                                </div>
+                              </div>
+                            </div>
 
-                              return (<p key={index}>{elem.exceptionDetails}<br /></p>)
-                            })}
-                          </div>
-                        </div>}
-                        <div className="form-group">
-                          <div className="row">
-                            <div className="col-md-2">
-                              <label className="bold">Region Type</label>
+                            <div className="col-md-6">
+                              <Lable text="Related Documents" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
+                              <Table fontclass=""
+                                gridColumns={utils.getGridColumnByName("RelatedDocument")}
+                                gridData={_.get(this.state.invoiceDetailsContainer.exportDeclaration,'relatedDocumentList', [])}
+                                totalRecords={100}  
+                            //  totalRecords={this.state.invoiceDetailsContainer.exportDeclaration.relatedDocumentList.length}        
+                                searchCallBack={this.searchCallBack}
+                                pageSize={10}
+                                pagination={false} pageChanged={this.pageChanged}
+                                export={false}
+                                search={true}
+                              />
                             </div>
-                            <div className="col-md-2">
-                              <label>{lov('regimeType', item.regimeType)}</label>
+                            <div className="col-md-6">
+                              <Lable text="Payment Details" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
+                              <Table fontclass=""
+                                gridColumns={utils.getGridColumnByName("PaymentDetails")}
+                                gridData={_.get(this.state.invoiceDetailsContainer.exportDeclaration, 'paymentDetailsList', [])}
+                                totalRecords={100}
+                       //       totalRecords={this.state.invoiceDetailsContainer.exportDeclaration.paymentDetailsList.length}
+                                searchCallBack={this.searchCallBack}
+                                pageSize={10}
+                                pagination={false} pageChanged={this.pageChanged}
+                                export={false}
+                                search={true}
+                              />
                             </div>
-                            <div className="col-md-2">
-                              <label className="bold">Declaration Type</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{lov('declarationType', item.declType)}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Export Code Mirsal 2</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.exporterMirsal2Code}</label>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="form-group">
-                          <div className="row">
-                            <div className="col-md-2">
-                              <label className="bold">Transport Mode</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{lov('transportMode', item.transportMode)}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">No of pages</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.noOfPages}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Payload</label>
-                            </div>
-                            <div className="col-md-2">
-                              <a href="javascript:;" onClick={this.renderPayload.bind(this, item.SOAPPayload)}>view</a>
+                            <div className="col-md-12">
+                              <Lable text="Declaration Item" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
+                              <Table fontclass=""
+                                gridColumns={utils.getGridColumnByName("delivery")}
+                                gridData={_.get(this.state.invoiceDetailsContainer.exportDeclaration,'declarationItemList',[])}
+                                totalRecords={100}
+                         //     totalRecords={this.state.invoiceDetailsContainer.exportDeclaration.declarationItemList.length}
+                                searchCallBack={this.searchCallBack}
+                                pageSize={10}
+                                pagination={false} pageChanged={this.pageChanged}
+                                export={false}
+                                search={true}
+                              />
                             </div>
                           </div>
                         </div>
-                        <div>
-                          <Table title="Invoice List"
-                            className="bold"
-                            pagination={false}
-                            export={false}
-                            search={false}
-                            gridColumns={utils.getGridColumnByName("invoices")}
-                            gridData={_.get(this.state, 'orderDetails.tranxData.exportDeclaration[0].invoiceList', [])}
-                            totalRecords={5}
-                            pageChanged={() => {
-                            }}
-                            activePage={1}
-                            pageSize={10}
-                          />
-                        </div>
+                      </div>
+                    </div>  
 
-                        {this.state.orderDetails.tranxData.exportDeclaration.length > 0 && <hr />}
-                      </div>;
-                    })}
-                    <div className="linetext"><label className="bold">See line items in the order of declaration line
-                      items</label></div>
                   </div>
                   
-                  <div id="importDeclaration" className="tab-pane">
-                    {this.state.orderDetails.tranxData.importDecleration == null && <div className="row">
-                      <text className="col-md-12" style={{ textAlign: "center", color: "#3064f0c4", fontWeight: "bold", fontSize: "18px" }}>Import Declaration Not Found</text>
-                    </div>}
-                    {this.state.orderDetails.tranxData.importDecleration && this.state.orderDetails.tranxData.importDecleration.map(item => {
-                      return <div>
-                        <div className="form-group">
-                          <div className="row">
-                            <div className="col-md-2">
-                              <label className="bold">Declaration No</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.declarationNo}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Request ID</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.Id}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Version</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.version}</label>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="form-group">
-                          <div className="row">
-                            <div className="col-md-2">
-                              <label className="bold">Flight No</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.flightNo}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Batch Id</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.ackNo}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Status</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{(item.status == "-1" || item.status == "1") ? "HAWB CREATED" : this.getStatus(item.status)}</label>
-                            </div>
-
-                          </div>
-                        </div>
-                        {item.exception && item.exception.length > 0 && item.exception[0].exceptionCode !== "000" && <div className="alertbox">
-                          <label className="errorcolr">Error</label>
-                          <div className="errorbox">
-                            {item.exception.map((elem, index) => {
-                              if (elem.exceptionCode == "000") {
-                                return
-                              }
-
-                              return (<p key={index}>{elem.exceptionDetails}<br /></p>)
-                            })}
-                          </div>
-                        </div>}
-                        <div className="form-group">
-                          <div className="row">
-                            <div className="col-md-2">
-                              <label className="bold">Regime Type</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{lov('regimeType', item.regimeType)}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Declaration Type</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{lov('declarationType', item.declType)}</label>
-                            </div>
-
-                          </div>
-                        </div>
-                        <div className="form-group">
-                          <div className="row">
-                            <div className="col-md-2">
-                              <label className="bold">Transport Mode</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{lov('transportMode', item.transportMode)}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">No of pages</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{item.noOfPages}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="bold">Payload</label>
-                            </div>
-                            <div className="col-md-2">
-                              <a href="javascript:;" onClick={this.renderPayload.bind(this, item.SOAPPayload)}>view</a>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <Table title="Invoice List"
-                            className="bold"
-                            pagination={false}
-                            export={false}
-                            search={false}
-                            gridColumns={utils.getGridColumnByName("invoices")}
-                            gridData={_.get(this.state, 'orderDetails.tranxData.importDecleration[0].invoiceList', [])}
-                            totalRecords={5}
-                            pageChanged={() => {
-                            }}
-                            activePage={1}
-                            pageSize={10}
-                          />
-                        </div>
-
-                        {this.state.orderDetails.tranxData.exportDeclaration.length > 0 && <hr />}
-                      </div>;
-                    })}
-                    <div className="linetext"><label className="bold">See returned items tab for item level details</label></div>
-                  </div>
                   
                   <div id="delivered" className="tab-pane">
-                    <div className="row">
+                    {this.state.invoiceDetailsContainer.delivered.map( item => {
+                      return (
+                      <div className="row">
+                          
+                          <div className="col-md-6">
+                            <div className="row">
+                              <div className="col-md-2">
+                                <label>Status : </label>
+                              </div>
+                              <div className="col-md-8">
+                                  <span>{item.deliveryStatus}</span>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-4">
+                                <label>Delivery Date: </label>
+                              </div>
+                              <div className="col-md-8">
+                                <label style={{fontWeight:"normal"}}>{item.deliveryDate}</label>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-4">
+                                <label>Delivery Type: </label>
+                              </div>
+                              <div className="col-md-8">
+                                <label key={1} className="mt-checkbox mt-checkbox-outline"
+                                    style={{ marginTop: "0px", marginRight: "10px" }}>
+                                    <input type="checkbox"
+                                        name="deliveryType"
+                                        checked={item.deliveryType === "Contact" ? true : false}
+                                    />
+                                    <span></span>
+                                    Contact
+                                </label>
+                                <label key={2} className="mt-checkbox mt-checkbox-outline"
+                                    style={{ marginTop: "0px" }}>
+                                    <input type="radio" className="form-control"
+                                        name="deliveryType"
+                                        checked={item.deliveryType === "Contactless" ? true : false}
+                                    />
+                                    <span></span>
+                                    Contactless
+                                </label>
+                              </div>
+                            </div>
+                          <div className="row">
+                            <div className="col-md-4">
+                              <label>Delivery To Person: </label>
+                            </div>
+                            <div className="col-md-8">
+                              <label style={{fontWeight:"normal"}}>{item.deliveryToPerson}</label>
+                            </div>
+                          </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="col-md-12">
+                          <label style={ item.deliveryType == "contact" ? {display:""} : {display: ""} }>Signature</label>
+                        </div>
+                        <div className="col-md-12">  
+                          <img style={{ width: "50%", height: "102px" }} src={baseUrl + item.signature.path} onError={this.addDefaultHAWBSrc} height="50%" />
+                        </div>
+                        <div className="col-md-12">
+                          <AnchorComp style={{textAlign:"right"}}
+                              anchotDisplayName = {"Download"}
+                              invokeAnchorButtonhandlar = {this.downloadHandler}
+                          />
+                        </div>
+                      </div>
                       <div className="col-md-12">
                         <Table
                           pagination={false}
                           export={false}
                           search={false}
                           gridColumns={utils.getGridColumnByName("delivery")}
-                          gridData={this.state.orderDetails.tranxData.lineItems.filter((item => {
-                            return item.isDelivered;
-                          })) || []}
+                          gridData={item.lineItems}
                           totalRecords={5}
                           pageChanged={() => {
                           }}
@@ -1156,30 +1551,268 @@ class InvoiceDetails extends React.Component {
                         />
                       </div>
                     </div>
+                    )
+                    })}
+                  </div>
+                  <div id="importDeclaration" className="tab-pane">
+                    <div className="tab-pane in active">
+                      <div className="ui-regulartabs">
+                        <ul id="importDeclarationTab" className="nav nav-tabs">
+                          <li id="fieldsTabLink" className="active"><a href="#importDeclarationLogs" data-toggle="tab">
+                            <span> Declaration Submission Logs</span></a>
+                          </li>
+                          <li id="filtersTabLink"><a href="#importDeclarationView" data-toggle="tab"> <span> View Declarations</span></a></li>
+                        </ul>
+                      </div>
+                      <div className="tab-content ui-innertab ui-tabcontentbody">
+                        <div id="importDeclarationLogs" className="tab-pane in active ui-fieldtable">
+                          <div className="row">
+                            <div className="col-md-12">
+                              <Table fontclass=""
+                                  gridColumns={utils.getGridColumnByName("DeclarationSubmissionLogs")}
+                                  gridData={[]}
+                                  totalRecords={this.state.length}
+                                  searchCallBack={this.searchCallBack}
+                                  pageSize={10}
+                                  pagination={false} pageChanged={this.pageChanged}
+                                  export={false}
+                                  search={true}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div id="importDeclarationView" className="tab-pane in ui-fieldtable">
+                          <div className="row">
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="row">
+                                      <div className="col-md-12">
+                                        <Lable text={utils.getLabelByID("Last Action : ")} columns="6"></Lable>
+                                        <span>10/10/2020 12:12:12</span>
+                                      </div>
+                                    </div>
+                                    <div className="row">
+                                      <div className="col-md-12">
+                                        <Lable text={utils.getLabelByID("Action Timestamp : ")} columns="6"></Lable>
+                                        <span>10/10/2020 12:12:12</span>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                   <span>FAILD</span>
+                                </div>
+                            </div>
+                            <div className="col-md-12">
+                                <AnchorComp
+                                    anchotDisplayName = {"SOAP Payload"}
+                                    invokeAnchorButtonhandlar = {this.soapPayloadHandler}
+                                />
+                            </div>
+                            <Lable text="Exceptions" />
+                            <div className="col-md-12">
+                                <Table fontclass=""
+                                    gridColumns={utils.getGridColumnByName("BusinessTransactionError")}
+                                    gridData={[]}
+                                    totalRecords={[]}
+                                    searchCallBack={this.searchCallBack}
+                                    pageSize={10}
+                                    pagination={false} pageChanged={this.pageChanged}
+                                    export={false}
+                                    search={true}
+                                />
+                            </div>
+                            <div className="row">
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Version</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>6</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Batch Id</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>876543567</span>
+                                </div>
+                              </div>
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Status</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>status</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Declaration No</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>876543567124123</span>
+                                </div>
+                              </div>
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Request ID</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>ECT70000046</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Region Type</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>IMPORT</span>
+                                </div>
+                              </div>
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Declaration Type</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>TS2 (FZ Transit In)</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Export Code Mirsal 2</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>LL0112312</span>
+                                </div>
+                              </div>
+                              <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Declaration Purpose</label>
+                                </div>
+                                <div className="col-md-6">
+                                  <span>{"Purpose"}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="col-md-6">
+                              <Lable text="Related Documents" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
+                              <Table fontclass=""
+                                gridColumns={utils.getGridColumnByName("RelatedDocument")}
+                                gridData={[]}
+                                totalRecords={this.state.length}
+                                searchCallBack={this.searchCallBack}
+                                pageSize={10}
+                                pagination={false} pageChanged={this.pageChanged}
+                                export={false}
+                                search={true}
+                              />
+                            </div>
+                            <div className="col-md-6">
+                              <Lable text="Payment Details" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
+                              <Table fontclass=""
+                                gridColumns={utils.getGridColumnByName("PaymentDetails")}
+                                gridData={[]}
+                                totalRecords={this.state.length}
+                                searchCallBack={this.searchCallBack}
+                                pageSize={10}
+                                pagination={false} pageChanged={this.pageChanged}
+                                export={false}
+                                search={true}
+                              />
+                            </div>
+                            <div className="col-md-12">
+                              <Lable text="Declaration Item" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
+                              <Table fontclass=""
+                                gridColumns={utils.getGridColumnByName("delivery")}
+                                gridData={[]}
+                                totalRecords={this.state.length}
+                                searchCallBack={this.searchCallBack}
+                                pageSize={10}
+                                pagination={false} pageChanged={this.pageChanged}
+                                export={false}
+                                search={true}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>  
+                  </div>
+
+                  <div id="returnDetails" className="tab-pane">
+                    { this.state.invoiceDetailsContainer.returnRequest.map( item => {
+                      return (
+                        <div className="row">
+                          <div className="row">
+                              <div className="col-md-6">
+                                <Lable text={utils.getLabelByID("Return Request Date : ")} columns="6"></Lable>
+                                <span>{item.requestDate}</span>
+                              </div>
+                          </div>
+                          <div className="row">
+                              <div className="col-md-6">
+                                <Lable text={utils.getLabelByID("Return Request Reason : ")} columns="6"></Lable>
+                                <span>{item.reason}</span>
+                              </div>
+                          </div>
+                          <div className="row">
+                              <div className="col-md-12">
+                                <Lable text={utils.getLabelByID("Return Items")} columns="12" style={{marginBottom:"0px"}}></Lable>
+                              </div>
+                          </div>
+                          <div className="col-md-12">
+                            <Table
+                              componentFunction={this.ReturnProofHandler}
+                              pagination={false}
+                              export={false}
+                              search={false}
+                              gridColumns={utils.getGridColumnByName("returnDelivery")}
+                              gridData={item.returnItems ? item.returnItems : []}
+                              pageChanged={() => {
+                              }}
+                              activePage={1}
+                              pageSize={10}
+                            />
+                          </div>
+                        </div>
+                      )
+                    })}
                   </div>
                   
-                  <div id="returnDetails" className="tab-pane">
+                  <div id="invoiceTrackingLogs" className="tab-pane">
                     <div className="row">
+                      
                       <div className="col-md-12">
                         <Table
                           componentFunction={this.ReturnProofHandler}
                           pagination={false}
                           export={false}
                           search={false}
-                          gridColumns={utils.getGridColumnByName("returnDelivery")}
-                          gridData={this.state.orderDetails.tranxData.returnItems || []}
+                          gridColumns={utils.getGridColumnByName("InvoiceTrackingLogs")}
+                          gridData={this.state.invoiceDetailsContainer.invoiceTrackingLogs}
+                          totalRecords = {this.state.invoiceDetailsContainer.invoiceTrackingLogs.length}
                           pageChanged={() => {
                           }}
                           activePage={1}
                           pageSize={10}
                         />
                       </div>
-                    </div>
                   </div>
                 </div>
+                        
               </div>
             </div>
-
+            </div>
           </div>
         </div>
       </div>);
@@ -1191,7 +1824,8 @@ function mapStateToProps(state, ownProps) {
 
   return {
     orgDetailByCode: state.app.orgDetailByCode,
-    orderDetails: state.app.getOrderDetails.data.searchResult
+    orderDetails: state.app.getOrderDetails.data.searchResult,
+    orderInvoiceDetails: _.get(state.app, 'orderInvoiceDetails', undefined)
   };
 }
 

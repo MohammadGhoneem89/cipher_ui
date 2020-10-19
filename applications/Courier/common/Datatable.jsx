@@ -341,7 +341,7 @@ class Datatable extends React.Component {
                             style={{
                               fontSize: "13px!important",
                               color: "#777777"
-                            }}>{utils.getLabelByID("NoRecordsFound")}</span></td>
+                            }}>{utils.getLabelByID("No Records Found")}</span></td>
                       </tr>
                     }
 
