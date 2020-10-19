@@ -1,0 +1,123 @@
+[
+    {
+      "id": "OUTBOUND",
+      "value": 3,
+      "color": "#808080"
+    },
+    {
+      "id": "OUTBOUND.ROW",
+      "value": 2,
+      "color": "#808080"
+    },
+    {
+      "id": "OUTBOUND.ROW.TS3-COUNT",
+      "value": 1.5,
+      "color": "#808080"
+    },
+	 {
+      "id": "OUTBOUND.ROW.TS3-VALUE",
+      "value": 1,
+      "color": "#808080"
+    },
+	
+    {
+      "id": "OUTBOUND.ROW.EX7-COUNT",
+      "value": 0.5,
+      "color": "#2E2575"
+    },
+	{
+      "id": "OUTBOUND.ROW.EX7-VALUE",
+      "value": 0.5,
+      "color": "#2E2575"
+    },
+    {
+      "id": "OUTBOUND.ROW.EX9-COUNT",
+      "value": 3,
+      "color": "#E54F24"
+    },
+	{
+      "id": "OUTBOUND.ROW.EX9-VALUE",
+      "value": 3,
+      "color": "#E54F24"
+    },
+    {
+      "id": "OUTBOUND.ROW.EX1-COUNT",
+      "value": 1.5,
+      "color": "#FF9900"
+    },
+	 {
+      "id": "OUTBOUND.ROW.EX1-VALUE",
+      "value": 1.5,
+      "color": "#FF9900"
+    },
+    {
+      "id": "OUTBOUND.LOCAL",
+      "value": 10000,
+      "color": "#563B7E"
+    },
+    {
+      "id": "OUTBOUND.LOCAL.IM2-COUNT",
+      "value": 2,
+      "color": "#563B7E"
+    },
+	{
+      "id": "OUTBOUND.LOCAL.IM2-VALUE",
+      "value": 3,
+      "color": "#563B7E"
+    },
+    {
+      "id": "OUTBOUND.LOCAL.IM3-COUNT",
+      "value": 3,
+      "color": "#D6BA33"
+    },
+	{
+      "id": "OUTBOUND.LOCAL.IM3-VALUE",
+      "value": 3,
+      "color": "#D6BA33"
+    },
+    {
+      "id": "OUTBOUND.GCC",
+      "value": 2.5,
+      "color": "#1169AE"
+    },
+    {
+      "id": "OUTBOUND.GCC.FZGT-COUNT",
+      "value": 2.5,
+      "color": "#F6854D"
+    },
+	{
+      "id": "OUTBOUND.GCC.FZGT-VALUE",
+      "value": 2.5,
+      "color": "#F6854D"
+    },
+    {
+      "id": "OUTBOUND.GCC.TS3-COUNT",
+      "value": 1.5,
+      "color": "#F6854D"
+    },
+	{
+      "id": "OUTBOUND.GCC.TS3-VALUE",
+      "value": 3.5,
+      "color": "#F6854D"
+    },
+    {
+      "id": "OUTBOUND.GCC.CWGT-COUNT",
+      "value": 4.5,
+      "color": "#F6854D"
+    },
+	{
+      "id": "OUTBOUND.GCC.CWGT-VALUE",
+      "value": 1.5,
+      "color": "#617CBE"
+    },
+    {
+      "id": "OUTBOUND.GCC.EX3-COUNT",
+      "value": 1,
+      "color": "#0073AD"
+    },
+	{
+      "id": "OUTBOUND.GCC.EX3-VALUE",
+      "value": 1,
+      "color": "#0073AD"
+    }
+  ]
