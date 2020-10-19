@@ -7,7 +7,7 @@ import Label from '../../common/Lable.jsx';
 import * as utils from "../../common/utils";
 
 const UserFilterForm = props => {
-  const { handleSubmit, pristine, reset, submitting,handleClear } = props;
+  const { handleSubmit, pristine, reset, submitting,actions } = props;
 
   let userType = sessionStorage.orgType
   let orgType = [
