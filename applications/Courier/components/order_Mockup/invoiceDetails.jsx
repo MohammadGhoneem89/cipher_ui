@@ -1475,7 +1475,7 @@ class InvoiceDetails extends React.Component {
                       return (
                       <div className="row">
                           
-                          <div className="col-md-6">
+                          <div className="col-md-8">
                             <div className="row">
                               <div className="col-md-2">
                                 <label>Status : </label>
@@ -1526,12 +1526,12 @@ class InvoiceDetails extends React.Component {
                             </div>
                           </div>
                       </div>
-                      <div className="col-md-6">
+                      <div className="col-md-4">
                         <div className="col-md-12">
                           <label style={ item.deliveryType == "contact" ? {display:""} : {display: ""} }>Signature</label>
                         </div>
                         <div className="col-md-12">  
-                          <img style={{ width: "50%", height: "102px" }} src={baseUrl + item.signature.path} onError={this.addDefaultHAWBSrc} height="50%" />
+                          <img style={{ width: "35%", height: "100px" }} src={baseUrl + item.signature.path} onError={this.addDefaultHAWBSrc} height="50%" />
                         </div>
                         <div className="col-md-12">
                           <AnchorComp style={{textAlign:"right"}}
