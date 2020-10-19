@@ -1305,7 +1305,9 @@ module.exports = {
     { alias: "Label", key: "label", type: "string" },
     { alias: "labelAr", key: "labelAr", type: "string" },
     { alias: "Value", key: "value", type: "string" },
-    { alias: "dependent", key: "dependent", type: "string" },
+    { alias: "image", key: "path", type: "image" },
+    { alias: "parent", key: "dependent", type: "string" },
+    { alias: "parent value", key: "parentValue", type: "string" },
     { alias: "Actions", key: "actions", type: "action" }
   ],
   fileList: [

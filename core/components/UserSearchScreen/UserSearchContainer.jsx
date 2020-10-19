@@ -138,7 +138,9 @@ class UserSearchContainer extends React.Component {
       return (
         <div>
           <Portlet title={"User Seach Filter"}>
-            <UserFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state} />
+            <UserFilterForm onSubmit={this.submit} initialValues={this.state.filterCriteria} state={this.state} actions={(formname)=>{
+              this.props.actions.reduxFormReset(formname);
+            }} />
             {/*<ActionButton actionList={this.props.userList.data.actions} performAction={this.performAction} />*/}
           </Portlet>
           <Portlet title={"User List"} isPermissioned={true} actions={this.props.userList.data.actions}>
@@ -153,6 +155,7 @@ class UserSearchContainer extends React.Component {
               pageSize={10}
               searchCriteria={this.state.filterCriteria}
               activePage={this.state.pageNo} gridType={"userList"}
+              
             />
           </Portlet>
         </div>

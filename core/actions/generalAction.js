@@ -4,6 +4,7 @@ import auth from '../auth/authenticator';
 import config from '../../config';
 import main from '../main';
 import Cookies from 'js-cookie';
+import {reset} from 'redux-form';
 let ws;
 
 export function generalActionLoad(resultData) {
@@ -74,6 +75,11 @@ export function reduxFormProcess(fetchURL, actionData) {
         });
     };
 
+}
+export function reduxFormReset(formName) {
+    return function (dispatch) {
+        dispatch(reset(formName));  // requires form name
+    }
 }
 
 

@@ -164,7 +164,8 @@ class AddUpdateMapping extends React.Component {
                     document.getElementById('IN_FIELDDESCRIPTION').value = a.IN_FIELDDESCRIPTION;
                     document.getElementById('IN_FIELDCOMPLEXTYPEDATA').value = a.IN_FIELDCOMPLEXTYPEDATA;
                     document.getElementById('MAP_FIELDCOMPLEXTYPEDATA').value = a.MAP_FIELDCOMPLEXTYPEDATA;
-
+                    document.getElementById('IN_FIELDTYPE_DPND_FLD').value = a.IN_FIELDTYPE_DPND_FLD||"";
+                    
                     document.getElementById('MAP_FIELD').value = a.MAP_FIELD;
                     document.getElementById('MAP_FIELDDT').value = a.MAP_FIELDDT;
                     document.getElementById('Sequence').value = a.Sequence;
@@ -227,6 +228,7 @@ class AddUpdateMapping extends React.Component {
                     document.getElementById('TRG_FIELDVALUE').value = a.TRG_FIELDVALUE;
                     document.getElementById('IN_FIELDCOMPLEXTYPEDATA').value = a.IN_FIELDCOMPLEXTYPEDATA;
                     document.getElementById('MAP_FIELDCOMPLEXTYPEDATA').value = a.MAP_FIELDCOMPLEXTYPEDATA;
+                    document.getElementById('IN_FIELDTYPE_DPND_FLD').value = a.IN_FIELDTYPE_DPND_FLD||"";
                     let tempState = this.state.transformationConfig;
                     tempState.splice(index, 1);
                     this.setState({ transformationConfig: tempState });
@@ -351,6 +353,8 @@ class AddUpdateMapping extends React.Component {
         let IN_FIELDCOMPLEXTYPEDATA = document.getElementById('IN_FIELDCOMPLEXTYPEDATA') == null ? "" : document.getElementById('IN_FIELDCOMPLEXTYPEDATA').value;
         let MAP_FIELDCOMPLEXTYPEDATA = document.getElementById('MAP_FIELDCOMPLEXTYPEDATA') == null ? "" : document.getElementById('MAP_FIELDCOMPLEXTYPEDATA').value;
 
+        let IN_FIELDTYPE_DPND_FLD = document.getElementById('IN_FIELDTYPE_DPND_FLD') == null ? "" : document.getElementById('IN_FIELDTYPE_DPND_FLD').value;
+
         let Sequence = document.getElementById('Sequence') == null ? 9999 : parseInt(document.getElementById('Sequence').value) || this.state.mappingConfig.length + 1;;
 
 
@@ -373,6 +377,7 @@ class AddUpdateMapping extends React.Component {
             "IN_FIELDDESCRIPTION": IN_FIELDDESCRIPTION,
             "IN_FIELDCOMPLEXTYPEDATA": IN_FIELDCOMPLEXTYPEDATA,
             "MAP_FIELDCOMPLEXTYPEDATA": MAP_FIELDCOMPLEXTYPEDATA,
+            "IN_FIELDTYPE_DPND_FLD": IN_FIELDTYPE_DPND_FLD,
             "IN_ISREQUIRED": IN_ISREQUIRED ? "Y" : "N",
             "MAP_FIELD": MAP_FIELD,
             "MAP_FIELDDT": MAP_FIELDDT,
@@ -641,7 +646,17 @@ class AddUpdateMapping extends React.Component {
                                                         </div>
                                                     </div>
                                                 </div>
-
+                                                {/* style={{ display: $('#IN_FIELDTYPEDATA').val()!="" ? 'none' : 'block' }} */}
+                                                <div className="row" >
+                                                    <div className="col-md-12">
+                                                        <div className="form-group col-md-4">
+                                                            <label className="control-label">{utils.getLabelByID("Type Dependant Field")}</label>
+                                                        </div>
+                                                        <div className="form-group col-md-8">
+                                                             <input type="text" className="form-control" id="IN_FIELDTYPE_DPND_FLD" />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div className="row">
                                                     <div className="col-md-12">
                                                         <div className="form-group col-md-4">

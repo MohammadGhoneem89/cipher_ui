@@ -309,7 +309,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-TemplateList.displayName = 'APPLICATIONS';
+TemplateList.displayName = 'Letter Templates';
 
 export default connect(
     mapStateToProps,

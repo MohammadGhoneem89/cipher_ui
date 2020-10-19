@@ -174,7 +174,8 @@ class UserSetupContainer extends Component {
       if (userType !== 'Entity' && userType !== 'Acquirer') {
         authenticationType = [
           { value: "System", label: "System" },
-          { value: "Local", label: "Local" }
+          { value: "Local", label: "Local" },
+          { value: "LDAP", label: "LDAP" }
         ];
       } else {
         authenticationType = [
