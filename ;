@@ -1,0 +1,558 @@
+[33mcommit 31d568b2ad08b780e20746701ed4a5ee1ecfda11[m[33m ([m[1;36mHEAD -> [m[1;32mcustoms_courier_project[m[33m)[m
+Author: zain jawwad <zain.khwaja94@gmail.com>
+Date:   Wed Sep 23 16:30:58 2020 +0500
+
+    dashboard WIP - pushing to give changes to rahman
+
+[33mcommit 38759c6988931a3f6c43811ac714e06b861b2757[m
+Merge: e1ba42426 e839c98b6
+Author: Your Name <you@example.com>
+Date:   Mon Aug 24 15:25:37 2020 +0000
+
+    Merge remote-tracking branch 'origin/core_1' into customs_courier_project
+
+[33mcommit e839c98b68f352318c2ccdc73b992877bf68f478[m
+Merge: c760a79d4 ffbf121ee
+Author: bilal <bilal.mahroof>
+Date:   Mon Aug 24 19:21:10 2020 +0400
+
+    changes for docs
+
+[33mcommit c760a79d42d6d235d21310384c7adde2e2ca3c06[m
+Author: bilal <bilal.mahroof>
+Date:   Mon Aug 24 19:20:25 2020 +0400
+
+    changes for docs
+
+[33mcommit e72162fb22548d53c061f4df49c37798c746fd9b[m
+Author: bilal <bilal.mahroof>
+Date:   Mon Aug 24 19:20:16 2020 +0400
+
+    changes for docs
+
+[33mcommit ffbf121ee0342f49fc0dc677d9b8371c63fad910[m
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Mon Aug 24 13:08:01 2020 +0500
+
+    CryptoUtility:
+    - updated UI for some fixes
+
+[33mcommit dc2d2aa6e2e2104e469c804894060314a8b59121[m
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Sun Aug 23 14:59:48 2020 +0500
+
+    CryptoUtility:
+    - Reducer based issue is resolved
+
+[33mcommit 6d0c734f3efc43cc320edae6080d708f052c43d1[m
+Merge: 8b44ea7e7 d5c01bd77
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Thu Aug 20 21:59:43 2020 +0500
+
+    Merge branch 'core_1' of https://github.com/Avanza-Innovations/cipher_ui into core_1
+
+[33mcommit 8b44ea7e717d21f11f164e453782f4782880e229[m
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Thu Aug 20 21:57:12 2020 +0500
+
+    Crypto Utility:
+    - UI with action method integrated
+    - added menu item in onboarding menu
+
+[33mcommit d5c01bd77e51eb4bc0c0f26b23b4c14a4d2a7697[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Thu Aug 20 17:51:20 2020 +0400
+
+    changes
+
+[33mcommit e0d9fab2dbc4195bd1f7fde37d54fe35ab3da990[m
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Thu Aug 20 15:05:55 2020 +0500
+
+    MongoDBUtility:
+    - ADD loading upon migrating changes
+
+[33mcommit 1817a072f4e3df96cfcc3088234e55b8dfff0bd3[m
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Thu Aug 20 10:51:37 2020 +0500
+
+    MongoDBUtility:
+    - Json comparion fixed
+    - update API subit case fixed
+    - few tweaks w.r.t UI
+
+[33mcommit bca4dca09837ec0fd54bfb140c0b69bf9e92d764[m
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Wed Aug 19 11:28:57 2020 +0500
+
+    MongoDBUtility:
+    - usecase new/update documents completed.
+    - enhanced UI for show status type colum
+
+[33mcommit a788f78e62df1121803d34f74f45aaa915589436[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Tue Aug 18 15:30:24 2020 +0400
+
+    changes in audit and report
+
+[33mcommit dceaef1e0e8887b76e295ad8d66650a35b8853bd[m
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Tue Aug 18 03:56:22 2020 +0500
+
+    mongoDbUtility:
+    - added two seperate functionalities for new & updated doc
+    - added prev and next button with functionality for new & updated documents
+
+[33mcommit 4c3a7f02c70b2ca26c5f580c5fd2f63c4e254bbc[m
+Merge: da0010039 a3511e5d3
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Mon Aug 17 21:41:07 2020 +0500
+
+    Merge branch 'core_1' of https://github.com/Avanza-Innovations/cipher_ui into core_1
+
+[33mcommit da00100395f1df59c83f4e8e211feaafd5650410[m
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Mon Aug 17 21:35:55 2020 +0500
+
+    MongoDBUtility:
+    - integrate new API: to apply changes.
+    - separated two modals loads on different scenrios from the listing component.
+    - Use case create/copy whole collection from source to destination is completed.
+
+[33mcommit a3511e5d3775fa0948882279d6eac10a6deaa0ba[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Sun Aug 16 18:34:43 2020 +0400
+
+    added a fix for api response handling
+
+[33mcommit 7b8a6c18843ed72f2ad40df1513d45d4d3ab3f66[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Sun Aug 16 18:19:17 2020 +0400
+
+    added a fix for api response handling
+
+[33mcommit 009c835232ca8337e027c93456493b6d163d9f5f[m
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Sun Aug 16 14:02:19 2020 +0500
+
+    - Add loader while schemaChanges are getting fetched in mongoDBUtility screen
+
+[33mcommit 4e1049c06443978c3c3fd17f2999b758ece4be49[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Sat Aug 15 22:52:43 2020 +0400
+
+    billing module added
+
+[33mcommit 582d38416c2f81e5912904ac25fb1baad1174eb5[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Sat Aug 15 21:49:31 2020 +0400
+
+    billing module added
+
+[33mcommit 56095b76e28d5787613fc75f501011eae88930ee[m
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Thu Aug 13 22:26:30 2020 +0500
+
+    mongoDb utility first screen is ready to display all schema differences between two DBs
+
+[33mcommit 492c6a002d4997ae4b1cbb8eb4282d5a3956b9da[m
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Thu Aug 13 15:57:48 2020 +0500
+
+    mongoDB utility screen1:
+    - load DB profiles in form.
+    - submit form.
+
+[33mcommit a1895c8f16b61fa5780ad972b1437480c94bae24[m
+Merge: 95a12a32c 5ffa6f0ee
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Thu Aug 13 15:55:21 2020 +0500
+
+    Merge branch 'core_1' of https://github.com/Avanza-Innovations/cipher_ui into core_1
+
+[33mcommit 5ffa6f0eed02f3b97e402c0737d8fd9479c2052b[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Tue Aug 11 19:19:10 2020 +0400
+
+    fixes
+
+[33mcommit 95a12a32c1d1dc323a866afc849df7b5773c0913[m
+Author: Isma Noor <dev@avanzainnovations.com>
+Date:   Tue Aug 11 18:52:55 2020 +0500
+
+    Static screen is ready for mongoDB utility
+
+[33mcommit 093f027e2c5a49349f5f97d47e7cdd69b590664a[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Sun Aug 9 19:21:06 2020 +0400
+
+    login fix
+
+[33mcommit 7e323665ab470a492c64de69e8219be04106c0b1[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Sun Aug 9 18:20:47 2020 +0400
+
+    minor fixes
+
+[33mcommit aceca23cb68f097b008a69d2b1991cc3e9e441e0[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Sun Aug 9 17:47:22 2020 +0400
+
+    changes
+
+[33mcommit 66e9bc431973aa7bf8c4be00a755b907f6e0a709[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Sun Aug 9 16:54:12 2020 +0400
+
+    added maker checker for user management
+
+[33mcommit 9fde4c68503f384fa5c07f500a200efd8e5fe28e[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Thu Aug 6 12:33:26 2020 +0400
+
+    changes
+
+[33mcommit e1ba42426b21470e57dfe8b0ff7861e3ac2719c2[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Wed Aug 5 16:09:57 2020 +0400
+
+    fixes
+
+[33mcommit a3660bc91d359793f278dd8abc8ec8d274e7e771[m
+Merge: 2d9b253ef a7a21e806
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Wed Aug 5 13:04:44 2020 +0400
+
+    Merge remote-tracking branch 'origin/core_1' into customs_courier_project
+
+[33mcommit a7a21e806085de21528d6a3ab24ea42317ef7bc2[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Wed Aug 5 13:03:36 2020 +0400
+
+    fixes in documentation
+
+[33mcommit 2d9b253ef93221ed18082438b89781bb9975a6aa[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Wed Aug 5 12:03:53 2020 +0400
+
+    fixes
+
+[33mcommit 90c55e7947b1843d25de5b584a2b1d9d69bddf66[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Tue Aug 4 20:16:30 2020 +0400
+
+    fixes for ekyc
+
+[33mcommit 8ba523ba5d2a484245db43d873bac50301b77d3c[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Tue Aug 4 17:27:27 2020 +0400
+
+    fixes
+
+[33mcommit 7e279ef17481355496ff50203f6bd47d9481e556[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Tue Aug 4 17:12:16 2020 +0400
+
+    fixes
+
+[33mcommit 937d073111203fd196ab93b4f937f250c0dee000[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Tue Aug 4 17:01:56 2020 +0400
+
+    fixes
+
+[33mcommit 111989668ff0ba2491facf428eb85a89f5225ac1[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Tue Aug 4 20:16:30 2020 +0400
+
+    fixes for ekyc
+
+[33mcommit 9b9c8f8a8f39b926206c21b7c2e981ab3faa553b[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Tue Aug 4 17:27:27 2020 +0400
+
+    fixes
+
+[33mcommit 317c69bf0cd4b1b76d7bc4a9a6eb7ecef75da810[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Tue Aug 4 17:12:16 2020 +0400
+
+    fixes
+
+[33mcommit 372e0ad5f49500175b9d423a343ce5ebed7f330b[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Tue Aug 4 17:01:56 2020 +0400
+
+    fixes
+
+[33mcommit cdeaa5356720df62b5c7fa4a1cde7d07731e0150[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Mon Aug 3 21:11:34 2020 +0400
+
+    changes
+
+[33mcommit e534c50267896e1f4e5f4c1f03f20e2024594954[m
+Merge: 62fbf7397 ac4c010ba
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Mon Aug 3 19:05:37 2020 +0400
+
+    Merge remote-tracking branch 'origin/core_1' into customs_courier_project
+
+[33mcommit ac4c010ba4f970eb65e4ffb013c9410817bd70d8[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Mon Aug 3 19:03:41 2020 +0400
+
+    changes
+
+[33mcommit 62fbf7397f6c61b1f189039d581aa82ed589112a[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Mon Aug 3 18:59:58 2020 +0400
+
+    changes
+
+[33mcommit 3e8a899d6ef77a470aebbb094db8031fa0d91eda[m
+Merge: 8ab5373d1 17b46c10d
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Mon Aug 3 14:08:58 2020 +0400
+
+    local
+
+[33mcommit 17b46c10de30ac69fa8f3961e779356843404aa7[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Mon Aug 3 10:36:55 2020 +0400
+
+    token added in request
+
+[33mcommit ee04512dae5a407b7e2b4788ca8f2901050f1849[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Wed Jul 29 22:23:58 2020 +0400
+
+    added edit mode anf features in pickups
+
+[33mcommit 6f71dbca0445ef2ab10f92514898471f2c250711[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Wed Jul 29 22:11:10 2020 +0400
+
+    added support for mssql accross platform
+
+[33mcommit 8ab5373d13007ff358cec3f6d952c45a03200dbc[m
+Author: devavanza <dev@avanzainnovations.com>
+Date:   Tue Jul 28 13:40:14 2020 +0400
+
+    Latest Fixes (Security) 28-07-2020
+
+[33mcommit 093fc1e050a8751997f47962e634a2611d62eda9[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Mon Jul 27 19:10:27 2020 +0400
+
+    changes
+
+[33mcommit 4df046ebd5ac7b4bd3d8ca4d892b0fe0949fb779[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Mon Jul 27 11:16:33 2020 +0400
+
+    added docs
+
+[33mcommit 8607d12a95f4845c6dbffd9af2f89caa00ad45db[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Thu Jul 23 19:56:37 2020 +0400
+
+    type data and dynamic queries
+
+[33mcommit 2ee2ff59799523688450368200956da094951103[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Sun Jul 19 14:59:35 2020 +0400
+
+    added graph options in reporting
+
+[33mcommit f496c2135ac419f86c0c2b6a134ecdb53964d505[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Tue Jul 14 16:02:06 2020 +0400
+
+    changes
+
+[33mcommit 32fc02647dcdf4d285a17dea2194c6b2a6202e71[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Tue Jul 14 14:07:49 2020 +0400
+
+    changes
+
+[33mcommit 42a9244c9347e1e71dbc703cd662f60cc18f928e[m
+Author: bilal.mahroof <bilal.mahroof>
+Date:   Mon Jul 13 20:02:50 2020 +0400
+
+    broadcast added/ notification added/ type data arabic support addded
+
+[33mcommit e7f1c95ca9d4ba1ce19ba6236a04a4fb53c6c3fa[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Wed Jul 8 12:31:16 2020 +0400
+
+    changes for user mgmt
+
+[33mcommit e3d5c457b448359cd624d4e769689f8d3eb553a6[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Wed Jul 8 12:17:48 2020 +0400
+
+    changes for user mgmt
+
+[33mcommit 570d73fdda96d7fd5edfb70bd47ce0934a43582d[m
+Merge: f0c0b5b06 1e3c9a1ec
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Wed Jul 8 11:54:56 2020 +0400
+
+    Merge branch 'core_1' of https://github.com/Avanza-Innovations/cipher_ui into core_1
+
+[33mcommit f0c0b5b069fcb8c1dfa9de08af8055833f438e56[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Wed Jul 8 11:54:18 2020 +0400
+
+    changes for user mgmt
+
+[33mcommit 1e3c9a1ec4ba607eebf4d7e6266d35838afba610[m
+Merge: b291b7668 3bd332622
+Author: zain jawwad <zain.khwaja94@gmail.com>
+Date:   Tue Jul 7 14:52:26 2020 +0500
+
+    conflict resolved, added template engine stuff, routes to be added
+
+[33mcommit b291b7668ce23b832ea25b680387960e9e1f7e50[m
+Author: zain jawwad <zain.khwaja94@gmail.com>
+Date:   Tue Jul 7 14:49:44 2020 +0500
+
+    added template list stuff, routes to be added for that
+
+[33mcommit 3bd332622ac00660004e3782fab1ccd2f1c6668b[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Tue Jul 7 11:37:48 2020 +0400
+
+    minor fixes and changes
+
+[33mcommit 2925675b6550ffa8c4b822b1335b2a0e678829e9[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Mon Jul 6 19:50:54 2020 +0400
+
+    added health chaeck and saf logs
+
+[33mcommit 7ca3c11caf60e776bb5f379592328352b4f9b08d[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Thu Jul 2 21:12:31 2020 +0400
+
+    updates in ADHOC Reports
+
+[33mcommit 20bd37998e70e8ba081320104c0c123dd88f74ff[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Thu Jul 2 19:30:02 2020 +0400
+
+    updates in ADHOC Reports
+
+[33mcommit 903478a136652046ca031defa8662da38391badc[m
+Author: Rahman Akhtar <dev@avanzainnovations.com>
+Date:   Thu Jul 2 19:56:12 2020 +0500
+
+    css variable changes
+
+[33mcommit 294bbfecd5feb15906342a258dcdcafd7f5ad744[m
+Author: Rahman Akhtar <dev@avanzainnovations.com>
+Date:   Wed Jul 1 15:37:47 2020 +0500
+
+    Create Variables for Theme Colors
+
+[33mcommit 69696ea5e0347343e4d65051cc403775047774ea[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Mon Jun 29 06:21:22 2020 +0400
+
+    fixes
+
+[33mcommit dd724b8794760687023dc531017465f25da862d9[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Mon Jun 29 06:01:12 2020 +0400
+
+    Adhoc Reports added
+
+[33mcommit 3aaf2e61d37e7cdc59f0173b9d86b909b93713f8[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Sun Jun 21 22:39:28 2020 +0400
+
+    commented code generator todo later
+
+[33mcommit e2c247a10df0d7eae4371472b94a42baf762fb40[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Sun Jun 21 20:28:09 2020 +0400
+
+    RBAC fixes
+
+[33mcommit 9a757a4937d30e8cfa02b36aeab2c3cac33f9ab7[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Thu Jun 18 16:58:22 2020 +0400
+
+    changes related to Owner orginization and minor fixes
+
+[33mcommit 4f1ed94e03389faf4467cc9efc871c2cb112d7e9[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Tue Jun 16 19:46:52 2020 +0400
+
+    heath and minor fixes
+
+[33mcommit 85a9d80f7e185e755c255feb2dbbcce9eb8593ae[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Sun Jun 14 14:50:15 2020 +0400
+
+    minor fixes
+
+[33mcommit 4578cd90d9572861a61cec3483527198205db5a0[m
+Merge: 38abc269c 14fcc2a60
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Sat Jun 13 18:23:26 2020 +0400
+
+    Merge branch 'core_1' of https://github.com/Avanza-Innovations/cipher_ui into core_1
+
+[33mcommit 38abc269c1466f7bcdf83489a200c86c00b11da8[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Sat Jun 13 18:22:44 2020 +0400
+
+    minor fixes
+
+[33mcommit 14fcc2a60bc31ecbce6d3aa8d7f1fd66f8c1d3b6[m
+Merge: 56898b222 a4efe367a
+Author: devavanza <dev@avanzainnovations.com>
+Date:   Wed Jun 10 16:30:03 2020 +0400
+
+    Merge branch 'core_1' of https://github.com/Avanza-Innovations/cipher_ui into core_1
+
+[33mcommit a4efe367aea0b18d24b0f686e65f0e523f843ac1[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Wed Jun 10 16:14:00 2020 +0400
+
+    added links for health
+
+[33mcommit fd69c4fd484c7fa3126c862cd57b34398a73414c[m
+Merge: 8b46bc6b7 8922a512b
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Wed Jun 10 13:15:36 2020 +0400
+
+    Merge branch 'core_1' of https://github.com/Avanza-Innovations/cipher_ui into core_1
+
+[33mcommit 8b46bc6b7b167edffc896b915c3c52c3410a5c59[m
+Author: bilal <bilal.mahroof@avanzainnovations.com>
+Date:   Wed Jun 10 13:13:50 2020 +0400
+
+    changes
+
+[33mcommit 8922a512bc4a7eda691b9e0122be1aa5fc0a957e[m
+Author: Mohammad Musa Chaudhary <musa.chaudhary@avanzainnovations.com>
+Date:   Tue Jun 9 12:33:18 2020 +0400
+
+    added task and task detail screen
+
+[33mcommit 6859174ac334b7b3c4a64b7397139281148b70cb[m
+Author: Mohammad Musa Chaudhary <musa.chaudhary@avanzainnovations.com>
+Date:   Mon Jun 8 19:41:18 2020 +0400
+
+    added task detail screen
+
+[33mcommit 88e207a62a1f220e75c2e6a91a5aab24e7367571[m
+Merge: 49c784cba e5711e4c9
+Author: Mohammad Musa Chaudhary <musa.chaudhary@avanzainnovations.com>
+Date:   Mon Jun 8 00:09:56 2020 +0400
+
+    Merge branch 'core_1' of https://github.com/Avanza-Innovations/cipher_ui into core_1
