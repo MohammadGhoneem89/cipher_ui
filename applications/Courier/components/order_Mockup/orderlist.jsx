@@ -331,6 +331,11 @@ class orderlistMock extends React.Component {
                                             <Input fieldname='exporter' formname='searchCriteria' columns='8' style={{}}
                                                 state={this.state} actionHandler={this.generalActionHandler} />
                                         </Col>
+                                        <Col col="6">
+                                            <Lable text={utils.getLabelByID("Declaration No")} columns="4"></Lable>                                           
+                                            <Input fieldname='declaration' formname='searchCriteria' columns='8' style={{}}
+                                                state={this.state} actionHandler={this.generalActionHandler} />
+                                        </Col>
                                     </Row>
                                     <Row>
                                         <Col col="6">
@@ -353,13 +358,6 @@ class orderlistMock extends React.Component {
                                         <Col col="6">
                                             <Lable text={utils.getLabelByID("MAWB #")} columns="4"></Lable>
                                             <Input fieldname='mawbNumber' formname='searchCriteria' columns='8' style={{}}
-                                                state={this.state} actionHandler={this.generalActionHandler} />
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col col="6">
-                                            <Lable text={utils.getLabelByID("Declaration No")} columns="4"></Lable>                                           
-                                            <Input fieldname='declaration' formname='searchCriteria' columns='8' style={{}}
                                                 state={this.state} actionHandler={this.generalActionHandler} />
                                         </Col>
                                     </Row>

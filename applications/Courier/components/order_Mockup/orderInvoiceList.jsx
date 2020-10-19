@@ -19,6 +19,8 @@ import moment from 'moment'
 import backOffices from '../../../backOffices';
 import Lable from '../../common/Lable.jsx';
 import lov from './typedata.js';
+import * as constantsApp from '../../constants/appCommunication.js';
+
 
 let baseUrl = backOffices.baseUrl;
 let interval;
@@ -35,6 +37,7 @@ class OrderInvoiceList extends React.Component {
       orderDetails: undefined,
       lineItems: undefined,
       orgDetailByCode: undefined,
+      orderDetailsContainer: undefined,
       statusList: [
         [
           {
@@ -161,8 +164,8 @@ class OrderInvoiceList extends React.Component {
     };
 
 
-    this.DeliveryProofHandler = this.DeliveryProofHandler.bind(this);
-    this.ReturnProofHandler = this.ReturnProofHandler.bind(this);
+    // this.DeliveryProofHandler = this.DeliveryProofHandler.bind(this);
+    // this.ReturnProofHandler = this.ReturnProofHandler.bind(this);
   }
   componentWillUnmount() {
     clearInterval(interval)
@@ -178,6 +181,13 @@ class OrderInvoiceList extends React.Component {
     window.scrollTo(0, 0);
     this.fetchData();
 
+    let request = {
+      "body" : {
+          "orderId":"OR123456"
+      }
+  }
+  this.props.actions.generalProcess(constantsApp.getEndToEndTrackingInformation, request);
+
     // interval = setInterval(() => {
     //   this.fetchData();
     // }, 5000);
@@ -187,79 +197,74 @@ class OrderInvoiceList extends React.Component {
     this.setState({ modalIsOpenXML: true, xml: xml })
   }
   componentWillReceiveProps(nextProps) {
+    console.log("nextProps ============= ", nextProps.orderInvoiceDetails)
+
     let stateCopy = _.clone(this.state)
+    let orderDetailsContainer = {};
+    if (nextProps.orderInvoiceDetails) {
 
-    if (nextProps.orgDetailByCode) {
-      stateCopy.orgDetailByCode = nextProps.orgDetailByCode
-    }
+      orderDetailsContainer.orderID = nextProps.orderInvoiceDetails.orderID;
+      orderDetailsContainer.orderDate = moment.unix(nextProps.orderInvoiceDetails.orderDate/1000).format("DD/MM/YYYY HH:mm:ss");
+      orderDetailsContainer.txID = nextProps.orderInvoiceDetails.txID;
+      orderDetailsContainer.orderStatus = nextProps.orderInvoiceDetails.orderStatus;
 
-    if (nextProps.orderDetails) {
-      let lineItems = nextProps.orderDetails.tranxData.lineItems ? nextProps.orderDetails.tranxData.lineItems : [];
-      let returnItems = nextProps.orderDetails.tranxData.returnItems ? nextProps.orderDetails.tranxData.returnItems : []
-      let exportHAWB = nextProps.orderDetails.tranxData.ExportHAWB ? nextProps.orderDetails.tranxData.ExportHAWB : {};
-      let importHAWB = nextProps.orderDetails.tranxData.ImportHAWB ? nextProps.orderDetails.tranxData.ImportHAWB : [];
+      orderDetailsContainer.eCommerceOrgCode = nextProps.orderInvoiceDetails.eCommerceOrgCode; // need to map
+      orderDetailsContainer.eCommerceImage = nextProps.orderInvoiceDetails.eCommerceImage; // need to map
+      orderDetailsContainer.courierCompanyImage = nextProps.orderInvoiceDetails.courierCompanyImage; // need to map
+      orderDetailsContainer.courierOrgCode = nextProps.orderInvoiceDetails.courierOrgCode; // need to map
 
-      lineItems.map((item, index) => {
+      orderDetailsContainer.submissionChannel = nextProps.orderInvoiceDetails.submissionChannel;
 
-        if (exportHAWB.isDelivered && exportHAWB.HAWBNumber == item.HAWBNumber) {
-          lineItems[index].actions = [{ "actionType": "COMPONENT_FUNCTION", iconName: "fa fa-eye", label: "View" }]
-          console.log("--==>", exportHAWB)
-          lineItems[index].deliveryProof = {
-            proofOfDeliveryHash: exportHAWB.proofOfDeliveryHash,
-            deliveryToPersonName: exportHAWB.deliveryToPersonName,
-            deliveryDate: exportHAWB.deliveryDate
-          }
-          return;
-        }
+      orderDetailsContainer.consigneeName = nextProps.orderInvoiceDetails.consigneeName
+      orderDetailsContainer.consigneeAddress = nextProps.orderInvoiceDetails.consigneeAddress
+
+      orderDetailsContainer.billTo = nextProps.orderInvoiceDetails.billTo
+      orderDetailsContainer.billToAddress = nextProps.orderInvoiceDetails.billToAddress
+
+      orderDetailsContainer.shipTo = nextProps.orderInvoiceDetails.shipTo
+      orderDetailsContainer.shipToAddress = nextProps.orderInvoiceDetails.shipToAddress
+      
+      orderDetailsContainer.invoices = nextProps.orderInvoiceDetails.invoices;
+
+      orderDetailsContainer.invoices.map(item=>{
+        item.fzCode = item.fzCode ? item.fzCode : "-";
+        item.wareHouse = item.wareHouse ? item.wareHouse : "-";
+        item.itmCnt = item.lineItems.length;
+        item.exportDeclaration = item.invoiceSubStatus;
+        item.action = [{
+          
+            "label": "View",
+            "URI": ["/courier/invoiceDetails"],
+            "params": "",
+            "iconName": "icon-docs"
+        }]
+
       })
 
-      returnItems.map((item, index) => {
-
-        importHAWB.forEach((hawb) => {
-          if (hawb.isDelivered && hawb.HAWBNumber == item.newAWB) {
-            returnItems[index].actions = [{ "actionType": "COMPONENT_FUNCTION", iconName: "fa fa-eye", label: "View" }]
-            returnItems[index].returnProof = {
-              proofOfDeliveryHash: hawb.proofOfDeliveryHash,
-              deliveryToPersonName: hawb.deliveryToPersonName,
-              deliveryDate: hawb.deliveryDate
-            }
-            return;
-          }
-        })
-      })
-
-      stateCopy.isLoading = false;
-      stateCopy.orderDetails = nextProps.orderDetails;
-      stateCopy.lineItems = lineItems;
-      stateCopy.returnItems = returnItems;
-
-
-      if (stateCopy.orderDetails.tranxData.orderStatus == 'HAWBCREATED' && _.get(stateCopy.orderDetails.tranxData, "exportDeclaration[0]", undefined) != undefined) {
-        let label = _.get(stateCopy, 'orderDetails.tranxData.exportDeclaration[0].status', '')
-
-        label = this.getStatus(label);
-        if (label != "1" && label != "-1") {
-          stateCopy.orderDetails.tranxData.orderStatus = 'EXPORTCLEARED'
-          stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][2].label = label
-        }
-      }
-      else if ((stateCopy.orderDetails.tranxData.orderStatus == 'UNDELIVERED' || stateCopy.orderDetails.tranxData.orderStatus == 'RETURNBYCUSTOMER') && _.get(stateCopy.orderDetails.tranxData, "importDecleration[0]", undefined) != undefined) {
-        let label = _.get(stateCopy, 'orderDetails.tranxData.importDecleration[0].status', '')
-
-        label = this.getStatus(label);
-
-        if (label != "1" && label != "-1") {
-          stateCopy.orderDetails.tranxData.orderStatus = 'IMPORTCLEARED'
-          stateCopy.statusList[stateCopy.orderDetails.tranxData.deliveryStatus][4].label = label
-        }
-      }
-
-      if (stateCopy.orgDetailByCode == undefined) {
-        this.props.actions.generalProcess(constants.orgDetailByCode, { "orgCode": [stateCopy.orderDetails.tranxData.eCommerceOrgCode, stateCopy.orderDetails.tranxData.courierOrgCode] });
-      }
+      stateCopy.orderDetailsContainer = orderDetailsContainer
+      stateCopy.isLoading = false
+      this.setState(stateCopy)
     }
+   
+  }
 
-    this.setState(stateCopy)
+  getOrderStatus(label){
+    switch (label) {
+      case 'FINALIZED':
+        return "#00ae4f"
+      case 'CANCELLED':
+        return "#e80202"
+      case 'DELIVERED':
+        return "#e80202"
+      case 'UNDELIVERED':
+        return "#e80202"
+      case 'FULL RETURN':
+        return "#e80202"
+      case 'PARTIAL RETURN':
+        return "#e80202"
+      default:
+        return "#a5a6af"
+    }
   }
 
   getStatus(label) {
@@ -307,29 +312,29 @@ class OrderInvoiceList extends React.Component {
     return label
   }
 
-  ReturnProofHandler({ actionName, index }) {
-    switch (actionName) {
-      case "View":
-        let data = this.state.returnItems[index].returnProof;
-        let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.proofOfDeliveryHash, date: data.deliveryDate };
-        this.setState({ showData, modalIsOpen: true });
-        break;
-      default:
-        break;
-    }
-  }
+  // ReturnProofHandler({ actionName, index }) {
+  //   switch (actionName) {
+  //     case "View":
+  //       let data = this.state.returnItems[index].returnProof;
+  //       let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.proofOfDeliveryHash, date: data.deliveryDate };
+  //       this.setState({ showData, modalIsOpen: true });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 
-  DeliveryProofHandler({ actionName, index }) {
-    switch (actionName) {
-      case "View":
-        let data = this.state.lineItems[index].deliveryProof;
-        let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.proofOfDeliveryHash, date: data.deliveryDate };
-        this.setState({ showData, modalIsOpen: true });
-        break;
-      default:
-        break;
-    }
-  }
+  // DeliveryProofHandler({ actionName, index }) {
+  //   switch (actionName) {
+  //     case "View":
+  //       let data = this.state.lineItems[index].deliveryProof;
+  //       let showData = { deliveryToPersonName: data.deliveryToPersonName, deliveryImagePath: data.proofOfDeliveryHash, date: data.deliveryDate };
+  //       this.setState({ showData, modalIsOpen: true });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
   updateState(data) {
     this.setState(data);
   }
@@ -388,19 +393,13 @@ class OrderInvoiceList extends React.Component {
             <div className="row">
               <div className="col-md-12">
                 <div className="form-group">
-
-
-
                   {this.formatXml(this.state.xml)}
-
                 </div>
-
               </div>
-
             </div>
           </Portlet>
         </ModalBox>
-        <ModalBox isOpen={this.state.modalIsOpen}>
+        {/* <ModalBox isOpen={this.state.modalIsOpen}>
           <Portlet title={utils.getLabelByID("Proof")} noCollapse={true} actions={modalActions}>
             <div className="row">
               <div className="col-md-12">
@@ -427,10 +426,10 @@ class OrderInvoiceList extends React.Component {
               </div>
             </div>
           </Portlet>
-        </ModalBox>
+        </ModalBox> */}
         <div className="portlet light" style={{ "min-height": "854px" }}>
 
-          <div className="row">
+          {/* <div className="row">
             <div className="col-md-12">
               <ul id="progressbar">
                 {this.state.statusList[this.state.orderDetails.tranxData.deliveryStatus].map((item, key) => {
@@ -442,16 +441,26 @@ class OrderInvoiceList extends React.Component {
                 })}
               </ul>
             </div>
+          </div> */}
+
+          <div className="row">
+            <div className="form-actions right">
+              <div className="form-group col-md-12">
+                  <div className="pull-right">
+                    <span style={{ border: "1px solid", padding: "8px 15px 8px 15px", color: "white", letterSpacing: "1px", fontWeight: "600", background: this.getOrderStatus(this.state.orderDetailsContainer.orderStatus) }}>{this.state.orderDetailsContainer.orderStatus}</span>
+                  </div>
+              </div>
+            </div>
           </div>
 
           <div className="row">
             <div className="col-md-12">
               <div className="orderno">
                 <img src="/assets/Resources/ordericon.png" width="18px" /><label className="bold">Order
-                #: <span>{this.state.orderDetails.tranxData.orderID}</span></label>
+                #: <span>{this.state.orderDetailsContainer.orderID}</span></label>
               </div>
               <div className="hashno">
-                <label className="bold">{this.state.orderDetails.txnid}</label>
+                <label className="bold">{this.state.orderDetailsContainer.txID}</label>
               </div>
             </div>
           </div>
@@ -466,13 +475,13 @@ class OrderInvoiceList extends React.Component {
                       <h4 className="bold">E-commerce</h4>
                     </div>
                     {console.log(this.state.orgDetailByCode)}
-                    <div><img src={baseUrl + (_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.eCommerceOrgCode}.logo.sizeMedium`, ""))} onError={this.addDefaultCourierSrc} width="100px" height="100px" /></div>
-                    <span className="bold">{_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.eCommerceOrgCode}.name`, "")}</span>
+                    <div><img src={`${baseUrl}${this.state.orderDetailsContainer.ecommerceImage}`} onError={this.addDefaultCourierSrc} width="100px" height="100px" /></div>
+                    { <span className="bold">{_.get(this.state.orderDetailsContainer, `.eCommerceOrgCode`, "")}</span> }
                   </div>
                   <div className="col-md-6 text-center">
                     <div><h4 className="bold">Courier Company</h4></div>
-                    <div><img src={baseUrl + (_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.courierOrgCode}.logo.sizeMedium`, ""))} onError={this.addDefaultECommerceSrc} width="100px" height="100px" /></div>
-                    <span className="bold">{_.get(this.state.orgDetailByCode.data, `${this.state.orderDetails.tranxData.courierOrgCode}.name`, "")}</span>
+                    <div><img src={`${baseUrl}${this.state.orderDetailsContainer.courierCompanyImage}`} onError={this.addDefaultECommerceSrc} width="100px" height="100px" /></div>
+                    { <span className="bold">{_.get(this.state.orderDetailsContainer, `courierOrgCode`, "")}</span> }
                   </div>
                 </div>
               </div>
@@ -487,7 +496,7 @@ class OrderInvoiceList extends React.Component {
                       <label className="bold">Name:</label>
                     </div>
                     <div className="col-md-5">
-                      <label>{this.state.orderDetails.tranxData.soldTo}</label>
+                      <label>{this.state.orderDetailsContainer.consigneeName}</label>
                     </div>
                   </div>
                   <div className="row">
@@ -497,28 +506,28 @@ class OrderInvoiceList extends React.Component {
                     <div className="col-md-5">
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine1}</label>
+                          <label>{this.state.orderDetailsContainer.consigneeAddress.addressLine1}</label>
                         </div>
 
                       </div>
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.soldToAddress.addressLine2}</label>
+                          <label>{this.state.orderDetailsContainer.consigneeAddress.addressLine2}</label>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.soldToAddress.POBox}</label>
+                          <label>{this.state.orderDetailsContainer.consigneeAddress.POBox}</label>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.soldToAddress.city}</label>
+                          <label>{this.state.orderDetailsContainer.consigneeAddress.city}</label>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                          <label>{this.state.orderDetailsContainer.consigneeAddress.country}</label>
                         </div>
                       </div>
                     </div>
@@ -533,7 +542,7 @@ class OrderInvoiceList extends React.Component {
                       <label className="bold">Name:</label>
                     </div>
                     <div className="col-md-5">
-                      <label>{this.state.orderDetails.tranxData.billTo}</label>
+                      <label>{this.state.orderDetailsContainer.billTo}</label>
                     </div>
                   </div>
                   <div className="row">
@@ -543,27 +552,27 @@ class OrderInvoiceList extends React.Component {
                     <div className="col-md-5">
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.billToAddress.addressLine1}</label>
+                          <label>{this.state.orderDetailsContainer.billToAddress.addressLine1}</label>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.billToAddress.addressLine2}</label>
+                          <label>{this.state.orderDetailsContainer.billToAddress.addressLine2}</label>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.billToAddress.POBox}</label>
+                          <label>{this.state.orderDetailsContainer.billToAddress.POBox}</label>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.billToAddress.city}</label>
+                          <label>{this.state.orderDetailsContainer.billToAddress.city}</label>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.billToAddress.country}</label>
+                          <label>{this.state.orderDetailsContainer.billToAddress.country}</label>
                         </div>
                       </div>
                     </div>
@@ -578,7 +587,7 @@ class OrderInvoiceList extends React.Component {
                       <label className="bold">Name:</label>
                     </div>
                     <div className="col-md-5">
-                      <label>{this.state.orderDetails.tranxData.shipTo}</label>
+                      <label>{this.state.orderDetailsContainer.shipTo}</label>
                     </div>
                   </div>
                   <div className="row">
@@ -588,27 +597,27 @@ class OrderInvoiceList extends React.Component {
                     <div className="col-md-5">
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine1}</label>
+                          <label>{this.state.orderDetailsContainer.shipToAddress.addressLine1}</label>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.shipToAddress.addressLine2}</label>
+                          <label>{this.state.orderDetailsContainer.shipToAddress.addressLine2}</label>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.shipToAddress.POBox}</label>
+                          <label>{this.state.orderDetailsContainer.shipToAddress.POBox}</label>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.shipToAddress.city}</label>
+                          <label>{this.state.orderDetailsContainer.shipToAddress.city}</label>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetails.tranxData.soldToAddress.country}</label>
+                          <label>{this.state.orderDetailsContainer.shipToAddress.country}</label>
                         </div>
                       </div>
                     </div>
@@ -628,7 +637,7 @@ class OrderInvoiceList extends React.Component {
                       <label className="bold">Order Date:</label>
                     </div>
                     <div className="col-md-6">
-                      <label>10/10/2020 12:12:30</label>
+                      <label>{this.state.orderDetailsContainer.orderDate}</label>
                     </div>
                   </div>
                 </div>
@@ -643,7 +652,7 @@ class OrderInvoiceList extends React.Component {
                       <label className="bold">Invoice Count</label>
                     </div>
                     <div className="col-md-6">
-                      <label>{this.state.orderDetails.tranxData.noOfItems}</label>
+                      <label>{this.state.orderDetailsContainer.invoices.length}</label>
                     </div>
                   </div> 
                 </div>
@@ -659,7 +668,7 @@ class OrderInvoiceList extends React.Component {
                       <label className="bold">Submission Channel:</label>
                     </div>
                     <div className="col-md-6">
-                      <label>{this.state.orderDetails.tranxData.currency}</label>
+                      <label>{this.state.orderDetailsContainer.submissionChannel}</label>
                     </div>
                   </div>
                 </div>
@@ -669,7 +678,7 @@ class OrderInvoiceList extends React.Component {
           </div>
 
           <Portlet title={"Invoice List"} actions={this.state.actions} isPermissioned={true}>
-              {
+              {/* {
                   this.state.gridData.map((obj) => {
                       obj.invoiceCount = (Math.floor(Math.random() * (10) ) + 1) + ""
                       obj.actions = [
@@ -683,13 +692,13 @@ class OrderInvoiceList extends React.Component {
                       ]
                   })
 
-              }
+              } */}
 
               <Table
                   gridColumns={utils.getGridColumnByName("orderInvoice")}
-                  gridData={this.state.gridData}
+                  gridData={this.state.orderDetailsContainer.invoices}
                   fontclass=""
-                  totalRecords={this.state.gridData.length}
+                  totalRecords={this.state.orderDetailsContainer.invoices}
                   pageSize={10}
                   pagination={true}
                   activePage={this.state.page.currentPageNo}
@@ -706,7 +715,9 @@ function mapStateToProps(state, ownProps) {
 
   return {
     orgDetailByCode: state.app.orgDetailByCode,
-    orderDetails: state.app.getOrderDetails.data.searchResult
+    orderDetails: state.app.getOrderDetails.data.searchResult,
+    orderInvoiceDetails: _.get(state.app, 'orderInvoiceDetails', undefined)
+
   };
 }
 

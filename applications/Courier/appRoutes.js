@@ -17,6 +17,7 @@ import BusinessTransactionList from './components/businessTransaction/businessTr
 import orderlistMock from "./components/order_Mockup/orderlist.jsx";
 import orderInvoiceList from "./components/order_Mockup/orderInvoiceList.jsx";
 import invoiceDetails from "./components/order_Mockup/invoiceDetails.jsx";
+import ItemDetails from "./components/order_Mockup/itemDetails.jsx";
 
 import widgetList from './components/addWidget/widgetList.jsx';
 
@@ -36,6 +37,7 @@ let authRoutes = <div>
   <Route path="courier/orderlistmock" component={orderlistMock} />
   <Route path="courier/orderInvoiceList/:id" component={orderInvoiceList} />
   <Route path="courier/invoiceDetails/:id" component={invoiceDetails} />
+  <Route path="courier/itemDetails/:id" component={ItemDetails} />
 
   <Route path="courier/widgetList" component={widgetList} />
 </div>;
