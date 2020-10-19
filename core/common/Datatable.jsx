@@ -41,7 +41,7 @@ class Datatable extends React.Component {
       console.log(this.props.gridData);
       this.setState({ isLoading: false });
     }
-    this.setState({ activePage: this.props.activePage });
+    this.setState({ activePage: nextProps.activePage });
   }
 
   getExportOptions(exportForDetail, enableXMLExport) {

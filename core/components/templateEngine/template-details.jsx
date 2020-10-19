@@ -301,6 +301,9 @@ class TemplateDetails extends React.Component {
                         <div className="addEditLab">
                             <div className="row">
 
+
+
+
                             </div>
 
 
@@ -328,16 +331,16 @@ class TemplateDetails extends React.Component {
 
                             </div>
                             <div className="row">
-
-                                <div style={{ textAlign: 'center', marginLeft: '-30px' }} className="col-md-6">
+                            <div className="col-md-2"></div>
+                                <div style={{ textAlign: 'center' }} className="col-md-2">
                                     <input onChange={e => this.checkRadio(e, 'path')} type="radio" checked={this.state.selectedType == 'path'} />
-                                    <label style={{ paddingLeft: '20px' }} htmlFor="">Path</label>
+                                    <label style={{ paddingLeft: '10px' }} htmlFor="">Path</label>
                                     {/* <input value={this.state.phone} type="text" className="form-control" onChange={e => this.selectField(e.target.value, 'phone')} /> */}
                                 </div>
 
-                                <div className="col-md-6">
+                                <div className="col-md-2">
                                     <input onChange={e => this.checkRadio(e, 'markup')} checked={this.state.selectedType == 'markup'} type="radio" />
-                                    <label style={{ paddingLeft: '20px' }} htmlFor="">Markup</label>
+                                    <label style={{ paddingLeft: '10px' }} htmlFor="">Markup</label>
                                     {/* <input value={this.state.phone} type="text" className="form-control" onChange={e => this.selectField(e.target.value, 'phone')} /> */}
                                 </div>
                             </div>
@@ -372,12 +375,12 @@ class TemplateDetails extends React.Component {
                                     <label htmlFor="">Sample JSON:</label>
                                 </div>
                                 <div className="col-md-10" style={{ marginTop: "-70px" }}>
-                                    <div className="row text-right">
+                                    <div className="text-right" style={{ marginBottom: "10px" }}>
                                         {!this.state.jsonViewer &&
-                                            <button disabled={this.state.body.sampleJson == undefined} className="btn-primary json-view-button" onClick={this.showJsonViewer}>Beautify</button>
+                                            <button disabled={this.state.body.sampleJson == undefined} className="btn btn-primary dark " onClick={this.showJsonViewer}>Beautify</button>
                                         }
                                         {this.state.jsonViewer &&
-                                            <button className="btn-primary json-view-button" onClick={this.showJsonViewer}>Edit</button>
+                                            <button className="btn btn-primary dark" onClick={this.showJsonViewer}>Edit</button>
                                         }
                                     </div>
                                     {this.state.jsonViewer &&
@@ -391,6 +394,7 @@ class TemplateDetails extends React.Component {
                                             formname='body'
                                             value={this.state.body.sampleJson}
                                             columns='12'
+                                            rows="5"
                                             style={{height: '80%'}}
                                             placeholder={utils.getLabelByID('')}
                                             state={this.state}
@@ -415,6 +419,7 @@ class TemplateDetails extends React.Component {
                                             formname='body'
                                             value={this.state.body.templatePath}
                                             columns='12'
+                                            rows="5"
                                             placeholder={utils.getLabelByID('')}
                                             state={this.state}
                                             actionHandler={this.generalHandler}
@@ -436,6 +441,7 @@ class TemplateDetails extends React.Component {
                                             formname='body'
                                             value={this.state.body.templateMarkup}
                                             columns='12'
+                                            rows="5"
                                             placeholder={utils.getLabelByID('')}
                                             state={this.state}
                                             actionHandler={this.generalHandler}

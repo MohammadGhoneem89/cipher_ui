@@ -58,7 +58,7 @@ class List extends React.Component {
       })
       this.setState({
         pageData: parsedData,
-        listData: parsedData
+        listData: parsedData.slice(0,10)
       })
     }
   }
@@ -144,9 +144,9 @@ class List extends React.Component {
   formSubmit() {
     // this.props.actions.generalProcess(constants.getADHReportList, this.getRequest());
     let data = this.state.pageData.filter(item=>{
-      return (item.Name==this.state.Container.documentName && 
-        item.DocumentType==this.state.Container.documentTypeName &&
-        item.OwnerOrgCode==this.state.Container.ownerOrgType)
+      return (item.name==this.state.Container.documentName && 
+        item.documentType==this.state.Container.documentTypeName &&
+        item.ownerOrgCode==this.state.Container.ownerOrgType)
     });
 
     this.setState({
@@ -182,10 +182,24 @@ class List extends React.Component {
         }
       }
 
-      this.setState({currentPageNo: pageNo})
+      var pageData = Object.assign([],this.state.pageData)
+      if(this.state.pageData.length-(pageNo*10)>0){
+        console.log("there",pageNo)
+        this.setState({
+          currentPageNo: pageNo,
+          listData:pageData.slice((pageNo*10)-10,pageNo*10)
+        })
+    }
+    else{
+      console.log("here",pageNo)
+      this.setState({
+        currentPageNo: pageNo,
+        listData:pageData.slice((pageNo*10)-10,this.state.pageData.length)
+      })
+    }
 
       // this.props.actions.generalProcess(constants.getADHReportList, request);
-      this.props.actions.generalProcess(constants.getDocumentTypeList);
+      //this.props.actions.generalProcess(constants.getDocumentTypeList);
 
     }
   }
@@ -291,7 +305,7 @@ class List extends React.Component {
                    gridColumns={utils.getGridColumnByName("DocumentTypeList")}
                    gridData={this.state.listData}
                    totalRecords={this.state.pageData.length}
-                   searchCallBack={this.searchCallBack}
+                  //  searchCallBack={this.searchCallBack}
                    pageSize={10}
                    pagination={true} pageChanged={this.pageChanged}
                    export={false}

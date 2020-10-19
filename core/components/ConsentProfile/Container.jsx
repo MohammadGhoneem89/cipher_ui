@@ -26,6 +26,7 @@ const initialState = {
   loadedOnce: false,
   gridLoading: true,
   getEndpointListView: [],
+  profileIdEditable: false,
   text: "Please wait while your request is being processed."
 };
 
@@ -49,7 +50,8 @@ class Container extends React.Component {
 
 
   componentDidMount() {
-
+    this.setState({
+      isLoading:true})
     this.props.actions.generalProcess(constants.getEntityList, requestCreator.createEntityListRequest({     // Get Orgs (entities)
       "currentPageNo": 1,
       "pageSize": 1
@@ -57,7 +59,10 @@ class Container extends React.Component {
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES'])); // Org types (entities)
     this.props.actions.generalProcess(constants.getDocumentTypeList);
     if (this.props.id !== "NEW") {
-      this.setState({isLoading:true});
+      this.setState({
+        isLoading:true,
+        profileIdEditable: true
+      });
       this.props.actions.generalAsyncProcess(constants.getConsentProfileByKey, {
         "body": {
           "profileID": this.props.id //"5bf9c9df4cb0c690e4461b89"
@@ -141,7 +146,7 @@ class Container extends React.Component {
          let elemEnt = _.get(documentList, parsedData.key, {});
 
          elemEnt = {
-          "label": parsedData.key,
+          "label": `${parsedData.name} - ${parsedData.key}`,
           "value": parsedData.key
         }
         documentList.push(elemEnt);
@@ -285,6 +290,14 @@ class Container extends React.Component {
     else{
       Container.isDynamicExpiry = true
     }
+    if(!('isActive' in Container) || Container.isActive === false){
+      Container.isActive = false
+    }
+    else{
+      Container.isActive = true
+    }
+    
+
     console.log("submit",Container);
     console.log(Container.consentProfileId);
     console.log(Container.description);
@@ -302,15 +315,17 @@ class Container extends React.Component {
     console.log(Container.expiryDuration);
     console.log(isNaN(Container.expiryDuration));
     console.log(Container.expiryDuration);
-    console.log(parseInt(Container.expiryDuration) >= 1 && parseInt(Container.expiryDuration) <= 5);
-    if (!Container.expiryDuration || !(parseInt(Container.expiryDuration) >= 1 && parseInt(Container.expiryDuration) <= 5  )) {
-      _.set(errors, 'expiryDuration', 'Invalid or Empty')
+    console.log(parseInt(Container.expiryDuration) > -1);
+    if (!Container.expiryDuration || (parseInt(Container.expiryDuration) < 1  )) {
+        if(parseInt(Container.expiryDuration) !== -1)
+          _.set(errors, 'expiryDuration', 'Invalid or Empty')
+        
     }
     
     if(Container.documentType){
       console.log("if condition hit Document list----------------", this.state.documentList);
-      console.log("output of document -----------",_.find(this.state.documentList, {'label': Container.documentType}));
-      let _out = _.find(this.state.documentList, {'label': Container.documentType});
+      console.log("output of document -----------",_.find(this.state.documentList, {'value': Container.documentType}));
+      let _out = _.find(this.state.documentList, {'value': Container.documentType});
       if(!_out){
         _.set(errors, 'documentType', 'Invalid Selection')
       }
@@ -325,8 +340,6 @@ class Container extends React.Component {
         alert("All fields are required"); 
     }
 
-
-  //  console.lo
     if (Object.keys(errors).length > 0) {
       this.setState({
           errors,
@@ -334,32 +347,6 @@ class Container extends React.Component {
       })
       return
     }
-    // if((!('consentProfileId' in Container) || Container.consentProfileId === '') || 
-    //    (!('description' in Container) || Container.description === '') ||
-    //    (!('documentType' in Container) || Container.documentType === '') ||
-    //    (!('consentMode' in Container) || Container.consentMode === '') ||
-    //    (!('expiryDuration' in Container) || Container.expiryDuration === '') ||
-    //    (!('proofRequirement' in Container) || Container.proofRequirement === '')
-    // )
-    // {
-    //   alert("All fields are required");
-    //   return false;
-    // }
-
-//     if (
-//       _.isEmpty(Container.consentProfileId) ||
-//       _.isEmpty(Container.description) ||
-//       _.isEmpty(Container.documentType) ||
-//       _.isEmpty(Container.consentMode) ||
-//  //     _.isEmpty(Container.isSupportExpiry) ||
-//       _.isEmpty(Container.expiryDuration) ||
-//       _.isEmpty(Container.proofRequirement) 
-//   //    _.isEmpty(Container.isOriginalRequired)      
-//     ) {
-//       alert("All fields are required");
-//       return false;
-//     }
-
     let body = {
       "body":{
         "policyID": Container.consentProfileId,
@@ -371,6 +358,7 @@ class Container extends React.Component {
         "expiryDuration": parseInt(Container.expiryDuration),
         "proofRequirement": Container.proofRequirement,
         "originalsRequired": Container.isOriginalRequired,
+        "isActive" : Container.isActive,
         "consentProvidedBy": this.state.List
       }
     }
@@ -537,7 +525,7 @@ function mapStateToProps(state, ownProps) {
   return {
     Container: _.get(state.app, 'documentContainer.data', []),
     typeData: _.get(state.app, 'typeData.data', []),
-    entityNames: _.get(state.app, 'entityList.data.typeData.entityNames', []),
+    entityNames: _.get(state.app, 'entityList.data.typeData.entityNames', undefined),
     orgTypes: _.get(state.app, 'typeData.data.ORG_TYPES', []),
     id: ownProps.params.id,
     documentList : _.get(state.app, 'documentTypeList', [])

@@ -11,6 +11,8 @@ import * as actions from '../../actions/generalAction';
 import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
 
+import APIPayloadDetail from '../APIPayloadScreen/APIPayloadDetail.jsx';
+
 
 import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
@@ -51,13 +53,16 @@ class ChangeTracking extends React.Component {
       allColumns:[],
       gridColumns:[],
       revData:[],
-      isLoading:false
+      isLoading:false,
+      APIPayloadID:undefined,
+      collectionLoading:false
     }
     // this.pageChanged = this.pageChanged.bind(this);
     // this.formSubmit = this.formSubmit.bind(this);
     // this.getRequest = this.getRequest.bind(this);
     // this.renderPopupBody = this.renderPopupBody.bind(this);
     this.onInputRuleEngine = this.onInputRuleEngine.bind(this);
+    this.renderPopupBody = this.renderPopupBody.bind(this);
 
 
   }
@@ -124,7 +129,8 @@ class ChangeTracking extends React.Component {
       // }
       console.log("bodyyyyyyy",body);
       this.setState({
-        selectedEndpoint: value
+        selectedEndpoint: value,
+        collectionLoading:true
       })
       // get pvcollections
       this.props.actions.generalProcess(constants.getCollectionList,body);
@@ -154,7 +160,8 @@ class ChangeTracking extends React.Component {
     if(nextProps.getCollectionList){
       console.log(nextProps.getCollectionList,"MMMMMMMMMMMMMMMMM")
       this.setState({
-        privateCollection:nextProps.getCollectionList
+        privateCollection:nextProps.getCollectionList,
+        collectionLoading:false
       })
     }
    
@@ -430,8 +437,21 @@ class ChangeTracking extends React.Component {
 
   selectedCell(rowData,cellData){
     if(rowData=="Blockchain ID" && cellData!="no change" && cellData!="not found" ){
-      this.props.history.push(`/hyperledger/hashSearch/${cellData}`)
+      window.location.href = `/hyperledger/hashSearch/${cellData}`;
+      //this.props.history.push(`/hyperledger/hashSearch/${cellData}`)
     }
+    // if(rowData=="UUID" && cellData!="no change" && cellData!="not found" ){
+    //   this.setState({
+    //     APIPayloadID:cellData,
+    //     display:"block"
+    //   })
+    //   //this.props.history.push(`/hyperledger/hashSearch/${cellData}`)
+    // }
+  }
+
+  renderPopupBody(dataID) {
+    //this.setState({APIPayloadID:"07b384e0-0412-11eb-b75f-e7b72d04c3f7"})
+    this.setState({APIPayloadID: dataID})
   }
 
 
@@ -452,6 +472,7 @@ class ChangeTracking extends React.Component {
                   </div>
                 </div>
                 <div className="portlet-body">
+                {this.state.collectionLoading && Loaders.dotted()}
                   <div className="form-body" id="auditLogList">
                     <div className="row">
                       {/* <div className="col-md-6">
@@ -645,6 +666,7 @@ class ChangeTracking extends React.Component {
                      gridData={this.state.revData}
                      totalRecords={this.state.allColumns.length}
                     //  searchCallBack={this.searchCallBack} 
+                    renderPopupBody={this.renderPopupBody}
                      pageSize={1}
                     //  pagination={true} 
                     //  pageChanged={this.pageChanged.bind(this)} 
@@ -657,7 +679,7 @@ class ChangeTracking extends React.Component {
               </Portlet>
             </div>
           </div>
-          {/* <div className="modal fade in modal-overflow" id="modelWindows" tabIndex="-1" role="basic" aria-hidden="true"
+          <div className="modal fade in modal-overflow" id="modelWindows" tabindex="-1" role="basic" aria-hidden="true"
                style={{display: "none", paddingTop: "10"}}>
             <div className="modal-dialog" style={{width: "1050"}}>
               <div className="modal-content" style={{padding: "10px"}}>
@@ -665,18 +687,19 @@ class ChangeTracking extends React.Component {
                   <button type="button" className="close" data-dismiss="modal"><span
                     aria-hidden="true">&times;</span><span className="sr-only">{utils.getLabelByID("TLP_Close")}</span>
                   </button>
-                  <h3 className="modal-title">{utils.getLabelByID("AuditLogDetail")}</h3>
+                  <h3 className="modal-title">{"Transaction Tracking Detail"}</h3>
                 </div>
 
                 {<div className="modal-body" id="popup">
-                  <AuditLogDetail auditLogID={this.state.auditLogID}/>
+                  <APIPayloadDetail APIPayloadID={this.state.APIPayloadID}/>
 
                 </div>
                 }
 
               </div>
             </div>
-          </div> */}
+          </div>
+          
         </div>
       );
 

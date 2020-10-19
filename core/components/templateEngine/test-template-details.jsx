@@ -281,8 +281,6 @@ class TestTemplateDetails extends React.Component {
 
 
                             <div className="row">
-                                <div className="col-md-12">
-
                                     <div className="col-md-2">
                                         <label htmlFor="">Letter Name:</label>
                                     </div>
@@ -323,13 +321,13 @@ class TestTemplateDetails extends React.Component {
                                     </div>
 
                                 </div>
-                            </div>
+                          
                             <div className="row">
-                                <div className="col-md-12">
                                     <div className="col-md-2">
                                         <label htmlFor="">Letter Markup:</label>
                                     </div>
                                     <div className="col-md-10">
+                                    <div className="col-md-12">
                                         <Textarea
                                             disabled={true}
                                             divStyle={{ padding: '0px' }}
@@ -338,6 +336,7 @@ class TestTemplateDetails extends React.Component {
                                             formname='body'
                                             value={this.state.body.templateMarkup}
                                             columns='12'
+                                            rows='8'
                                             placeholder={utils.getLabelByID('')}
                                             state={this.state}
                                             actionHandler={this.generalHandler}
@@ -345,9 +344,8 @@ class TestTemplateDetails extends React.Component {
                                         />
                                         {/* <input value={this.state.email} type="text" className="form-control" onChange={e => this.selectField(e.target.value, 'email')} /> */}
                                     </div>
-                                </div>
+                                    </div>
                             </div>
-
                         </div>
                         <div className="row" style={{
                             display: 'flex', justifyContent: 'flex-end',
@@ -383,6 +381,7 @@ class TestTemplateDetails extends React.Component {
                                             formname='body'
                                             value={this.state.body.templatePayload}
                                             columns='12'
+                                            rows='5'
                                             placeholder={utils.getLabelByID('')}
                                             state={this.state}
                                             actionHandler={this.generalHandler}

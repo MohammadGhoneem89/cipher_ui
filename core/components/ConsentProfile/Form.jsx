@@ -37,7 +37,7 @@ const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChan
                         status={(state.errors && state.errors.consentProfileId) ? "ERROR" : undefined}
                         fieldname='consentProfileId'
                         formname='Container'
-                        disabled={false}
+                        disabled={state.profileIdEditable}
                         placeholder={utils.getLabelByID('')}
                         state={state}
                         actionHandler={generalHandler}
@@ -74,7 +74,7 @@ const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChan
                   <label className="form-group control-label col-md-4" style={{
                     textAlign: "left",
                     fontWeight: "normal"
-                  }}>{utils.getLabelByID("Document")}</label>
+                  }}>{utils.getLabelByID("Document Type")}</label>
                   <div className="col-md-8">
                     <Combobox
                         status={(state.errors && state.errors.documentType) ? "ERROR" : undefined}
@@ -84,10 +84,11 @@ const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChan
                         fieldname='documentType'
                         formname='Container'
                         allowValue={false}
+                        isDDL={true}
                         selected={_.get(_.get(state, 'documentList', []).filter(item =>
                             item.key == _.get(state.Container, 'documentType', '')
-                        ), `[${0}].label`, undefined)}
-                        placeholder={utils.getLabelByID('Document')}
+                        ), `[${0}].value`, undefined)}
+                        placeholder={utils.getLabelByID('Document Type')}
                         state={state}
                         typeName="documentList"
                         dataSource={state}
@@ -167,7 +168,7 @@ const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChan
                     <label className="form-group control-label col-md-4" style={{
                       textAlign: "left",
                       fontWeight: "normal"
-                    }}>{utils.getLabelByID("Expiry Duration (1- 5 Days)")}</label>
+                    }}>{utils.getLabelByID("Expiry Duration Days")}</label>
                     <div className="col-md-8">
                     <Input
                         type="number"
@@ -282,7 +283,28 @@ const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChan
 
                   </div>
                 </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label className="form-group control-label col-md-4" style={{
+                      textAlign: "left",
+                      fontWeight: "normal"
+                    }}>{utils.getLabelByID("Is Active")}</label>
+                    <div className="form-group col-md-8">
 
+                      <div className="icheck-list">
+                        <label className="mt-checkbox mt-checkbox-outline"
+                          style={{ marginBottom: "0px", marginTop: "10px" }}>
+                          <label />
+                          <input type="checkbox" className="form-control" onChange={onInputChange}
+                            checked={state.Container.isActive} name="isActive" id="isActive" />
+                          <span />
+                        </label>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
 
               </div>
             </div>

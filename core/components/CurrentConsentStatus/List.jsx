@@ -60,7 +60,7 @@ class List extends React.Component {
               let elemEnt = _.get(documentTypeList, parsedData.key, {});
     
               elemEnt = {
-                "label": parsedData.key,
+                "label": `${parsedData.name} - ${parsedData.key}`,
                 "value": parsedData.key
               }
               documentTypeList.push(elemEnt);
@@ -148,7 +148,7 @@ class List extends React.Component {
       else{
         this.setState({
           formLoading: false,
-          consentStatus:"",
+          consentStatus:"NOT FOUND",
           validTill:""
         });
       }
@@ -170,7 +170,9 @@ class List extends React.Component {
       $(this)[0].selectedIndex = 0;
     });
     this.setState({
-      Container:{}
+      Container:{},
+      consentStatus:"",
+      validTill:""
     })
   }
 
@@ -218,7 +220,7 @@ class List extends React.Component {
                               {
                                 this.state.documentTypeList.map((option, index) => {
                                   return (
-                                    <option key={index} value={option.value}>{option.label}</option>
+                                  <option key={index} value={option.value}>{option.label}</option>
                                   );
                                 })
                               }
@@ -307,13 +309,23 @@ class List extends React.Component {
                 </div>
               </div>:
               <div className="row">
+                {this.state.consentStatus=="NOT FOUND" && <div>
+              <div className="col-md-12 text-center">
+                <p className="h4" style={{fontWeight:"bold"}}>No consent found for the document</p>
+                
+              </div>
+              <div className="col-md-12 text-center">
+                <img src="assets/imgs/thumbsdown.png" style={{height:300,width:300,margin:"10px 0px"}}/>
+              </div>
+              </div>
+              }
               {this.state.consentStatus=="GRANT" && <div>
                 <div className="col-md-12 text-center">
                   <p className="h4" style={{fontWeight:"bold"}}>Consent is valid till : {this.state.validTill}</p>
                   
                 </div>
                 <div className="col-md-12 text-center">
-                <img src="assets/imgs/positive-vote.png" style={{height:300,width:300,margin:"10px 0px"}}/>
+                <img src="assets/imgs/thumbsup.png" style={{height:300,width:300,margin:"10px 0px"}}/>
               </div>
               </div>
               }
@@ -323,7 +335,7 @@ class List extends React.Component {
                 
               </div>
               <div className="col-md-12 text-center">
-                <img src="assets/imgs/negative-vote.png" style={{height:300,width:300,margin:"10px 0px"}}/>
+                <img src="assets/imgs/exclaimation-sign-01.png" style={{height:300,width:300,margin:"10px 0px"}}/>
               </div>
               </div>
               }
@@ -333,7 +345,7 @@ class List extends React.Component {
                 
               </div>
               <div className="col-md-12 text-center">
-                <img src="assets/imgs/folder.png" style={{height:300,width:300,margin:"10px 0px"}}/>
+                <img src="assets/imgs/ban.png" style={{height:300,width:300,margin:"10px 0px"}}/>
               </div>
               </div>
               }

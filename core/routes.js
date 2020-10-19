@@ -42,6 +42,7 @@ import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/
 import AuditLogList from './components/AuditLogScreen/auditLogList.jsx';
 
 import ChangeTrackingLog from "./components/ChangeTrackingLog/changeTrackingList.jsx";
+import NetworkVisualization from "./components/NetworkVisualization.jsx";
 
 import NotFound from "./components/NotFound.jsx";
 
@@ -189,6 +190,7 @@ export default (<Router history={browserHistory}>
     <Route path="/APIPayloadSearch/:payLoadField/:payLoadFieldValue" component={APIPayloadSearch} />
     <Route path="/auditLogList" component={AuditLogList} />
     <Route path="/ChangeTrackingLog" component={ChangeTrackingLog} />
+    <Route path="/NetworkVisualization" component={NetworkVisualization} />
     <Route path="/healthMonitor" component={HealthMonitor} />
     <Route path="/fileTemplateSearch" component={FileTemplateSearch} />
     <Route path="/fileTemplateSetup" component={FileTemplateSetup} />
@@ -226,7 +228,7 @@ export default (<Router history={browserHistory}>
     <Route path="/documentList" component={documentList} />
     <Route path="/addDocType/(:id)" component={addDocType} />
     <Route path="/ConsentProfileList" component={ConsentProfileList} />
-    <Route path="/ConsentProfile/(:id)" component={ConsentProfile} />
+    <Route path="/ConsentProfile/:id" component={ConsentProfile} />
     <Route path="/ConsentStatus" component={ConsentStatus} />
 
     <Route path="/ConsentHistory" component={ConsentHistory} />

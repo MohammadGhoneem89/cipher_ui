@@ -332,9 +332,11 @@ class APIPayloadDetail extends React.Component {
 
       );
     } else
-      return (
-        <div></div>
-      )
+    return (<div className="row">
+    <div className="col-md-12 text-center" style={{marginTop:"80px",marginBottom:"80px"}}>
+      <p className="h4">Data not available, please enable API Tracking options</p>
+    </div>
+  </div>)
   }
 }
 

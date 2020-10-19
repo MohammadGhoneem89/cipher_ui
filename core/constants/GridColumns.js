@@ -1306,7 +1306,9 @@ module.exports = {
     { alias: "Label", key: "label", type: "string" },
     { alias: "labelAr", key: "labelAr", type: "string" },
     { alias: "Value", key: "value", type: "string" },
-    { alias: "dependent", key: "dependent", type: "string" },
+    { alias: "image", key: "path", type: "image" },
+    { alias: "parent", key: "dependent", type: "string" },
+    { alias: "parent value", key: "parentValue", type: "string" },
     { alias: "Actions", key: "actions", type: "action" }
   ],
   fileList: [
@@ -1365,7 +1367,18 @@ module.exports = {
     // { alias: "currency", key: "currency", type: "string" },
     // { alias: "billingcycle", key: "billingcycle", type: "string" }
   ],
-  ...GridColumnsIndex,
+  ConsentStatusList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "Time Stamp", key: "timestamp", type: "string" },
+    { alias: "Status", key: "status", type: "string" },
+    { alias: "Document Type", key: "documentType", type: "string" },
+    { alias: "Consent Type", key: "consentType", type: "string" },
+    { alias: "Document No", key: "documentNo", type: "string" },
+    { alias: "Validity", key: "validity", type: "string" },
+    { alias: "Providied To", key: "providedTo", type: "image" }
+  ],
+  
   DocumentTypeList: [
     { alias: "", key: "key", type: "hiddenID" },
     { alias: "Document Type", key: "documentType", type: "string" },
@@ -1375,19 +1388,16 @@ module.exports = {
     { alias: "EL_actions", key: "actions", type: "action" }
   ],
   
-
-ConsentStatusList: [
-  { alias: "COM_SerialNo", key: "", type: "serialNo" },
-  { alias: "", key: "_id", type: "hiddenID" },
-  { alias: "Time Stamp", key: "txtimestamp", type: "string" },
-  { alias: "Status", key: "status", type: "string" },
-  { alias: "Document Type", key: "documentType", type: "string" },
-  { alias: "Type", key: "consentType", type: "string" },
-  { alias: "Document No", key: "relatedDocumentNo", type: "string" },
-  { alias: "Validity", key: "validity", type: "string" },
-  { alias: "Providied To", key: "providedTo", type: "string" },
-  { alias: "Details", key: "actions", type: "action" }
-]
+  ConsentProfileList: [
+    { alias: "COM_SerialNo", key: "", type: "serialNo" },
+    { alias: "", key: "_id", type: "hiddenID" },
+    { alias: "document Type", key: "documentType", type: "string" },
+    { alias: "description", key: "description", type: "string" },
+    { alias: "policy ID", key: "policyID", type: "string" },
+    { alias: "Consent Type", key: "consentType", type: "string" },
+    { alias: "created At", key: "createdAt", type: "string" },
+    { alias: "Details", key: "actions", type: "action" }
+  ]
 };
 
 
