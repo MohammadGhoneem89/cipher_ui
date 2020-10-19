@@ -339,11 +339,11 @@ class InvoiceDetails extends React.Component {
           "brokerBCode":       _.get(item, 'brokerBCode', ""),
           "brokerName":        _.get(item, 'brokerName', ""),
 
-          "modeOfTransport":   _.get(item, 'modeOfTransport', ""),
-          "carrierNumber":     _.get(item, 'carrierNumber', ""),
-          "carrierRegistrationNumber": _.get(item, 'carrierRegistrationNumber', ""),
+          "modeOfTransport":   _.get(item.shippingDetails, 'modeOfTransport', ""),
+          "carrierNumber":     _.get(item.shippingDetails, 'carrierNumber', ""),
+          "carrierRegistrationNumber": _.get(item.shippingDetails, 'carrierRegistrationNumber', ""),
 
-          "dateOfDeparture":   _.get(item, 'dateOfDeparture', ""),
+          "dateOfDeparture":   _.get(item.shippingDetails, 'dateOfDeparture', ""),
 
           "portLoad":          _.get(item.shippingDetails, 'portOfLoad', ""),
           "portOfDischarge":   _.get(item.shippingDetails, 'portOfDischarge', ""),
@@ -358,27 +358,26 @@ class InvoiceDetails extends React.Component {
 //      })
       invoiceDetailsContainer.transport = transportTemp;
 
+      let exitConfirmation = []
+      invoiceData.exitConfirmation.forEach(item => {
+        exitConfirmation = exitConfirmation.concat(item.exitData)
+      })
+    //  let NRClaim = invoiceData.NRClaim;
 
-      let exitConfirmation = invoiceData.exitConfirmation ? 
-        
-        {
-          "payload": _.get(invoiceData.exitConfirmation, 'payload', ""),
-          "annualDepartureDate": _.get(invoiceData.exitConfirmation, 'annualDepartureDate', ""),
-          "cardNumber":  _.get(invoiceData.exitConfirmation, 'cardNumber', ""),
-          "claimType":         _.get(invoiceData.exitConfirmation, 'claimType', ""),
-          "NRClaimNo":       _.get(invoiceData.exitConfirmation, 'NRClaimNo', ""),
-          "claimSubmitStatus":      _.get(invoiceData.exitConfirmation, 'claimSubmitStatus', ""),
-          "claimSubmissionDate":       _.get(invoiceData.exitConfirmation, 'claimSubmissionDate', ""),
-          "totalCharges":         _.get(invoiceData.exitConfirmation, 'totalCharges', ""),
-          "currency" : _.get(invoiceData.exitConfirmation, 'currency', ""),
-          "chargesList" : _.get(invoiceData.exitConfirmation, 'charges', [])
-        } 
-        
-        : 
-        
-        {};
+          // "payload": _.get(invoiceData.exitConfirmation, 'payload', ""),
+          // "annualDepartureDate": _.get(invoiceData.exitConfirmation, 'annualDepartureDate', ""),
+          // "cardNumber":  _.get(invoiceData.exitConfirmation, 'cardNumber', ""),
+          // "claimType":         _.get(invoiceData.exitConfirmation, 'claimType', ""),
+          // "NRClaimNo":       _.get(invoiceData.exitConfirmation, 'NRClaimNo', ""),
+          // "claimSubmitStatus":      _.get(invoiceData.exitConfirmation, 'claimSubmitStatus', ""),
+          // "claimSubmissionDate":       _.get(invoiceData.exitConfirmation, 'claimSubmissionDate', ""),
+          // "totalCharges":         _.get(invoiceData.exitConfirmation, 'totalCharges', ""),
+          // "currency" : _.get(invoiceData.exitConfirmation, 'currency', ""),
+          // "chargesList" : _.get(invoiceData.exitConfirmation, 'charges', [])
+      
 //      transport.forEach( item => {
       invoiceDetailsContainer.exitConfirmation = exitConfirmation;
+      invoiceDetailsContainer.NRClaim = invoiceData.NRClaim[0];
 
       let exportDeclaration = invoiceData.exportDeclaration ? 
         
@@ -1162,15 +1161,17 @@ class InvoiceDetails extends React.Component {
                   </div>
                   
                   <div id="exitConfirmation" className="tab-pane">
-                    <div className="row">
-                      <div className="form-actions right">
-                        <div className="form-group col-md-12">
-                            <div className="btn-toolbar pull-right">
-                              <button type="submit" className="btn green"
-                                    onClick={this.renderPayload.bind(this, this.state.invoiceDetailsContainer.exitConfirmation.payload)}>{utils.getLabelByID("View SOAP Payload")} </button>
-                            </div>
+                    {this.state.invoiceDetailsContainer.exitConfirmation.map(item=>{
+                      return (
+                      <div className="row">
+                        <div className="form-actions right">
+                          <div className="form-group col-md-12">
+                              <div className="btn-toolbar pull-right">
+                                <button type="submit" className="btn green"
+                                      onClick={this.renderPayload.bind(this, item.soapPayload.hash)}>{utils.getLabelByID("View SOAP Payload")} </button>
+                              </div>
+                          </div>
                         </div>
-                      </div>
 
                         <div className="row">
                           <div className="col-md-6">
@@ -1178,7 +1179,7 @@ class InvoiceDetails extends React.Component {
                                 <label>Annual Departure Date: </label>
                             </div>
                             <div className="col-md-7">
-                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.annualDepartureDate}</span>
+                              <span>{item.actualDepartureDate}</span>
                             </div>
                           </div>
                         </div>
@@ -1188,11 +1189,14 @@ class InvoiceDetails extends React.Component {
                                 <label>Debit / Credit Account # : </label>
                             </div>
                             <div className="col-md-7">
-                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.cardNumber}</span>
+                              <span>{item.debitCreditAccountNumber}</span>
                             </div>
                           </div>
                         </div>
-
+                      </div>
+                      )
+                    })}
+                      <div className="row">
                         <Lable text="CLAIM" />
                         <div className="row">
                           <div className="col-md-4">
@@ -1200,7 +1204,7 @@ class InvoiceDetails extends React.Component {
                                 <label>Claim Type: </label>
                             </div>
                             <div className="col-md-6">
-                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.claimType}</span>
+                              <span>{this.state.invoiceDetailsContainer.NRClaim.claimType}</span>
                             </div>
                           </div>
                         </div>
@@ -1210,15 +1214,15 @@ class InvoiceDetails extends React.Component {
                                 <label>NR Claim No:</label>
                             </div>
                             <div className="col-md-6">
-                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.NRClaimNo}</span>
+                              <span>{this.state.invoiceDetailsContainer.NRClaim.NRClaimNo}</span>
                             </div>
                           </div> 
-                         <div className="col-md-4">
+                          <div className="col-md-4">
                             <div className="col-md-6">
                                 <label>Claim Submit Status: </label>
                             </div>
                             <div className="col-md-6">
-                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.claimSubmitStatus}</span>
+                              <span>{this.state.invoiceDetailsContainer.NRClaim.claimRequestStatus}</span>
                             </div>
                           </div>                  
                         </div>
@@ -1228,7 +1232,7 @@ class InvoiceDetails extends React.Component {
                                 <label>Claim Submission Date: </label>
                             </div>
                             <div className="col-md-6">
-                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.claimSubmissionDate}</span>
+                              <span>{this.state.invoiceDetailsContainer.NRClaim.claimRequestDate}</span>
                             </div>
                           </div>
                         </div>
@@ -1243,21 +1247,21 @@ class InvoiceDetails extends React.Component {
                           </div>
                         </div>
                         <div className="col-md-12">
-                            <Table
-                                pagination={false}
-                                export={false}
-                                search={false}
-                                gridColumns={utils.getGridColumnByName("charges")}
-                                gridData={this.state.invoiceDetailsContainer.exitConfirmation.totalCharges}
-                                totalRecords={5}
-                                pageChanged={() => {
-                                }}
-                                activePage={1}
-                                pageSize={10}
-                            />
-                        </div>
-                    </div>
-                    
+                        <Table
+                            pagination={false}
+                            export={false}
+                            search={false}
+                            gridColumns={utils.getGridColumnByName("charges")}
+                            gridData={this.state.invoiceDetailsContainer.NRClaim.charges ? this.state.invoiceDetailsContainer.NRClaim.charges : []}
+                            totalRecords={5}
+                            pageChanged={() => {
+                            }}
+                            activePage={1}
+                            pageSize={10}
+                        />
+                      </div>
+                      </div>
+                      
                   </div>
                   
                   <div id="exportDeclaration" className="tab-pane">
