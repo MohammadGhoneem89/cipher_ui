@@ -41,10 +41,12 @@ class EndPointDefination extends React.Component {
       }
     };
 
-    this.requestTypes = [{label: 'SOAP', value: 'soap'}, {label: 'REST', value: 'rest'}, {
-      label: 'Database Connection',
-      value: 'dbConnection'
-    }];
+    this.requestTypes = [
+      {label: 'SOAP', value: 'soap'}, 
+      {label: 'REST', value: 'rest'}, 
+      {label: 'Database Connection',value: 'dbConnection'},
+      {label: 'LDAP',value: 'ldap'}
+    ];
     this.authTypes = [{label: 'Bearer Token', value: 'bearer'}, {
       label: 'No Auth',
       value: 'noAuth'

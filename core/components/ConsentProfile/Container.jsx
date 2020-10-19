@@ -146,7 +146,7 @@ class Container extends React.Component {
          let elemEnt = _.get(documentList, parsedData.key, {});
 
          elemEnt = {
-          "label": parsedData.key,
+          "label": `${parsedData.name} - ${parsedData.key}`,
           "value": parsedData.key
         }
         documentList.push(elemEnt);
@@ -315,15 +315,17 @@ class Container extends React.Component {
     console.log(Container.expiryDuration);
     console.log(isNaN(Container.expiryDuration));
     console.log(Container.expiryDuration);
-    console.log(parseInt(Container.expiryDuration) >= 1 && parseInt(Container.expiryDuration) <= 5);
+    console.log(parseInt(Container.expiryDuration) > -1);
     if (!Container.expiryDuration || (parseInt(Container.expiryDuration) < 1  )) {
-      _.set(errors, 'expiryDuration', 'Invalid or Empty')
+        if(parseInt(Container.expiryDuration) !== -1)
+          _.set(errors, 'expiryDuration', 'Invalid or Empty')
+        
     }
     
     if(Container.documentType){
       console.log("if condition hit Document list----------------", this.state.documentList);
-      console.log("output of document -----------",_.find(this.state.documentList, {'label': Container.documentType}));
-      let _out = _.find(this.state.documentList, {'label': Container.documentType});
+      console.log("output of document -----------",_.find(this.state.documentList, {'value': Container.documentType}));
+      let _out = _.find(this.state.documentList, {'value': Container.documentType});
       if(!_out){
         _.set(errors, 'documentType', 'Invalid Selection')
       }
