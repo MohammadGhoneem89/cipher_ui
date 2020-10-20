@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/generalAction';
 
 
-/*container specific imports*/
 import * as utils from '../common/utils.js';
 
 import * as d3 from "d3";
@@ -30,11 +29,9 @@ class NetworkVisualization extends React.Component {
             response: []
         }
 
+        this.myInterval = null;
+        this.myInterval2 = null;
     }
-
-    // renderPopupBody(dataID) {
-    //   this.setState({auditLogID: dataID})
-    // }
 
     onInputRuleEngine = (e) => {
 
@@ -49,10 +46,7 @@ class NetworkVisualization extends React.Component {
         let index = e.nativeEvent.target.selectedIndex;
         let label = this.state.channel[index - 1].label;
         let string = label.split(': ')[1];
-        // use the function:
         if (e.target.name == 'channel') {
-            // pLoad.selectedConsortium = this.state.selectedConsortium;
-            // pLoad.channelID = value
             this.setState({
                 selectedChannel: value,
                 network: string
@@ -79,48 +73,48 @@ class NetworkVisualization extends React.Component {
         }
     }
 
-    // // componentWillMount() {
-
-    // //   this.props.actions.generalProcess(constants.getAuditLogListData, this.getRequest());
-
-    // // }
-
-    searchCallBack(keyWord) {
-
-    }
-
     componentDidMount() {
         window.scrollTo(0, 0);
         let obj = {}
-        this.props.actions.generalAjxProcess(constants.getConsortiumTypeList).then(res => {
-            if (res.ConsortiumTypeData.data) {
-                let label = res.ConsortiumTypeData.data.channel[0].label;
-                var fields = label.split(' ');
-                let string = label.split(': ')[1];
-                obj = {
-                    "network": string,
-                    "fabricChannel": fields[0]
-                }
-                this.setState({
-                    consortium: res.ConsortiumTypeData.data.consortium,
-                    channel: res.ConsortiumTypeData.data.channel,
-                });
-                this.props.actions.generalAjxProcess(constants.getNetworkStatus, obj).then(res => {
-                    this.getData(res)
-                });
-            }
+        this.props.actions.generalAjxProcess(constants.getConsortiumTypeList, { version: '2.0' }).then(res => {
+            // if (res.ConsortiumTypeData.data) {
+            //     let label = res.ConsortiumTypeData.data.channel[0].label;
+            //     var fields = label.split(' ');
+            //     let string = label.split(': ')[1];
+            //     this.props.actions.generalAjxProcess(constants.getNetworkConfigByName, {
+            //         "name": string
+            //     });
+            //     obj = {
+            //         "network": string,
+            //         "fabricChannel": fields[0]
+            //     }
+            //     this.setState({
+            //         consortium: res.ConsortiumTypeData.data.consortium,
+            //         channel: res.ConsortiumTypeData.data.channel,
+            //     });
+            //     this.props.actions.generalAjxProcess(constants.getNetworkStatus, obj).then(res => {
+            //         this.getData(res)
+            //     });
+            // }
 
         });
-        setInterval(() => {
-            this.props.actions.generalAjxProcess(constants.getNetworkStatus, obj).then(res => {
-                this.getData(res)
-            });
-        }, 30000);
+        // this.myInterval = setInterval(() => {
+        //     this.props.actions.generalAjxProcess(constants.getNetworkStatus, obj).then(res => {
+        //         this.getData(res)
+        //     });
+        // }, 30000);
+    }
+
+    componentWillUnmount = () => {
+        clearInterval(this.myInterval)
+        clearInterval(this.myInterval2)
+
     }
 
 
     formSubmit = () => {
-
+        clearInterval(this.myInterval)
+        clearInterval(this.myInterval2)
         if (this.state.selectedChannel) {
             this.setState({
                 isLoading: true
@@ -130,8 +124,6 @@ class NetworkVisualization extends React.Component {
                 "network": this.state.network,
             }
             this.props.actions.generalAjxProcess(constants.getNetworkStatus, body).then(res => {
-                // let format = res.result.myself.name.replace(/./g, '-');
-                // var mystring = "this,is,a,test"
                 this.setState({
                     isLoading: false
                 }, () => {
@@ -139,6 +131,11 @@ class NetworkVisualization extends React.Component {
                 })
 
             })
+            this.myInterval2 = setInterval(() => {
+                this.props.actions.generalAjxProcess(constants.getNetworkStatus, body).then(res => {
+                    this.getData(res)
+                });
+            }, 30000);
         }
         else {
             alert("All fields are required");
@@ -151,7 +148,8 @@ class NetworkVisualization extends React.Component {
         var svg = d3.select("svg")
         svg.selectAll("g").remove()
         var newchar = '-'
-        let format = res.result.myself.name.split('.').join(newchar);
+        // let format = res.result.myself.name.split('.').join(newchar);
+        let format = res.result.myself.mspid;
         let array = []
         let internalArray = []
         let parent = {
@@ -524,16 +522,11 @@ class NetworkVisualization extends React.Component {
                     <div className="portlet light bordered sdg_portlet">
                         <div className="portlet-title">
                             <div className="portlet-body"></div>
-                            <svg width="1000" height="600"></svg>
+                            <svg height={this.state.response.length > 0 ? "600" : "0"} width="1000"></svg>
+                            <div className='GraphPlaceholder' style={{ height: this.state.response.length == 0 ? 500 : 0 }} />
                         </div>
                     </div>
-                    {/* <div className="portlet light bordered sdg_portlet">
-                        <div className="portlet-title">
-                            <div className="portlet-body"></div>
-                            <svg width="1000" height="600"></svg>
-                        </div>
-                    </div> */}
-                </div>
+                </div >
             );
 
         } else
