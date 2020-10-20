@@ -91,6 +91,7 @@
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2",
     "whatwg-fetch": "^2.0.3",
+    "xlsx": "^0.16.8",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
