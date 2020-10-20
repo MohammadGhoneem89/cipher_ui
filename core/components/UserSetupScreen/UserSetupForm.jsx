@@ -576,16 +576,43 @@ export default function UserSetupForm(props) {
                 disabled={disabled}
               />
             </div>
+
+
+
+            <div className='row' style={{ paddingLeft: '22px', paddingRight: '22px' }}>
+              <div className="control-label col-md-5">
+                <Label text="User Affiliation" columns='5' divStyle={{ width: 'auto', paddingRight: '0px' }} />
+                <Label text={""} columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
+              </div>
+              <Combobox
+                fieldname='addAffiliation'
+                formname='userDetail'
+                columns='7'
+                placeholder='Select'
+                style={{}}
+                state={containerState}
+                typeName={"addAffiliation"}
+                dataSource={typeData}
+                multiple={false}
+                actionHandler={comboBoxHandler}
+                className="form-control"
+                disabled={disabled}
+              />
+            </div>
+
+
+
+
           </div>
         </Col>
       </Row>
-      {containerState.userDetail.status != 'APPROVED' &&
+      {containerState.userDetail.status != 'APPROVED' || !isNew ?
         <Row>
           <Col style={{ marginLeft: "20px" }}>
             <div className='row' style={{ paddingLeft: '22px', paddingRight: '22px' }}>
               <div className="control-label col-md-12" >
                 <Label text="Rejection Reason" columns='5' divStyle={{ width: 'auto', paddingRight: '0px' }} />
-                <Label text={""}columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
+                <Label text={"*"} columns='1' style={{ color: 'red', marginLeft: '-10px' }} />
               </div>
               <div className="col-md-12">
                 <div className="col-md-12">
@@ -595,7 +622,7 @@ export default function UserSetupForm(props) {
               </div>
             </div>
           </Col>
-        </Row>
+        </Row>:null
       }
       <br></br>
       <div className="clearfix" style={{ padding: "30px" }}>

@@ -18,6 +18,7 @@ import DateControl from '../common/DateControl.jsx';
 import ModalBox from '../common/ModalBox.jsx';
 import Label from '../common/Lable.jsx';
 import TextArea from '../common/Textarea.jsx';
+import DateTimeField from "react-bootstrap-datetimepicker";
 
 
 class Task extends React.Component {
@@ -41,6 +42,7 @@ class Task extends React.Component {
         pageSize: 10,
         currentPageNo: 1
       },
+      actions:[]
     }
     this.generalHandler = gen.generalHandler.bind(this);
     this.onChangeCheckbox = this.onChangeCheckbox.bind(this);
@@ -72,6 +74,7 @@ class Task extends React.Component {
       ]));
 
     this.props.actions.generalProcess(constants.searchTask, this.getRequest())
+    this.setState({ actions: [{ "value": "1002", "type": "pageAction", "label": "ADD", "labelName": "COM_AB_Add", "actionType": "PORTLET_LINK", "iconName": "fa fa-plus", "URI": "/addTask", "children": [] }] })
   }
 
   showHideDetails = (actionName, index) => {
@@ -198,22 +201,39 @@ class Task extends React.Component {
           "label": "Task Details",
           "params": "",
           "iconName": "icon-docs"
+        },
+        {
+          "URI": ["/addTask/"],
+          "value": "4042",
+          "type": "componentAction",
+          "label": "Edit",
+          "params": "",
+          "iconName": "icon-docs"
         }
       ];
 
 
-      let epochDateSchedule_time = Number(element.schedule_time) * 1000;
-      element.schedule_time = moment(epochDateSchedule_time).format("DD-MM-YYYY")
+      let epochDateSchedule_time = Number(element.schedule_time);
+      element.schedule_time = moment(epochDateSchedule_time).format("DD-MM-YYYY HH:MM:SS")
       // element.schedule_time= moment(element.schedule_time).format("DD/MM/YYYY")
       console.log("----------------element.schedule_time", element.schedule_time)
 
 
       let epochDateExecution_time = Number(element.execution_time) * 1000;
-      element.execution_time = moment(epochDateExecution_time).format("DD-MM-YYYY")
+      element.execution_time = moment(epochDateExecution_time).format("DD-MM-YYYY HH:MM:SS")
       // element.execution_time= moment(element.execution_time).format("DD/MM/YYYY")
       console.log("----------------element.execution_time", element.execution_time)
 
     });
+
+    console.log("nextProps.searchTask1",nextProps.searchTask);
+    for (let i = 0; i < nextProps.searchTask.length; i++) {
+      if (nextProps.searchTask[i].execution_time=='01-01-1970') {
+        nextProps.searchTask[i].execution_time=''
+      }
+    }
+    console.log("nextProps.searchTask2",nextProps.searchTask);
+
     this.setState({
       typeData: nextProps.typeData,
       gridData: nextProps.searchTask,   //getTask,
@@ -257,7 +277,7 @@ class Task extends React.Component {
     //  console.log('------------------data',data)
 
     return (
-      <Portlet title={"task list"}>
+      <Portlet title={"search task"}  >
         <div className="row">
           <ModalBox isOpen={this.state.responseModal}>
             {this.slabActionHandler()}
@@ -301,10 +321,16 @@ class Task extends React.Component {
                 <label className="control-label">Schedule Date</label>
               </div>
               <div className="form-group col-md-8">
-                <DateControl
+                {/* <DateControl
                   id='onStartDateChange'
                   // defaultValue={utils.UNIXConvertToDateWithout1000(this.state.schedule_time)}
                   dateChange={this.onStartDateChange}
+                /> */}
+                <DateTimeField
+                    inputFormat={'DD/MM/YYYY HH:MM:SS'}
+                    id="onStartDateChange"
+                    onChange={this.onStartDateChange}
+                    // changed={this.state.newTime}
                 />
               </div>
             </div>
@@ -336,7 +362,10 @@ class Task extends React.Component {
           </div>
 
           <div className="col-md-12">
+          <Portlet title={"task list"}  isPermissioned={true}
+            actions={this.state.actions}>
             <Table
+            
               gridColumns={utils.getGridColumnByName("ViewTask")}
               gridData={this.state.gridData}
               //gridData={data}
@@ -347,6 +376,8 @@ class Task extends React.Component {
               activePage={this.state.page.currentPageNo}
               componentFunction={this.showHideDetails}
             />
+      </Portlet>
+
           </div>
         </div>
       </Portlet>

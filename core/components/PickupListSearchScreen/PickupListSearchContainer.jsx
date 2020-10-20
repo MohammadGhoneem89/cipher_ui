@@ -13,9 +13,12 @@ import * as gen from '../../common/generalActionHandler';
 import Portlet from '../../common/Portlet.jsx';
 import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
+import Combobox from '../../../core/common/Select.jsx';
+import XLSX from 'xlsx';
+
 
 const toaster = require('../../common/toaster.js');
-import _ from 'lodash';
+import _, { isUndefined } from 'lodash';
 
 class PickupListSearchContainer extends React.Component {
   constructor(props, context) {
@@ -23,6 +26,7 @@ class PickupListSearchContainer extends React.Component {
     this.generalActionHandler = gen.generalHandler.bind(this);
     this.sync = this.sync.bind(this);
     this.pageChanged = this.pageChanged.bind(this);
+    this.export = this.export.bind(this);
 
     this.state = {
       searchCriteria: { typeName: "core" },
@@ -34,7 +38,8 @@ class PickupListSearchContainer extends React.Component {
       pageData: {},
       isLoading: true,
       typeList: [],
-      isOwner: false
+      isOwner: false,
+      typeData: undefined
     };
   }
   pageChanged = (pageNo) => {
@@ -49,7 +54,7 @@ class PickupListSearchContainer extends React.Component {
   }
   componentDidMount() {
 
-
+    this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['USE_CASE']));
     this.props.actions.generalProcess(constants.getTypeSyncOut, {})
     this.props.actions.generalProcess(constants.getPickupListByType, requestCreator.createPickupListRequest({
       "currentPageNo": 1,
@@ -58,20 +63,65 @@ class PickupListSearchContainer extends React.Component {
 
   }
   sync = (e) => {
-
-
     this.props.actions.generalProcess(constants.pushTypeData, { body: { typeList: JSON.stringify(this.state.typeList) } })
     toaster.showToast("Sync Call Sent successfully", 'OK');
   }
-  componentWillReceiveProps(nextProps) {
+
+  export = (e) => {
+  let arrayData=[]
+  let useCase = document.getElementById('useCase').value
+  for (let i = 0; i < this.state.typeDataList.length; i++) {
+    if (useCase==this.state.typeDataList[i].type) {
+      arrayData.push({typename:this.state.typeDataList[i].typeName,data:this.state.typeDataList[i].data[Object.keys(this.state.typeDataList[i].data)[0]]})
+    }
+  }
+  let data=[]
+  for (let i = 0; i < arrayData.length; i++) {
+
+    data.push({typename:arrayData[i].typename,data:arrayData[i].data})
+    
+  }
+
+let sheetData={Sheets:{},SheetNames:[]}
+for (let i = 0; i < data.length; i++) {
+    let typeData
+    if (data[i].data && data[i].typename) {
+    typeData = XLSX.utils.json_to_sheet(data[i].data);
+    sheetData = { Sheets: {...sheetData.Sheets,[data[i].typename]:typeData },SheetNames: [...sheetData.SheetNames,data[i].typename]};
+  }
+ }
+const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+const excelBuffer = XLSX.write(sheetData, { bookType: 'xlsx', type: 'array' });
+const dataBytes = new Blob([excelBuffer], { type: fileType });
+const url = window.URL.createObjectURL(dataBytes);
+const link = document.createElement('a');
+link.href = url;
+link.setAttribute('download', useCase + ".xlsx" || 'file.xlsx');
+document.body.appendChild(link);
+link.click();
+
+
+}
+
+ componentWillReceiveProps(nextProps) {
     if (nextProps.typeDataList && nextProps.typeListForSync) {
-      console.log(JSON.stringify(nextProps.typeDataList.pageData))
+      let val=''
+      nextProps.typeDataList.searchResult.map(x=>{
+        val =x.typeName
+      })
       this.setState({
         typeDataList: nextProps.typeDataList.searchResult,
         pageData: nextProps.typeDataList.pageData,
         isOwner: nextProps.typeDataList.isOwner,
         typeList: nextProps.typeListForSync,
-        isLoading: false
+        isLoading: false,
+        val
+      });
+    }
+
+    if (nextProps.typeData) {
+      this.setState({
+        typeData: nextProps.typeData
       });
     }
 
@@ -116,23 +166,38 @@ class PickupListSearchContainer extends React.Component {
         <Row>
           <Col>
             <Portlet title={utils.getLabelByID("Pickup List Search")}>
-              <Row>
-                <Col>
-                  <div className="col-md-6">
-                    <Lable columns='2' text={utils.getLabelByID("Type Name")} />
-                    <Col>
-                      <input id="typeName" className="form-control" name="typeName" />
-                    </Col>
-                  </div>
-                </Col>
-                {/* <Select fieldname='typeName' className="form-control" formname='searchForm' columns='4' style={{}}
-                  state={this.state} typeName="pickupList" dataSource={this.state}
-                  multiple={false} actionHandler={this.generalActionHandler} /> */}
-              </Row>
+            <div className="row">
+            <div className="col-md-6">
+              <div className="form-group col-md-4">
+                <label className="control-label">{utils.getLabelByID("Type Name")}</label>
+              </div>
+              <div className="form-group col-md-8">
+                <input type="text" className="form-control" name="typeName" id="typeName" />
+              </div>
+            </div>
+            <div className="col-md-6">
+            <div className="form-group col-md-4">
+              <label className="control-label">{utils.getLabelByID("MAU_useCase")}</label>
+            </div>
+            <div className="form-group col-md-8">
+              <select name="useCase" id="useCase" className="form-control">
+                <option key="-1" value="">{utils.getLabelByID("RA_Select")} </option>
+                {this.state.typeData && this.state.typeData.USE_CASE && this.state.typeData.USE_CASE.map((option, index) => {
+                  return (
+                    <option key={index} value={option.value}>{option.label}</option>
+                  );
+                })}
+              </select>
+            </div>
+          </div>
+            </div>
               <br />
               <Row>
                 <Col>
                   <div className="btn-toolbar pull-right">
+                  <button type="submit" className="btn green" onClick={this.export}>
+                        {utils.getLabelByID("Export")}
+                      </button>
                     {this.state.isOwner &&
                       <button type="submit" className="btn green" onClick={this.sync}>
                         {utils.getLabelByID("Sync LOVs")}
@@ -153,7 +218,7 @@ class PickupListSearchContainer extends React.Component {
             </Portlet>
             <Portlet title={utils.getLabelByID("PICKUP LIST")} isPermissioned={true}>
               <Table
-                pagination={true}
+                pagination={false}
                 export={false}
                 search={false}
                 pageChanged={this.pageChanged}
@@ -173,11 +238,11 @@ class PickupListSearchContainer extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log(state.app)
   return {
     typeDataList: _.get(state.app, 'typeDataListByType.data', undefined),
     typeListForSync: _.get(state.app, 'typeListForSync.data', undefined),
-    pickupList: _.get(state.app, 'typeDataListForType', [])
+    pickupList: _.get(state.app, 'typeDataListForType', []),
+    typeData: state.app.typeData.data
   }
 }
 

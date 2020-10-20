@@ -230,6 +230,7 @@ class MappingList extends React.Component {
                         </div>
                     </div>
 
+                    {console.log("this.state.actions",this.state.actions)}
                     <Portlet title={utils.getLabelByID("MappingList")} isPermissioned={true}
                         actions={this.state.actions}>
                         <Table fontclass="" 

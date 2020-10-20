@@ -610,7 +610,6 @@ class AddUpdateEventList extends React.Component {
                                                     <div className="form-group">
                                                         <label className="form-group control-label col-md-4" style={{ textAlign: "left" }}>{utils.getLabelByID("DC_filePath")}</label>
                                                         <div className="form-group col-md-8">
-                                                            {/* {console.log(initialValues)} */}
                                                             <input type="text" className="form-control" name="filePath" onChange={this.onInputChange} value={this.state.EventDispatcherDetails.filePath} />
                                                         </div>
                                                     </div>

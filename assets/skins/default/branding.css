@@ -786,6 +786,9 @@ text {
     -webkit-filter: drop-shadow(-1.5px -1.5px 1.5px #000);
     filter: drop-shadow(-1.5px -1.5px 1.5px #000);
 }
-
+.notification-hit-grid table thead tr th a {
+	color: white !important;
+	text-decoration: none !important;
+}
 
 /* dendogram-end */

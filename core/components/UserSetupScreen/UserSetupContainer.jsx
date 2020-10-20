@@ -152,6 +152,7 @@ class UserSetupContainer extends Component {
       });
     } else {
       let rejectionReason = document.getElementById('rejectionReason') == null ? "" : document.getElementById('rejectionReason').value;
+      console.log("ffffffffffffffffffff",rejectionReason);
       this.props.actions.generalProcess(constants.userApproveReject, {
         data: {
           id: this.props.params.checkerID,
@@ -179,6 +180,10 @@ class UserSetupContainer extends Component {
 
     }
     if (nextProps.userDetail && nextProps.userDetail.groups && nextProps.passwordPolicyDetail && nextProps.entityNames && (nextProps.orgTypes || nextProps.callerTypes || nextProps.firstScreens) && nextProps.hyperledgerData && nextProps.quorrumData) {
+
+
+      console.log("nextProps.userDetail",nextProps.userDetail);
+      // && nextProps.affiliationData
 
       //allowIncorrectLoginAttempts from passwordPolicy
       const passwordPolicy = nextProps.passwordPolicyDetail;
@@ -258,6 +263,7 @@ class UserSetupContainer extends Component {
               }),
             hyperledgerData: nextProps.hyperledgerData,
             quorrumData: nextProps.quorrumData,
+            affiliationData: nextProps.affiliationData,
             authenticationType
           },
           groupUI,
@@ -286,6 +292,7 @@ class UserSetupContainer extends Component {
             entityNames: nextProps.entityNames,
             hyperledgerData: nextProps.hyperledgerData,
             quorrumData: nextProps.quorrumData,
+            affiliationData: nextProps.affiliationData,
             authenticationType
           },
           permissionTypeData: perTypeData,
@@ -655,6 +662,8 @@ class UserSetupContainer extends Component {
   // }
 
   render() {
+
+    console.log("typeDatatypeDatatypeDatatypeDatatypeDatatypeDatatypeData",this.state.typeData);
     if (!this.state.isLoading) {
       let allowedGroup = []
       let groupList = []
