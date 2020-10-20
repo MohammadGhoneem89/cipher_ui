@@ -1959,3 +1959,45 @@ text.subunit-label {
     filter: drop-shadow( -1.5px -1.5px 1.5px #000 );
 }
 /* DendoGram Graph Ends */
+
+/* react trello board */
+.column-headings {
+    width: 78px;
+    height: 50px;
+    margin-bottom: 20px; 
+}
+
+.cHArjo {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    overflow-y: inherit;
+}
+
+.header-titles {
+    display: flex;
+    justify-content: space-around;
+    font-weight: 600;
+}
+/* .dehkvL { */
+.sc-EHOje {
+    min-width: 390px;
+    /* overflow: inherit; */
+}
+.sc-htpNat {
+    width: 400px;
+}
+.sc-dnqmqq {
+    max-width: 350px;
+    margin-left: 15px;
+}
+.smooth-dnd-container {
+    height: 100vh;
+}
+.drop-up-button {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    margin-left: 15px;
+    border-radius: 5px !important;
+}

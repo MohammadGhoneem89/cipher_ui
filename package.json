@@ -88,6 +88,7 @@
     "react-spreadsheet-component": "^0.5.1",
     "react-star-rating-component": "^1.2.4",
     "react-to-print": "^2.0.0-alpha-4",
+    "react-trello": "^2.0.4",
     "redux": "^3.7.2",
     "redux-form": "^7.0.4",
     "redux-immutable-state-invariant": "^2.0.0",

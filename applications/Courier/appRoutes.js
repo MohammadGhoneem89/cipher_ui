@@ -8,6 +8,7 @@ import OrderDetails from "./components/orderDetails/orderDetailsContainer.jsx";
 import orderlist from "./components/orderDetails/orderlist.jsx";
 import Dashboard from "./components/orderDetails/dashboard.jsx";
 import DynamicDashboardCreator from "./components/dashboards/dynamicDashboardCreator.jsx";
+import EcommerceOrderTemplate from "./components/kanban-board/EcommerceOrderTemplate.jsx";
 import FileList from "./components/Files/FileList.jsx";
 import FileData from "./components/Files/FileData.jsx";
 import EcommerceDashboard from './components/dashboards/ecommerceDashboard.jsx';
@@ -26,6 +27,7 @@ let authRoutes = <div>
   <Route path="courier/orderDetails/:id" component={OrderDetails} />
   <Route path="courier/dashboard" component={Dashboard} />
   <Route path="courier/createDashboard" component={DynamicDashboardCreator} />
+  <Route path="courier/EcommerceOrderTemplate" component={EcommerceOrderTemplate} />
   <Route path="courier/orderlist" component={orderlist} />
   <Route path="courier/fileList" component={FileList} />
   <Route path="courier/fileData/:id" component={FileData} />
