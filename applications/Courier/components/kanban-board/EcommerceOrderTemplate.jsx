@@ -39,6 +39,12 @@ class EcommerceOrderTemplate extends React.Component {
         courier: "",
         ecommerce: ""
       },
+      orders: [
+        {
+          key: 'Order',
+          value: 'order'
+        }
+      ]
     };
     this.generalHandler = gen.generalHandler.bind(this);
     this.customActionHandler = customActionHandler.bind(this);
@@ -620,13 +626,13 @@ class EcommerceOrderTemplate extends React.Component {
                 columns={12}
                 allowValue={false}
                 isDDL={true}
-                // selected={_.get(_.get(this.state.jsonData, 'processorData', []).filter(item =>
+                // selected={_.get(_.get(this.state, 'orders', []).filter(item =>
                 //   item.key == _.get(this.state.Container, 'processor', '')
                 // ), `[${0}].value`, undefined)}
-                placeholder={''}
+                placeholder={'Orders'}
                 state={this.state}
-                typeName="processorData"
-                dataSource={_.get(this.state, "", {})}
+                typeName="orders"
+                dataSource={_.get(this.state, "orders", {})}
                 actionHandler={this.generalHandler}
               />
               {/* <select className="col-md-12 form-group form-control" name="" id="">
@@ -668,7 +674,11 @@ class EcommerceOrderTemplate extends React.Component {
           }
 
           {/* </Portlet> */}
-
+          <div className="row">
+            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+              <button className="btn btn-primary">Save</button>
+            </div>
+          </div>
         </Wrapper>
       );
     else

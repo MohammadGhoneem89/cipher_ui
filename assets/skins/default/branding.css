@@ -1991,3 +1991,6 @@ text.subunit-label {
     max-width: 350px;
     margin-left: 15px;
 }
+.smooth-dnd-container {
+    height: 100vh;
+}
