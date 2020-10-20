@@ -1994,3 +1994,10 @@ text.subunit-label {
 .smooth-dnd-container {
     height: 100vh;
 }
+.drop-up-button {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    margin-left: 15px;
+    border-radius: 5px !important;
+}

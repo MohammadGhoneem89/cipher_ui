@@ -39,6 +39,7 @@ class EcommerceOrderTemplate extends React.Component {
         courier: "",
         ecommerce: ""
       },
+      showDescription: true,
       orders: [
         {
           key: 'Order',
@@ -307,7 +308,8 @@ class EcommerceOrderTemplate extends React.Component {
         "title": data.tileName,
         "label": "",
         "description": data.tilePurpose,
-        "canMove": data.canMove
+        "canMove": data.canMove,
+        "draggable": data.canMove == 'Y' ? true : false
         // "tileName": "Order Number",
         //   "canMove": "N",
         //   "tilePurpose": "Order Number ",
@@ -323,7 +325,7 @@ class EcommerceOrderTemplate extends React.Component {
           "title": "E-Commerce",
           "label": "",
           "style": {
-            "width": 400
+            "width": '32%'
           },
           "cards": modifiedData
         },
@@ -332,7 +334,7 @@ class EcommerceOrderTemplate extends React.Component {
           "title": "Logistics Processor",
           "label": "",
           "style": {
-            "width": 400
+            "width": '32%'
           },
           "cards": []
         },
@@ -341,7 +343,7 @@ class EcommerceOrderTemplate extends React.Component {
           "title": "Declaration Processor",
           "label": "",
           "style": {
-            "width": 400
+            "width": '32%'
           },
           "cards": []
         },
@@ -568,26 +570,29 @@ class EcommerceOrderTemplate extends React.Component {
 
     const CustomCard = props => {
       return (
-        <div cardDraggable={false} style={{
+        <div style={{
           backgroundColor: props.canMove == 'Y' ? 'white' : '#7b7474b5',
           opacity: props.canMove == 'Y' ? 1 : 0.7,
           padding: '5px'
         }}>
+          <div style={{ width: '100%', background: 'red' }}></div>
           <header
             style={{
-              borderBottom: '1px solid #eee',
+              borderBottom: this.state.showDescription ? '1px solid #eee' : '0px',
               paddingBottom: 6,
               marginBottom: 10,
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: this.state.showDescription ? 'space-between' : 'center',
               color: props.cardColor
             }}>
-            <div style={{ fontSize: 14, fontWeight: 'bold', color: '#544e4e', marginTop: '8px' }}>{props.title}</div>
+            <div style={{ fontSize: 14, fontWeight: 'bold', color: props.canMove == 'N' ? 'white' : '#544e4e', marginTop: '8px' }}>{props.title}</div>
             {/* <div style={{fontSize: 11}}>{props.dueOn}</div> */}
           </header>
           <div style={{ fontSize: 12 }}>
-            <div style={{ color: '#312e2ef2' }}>{props.description}</div>
+            {this.state.showDescription &&
+              <div style={{ color: props.canMove == 'N' ? 'white' : '#312e2ef2' }}>{props.description}</div>
+            }
             {/* <div style={{padding: '5px 0px'}}>
               <i>{props.title}</i>
             </div> */}
@@ -654,6 +659,18 @@ class EcommerceOrderTemplate extends React.Component {
               />
             </div>
           </div>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'row-reverse'
+          }} className="row">
+            <div className="col-md-2">
+              <input type="checkbox" checked={this.state.showDescription} onChange={() => this.setState({ showDescription: !this.state.showDescription })} />
+            </div>
+            <div className="col-md-4">
+              <label htmlFor="">Show Description</label>
+            </div>
+          </div>
           <div>
             <div className="header-titles">
               <div className="title-declaration"> <div className=""> <img className="column-headings" src="\assets\Resources\images\amazon.png" alt="" /> </div> </div>
@@ -662,14 +679,14 @@ class EcommerceOrderTemplate extends React.Component {
             </div>
           </div>
           {this.state.boardData &&
-            <Board data={this.state.boardData} laneDraggable={false} cardDraggable={true} customCardLayout draggable >
+            <Board data={this.state.boardData} laneDraggable={false} customCardLayout draggable >
               <CustomCard />
             </Board>
           }
 
           {/* </Portlet> */}
           <div className="row">
-            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <button className="btn btn-primary">Save</button>
             </div>
           </div>

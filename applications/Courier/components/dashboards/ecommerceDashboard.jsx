@@ -1449,42 +1449,42 @@ class EcommerceDashboard extends React.Component {
                                 type: data.zIndex.value,
                                 color: '#2196f3'
                             }
-    
+
                             dataArray.push(obj);
                         }
 
                     } else {
 
-                    if (data.zIndex && !z.includes(data.zIndex.value)) {
-                        z.push(data.zIndex.value)
-                    }
-                    if (data.zIndex && data.zIndex.value == z[0]) {
-                        let obj = {
-                            entityName: data.xIndex.value,
-                            value1: data.yIndex.value,
-                            type: data.zIndex.value,
-                            color: '#f58709'
+                        if (data.zIndex && !z.includes(data.zIndex.value)) {
+                            z.push(data.zIndex.value)
                         }
-                        dataArray.push(obj);
-                    } else if (data.zIndex.value == z[1]) {
-                        let obj = {
-                            entityName: data.xIndex.value,
-                            value2: data.yIndex.value,
-                            type: data.zIndex.value,
-                            color: '#ae8b4b'
-                        }
-                        dataArray.push(obj);
-                    } else {
-                        let obj = {
-                            entityName: data.xIndex.value,
-                            value3: data.yIndex.value,
-                            type: data.zIndex.value,
-                            color: '#2196f3'
-                        }
+                        if (data.zIndex && data.zIndex.value == z[0]) {
+                            let obj = {
+                                entityName: data.xIndex.value,
+                                value1: data.yIndex.value,
+                                type: data.zIndex.value,
+                                color: '#f58709'
+                            }
+                            dataArray.push(obj);
+                        } else if (data.zIndex.value == z[1]) {
+                            let obj = {
+                                entityName: data.xIndex.value,
+                                value2: data.yIndex.value,
+                                type: data.zIndex.value,
+                                color: '#ae8b4b'
+                            }
+                            dataArray.push(obj);
+                        } else {
+                            let obj = {
+                                entityName: data.xIndex.value,
+                                value3: data.yIndex.value,
+                                type: data.zIndex.value,
+                                color: '#2196f3'
+                            }
 
-                        dataArray.push(obj);
+                            dataArray.push(obj);
+                        }
                     }
-                }
 
                 })
                 this.setState({
@@ -1504,11 +1504,11 @@ class EcommerceDashboard extends React.Component {
             let chart;
             if (graphProps.widgetData.widgetId == 'widget1') {
                 chart = <HorizontalBarChartWithDifferentColors minRange={sortedValueArray[0]} maxRange={maxRange} stepSize={maxRange / 5} height={120}
-                data={dataArray || []} labels={unique} sortedLabels={sortedLabels} sortedColors={sortedColors} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} separateColors={true} backgroundColors={['#f58709', '#ae8b4b', '#2196f3']}
-                options={{
-                    responsive: true,
-                    maintainAspectRatio: true
-                }} />
+                    data={dataArray || []} labels={unique} sortedLabels={sortedLabels} sortedColors={sortedColors} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} separateColors={true} backgroundColors={['#f58709', '#ae8b4b', '#2196f3']}
+                    options={{
+                        responsive: true,
+                        maintainAspectRatio: true
+                    }} />
             } else {
                 chart = <HorizontalBarChartNew minRange={sortedValueArray[0]} maxRange={maxRange} stepSize={maxRange / 5} height={120}
                     data={dataArray || []} labels={unique} stack="multiple" dataLabelsAttribute="entityName" separateColors={false} dataValuesAttributes={['value1', 'value2', 'value3']} backgroundColors={['#f58709', '#ae8b4b', '#2196f3']}
@@ -2552,7 +2552,21 @@ class EcommerceDashboard extends React.Component {
                                         <label htmlFor="">Value</label>
                                     </div>
                                     <img onClick={() => this.refreshSingleWidget(1)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    <div className="dropup">
+                                        <button className="btn btn-default dropdown-toggle drop-up-button" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i className="fa fa-cogs"></i>
+    <span className="caret"></span>
+                                        </button>
+                                        <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                            <li><a href="#">Action</a></li>
+                                            <li><a href="#">Another action</a></li>
+                                            <li><a href="#">Something else here</a></li>
+                                            <li role="separator" className="divider"></li>
+                                            <li><a href="#">Separated link</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
+
                                 {this.state.widget1isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
                                     <div>   {this.state.widget1} </div>
