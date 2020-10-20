@@ -52,6 +52,9 @@ import WorldHeatChart from '../../common/charts/world-heat-chart.jsx';
 import WorldHeatChart2 from '../../common/charts/world-heat-chart2.jsx';
 import GroupedDendogramBarChart from '../../common/charts/groupedDendoGramBarChart.jsx';
 // bubbleChartFc
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import ModalBox from '../../../../core/common/ModalBox.jsx';
 
 let interval;
 class EcommerceDashboard extends React.Component {
@@ -1204,6 +1207,7 @@ class EcommerceDashboard extends React.Component {
             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
+                [graphProps.widgetData.widgetId + 'data']: dataArray,
                 [stateLabel]: false
             })
         }
@@ -1254,6 +1258,7 @@ class EcommerceDashboard extends React.Component {
             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
+                [graphProps.widgetData.widgetId + 'data']: dataArray,
                 [stateLabel]: false
             })
         }
@@ -1312,6 +1317,7 @@ class EcommerceDashboard extends React.Component {
             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
+                [graphProps.widgetData.widgetId + 'data']: dataArray,
                 [stateLabel]: false
             })
         }
@@ -1398,6 +1404,7 @@ class EcommerceDashboard extends React.Component {
             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
+                [graphProps.widgetData.widgetId + 'data']: dataArray,
                 [stateLabel]: false
             })
         }
@@ -1522,6 +1529,7 @@ class EcommerceDashboard extends React.Component {
             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
+                [graphProps.widgetData.widgetId + 'data']: dataArray,
                 [stateLabel]: false
             })
         }
@@ -1582,6 +1590,7 @@ class EcommerceDashboard extends React.Component {
             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
+                [graphProps.widgetData.widgetId + 'data']: dataArray,
                 [stateLabel]: false
             })
         }
@@ -2120,6 +2129,71 @@ class EcommerceDashboard extends React.Component {
 
     }
 
+    downloadAsCSV(CSV) {
+        console.log(CSV)
+        let keys = []
+        if (CSV.length > 0) {
+            keys = Object.keys(CSV[0])
+        } else {
+            toaster.showToast(utils.getLabelByID("No Records found for the selected booking date"), "ERROR")
+            return
+        }
+        CSV = CSV.map((obj) => {
+            let row = ``
+            keys.forEach((key, index) => {
+                if (index == keys.length - 1) {
+                    row += `${obj[key]}`
+                } else {
+                    row += `${obj[key]},`
+                }
+            })
+            return row
+        })
+        CSV.unshift(keys.join(","))
+        CSV = CSV.join('\n');
+        // const url = window.URL.createObjectURL(new Blob([CSV], { type: "application/vnd.ms-excel" }));
+        const url = window.URL.createObjectURL(new Blob([CSV], { type: "text/plain" }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'report.csv');
+        document.body.appendChild(link);
+        link.click();
+    }
+
+    downloadAsPDF(data) {
+        // let anchorSelector = '#print-anchor';
+        // $(anchorSelector).attr('disabled', true);
+
+        window.scrollTo(0, 0);
+
+        let elementSelector = '#widget1';
+        let elementWidth = $(elementSelector).width();
+        let elementHeight = $(elementSelector).height();
+
+        let margin = 10;
+        let pdfWidth = elementWidth + margin * 2;
+        let pdfHeight = elementHeight > pdfWidth ? elementHeight + margin * 2 : pdfWidth;
+
+        html2canvas($(elementSelector)[0], { useCORS: true }).then((canvas) => {
+            canvas.getContext('2d');
+            let imgData = canvas.toDataURL('image/jpeg', 1.0);
+            let pdf = new jsPDF('p', 'pt', [pdfWidth, pdfHeight]);
+            pdf.addImage(imgData, 'JPG', margin, margin * 2, elementWidth, elementHeight);
+
+            let fileName = 'print_' + 'chart' + '.pdf';
+            pdf.save(fileName);
+
+            // $(anchorSelector).removeAttr("disabled");
+        });
+
+    }
+
+    sendAsEmail(data) {
+        this.setState({
+            showEmailModal: true
+        })
+    }
+
     render() {
         console.log("state-->", this.state)
         console.log("props-->", this.props)
@@ -2555,26 +2629,50 @@ class EcommerceDashboard extends React.Component {
                                     <div className="dropup">
                                         <button className="btn btn-default dropdown-toggle drop-up-button" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i className="fa fa-cogs"></i>
-    <span className="caret"></span>
+                                            <span className="caret"></span>
                                         </button>
                                         <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                            <li><a href="#">Action</a></li>
-                                            <li><a href="#">Another action</a></li>
-                                            <li><a href="#">Something else here</a></li>
+                                            <li><a >View as Pie</a></li>
+                                            <li><a >View as Bubbles</a></li>
                                             <li role="separator" className="divider"></li>
-                                            <li><a href="#">Separated link</a></li>
+                                            <li><a onClick={() => this.downloadAsPDF(this.state.widget1data)} >Download as PDF</a></li>
+                                            <li><a onClick={() => this.downloadAsCSV(this.state.widget1data)} >Download as CSV</a></li>
+                                            <li role="separator" className="divider"></li>
+                                            <li><a onClick={() => this.sendAsEmail(this.state.widget1data)} >Send as Email</a></li>
                                         </ul>
                                     </div>
                                 </div>
 
                                 {this.state.widget1isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
-                                    <div>   {this.state.widget1} </div>
+                                    <div id="widget1">   {this.state.widget1} </div>
                                 }
                                 {/* <PieChart  onElementsClick={() => { console.log('Pie Chart Clicked') }} labels={['FINANCED', 'REJECTED', 'PURGED']} data={[this.state.financedPercentage, this.state.rejectedPercentage, this.state.purgedPercentage]} height={120}
                                         // backgroundColor={['#7aa62d', '#18e244', '#95d22a', '#62920d']} />
                                         backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3']} /> */}
                             </Portlet>
+                            <ModalBox isOpen={this.state.showEmailModal}>
+                                <Portlet title={utils.getLabelByID("Send Email")} noCollapse={true}>
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="form-group">
+                                                <div className="row">
+                                                    <div className="col-md-2">
+                                                        <label className="bold">Email:</label>
+                                                    </div>
+                                                    <div className="col-md-5">
+                                                    <input type="text" className="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div style={{display: 'flex', justifyContent: 'flex-end'}} className="row">
+                                        <button onClick={() => this.setState({ showEmailModal: false})} className="btn green">Send</button>
+                                    </div>
+                                </Portlet>
+                            </ModalBox>
                         </div>
 
                         <div className="col-md-6">
