@@ -193,6 +193,16 @@ module.exports = {
     { alias: "HAWB", key: "HAWB", type: "string" },
     { alias: "Declaration", key: "declarationNo", type: "string" },
     { alias: "View", key: "action", type: "action" }
+  ],
+  OrderTrackingLogs: [
+    { alias: "S.No", key: "S.No", type: "serialNo"  },
+    { alias: "Message", key: "message", type: 'string' },
+    { alias: "Date Time", key: "dateTime", type: "string" },
+    { alias: "Sender", key: "sender", type: "string" },
+    { alias: "Declaration Status", key: "customStatus", type: "string" },
+    { alias: "Document #", key: "documentNo", type: "string" },
+    { alias: "house Transport Document No", key: "houseTransportDocumentNo", type: "string" },
+    { alias: "master Transport Document No", key: "masterTransportDocumentNo", type: "string" } 
   ]
   
 };
