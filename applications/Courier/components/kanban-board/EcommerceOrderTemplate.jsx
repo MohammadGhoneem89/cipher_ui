@@ -214,12 +214,6 @@ class EcommerceOrderTemplate extends React.Component {
           "mappedField": "order.invoices[0].lineItems[0].lineNo"
         },
         {
-          "tileName": "Hs code ",
-          "canMove": "Y",
-          "tilePurpose": "hs code or commodity Code",
-          "mappedField": "order.invoices[0].lineItems[0].hscode"
-        },
-        {
           "tileName": "goodsCondition",
           "canMove": "Y",
           "tilePurpose": "goodsCondition new or old",
@@ -229,7 +223,7 @@ class EcommerceOrderTemplate extends React.Component {
           "tileName": "Goods Description ",
           "canMove": "Y",
           "tilePurpose": "Goods Description desc",
-          "mappedField": "order.invoices[0].lineItems[0].hscode"
+          "mappedField": "order.invoices[0].lineItems[0].goodsDescription"
         },
         {
           "tileName": "Quantity",
