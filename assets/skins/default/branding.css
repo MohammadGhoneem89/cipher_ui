@@ -1994,10 +1994,16 @@ text.subunit-label {
 .smooth-dnd-container {
     height: 100vh;
 }
-.drop-up-button {
-    width: 40px;
-    display: flex;
-    justify-content: center;
-    margin-left: 15px;
-    border-radius: 5px !important;
+section.sc-htpNat.HLTqd {
+    background-color: transparent;
+    border: 1px solid #d0d0d0;
+    box-shadow: 0px 0px 6px #00000024;
+}
+article.sc-dnqmqq.iQLmWD.sc-htoDjs.cAyhnA {
+    border: 1px solid #c2c2c2;
+    border-radius: 0;
+}
+.sc-EHOje.dehkvL {
+    border-top: 1px solid grey;
+    padding: 5px 0px;
 }
