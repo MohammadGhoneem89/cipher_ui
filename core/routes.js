@@ -42,6 +42,7 @@ import CommissionTemplateSetup from './components/CommissionTemplateSetupScreen/
 import AuditLogList from './components/AuditLogScreen/auditLogList.jsx';
 
 import ChangeTrackingLog from "./components/ChangeTrackingLog/changeTrackingList.jsx";
+import NetworkVisualization from "./components/NetworkVisualization.jsx";
 
 import NotFound from "./components/NotFound.jsx";
 
@@ -100,6 +101,7 @@ import onBoardingProfileSetup from './components/onBoarding/onBoardingProfileSet
 import onBoardingProfileList from './components/onBoarding/onBoardingProfileList';
 import WorkingCalendarSearch from './components/WorkingCalendar/WorkingCalendarSearch.jsx';
 import Task from "./components/Task.jsx"
+import AddTask from "./components/AddTask.jsx"
 import ReportRender from "./components/report/reportRender.jsx"
 import ReportContainer from "./components/report/reportContainer.jsx"
 import ReportList from "./components/report/reportList.jsx"
@@ -142,6 +144,8 @@ export default (<Router history={browserHistory}>
         <IndexRoute component={blockchainWorkboard}/>*/}
     <Route path="/DocumentationCode/:smartcontract" component={DocumentationContainer} />
     <Route path="/task" component={Task} />
+    <Route path="/AddTask" component={AddTask} />
+    <Route path="/AddTask/:id" component={AddTask} />
     <Route path="/taskDetails/:id" component={TaskDetails} />
     <Route path="/blockchain" component={blockchainWorkboard} />
     <Route path="/groupList" component={GroupSearch} />
@@ -186,6 +190,7 @@ export default (<Router history={browserHistory}>
     <Route path="/APIPayloadSearch/:payLoadField/:payLoadFieldValue" component={APIPayloadSearch} />
     <Route path="/auditLogList" component={AuditLogList} />
     <Route path="/ChangeTrackingLog" component={ChangeTrackingLog} />
+    <Route path="/NetworkVisualization" component={NetworkVisualization} />
     <Route path="/healthMonitor" component={HealthMonitor} />
     <Route path="/fileTemplateSearch" component={FileTemplateSearch} />
     <Route path="/fileTemplateSetup" component={FileTemplateSetup} />

@@ -1,3 +1,4 @@
+
 const backOffices = {
     baseUrl: "http://23.97.138.116:10001",
     blockChainURL: "http://23.97.138.116:10001",
@@ -10,4 +11,16 @@ const backOffices = {
    // IPFS: "//avanza-training.westeurope.cloudapp.azure.com/API/core/download?type=IPFS&path="
 };
 
+<<<<<<< HEAD
+=======
+// const backOffices = {
+//   baseUrl: "http://40.68.90.206:9080",
+//   blockChainURL: "http://40.68.90.206:9080",
+//   webSocketURL: "ws://40.68.90.206:9080",
+//   repostActionURL: "http://40.68.90.206:9080/API",
+//   blockChainViewerURL: "http://40.68.90.206:9080",
+//   reportUrl: "http://40.68.90.206:9080"
+// };
+
+>>>>>>> 101a21a999da060d612fa2da30121159cf5ed762
 export default backOffices;

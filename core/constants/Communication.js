@@ -244,7 +244,9 @@ module.exports = {
   testADHReport: baseUrl + "/API/core/testADHReport",
   getTask: baseUrl + '/API/Task/getTask',
   searchTask: baseUrl + '/API/Task/searchTask',
-  addTask: baseUrl + '/API/Task/addTask',
+  addTask: baseUrl + '/API/UI/addTask',
+  editTask: baseUrl + '/API/UI/editTask',
+  getTask: baseUrl + '/API/UI/getTask',
   searchTaskDetails: baseUrl + '/API/Task/searchTaskDetails',
   getSafLogs: baseUrl + '/API/core/getSafLogs',
   updateSafLogs: baseUrl + '/API/core/updateSafLogs',
@@ -274,7 +276,7 @@ module.exports = {
   getProvidedConsentList : baseUrl + "/API/Consent/getProvidedConsentList",
   getConsentStatus: baseUrl + "/API/Core/getConsentStatus",
   geOrgList : baseUrl + "/API/Consent/getOrgList",
-  fetchConsentStatus: baseUrl + "/API/Core/fetchConsentStatus"
-
+  fetchConsentStatus: baseUrl + "/API/Core/fetchConsentStatus",
+  getNetworkStatus: baseUrl + "/API/Cipher/getNetworkStatus"
 }
 

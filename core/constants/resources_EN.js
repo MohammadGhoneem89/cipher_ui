@@ -147,7 +147,7 @@ module.exports = {
   ES_port: "Port",
   ES_services_action: "Action",
   ES_contacts_action: "Action",
-  ESEARCH_entityName: "Org Full Name",
+  ESEARCH_entityName: "Type Name",
   ESEARCH_arabicName: "Arabic Name",
   ESEARCH_status: "Status",
   ESEARCH_spCode: "Org Code",
