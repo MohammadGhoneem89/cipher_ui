@@ -84,6 +84,14 @@ class PickupListSearchContainer extends React.Component {
   export = e => {
     let arrayData = []
     let useCase = document.getElementById('useCase').value
+    if (!useCase) {
+      alert('Please select usecase and search')
+      return
+    }
+    if (this.state.typeDataList.length == 0) {
+      alert('no records to export!')
+      return
+    }
     for (let i = 0; i < this.state.typeDataList.length; i++) {
       if (useCase == this.state.typeDataList[i].type) {
         arrayData.push({
@@ -131,13 +139,13 @@ class PickupListSearchContainer extends React.Component {
       nextProps.typeDataList.searchResult.map(x => {
         val = x.typeName
       })
+
       this.setState({
         typeDataList: nextProps.typeDataList.searchResult,
         pageData: nextProps.typeDataList.pageData,
         isOwner: nextProps.typeDataList.isOwner,
         typeList: nextProps.typeListForSync,
         isLoading: false,
-        isExport:false,
         val
       })
     }
@@ -185,12 +193,14 @@ class PickupListSearchContainer extends React.Component {
         { type: useCase || 'core', typeName: typeName }
       )
     )
+    this.setState({
+      isExport: true
+    })
   }
 
   reset = () => {
     this.setState({
-      searchForm: {},
-      isExport: true
+      searchForm: {}
     })
   }
 
@@ -257,7 +267,7 @@ class PickupListSearchContainer extends React.Component {
                       <button
                         type='submit'
                         className='btn green'
-                        disabled={this.state.isExport}
+                        disabled={!this.state.isExport}
                         onClick={this.export}
                       >
                         {utils.getLabelByID('Export')}
