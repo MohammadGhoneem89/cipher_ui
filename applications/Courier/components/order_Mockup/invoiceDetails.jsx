@@ -311,13 +311,19 @@ class InvoiceDetails extends React.Component {
       invoiceDetailsContainer.lineItems = lineItemsTemp;
 
       // content For Tab2 (Transport)
+      let transport = [];
       let transportTemp = [];
-      let transport = invoiceData.transport ? invoiceData.transport : {};
+      invoiceData.transport ? transportTemp.push(invoiceData.transport) :  {};
+
+      invoiceData.returnRequest.forEach(item => {
+        transportTemp.push(item.transport)
+      })
  //   let transport = [];
-    let item = transport;
-//      transport.forEach( item => {
+      transportTemp.forEach( item => {
         let obj = {
-          "mode": _.get(item, 'mode', ""),
+          "mode": _.get(item, 'modeOfTransport', ""), //modeoftranport
+          "txID" : _.get(item, 'txID', ""),
+          "txTimeStamp": _.get(item, "txTimeStamp", ""),
           "masterTransportNo": _.get(item, 'masterTransportNo', ""),
           "houseTransportNo":  _.get(item, 'houseTransportNo', ""),
           "cargoType":         _.get(item, 'cargoType', ""),
@@ -327,23 +333,24 @@ class InvoiceDetails extends React.Component {
           "netWeight":         _.get(item.transportDetails, 'netWeight', ""),
           "volumetricWeight":  _.get(item.transportDetails, 'volumetricWeight', ""),
           "transportImage":    _.get(item.transportDetails.document, 'path', ""),
-          "shippingCode":      _.get(item, 'shippingCode', ""),
-          "shippingBCode":     _.get(item, 'shippingBCode', ""),
-          "shippingName":      _.get(item, 'shippingName', ""),
 
-          "CargoCode":         _.get(item, 'CargoCode', ""),
-          "CargoBCode":        _.get(item, 'CargoBCode', ""),
-          "CargoName":         _.get(item, 'CargoName', ""),
+          "shippingCode":      _.get(item, 'shippingCode', ""),
+          "shippingBCode":     _.get(item.shippingDetails, 'shippingAirLineAgentBusinessCode.BusinessCode', ""),
+          "shippingName":      _.get(item, 'shippingAirLineAgentBusinessCode.companyName', ""),
+
+          "CargoCode":         _.get(item.shippingDetails, 'cargoHandlerCode', ""),
+          "CargoBCode":        _.get(item.shippingDetails, 'cargoHandlerCode.BusinessCode', ""),
+          "CargoName":         _.get(item.shippingDetails, 'cargoHandlerCode.companyName', ""),
           
           "brokerCode":        _.get(item, 'brokerCode', ""),
           "brokerBCode":       _.get(item, 'brokerBCode', ""),
           "brokerName":        _.get(item, 'brokerName', ""),
 
-          "modeOfTransport":   _.get(item, 'modeOfTransport', ""),
-          "carrierNumber":     _.get(item, 'carrierNumber', ""),
-          "carrierRegistrationNumber": _.get(item, 'carrierRegistrationNumber', ""),
+          "modeOfTransport":   _.get(item.shippingDetails, 'modeOfTransport', ""),
+          "carrierNumber":     _.get(item.shippingDetails, 'carrierNumber', ""),
+          "carrierRegistrationNumber": _.get(item.shippingDetails, 'carrierRegistrationNumber', ""),
 
-          "dateOfDeparture":   _.get(item, 'dateOfDeparture', ""),
+          "dateOfDeparture":   _.get(item.shippingDetails, 'dateOfDeparture', ""),
 
           "portLoad":          _.get(item.shippingDetails, 'portOfLoad', ""),
           "portOfDischarge":   _.get(item.shippingDetails, 'portOfDischarge', ""),
@@ -353,61 +360,69 @@ class InvoiceDetails extends React.Component {
           "destinationCountryFlagImage": _.get(item, 'destinationCountryFlagImage', ""),
           "submissionChannel": _.get(item, "submissionChannel", "")
         }
-        transportTemp.push(obj);
-        transportTemp.push(obj);
-//      })
-      invoiceDetailsContainer.transport = transportTemp;
+        transport.push(obj);
+      })
+      invoiceDetailsContainer.transport = transport;
 
+      let exitConfirmation = []
+      invoiceData.exitConfirmation.forEach(item => {
+        exitConfirmation = exitConfirmation.concat(item.exitData)
+      })
+    //  let NRClaim = invoiceData.NRClaim;
 
-      let exitConfirmation = invoiceData.exitConfirmation ? 
-        
-        {
-          "payload": _.get(invoiceData.exitConfirmation, 'payload', ""),
-          "annualDepartureDate": _.get(invoiceData.exitConfirmation, 'annualDepartureDate', ""),
-          "cardNumber":  _.get(invoiceData.exitConfirmation, 'cardNumber', ""),
-          "claimType":         _.get(invoiceData.exitConfirmation, 'claimType', ""),
-          "NRClaimNo":       _.get(invoiceData.exitConfirmation, 'NRClaimNo', ""),
-          "claimSubmitStatus":      _.get(invoiceData.exitConfirmation, 'claimSubmitStatus', ""),
-          "claimSubmissionDate":       _.get(invoiceData.exitConfirmation, 'claimSubmissionDate', ""),
-          "totalCharges":         _.get(invoiceData.exitConfirmation, 'totalCharges', ""),
-          "currency" : _.get(invoiceData.exitConfirmation, 'currency', ""),
-          "chargesList" : _.get(invoiceData.exitConfirmation, 'charges', [])
-        } 
-        
-        : 
-        
-        {};
+          // "payload": _.get(invoiceData.exitConfirmation, 'payload', ""),
+          // "annualDepartureDate": _.get(invoiceData.exitConfirmation, 'annualDepartureDate', ""),
+          // "cardNumber":  _.get(invoiceData.exitConfirmation, 'cardNumber', ""),
+          // "claimType":         _.get(invoiceData.exitConfirmation, 'claimType', ""),
+          // "NRClaimNo":       _.get(invoiceData.exitConfirmation, 'NRClaimNo', ""),
+          // "claimSubmitStatus":      _.get(invoiceData.exitConfirmation, 'claimSubmitStatus', ""),
+          // "claimSubmissionDate":       _.get(invoiceData.exitConfirmation, 'claimSubmissionDate', ""),
+          // "totalCharges":         _.get(invoiceData.exitConfirmation, 'totalCharges', ""),
+          // "currency" : _.get(invoiceData.exitConfirmation, 'currency', ""),
+          // "chargesList" : _.get(invoiceData.exitConfirmation, 'charges', [])
+      
 //      transport.forEach( item => {
       invoiceDetailsContainer.exitConfirmation = exitConfirmation;
+      invoiceDetailsContainer.NRClaim = invoiceData.NRClaim[0];
 
-      let exportDeclaration = invoiceData.exportDeclaration ? 
-        
-        {
-          "lastAction": _.get(invoiceData.exportDeclaration, 'lastAction', ""),
-          "actionTimeStamp": _.get(invoiceData.exportDeclaration, 'actionTimeStamp', ""),
-          "declarationStatus":  _.get(invoiceData.exportDeclaration, 'declarationStatus', ""),
-          "SOAPPayload":         _.get(invoiceData.exportDeclaration, 'SOAPPayload', ""),
-          "totalCharges":         _.get(invoiceData.exportDeclaration, 'totalCharges', ""),
-          "currency" : _.get(invoiceData.exportDeclaration, 'currency', ""),
-          "chargesList" : _.get(invoiceData.exportDeclaration, 'charges', []),
-          "version":       _.get(invoiceData.exportDeclaration, 'version', ""),
-          "batchID":      _.get(invoiceData.exportDeclaration, 'batchID', ""),
-          "status":       _.get(invoiceData.exportDeclaration, 'status', ""),
-          "declarationNo":         _.get(invoiceData.exportDeclaration, 'declarationNo', ""),
-          "requestID" : _.get(invoiceData.exportDeclaration, 'requestID', ""),
-          "regionType":         _.get(invoiceData.exportDeclaration, 'regimeType', ""),
-          "declarationType":         _.get(invoiceData.exportDeclaration, 'declarationType', ""),
-          "exportCodeMirsal2":         _.get(invoiceData.exportDeclaration, 'declarationType', ""),
-          "declarationPurpose":         _.get(invoiceData.exportDeclaration, 'declarationType', ""),
-          "relatedDocumentList": _.get(invoiceData.exportDeclaration, 'RelatedDocument', []),
-          "paymentDetailsList": _.get(invoiceData.exportDeclaration, 'paymentDetails', []),
-          "declarationItemList": _.get(invoiceData.exportDeclaration, 'declarationItem', [])
-        } 
-        : 
-        // charges total
-        {};
+      let declarationTemp = [];
+      let exportDeclaration = [];
+      invoiceData.declaration.latest ? 
+      declarationTemp.push(invoiceData.declaration.latest)
+      : {}
+
+      invoiceData.declaration.historical ? 
+      declarationTemp = declarationTemp.concat(invoiceData.declaration.historical)
+      : {}
+
+      declarationTemp.forEach(item => {
+        let obj = {
+                    "lastAction": _.get(item, 'lastAction', ""), //
+                    "actionTimeStamp": _.get(item, 'lastActionDateTime', ""), //
+                    "declarationStatus":  _.get(item, 'declarationStatus', ""), //
+                    "SOAPPayload":         _.get(item, 'SOAPPayload.hash', ""), //
+                    "totalCharges":         _.get(item, 'totalCharges', ""),
+                    "currency" : _.get(item, 'currency', ""),
+                    "chargesList" : _.get(item, 'charges', []), //
+                    "exceptionsList" : _.get(item, "exceptions", []), //
+                    "version":       _.get(item, 'version', ""), //
+                    "batchID":      _.get(item, 'batchID', ""), //
+                    "status":       _.get(item, 'customsStatus', ""), //
+                    "declarationNo":         _.get(item, 'declarationNo', ""), //
+                    "requestID" : _.get(item, 'requestID', ""), //
+                    "regionType":         _.get(item, 'regionType', ""), //
+                    "declarationType":         _.get(item, 'declarationType', ""), // 
+                    "exportCodeMirsal2":         _.get(item, 'declarationType', ""), //should be removed
+                    "declarationPurpose":         _.get(item, 'declarationPurpose', ""), //
+                    "relatedDocumentList": _.get(item, 'relatedDocuments', []), //
+                    "paymentDetailsList": _.get(item, 'paymentDetails', []), //
+                    "declarationItemList": _.get(item, 'declarationItem', [])
+                  } 
+            exportDeclaration.push(obj)
+      })  
+
 //      transport.forEach( item => {
-      invoiceDetailsContainer.exportDeclaration = exportDeclaration;
+      invoiceDetailsContainer.exportDeclaration = declarationTemp;
 
       let delivered = [];
       delivered = invoiceData.delivered.map(item => {
@@ -911,13 +926,14 @@ class InvoiceDetails extends React.Component {
                         <div className="row">
                           <div className="col-md-12" style={{marginTop:"10px" }}>
                             <div className="col-md-2">
-                              <label>OUTBOUND</label>
+                              <label>{ item.mode }</label>
                             </div>
                             <div className="col-md-4">
-                              <span>{"10/10/2020 12:12:12"}</span>
+                              {console.log("txTimeStamp ========== ", item.txTimeStamp)}
+                              <span>{moment.unix(item.txTimeStamp/1000).format("MM/DD/YYYY HH:mm:ss")}</span>
                             </div>
-                            <div className="col-md-6" style={{textAlign:"right"}}>
-                                <label>asaaabbbbccc12321312312312312312</label>
+                            <div className="col-md-6" style={{textAlign:"right", overflowWrap: "anywhere"}}>
+                                <label>{ item.txID }</label>
                             </div>
                           </div>
 
@@ -997,12 +1013,12 @@ class InvoiceDetails extends React.Component {
                           <div className="form-group">
                               <div className="col-md-12">
                                   <Lable text={utils.getLabelByID("Shipping / Airline Agent")} columns="12" style={{marginBottom:"3px"}}></Lable>
-                                  <div className="col-md-2">
+                                  {/* <div className="col-md-2">
                                       <label>Code: </label>
                                   </div>    
                                   <div className="col-md-2">
                                     <span> {item.shippingBCode}</span>
-                                  </div>
+                                  </div> */}
                                   <div className="col-md-2">
                                     <label>Business Code: </label>
                                   </div>
@@ -1023,12 +1039,12 @@ class InvoiceDetails extends React.Component {
                           <div className="form-group">
                               <div className="col-md-12">
                                   <Lable text={utils.getLabelByID("Cargo Handler")} columns="12" style={{marginBottom:"3px"}}></Lable>
-                                  <div className="col-md-2">
+                                  {/* <div className="col-md-2">
                                       <label>Code: </label>
                                   </div>    
                                   <div className="col-md-2">
                                     <span> {item.CargoCode}</span>
-                                  </div>
+                                  </div> */}
                                   <div className="col-md-2">
                                     <label>Business Code: </label>
                                   </div>
@@ -1046,7 +1062,7 @@ class InvoiceDetails extends React.Component {
 
                           <div className="form-group"></div>
 
-                          <div className="form-group">
+                          {/* <div className="form-group">
                             <div className="col-md-12">
                                   <Lable text={utils.getLabelByID("Broker")} columns="12" style={{marginBottom:"3px"}}></Lable>
                                   <div className="col-md-2">
@@ -1068,7 +1084,7 @@ class InvoiceDetails extends React.Component {
                                     <span> {item.brokerName}</span>
                                   </div>
                               </div>
-                          </div>
+                          </div> */}
                           
                           <div className="form-group">
                             <div className="col-md-12">
@@ -1162,15 +1178,17 @@ class InvoiceDetails extends React.Component {
                   </div>
                   
                   <div id="exitConfirmation" className="tab-pane">
-                    <div className="row">
-                      <div className="form-actions right">
-                        <div className="form-group col-md-12">
-                            <div className="btn-toolbar pull-right">
-                              <button type="submit" className="btn green"
-                                    onClick={this.renderPayload.bind(this, this.state.invoiceDetailsContainer.exitConfirmation.payload)}>{utils.getLabelByID("View SOAP Payload")} </button>
-                            </div>
+                    {this.state.invoiceDetailsContainer.exitConfirmation.map(item=>{
+                      return (
+                      <div className="row">
+                        <div className="form-actions right">
+                          <div className="form-group col-md-12">
+                              <div className="btn-toolbar pull-right">
+                                <button type="submit" className="btn green"
+                                      onClick={this.renderPayload.bind(this, item.soapPayload.hash)}>{utils.getLabelByID("View SOAP Payload")} </button>
+                              </div>
+                          </div>
                         </div>
-                      </div>
 
                         <div className="row">
                           <div className="col-md-6">
@@ -1178,7 +1196,7 @@ class InvoiceDetails extends React.Component {
                                 <label>Annual Departure Date: </label>
                             </div>
                             <div className="col-md-7">
-                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.annualDepartureDate}</span>
+                              <span>{item.actualDepartureDate}</span>
                             </div>
                           </div>
                         </div>
@@ -1188,11 +1206,14 @@ class InvoiceDetails extends React.Component {
                                 <label>Debit / Credit Account # : </label>
                             </div>
                             <div className="col-md-7">
-                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.cardNumber}</span>
+                              <span>{item.debitCreditAccountNumber}</span>
                             </div>
                           </div>
                         </div>
-
+                      </div>
+                      )
+                    })}
+                      <div className="row">
                         <Lable text="CLAIM" />
                         <div className="row">
                           <div className="col-md-4">
@@ -1200,7 +1221,7 @@ class InvoiceDetails extends React.Component {
                                 <label>Claim Type: </label>
                             </div>
                             <div className="col-md-6">
-                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.claimType}</span>
+                              <span>{this.state.invoiceDetailsContainer.NRClaim.claimType}</span>
                             </div>
                           </div>
                         </div>
@@ -1210,15 +1231,15 @@ class InvoiceDetails extends React.Component {
                                 <label>NR Claim No:</label>
                             </div>
                             <div className="col-md-6">
-                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.NRClaimNo}</span>
+                              <span>{this.state.invoiceDetailsContainer.NRClaim.NRClaimNo}</span>
                             </div>
                           </div> 
-                         <div className="col-md-4">
+                          <div className="col-md-4">
                             <div className="col-md-6">
                                 <label>Claim Submit Status: </label>
                             </div>
                             <div className="col-md-6">
-                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.claimSubmitStatus}</span>
+                              <span>{this.state.invoiceDetailsContainer.NRClaim.claimRequestStatus}</span>
                             </div>
                           </div>                  
                         </div>
@@ -1228,7 +1249,7 @@ class InvoiceDetails extends React.Component {
                                 <label>Claim Submission Date: </label>
                             </div>
                             <div className="col-md-6">
-                              <span>{this.state.invoiceDetailsContainer.exitConfirmation.claimSubmissionDate}</span>
+                              <span>{this.state.invoiceDetailsContainer.NRClaim.claimRequestDate}</span>
                             </div>
                           </div>
                         </div>
@@ -1243,21 +1264,21 @@ class InvoiceDetails extends React.Component {
                           </div>
                         </div>
                         <div className="col-md-12">
-                            <Table
-                                pagination={false}
-                                export={false}
-                                search={false}
-                                gridColumns={utils.getGridColumnByName("charges")}
-                                gridData={this.state.invoiceDetailsContainer.exitConfirmation.totalCharges}
-                                totalRecords={5}
-                                pageChanged={() => {
-                                }}
-                                activePage={1}
-                                pageSize={10}
-                            />
-                        </div>
-                    </div>
-                    
+                        <Table
+                            pagination={false}
+                            export={false}
+                            search={false}
+                            gridColumns={utils.getGridColumnByName("charges")}
+                            gridData={this.state.invoiceDetailsContainer.NRClaim.charges ? this.state.invoiceDetailsContainer.NRClaim.charges : []}
+                            totalRecords={5}
+                            pageChanged={() => {
+                            }}
+                            activePage={1}
+                            pageSize={10}
+                        />
+                      </div>
+                      </div>
+                      
                   </div>
                   
                   <div id="exportDeclaration" className="tab-pane">
@@ -1288,177 +1309,182 @@ class InvoiceDetails extends React.Component {
                           </div>
                       </div>
                         <div id="exportDeclarationView" className="tab-pane in ui-fieldtable">
-                          <div className="row">
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="row">
-                                      <div className="col-md-12">
-                                        <Lable text={utils.getLabelByID("Last Action : ")} columns="6"></Lable>
-                                        <span>{this.state.invoiceDetailsContainer.exportDeclaration.lastAction}</span>
-                                      </div>
+                            { this.state.invoiceDetailsContainer.exportDeclaration.map(item => {
+                              return(
+                              <div className="row">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="row">
+                                          <div className="col-md-12">
+                                            <Lable text={utils.getLabelByID("Last Action : ")} columns="6"></Lable>
+                                            <span>{item.lastAction}</span>
+                                          </div>
+                                        </div>
+                                        <div className="row">
+                                          <div className="col-md-12">
+                                            <Lable text={utils.getLabelByID("Action Timestamp : ")} columns="6"></Lable>
+                                            <span>{item.actionTimeStamp}</span>
+                                          </div>
+                                        </div>
                                     </div>
-                                    <div className="row">
-                                      <div className="col-md-12">
-                                        <Lable text={utils.getLabelByID("Action Timestamp : ")} columns="6"></Lable>
-                                        <span>{this.state.invoiceDetailsContainer.exportDeclaration.actionTimeStamp}</span>
+                                    <div className="col-md-6">
+                                      <div className="form-group col-md-12">
+                                          <div className="pull-right">
+                                            <span style={{ border: "1px solid", padding: "8px 15px 8px 15px", background: "#ed0707", color: "white", letterSpacing: "1px", fontWeight: "600" }}>{item.declarationStatus}</span>  
+                                          </div>
                                       </div>
                                     </div>
                                 </div>
-                                <div className="col-md-6">
-                                  <div className="form-group col-md-12">
-                                      <div className="pull-right">
-                                        <span style={{ border: "1px solid", padding: "8px 15px 8px 15px", background: "#ed0707", color: "white", letterSpacing: "1px", fontWeight: "600" }}>{this.state.invoiceDetailsContainer.exportDeclaration.declarationStatus}</span>  
-                                      </div>
+                                <div className="col-md-12">
+                                    <AnchorComp
+                                        anchotDisplayName = {"SOAP Payload"}
+                                        invokeAnchorButtonhandlar = {this.soapPayloadHandler}
+                                    />
+                                </div>
+    
+                                <Lable text = {"Charges Total = " + this.state.invoiceDetailsContainer.exitConfirmation.totalCharges + this.state.invoiceDetailsContainer.exitConfirmation.currency} />
+                                <div className="col-md-12">
+                                    <Table fontclass=""
+                                        gridColumns={utils.getGridColumnByName("charges")}
+                                        gridData={_.get(item,'chargesList', [])}
+                                        totalRecords={100}
+                            //           totalRecords={item.chargesList.length}
+                                        searchCallBack={this.searchCallBack}
+                                        pageSize={10}
+                                        pagination={false} pageChanged={this.pageChanged}
+                                        export={false}
+                                        search={true}
+                                    />
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-4">
+                                    <div className="col-md-6">
+                                        <label>Version</label>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <span>{item.version}</span>
+                                    </div>
                                   </div>
                                 </div>
-                            </div>
-                            <div className="col-md-12">
-                                <AnchorComp
-                                    anchotDisplayName = {"SOAP Payload"}
-                                    invokeAnchorButtonhandlar = {this.soapPayloadHandler}
-                                />
-                            </div>
-
-                            <Lable text = {"Charges Total = " + this.state.invoiceDetailsContainer.exitConfirmation.totalCharges + this.state.invoiceDetailsContainer.exitConfirmation.currency} />
-                            <div className="col-md-12">
-                                <Table fontclass=""
-                                    gridColumns={utils.getGridColumnByName("charges")}
-                                    gridData={_.get(this.state.invoiceDetailsContainer.exportDeclaration,'chargesList', [])}
-                                    totalRecords={100}
-                       //           totalRecords={this.state.invoiceDetailsContainer.exportDeclaration.chargesList.length}
+                                <div className="row">
+                                  <div className="col-md-4">
+                                    <div className="col-md-6">
+                                        <label>Batch Id</label>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <span>{item.batchID}</span>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="col-md-6">
+                                        <label>Status</label>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <span>{item.status}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-4">
+                                    <div className="col-md-6">
+                                        <label>Declaration No</label>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <span>{item.declarationNo}</span>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="col-md-6">
+                                        <label>Request ID</label>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <span>{item.requestID}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-4">
+                                    <div className="col-md-6">
+                                        <label>Region Type</label>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <span>{item.regionType}</span>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="col-md-6">
+                                        <label>Declaration Type</label>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <span>{item.declarationType}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-4">
+                                    <div className="col-md-6">
+                                        <label>Export Code Mirsal 2</label>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <span>{item.exportCodeMirsal2}</span>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-4">
+                                    <div className="col-md-6">
+                                        <label>Declaration Purpose</label>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <span>{item.declarationPurpose}</span>
+                                    </div>
+                                  </div>
+                                </div>
+    
+                                <div className="col-md-6">
+                                  <Lable text="Related Documents" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
+                                  <Table fontclass=""
+                                    gridColumns={utils.getGridColumnByName("RelatedDocument")}
+                                    gridData={_.get(item,'relatedDocumentList', [])}
+                                    totalRecords={100}  
+                                //  totalRecords={item.relatedDocumentList.length}        
                                     searchCallBack={this.searchCallBack}
                                     pageSize={10}
                                     pagination={false} pageChanged={this.pageChanged}
                                     export={false}
                                     search={true}
-                                />
-                            </div>
-                            <div className="row">
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Version</label>
+                                  />
                                 </div>
                                 <div className="col-md-6">
-                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.version}</span>
+                                  <Lable text="Payment Details" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
+                                  <Table fontclass=""
+                                    gridColumns={utils.getGridColumnByName("PaymentDetails")}
+                                    gridData={_.get(item, 'paymentDetailsList', [])}
+                                    totalRecords={100}
+                            //       totalRecords={item.paymentDetailsList.length}
+                                    searchCallBack={this.searchCallBack}
+                                    pageSize={10}
+                                    pagination={false} pageChanged={this.pageChanged}
+                                    export={false}
+                                    search={true}
+                                  />
                                 </div>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Batch Id</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.batchID}</span>
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Status</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.status}</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Declaration No</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.declarationNo}</span>
+                                <div className="col-md-12">
+                                  <Lable text="Declaration Item" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
+                                  <Table fontclass=""
+                                    gridColumns={utils.getGridColumnByName("delivery")}
+                                    gridData={_.get(item,'declarationItemList',[])}
+                                    totalRecords={100}
+                              //     totalRecords={item.declarationItemList.length}
+                                    searchCallBack={this.searchCallBack}
+                                    pageSize={10}
+                                    pagination={false} pageChanged={this.pageChanged}
+                                    export={false}
+                                    search={true}
+                                  />
                                 </div>
                               </div>
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Request ID</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.requestID}</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Region Type</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.regionType}</span>
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Declaration Type</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.declarationType}</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Export Code Mirsal 2</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.exportCodeMirsal2}</span>
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Declaration Purpose</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>{this.state.invoiceDetailsContainer.exportDeclaration.declarationPurpose}</span>
-                                </div>
-                              </div>
-                            </div>
+                              )
+                            })}
 
-                            <div className="col-md-6">
-                              <Lable text="Related Documents" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
-                              <Table fontclass=""
-                                gridColumns={utils.getGridColumnByName("RelatedDocument")}
-                                gridData={_.get(this.state.invoiceDetailsContainer.exportDeclaration,'relatedDocumentList', [])}
-                                totalRecords={100}  
-                            //  totalRecords={this.state.invoiceDetailsContainer.exportDeclaration.relatedDocumentList.length}        
-                                searchCallBack={this.searchCallBack}
-                                pageSize={10}
-                                pagination={false} pageChanged={this.pageChanged}
-                                export={false}
-                                search={true}
-                              />
-                            </div>
-                            <div className="col-md-6">
-                              <Lable text="Payment Details" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
-                              <Table fontclass=""
-                                gridColumns={utils.getGridColumnByName("PaymentDetails")}
-                                gridData={_.get(this.state.invoiceDetailsContainer.exportDeclaration, 'paymentDetailsList', [])}
-                                totalRecords={100}
-                       //       totalRecords={this.state.invoiceDetailsContainer.exportDeclaration.paymentDetailsList.length}
-                                searchCallBack={this.searchCallBack}
-                                pageSize={10}
-                                pagination={false} pageChanged={this.pageChanged}
-                                export={false}
-                                search={true}
-                              />
-                            </div>
-                            <div className="col-md-12">
-                              <Lable text="Declaration Item" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
-                              <Table fontclass=""
-                                gridColumns={utils.getGridColumnByName("delivery")}
-                                gridData={_.get(this.state.invoiceDetailsContainer.exportDeclaration,'declarationItemList',[])}
-                                totalRecords={100}
-                         //     totalRecords={this.state.invoiceDetailsContainer.exportDeclaration.declarationItemList.length}
-                                searchCallBack={this.searchCallBack}
-                                pageSize={10}
-                                pagination={false} pageChanged={this.pageChanged}
-                                export={false}
-                                search={true}
-                              />
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </div>  
@@ -1527,7 +1553,7 @@ class InvoiceDetails extends React.Component {
                           <label style={ item.deliveryType == "contact" ? {display:""} : {display: ""} }>Signature</label>
                         </div>
                         <div className="col-md-12">  
-                          <img style={{ width: "35%", height: "100px" }} src={baseUrl + item.signature.path} onError={this.addDefaultHAWBSrc} height="50%" />
+                          <img style={{ width: "80%", height: "100px" }} src={baseUrl + item.signature.path} onError={this.addDefaultHAWBSrc} height="50%" />
                         </div>
                         <div className="col-md-12">
                           <AnchorComp style={{textAlign:"right"}}
@@ -1794,7 +1820,6 @@ class InvoiceDetails extends React.Component {
                       
                       <div className="col-md-12">
                         <Table
-                          componentFunction={this.ReturnProofHandler}
                           pagination={false}
                           export={false}
                           search={false}

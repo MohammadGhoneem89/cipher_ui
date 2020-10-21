@@ -7,7 +7,7 @@ import * as actions from '../../../../core/actions/generalAction';
 import Wrapper from '../../common/Wrapper.jsx';
 import Row from '../../common/Row.jsx';
 import Input from '../../common/Input.jsx';
-import Label from '../../common/Lable.jsx';;
+import Lable from '../../common/Lable.jsx';
 import Combobox from '../../../../core/common/Select.jsx';
 import AnchorComp from '../../common/AnchorComp.jsx';
 
@@ -33,8 +33,9 @@ import stageData from './stageData.json';
 import documentData from './documentData.json';
 import jsonData from '../../common/dummyData/dashboard.json';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
-
-
+import DateControl from '../../../../core/common/DateControl.jsx'
+import TextArea from '../../../../core/common/Textarea.jsx';
+//import SOAPPayload from './responsePayload.json'
 let interval;
 class BusinessTransaction extends React.Component {
 
@@ -44,7 +45,11 @@ class BusinessTransaction extends React.Component {
             Container: {
                 "processor" : "ALL"
             },
+            showData :  "",
             currentPageNo: 1,
+            modalIsOpenErrorLogs: false, 
+            modalIsOpenSOAP: false, 
+            modalIsTransactionLogs: false,
             isOpen: false,
             isLoading: true,
             jsonData : undefined,
@@ -137,7 +142,7 @@ class BusinessTransaction extends React.Component {
                 },
                 {
                   "name": "FedEx",
-                  "imageURL": "/assets/Resources/images/fedex.jpg"
+                  "imageURL": "/assets/Resources/images/fedex.png"
                 },
                 ,
                 {
@@ -175,7 +180,216 @@ class BusinessTransaction extends React.Component {
                 [2, 0], // 19 mins
                 [2, 1], // 20 hours
                 [1, 2], // 21 days
-            ]
+            ],
+            xmlPayloadRequest: `<?xml version="1.0" encoding="UTF-8"?><ns11:CourierBulkProcessingProcessRequest xmlns:ns11="http://www.customs.pcfc.com/Schema/Declaration/CourierBulkProcessingParameters" xmlns:bat="http://www.customs.pcfc.com/Schema/Declaration/BatchDeclaration" xmlns:com="http://www.customs.pcfc.com/Schema/Common/2.0" xmlns:sad="http://www.customs.pcfc.com/Schema/Declaration/SAD">
+            <ns11:UNB>
+                <com:MessageCode>DEC</com:MessageCode>
+                <com:MessageVersionNumber>1</com:MessageVersionNumber>
+                <com:SenderIdentification>AE-1005666</com:SenderIdentification>
+                <com:InterchangeControlReference>1</com:InterchangeControlReference>
+                <com:RecipientIdentification>AE-1005666</com:RecipientIdentification>
+                <com:DateTime>2020-08-13T12:30:07Z</com:DateTime>
+            </ns11:UNB>
+            <ns11:UTH>
+                <com:ReplytoTransportMode>WEBSERVICE</com:ReplytoTransportMode>
+                <com:ReplytoAddress>swewer</com:ReplytoAddress>
+                <com:ReplytoMessageFormat>XML</com:ReplytoMessageFormat>
+            </ns11:UTH>
+            <ns11:UNH>
+                <com:MessageReferenceNumber>20200813123001-205</com:MessageReferenceNumber>
+                <com:MessageType>NEW</com:MessageType>
+            </ns11:UNH>
+            <ns11:Declaration>
+                <bat:BatchHeader>
+                    <bat:BrokerBusinessCode>AE-1005666</bat:BrokerBusinessCode>
+                    <bat:BrokerCustomerCode>58686</bat:BrokerCustomerCode>
+                    <bat:CTOCargoHandlerPremisesCode>PR-00166</bat:CTOCargoHandlerPremisesCode>
+                    <bat:ShippingAirlineAgentBusinessCode>AE-1005666</bat:ShippingAirlineAgentBusinessCode>
+                    <bat:PortOfLoading>D04</bat:PortOfLoading>
+                    <bat:PortOfDischarge>SIN</bat:PortOfDischarge>
+                    <bat:TotalNoOfConsignment>1</bat:TotalNoOfConsignment>
+                    <bat:OutboundMasterDocumentNo>15502625560</bat:OutboundMasterDocumentNo>
+                    <bat:OutboundCarrierDetails>
+                        <sad:TransportMode>8</sad:TransportMode>
+                        <sad:CarrierRegistrationNo>3S0514</sad:CarrierRegistrationNo>
+                        <sad:DateOfDeparture>2020-07-06</sad:DateOfDeparture>
+                    </bat:OutboundCarrierDetails>
+                </bat:BatchHeader>
+                <bat:Consignments>
+                    <sad:PartiesDetails>
+                        <sad:ConsignorExporterTransferorCode>AE-1080107</sad:ConsignorExporterTransferorCode>
+                    </sad:PartiesDetails>
+                    <sad:DeclarationDetails>
+                        <sad:RegimeType>2</sad:RegimeType>
+                        <sad:DeclarationType>201</sad:DeclarationType>
+                        <sad:TotalNumberHAWBsConsolidated>1</sad:TotalNumberHAWBsConsolidated>
+                        <sad:DeclarationRelatedDocuments>
+                            <sad:DocumentCode>1</sad:DocumentCode>
+                            <sad:AvailabilityStatus>2</sad:AvailabilityStatus>
+                        </sad:DeclarationRelatedDocuments>
+                        <sad:DeclarationRelatedDocuments>
+                            <sad:DocumentCode>3</sad:DocumentCode>
+                            <sad:AvailabilityStatus>2</sad:AvailabilityStatus>
+                        </sad:DeclarationRelatedDocuments>
+                        <sad:PaymentDetails>
+                            <sad:PaymentMode>1</sad:PaymentMode>
+                            <sad:PaymentReference>1000868</sad:PaymentReference>
+                        </sad:PaymentDetails>
+                        <sad:PaymentDetails>
+                            <sad:PaymentMode>2</sad:PaymentMode>
+                            <sad:PaymentReference>2000598</sad:PaymentReference>
+                        </sad:PaymentDetails>
+                        <sad:TransportDocumentDetails>
+                            <sad:OutboundTransportDocumentNo>8123991945</sad:OutboundTransportDocumentNo>
+                            <sad:CargoTypePackageCode>1</sad:CargoTypePackageCode>
+                            <sad:GrossWeightUnit>kg</sad:GrossWeightUnit>
+                            <sad:TotalGrossWeight>0.2000</sad:TotalGrossWeight>
+                            <sad:NetWeightUnit>kg</sad:NetWeightUnit>
+                            <sad:TotalNetWeight>0.2000</sad:TotalNetWeight>
+                            <sad:PackageDetails>
+                                <sad:PackageType>BOX</sad:PackageType>
+                                <sad:TotalNumberOfPackages>1</sad:TotalNumberOfPackages>
+                            </sad:PackageDetails>
+                        </sad:TransportDocumentDetails>
+                    </sad:DeclarationDetails>
+                    <sad:ShippingDetails>
+                        <sad:DestinationCountry>SG</sad:DestinationCountry>
+                        <sad:ExitPort>AFZ</sad:ExitPort>
+                        <sad:Invoices>
+                            <sad:InvoiceNumber>137897</sad:InvoiceNumber>
+                            <sad:InvoiceDate>2020-07-04</sad:InvoiceDate>
+                            <sad:TotalNumberOfInvoicePages>1</sad:TotalNumberOfInvoicePages>
+                            <sad:InvoiceType>1</sad:InvoiceType>
+                            <sad:PaymentInstrumentType>10</sad:PaymentInstrumentType>
+                            <sad:InvoiceCurrency>USD</sad:InvoiceCurrency>
+                            <sad:InvoiceValue>1860.00</sad:InvoiceValue>
+                            <sad:INCOTermsCode>DAP</sad:INCOTermsCode>
+                            <sad:InvoiceItemsDetail>
+                                <sad:InvoiceItemLineNumber>1</sad:InvoiceItemLineNumber>
+                                <sad:CommodityCode>71171110</sad:CommodityCode>
+                                <sad:GoodsDescription>TIFFANYCO ETIOLE 020 CTW DIAMOND PLATINUM BAND RING SIZE 48</sad:GoodsDescription>
+                                <sad:GoodsCondition>N</sad:GoodsCondition>
+                                <sad:StatisticalQuantityMeasurementUnit>kg</sad:StatisticalQuantityMeasurementUnit>
+                                <sad:StatisticalQuantity>1.0000</sad:StatisticalQuantity>
+                                <sad:NetWeightUnit>kg</sad:NetWeightUnit>
+                                <sad:NetWeight>0.2000</sad:NetWeight>
+                                <sad:SupplementaryQuantityMeasurementUnit>kg</sad:SupplementaryQuantityMeasurementUnit>
+                                <sad:ValueOfGoods>1860.00</sad:ValueOfGoods>
+                                <sad:CountryOfOrigin>AE</sad:CountryOfOrigin>
+                                <sad:PermitRefenceDetails>
+                                    <sad:PermitIndicator>N</sad:PermitIndicator>
+                                </sad:PermitRefenceDetails>
+                            </sad:InvoiceItemsDetail>
+                        </sad:Invoices>
+                    </sad:ShippingDetails>
+                </bat:Consignments>
+            </ns11:Declaration>
+        </ns11:CourierBulkProcessingProcessRequest>`
+        ,
+            xmlPayloadResponse: `<?xml version="1.0" encoding="UTF-8"?><ns11:CourierBulkProcessingProcessResponse xmlns:ns11="http://www.customs.pcfc.com/Schema/Declaration/CourierBulkProcessingParameters" xmlns:bat="http://www.customs.pcfc.com/Schema/Declaration/BatchDeclaration" xmlns:com="http://www.customs.pcfc.com/Schema/Common/2.0" xmlns:sad="http://www.customs.pcfc.com/Schema/Declaration/SAD">
+            <ns11:UNB>
+                <com:MessageCode>DEC</com:MessageCode>
+                <com:MessageVersionNumber>1</com:MessageVersionNumber>
+                <com:SenderIdentification>AE-1005666</com:SenderIdentification>
+                <com:InterchangeControlReference>1</com:InterchangeControlReference>
+                <com:RecipientIdentification>AE-1005666</com:RecipientIdentification>
+                <com:DateTime>2020-08-13T12:30:07Z</com:DateTime>
+            </ns11:UNB>
+            <ns11:UTH>
+                <com:ReplytoTransportMode>WEBSERVICE</com:ReplytoTransportMode>
+                <com:ReplytoAddress>swewer</com:ReplytoAddress>
+                <com:ReplytoMessageFormat>XML</com:ReplytoMessageFormat>
+            </ns11:UTH>
+            <ns11:UNH>
+                <com:MessageReferenceNumber>20200813123001-205</com:MessageReferenceNumber>
+                <com:MessageType>NEW</com:MessageType>
+            </ns11:UNH>
+            <ns11:Declaration>
+                <bat:BatchHeader>
+                    <bat:BrokerBusinessCode>AE-1005666</bat:BrokerBusinessCode>
+                    <bat:BrokerCustomerCode>58686</bat:BrokerCustomerCode>
+                    <bat:CTOCargoHandlerPremisesCode>PR-00166</bat:CTOCargoHandlerPremisesCode>
+                    <bat:ShippingAirlineAgentBusinessCode>AE-1005666</bat:ShippingAirlineAgentBusinessCode>
+                    <bat:PortOfLoading>D04</bat:PortOfLoading>
+                    <bat:PortOfDischarge>SIN</bat:PortOfDischarge>
+                    <bat:TotalNoOfConsignment>1</bat:TotalNoOfConsignment>
+                    <bat:OutboundMasterDocumentNo>15502625560</bat:OutboundMasterDocumentNo>
+                    <bat:OutboundCarrierDetails>
+                        <sad:TransportMode>8</sad:TransportMode>
+                        <sad:CarrierRegistrationNo>3S0514</sad:CarrierRegistrationNo>
+                        <sad:DateOfDeparture>2020-07-06</sad:DateOfDeparture>
+                    </bat:OutboundCarrierDetails>
+                </bat:BatchHeader>
+                <bat:Consignments>
+                    <sad:PartiesDetails>
+                        <sad:ConsignorExporterTransferorCode>AE-1080107</sad:ConsignorExporterTransferorCode>
+                    </sad:PartiesDetails>
+                    <sad:DeclarationDetails>
+                        <sad:RegimeType>2</sad:RegimeType>
+                        <sad:DeclarationType>201</sad:DeclarationType>
+                        <sad:TotalNumberHAWBsConsolidated>1</sad:TotalNumberHAWBsConsolidated>
+                        <sad:DeclarationRelatedDocuments>
+                            <sad:DocumentCode>1</sad:DocumentCode>
+                            <sad:AvailabilityStatus>2</sad:AvailabilityStatus>
+                        </sad:DeclarationRelatedDocuments>
+                        <sad:DeclarationRelatedDocuments>
+                            <sad:DocumentCode>3</sad:DocumentCode>
+                            <sad:AvailabilityStatus>2</sad:AvailabilityStatus>
+                        </sad:DeclarationRelatedDocuments>
+                        <sad:PaymentDetails>
+                            <sad:PaymentMode>1</sad:PaymentMode>
+                            <sad:PaymentReference>1000868</sad:PaymentReference>
+                        </sad:PaymentDetails>
+                        <sad:PaymentDetails>
+                            <sad:PaymentMode>2</sad:PaymentMode>
+                            <sad:PaymentReference>2000598</sad:PaymentReference>
+                        </sad:PaymentDetails>
+                        <sad:TransportDocumentDetails>
+                            <sad:OutboundTransportDocumentNo>8123991945</sad:OutboundTransportDocumentNo>
+                            <sad:CargoTypePackageCode>1</sad:CargoTypePackageCode>
+                            <sad:GrossWeightUnit>kg</sad:GrossWeightUnit>
+                            <sad:TotalGrossWeight>0.2000</sad:TotalGrossWeight>
+                            <sad:NetWeightUnit>kg</sad:NetWeightUnit>
+                            <sad:TotalNetWeight>0.2000</sad:TotalNetWeight>
+                            <sad:PackageDetails>
+                                <sad:PackageType>BOX</sad:PackageType>
+                                <sad:TotalNumberOfPackages>1</sad:TotalNumberOfPackages>
+                            </sad:PackageDetails>
+                        </sad:TransportDocumentDetails>
+                    </sad:DeclarationDetails>
+                    <sad:ShippingDetails>
+                        <sad:DestinationCountry>SG</sad:DestinationCountry>
+                        <sad:ExitPort>AFZ</sad:ExitPort>
+                        <sad:Invoices>
+                            <sad:InvoiceNumber>137897</sad:InvoiceNumber>
+                            <sad:InvoiceDate>2020-07-04</sad:InvoiceDate>
+                            <sad:TotalNumberOfInvoicePages>1</sad:TotalNumberOfInvoicePages>
+                            <sad:InvoiceType>1</sad:InvoiceType>
+                            <sad:PaymentInstrumentType>10</sad:PaymentInstrumentType>
+                            <sad:InvoiceCurrency>USD</sad:InvoiceCurrency>
+                            <sad:InvoiceValue>1860.00</sad:InvoiceValue>
+                            <sad:INCOTermsCode>DAP</sad:INCOTermsCode>
+                            <sad:InvoiceItemsDetail>
+                                <sad:InvoiceItemLineNumber>1</sad:InvoiceItemLineNumber>
+                                <sad:CommodityCode>71171110</sad:CommodityCode>
+                                <sad:GoodsDescription>TIFFANYCO ETIOLE 020 CTW DIAMOND PLATINUM BAND RING SIZE 48</sad:GoodsDescription>
+                                <sad:GoodsCondition>N</sad:GoodsCondition>
+                                <sad:StatisticalQuantityMeasurementUnit>kg</sad:StatisticalQuantityMeasurementUnit>
+                                <sad:StatisticalQuantity>1.0000</sad:StatisticalQuantity>
+                                <sad:NetWeightUnit>kg</sad:NetWeightUnit>
+                                <sad:NetWeight>0.2000</sad:NetWeight>
+                                <sad:SupplementaryQuantityMeasurementUnit>kg</sad:SupplementaryQuantityMeasurementUnit>
+                                <sad:ValueOfGoods>1860.00</sad:ValueOfGoods>
+                                <sad:CountryOfOrigin>AE</sad:CountryOfOrigin>
+                                <sad:PermitRefenceDetails>
+                                    <sad:PermitIndicator>N</sad:PermitIndicator>
+                                </sad:PermitRefenceDetails>
+                            </sad:InvoiceItemsDetail>
+                        </sad:Invoices>
+                    </sad:ShippingDetails>
+                </bat:Consignments>
+            </ns11:Declaration>
+        </ns11:CourierBulkProcessingProcessResponse>`
 
         };
         this.generalHandler = gen.generalHandler.bind(this);
@@ -252,7 +466,7 @@ class BusinessTransaction extends React.Component {
         console.log("errors ==== ",err);
         this.setState({
             businessTransDataError: err,
-            isOpen: true
+            modalIsOpenErrorLogs: true
         })
     }
 
@@ -301,6 +515,8 @@ class BusinessTransaction extends React.Component {
         //     console.log("item ==== ",item)
         // })
         
+        
+        
         this.setState({
             jsonData : {
                 "processorData": processorData,
@@ -309,7 +525,38 @@ class BusinessTransaction extends React.Component {
             }
         })
         this.commonActionExecutor()
+        setTimeout(() => {
+            this.jqueryExecuter();
+        }, 1000);
+        
     //    this.setIntervalForMonitoring();
+    }
+
+    jqueryExecuter = () => {
+        $(document).ready(function () {
+            console.log("jquery business")
+            $('.multiselect').multiselect({
+                buttonWidth: 'auto',
+                numberDisplayed: 15,
+                enableHTML: true,
+                optionLabel: function (element) {
+                    return '<img src="' + $(element).attr('data-img') + '" width="15px" height="45px"> ' + $(element).text();
+                },
+                onChange: function (element, checked) {
+                    $("ul.multiselect-container").find("input[type=checkbox]").each(function () {
+                        var valueAttr = $(this).attr('value');
+                        if (element.attr('value') == valueAttr) {
+                            var checkParent = $(this).parent().parent().parent().hasClass('active');
+                            // if (checkParent == false) {
+                            //     $(this).removeAttr('disabled')
+                            // }else{
+                            //     $(this).attr('disabled','disabled')
+                            // }
+                        }
+                    });
+                }
+            });
+        });
     }
 
     componentWillUnmount() {
@@ -505,14 +752,32 @@ class BusinessTransaction extends React.Component {
                     }
                 }
 
-                _item.actions = [{
-                    URI: ["/courier/orderDetails"],
-                    iconName: "icon-docs",
-                    label: "View",
-                    params: "",
-                    type: "componentAction",
-                    value: "1003",
-                }]
+                _item.actions = [
+                    {
+                        URI: ["/courier/orderDetails"],
+                        iconName: "icon-docs",
+                        label: "View Order Details",
+                        params: "",
+                        type: "componentAction",
+                        value: "1003",
+                    },
+                    {
+                    //    URI: ["/courier/orderDetails"],
+                        iconName: "icon-docs",
+                        label: "View Transaction Logs",
+                        actionType: "COMPONENT_FUNCTION"
+                    },
+                ]
+
+                if(_item.currentStage === "Submission Failure" || _item.currentStage === "Submission Success" || _item.currentStage === "Pending Status"){
+                    _item.actions.push({
+                        //    URI: ["/courier/orderDetails"],
+                            iconName: "icon-docs",
+                            label: "View SOAP Payload",
+                            actionType: "COMPONENT_FUNCTION"
+                        });
+                }
+
                 console.log("_item ===== ",_item)
                 if(_item.lastActivity.type === "critical")
                     businessTransCriticalList.push(_item);
@@ -655,6 +920,7 @@ class BusinessTransaction extends React.Component {
     }
 
     exportBtnHandler = () => {
+        
         this.downloadDummyCSV(this.state.businessTransDataList);
 
     }
@@ -773,6 +1039,64 @@ class BusinessTransaction extends React.Component {
         }
     }
 
+    dateChangeToHandler = (value) => {
+        let searchCriteria = _.cloneDeep(this.state.searchCriteria);
+        console.log("searchCriteria To", searchCriteria);
+    //    console.log("searchCriteria To", value);
+        searchCriteria.toDate = moment.unix(value).format('DD/MM/YYYY');
+        this.setState({
+            searchCriteria
+        })
+    }
+
+    dateChangeFromHandler = (value) => {
+        let searchCriteria = _.cloneDeep(this.state.searchCriteria);
+        console.log("searchCriteria from", searchCriteria);
+        searchCriteria.fromDate = moment.unix(value).format('DD/MM/YYYY');
+        this.setState({
+            searchCriteria
+        })
+    }
+
+    businessTransactionFunc = ({ actionName, index }) => {
+        switch (actionName) {
+            case "View SOAP Payload":
+                console.log("View soap Payload hit");
+                let showData =  {};
+                showData.xmlPayloadRequest = this.state.xmlPayloadRequest
+                if(this.state.businessTransDataList[index].currentStage !== "Pending Status"){
+                    showData.xmlPayloadResponse = this.state.xmlPayloadResponse
+                }
+                
+                showData
+                this.setState({
+                    showData : showData,
+                    modalIsOpenSOAP: true
+                })
+                break;
+            case "View Transaction Logs":
+                this.setState({
+                    showData: this.state.businessTransDataList[index].orderTrackingLogs.map( item => {
+                        let obj = {
+                            "message": item.message,
+                            "sender": item.senderBusinessCode,
+                            "documentNo": item.orderId + " - " + item.invoice.invoiceId + "-" + item.declaration.declarationNo,
+                            "declaration": item.declaration.customStatus,
+                            "masterTransportDocumentNo": item.transport.masterTransportDocumentNo,
+                            "houseTransportDocumentNo": item.transport.houseTransportDocumentNo,
+                            "dateTime" : moment.unix(item.txTimeStamp/1000).format("DD/MM/YYYY HH:mm:ss")
+                        }
+                        return obj
+                    }),
+                    modalIsTransactionLogs: true
+                })
+                break;
+            default:
+                break;
+        }
+        console.log("businessTransactionFunc", { actionName, index });
+    }
+
     clearFields() {
         $('#ApiListData').find('input:text').val('');
         $('#ApiListData').find('select').each(function () {
@@ -796,8 +1120,20 @@ class BusinessTransaction extends React.Component {
         }
         this.props.actions.generalAsyncProcess(constants.monitoringScreenData, this.applyFilter("widget3", "listing"))
     }
+    updateState(data) {
+        this.setState(data);
+      }
     render() {
         console.log("state-->", this.state)
+        let modalActions = [
+            {
+              type: "icon",
+              className: "btn btn-default",
+              label: "ADD",
+              icon: "close",
+              actionHandler: this.updateState.bind(this, { modalIsOpenErrorLogs: false, modalIsOpenSOAP: false, modalIsTransactionLogs: false })
+            }
+          ];
         if (!this.state.isLoading)
             return (
                 <div className="coreDiv">
@@ -807,24 +1143,24 @@ class BusinessTransaction extends React.Component {
                                     <span style={{ color: "white" }}>Declaration Processor</span>
                             </div>
                             <div className="col-md-6" style={{ display: "flex",justifyContent: "flex-end"}}>
-                                    <Combobox
-                                        status={(this.state.errors && this.state.errors.process) ? "ERROR" : undefined}
-                                        style={{marginTop: "14px"}}
-                                        fieldname='processor'
-                                        className="form-control"
-                                        formname='Container'
-                                        columns={6}
-                                        allowValue={false}
-                                        isDDL={true}
-                                        selected={_.get(_.get(this.state.jsonData, 'processorData', []).filter(item =>
-                                            item.key == _.get(this.state.Container, 'processor', '')
-                                        ), `[${0}].value`, undefined)}
-                                        placeholder={utils.getLabelByID('processes')}
-                                        state={this.state}
-                                        typeName="processorData"
-                                        dataSource={_.get(this.state, "jsonData", {})}
-                                        actionHandler={this.processorHandler}
-                                    /> 
+                                <Combobox
+                                    status={(this.state.errors && this.state.errors.process) ? "ERROR" : undefined}
+                                    style={{marginTop: "14px"}}
+                                    fieldname='processor'
+                                    className="form-control"
+                                    formname='Container'
+                                    columns={6}
+                                    allowValue={false}
+                                    isDDL={true}
+                                    selected={_.get(_.get(this.state.jsonData, 'processorData', []).filter(item =>
+                                        item.key == _.get(this.state.Container, 'processor', '')
+                                    ), `[${0}].value`, undefined)}
+                                    placeholder={utils.getLabelByID('processes')}
+                                    state={this.state}
+                                    typeName="processorData"
+                                    dataSource={_.get(this.state, "jsonData", {})}
+                                    actionHandler={this.processorHandler}
+                                /> 
                             </div>
                         </div>
                     </div>                    
@@ -1048,7 +1384,7 @@ class BusinessTransaction extends React.Component {
                                                 <label className="control-label">{utils.getLabelByID("E-Commerce")}</label>
                                                 </div>
                                                 <div className="form-group col-md-8">
-                                                    <Input
+                                                    {/* <Input
                                                         divStyle={{ padding: '0px', top: '10px',
                                                         position: 'absolute' }}
                                                         errorIconStyle={{
@@ -1062,7 +1398,20 @@ class BusinessTransaction extends React.Component {
                                                         state={this.state}
                                                         actionHandler={this.generalHandler}
                                                         className="form-control"
-                                                    />
+                                                    /> */}
+                                                <div className="form-group mb-2">
+                                                    <input type="hidden" name="data[Server][0][id]" className="form-control" value="1" id="Server0Id" />
+                                                    <div className="controls">
+                                                        <select className="multiselect" multiple="multiple" id="Server0Vm">
+                                                            <optgroup>
+                                                                {this.state.declarationProcessors.map( item=> {
+                                                                    return <option data-img={item.imageURL} value={item.name}>{item.name}</option>
+                                                                })}
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>    
@@ -1092,7 +1441,7 @@ class BusinessTransaction extends React.Component {
                                             </div>
                                             <div className="col-md-6">
                                                 <div className="form-group col-md-4">
-                                                <label className="control-label">{utils.getLabelByID("Declaration ID")}</label>
+                                                <label className="control-label">{utils.getLabelByID("Declaration No")}</label>
                                                 </div>
                                                 <div className="form-group col-md-8">
                                                     <Input
@@ -1112,8 +1461,71 @@ class BusinessTransaction extends React.Component {
                                                     />
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div className="row">                          
+                                            <div className="col-md-6">
+                                                <div className="form-group col-md-4">
+                                                    <label className="control-label">{utils.getLabelByID("Error Code")}</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                    <Input
+                                                        divStyle={{ padding: '0px', top: '10px',
+                                                        position: 'absolute' }}
+                                                        errorIconStyle={{
+                                                        display:'none'
+                                                        }}
+                                                        status={(this.state.errors && this.state.errors.errorCode) ? "ERROR" : undefined}
+                                                        fieldname='errorCode'
+                                                        formname='Container'
+                                                        disabled={false}
+                                                        placeholder={utils.getLabelByID('')}
+                                                        state={this.state}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="form-group col-md-4">
+                                                    <label className="control-label">{utils.getLabelByID("Request Id")}</label>
+                                                </div>
+                                                <div className="form-group col-md-8">
+                                                    <Input
+                                                        divStyle={{ padding: '0px', top: '10px',
+                                                        position: 'absolute' }}
+                                                        errorIconStyle={{
+                                                        display:'none'
+                                                        }}
+                                                        status={(this.state.errors && this.state.errors.requestID) ? "ERROR" : undefined}
+                                                        fieldname='requestID'
+                                                        formname='Container'
+                                                        disabled={false}
+                                                        placeholder={utils.getLabelByID('')}
+                                                        state={this.state}
+                                                        actionHandler={this.generalHandler}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+                                            </div>  
                                         </div>  
-
+                                        <div className="row">                          
+                                            <div className="col-md-6">
+                                                <div className="form-group col-md-4">
+                                                    <label className="control-label">{utils.getLabelByID("Last Action Date To")}</label>
+                                                </div>                                    
+                                                <div className="form-group col-md-8">
+                                                    <DateControl id="actionDateTo" dateChange={this.dateChangeToHandler}  />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="form-group col-md-4">
+                                                    <label className="control-label">{utils.getLabelByID("Last Action Date From")}</label>
+                                                </div>  
+                                                <div className="form-group col-md-8">
+                                                    <DateControl id="actionDateFrom" dateChange={this.dateChangeFromHandler}  />
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div className="form-actions right">
                                             <div className="form-group col-md-12">
                                                 <div className="btn-toolbar pull-right">
@@ -1145,6 +1557,7 @@ class BusinessTransaction extends React.Component {
                                     </Row>                            
                                     {!this.state.widget3Loading ? 
                                     <Table fontclass=""
+                                        componentFunction = { this.businessTransactionFunc }
                                         gridColumns={utils.getGridColumnByName("BusinessTransaction")}
                                         gridData={this.state.businessTransDataList}
                                         totalRecords={this.state.businessTransDataList.length}
@@ -1166,8 +1579,8 @@ class BusinessTransaction extends React.Component {
                         actions={this.state.actions}>
                         
                     </Portlet> */}
-                    <ModalBox isOpen={this.state.isOpen}>
-                        <Portlet title={utils.getLabelByID("Errors")} isPermissioned={true}>                            
+                    <ModalBox isOpen={this.state.modalIsOpenErrorLogs}>
+                        <Portlet title={utils.getLabelByID("Errors")} noCollapse={true} actions={modalActions}>                            
                             <Row>
                                 <AnchorComp
                                     anchotDisplayName = {"SOAP Payload"}
@@ -1175,7 +1588,7 @@ class BusinessTransaction extends React.Component {
                                 />
                             </Row>
                             <Row>
-                                <Label text="Exceptions" />
+                                <Lable text="Exceptions" />
                             </Row>                            
                             <Row>
                                 <Table fontclass=""
@@ -1190,7 +1603,7 @@ class BusinessTransaction extends React.Component {
                                 />
                             </Row>
 
-                            <Row>
+                            {/* <Row>
                                 <div className="form-actions right">
                                     <div className="form-group col-md-12">
                                         <div className="btn-toolbar pull-right">
@@ -1198,9 +1611,81 @@ class BusinessTransaction extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                            </Row>
+                            </Row> */}
                         </Portlet>
                     </ModalBox>
+                    
+                    <ModalBox isOpen={this.state.modalIsOpenSOAP}>
+                        <Portlet title={utils.getLabelByID("SOAP Payload")} noCollapse={true} actions={modalActions}>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <Lable text={utils.getLabelByID("Request")} columns="12" style={{marginBottom:"3px"}}></Lable>
+                                    <div className="col-md-12">
+                                        <TextArea
+                                            divStyle={{ padding: '0px' }}
+                                            status={(this.state.errors && this.state.errors.response) ? "ERROR" : undefined}
+                                            fieldname='response'
+                                            rows="6"
+                                            formname='body'
+                                            value={JSON.stringify(this.state.xmlPayloadRequest)}
+                                            columns='12'
+                                            placeholder={utils.getLabelByID('')}
+                                            state={this.state}
+                                            actionHandler={this.generalHandler}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                </div>
+                                {this.state.showData.xmlPayloadResponse ? 
+                                    <div className="col-md-12">
+                                        <Lable text={utils.getLabelByID("Response")} columns="12" style={{marginBottom:"3px"}}></Lable>
+                                        <div  className="col-md-12">
+                                            <TextArea
+                                                divStyle={{ padding: '0px' }}
+                                                status={(this.state.errors && this.state.errors.response) ? "ERROR" : undefined}
+                                                fieldname='response'
+                                                rows="6"
+                                                formname='body'
+                                                value={JSON.stringify(this.state.xmlPayloadResponse)}
+                                                columns='12'
+                                                placeholder={utils.getLabelByID('')}
+                                                state={this.state}
+                                                actionHandler={this.generalHandler}
+                                                className="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                :
+                                <div className="col-md-6"></div>
+                                }
+                            </div>
+                        </Portlet>
+                    </ModalBox>
+
+                    <ModalBox isOpen={this.state.modalIsTransactionLogs}>
+                        <Portlet title={utils.getLabelByID("Transaction Logs")} noCollapse={true} actions={modalActions}>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="form-group">
+                                        <Table
+                                            pagination={false}
+                                            export={false}
+                                            search={false}
+                                            gridColumns={utils.getGridColumnByName("OrderTrackingLogs")}
+                                            gridData={this.state.showData}
+                                            totalRecords = {this.state.showData.length}
+                                            pageChanged={() => {
+                                            }}
+                                            activePage={1}
+                                            pageSize={10}
+                                            />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </Portlet>
+                    </ModalBox>
+                
                 </div>
             );
         else

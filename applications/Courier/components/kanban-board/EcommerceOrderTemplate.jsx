@@ -687,7 +687,7 @@ class EcommerceOrderTemplate extends React.Component {
           {/* </Portlet> */}
           <div className="row">
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <button className="btn btn-primary">Save</button>
+              <button className="btn btn green">Save</button>
             </div>
           </div>
         </Wrapper>

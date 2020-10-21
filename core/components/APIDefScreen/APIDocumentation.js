@@ -26,7 +26,7 @@ class APIDocumentation extends React.Component {
     }
 
     componentWillMount() {
-        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['UseCase', 'ORG_TYPES']));
+        this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['USECASE', 'ORG_TYPES']));
     }
 
     componentDidMount() {
@@ -36,7 +36,7 @@ class APIDocumentation extends React.Component {
     getTypeData = (UCtypeData) => {
         if (UCtypeData) {
             this.setState({
-                useCases: _.get(UCtypeData, 'data.UseCase', []),
+                useCases: _.get(UCtypeData, 'data.USECASE', []),
                 orgTypes: _.get(UCtypeData, 'data.ORG_TYPES', [])
             })
         }
