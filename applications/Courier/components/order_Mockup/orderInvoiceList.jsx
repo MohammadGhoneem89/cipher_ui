@@ -183,7 +183,7 @@ class OrderInvoiceList extends React.Component {
 
     let request = {
       "body" : {
-          "orderId":"OR123456"
+          "orderId":"OR1234567"
       }
   }
   this.props.actions.generalProcess(constantsApp.getEndToEndTrackingInformation, request);
@@ -203,6 +203,7 @@ class OrderInvoiceList extends React.Component {
     let orderDetailsContainer = {};
     if (nextProps.orderInvoiceDetails) {
 
+      orderDetailsContainer.primaryEcommerceDetails = nextProps.orderInvoiceDetails.primaryEcommerceDetails;
       orderDetailsContainer.orderID = nextProps.orderInvoiceDetails.orderID;
       orderDetailsContainer.orderDate = moment.unix(nextProps.orderInvoiceDetails.orderDate/1000).format("DD/MM/YYYY HH:mm:ss");
       orderDetailsContainer.txID = nextProps.orderInvoiceDetails.txID;
@@ -470,19 +471,19 @@ class OrderInvoiceList extends React.Component {
             <div className="col-md-12">
               <div className="shadowBox Courierbox">
                 <div className="row">
-                  <div className="col-md-6 text-center">
+                  <div className="col-md-12 text-center">
                     <div>
                       <h4 className="bold">E-commerce</h4>
                     </div>
                     {console.log(this.state.orgDetailByCode)}
-                    <div><img src={`${baseUrl}${this.state.orderDetailsContainer.ecommerceImage}`} onError={this.addDefaultCourierSrc} width="100px" height="100px" /></div>
-                    { <span className="bold">{_.get(this.state.orderDetailsContainer, `.eCommerceOrgCode`, "")}</span> }
+                    <div><img src={`${baseUrl}${this.state.orderDetailsContainer.primaryEcommerceDetails.companyLogo}`} onError={this.addDefaultCourierSrc} width="100px" height="100px" /></div>
+                    { <span className="bold">{_.get(this.state.orderDetailsContainer.primaryEcommerceDetails, `companyName`, "")}</span> }
                   </div>
-                  <div className="col-md-6 text-center">
+                  {/* <div className="col-md-6 text-center">
                     <div><h4 className="bold">Courier Company</h4></div>
                     <div><img src={`${baseUrl}${this.state.orderDetailsContainer.courierCompanyImage}`} onError={this.addDefaultECommerceSrc} width="100px" height="100px" /></div>
                     { <span className="bold">{_.get(this.state.orderDetailsContainer, `courierOrgCode`, "")}</span> }
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -495,7 +496,7 @@ class OrderInvoiceList extends React.Component {
                     <div className="col-md-3">
                       <label className="bold">Name:</label>
                     </div>
-                    <div className="col-md-5">
+                    <div className="col-md-9">
                       <label>{this.state.orderDetailsContainer.consigneeName}</label>
                     </div>
                   </div>
@@ -503,32 +504,39 @@ class OrderInvoiceList extends React.Component {
                     <div className="col-md-3">
                       <label className="bold">Address:</label>
                     </div>
-                    <div className="col-md-5">
+                    <div className="col-md-9">
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.consigneeAddress.addressLine1}</label>
-                        </div>
-
-                      </div>
-                      <div className="row">
-                        <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.consigneeAddress.addressLine2}</label>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.consigneeAddress.addressLine1}</p>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.consigneeAddress.addressLine2}</p>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.consigneeAddress.POBox}</p>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.consigneeAddress.city}</p>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.consigneeAddress.country}</p>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div className="row" style={{ marginTop: "10px"}}>
+                    <div className="col-md-3">
+                      <label className="bold">Phone:</label>
+                    </div>
+                    <div className="col-md-9">
                       <div className="row">
-                        <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.consigneeAddress.POBox}</label>
+                        <div className="col-md-12">                            
+                          <label>{_.get(this.state.orderDetailsContainer.consigneeAddress, "phone", "-")}</label>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Email:</label>
+                    </div>
+                    <div className="col-md-9">
                       <div className="row">
-                        <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.consigneeAddress.city}</label>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.consigneeAddress.country}</label>
-                        </div>
+                          <div className="col-md-12">
+                            <label>{_.get(this.state.orderDetailsContainer.consigneeAddress, "email", "-")}</label>
+                          </div>
                       </div>
                     </div>
                   </div>
@@ -541,7 +549,7 @@ class OrderInvoiceList extends React.Component {
                     <div className="col-md-3">
                       <label className="bold">Name:</label>
                     </div>
-                    <div className="col-md-5">
+                    <div className="col-md-9">
                       <label>{this.state.orderDetailsContainer.billTo}</label>
                     </div>
                   </div>
@@ -549,31 +557,39 @@ class OrderInvoiceList extends React.Component {
                     <div className="col-md-3">
                       <label className="bold">Address:</label>
                     </div>
-                    <div className="col-md-5">
+                    <div className="col-md-9">
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.billToAddress.addressLine1}</label>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.billToAddress.addressLine1}</p>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.billToAddress.addressLine2}</p>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.billToAddress.POBox}</p>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.billToAddress.city}</p>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.billToAddress.country}</p>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div className="row" style={{ marginTop: "10px"}}>
+                    <div className="col-md-3">
+                      <label className="bold">Phone:</label>
+                    </div>
+                    <div className="col-md-9">
                       <div className="row">
-                        <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.billToAddress.addressLine2}</label>
+                        <div className="col-md-12">                            
+                          <label>{_.get(this.state.orderDetailsContainer.billToAddress, "phone", "-")}</label>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Email:</label>
+                    </div>
+                    <div className="col-md-9">
                       <div className="row">
-                        <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.billToAddress.POBox}</label>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.billToAddress.city}</label>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.billToAddress.country}</label>
-                        </div>
+                          <div className="col-md-12">
+                            <label>{_.get(this.state.orderDetailsContainer.billToAddress, "email", "-")}</label>
+                          </div>
                       </div>
                     </div>
                   </div>
@@ -586,7 +602,7 @@ class OrderInvoiceList extends React.Component {
                     <div className="col-md-3">
                       <label className="bold">Name:</label>
                     </div>
-                    <div className="col-md-5">
+                    <div className="col-md-9">
                       <label>{this.state.orderDetailsContainer.shipTo}</label>
                     </div>
                   </div>
@@ -594,31 +610,39 @@ class OrderInvoiceList extends React.Component {
                     <div className="col-md-3">
                       <label className="bold">Address:</label>
                     </div>
-                    <div className="col-md-5">
+                    <div className="col-md-9">
                       <div className="row">
                         <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.shipToAddress.addressLine1}</label>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.shipToAddress.addressLine1}</p>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.shipToAddress.addressLine2}</p>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.shipToAddress.POBox}</p>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.shipToAddress.city}</p>
+                          <p style= {{ padding:"0px", margin:"0px", fontWeight:"700"}} >{this.state.orderDetailsContainer.shipToAddress.country}</p>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div className="row" style={{ marginTop: "10px"}}>
+                    <div className="col-md-3">
+                      <label className="bold">Phone:</label>
+                    </div>
+                    <div className="col-md-9">
                       <div className="row">
-                        <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.shipToAddress.addressLine2}</label>
+                        <div className="col-md-12">                            
+                          <label>{_.get(this.state.orderDetailsContainer.shipToAddress, "phone", "-")}</label>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-3">
+                      <label className="bold">Email:</label>
+                    </div>
+                    <div className="col-md-9">
                       <div className="row">
-                        <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.shipToAddress.POBox}</label>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.shipToAddress.city}</label>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-12">
-                          <label>{this.state.orderDetailsContainer.shipToAddress.country}</label>
-                        </div>
+                          <div className="col-md-12">
+                            <label>{_.get(this.state.orderDetailsContainer.shipToAddress, "email", "-")}</label>
+                          </div>
                       </div>
                     </div>
                   </div>

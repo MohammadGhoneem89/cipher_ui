@@ -2001,3 +2001,116 @@ text.subunit-label {
     margin-left: 15px;
     border-radius: 5px !important;
 }
+
+/* TimeLine ( usage in Invoice Details) */
+
+.timeline {
+    position: relative;
+    padding: 21px 0px 10px;
+    margin-top: 4px;
+    margin-bottom: 30px;
+    height:100%;
+    text-align: center;
+
+}
+
+.timeline .line {
+    position: absolute;
+    width: 4px;
+    display: block;
+    background: currentColor;
+    top: 0px;
+    bottom: 0px;
+    margin-left: 30px;
+}
+
+.timeline .separator {
+    border-top: 1px solid currentColor;
+    padding: 5px;
+    padding-left: 40px;
+    font-style: italic;
+    font-size: .9em;
+    margin-left: 30px;
+}
+
+.timeline .line::before { top: -4px; }
+.timeline .line::after { bottom: -4px; }
+.timeline .line::before,
+.timeline .line::after {
+    content: '';
+    position: absolute;
+    left: -4px;
+    width: 12px;
+    height: 12px;
+    display: block;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.timeline .panel {
+    position: relative;
+    margin: 10px 0px 21px 70px;
+    clear: both;
+}
+
+.timeline .panel::before {
+    position: absolute;
+    display: block;
+    top: 8px;
+    left: -24px;
+    content: '';
+    width: 0px;
+    height: 0px;
+    border: inherit;
+    border-width: 12px;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+}
+
+.timeline .panel .panel-heading.icon * { font-size: 20px; vertical-align: middle; line-height: 40px; }
+.timeline .panel .panel-heading.icon {
+    position: absolute;
+    left: -49px;
+    display: block;
+    width: 20px;
+    height: 20px;
+    padding: 0px;
+    border-radius: 50%;
+    text-align: center;
+    float: left;
+    top: 10px;
+}
+
+.timeline .panel-outline {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+}
+
+.timeline .panel-outline .panel-body {
+    padding: 10px 0px;
+}
+
+.timeline .panel-outline .panel-heading:not(.icon),
+.timeline .panel-outline .panel-footer {
+    display: none;
+}
+.timelinescreen .panel-primary>.panel-heading {
+    color: #fff;
+    background-color: green;
+    border-color: green;
+}
+.timelinescreen .panel-primary {
+    border-color: green;
+}
+.timelinescreen .panel-success>.panel-heading {
+    color: #ffffff;
+    background-color: red;
+    border-color: red;
+}
+.timelinescreen .panel-success {
+    border-color: red;
+}
+
+/* TimeLine End */

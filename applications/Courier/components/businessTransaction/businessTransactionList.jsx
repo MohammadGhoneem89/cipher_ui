@@ -151,11 +151,11 @@ class BusinessTransaction extends React.Component {
                 },
                 {
                     "name": "Agility",
-                    "imageURL": "/assets/Resources/images/agility_logo_appicon.png"
+                    "imageURL": "/assets/Resources/images/agility_updated.jpg"
                 },
                 {
                     "name": "Aramex",
-                    "imageURL": "/assets/Resources/images/aramex_icon.png"
+                    "imageURL": "/assets/Resources/images/aramex_updated.png"
                 }
               ],
             demoIntervalTime:[
@@ -452,7 +452,6 @@ class BusinessTransaction extends React.Component {
     }
 
 
-
     setIntervalForMonitoring = () => {
         const monitoringInterval = setInterval(() => {
             this.commonActionExecutor()
@@ -533,10 +532,14 @@ class BusinessTransaction extends React.Component {
     }
 
     jqueryExecuter = () => {
+        
         $(document).ready(function () {
             console.log("jquery business")
             $('.multiselect').multiselect({
-                buttonWidth: 'auto',
+                allSelectedText: 'select ALL',
+                includeSelectAllOption: true,
+                nonSelectedText: "Select E-Commerce",
+                buttonWidth: '100%',
                 numberDisplayed: 15,
                 enableHTML: true,
                 optionLabel: function (element) {
@@ -1562,7 +1565,7 @@ class BusinessTransaction extends React.Component {
                                         gridData={this.state.businessTransDataList}
                                         totalRecords={this.state.businessTransDataList.length}
                                         searchCallBack={this.searchCallBack}
-                                        pageSize={20}
+                                        pageSize={21}
                                         pagination={true} pageChanged={this.pageChanged}
                                         export={false}
                                         search={true}

@@ -95,7 +95,7 @@ module.exports = {
     { alias: "FZ code", key: "fzCode", type: "string" },
     { alias: "warehouse", key: "wareHouse", type: "string" },
     { alias: "item cnt", key: "itmCnt", type: "string" },
-    { alias: "Export Declaration", key: "exportDeclaration", type: "string" },
+    { alias: "Export Declaration", key: "invoiceSubStatus", type: "string" },
     { alias: "type", key: "invoiceType", type: "string" },
     { alias: "Status", key: "invoiceStatus", type: "statusBox" },
     { alias: "Action", key: "action", type: "action" }
@@ -151,9 +151,9 @@ module.exports = {
   ],
   RelatedDocument: [
     { alias: "#", key: "", type: "serialNo" },
-    { alias: "Document", key: "Document", type: "string" },
+    { alias: "Document", key: "name", type: "string" },
     { alias: "Availability Status", key: "availabilityStatus", type: "string" },
-    { alias: "Non Availability", key: "nonAvailability", type: "string" }
+    { alias: "Non Availability Reason", key: "nonAvailabilityReason", type: "string" }
   ],
   PaymentDetails: [
     { alias: "#", key: "", type: "serialNo" },
@@ -161,12 +161,12 @@ module.exports = {
     { alias: "Payment Ref", key: "paymentRef", type: "string" }
   ],
   DeclarationSubmissionLogs: [
-    { alias: "Delcaration # / Batch Id.", key: "delcarationNo", type: "serialNo" },
-    { alias: "action", key: "currAction", type: 'string' },
+    { alias: "Delcaration # / Batch Id.", key: "declarationNo", type: "serialNo" },
+    { alias: "action", key: "action", type: 'string' },
     { alias: "Date Time", key: "dateTime", type: "string" },
     { alias: "Type", key: "type", type: "string" },
-    { alias: "invoice #", key: "invoiceValue", type: "string" },
-    { alias: "Reason", key: "reason", type: "string" },
+    { alias: "invoice #", key: "invoice", type: "string" },
+    { alias: "Reason", key: "message", type: "string" },
     { alias: "Status", key: "status", type: "statusBox" },
     { alias: "view", key: "viewAction", type: "action" },
     { alias: "payload", key: "payloadAction", type: "action" }
