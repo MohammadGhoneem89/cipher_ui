@@ -576,7 +576,7 @@ class EcommerceOrderTemplate extends React.Component {
       return (
         <div style={{
           backgroundColor: props.canMove == 'Y' ? 'white' : '#7b7474b5',
-          opacity: props.canMove == 'Y' ? 1 : 0.7,
+          opacity: props.canMove == 'Y' ? 1 : 0.5,
           padding: '5px'
         }}>
           <div style={{ width: '100%', background: 'red' }}></div>
@@ -584,13 +584,13 @@ class EcommerceOrderTemplate extends React.Component {
             style={{
               borderBottom: this.state.showDescription ? '1px solid #eee' : '0px',
               paddingBottom: 6,
-              marginBottom: 10,
+              marginBottom: this.state.showDescription ? '10px' : '0px',
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: this.state.showDescription ? 'space-between' : 'center',
+              justifyContent: this.state.showDescription ? 'space-between' : 'right',
               color: props.cardColor
             }}>
-            <div style={{ fontSize: 14, fontWeight: 'bold', color: props.canMove == 'N' ? 'white' : '#544e4e', marginTop: '8px' }}>{props.title}</div>
+            <div style={{ fontSize: 14, fontWeight: 'bold', color: props.canMove == 'N' ? 'white' : '#544e4e'}}>{props.title}</div>
             {/* <div style={{fontSize: 11}}>{props.dueOn}</div> */}
           </header>
           <div style={{ fontSize: 12 }}>
@@ -616,7 +616,7 @@ class EcommerceOrderTemplate extends React.Component {
           {/* <Portlet title={'Widget Creator'}> */}
           <div style={{
             display: 'flex', alignItems: 'center',
-            justifyContent: 'center',
+           
           }} className="row">
             <div className="col-md-2"> <label htmlFor="">Business Object type</label> </div>
             <div className="col-md-4">
@@ -645,7 +645,7 @@ class EcommerceOrderTemplate extends React.Component {
           </div>
           <div style={{
             display: 'flex', alignItems: 'center',
-            justifyContent: 'center',
+            
             marginBottom: '30px'
           }} className="row">
             <div className="col-md-2"> <label htmlFor="">Template Name</label></div>
