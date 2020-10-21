@@ -137,6 +137,7 @@ class PickupListSearchContainer extends React.Component {
         isOwner: nextProps.typeDataList.isOwner,
         typeList: nextProps.typeListForSync,
         isLoading: false,
+        isExport:false,
         val
       })
     }
@@ -188,7 +189,8 @@ class PickupListSearchContainer extends React.Component {
 
   reset = () => {
     this.setState({
-      searchForm: {}
+      searchForm: {},
+      isExport: true
     })
   }
 
@@ -255,6 +257,7 @@ class PickupListSearchContainer extends React.Component {
                       <button
                         type='submit'
                         className='btn green'
+                        disabled={this.state.isExport}
                         onClick={this.export}
                       >
                         {utils.getLabelByID('Export')}
