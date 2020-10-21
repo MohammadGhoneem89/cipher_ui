@@ -418,7 +418,11 @@ class EcommerceOrderTemplate extends React.Component {
   }
 
 
-
+  
+  newData = (handle) => {
+    console.log(handle);
+    // eventBus = handle
+  }
 
   render() {
     let actualData = {
@@ -679,7 +683,7 @@ class EcommerceOrderTemplate extends React.Component {
             </div>
           </div>
           {this.state.boardData &&
-            <Board data={this.state.boardData} laneDraggable={false} customCardLayout draggable >
+            <Board onDataChange={this.newData.bind(this)} data={this.state.boardData} laneDraggable={false} customCardLayout draggable >
               <CustomCard />
             </Board>
           }

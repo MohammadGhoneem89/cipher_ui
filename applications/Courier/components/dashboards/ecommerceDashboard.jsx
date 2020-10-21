@@ -1259,6 +1259,7 @@ class EcommerceDashboard extends React.Component {
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [graphProps.widgetData.widgetId + 'data']: dataArray,
+                [graphProps.widgetData.widgetId + 'Props']: graphProps,
                 [stateLabel]: false
             })
         }
@@ -1318,6 +1319,7 @@ class EcommerceDashboard extends React.Component {
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [graphProps.widgetData.widgetId + 'data']: dataArray,
+                [graphProps.widgetData.widgetId + 'Props']: graphProps,
                 [stateLabel]: false
             })
         }
@@ -1405,6 +1407,7 @@ class EcommerceDashboard extends React.Component {
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [graphProps.widgetData.widgetId + 'data']: dataArray,
+                [graphProps.widgetData.widgetId + 'Props']: graphProps,
                 [stateLabel]: false
             })
         }
@@ -1530,6 +1533,7 @@ class EcommerceDashboard extends React.Component {
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [graphProps.widgetData.widgetId + 'data']: dataArray,
+                [graphProps.widgetData.widgetId + 'Props']: graphProps,
                 [stateLabel]: false
             })
         }
@@ -2189,9 +2193,220 @@ class EcommerceDashboard extends React.Component {
     }
 
     sendAsEmail(data) {
-        this.setState({
-            showEmailModal: true
-        })
+
+        let elementSelector = '#widget1';
+        let elementWidth = $(elementSelector).width();
+        let elementHeight = $(elementSelector).height();
+
+        let margin = 10;
+        let pdfWidth = elementWidth + margin * 2;
+        let pdfHeight = elementHeight > pdfWidth ? elementHeight + margin * 2 : pdfWidth;
+
+        html2canvas($(elementSelector)[0], { useCORS: true }).then((canvas) => {
+            canvas.getContext('2d');
+            let imgData = canvas.toDataURL('image/jpeg', 1.0);
+            let pdf = new jsPDF('p', 'pt', [pdfWidth, pdfHeight]);
+            pdf.addImage(imgData, 'JPG', margin, margin * 2, elementWidth, elementHeight);
+            
+            var email = 'sample@gmail.com';
+            var subject = 'Test';
+            var emailBody = 'Hi Sample,';
+            var attach = 'this is the attachment string';
+            var link = "mailto:"+email+"?subject="+subject+"&body="+emailBody+"?attach="+attach;
+            // console.log(link);
+                window.location.href = link;
+        });
+
+        // var link = "mailto:me@example.com"
+        //     //  + "?cc=myCCaddress@example.com"
+        //      + "&subject=" + encodeURIComponent("This is my subject")
+        //      var attach = 'path'
+        //     //  + "&body=" + encodeURIComponent(document.getElementById('myText').value)
+    ;
+    
+    // window.location.href = link;
+        // this.setState({
+        //     showEmailModal: true
+        // })
+    }
+
+    changeGraphType(graphType, widgetId, graphProps) {
+        graphProps.widgetData.widgetType = graphType;
+
+        // let graphData = {
+        //         "widgetData": {
+        //             "widgetId": "widget1",
+        //             "widgetType": graphType,
+        //             "graphTitle": "Top 3 E-Commerce, Logistics & Courier Companies",
+        //             "graphData": {
+        //                 "axisData": {
+        //                     "xAxis": {
+        //                         "type": "string",
+        //                         "value": [
+        //                             "JOLLY CHIC",
+        //                             "NOON",
+        //                             "AMAZON",
+        //                             "ARAMEX",
+        //                             "FEDEX",
+        //                             "DHL",
+        //                             "AL FUTTAIM",
+        //                             "ALTRANS",
+        //                             "AGILITY"
+        //                         ]
+        //                     },
+        //                     "yAxis": {
+        //                         "type": "integer",
+        //                         "value": [
+        //                             0,
+        //                             20,
+        //                             40,
+        //                             60,
+        //                             80,
+        //                             100
+        //                         ]
+        //                     },
+        //                     "zAxiz": {
+        //                         "type": "string",
+        //                         "value": [
+        //                             "E-Commerce",
+        //                             "Courier",
+        //                             "Logistics"
+        //                         ]
+        //                     }
+        //                 },
+        //                 "data": [
+        //                     {
+        //                         "xIndex": {
+        //                             "type": "string",
+        //                             "value": "JOLLY CHIC"
+        //                         },
+        //                         "yIndex": {
+        //                             "type": "integer",
+        //                             "value": 88
+        //                         },
+        //                         "zIndex": {
+        //                             "type": "string",
+        //                             "value": "E-Commerce"
+        //                         }
+        //                     },
+        //                     {
+        //                         "xIndex": {
+        //                             "type": "string",
+        //                             "value": "NOON"
+        //                         },
+        //                         "yIndex": {
+        //                             "type": "integer",
+        //                             "value": 77
+        //                         },
+        //                         "zIndex": {
+        //                             "type": "string",
+        //                             "value": "E-Commerce"
+        //                         }
+        //                     },
+        //                     {
+        //                         "xIndex": {
+        //                             "type": "string",
+        //                             "value": "AMAZON"
+        //                         },
+        //                         "yIndex": {
+        //                             "type": "integer",
+        //                             "value": 66
+        //                         },
+        //                         "zIndex": {
+        //                             "type": "string",
+        //                             "value": "E-Commerce"
+        //                         }
+        //                     },
+        //                     {
+        //                         "xIndex": {
+        //                             "type": "string",
+        //                             "value": "ARAMEX"
+        //                         },
+        //                         "yIndex": {
+        //                             "type": "integer",
+        //                             "value": 33
+        //                         },
+        //                         "zIndex": {
+        //                             "type": "string",
+        //                             "value": "Courier"
+        //                         }
+        //                     },
+        //                     {
+        //                         "xIndex": {
+        //                             "type": "string",
+        //                             "value": "FEDEX"
+        //                         },
+        //                         "yIndex": {
+        //                             "type": "integer",
+        //                             "value": 22
+        //                         },
+        //                         "zIndex": {
+        //                             "type": "string",
+        //                             "value": "Courier"
+        //                         }
+        //                     },
+        //                     {
+        //                         "xIndex": {
+        //                             "type": "string",
+        //                             "value": "DHL"
+        //                         },
+        //                         "yIndex": {
+        //                             "type": "integer",
+        //                             "value": 11
+        //                         },
+        //                         "zIndex": {
+        //                             "type": "string",
+        //                             "value": "Courier"
+        //                         }
+        //                     },
+        //                     {
+        //                         "xIndex": {
+        //                             "type": "string",
+        //                             "value": "AL FUTTAIM"
+        //                         },
+        //                         "yIndex": {
+        //                             "type": "integer",
+        //                             "value": 44
+        //                         },
+        //                         "zIndex": {
+        //                             "type": "string",
+        //                             "value": "Logistics"
+        //                         }
+        //                     },
+        //                     {
+        //                         "xIndex": {
+        //                             "type": "string",
+        //                             "value": "ALTRANS"
+        //                         },
+        //                         "yIndex": {
+        //                             "type": "integer",
+        //                             "value": 55
+        //                         },
+        //                         "zIndex": {
+        //                             "type": "string",
+        //                             "value": "Logistics"
+        //                         }
+        //                     },
+        //                     {
+        //                         "xIndex": {
+        //                             "type": "string",
+        //                             "value": "AGILITY"
+        //                         },
+        //                         "yIndex": {
+        //                             "type": "integer",
+        //                             "value": 33
+        //                         },
+        //                         "zIndex": {
+        //                             "type": "string",
+        //                             "value": "Logistics"
+        //                         }
+        //                     }
+        //                 ]
+        //             }
+        //         }
+        // }
+
+        this.graphCreator(graphProps);
     }
 
     render() {
@@ -2613,7 +2828,7 @@ class EcommerceDashboard extends React.Component {
                         {/* <div className="col-md-12">
                                 <DashboardFilters />
                             </div> */}
-                        <div className="col-md-6">
+                        <div id="widget1" className="col-md-6">
                             <Portlet title={"Top 3 E-Commerce, Logistics and Courier Companies"} style={{ height: 'auto', maxHeight: 'auto' }} noCollapse={false}>
 
                                 <div className="refresh-img-div">
@@ -2632,8 +2847,9 @@ class EcommerceDashboard extends React.Component {
                                             <span className="caret"></span>
                                         </button>
                                         <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                            <li><a >View as Pie</a></li>
-                                            <li><a >View as Bubbles</a></li>
+                                            <li><a onClick={() => this.changeGraphType('2ValueBar-Vertical', 'widget1', this.state.widget1Props)} >View as Horizontal Chart</a></li>
+                                            <li><a onClick={() => this.changeGraphType('3ValueBubble-Vertical', 'widget1', this.state.widget1Props)} >View as Bubbles</a></li>
+                                            <li><a onClick={() => this.changeGraphType('3ValueBar-Horizontal', 'widget1', this.state.widget1Props)} >View as Vertical Chart</a></li>
                                             <li role="separator" className="divider"></li>
                                             <li><a onClick={() => this.downloadAsPDF(this.state.widget1data)} >Download as PDF</a></li>
                                             <li><a onClick={() => this.downloadAsCSV(this.state.widget1data)} >Download as CSV</a></li>
@@ -2645,7 +2861,7 @@ class EcommerceDashboard extends React.Component {
 
                                 {this.state.widget1isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
-                                    <div id="widget1">   {this.state.widget1} </div>
+                                    <div>   {this.state.widget1} </div>
                                 }
                                 {/* <PieChart  onElementsClick={() => { console.log('Pie Chart Clicked') }} labels={['FINANCED', 'REJECTED', 'PURGED']} data={[this.state.financedPercentage, this.state.rejectedPercentage, this.state.purgedPercentage]} height={120}
                                         // backgroundColor={['#7aa62d', '#18e244', '#95d22a', '#62920d']} />
@@ -2687,6 +2903,21 @@ class EcommerceDashboard extends React.Component {
                                         <label htmlFor="">Value</label>
                                     </div>
                                     <img onClick={() => this.refreshSingleWidget(20)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    <div className="dropup">
+                                        <button className="btn btn-default dropdown-toggle drop-up-button" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i className="fa fa-cogs"></i>
+                                            <span className="caret"></span>
+                                        </button>
+                                        <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                            <li><a onClick={() => this.changeGraphType('2ValueBar-Vertical', 'widget1')} >View as Pie</a></li>
+                                            <li><a onClick={() => this.changeGraphType('bubbleChart', 'widget1')} >View as Bubbles</a></li>
+                                            <li role="separator" className="divider"></li>
+                                            <li><a onClick={() => this.downloadAsPDF(this.state.widget1data)} >Download as PDF</a></li>
+                                            <li><a onClick={() => this.downloadAsCSV(this.state.widget1data)} >Download as CSV</a></li>
+                                            <li role="separator" className="divider"></li>
+                                            <li><a onClick={() => this.sendAsEmail(this.state.widget1data)} >Send as Email</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 {this.state.widget20isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
