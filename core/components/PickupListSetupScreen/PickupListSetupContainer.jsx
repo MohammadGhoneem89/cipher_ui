@@ -342,16 +342,16 @@ class PickupListSetupContainer extends React.Component {
             <Row>
               <Col>
                 <Lable columns='1' text={utils.getLabelByID("Type Name")} />
-                <Input fieldname='typeName' formname='typeForm' columns='5' style={{}}
+                <Input fieldname='typeName' disabled={!this.state.isNew} formname='typeForm' columns='5' style={{}}
                   state={this.state} actionHandler={this.generalActionHandler} />
-                <Lable columns='1' text={utils.getLabelByID("category")} />
-                <Select fieldname='type' formname='typeForm' columns='5' style={{}}
+                <Lable columns='1' text={utils.getLabelByID("MAU_useCase")} />
+                <Select fieldname='type' disabled={!this.state.isNew} formname='typeForm' columns='5' style={{}}
                   state={this.state} typeName="typeDataList" dataSource={this.state}
                   multiple={false} actionHandler={this.generalActionHandler} />
               </Col>
             </Row>
           </Portlet>
-          <Portlet title={"Pickup List Detail"}>
+          <Portlet title={"label / Vaues Detail"}>
             <Row>
               <Col>
                 <Lable columns='1' text={utils.getLabelByID("Label")} />
@@ -474,5 +474,5 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-PickupListSetupContainer.displayName = "PickupListSetup_Heading";
+PickupListSetupContainer.displayName = "List of Values Setup";
 export default connect(mapStateToProps, mapDispatchToProps)(PickupListSetupContainer);
