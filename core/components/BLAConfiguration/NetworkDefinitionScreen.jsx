@@ -17,6 +17,11 @@ const initialState = {
     "type": "",
     "username": "",
     "secret": "",
+    "networkVersion":"",
+    "caDomainName":"",
+    "caCerts":"",
+    "caName":"",
+    "caHostname":"",
     "name": "",
     "mspid": "",
     "channelName": "",
@@ -70,6 +75,11 @@ class NetworkDefinitionScreen extends React.Component {
       _.isEmpty(data.ca) ||
       _.isEmpty(data.username) ||
       _.isEmpty(data.secret) ||
+      _.isEmpty(data.networkVersion) ||
+      _.isEmpty(data.caDomainName) ||
+      _.isEmpty(data.caCerts) ||
+      _.isEmpty(data.caName) ||
+      _.isEmpty(data.caHostname) ||
       _.isEmpty(data.mspid) ||
       _.isEmpty(data.type)
     ) {

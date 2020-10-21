@@ -471,6 +471,10 @@ class CreateSmartContract extends React.Component {
               return false;
             }
           }
+          if (this.state.smartContractData.networkEntities == '') {
+            alert("networkEntities are required");
+            return;
+          }
           if (this.state.documents.length && this.state.documents.length != 0) {
             this.state.smartContractData.status = "========================COMMIT 2.0 REQUEST SENT=============================="
             this.setState({ status: this.state.smartContractData });
@@ -490,6 +494,7 @@ class CreateSmartContract extends React.Component {
               "peerDomain":this.state.channelData.network.peerDomain,
               "peerPort":this.state.channelData.network.peerPort,
               "signaturePolicy":this.state.channelData.network.signaturePolicy,
+              "networkEntities":this.state.channelData.network.networkEntities,
               "sequence":this.state.smartContractData.sequence,
               "smartContractArgs": arg,
               "packageIdentifier":this.state.smartContractData.packageIdentifier

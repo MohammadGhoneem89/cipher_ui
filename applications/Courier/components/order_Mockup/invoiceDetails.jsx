@@ -1499,6 +1499,7 @@ class InvoiceDetails extends React.Component {
                                   </div>
                                   <div className="col-md-12">
                                       <AnchorComp
+                                          style={{marginBottom:"15px"}}
                                           anchotDisplayName = {"SOAP Payload"}
                                           // invokeAnchorButtonhandlar = {this.soapPayloadHandler}
                                           invokeAnchorButtonhandlar = {()=> {this.invoiceDetailsPopUpHandler({actionName:"View SOAP Payload", index: -1}) }}

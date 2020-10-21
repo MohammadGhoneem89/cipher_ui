@@ -115,6 +115,7 @@ class UserSetupContainer extends Component {
     this.props.actions.generalProcess(constants.getBlkUserList); // Hyperledger/quorum etc blckchain users (peer admins)
     this.props.actions.generalProcess(constants.getTypeData, requestCreator.createTypeDataRequest(['ORG_TYPES', 'CALLER_TYPES', 'First_Screens'])); // Org types (entities)
     this.props.actions.generalProcess(constants.passwordPolicyDetail, { "action": "typeDataDetail" });
+    this.props.actions.generalProcess(constants.getEndpointListView);
 
 
     this.props.actions.generalProcess(constants.getUserDetail, {    // user detail + groups list
@@ -151,6 +152,7 @@ class UserSetupContainer extends Component {
       });
     } else {
       let rejectionReason = document.getElementById('rejectionReason') == null ? "" : document.getElementById('rejectionReason').value;
+      console.log("ffffffffffffffffffff",rejectionReason);
       this.props.actions.generalProcess(constants.userApproveReject, {
         data: {
           id: this.props.params.checkerID,
@@ -161,7 +163,27 @@ class UserSetupContainer extends Component {
   }
   componentWillReceiveProps(nextProps) {
     let perTypeData = this.getPermissionTypeData(nextProps.permission);
+    if(nextProps.endpointListView){
+      let endponints = nextProps.endpointListView.filter(item=>item.requestType=="ldap").map(element=>{
+        return {
+          value:element.value,
+          label:element.text
+        }
+      });
+      this.setState({
+        typeData: {
+          ...this.state.typeData,
+          endpointList:endponints
+        }
+      })
+      
+
+    }
     if (nextProps.userDetail && nextProps.userDetail.groups && nextProps.passwordPolicyDetail && nextProps.entityNames && (nextProps.orgTypes || nextProps.callerTypes || nextProps.firstScreens) && nextProps.hyperledgerData && nextProps.quorrumData) {
+
+
+      console.log("nextProps.userDetail",nextProps.userDetail);
+      // && nextProps.affiliationData
 
       //allowIncorrectLoginAttempts from passwordPolicy
       const passwordPolicy = nextProps.passwordPolicyDetail;
@@ -174,7 +196,8 @@ class UserSetupContainer extends Component {
       if (userType !== 'Entity' && userType !== 'Acquirer') {
         authenticationType = [
           { value: "System", label: "System" },
-          { value: "Local", label: "Local" }
+          { value: "Local", label: "Local" },
+          { value: "LDAP", label: "LDAP" }
         ];
       } else {
         authenticationType = [
@@ -199,7 +222,7 @@ class UserSetupContainer extends Component {
       groups.forEach(elem => {
         elem.type == 'UI' ? groupUI.push(elem) : groupAPI.push(elem);
       })
-      console.log(JSON.stringify(groups))
+      // console.log(JSON.stringify(groups))
       console.log(this.props.params.userID, ' : User ID')
 
       let hypUser = nextProps.userDetail.hypUser
@@ -240,6 +263,7 @@ class UserSetupContainer extends Component {
               }),
             hyperledgerData: nextProps.hyperledgerData,
             quorrumData: nextProps.quorrumData,
+            affiliationData: nextProps.affiliationData,
             authenticationType
           },
           groupUI,
@@ -268,6 +292,7 @@ class UserSetupContainer extends Component {
             entityNames: nextProps.entityNames,
             hyperledgerData: nextProps.hyperledgerData,
             quorrumData: nextProps.quorrumData,
+            affiliationData: nextProps.affiliationData,
             authenticationType
           },
           permissionTypeData: perTypeData,
@@ -310,6 +335,9 @@ class UserSetupContainer extends Component {
     }
     if (this.state.userDetail.userType === 'Human' && !this.state.userDetail.authType) {
       errors.authType = 'Field is Required'
+    }
+    if (this.state.userDetail.authType === 'LDAP' && !this.state.userDetail.endpoint) {
+      errors.endpoint = 'Field is Required'
     }
     if (!this.state.userDetail.orgType) {
       errors.orgType = 'Field is Required'
@@ -634,6 +662,8 @@ class UserSetupContainer extends Component {
   // }
 
   render() {
+
+    console.log("typeDatatypeDatatypeDatatypeDatatypeDatatypeDatatypeData",this.state.typeData);
     if (!this.state.isLoading) {
       let allowedGroup = []
       let groupList = []
@@ -687,7 +717,8 @@ function mapStateToProps(state, ownProps) {
     firstScreens: _.get(state.app, 'typeData.data.First_Screens', undefined),
     permission: _.get(state.app, 'permissionData.data.menuPermissions', undefined),
     hyperledgerData: _.get(state.app, 'NetworkUserTypeData.data.hyperledger', undefined),
-    quorrumData: _.get(state.app, 'NetworkUserTypeData.data.quorrum', undefined)
+    quorrumData: _.get(state.app, 'NetworkUserTypeData.data.quorrum', undefined),
+    endpointListView: _.get(state.app,'getEndpointListView.data',undefined)
 
   }
 }
