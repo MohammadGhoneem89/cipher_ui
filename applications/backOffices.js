@@ -22,5 +22,4 @@ const backOffices = {
     //URLReportService: 'http://localhost:10052'
    // IPFS: "//avanza-training.westeurope.cloudapp.azure.com/API/core/download?type=IPFS&path="
 };
-
 export default backOffices;
