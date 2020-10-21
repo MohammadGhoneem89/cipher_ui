@@ -730,6 +730,14 @@ pre {
     }
 }
 
+.GraphPlaceholder{
+    background-image: url('../../../images/graphplaceholder.jpg');
+    background-position: 'center';
+    background-size: 'cover';
+    background-repeat: 'no-repeat';
+    height: 500px;
+  }
+
 
 
 text {
