@@ -1845,165 +1845,138 @@ text.subunit-label {
       
 /* World Heat Chart ends */
 
-.monitoringTab{
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	height: 80%;
-}
 
-.monitoringHeading{
-    display: flex !important;
-    justify-content: center;
-    min-height: 20%;
-    font-size: 25px;
-    font-weight: 700;
-    padding-top: 15px;
-    padding-bottom: 15px
-}
-/* Drag and Drop Starts */
 
-.container-drag {
-    text-align: center;
-  }
-  
-  .wip {
-    position: absolute;
-    width: 150px;
-    height: 100vh;
-    left: 0;
-    top: 10;
-    background-color: #EEEEEE;
-    border-right: 1px dotted;
-  }
-  
-  .header {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    background-color: #E0E0E0;
-    width:100%;
-  }
-  
-  .task-header {
-    display: inline-block;
-    background-color: skyblue;
-    width:100%;
-  }
-  
-  .droppable {
-    position: absolute;
-    width: 150px;
-    height: 100vh;
-    right: 0;
-    top: 10;
-    background-color: #9E9E9E;
-    border-left: 1px dotted;
-  }
-  
-  .draggable {
-    width: 100px;
-    height: 100px;
-    background-color: yellow;
-    margin: 5px auto;
-    line-height: 5em;
-  }
-  
-/* Drag and Drop Ends */
 
-/* DendoGram Graph Starts */
-#my_dendogram .link {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* dendrogram */
+
+.link {
     fill: none;
-    stroke: #555;
-    stroke-opacity: 0.4;
-    stroke-width: 1px;
+    stroke: green;
+    stroke-opacity: 0.7;
+    stroke-width: 1.7px;
+    stroke-dasharray: 5;
+    animation: dash 10s linear infinite;
+
 }
-#my_dendogram text {
+
+.link2 {
+    fill: none;
+    stroke: red;
+    stroke-opacity: 1;
+    stroke-width: 1.2px;
+    stroke-dasharray: none;
+    animation: none;
+}
+
+.link3 {
+    fill: none;
+    stroke: green;
+    stroke-opacity: 1;
+    stroke-width: 1.2px;
+    stroke-dasharray: none;
+    animation: none;
+}
+
+.text1 {
+    fill: green !important;
+}
+.text2 {
+    fill: red !important;
+}
+@keyframes dash {
+    to {
+        stroke-dashoffset: 100;
+    }
+}
+
+.GraphPlaceholder{
+    background-image: url('../../../images/graphplaceholder.jpg');
+    background-position: 'center';
+    background-size: 'cover';
+    background-repeat: 'no-repeat';
+    height: 500px;
+  }
+
+
+
+text {
     font-family: "Arial Black", Gadget, sans-serif;
     fill: black;
     font-weight: bold;
-    font-size: 8px
+    font-size: 14px
 }
 
-#my_dendogram .xAxis .tick text{
+.xAxis .tick text {
     fill: black;
 }
-#my_dendogram .grid .tick line{
+
+.grid .tick line {
     stroke: grey;
     stroke-dasharray: 5, 10;
     opacity: 0.7;
 }
-#my_dendogram .grid path{
+
+.grid path {
     stroke-width: 0;
 }
 
-#my_dendogram .node circle {
+.node circle {
     fill: #999;
 }
-#my_dendogram .node--internal circle {
+
+.node--internal circle {
     fill: #555;
 }
-#my_dendogram .node--internal text {
-    font-size: 10px;
+
+.node--internal text {
+    font-size: 16px;
     text-shadow: 0 2px 0 #fff, 0 -2px 0 #fff, 2px 0 0 #fff, -2px 0 0 #fff;
 }
-#my_dendogram .node--leaf text {
-    fill: white;
-}
-#my_dendogram .ballG text {
-    fill: white;
+
+.node--leaf text {
+    fill: black;
 }
 
-#my_dendogram .shadow {
-    -webkit-filter: drop-shadow( -1.5px -1.5px 1.5px #000 );
-    filter: drop-shadow( -1.5px -1.5px 1.5px #000 );
-}
-/* DendoGram Graph Ends */
-
-/* react trello board */
-.column-headings {
-    width: 78px;
-    height: 50px;
-    margin-bottom: 20px; 
+.ballG text {
+    fill: black;
 }
 
-.cHArjo {
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    overflow-y: inherit;
+.shadow {
+    -webkit-filter: drop-shadow(-1.5px -1.5px 1.5px #000);
+    filter: drop-shadow(-1.5px -1.5px 1.5px #000);
+}
+.notification-hit-grid table thead tr th a {
+	color: white !important;
+	text-decoration: none !important;
 }
 
-.header-titles {
-    display: flex;
-    justify-content: space-around;
-    font-weight: 600;
-}
-/* .dehkvL { */
-.sc-EHOje {
-    min-width: 390px;
-    /* overflow: inherit; */
-}
-.sc-htpNat {
-    width: 400px;
-}
-.sc-dnqmqq {
-    max-width: 350px;
-    margin-left: 15px;
-}
-.smooth-dnd-container {
-    height: 100vh;
-}
-section.sc-htpNat.HLTqd {
-    background-color: transparent;
-    border: 1px solid #d0d0d0;
-    box-shadow: 0px 0px 6px #00000024;
-}
-article.sc-dnqmqq.iQLmWD.sc-htoDjs.cAyhnA {
-    border: 1px solid #c2c2c2;
-    border-radius: 0;
-}
-.sc-EHOje.dehkvL {
-    border-top: 1px solid grey;
-    padding: 5px 0px;
-}
+/* dendogram-end */

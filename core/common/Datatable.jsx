@@ -41,7 +41,7 @@ class Datatable extends React.Component {
       console.log(this.props.gridData);
       this.setState({ isLoading: false });
     }
-    this.setState({ activePage: this.props.activePage });
+    this.setState({ activePage: nextProps.activePage });
   }
 
   getExportOptions(exportForDetail, enableXMLExport) {
@@ -200,15 +200,28 @@ class Datatable extends React.Component {
     this.props.pageChanged(pageNumber);
   }
 
+  
+  selectAllItems() {
+    $("input:checkbox").prop('checked', true);
+    if (this.props.selectAllItems) this.props.selectAllItems();
+  }
+
+  unselectAllItems() {
+    $("input:checkbox").prop('checked', false);
+    if (this.props.unselectAllItems) this.props.unselectAllItems();
+  }
+
   getHeader(colData, index, gridData) {
     switch (colData.type) {
       case "cb":
         return (<th key={index.toString()}>
           <a href="javascript:" onClick={() => {
-            $("input:checkbox").prop('checked', true);
+            // $("input:checkbox").prop('checked', true);
+            this.selectAllItems();
           }}>Select</a>/
           <a href="javascript:" onClick={() => {
-            $("input:checkbox").prop('checked', false);
+            // $("input:checkbox").prop('checked', false);
+            this.unselectAllItems();
           }}>Un-select</a>
         </th>);
       case "hiddenID":
@@ -262,8 +275,6 @@ class Datatable extends React.Component {
       searchObj: $('#searchINP')
     })
   }
-
-
 
   returnSingleKey(key, value) {
     console.log(key, value);
