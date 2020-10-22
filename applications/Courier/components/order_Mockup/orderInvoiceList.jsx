@@ -180,10 +180,10 @@ class OrderInvoiceList extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.fetchData();
-
+    console.log("params : ", this.props.params.id)
     let request = {
       "body" : {
-          "orderId":"OR1234567"
+          "orderId": this.props.params.id
       }
   }
   this.props.actions.generalProcess(constantsApp.getEndToEndTrackingInformation, request);
@@ -228,6 +228,7 @@ class OrderInvoiceList extends React.Component {
       orderDetailsContainer.invoices = nextProps.orderInvoiceDetails.invoices;
 
       orderDetailsContainer.invoices.map(item=>{
+        item.orderId = nextProps.orderInvoiceDetails.orderID;
         item.fzCode = item.fzCode ? item.fzCode : "-";
         item.wareHouse = item.wareHouse ? item.wareHouse : "-";
         item.itmCnt = item.lineItems.length;

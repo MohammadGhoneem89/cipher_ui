@@ -87,7 +87,7 @@ module.exports = {
     { alias: "Action", key: "actions", type: "action" }
   ],
   orderInvoice: [
-    { alias: "", key: "invoiceNumber", type: "hiddenID" },
+    { alias: "", key: "orderId", type: "hiddenID" },
     { alias: "invoice #", key: "invoiceNumber", type: "string" },
     { alias: "invoice Value", key: "totalValue", type: "string" },
     { alias: "currency", key: "currency", type: 'string' },
@@ -192,7 +192,7 @@ module.exports = {
     { alias: "Document #", key: "documentNo", type: "string" },
     { alias: "HAWB", key: "HAWB", type: "string" },
     { alias: "Declaration", key: "declarationNo", type: "string" },
-    { alias: "View", key: "action", type: "action" }
+  //  { alias: "View", key: "action", type: "action" }
   ],
   OrderTrackingLogs: [
     { alias: "S.No", key: "S.No", type: "serialNo"  },

@@ -158,6 +158,28 @@ class BusinessTransaction extends React.Component {
                     "imageURL": "/assets/Resources/images/aramex_updated.png"
                 }
               ],
+            eCommerceList: [
+                {
+                    "name": "ALL",
+                    "imageURL": "/assets/Resources/images/ecommerce/whiteImageBorder.png"
+                },
+                {
+                    "name": "Noon",
+                    "imageURL": "/assets/Resources/images/ecommerce/noon.png"
+                },
+                {
+                    "name": "Amazon",
+                    "imageURL": "/assets/Resources/images/ecommerce/amazon.jpg"
+                },
+                {
+                    "name": "Awok",
+                    "imageURL": "/assets/Resources/images/ecommerce/awok.jpg"
+                },
+                {
+                    "name": "Namshi",
+                    "imageURL": "/assets/Resources/images/ecommerce/namshi.jpg"
+                }
+            ],
             demoIntervalTime:[
                 [2, 0], // 1  mins
                 [2, 1], // 2  hours
@@ -1407,7 +1429,7 @@ class BusinessTransaction extends React.Component {
                                                     <div className="controls">
                                                         <select className="multiselect" multiple="multiple" id="Server0Vm">
                                                             <optgroup>
-                                                                {this.state.declarationProcessors.map( item=> {
+                                                                {this.state.eCommerceList.map( item=> {
                                                                     return <option data-img={item.imageURL} value={item.name}>{item.name}</option>
                                                                 })}
                                                             </optgroup>
