@@ -3555,21 +3555,30 @@ text.subunit-label {
 .timeline .panel-outline .panel-footer {
     display: none;
 }
-.timelinescreen .panel-primary>.panel-heading {
+.timelinescreen .panel-success>.panel-heading {
     color: #fff;
     background-color: #00ae4f;
     border-color: #00ae4f;
 }
-.timelinescreen .panel-primary {
+.timelinescreen .panel-success {
     border-color: #00ae4f;
 }
-.timelinescreen .panel-success>.panel-heading {
+.timelinescreen .panel-danger>.panel-heading {
     color: #ffffff;
     background-color: #e80202;
     border-color: #e80202;
 }
-.timelinescreen .panel-success {
+.timelinescreen .panel-danger {
     border-color: #e80202;
+}
+
+.timelinescreen .panel-warning>.panel-heading {
+    color: #ffffff;
+    background-color: #fb7425;
+    border-color: #fb7425;
+}
+.timelinescreen .panel-warning {
+    border-color: #fb7425;
 }
 
 /* TimeLine End */

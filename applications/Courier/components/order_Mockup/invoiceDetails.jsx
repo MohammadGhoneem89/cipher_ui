@@ -272,23 +272,31 @@ class InvoiceDetails extends React.Component {
   }
 
   getDeclarationStatus(label){
-    switch (label) {
+    switch (label.toUpperCase()) {
       case 'SUBMITTED':
-        return "#00ae4f"
-      case 'FAILED':
-        return "#e80202"
+        return "panel panel-success"
       case "CLEARED":
-        return "#00ae4f"
+        return "panel panel-success"
       case "CLEARANCE SUBJECT TO INSPECTION":
+        return "panel panel-warning";
       case "RELEASE FOR INSPECTION":
+        return "panel panel-warning";
       case "CREATED":
-      case "YELLOW":
+        return "panel panel-warning";
+      case 'FAILED':
+        return "panel panel-danger";
       case "DETAINED":
+        return "panel panel-danger";
       case "SUSPEND":
+        return "panel panel-danger";
       case "CANCELLED":
+        return "panel panel-danger";
       case "DECLINED":
+        return "panel panel-danger";
       case "REJECTED":
+        return "panel panel-danger";
       case "FAIL DISPATCH":
+        return "panel panel-danger";
       default:
         return "grey";
     }
@@ -1096,10 +1104,10 @@ class InvoiceDetails extends React.Component {
                   <ul id="adHocTabs" className="nav nav-tabs">
                     <li id="fieldsTabLink" className="active"><a href="#orderLine" data-toggle="tab"><span> Order Line</span></a></li>
                     <li id="filtersTabLink"><a href="#transport" data-toggle="tab"><span> Transport</span></a></li>
-                    <li id="fieldsTabLink"><a href="#exportDeclaration" data-toggle="tab"><span> OUTBOUND Declaration</span></a></li>
+                    <li id="fieldsTabLink"><a href="#exportDeclaration" data-toggle="tab"><span> Outbound Declaration</span></a></li>
                     <li id="groupsTabLink"><a href="#exitConfirmation" data-toggle="tab"> <span> Exit Confirmation</span></a></li>
                     <li id="filtersTabLink"><a href="#delivered" data-toggle="tab"> <span> Delivered</span></a></li>
-                    <li id="fieldsTabLink"><a href="#importDeclaration" data-toggle="tab"><span> INBOUND Declaration</span></a></li>
+                    <li id="fieldsTabLink"><a href="#importDeclaration" data-toggle="tab"><span> Inbound Declaration</span></a></li>
                     <li id="groupsTabLink"><a href="#returnDetails" data-toggle="tab"><span> Return Details</span></a></li>
                     <li id="groupsTabLink"><a href="#invoiceTrackingLogs" data-toggle="tab"><span> Logs</span></a></li>                  </ul>
                 </div>
@@ -1539,7 +1547,7 @@ class InvoiceDetails extends React.Component {
                                 <div className="col-md-3">
                                   <div className="timeline timelinescreen">       
                                     <div className="line text-muted"></div>
-                                    <article className={item.status === "SUBMITTED" ? "panel panel-primary" : "panel panel-success"}>
+                                    <article className={this.getDeclarationStatus(item.status)}>
                                 
                                         <div className="panel-heading icon">
                                           
@@ -1662,7 +1670,7 @@ class InvoiceDetails extends React.Component {
                                     </div>
                                   </div>
       
-                                  { item.status !== "FAILED" ?
+                                  { item.chargesList.length > 0 ?
                                     <div className="row">
                                       <div className="col-md-12">
                                         <div className="col-md-6" style={{ margin: "20px 0px 20px 0px" }}>
@@ -1681,15 +1689,18 @@ class InvoiceDetails extends React.Component {
                                         </div>
                                       </div>
                                     </div>
-                                  :  
+                                    :  
+                                    <div></div>
+                                  }
+                                  { item.exceptionsList.length > 0 ? 
                                     <div className="row">
                                       <div className="col-md-12">
                                         <div className="col-md-6" style={{ margin: "20px 0px 20px 0px" }} >
                                           <Lable text="Exceptions" style={{padding:"0px", margin:"0px 0px -10px -15px"}} />
                                           <Table fontclass=""
                                               gridColumns={utils.getGridColumnByName("BusinessTransactionError")}
-                                              gridData={[]}
-                                              totalRecords={[]}
+                                              gridData={_.get(item,'exceptionsList', [])}
+                                              totalRecords={100}
                                               searchCallBack={this.searchCallBack}
                                               pageSize={10}
                                               pagination={false} pageChanged={this.pageChanged}
@@ -1699,6 +1710,8 @@ class InvoiceDetails extends React.Component {
                                         </div>
                                       </div>
                                     </div>
+                                    :
+                                    <div></div>
                                   }
                                   <div className="col-md-12">
                                     <div className="row">
@@ -1891,7 +1904,7 @@ class InvoiceDetails extends React.Component {
                                 <div className="col-md-3">
                                   <div className="timeline timelinescreen">       
                                     <div className="line text-muted"></div>
-                                    <article className={item.status === "SUBMITTED" ? "panel panel-primary" : "panel panel-success"}>
+                                    <article className={this.getDeclarationStatus(item.status)}>
                                 
                                         <div className="panel-heading icon">
                                           
@@ -2014,7 +2027,7 @@ class InvoiceDetails extends React.Component {
                                     </div>
                                   </div>
       
-                                  { item.status !== "FAILED" ?
+                                  { item.chargesList.length > 0 ?
                                     <div className="row">
                                       <div className="col-md-12">
                                         <div className="col-md-6" style={{ margin: "20px 0px 20px 0px" }}>
@@ -2033,15 +2046,18 @@ class InvoiceDetails extends React.Component {
                                         </div>
                                       </div>
                                     </div>
-                                  :  
+                                    :  
+                                    <div></div>
+                                  }
+                                  { item.exceptionsList.length > 0 ? 
                                     <div className="row">
                                       <div className="col-md-12">
                                         <div className="col-md-6" style={{ margin: "20px 0px 20px 0px" }} >
                                           <Lable text="Exceptions" style={{padding:"0px", margin:"0px 0px -10px -15px"}} />
                                           <Table fontclass=""
                                               gridColumns={utils.getGridColumnByName("BusinessTransactionError")}
-                                              gridData={[]}
-                                              totalRecords={[]}
+                                              gridData={_.get(item,'exceptionsList', [])}
+                                              totalRecords={100}
                                               searchCallBack={this.searchCallBack}
                                               pageSize={10}
                                               pagination={false} pageChanged={this.pageChanged}
@@ -2051,6 +2067,8 @@ class InvoiceDetails extends React.Component {
                                         </div>
                                       </div>
                                     </div>
+                                    :
+                                    <div></div>
                                   }
                                   <div className="col-md-12">
                                     <div className="row">
