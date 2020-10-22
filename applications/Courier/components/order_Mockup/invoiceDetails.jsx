@@ -277,6 +277,18 @@ class InvoiceDetails extends React.Component {
         return "#00ae4f"
       case 'FAILED':
         return "#e80202"
+      case "CLEARED":
+        return "#00ae4f"
+      case "CLEARANCE SUBJECT TO INSPECTION":
+      case "RELEASE FOR INSPECTION":
+      case "CREATED":
+      case "YELLOW":
+      case "DETAINED":
+      case "SUSPEND":
+      case "CANCELLED":
+      case "DECLINED":
+      case "REJECTED":
+      case "FAIL DISPATCH":
       default:
         return "grey";
     }
@@ -291,7 +303,7 @@ class InvoiceDetails extends React.Component {
       let invoiceData = nextProps.orderInvoiceDetails.invoices[0];
       invoiceDetailsContainer.associatedEcommerceDetails = invoiceData.associatedEcommerceDetails
       invoiceDetailsContainer.brokerDetails = invoiceData.brokerDetails
-      invoiceDetailsContainer.lastMileDeliveryDetails = invoiceData.lastMileDeliveryDetails
+      invoiceDetailsContainer.logisticsStorageProviderDetails = invoiceData.logisticsStorageProviderDetails
 
       invoiceDetailsContainer.orderID = nextProps.orderInvoiceDetails.orderID;
       invoiceDetailsContainer.invoiceNumber = invoiceData.invoiceNumber;
@@ -622,7 +634,7 @@ class InvoiceDetails extends React.Component {
               label: "View SOAP Payload",
               actionType: "COMPONENT_FUNCTION"
           }]
-         item.dateTime = moment.unix(item.txTimeStamp).unix("DD/MM/YYYY HH:mm:ss")
+         item.dateTime = moment.unix(item.txTimeStamp/1000).unix("DD/MM/YYYY HH:mm:ss")
          return item
         })
       invoiceDetailsContainer.importDeclarationTrackingLogs = invoiceData.importDeclarationTrackingLogs.map( item => {
@@ -631,11 +643,14 @@ class InvoiceDetails extends React.Component {
                 label: "View SOAP Payload",
                 actionType: "COMPONENT_FUNCTION"
             }]
-        item.dateTime = moment.unix(item.txTimeStamp).unix("DD/MM/YYYY HH:mm:ss")
+        item.dateTime = moment.unix(item.txTimeStamp/1000).unix("DD/MM/YYYY HH:mm:ss")
         return item
       })
       // content For Tab8 (InvoiceTrackingLogs)
-      invoiceDetailsContainer.invoiceTrackingLogs = invoiceData.InvoiceTrackingLogs;
+      invoiceDetailsContainer.invoiceTrackingLogs = invoiceData.InvoiceTrackingLogs.map( item => {
+        item.dateTime = moment.unix(item.txTimeStamp/1000).unix("DD/MM/YYYY HH:mm:ss")
+        return item
+      });
       stateCopy.invoiceDetailsContainer = invoiceDetailsContainer
       console.log("stateCopy props udpate ===== ", stateCopy);
       stateCopy.isLoading = false
@@ -907,15 +922,15 @@ class InvoiceDetails extends React.Component {
                     { <span className="bold">{_.get(this.state.invoiceDetailsContainer.associatedEcommerceDetails, `companyName`, "")}</span> }
                   </div>
                   <div className="col-md-4 text-center">
-                    <div><h4 className="bold">Courier Company</h4></div>
+                    <div><h4 className="bold">Logistics Processor</h4></div>
                     <div><img src={`${baseUrl}${this.state.invoiceDetailsContainer.brokerDetails.companyLogo}`} onError={this.addDefaultECommerceSrc} width="100px" height="100px" /></div>
                     { <span className="bold">{_.get(this.state.invoiceDetailsContainer.brokerDetails, `companyName`, "")}</span> }
                   </div>
 
                   <div className="col-md-4 text-center">
                     <div><h4 className="bold">Declaration Processor</h4></div>
-                    <div><img src={`${baseUrl}${this.state.invoiceDetailsContainer.lastMileDeliveryDetails.companyLogo}`} onError={this.addDefaultECommerceSrc} width="100px" height="100px" /></div>
-                    { <span className="bold">{_.get(this.state.invoiceDetailsContainer.lastMileDeliveryDetails, `companyName`, "")}</span> }
+                    <div><img src={`${baseUrl}${this.state.invoiceDetailsContainer.logisticsStorageProviderDetails.companyLogo}`} onError={this.addDefaultECommerceSrc} width="100px" height="100px" /></div>
+                    { <span className="bold">{_.get(this.state.invoiceDetailsContainer.logisticsStorageProviderDetails, `companyName`, "")}</span> }
                   </div>
                 </div>
               </div>
@@ -1112,19 +1127,25 @@ class InvoiceDetails extends React.Component {
                       return (
                       <div className="shadowBox" style={{ padding:"5px", marginBottom: "15px"}}>
                         <div className="row">
-                          <div className="col-md-12" style={{marginTop:"10px" }}>
-                            <div className="col-md-2">
-                              <label>{ item.mode }</label>
+                          <div className="form-group" style={{display:"table"}}>
+                            <div className="col-md-12" style={{marginTop:"10px" }}>
+                              <div className="col-md-2">
+                                <label>{ item.mode }</label>
+                              </div>
+                              <div className="col-md-4">
+                                {console.log("txTimeStamp ========== ", item.txTimeStamp)}
+                                <label style={{ fontWeight:"normal"}}> {moment.unix(item.txTimeStamp/1000).format("MM/DD/YYYY HH:mm:ss")}</label>
+                              </div>
                             </div>
-                            <div className="col-md-4">
-                              {console.log("txTimeStamp ========== ", item.txTimeStamp)}
-                              <label style={{ fontWeight:"normal"}}> {moment.unix(item.txTimeStamp/1000).format("MM/DD/YYYY HH:mm:ss")}</label>
-                            </div>
-                            <div className="col-md-6" style={{textAlign:"right", overflowWrap: "anywhere"}}>
+                            <div className="col-md-12">
+                              {/* <div className="col-md-2">
+                                <label>Transaction Id: </label>
+                              </div> */}
+                              <div className="col-md-12" style={{overflowWrap: "anywhere"}}>
                                 <label>{ item.txID }</label>
+                              </div>
                             </div>
                           </div>
-
                           <div className="col-md-12">
                             <div className="col-md-2">
                                 <label>Master Transport Doc#</label>

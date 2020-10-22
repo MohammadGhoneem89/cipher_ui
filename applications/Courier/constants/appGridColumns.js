@@ -186,7 +186,7 @@ module.exports = {
   InvoiceTrackingLogs: [
     { alias: "S.No", key: "S.No", type: "serialNo"  },
     { alias: "Message", key: "message", type: 'string' },
-    { alias: "Date Time", key: "txTimeStamp", type: "string" },
+    { alias: "Date Time", key: "dateTime", type: "string" },
     { alias: "Sender", key: "senderOrg", type: "string" },
     { alias: "Status", key: "status", type: "string" },
     { alias: "Document #", key: "documentNo", type: "string" },
