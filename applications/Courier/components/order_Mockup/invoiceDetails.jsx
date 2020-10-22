@@ -482,6 +482,59 @@ class InvoiceDetails extends React.Component {
 //      transport.forEach( item => {
       invoiceDetailsContainer.exportDeclaration = exportDeclaration;
 
+      let importDeclarationTemp = [];
+      let importDeclaration = [];
+
+      invoiceData.returnRequest.forEach(item => {
+        item.declaration.latest ? 
+        importDeclarationTemp.push(item.declaration.latest)
+        : {}
+  
+        invoiceData.declaration.historical ? 
+        importDeclarationTemp = importDeclarationTemp.concat(item.declaration.historical)
+        : {}
+      })
+
+     
+
+      importDeclarationTemp.forEach(item => {
+        let obj = {
+                    "lastAction": _.get(item, 'lastAction', ""), //
+                    "actionTimeStamp": _.get(item, 'lastActionDateTime', ""), //
+                    "declarationStatus":  _.get(item, 'declarationStatus', ""), //
+                    "SOAPPayload":         _.get(item, 'SOAPPayload.hash', ""), //
+                    "totalCharges":         _.get(item, 'totalCharges', ""),
+                    "currency" : _.get(item, 'currency', ""),
+                    "chargesList" : _.get(item, 'charges', []), //
+                    "exceptionsList" : _.get(item, "exceptions", []), //
+                    "version":       _.get(item, 'version', ""), //
+                    "batchID":      _.get(item, 'batchID', ""), //
+                    "status":       _.get(item, 'customsStatus', ""), //
+                    "declarationNo":         _.get(item, 'declarationNo', ""), //
+                    "requestID" : _.get(item, 'requestID', ""), //
+                    "regionType":         _.get(item, 'regimeType', ""), //
+                    "declarationType":         _.get(item, 'declarationType', ""), // 
+                    "exportCodeMirsal2":         _.get(item, 'declarationType', ""), //should be removed
+                    "declarationPurpose":         _.get(item, 'declarationPurpose', ""), //
+                    "relatedDocumentList": _.get(item, 'relatedDocuments', []), //
+                    "paymentDetailsList": _.get(item, 'paymentDetails', []), //
+                    "declarationItemList": _.get(item, 'declarationItem', [])
+                  }
+                  if(obj.chargesList.length > 0)
+                  {  obj.totalCharges = _.sumBy(obj.chargesList, function (item) {
+                      return item.chargeAmount;
+                    }) 
+                  }
+                  else{
+                    obj.totalCharges = 0;
+                  }
+        importDeclaration.push(obj)
+      })  
+
+//      transport.forEach( item => {
+      invoiceDetailsContainer.importDeclaration = importDeclaration;
+
+
       let delivered = [];
       delivered = invoiceData.delivered.map(item => {
         return item;
@@ -1691,7 +1744,7 @@ class InvoiceDetails extends React.Component {
                   <div id="delivered" className="tab-pane">
                     {this.state.invoiceDetailsContainer.delivered.map( item => {
                       return (
-                      <div className="row">
+                      <div className="row" style={{ paddingTop: "25px",  paddingBottom: "25px"}}>
                           
                           <div className="col-md-8">
                             <div className="row">
@@ -1754,7 +1807,7 @@ class InvoiceDetails extends React.Component {
                         <div className="col-md-12">
                           <div style={ item.deliveryType === "contact" ? {display:""} : {display: "none"}}>
                             <AnchorComp 
-                                anchotDisplayName = {"Download"} style ={{textAlign:"right"}}
+                                anchotDisplayName = {"Download"} style ={{paddingTop:"10px"}}
                                 invokeAnchorButtonhandlar = {this.downloadHandler}
                             />
                           </div>
@@ -1775,7 +1828,7 @@ class InvoiceDetails extends React.Component {
                         />
                       </div>
                       <div className="col-md-12" style={{display:"flex", justifyContent:"center"}}>
-                        <hr style={{width:"80%"}}></hr>
+                        <hr style={{width:"80%", border:"1px solid #e7ecf1"}}></hr>
                       </div>
                     </div>
                     )
@@ -1811,169 +1864,229 @@ class InvoiceDetails extends React.Component {
                           </div>
                         </div>
                         <div id="importDeclarationView" className="tab-pane in ui-fieldtable">
-                          <div className="row">
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="row">
-                                      <div className="col-md-12">
-                                        <Lable text={utils.getLabelByID("Last Action : ")} columns="6"></Lable>
-                                        <span>10/10/2020 12:12:12</span>
+                        { this.state.invoiceDetailsContainer.importDeclaration.map(item => {
+                              return(
+                              <div className="row">
+                                <div className="col-md-3">
+                                  <div className="timeline timelinescreen">       
+                                    <div className="line text-muted"></div>
+                                    <article className={item.status === "SUBMITTED" ? "panel panel-primary" : "panel panel-success"}>
+                                
+                                        <div className="panel-heading icon">
+                                          
+                                        </div>
+                                
+                                        <div className="panel-heading">
+                                            <h2 className="panel-title">{item.status}</h2>
+                                        </div>
+                                
+                                    </article>
+                                  </div>
+                                </div>  
+                                <div className="col-md-9">
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="col-md-6">
+                                          <label>Last Action : </label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight:"normal"}}> {item.lastAction}</label>
                                       </div>
                                     </div>
-                                    <div className="row">
-                                      <div className="col-md-12">
-                                        <Lable text={utils.getLabelByID("Action Timestamp : ")} columns="6"></Lable>
-                                        <span>10/10/2020 12:12:12</span>
+                                    <div className="col-md-6">
+                                      <div className="col-md-6">
+                                          <label>Action Timestamp : </label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight:"normal"}}>  {moment.unix(item.actionTimeStamp/1000).format("DD/MM/YYYY HH:mm:ss")}</label>
                                       </div>
                                     </div>
-                                </div>
-                                <div className="col-md-6">
-                                   <span>FAILD</span>
-                                </div>
-                            </div>
-                            <div className="col-md-12">
-                                <AnchorComp
-                                    anchotDisplayName = {"SOAP Payload"}
-                                    invokeAnchorButtonhandlar = {this.soapPayloadHandler}
-                                />
-                            </div>
-                            <Lable text="Exceptions" />
-                            <div className="col-md-12">
-                                <Table fontclass=""
-                                    gridColumns={utils.getGridColumnByName("BusinessTransactionError")}
-                                    gridData={[]}
-                                    totalRecords={[]}
-                                    searchCallBack={this.searchCallBack}
-                                    pageSize={10}
-                                    pagination={false} pageChanged={this.pageChanged}
-                                    export={false}
-                                    search={true}
-                                />
-                            </div>
-                            <div className="row">
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Version</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>6</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Batch Id</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>876543567</span>
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Status</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>status</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Declaration No</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>876543567124123</span>
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Request ID</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>ECT70000046</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Region Type</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>IMPORT</span>
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Declaration Type</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>TS2 (FZ Transit In)</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Export Code Mirsal 2</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>LL0112312</span>
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <div className="col-md-6">
-                                    <label>Declaration Purpose</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <span>{"Purpose"}</span>
-                                </div>
-                              </div>
-                            </div>
+                                  </div>
+                                  <div className="col-md-12">
+                                      <AnchorComp
+                                          style={{marginBottom:"15px"}}
+                                          anchotDisplayName = {"SOAP Payload"}
+                                          // invokeAnchorButtonhandlar = {this.soapPayloadHandler}
+                                          invokeAnchorButtonhandlar = {()=> {this.invoiceDetailsPopUpHandler({actionName:"View SOAP Payload", index: -1}) }}
+                                      />
+                                  </div>
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="col-md-6">
+                                          <label>Version</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight:"normal"}}> {item.version}</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="col-md-6">
+                                          <label>Batch Id</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight:"normal"}}> {item.batchID}</label>
+                                      </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <div className="col-md-6">
+                                          <label>Status</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight:"normal"}}> {item.status}</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="col-md-6">
+                                          <label>Declaration No</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight:"normal"}}> {item.declarationNo}</label>
+                                      </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <div className="col-md-6">
+                                          <label>Request ID</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight:"normal"}}> {item.requestID}</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="col-md-6">
+                                          <label>Region Type</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight:"normal"}}> {item.regionType}</label>
+                                      </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <div className="col-md-6">
+                                          <label>Declaration Type</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight:"normal"}}> {item.declarationType}</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="col-md-6">
+                                          <label>Export Code Mirsal 2</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight:"normal"}}> {item.exportCodeMirsal2}</label>
+                                      </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <div className="col-md-6">
+                                          <label>Declaration Purpose</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight:"normal"}}> {item.declarationPurpose}</label>
+                                      </div>
+                                    </div>
+                                  </div>
+      
+                                  { item.status !== "FAILED" ?
+                                    <div className="row">
+                                      <div className="col-md-12">
+                                        <div className="col-md-6" style={{ margin: "20px 0px 20px 0px" }}>
+                                          <Lable text = {"Charges Total = " + item.totalCharges  + " AED"} style={{padding:"0px", margin:"0px 0px -10px -15px"}}/>
+                                          <Table fontclass=""
+                                              gridColumns={utils.getGridColumnByName("charges")}
+                                              gridData={_.get(item,'chargesList', [])}
+                                              totalRecords={100}
+                                  //           totalRecords={item.chargesList.length}
+                                              searchCallBack={this.searchCallBack}
+                                              pageSize={10}
+                                              pagination={false} pageChanged={this.pageChanged}
+                                              export={false}
+                                              search={true}
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  :  
+                                    <div className="row">
+                                      <div className="col-md-12">
+                                        <div className="col-md-6" style={{ margin: "20px 0px 20px 0px" }} >
+                                          <Lable text="Exceptions" style={{padding:"0px", margin:"0px 0px -10px -15px"}} />
+                                          <Table fontclass=""
+                                              gridColumns={utils.getGridColumnByName("BusinessTransactionError")}
+                                              gridData={[]}
+                                              totalRecords={[]}
+                                              searchCallBack={this.searchCallBack}
+                                              pageSize={10}
+                                              pagination={false} pageChanged={this.pageChanged}
+                                              export={false}
+                                              search={true}
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  }
+                                  <div className="col-md-12">
+                                    <div className="row">
+                                      <div className="portlet light bordered sdg_portlet" style={{display:"flex"}}>
+                                        <div className="col-md-6">
+                                          <Lable text="Related Documents" style={{padding:"0px", margin:"0px 0px -10px -15px"}} />
+                                          <Table fontclass=""
+                                            gridColumns={utils.getGridColumnByName("RelatedDocument")}
+                                            gridData={_.get(item,'relatedDocumentList', [])}
+                                            totalRecords={100}  
+                                        //  totalRecords={item.relatedDocumentList.length}        
+                                            searchCallBack={this.searchCallBack}
+                                            pageSize={10}
+                                            pagination={false} pageChanged={this.pageChanged}
+                                            export={false}
 
-                            <div className="col-md-6">
-                              <Lable text="Related Documents" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
-                              <Table fontclass=""
-                                gridColumns={utils.getGridColumnByName("RelatedDocument")}
-                                gridData={[]}
-                                totalRecords={this.state.length}
-                                searchCallBack={this.searchCallBack}
-                                pageSize={10}
-                                pagination={false} pageChanged={this.pageChanged}
-                                export={false}
-                                search={true}
-                              />
-                            </div>
-                            <div className="col-md-6">
-                              <Lable text="Payment Details" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
-                              <Table fontclass=""
-                                gridColumns={utils.getGridColumnByName("PaymentDetails")}
-                                gridData={[]}
-                                totalRecords={this.state.length}
-                                searchCallBack={this.searchCallBack}
-                                pageSize={10}
-                                pagination={false} pageChanged={this.pageChanged}
-                                export={false}
-                                search={true}
-                              />
-                            </div>
-                            <div className="col-md-12">
-                              <Lable text="Declaration Item" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
-                              <Table fontclass=""
-                                gridColumns={utils.getGridColumnByName("delivery")}
-                                gridData={[]}
-                                totalRecords={this.state.length}
-                                searchCallBack={this.searchCallBack}
-                                pageSize={10}
-                                pagination={false} pageChanged={this.pageChanged}
-                                export={false}
-                                search={true}
-                              />
-                            </div>
+
+                                            search={true}
+                                          />
+                                        </div>
+                                        <div className="col-md-6">
+                                          <Lable text="Payment Details" style={{padding:"0px", margin:"0px 0px -10px -15px"}} />
+                                          <Table fontclass=""
+                                            gridColumns={utils.getGridColumnByName("PaymentDetails")}
+                                            gridData={_.get(item, 'paymentDetailsList', [])}
+                                            totalRecords={100}
+                                    //       totalRecords={item.paymentDetailsList.length}
+                                            searchCallBack={this.searchCallBack}
+                                            pageSize={10}
+                                            pagination={false} pageChanged={this.pageChanged}
+                                            export={false}
+                                            search={true}
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* <div className="col-md-12">
+                                    <Lable text="Declaration Item" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
+                                    <Table fontclass=""
+                                      gridColumns={utils.getGridColumnByName("delivery")}
+                                      gridData={_.get(item,'declarationItemList',[])}
+                                      totalRecords={100}
+                                //     totalRecords={item.declarationItemList.length}
+                                      searchCallBack={this.searchCallBack}
+                                      pageSize={10}
+                                      pagination={false} pageChanged={this.pageChanged}
+                                      export={false}
+                                      search={true}
+                                    />
+                                  </div> */}
+                                </div>
+                              
+                              </div>    
+                              )
+                            })}
                           </div>
-                        </div>
                       </div>
                     </div>  
                   </div>
