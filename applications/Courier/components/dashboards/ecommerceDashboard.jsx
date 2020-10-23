@@ -1203,25 +1203,25 @@ class EcommerceDashboard extends React.Component {
 
             graphProps.widgetData.graphData.data.forEach(data => {
                 if (data.label && data.count) {
-                // console.log(data);
-                labels.push(data.label)
-                values.push(data.count)
-            } else {
-                let value = data.yIndex.value / calculatedScore;
-                labels.push(data.xIndex.value)
-                console.log(value * 100);
-                values.push(Math.round(value * 100))
-            }
+                    // console.log(data);
+                    labels.push(data.label)
+                    values.push(data.count)
+                } else {
+                    let value = data.yIndex.value / calculatedScore;
+                    labels.push(data.xIndex.value)
+                    console.log(value * 100);
+                    values.push(Math.round(value * 100))
+                }
             })
             let chart = <PieChart onElementsClick={() => { console.log('Pie Chart Clicked') }} labels={labels} data={values} height={120}
                 // backgroundColor={['#7aa62d', '#18e244', '#95d22a', '#62920d']} />
-                backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3', '#3ASD43', '#2135f3', '#ae2b4b', '#8B8B8B' ]} />
+                backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3', '#3ASD43', '#2135f3', '#ae2b4b', '#8B8B8B']} />
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
-                [graphProps.widgetData.widgetId + 'data']: dataArray,
+                // [graphProps.widgetData.widgetId + 'data']: dataArray,
                 [stateLabel]: false
             })
         }
@@ -1239,18 +1239,18 @@ class EcommerceDashboard extends React.Component {
 
             graphProps.widgetData.graphData.data.forEach(data => {
                 if (data.label && data.count) {
-                // console.log(data);
-                labels.push(data.label)
-                values.push(data.count)
-            } else {
-                let value = data.yIndex.value / calculatedScore;
-                labels.push(data.xIndex.value)
-                console.log(value * 100);
-                values.push(Math.round(value * 100))
-                keys.push(data.xIndex.value)
-            }
+                    // console.log(data);
+                    labels.push(data.label)
+                    values.push(data.count)
+                } else {
+                    let value = data.yIndex.value / calculatedScore;
+                    labels.push(data.xIndex.value)
+                    console.log(value * 100);
+                    values.push(Math.round(value * 100))
+                    keys.push(data.xIndex.value)
+                }
             })
-            
+
             let obj = {};
 
             keys.map((key, index) => {
@@ -1259,7 +1259,7 @@ class EcommerceDashboard extends React.Component {
                     [key]: values[index]
                 }
             })
-            
+
             console.log(obj, 'DOBJECT')
 
             let chart = <DonutChart dataObject={obj} />
@@ -1268,7 +1268,7 @@ class EcommerceDashboard extends React.Component {
             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
-                [graphProps.widgetData.widgetId + 'data']: dataArray,
+                // [graphProps.widgetData.widgetId + 'data']: dataArray,
                 [stateLabel]: false
             })
         }
@@ -1290,7 +1290,7 @@ class EcommerceDashboard extends React.Component {
                 })
             } else {
 
-                
+
                 graphProps.widgetData.graphData.data.forEach(data => {
                     // console.log(data);
                     x.push(data.xIndex.value)
@@ -1580,7 +1580,7 @@ class EcommerceDashboard extends React.Component {
             let sortedLabels = dataArray.map(x => x.type);
             let chart;
             let legend = graphProps.widgetData.legend;
-            
+
             if (graphProps.widgetData.widgetId == 'widget1') {
                 chart = <HorizontalBarChartWithDifferentColors minRange={sortedValueArray[0]} maxRange={maxRange} stepSize={maxRange / 5} height={120}
                     data={dataArray || []} labels={unique} sortedLabels={sortedLabels} sortedColors={sortedColors} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} separateColors={true} backgroundColors={['#f58709', '#ae8b4b', '#2196f3']}
@@ -2238,13 +2238,13 @@ class EcommerceDashboard extends React.Component {
         link.click();
     }
 
-    downloadAsPDF(data) {
+    downloadAsPDF(widgetId) {
         // let anchorSelector = '#print-anchor';
         // $(anchorSelector).attr('disabled', true);
 
         window.scrollTo(0, 0);
 
-        let elementSelector = '#widget1';
+        let elementSelector = `#${widgetId}`;
         let elementWidth = $(elementSelector).width();
         let elementHeight = $(elementSelector).height();
 
@@ -2263,7 +2263,7 @@ class EcommerceDashboard extends React.Component {
 
             // $(anchorSelector).removeAttr("disabled");
         });
-        
+
     }
     openModalBox() {
         this.setState({
@@ -2271,9 +2271,11 @@ class EcommerceDashboard extends React.Component {
         })
     }
 
-    sendAsEmail(data) {
+    sendAsEmail(widgetId) {
 
-        let elementSelector = '#widget1';
+        window.scrollTo(0, 0);
+
+        let elementSelector = `#${widgetId}`;
         let elementWidth = $(elementSelector).width();
         let elementHeight = $(elementSelector).height();
 
@@ -2287,14 +2289,24 @@ class EcommerceDashboard extends React.Component {
             let pdf = new jsPDF('p', 'pt', [pdfWidth, pdfHeight]);
             pdf.addImage(imgData, 'JPG', margin, margin * 2, elementWidth, elementHeight);
 
+            // let attachment = pdf.output('datauri');
+
+            // let fileName = 'print_' + 'chart' + '.pdf';
+            // pdf.save(fileName);
+
             let payload = {
                 from: 'zain.jawwad@avanzainnovations.com',
-                to: 'this',
-                subject: 'no subject',
-                attachment: pdf.output()
+                to: this.state.body.email,
+                subject: 'Sample Chart Email',
+                attachment: pdf.output('datauri'),
             }
-            
-            this.props.actions.generalHandler(constants.sendChartEmail, payload);
+
+            setTimeout(() => {
+                this.props.actions.generalProcess(constants.sendChartEmail, payload);
+                this.setState({
+                    showEmailModal: false
+                })
+            }, 1000);
             // var email = 'sample@gmail.com';
             // var subject = 'Test';
             // var emailBody = 'Hi Sample,';
@@ -2308,9 +2320,9 @@ class EcommerceDashboard extends React.Component {
         //      + "&subject=" + encodeURIComponent("This is my subject")
         //      var attach = 'path'
         //     //  + "&body=" + encodeURIComponent(document.getElementById('myText').value)
-    ;
-    
-    // window.location.href = link;
+        ;
+
+        // window.location.href = link;
     }
 
     changeGraphType(graphType, widgetId, graphProps) {
@@ -2924,7 +2936,7 @@ class EcommerceDashboard extends React.Component {
                                         <label htmlFor="">Value</label>
                                     </div>
                                     <img onClick={() => this.refreshSingleWidget(1)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
-                                    <div className="dropup">
+                                    {/* <div className="dropup">
                                         <button className="btn btn-default dropdown-toggle drop-up-button" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i className="fa fa-cogs"></i>
                                             <span className="caret"></span>
@@ -2939,7 +2951,7 @@ class EcommerceDashboard extends React.Component {
                                             <li role="separator" className="divider"></li>
                                             <li><a onClick={() => this.openModalBox()} >Send as Email</a></li>
                                         </ul>
-                                    </div>
+                                    </div> */}
                                 </div>
 
                                 {this.state.widget1isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
@@ -2951,8 +2963,14 @@ class EcommerceDashboard extends React.Component {
                                         backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3']} /> */}
                             </Portlet>
                             <ModalBox isOpen={this.state.showEmailModal}>
-                                <Portlet title={utils.getLabelByID("Send Email")} noCollapse={true}>
+                                <Portlet title={utils.getLabelByID("Send Email")} noCollapse={true}  >
                                     <div className="row">
+                                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                            <span onClick={() => this.setState({ showEmailModal: false })}>X</span>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+
                                         <div className="col-md-12">
                                             <div className="form-group">
                                                 <div className="row">
@@ -2960,21 +2978,32 @@ class EcommerceDashboard extends React.Component {
                                                         <label className="bold">Email:</label>
                                                     </div>
                                                     <div className="col-md-5">
-                                                    <input type="text" className="form-control" />
+                                                        <Input
+                                                            divStyle={{ padding: '0' }}
+                                                            status={(this.state.errors && this.state.errors.passportNo) ? "ERROR" : undefined}
+                                                            fieldname='emailAddress'
+                                                            // placeholder={utils.getLabelByID('Passport Number*')}
+                                                            formname='body'
+                                                            columns='12'
+                                                            state={this.state}
+                                                            actionHandler={this.generalHandler}
+                                                            className="form-control"
+                                                        />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
-                                    <div style={{display: 'flex', justifyContent: 'flex-end'}} className="row">
-                                        <button onClick={() => this.sendAsEmail()} className="btn green">Send</button>
+                                    <div style={{ display: 'flex', justifyContent: 'flex-end' }} className="row">
+                                        <button style={{ marginRight: '5px' }} onClick={() => this.setState({ showEmailModal: false })} className="btn green">Close</button>
+                                        <button onClick={() => this.sendAsEmail('widget20')} className="btn green">Send</button>
                                     </div>
                                 </Portlet>
                             </ModalBox>
                         </div>
 
-                        <div className="col-md-6">
+                        <div id="widget20" className="col-md-6">
                             <Portlet title={"E-COMMERCE TRANSACTIONS"} noCollapse={false} style={{ height: 'auto' }}>
                                 <div className="refresh-img-div">
                                     <div className="content-toggle">
@@ -2997,8 +3026,8 @@ class EcommerceDashboard extends React.Component {
                                             <li><a onClick={() => this.changeGraphType('2ValueBar-Vertical', 'widget2', this.state.widget20Props)} >View as Vertical</a></li>
                                             <li><a onClick={() => this.changeGraphType('3ValueBubble-Vertical', 'widget2', this.state.widget20Props)} >View as Bubbles</a></li>
                                             <li role="separator" className="divider"></li>
-                                            <li><a onClick={() => this.downloadAsPDF(this.state.widget2data)} >Download as PDF</a></li>
-                                            <li><a onClick={() => this.downloadAsCSV(this.state.widget2data)} >Download as CSV</a></li>
+                                            <li><a onClick={() => this.downloadAsPDF('widget20')} >Download as PDF</a></li>
+                                            <li><a onClick={() => this.downloadAsCSV(this.state.widget20data)} >Download as CSV</a></li>
                                             <li role="separator" className="divider"></li>
                                             <li><a onClick={() => this.openModalBox()} >Send as Email</a></li>
                                         </ul>
@@ -3188,6 +3217,22 @@ class EcommerceDashboard extends React.Component {
                             <Portlet title={"TOP 5 EXPORT HS CODES"} noCollapse={true}>
                                 <div className="refresh-img-div">
                                     <img onClick={() => this.refreshSingleWidget(7)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    <div className="dropup">
+                                        <button className="btn btn-default dropdown-toggle drop-up-button" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i className="fa fa-cogs"></i>
+                                            <span className="caret"></span>
+                                        </button>
+                                        <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                            <li><a onClick={() => this.changeGraphType('donutChart', 'widget7', this.state.widget7Props)} >View as Pie</a></li>
+                                            <li><a onClick={() => this.changeGraphType('2ValueBar-Horizontal', 'widget7', this.state.widget7Props)} >View as Horizontal</a></li>
+                                            <li><a onClick={() => this.changeGraphType('2ValueBar-Vertical', 'widget7', this.state.widget7Props)} >View as Vertical</a></li>
+                                            <li role="separator" className="divider"></li>
+                                            <li><a onClick={() => this.downloadAsPDF(this.state.widget7data)} >Download as PDF</a></li>
+                                            <li><a onClick={() => this.downloadAsCSV(this.state.widget7data)} >Download as CSV</a></li>
+                                            <li role="separator" className="divider"></li>
+                                            <li><a onClick={() => this.openModalBox()} >Send as Email</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 {this.state.widget7isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :

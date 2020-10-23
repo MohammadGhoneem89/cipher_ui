@@ -47,7 +47,7 @@ class GroupedDendogramBarChart extends Component {
             .attr("width", width)
             .attr("height", height)
             .append('g')
-            .attr("transform", "translate(20,0)");
+            .attr("transform", "translate(50,0)");
             // g = svg.append("g").attr("transform", "translate(20,0)")
             let g = svg;
 
@@ -85,10 +85,10 @@ class GroupedDendogramBarChart extends Component {
             tree(root);
 
             // Draw every datum a line connecting to its parent.
-            var link = g.selectAll(".link")
+            var link = g.selectAll(".dendo-link")
                 .data(root.descendants().slice(1))
                 .enter().append("path")
-                .attr("class", "link")
+                .attr("class", "dendo-link")
                 .attr("d", function (d) {
                     return "M" + d.y + "," + d.x
                         + "C" + (d.parent.y + 100) + "," + d.x
