@@ -39,6 +39,7 @@ class ItemDetails extends React.Component {
       orderDetails: undefined,
       lineItems: undefined,
       orgDetailByCode: undefined,
+      orderKey: -1,
       statusList: [
         [
           {
@@ -175,13 +176,16 @@ class ItemDetails extends React.Component {
   }
   componentDidMount() {
     window.scrollTo(0, 0);
-    this.fetchData();
+  //this.fetchData();
     
+    console.log("params : ", this.props.params.id.split("-")[0])
     let request = {
       "body" : {
-          "orderId":"OR123456"
+          "orderId": this.props.params.id.split("-")[0]
       }
   }
+  this.setState({ orderKey :  this.props.params.id})
+
   this.props.actions.generalProcess(constantsApp.getEndToEndTrackingInformation, request);
   
     // interval = setInterval(() => {
@@ -199,40 +203,44 @@ class ItemDetails extends React.Component {
 
     let itemDetailsContainer = {};
     if (nextProps.orderInvoiceDetails) {
-
-      let invoiceData = nextProps.orderInvoiceDetails.invoices[0];
+      let _orderKey = this.state.orderKey.split("-")
+      let invoiceID_O = _orderKey[1];
+      let lineItemID_O = _orderKey[2]
+      let invoiceData = nextProps.orderInvoiceDetails.invoices.filter( item => { 
+        return invoiceID_O === item.id 
+      })[0];
+      let lineItemsData = invoiceData.lineItems.filter( item => { 
+        return lineItemID_O === item.id 
+      })[0];
+      console.log("filterlne items- ======",lineItemsData);
 
       itemDetailsContainer.orderID = nextProps.orderInvoiceDetails.orderID;
       itemDetailsContainer.invoiceNumber = invoiceData.invoiceNumber;
       itemDetailsContainer.txID = nextProps.orderInvoiceDetails.txID;
 
-      let lineItemsTemp = [];
-      invoiceData.lineItems.forEach( item => {
-        let obj={
-          "quantity": item.quantity,
-          "description": item.description,
-          "hscode": item.hscode,
-          "unitPrice": item.originalValueOfItem,
-          "countryOfOrigin" : item.countryOfOrigin,
-          "statUOM": item.statUOM,
-          "discount": item.discount.value,
-          "total": item.valueOfGoods,
-          "statQuantity": item.supplementaryQty,
-          "statUOM": item.supplementaryQtyUOM,
-          "netWeight": item.netWeight,
-          "sku": item.sku,
-          "isFreeOfCost": item.isFreeOfCost,
-          "goodsCondition" : item.goodsCondition,
-          "returnDays": item.returnDays
-        }
+      let lineItemsDetails={
+        "quantity": lineItemsData.quantity,
+        "description": lineItemsData.description,
+        "hscode": lineItemsData.hscode,
+        "unitPrice": lineItemsData.originalValueOflineItemsData,
+        "countryOfOrigin" : lineItemsData.countryOfOrigin,
+        "statUOM": lineItemsData.statUOM,
+        "discount": lineItemsData.discount.value,
+        "total": lineItemsData.valueOfGoods,
+        "statQuantity": lineItemsData.supplementaryQty,
+        "statUOM": lineItemsData.supplementaryQtyUOM,
+        "netWeight": lineItemsData.netWeight,
+        "netWeightUOM": lineItemsData.netWeightUOM,
+        "sku": lineItemsData.sku,
+        "isFreeOfCost": lineItemsData.isFreeOfCost,
+        "goodsCondition" : lineItemsData.goodsCondition,
+        "returnDays": lineItemsData.returnDays
+      }
 
-        lineItemsTemp.push(obj)
-      })
-      
-      itemDetailsContainer.lineItems = lineItemsTemp
-      itemDetailsContainer.imageURL = invoiceData.lineItems[0].documents.path;
-      itemDetailsContainer.permits = invoiceData.lineItems[0].permits ? invoiceData.lineItems[0].permits : [];
-      itemDetailsContainer.exemptions = invoiceData.lineItems[0].exemptions ? invoiceData.lineItems[0].exemptions : [];
+      itemDetailsContainer.lineItemsDetails = lineItemsDetails
+      itemDetailsContainer.imageURL = lineItemsData.documents.path;
+      itemDetailsContainer.permits = !_.isEmpty(lineItemsData.permits) ? lineItemsData.permits : [];
+      itemDetailsContainer.exemptions = !_.isEmpty(lineItemsData.exemptions) ? Array.of(lineItemsData.exemptions) : [];
 
       stateCopy.itemDetailsContainer = itemDetailsContainer;
       console.log("stateCopy props udpate ===== ", stateCopy);
@@ -433,8 +441,8 @@ class ItemDetails extends React.Component {
                         export={false}
                         search={false}
                         gridColumns={utils.getGridColumnByName("orderLine")}
-                        gridData={this.state.itemDetailsContainer.lineItems}
-                        totalRecords={this.state.itemDetailsContainer.lineItems.length}
+                        gridData={Array.of(this.state.itemDetailsContainer.lineItemsDetails)}
+                        totalRecords={1}
                         pageChanged={() => {
                         }}
                         activePage={1}
@@ -450,13 +458,13 @@ class ItemDetails extends React.Component {
                                 <label>Quantity: </label>
                             </div>
                             <div className="col-md-3">
-                              <span>{this.state.itemDetailsContainer.lineItems[0].quantity}</span>
+                              <span>{this.state.itemDetailsContainer.lineItemsDetails.quantity}</span>
                             </div>
                             <div className="col-md-3">
                                 <label>SKU Quantity: </label>
                             </div>
                             <div className="col-md-3">
-                              <span>{this.state.itemDetailsContainer.lineItems[0].sku.qty} {this.state.itemDetailsContainer.lineItems[0].sku.quantityUOM}</span>
+                              <span>{this.state.itemDetailsContainer.lineItemsDetails.sku.qty} {this.state.itemDetailsContainer.lineItemsDetails.sku.quantityUOM}</span>
                             </div>
                         </div>
 
@@ -465,13 +473,13 @@ class ItemDetails extends React.Component {
                                 <label>Net Weight: </label>
                             </div>
                             <div className="col-md-3">
-                                <span>{this.state.itemDetailsContainer.lineItems[0].netWeight} {this.state.itemDetailsContainer.lineItems[0].netWeightUOM}</span>
+                                <span>{this.state.itemDetailsContainer.lineItemsDetails.netWeight} {this.state.itemDetailsContainer.lineItemsDetails.netWeightUOM}</span>
                             </div>
                             <div className="col-md-3">
                                 <label>SKU Product Code: </label>
                             </div>
                             <div className="col-md-3">
-                                <span>{this.state.itemDetailsContainer.lineItems[0].sku.productCode}</span>
+                                <span>{this.state.itemDetailsContainer.lineItemsDetails.sku.productCode}</span>
                             </div>
                         </div>
 
@@ -500,7 +508,7 @@ class ItemDetails extends React.Component {
                                     <input type="checkbox" className="form-control"
                                       disabled={true}
                                       name="isFreeOfCost"
-                                      checked={this.state.itemDetailsContainer.lineItems[0].isFreeOfCost}/>
+                                      checked={this.state.itemDetailsContainer.lineItemsDetails.isFreeOfCost}/>
                                     <span></span>
                                 </label>
                             </div>
@@ -511,7 +519,7 @@ class ItemDetails extends React.Component {
                                 <label>Goods Condition: </label>
                             </div>
                             <div className="col-md-3">
-                                <span>{this.state.itemDetailsContainer.lineItems[0].goodsCondition}</span>
+                                <span>{this.state.itemDetailsContainer.lineItemsDetails.goodsCondition}</span>
                             </div>
                         </div>
 
@@ -520,7 +528,7 @@ class ItemDetails extends React.Component {
                                 <label>Return Days: </label>
                             </div>
                             <div className="col-md-3">
-                                <span>{this.state.itemDetailsContainer.lineItems[0].returnDays} days</span>
+                                <span>{this.state.itemDetailsContainer.lineItemsDetails.returnDays} days</span>
                             </div>
                         </div>
                     </div>

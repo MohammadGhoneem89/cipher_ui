@@ -14,6 +14,7 @@ module.exports = {
     { alias: "Delivery Proof", key: "actions", type: "action" }
   ],
   orderLineTraversal: [
+    { alias: "", key: "orderKey", type: "hiddenID" },
     { alias: "Line No.", key: "", type: "serialNo" },
     { alias: "Quantity", key: "quantity", type: 'string' },
     { alias: "Description", key: "description", type: "string" },
@@ -188,7 +189,7 @@ module.exports = {
     { alias: "Message", key: "message", type: 'string' },
     { alias: "Date Time", key: "dateTime", type: "string" },
     { alias: "Sender", key: "senderOrg", type: "string" },
-    { alias: "Status", key: "status", type: "string" },
+    { alias: "Status", key: "statusBox", type: "string" },
     { alias: "Document #", key: "documentNo", type: "string" },
     { alias: "HAWB", key: "HAWB", type: "string" },
     { alias: "Declaration", key: "declarationNo", type: "string" },

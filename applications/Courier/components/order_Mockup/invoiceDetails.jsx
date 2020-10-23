@@ -255,7 +255,7 @@ class InvoiceDetails extends React.Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    this.fetchData();
+    //this.fetchData();
     console.log("params : ", this.props.params.id.split("-")[0])
     let request = {
       "body" : {
@@ -372,6 +372,7 @@ class InvoiceDetails extends React.Component {
       let lineItemsTemp = []
       lineItems.forEach( item => {;
         let obj={
+          "orderKey": this.state.orderKey + "-" + item.id,
           "quantity": item.quantity,
           "description": item.description,
           "hscode": item.hscode,
