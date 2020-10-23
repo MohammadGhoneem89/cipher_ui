@@ -87,7 +87,7 @@ module.exports = {
     { alias: "Action", key: "actions", type: "action" }
   ],
   orderInvoice: [
-    { alias: "", key: "orderId", type: "hiddenID" },
+    { alias: "", key: "orderKey", type: "hiddenID" },
     { alias: "invoice #", key: "invoiceNumber", type: "string" },
     { alias: "invoice Value", key: "totalValue", type: "string" },
     { alias: "currency", key: "currency", type: 'string' },

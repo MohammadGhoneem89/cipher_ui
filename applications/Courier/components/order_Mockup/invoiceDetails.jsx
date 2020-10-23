@@ -404,8 +404,8 @@ class InvoiceDetails extends React.Component {
         transportTemp.push(invoiceData.transport)
       }
       invoiceData.returnRequest.forEach(item =>{
-        item.transport.oldHouseTransportNo = item.previousTransportDocumentNo 
-        item.transport.returnReason = item.reason
+        item.transport.oldHouseTransportNo = item.transport.previousTransportDocumentNo 
+        item.transport.returnReason = item.request.reason
         item.transport.typeOfTransport = "RETURN"
         transportTemp.push(item.transport)
       })
@@ -418,7 +418,8 @@ class InvoiceDetails extends React.Component {
           "txTimeStamp": _.get(item, "txTimeStamp", ""),
           "masterTransportNo": _.get(item.transportDetails, 'masterTransportDocumentNo', ""),
           "houseTransportNo":  _.get(item.transportDetails, 'houseTransportDocumentNo', ""),
-          "oldHouseTransportNo" : _.get(item, "previousTransportDocumentNo", "-"),
+          "oldHouseTransportNo" : _.get(item, "oldHouseTransportNo", "-"),
+          "returnReason" : _.get(item, "returnReason", "-"),
           "cargoType":         _.get(item.transportDetails, 'cargoType', ""),
           "packageType":       _.get(item.transportDetails.packageDetails[0], 'packageType', ""),
           "noOfPackages":      _.get(item.transportDetails.packageDetails[0], 'numberOfPackages', ""),
@@ -501,6 +502,7 @@ class InvoiceDetails extends React.Component {
 
       declarationTemp.forEach(item => {
         let obj = {
+                    "txID":  _.get(item, 'txID', ""),
                     "lastAction": _.get(item, 'lastAction', ""), //
                     "actionTimeStamp": _.get(item, 'lastActionDateTime', ""), //
                     "declarationStatus":  _.get(item, 'declarationStatus', ""), //
@@ -1092,7 +1094,7 @@ class InvoiceDetails extends React.Component {
             <div className="col-md-4">
                     <div className="form-group">
                         <div className="col-md-6">
-                            <label className="bold">{utils.getLabelByID("Freight_Amount_")},</label>
+                            <label className="bold">{utils.getLabelByID("Freight_Amount_")}</label>
                         </div>
                         <div className="col-md-6">
                             <span>{this.state.invoiceDetailsContainer.freightAmount} {this.state.invoiceDetailsContainer.freightCurrency}</span>
@@ -1172,281 +1174,322 @@ class InvoiceDetails extends React.Component {
                       return (
                       <div className="shadowBox" style={{ padding:"5px", marginBottom: "15px"}}>
                         <div className="row">
-                          <div className="form-group" style={{display:"table"}}>
-                            <div className="col-md-12" style={{marginTop:"10px" }}>
-                              <div className="col-md-1">
-                                <label>{ item.typeOfTransport }</label>
+                          <div className="col-md-3">
+                            <div className="timeline timelinescreen">
+                              <div className="line text-muted" />
+                              <article className="panel panel-success">
+                                <div className="panel-heading icon" />
+                                <div className="panel-heading">
+                                  {/* <label>{utils.getLabelByID('House_Transport_Doc_')}</label> */}
+                                  <h2 className="panel-title">{item.houseTransportNo}</h2>
+                                </div>
+                              </article>
+                              <article className="panel" style={{ backgroundcolor: "transparent" }}>
+                                <div className="row text-left" style={ item.typeOfTransport === "RETURN" ? {display:"", paddingBottom: 10} : {display:"none"} } >
+                                  <div className="col-md-12">
+                                    <div className="col-md-12">
+                                      <label>{utils.getLabelByID('Old_House_Transport_Doc_')}</label>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <label style={{ fontWeight: "normal" }}>{item.oldHouseTransportNo}</label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row text-left" style={{ paddingBottom: 10 }}>
+                                  <div className="col-md-12">
+                                    <div className="col-md-12">
+                                      <label>{utils.getLabelByID('Master_Transport_Doc_')}</label>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <label style={{ fontWeight: "normal" }}>{item.masterTransportNo}</label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row text-left" style={{ paddingBottom: 10 }}>
+                                  <div className="col-md-12">
+                                    <div className="col-md-12">
+                                      <label>{utils.getLabelByID('Mode_Of_transport_')}</label>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <label style={{ fontWeight: "normal" }}>
+                                        {item.modeOfTransport}{" "}
+                                        {/* <img
+                                          src="img/aeroplane.svg"
+                                          width={30}
+                                          alt
+                                          style={{ paddingLeft: 10 }}
+                                        /> */}
+                                        <i style={{fontSize: "20px", paddingLeft: "10px" }}className={ this.getTransportModeIcon(item.modeOfTransport)} aria-hidden="true"></i>
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row text-left" style={{ paddingBottom: 10 }}>
+                                  <div className="col-md-12">
+                                    <div className="col-md-12">
+                                      <label>Port of Load :</label>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <label style={{ fontWeight: "normal" }}>XYZ</label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row text-left" style={{ paddingBottom: 10 }}>
+                                  <div className="col-md-12">
+                                    <div className="col-md-12">
+                                      <label>{utils.getLabelByID('Carrier_Registration_Number_')}</label>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <label style={{ fontWeight: "normal" }}>{item.carrierRegistrationNumber}</label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row text-left" style={{ paddingBottom: 10 }}>
+                                  <div className="col-md-12">
+                                    <div className="col-md-12">
+                                      <label>{utils.getLabelByID('Date_of_Departure_')}</label>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <label style={{ fontWeight: "normal" }}>{item.dateOfDeparture}</label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row text-left" style={{ paddingBottom: 10 }}>
+                                  <div className="col-md-12">
+                                    <div className="col-md-12">
+                                      <label>{utils.getLabelByID('Carrier_Number_')}</label>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <label style={{ fontWeight: "normal" }}>{item.carrierNumber}</label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row text-left" style={{ paddingBottom: 10 }}>
+                                  <div className="col-md-12">
+                                    <div className="col-md-12">
+                                      <label>{utils.getLabelByID('Port_of_Discharge_')}</label>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <label style={{ fontWeight: "normal" }}>{item.portOfDischarge}</label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row text-left" style={{ paddingBottom: 10 }}>
+                                  <div className="col-md-12">
+                                    <div className="col-md-12">
+                                      <label>{utils.getLabelByID('Destination_Country_')}</label>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <label style={{ fontWeight:"normal"}}> {item.destinationCountry} </label>
+                                      <img style={{ width: "28px", marginLeft: "10px" }} src={item.destinationCountryFlagImage} />                                  
+                                    </div>
+                                  </div>
+                                </div>
+                              </article>
+                            </div>
+                          </div>
+                          <div className="col-md-9">
+                            <div className="row" style={{ marginBottom: 50, marginTop: 20 }}>
+                              <div className="col-md-2"></div>
+                              <div className="col-md-10">
+                                <div className="text-right">
+                                  {" "}
+                                  <span
+                                    style={{
+                                      backgroundColor: "#00ae4f",
+                                      fontWeight: 600,
+                                      fontSize: 16,
+                                      color: "white",
+                                      padding: "1rem 2rem",
+                                      display:"block",
+                                      overflow: "hidden"
+
+                                    }}
+                                  >
+                                    { item.txID }
+                                  </span>
+                                </div>
                               </div>
-                              <div className="col-md-4">
-                                {console.log("txTimeStamp ========== ", item.txTimeStamp)}
-                                <label style={{ fontWeight:"normal"}}> ({moment.unix(item.txTimeStamp/1000).format("DD/MM/YYYY HH:mm:ss")})</label>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-12">
+                                <div className="row" style={{ paddingBottom: 20 }}>
+                                  <div className="col-md-6">
+                                    <div style={ item.typeOfTransport === "RETURN" ? {display:"",paddingBottom: 30} : {display:"none"}}>
+                                      <div className="col-md-6">
+                                        <label>{utils.getLabelByID('Return_Reason_')}</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight: "normal" }}>{item.returnReason}</label>
+                                      </div>
+                                    </div>
+                                    <div style={{ paddingBottom: 30 }}>
+                                      <div className="col-md-6">
+                                        <label>{utils.getLabelByID('No_of_Packages_')}</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight: "normal" }}>{item.noOfPackages}</label>
+                                      </div>
+                                    </div>
+                                    <div style={{ paddingBottom: 30 }}>
+                                      <div className="col-md-6">
+                                        <label>{utils.getLabelByID('Net_Weight_')}</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight: "normal" }}>{item.netWeight} {item.netWeightUOM}</label>
+                                      </div>
+                                    </div>
+                                    <div style={{ paddingBottom: 30 }}>
+                                      <div className="col-md-6">
+                                        <label>{utils.getLabelByID('Cargo_Type_')}</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight: "normal" }}>{item.cargoType}</label>
+                                      </div>
+                                    </div>
+                                    <div style={{ paddingBottom: 30 }}>
+                                      <div className="col-md-6">
+                                        <label>{utils.getLabelByID('Package_Type_')}</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight: "normal" }}>{item.packageType}</label>
+                                      </div>
+                                    </div>
+                                    <div style={{ paddingBottom: 30 }}>
+                                      <div className="col-md-6">
+                                        <label>{utils.getLabelByID('Gross_Weight_')}</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight: "normal" }}>{item.grossWeight} {item.grossWeightUOM}</label>
+                                      </div>
+                                    </div>
+                                    <div style={{ paddingBottom: 30 }}>
+                                      <div className="col-md-6">
+                                        <label>{utils.getLabelByID('Volumetric_Weight_')}</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight: "normal" }}>{item.volumetricWeight} {item.volumetricUOM}</label>
+                                      </div>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    
+                                    <div className="col-md-12" style={{ }}>
+                                      <label
+                                        className="control-label pull-left bold"
+                                        style={{
+                                          marginBottom: 3,
+                                          overflowWrap: "inherit",
+                                          background: "#666",
+                                          color: "white",
+                                          padding: "10px 15px"
+                                        }}
+                                      >
+                                        {utils.getLabelByID('Shipping_Airline_Agent')}
+                                      </label>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <div style={{ paddingBottom: 30 }}>
+                                        <div
+                                          className="col-md-3"
+                                          style={{
+                                            backgroundColor: "#e5e5e5",
+                                            border: "1px solid grey",
+                                            paddingTop: 10
+                                          }}
+                                        >
+                                           {/* <label>{utils.getLabelByID('Business_Code_')}</label> */}
+                                          <label>{item.shippingBCode}</label>
+                                        </div>
+                                        <div
+                                          className="col-md-6"
+                                          style={{
+                                            backgroundColor: "#e5e5e5",
+                                            border: "1px solid grey",
+                                            paddingTop: 10
+                                          }}
+                                        >
+                                          {/* <label>{utils.getLabelByID('Name_')}</label> */}
+                                          <label style={{ fontWeight: "normal" }}>{item.shippingName}</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-md-12" style={{ marginTop: 20}}>
+                                      <label
+                                        className="control-label pull-left bold"
+                                        style={{
+                                          marginBottom: 3,
+                                          overflowWrap: "inherit",
+                                          background: "#666",
+                                          color: "white",
+                                          padding: "10px 15px"
+                                        }}
+                                      >
+                                        {utils.getLabelByID('Cargo_Handler')}
+                                      </label>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <div style={{ paddingBottom: 30 }}>
+                                        <div
+                                          className="col-md-3"
+                                          style={{
+                                            backgroundColor: "#e5e5e5",
+                                            border: "1px solid grey",
+                                            paddingTop: 10
+                                          }}
+                                        >
+                                          {/* <label>{utils.getLabelByID('Business_Code_')}</label> */}
+                                          <label>{item.CargoBCode}</label>
+                                        </div>
+                                        <div
+                                          className="col-md-6"
+                                          style={{
+                                            backgroundColor: "#e5e5e5",
+                                            border: "1px solid grey",
+                                            paddingTop: 10
+                                          }}
+                                        >
+                                          {/* <label>{utils.getLabelByID('Name_')}</label> */}
+                                          <label style={{ fontWeight: "normal" }}>{item.CargoName}</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div style={{ paddingBottom: 30, paddingTop: 100, marginTop: 120 }}>
+                                      <div className="col-md-6">
+                                        <label>{utils.getLabelByID('Original_Load_Port_')}</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight: "normal" }}>{item.originalLoadPort}</label>
+                                      </div>
+                                    </div>
+                                    <div style={{ paddingBottom: 30 }}>
+                                      <div className="col-md-6">
+                                        <label>{utils.getLabelByID('Submission_Channel_')}</label>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <label style={{ fontWeight: "normal" }}>{item.submissionChannel}</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-6">
+                                    <div className="col-md-12 text-right">
+                                      <div className="text-center" style={{ display: "flex"}}>
+                                        <img src={baseUrl + item.transportImage} onError={this.addDefaultHAWBSrc} width={500} height={400} alt />
+                                      </div>
+                                      {/* <img src="img/dewa.jpg" width="150" alt=""> */}
+                                    </div>
+                                  </div>
+                                  <div className="col-md-6" style={{ margin: "0px 0px" }}></div>
+                                </div>
                               </div>
-                            </div>
-                            <div className="col-md-12">
-                              {/* <div className="col-md-2">
-                                <label>Transaction Id: </label>
-                              </div> */}
-                              <div className="col-md-12" style={{overflowWrap: "anywhere"}}>
-                                <label>{ item.txID }</label>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-md-12">
-                            <div className="col-md-2">
-                                <label>{utils.getLabelByID('Master_Transport_Doc_')}</label>
-                            </div>
-                            <div className="col-md-2">
-                                <label style={{ fontWeight:"normal"}}> {item.masterTransportNo}</label>
-                            </div>
-                            
-                            <div className="col-md-2">
-                                <label>{utils.getLabelByID('House_Transport_Doc_')}</label>
-                            </div>
-                            <div className="col-md-2">
-                                <label style={{ fontWeight:"normal"}}>{item.houseTransportNo}</label>
-                            </div>
-
-                            <div className="col-md-2" style={ item.typeOfTransport === "RETURN" ? {display:""} : {display:"none"}}>
-                                <label>{utils.getLabelByID('Old_House_Transport_Doc_')}</label>
-                            </div>
-                            <div className="col-md-2" style={ item.typeOfTransport === "RETURN" ? {display:""} : {display:"none"}}>
-                                <label style={{ fontWeight:"normal"}}>  {item.houseTransportNo}</label>
-                            </div>
-                          </div>
-                          
-                          <div className="col-md-12" style={ item.typeOfTransport === "RETURN" ? {display:""} : {display:"none"}} >
-                            <div className="col-md-2">
-                              <label>{utils.getLabelByID('Return_Reason_')}</label>
-                            </div>
-                            <div className="col-md-10">
-                              <label style={{ fontWeight:"normal"}}>{item.returnReason}</label>
-                            </div>
-                          </div>
-
-                          <div className="col-md-12">
-                            <div className="col-md-2">
-                              <label>{utils.getLabelByID('Cargo_Type_')}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label style={{ fontWeight:"normal"}}>  {item.cargoType}</label>
-                            </div>
-                          </div>
-
-                          <div className="col-md-12">
-                            <div className="col-md-2">
-                              <label>{utils.getLabelByID('Package_Type_')}</label>
-                            </div>  
-                            <div className="col-md-2">
-                              <label style={{ fontWeight:"normal"}}>  {item.packageType}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label>{utils.getLabelByID('No_of_Packages_')}</label>
-                            </div>
-                            <div className="col-md-2">  
-                              <label style={{ fontWeight:"normal"}}>{item.noOfPackages}</label>
-                            </div>
-                          </div>
-
-                          <div className="col-md-12">
-                            <div className="col-md-2">
-                              <label>{utils.getLabelByID('Gross_Weight_')}</label>
-                            </div>
-                            <div className="col-md-2">
-                              <label style={{ fontWeight:"normal"}}>  {item.grossWeight} {item.grossWeightUOM}</label>
-                            </div>
-
-                            <div className="col-md-2">
-                              <label>{utils.getLabelByID('Net_Weight_')}</label>
-                            </div>
-                            <div className="col-md-2">   
-                              <label style={{ fontWeight:"normal"}}>  {item.netWeight} {item.netWeightUOM}</label>
-                            </div>
-
-                            <div className="col-md-2">
-                              <label>{utils.getLabelByID('Volumetric_Weight_')}</label>
-                            </div>
-                            <div className="col-md-2">  
-                              <label style={{ fontWeight:"normal"}}>  {item.volumetricWeight} {item.volumetricUOM}</label>
                             </div>
                           </div>
                         </div>
-
-                        <div className="row">
-                          <div className="col-md-12 text-center">
-                            <div className="shadowBox recipt" style={{ margin:"5px 15px 5px 15px" }}>
-                                <img src={baseUrl + item.transportImage} onError={this.addDefaultHAWBSrc} height="30%" />
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="row">
-                          <div className="form-group">
-                              <div className="col-md-12">
-                                  <Lable text={utils.getLabelByID('Shipping_Airline_Agent')} columns="12" style={{marginBottom:"3px"}}></Lable>
-                                  {/* <div className="col-md-2">
-                                      <label>Code: </label>
-                                  </div>    
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.shippingBCode}</span>
-                                  </div> */}
-                                  <div className="col-md-2">
-                                    <label>{utils.getLabelByID('Business_Code_')}</label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.shippingBCode}</label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label>{utils.getLabelByID('Name_')}</label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.shippingName}</label>
-                                  </div>
-                              </div>
-                          </div>
-                          
-                          <div className="form-group"></div>
-
-                          <div className="form-group">
-                              <div className="col-md-12">
-                                  <Lable text={utils.getLabelByID('Cargo_Handler')} columns="12" style={{marginBottom:"3px"}}></Lable>
-                                  {/* <div className="col-md-2">
-                                      <label>Code: </label>
-                                  </div>    
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.CargoCode}</span>
-                                  </div> */}
-                                  <div className="col-md-2">
-                                    <label>{utils.getLabelByID('Business_Code_')}</label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.CargoBCode}</label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label>{utils.getLabelByID('Name_')}</label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.CargoName}</label>
-                                  </div>
-                              </div>
-                          </div>
-
-                          <div className="form-group"></div>
-
-                          {/* <div className="form-group">
-                            <div className="col-md-12">
-                                  <Lable text={utils.getLabelByID("Broker")} columns="12" style={{marginBottom:"3px"}}></Lable>
-                                  <div className="col-md-2">
-                                      <label>Code: </label>
-                                  </div>    
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.brokerCode}</span>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label>Business Code: </label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.brokerBCode}</span>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label>Name: </label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.brokerName}</span>
-                                  </div>
-                              </div>
-                          </div> */}
-                          
-                          <div className="form-group">
-                            <div className="col-md-12">
-                                <div className="col-md-2">
-                                  <label>{utils.getLabelByID('Mode_Of_transport_')}</label>
-                                </div>
-                                <div className="col-md-6">
-                                  <label style={{ fontWeight:"normal"}}>  {item.modeOfTransport} <i style={{fontSize: "20px", paddingLeft: "10px" }}className={ this.getTransportModeIcon(item.modeOfTransport)} aria-hidden="true"></i></label>
-                                </div>
-                            </div>
-                          </div>
-                          
-                          <div className="form-group">
-                              <div className="col-md-12">
-                                <div className="col-md-2">
-                                  <label>{utils.getLabelByID('Carrier_Number_')}</label>
-                                </div>
-                                <div className="col-md-2">
-                                  <label style={{ fontWeight:"normal"}}>  {item.carrierNumber}</label>
-                                </div>
-                                <div className="col-md-2">
-                                  <label>{utils.getLabelByID('Carrier_Registration_Number_')}</label>
-                                </div>
-                                <div className="col-md-2">
-                                  <label style={{ fontWeight:"normal"}}>  {item.carrierRegistrationNumber}</label>
-                                </div>
-                              </div>
-                          </div>
-                          
-                          <div className="form-group">
-                              <div className="col-md-12">
-                                  <div className="col-md-2">
-                                    <label>{utils.getLabelByID('Date_of_Departure_')}</label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.dateOfDeparture}</label>
-                                  </div>
-                              </div>
-                          </div>
-                          
-                          <div className="form-group">
-                              <div className="col-md-12">
-                                  <div className="col-md-2">
-                                    <label>{utils.getLabelByID('Port_of_Load_')}</label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.portLoad}</label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label>{utils.getLabelByID('Port_of_Discharge_')}</label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.portOfDischarge}</label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label>{utils.getLabelByID('Original_Load_Port_')}</label>
-                                  </div>
-                                  <div className="col-md-2">
-                                    <label style={{ fontWeight:"normal"}}>  {item.originalLoadPort}</label>
-                                  </div>
-                              </div>
-                          </div>
-                          
-                          <div className="form-group">
-                              <div className="col-md-12">
-                                  <div className="col-md-2">
-                                    <label>{utils.getLabelByID('Destination_Country_')}</label>
-                                  </div>
-                                  <div className="col-md-10">
-                                    <label style={{ fontWeight:"normal"}}> {item.destinationCountry} </label>
-                                    <img style={{ width: "28px", marginLeft: "10px" }} src={item.destinationCountryFlagImage} />
-                                  </div>
-                              </div>
-                          </div>
-                          
-                          <div className="form-group">
-                              <div className="col-md-12">
-                                  <div className="col-md-2">
-                                    <label>{utils.getLabelByID('Submission_Channel_')}</label>
-                                  </div>
-                                  <div className="col-md-10">
-                                    <label style={{ fontWeight:"normal"}}> {item.submissionChannel}</label>
-                                  </div>
-                              </div>
-                          </div>
-                        </div>
-                      </div>
+                      </div>                    
                       )
                       })
                     }
                   </div>
-                  
                   <div id="exitConfirmation" className="tab-pane">
                     {this.state.invoiceDetailsContainer.exitConfirmation.length > 0 ? this.state.invoiceDetailsContainer.exitConfirmation.map(item=>{
                       return (
@@ -1596,176 +1639,228 @@ class InvoiceDetails extends React.Component {
                         <div id="exportDeclarationView" className="tab-pane in ui-fieldtable">
                             { this.state.invoiceDetailsContainer.exportDeclaration.map(item => {
                               return(
-                              <div className="row">
+                                <div className="row">
                                 <div className="col-md-3">
                                   <div className="timeline timelinescreen">       
                                     <div className="line text-muted"></div>
-                                    <article className={this.getDeclarationStatus(item.status)}>
-                                
-                                        <div className="panel-heading icon">
-                                          
-                                        </div>
-                                
-                                        <div className="panel-heading">
-                                            <h2 className="panel-title">{item.status}</h2>
-                                        </div>
-                                
+                                    <article className={this.getDeclarationStatus(item.status)}>                 
+                                        <div className="panel-heading icon"></div>                                
+                                        <div className="panel-heading"><h2 className="panel-title">{item.status}</h2></div>                      
+                                    </article> 
+                                    <article className="panel" style={{ backgroundColor: "transparent"}}>
+                                      <div className="row text-left" style={{ paddingBottom:"10px" }}>
+                                          <div className="col-md-12">
+                                            <div className="col-md-12"><label>{utils.getLabelByID('Last_Action_')}</label></div>
+                                              <div className="col-md-12">
+                                                  <label style={{ fontWeight: "normal" }}>
+                                                    {item.lastAction}
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <div className="row text-left" style={{ paddingBottom:"10px" }}>
+                                          <div className="col-md-12">
+                                              <div className="col-md-12"><label>{utils.getLabelByID('Action_Timestamp_')}</label></div>
+                                              <div className="col-md-12">
+                                                  <label style={{ fontWeight: "normal" }}>
+                                                    {moment.unix(item.actionTimeStamp/1000).format("DD/MM/YYYY HH:mm:ss")}
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <div className="row text-left" style={{ paddingBottom:"10px" }}>
+                                          <div className="col-md-12">
+                                              <div className="col-md-12"><label>{utils.getLabelByID('Batch_Id')}</label></div>
+                                              <div className="col-md-12">
+                                                  <label style={{ fontWeight: "normal" }}>
+                                                    {item.batchID}
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <div className="row text-left" style={{ paddingBottom:"10px" }}>
+                                          <div className="col-md-12">
+                                              <div className="col-md-12"><label>Regime Type: </label></div>
+                                              <div className="col-md-12">
+                                                  <label style={{ fontWeight: "normal" }}>
+                                                    {item.regimeType}
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div>
+
+
+                                      {/* <div className="row text-left" style={{ paddingBottom:"10px" }}>
+                                          <div className="col-md-12">
+                                              <div className="col-md-12"><label>Export Code Mirsal 2 :</label></div>
+                                              <div className="col-md-12">
+                                                  <label style={{ fontWeight: "normal" }}>
+                                                  IM1
+
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div> */}
+
+                                      <div className="row text-left" style={{ paddingBottom:"10px" }}>
+                                          <div className="col-md-12">
+                                              <div className="col-md-12"><label>{utils.getLabelByID('Status')}</label></div>
+                                              <div className="col-md-12">
+                                                  <label style={{ fontWeight: "normal" }}>
+                                                    {item.status}
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <div className="row text-left" style={{ paddingBottom:"10px" }}>
+                                          <div className="col-md-12">
+                                              <div className="col-md-12"><label>{utils.getLabelByID('Request_ID')}</label></div>
+                                              <div className="col-md-12">
+                                                  <label style={{ fontWeight: "normal" }}>
+                                                    {item.requestID}
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <div className="row text-left" style={{ paddingBottom:"10px" }}>
+                                          <div className="col-md-12">
+                                              <div className="col-md-12"><label>{utils.getLabelByID('Declaration_Type')}</label></div>
+                                              <div className="col-md-12">
+                                                  <label style={{ fontWeight: "normal" }}>
+                                                    {item.declarationType}
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div>
                                     </article>
                                   </div>
                                 </div>  
-                                <div className="col-md-9">
-                                  <div className="row">
-                                    <div className="col-md-6">
-                                      <div className="col-md-6">
-                                          <label>{utils.getLabelByID('Last_Action_')}</label>
+                                <div className="col-md-9" style={{ marginTop: "20px" }}>
+                                  <div className="row" style={{ marginBottom: "50px" }}>
+                                    <div className="col-md-2"></div>
+                                      <div className="col-md-10" style={{    display: "block", overflow: "hidden", padding: "10px 10px" }}>
+                                          <div className="text-right">
+                                            <span style={{ 
+                                              backgroundColor:"#00ae4f", fontWeight: "600", fontSize: "16px", color:"white", padding: "1rem 2rem", display:"block", overflow: "hidden"
+                                              }}>{item.txID}</span></div>                    
                                       </div>
-                                      <div className="col-md-6">
-                                        <label style={{ fontWeight:"normal"}}> {item.lastAction}</label>
-                                      </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <div className="col-md-6">
-                                          <label>{utils.getLabelByID('Action_Timestamp_')}</label>
-                                      </div>
-                                      <div className="col-md-6">
-                                        <label style={{ fontWeight:"normal"}}>{moment.unix(item.actionTimeStamp/1000).format("DD/MM/YYYY HH:mm:ss")}</label>
-                                      </div>
-                                    </div>
                                   </div>
+                                  
                                   <div className="col-md-12">
-                                      <AnchorComp
-                                          style={{marginBottom:"15px"}}
-                                          anchotDisplayName = {utils.getLabelByID('SOAP_Payload')}
-                                          // invokeAnchorButtonhandlar = {this.soapPayloadHandler}
-                                          invokeAnchorButtonhandlar = {()=> {this.invoiceDetailsPopUpHandler({actionName:"View SOAP Payload", index: -1}) }}
-                                      />
-                                  </div>
-                                  <div className="row">
-                                    <div className="col-md-6">
-                                      <div className="col-md-6">
-                                          <label>{utils.getLabelByID('Version')}</label>
-                                      </div>
-                                      <div className="col-md-6">
-                                        <label style={{ fontWeight:"normal"}}> {item.version}</label>
-                                      </div>
+                                      
+                                  </div> 
+                                  
+                                  <div className="row">       
+                                    <div className="col-md-12">
+                                        <div className="row" style={{ paddingBottom: "20px" }}>
+                                          <div className="col-md-6">
+                                            <div className="row">
+                                              <div className="col-md-12">
+                                                <div className="col-md-6">
+                                                  <label>{utils.getLabelByID('Version')}</label>
+                                                </div>
+                                                <div className="col-md-6">
+                                                  <label style={{ fontWeight: "normal" }}>{item.version}</label>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div className="row">
+                                              <div className="col-md-12">
+                                                <div className="col-md-6">
+                                                  <label>{utils.getLabelByID('Declaration_Purpose')}</label>
+                                                </div>
+                                                <div className="col-md-6">
+                                                  <label style={{ fontWeight: "normal" }}>{_.get(item, "declarationPurpose", "-")}</label>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div className="row">
+                                              <div className="col-md-12">
+                                                <div className="col-md-6">
+                                                  <label>{utils.getLabelByID('Declaration_No')}</label>
+                                                </div>
+                                                <div className="col-md-6">
+                                                  <label style={{ fontWeight: "normal" }}>{item.declarationNo}</label>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            { item.chargesList.length > 0 ?
+                                              <div className="col-md-12" style={{ margin: "10px 0px 0px 0px" }}>
+                                                <div className="col-md-12">
+                                                  <label className="control-label pull-left bold" style={{ padding: "0px", margin: "0px 0px -10px -15px", overflowWrap: "inherit" }}>
+                                                    {"Charges Total = " + item.totalCharges  + " AED"}
+                                                  </label>
+                                                </div>
+                                                <div className="row">
+                                                  <div className="col-md-12">
+
+                                                      <Table fontclass=""
+                                                          gridColumns={utils.getGridColumnByName("charges")}
+                                                          gridData={_.get(item,'chargesList', [])}
+                                                          totalRecords={100}
+                                              //           totalRecords={item.chargesList.length}
+                                                          searchCallBack={this.searchCallBack}
+                                                          pageSize={10}
+                                                          pagination={false} pageChanged={this.pageChanged}
+                                                          export={false}
+                                                          search={true}
+                                                      />
+
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              :  
+                                                <div></div>
+                                              }
+                                            { item.exceptionsList.length > 0 ?
+                                              <div className="col-md-12" style="margin: 10px 0px 0px 0px;">
+                                                <div className="col-md-12">
+                                                  <label className="control-label pull-left bold" style={{ padding: "0px", margin: "0px 0px -10px -15px", overflowWrap: "inherit" }}>
+                                                    {utils.getLabelByID('Exceptions')}
+                                                  </label>
+                                                </div>
+                                                <div className="row">
+                                                  <div className="col-md-12">
+                                                      <Table fontclass=""
+                                                        gridColumns={utils.getGridColumnByName("BusinessTransactionError")}
+                                                        gridData={_.get(item,'exceptionsList', [])}
+                                                        totalRecords={100}
+                                                        searchCallBack={this.searchCallBack}
+                                                        pageSize={10}
+                                                        pagination={false} pageChanged={this.pageChanged}
+                                                        export={false}
+                                                        search={true}
+                                                      />
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              :  
+                                                <div></div>
+                                            }
+                                          </div>
+                                          <div className="col-md-6" style={{ margin: "0px 0px" }}>
+                                            <div className="col-md-12">
+                                              <div className="col-md-12 text-right">
+                                                <div style={{ backgroundImage: "url('/assets/Resources/images/soapPayloadImage.jpg')", backgroundSize: "cover", backgroundRepeat: "no-repeat", width: "160px", height: "180px", float:"right" }}  className="text-center">
+                                                  <button className="btn" style={{ backgroundColor: "#333", marginTop: "70px", color: "white", border: "1px solid white" }}
+                                                    onClick={()=> {this.invoiceDetailsPopUpHandler({actionName:"View SOAP Payload", index: -1}) }}>SOAP payload</button>
+                                                </div>                                                  
+                                              </div>
+                                              {/* <AnchorComp
+                                                  anchotDisplayName = {utils.getLabelByID('SOAP_Payload')}
+                                                  // invokeAnchorButtonhandlar = {this.soapPayloadHandler}
+                                                  invokeAnchorButtonhandlar = {()=> {this.invoiceDetailsPopUpHandler({actionName:"View SOAP Payload", index: -1}) }}
+                                              /> */}
+                                            </div>
+                                          </div>                                  
+                                        </div>                  
                                     </div>
-                                  </div>
-                                  <div className="row">
-                                    <div className="col-md-6">
-                                      <div className="col-md-6">
-                                          <label>{utils.getLabelByID('Batch_Id')}</label>
-                                      </div>
-                                      <div className="col-md-6">
-                                        <label style={{ fontWeight:"normal"}}> {item.batchID}</label>
-                                      </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <div className="col-md-6">
-                                          <label>{utils.getLabelByID('Status')}</label>
-                                      </div>
-                                      <div className="col-md-6">
-                                        <label style={{ fontWeight:"normal"}}> {item.status}</label>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="row">
-                                    <div className="col-md-6">
-                                      <div className="col-md-6">
-                                          <label>{utils.getLabelByID('Declaration_No')}</label>
-                                      </div>
-                                      <div className="col-md-6">
-                                        <label style={{ fontWeight:"normal"}}> {item.declarationNo}</label>
-                                      </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <div className="col-md-6">
-                                          <label>{utils.getLabelByID('Request_ID')}</label>
-                                      </div>
-                                      <div className="col-md-6">
-                                        <label style={{ fontWeight:"normal"}}> {item.requestID}</label>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="row">
-                                    <div className="col-md-6">
-                                      <div className="col-md-6">
-                                          <label>Regime Type</label>
-                                      </div>
-                                      <div className="col-md-6">
-                                        <label style={{ fontWeight:"normal"}}> {item.regionType}</label>
-                                      </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <div className="col-md-6">
-                                          <label>{utils.getLabelByID('Declaration_Type')}</label>
-                                      </div>
-                                      <div className="col-md-6">
-                                        <label style={{ fontWeight:"normal"}}> {item.declarationType}</label>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="row">
-                                    {/* <div className="col-md-6">
-                                      <div className="col-md-6">
-                                          <label>Export Code Mirsal 2</label>
-                                      </div>
-                                      <div className="col-md-6">
-                                        <label style={{ fontWeight:"normal"}}> {item.exportCodeMirsal2}</label>
-                                      </div>
-                                    </div> */}
-                                    <div className="col-md-6">
-                                      <div className="col-md-6">
-                                          <label>{utils.getLabelByID('Declaration_Purpose')}</label>
-                                      </div>
-                                      <div className="col-md-6">
-                                        <label style={{ fontWeight:"normal"}}> {item.declarationPurpose}</label>
-                                      </div>
-                                    </div>
-                                  </div>
-      
-                                  { item.chargesList.length > 0 ?
-                                    <div className="row">
-                                      <div className="col-md-12">
-                                        <div className="col-md-6" style={{ margin: "20px 0px 20px 0px" }}>
-                                          <Lable text = {"Charges Total = " + item.totalCharges  + " AED"} style={{padding:"0px", margin:"0px 0px -10px -15px"}}/>
-                                          <Table fontclass=""
-                                              gridColumns={utils.getGridColumnByName("charges")}
-                                              gridData={_.get(item,'chargesList', [])}
-                                              totalRecords={100}
-                                  //           totalRecords={item.chargesList.length}
-                                              searchCallBack={this.searchCallBack}
-                                              pageSize={10}
-                                              pagination={false} pageChanged={this.pageChanged}
-                                              export={false}
-                                              search={true}
-                                          />
-                                        </div>
-                                      </div>
-                                    </div>
-                                    :  
-                                    <div></div>
-                                  }
-                                  { item.exceptionsList.length > 0 ? 
-                                    <div className="row">
-                                      <div className="col-md-12">
-                                        <div className="col-md-6" style={{ margin: "20px 0px 20px 0px" }} >
-                                          <Lable text={utils.getLabelByID('Exceptions')} style={{padding:"0px", margin:"0px 0px -10px -15px"}} />
-                                          <Table fontclass=""
-                                              gridColumns={utils.getGridColumnByName("BusinessTransactionError")}
-                                              gridData={_.get(item,'exceptionsList', [])}
-                                              totalRecords={100}
-                                              searchCallBack={this.searchCallBack}
-                                              pageSize={10}
-                                              pagination={false} pageChanged={this.pageChanged}
-                                              export={false}
-                                              search={true}
-                                          />
-                                        </div>
-                                      </div>
-                                    </div>
-                                    :
-                                    <div></div>
-                                  }
+                                  </div>                      
                                   <div className="col-md-12">
                                     <div className="row">
                                       <div className="portlet light bordered sdg_portlet" style={{display:"flex"}}>
@@ -1802,23 +1897,8 @@ class InvoiceDetails extends React.Component {
                                       </div>
                                     </div>
                                   </div>
-                                  {/* <div className="col-md-12">
-                                    <Lable text="Declaration Item" style={{marginLeft:"-15px", marginBottom:"3px"}}/>
-                                    <Table fontclass=""
-                                      gridColumns={utils.getGridColumnByName("delivery")}
-                                      gridData={_.get(item,'declarationItemList',[])}
-                                      totalRecords={100}
-                                //     totalRecords={item.declarationItemList.length}
-                                      searchCallBack={this.searchCallBack}
-                                      pageSize={10}
-                                      pagination={false} pageChanged={this.pageChanged}
-                                      export={false}
-                                      search={true}
-                                    />
-                                  </div> */}
                                 </div>
-                              
-                              </div>    
+                              </div>
                               )
                             })}
                             
@@ -2058,7 +2138,10 @@ class InvoiceDetails extends React.Component {
                                   <div className="row" style={{ marginBottom: "50px" }}>
                                     <div className="col-md-2"></div>
                                       <div className="col-md-10" style={{    display: "block", overflow: "hidden", padding: "10px 10px" }}>
-                                          <div className="text-right"> <span style={{ backgroundColor:"#00ae4f", fontWeight: "600", fontSize: "16px", color:"white", padding: "1rem 2rem" }}>{item.txID}</span></div>                    
+                                          <div className="text-right">
+                                            <span style={{ 
+                                              backgroundColor:"#00ae4f", fontWeight: "600", fontSize: "16px", color:"white", padding: "1rem 2rem", display:"block", overflow: "hidden"
+                                              }}>{item.txID}</span></div>                    
                                       </div>
                                   </div>
                                   

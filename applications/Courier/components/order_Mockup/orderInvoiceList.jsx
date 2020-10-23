@@ -38,6 +38,7 @@ class OrderInvoiceList extends React.Component {
       lineItems: undefined,
       orgDetailByCode: undefined,
       orderDetailsContainer: undefined,
+      orderKey: -1,
       statusList: [
         [
           {
@@ -187,7 +188,7 @@ class OrderInvoiceList extends React.Component {
       }
   }
   this.props.actions.generalProcess(constantsApp.getEndToEndTrackingInformation, request);
-
+  this.setState({ orderKey :  this.props.params.id})
     // interval = setInterval(() => {
     //   this.fetchData();
     // }, 5000);
@@ -228,6 +229,7 @@ class OrderInvoiceList extends React.Component {
       orderDetailsContainer.invoices = nextProps.orderInvoiceDetails.invoices;
 
       orderDetailsContainer.invoices.map(item=>{
+        item.orderKey = this.state.orderKey,
         item.orderId = nextProps.orderInvoiceDetails.orderID;
         item.fzCode = item.fzCode ? item.fzCode : "-";
         item.wareHouse = item.wareHouse ? item.wareHouse : "-";
