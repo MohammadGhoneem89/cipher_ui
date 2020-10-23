@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router';
 import unescapejs from 'unescape-js';
 import ShadowBox from '../../common/ShadowBox.jsx'
 // import Steps from '../../../../core/common/Steps.jsx';
-import Table from '../../../../core/common/Datatable.jsx';
+import Table from '../../common/Datatable.jsx';
 import * as utils from '../../../../core/common/utils.js';
 import * as actions from '../../../../core/actions/generalAction';
 import * as constants from '../../../../core/constants/Communication.js';
@@ -40,6 +40,7 @@ class InvoiceDetails extends React.Component {
       orderDetails: undefined,
       lineItems: undefined,
       orgDetailByCode: undefined,
+      orderKey: -1,
       statusList: [
         [
           {
@@ -230,7 +231,7 @@ class InvoiceDetails extends React.Component {
 
   fetchData() {
     let request = {
-      "internalid": this.props.params.id
+      "internalid": this.props.params.id.split("-")[0]
     }
     this.props.actions.generalProcess(constants.orderDetails, request);
   }
@@ -254,14 +255,16 @@ class InvoiceDetails extends React.Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    this.fetchData();
-    console.log("params : ", this.props.params.id)
+    //this.fetchData();
+    console.log("params : ", this.props.params.id.split("-")[0])
     let request = {
       "body" : {
-          "orderId": this.props.params.id
+          "orderId": this.props.params.id.split("-")[0]
       }
   }
-    this.props.actions.generalProcess(constantsApp.getEndToEndTrackingInformation, request);
+  this.setState({ orderKey :  this.props.params.id})
+
+  this.props.actions.generalProcess(constantsApp.getEndToEndTrackingInformation, request);
     
     // interval = setInterval(() => {
     //   this.fetchData();
@@ -333,9 +336,10 @@ class InvoiceDetails extends React.Component {
 
     let invoiceDetailsContainer = {};
     if (nextProps.orderInvoiceDetails) {
-      let invoiceData = nextProps.orderInvoiceDetails.invoices[0];
+      let invoiceID_O = this.state.orderKey.split("-")[1];
+      let invoiceData = nextProps.orderInvoiceDetails.invoices.filter( item => { return invoiceID_O === item.id })[0];
       invoiceDetailsContainer.associatedEcommerceDetails = invoiceData.associatedEcommerceDetails
-      invoiceDetailsContainer.brokerDetails = invoiceData.brokerDetails
+      invoiceDetailsContainer.brokerDetails = invoiceData.brokerDetails 
       invoiceDetailsContainer.logisticsStorageProviderDetails = invoiceData.logisticsStorageProviderDetails
 
       invoiceDetailsContainer.orderID = nextProps.orderInvoiceDetails.orderID;
@@ -368,6 +372,7 @@ class InvoiceDetails extends React.Component {
       let lineItemsTemp = []
       lineItems.forEach( item => {;
         let obj={
+          "orderKey": this.state.orderKey + "-" + item.id,
           "quantity": item.quantity,
           "description": item.description,
           "hscode": item.hscode,
@@ -492,11 +497,12 @@ class InvoiceDetails extends React.Component {
       
       let declarationTemp = [];
       let exportDeclaration = [];
-      invoiceData.declaration.latest ? 
+      console.log("declaration object", invoiceData.declaration.latest ? true : false)
+      !_.isEmpty(invoiceData.declaration.latest) ? 
       declarationTemp.push(invoiceData.declaration.latest)
       : {}
 
-      invoiceData.declaration.historical ? 
+      !_.isEmpty(invoiceData.declaration.historical) ? 
       declarationTemp = declarationTemp.concat(invoiceData.declaration.historical)
       : {}
 
@@ -542,11 +548,11 @@ class InvoiceDetails extends React.Component {
       let importDeclaration = [];
 
       invoiceData.returnRequest.forEach(item => {
-        item.declaration.latest ? 
+        !_.isEmpty(item.declaration.latest) ? 
         importDeclarationTemp.push(item.declaration.latest)
         : {}
   
-        invoiceData.declaration.historical ? 
+        !_.isEmpty(invoiceData.declaration.historical) ? 
         importDeclarationTemp = importDeclarationTemp.concat(item.declaration.historical)
         : {}
       })
@@ -874,12 +880,17 @@ class InvoiceDetails extends React.Component {
 
   getActiveClass(label) {
     label = label.toUpperCase();
-    if (label == "UNDELIVERED" || label == "REJECTED" || label == "PARTIAL RETURN" || label == "FULL RETURN" || label == "CANCELLED") {
-      return "warning"
+    if (label === "CANCELLED" || label == "UNDELIVERED" || label === "RETURN_BY_CUSTOMER") {
+      return "warning";// warning is basically danger
     }
-    return "active"
+    else
+    if(label === "TRANSPORTED" || label === "EXIT" || label === "DECLARED" || label === "PARTIAL RETURN" || label === "FULL RETURN" || label === "RET_DECLARED" || label === "RET_TRANSPORTED")
+    {
+      return "danger"; // and danger is warning
+    }
+    return "active";
   }
-
+ 
   render() {
     console.log("state", this.state)
     let statusBarClass = "";
@@ -948,7 +959,7 @@ class InvoiceDetails extends React.Component {
                   if (item.label.toUpperCase() == this.state.invoiceDetailsContainer.invoiceStatus) {
                     statusBarClass = "notPassed"
                   }
-                  return <li key={key} style={{ width: width }} className={item.label.toUpperCase() == this.state.invoiceDetailsContainer.invoiceStatus ? this.getActiveClass(item.label) : statusBarClass}>{item.label}</li>
+                  return <li key={key} style={{ width: width }} className={item.label.toUpperCase() === this.state.invoiceDetailsContainer.invoiceStatus.toUpperCase() ? this.getActiveClass(item.label) : statusBarClass}>{item.label}</li>
                 })}
               </ul>
             </div>
@@ -1302,8 +1313,9 @@ class InvoiceDetails extends React.Component {
                                       color: "white",
                                       padding: "1rem 2rem",
                                       display:"block",
-                                      overflow: "hidden"
-
+                                      overflow: "hidden",
+                                      textOverflow: "ellipsis",
+                                      marginRight: "15px"
                                     }}
                                   >
                                     { item.txID }
@@ -1473,8 +1485,8 @@ class InvoiceDetails extends React.Component {
                                   </div>
                                   <div className="col-md-6">
                                     <div className="col-md-12 text-right">
-                                      <div className="text-center" style={{ display: "flex"}}>
-                                        <img src={baseUrl + item.transportImage} onError={this.addDefaultHAWBSrc} width={500} height={400} alt />
+                                      <div className="text-center">
+                                        <img src={baseUrl + item.transportImage} onError={this.addDefaultHAWBSrc} width="100%" alt />
                                       </div>
                                       {/* <img src="img/dewa.jpg" width="150" alt=""> */}
                                     </div>
@@ -1746,7 +1758,9 @@ class InvoiceDetails extends React.Component {
                                       <div className="col-md-10" style={{    display: "block", overflow: "hidden", padding: "10px 10px" }}>
                                           <div className="text-right">
                                             <span style={{ 
-                                              backgroundColor:"#00ae4f", fontWeight: "600", fontSize: "16px", color:"white", padding: "1rem 2rem", display:"block", overflow: "hidden"
+                                              backgroundColor:"#00ae4f", fontWeight: "600", fontSize: "16px", color:"white", padding: "1rem 2rem", display:"block", overflow: "hidden",
+                                              textOverflow: "ellipsis",
+                                              marginRight: "15px"
                                               }}>{item.txID}</span></div>                    
                                       </div>
                                   </div>
@@ -1969,7 +1983,7 @@ class InvoiceDetails extends React.Component {
                           <label style={ item.deliveryType === "contact" ? {display:""} : {display: "none"} }>Signature</label>
                         </div>
                         <div className="col-md-12">  
-                          <img style={ item.deliveryType === "contact" ? {width: "80%", height: "100px", display:""} : {display: "none"}}  src={baseUrl + item.signature.path} onError={this.addDefaultHAWBSrc} height="50%" />
+                          <img style={ item.deliveryType === "contact" ? {width: "50%", display:""} : {display: "none"}}  src={baseUrl + item.signature.path} onError={this.addDefaultHAWBSrc} />
                         </div>
                         <div className="col-md-12">
                           <div style={ item.deliveryType === "contact" ? {display:""} : {display: "none"}}>
@@ -2140,7 +2154,9 @@ class InvoiceDetails extends React.Component {
                                       <div className="col-md-10" style={{    display: "block", overflow: "hidden", padding: "10px 10px" }}>
                                           <div className="text-right">
                                             <span style={{ 
-                                              backgroundColor:"#00ae4f", fontWeight: "600", fontSize: "16px", color:"white", padding: "1rem 2rem", display:"block", overflow: "hidden"
+                                              backgroundColor:"#00ae4f", fontWeight: "600", fontSize: "16px", color:"white", padding: "1rem 2rem", display:"block", overflow: "hidden",
+                                              textOverflow: "ellipsis",
+                                              marginRight: "15px"
                                               }}>{item.txID}</span></div>                    
                                       </div>
                                   </div>

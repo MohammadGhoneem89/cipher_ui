@@ -32,10 +32,11 @@ class orderlistMock extends React.Component {
                 pageSize: 10,
                 currentPageNo: 1
             },
-            isLoading: false,
+            isLoading: true,
             gridData: [],
             actions: [],
             typedata: undefined,
+            orderListPage : [],
             orderStatusList : [ 
                 {
                     "label" : "FINALIZED",
@@ -108,22 +109,35 @@ class orderlistMock extends React.Component {
     componentWillReceiveProps(nextProps) {
         console.log(nextProps.orderlist, "---- get grid data")
 
-        let gridData = nextProps.orderlist.data.searchResult.orderList || [];
+        // let gridData = nextProps.orderlist.data.searchResult.orderList || [];
 
-        gridData.forEach((data, index) => {
-            gridData[index].orderStatus = this.getStatus(data.orderStatus, data.exportDeclarationStatus);
-        })
+        // gridData.forEach((data, index) => {
+        //     gridData[index].orderStatus = this.getStatus(data.orderStatus, data.exportDeclarationStatus);
+        // })
 
-        if(nextProps.orderStatusList){
-            this.setState({
-                orderStatusList : nextProps.orderStatusList,
-                isLoading: false
-            })
-        }
+        // if(nextProps.orderStatusList){
+        //     this.setState({
+        //         orderStatusList : nextProps.orderStatusList,
+        //         isLoading: false
+        //     })
+        // }
+       
 
         if (nextProps.orderlist && nextProps.entityList.data) {
             let entityList = nextProps.entityList.data.searchResult;
-
+            let gridData = nextProps.orderlist.data.searchResult.orderList || [];
+            gridData.map((obj) => {
+                // obj.invoiceCount = (Math.floor(Math.random() * (10) ) + 1) + ""
+                 obj.actions = [
+    
+                     {
+                         "label": "View",
+                         "URI": ["/courier/orderInvoiceList"],
+                         "params": "_id",
+                         "iconName": "icon-docs"
+                     }
+                 ]
+             })
             let ecommerceList = []
             let courierList = []
             entityList.forEach((entity) => {
@@ -143,12 +157,15 @@ class orderlistMock extends React.Component {
                 }
             })
 
+            let mainList = _.cloneDeep(gridData);
+            let orderListPage = mainList.slice(0, 10);
             console.log("state ============= ", this.state);
             this.setState(
                 {
+                    orderListPage,
                     gridData: gridData,
                     typeData: nextProps.typeData,
-//                    isLoading: false,
+                    isLoading: false,
                     page: nextProps.orderlist.pageData,
                     ecommerceList: ecommerceList,
                     courierList: courierList
@@ -250,8 +267,14 @@ class orderlistMock extends React.Component {
                     }
                 }
             }
-            this.setState({ currentPageNo: pageNo });
-            this.props.actions.generalProcess(constants.orderlist, request);
+            let page = {
+                "currentPageNo": pageNo,
+                "pageSize": 10
+            }
+            let mainList = _.cloneDeep(this.state.gridData);
+            let orderListPage = mainList.slice((pageNo-1)*10, pageNo*10);
+            this.setState({ orderListPage, page });
+            // this.props.actions.generalProcess(constants.orderlist, request);
         }
     }
 
@@ -424,27 +447,12 @@ class orderlistMock extends React.Component {
                         </div>
                     </div>
                     <Portlet title={"Order List"} actions={this.state.actions} isPermissioned={true}>
-                        {
-                            this.state.gridData.map((obj) => {
-                                obj.invoiceCount = (Math.floor(Math.random() * (10) ) + 1) + ""
-                                obj.actions = [
-
-                                    {
-                                        "label": "View",
-                                        "URI": ["/courier/orderInvoiceList"],
-                                        "params": "_id",
-                                        "iconName": "icon-docs"
-                                    }
-                                ]
-                            })
-
-                        }
 
                         <Table
                             gridColumns={utils.getGridColumnByName("orderListMockup")}
-                            gridData={this.state.gridData}
+                            gridData={this.state.orderListPage}
                             fontclass=""
-                            totalRecords={this.state.page.totalRecords}
+                            totalRecords={this.state.gridData.totalRecords}
                             pageSize={10}
                             pagination={true}
                             activePage={this.state.page.currentPageNo}

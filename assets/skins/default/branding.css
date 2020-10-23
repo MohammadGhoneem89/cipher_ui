@@ -914,6 +914,11 @@ cursor: pointer;
 	color: white;
 }
 
+#progressbar li.danger:before {
+	background: #fb7425;
+	color: white;
+}
+
 /* end setp screen css */
 
 @media (max-width: 768px) {
@@ -967,9 +972,12 @@ cursor: pointer;
 }
 
 .badge-success {
-    background: #56a93c;
+    background: #00ae4f;
 }
 
+.badge-danger {
+    background: #e80202;
+}
 
 /* Tiles*/
 
