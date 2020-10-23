@@ -151,13 +151,35 @@ class BusinessTransaction extends React.Component {
                 },
                 {
                     "name": "Agility",
-                    "imageURL": "/assets/Resources/images/agility_logo_appicon.png"
+                    "imageURL": "/assets/Resources/images/agility_updated.jpg"
                 },
                 {
                     "name": "Aramex",
-                    "imageURL": "/assets/Resources/images/aramex_icon.png"
+                    "imageURL": "/assets/Resources/images/aramex_updated.png"
                 }
               ],
+            eCommerceList: [
+                {
+                    "name": "ALL",
+                    "imageURL": "/assets/Resources/images/ecommerce/whiteImageBorder.png"
+                },
+                {
+                    "name": "Noon",
+                    "imageURL": "/assets/Resources/images/ecommerce/noon.png"
+                },
+                {
+                    "name": "Amazon",
+                    "imageURL": "/assets/Resources/images/ecommerce/amazon.jpg"
+                },
+                {
+                    "name": "Awok",
+                    "imageURL": "/assets/Resources/images/ecommerce/awok.jpg"
+                },
+                {
+                    "name": "Namshi",
+                    "imageURL": "/assets/Resources/images/ecommerce/namshi.jpg"
+                }
+            ],
             demoIntervalTime:[
                 [2, 0], // 1  mins
                 [2, 1], // 2  hours
@@ -452,7 +474,6 @@ class BusinessTransaction extends React.Component {
     }
 
 
-
     setIntervalForMonitoring = () => {
         const monitoringInterval = setInterval(() => {
             this.commonActionExecutor()
@@ -533,10 +554,14 @@ class BusinessTransaction extends React.Component {
     }
 
     jqueryExecuter = () => {
+        
         $(document).ready(function () {
             console.log("jquery business")
             $('.multiselect').multiselect({
-                buttonWidth: 'auto',
+                allSelectedText: 'select ALL',
+                includeSelectAllOption: true,
+                nonSelectedText: "Select E-Commerce",
+                buttonWidth: '100%',
                 numberDisplayed: 15,
                 enableHTML: true,
                 optionLabel: function (element) {
@@ -1404,7 +1429,7 @@ class BusinessTransaction extends React.Component {
                                                     <div className="controls">
                                                         <select className="multiselect" multiple="multiple" id="Server0Vm">
                                                             <optgroup>
-                                                                {this.state.declarationProcessors.map( item=> {
+                                                                {this.state.eCommerceList.map( item=> {
                                                                     return <option data-img={item.imageURL} value={item.name}>{item.name}</option>
                                                                 })}
                                                             </optgroup>
@@ -1562,7 +1587,7 @@ class BusinessTransaction extends React.Component {
                                         gridData={this.state.businessTransDataList}
                                         totalRecords={this.state.businessTransDataList.length}
                                         searchCallBack={this.searchCallBack}
-                                        pageSize={20}
+                                        pageSize={21}
                                         pagination={true} pageChanged={this.pageChanged}
                                         export={false}
                                         search={true}

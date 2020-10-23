@@ -74,7 +74,7 @@ const ReportForm = ({ onInputChange, onConsentModeChange, onProofRequirementChan
                   <label className="form-group control-label col-md-4" style={{
                     textAlign: "left",
                     fontWeight: "normal"
-                  }}>{utils.getLabelByID("Document")}</label>
+                  }}>{utils.getLabelByID("Document Type")}</label>
                   <div className="col-md-8">
                     <Combobox
                         status={(state.errors && state.errors.documentType) ? "ERROR" : undefined}

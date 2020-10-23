@@ -14,7 +14,7 @@ class AnchorComp extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={this.props.style ? this.props.style : {}}>
                 <a className="table-anchor-btn" onClick={this.invokeAnchorButton}>{this.props.anchotDisplayName}</a>
             </div>
         );

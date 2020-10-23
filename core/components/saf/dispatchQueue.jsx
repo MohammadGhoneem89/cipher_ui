@@ -11,6 +11,7 @@ import * as constants from '../../constants/Communication.js';
 import DateControl from '../../common/DateControl.jsx'
 import ModalBox from '../../common/ModalBox.jsx';
 import ReactJson from 'react-json-view';
+import DateTimeField from "react-bootstrap-datetimepicker";
 
 class DispatchQueue extends React.Component {
 
@@ -23,7 +24,14 @@ class DispatchQueue extends React.Component {
       actions: [],
       isOpen: false,
       showdata: {},
-      response: {}
+      response: {},
+      fromTime:'',
+      toTime:'',
+      isAllSelected: false,
+      selectedValues: [],
+      unselectedValues: [],
+      changed: true,
+      valuesListKey:[]
     };
     this.pageChanged = this.pageChanged.bind(this);
     this.formSubmit = this.formSubmit.bind(this);
@@ -31,7 +39,9 @@ class DispatchQueue extends React.Component {
     this.renderPopupBody = this.renderPopupBody.bind(this);
     this.ActionHandlers = this.ActionHandlers.bind(this);
     this.closePopUP = this.closePopUP.bind(this);
-
+    this.fromDateChange = this.fromDateChange.bind(this);
+    this.toDateChange = this.toDateChange.bind(this);
+    this.getCheckedItems = this.getCheckedItems.bind(this);
 
   }
 
@@ -44,8 +54,14 @@ class DispatchQueue extends React.Component {
   }
 
   getRequest() {
-    let toDate = $("#toDate").find("input").val()
-    let fromDate = $("#fromDate").find("input").val()
+    // let toDate = $("#toDate").find("input").val()
+    // let fromDate = $("#fromDate").find("input").val()
+    let fromDate = this.state.fromTime
+    let toDate = this.state.toTime
+
+
+
+    console.log("fromDate",document.getElementById('fromDate'));
     let functionName = (document.getElementById('functionName') == null || document.getElementById('functionName') == undefined) ? "" : document.getElementById('functionName').value;
     let network = document.getElementById('network') == null ? "" : document.getElementById('network').value;
 
@@ -103,10 +119,12 @@ class DispatchQueue extends React.Component {
         if (index > -1) {
           let a = this.props.DispatchQueueData.data.searchResult;
           let id = a[index].id;
+         delete a[index].payload.Error
           let request = {
             id,
-            payload: a[index]
+            payload: a[index].payload
           }
+          console.log("request",request);
           this.setState({ isReQueued: true }, () => {
             this.props.actions.generalProcess(constants.updateSafLogs, request);
           })
@@ -124,6 +142,8 @@ class DispatchQueue extends React.Component {
   }
 
   componentWillUpdate() {
+    console.log("fffffffffffffffffffffffff",this.state.unselectedValues);
+    console.log("fffffffffffffffffffffffff",this.state.selectedValues);
     if (this.state.isReQueued === true)
       this.setState({
         isReQueued: false
@@ -181,7 +201,6 @@ class DispatchQueue extends React.Component {
       }
 
       this.setState({ currentPageNo: pageNo })
-
       this.props.actions.generalProcess(constants.getSafLogs, request);
 
     }
@@ -194,8 +213,110 @@ class DispatchQueue extends React.Component {
     });
   }
 
+  fromDateChange = value => {
+    console.log("value",value);
+    value=moment.unix(value/1000).format('YYYY-MM-DD HH:mm:ss')
+    console.log("value",value);
+    this.setState({
+      fromTime:value
+    })
+  };
+  toDateChange = value => {
+    console.log("value",value);
+    value=moment.unix(value/1000).format('YYYY-MM-DD HH:mm:ss')
+    console.log("value",value);
+    this.setState({
+      toTime:value
+    })
+  };
+
+  getCheckedItems(ID, checked) {
+
+    console.log("ID",ID);
+    console.log("checked",checked);
+
+console.log("this.state.isAllSelected",this.state.isAllSelected);
+    let valuesListKey = this.state.isAllSelected ? 'unselectedValues': 'selectedValues';
+    let valuesList = _.clone(this.state[valuesListKey]);
+
+    if ((checked && !this.state.isAllSelected) || (!checked && this.state.isAllSelected))
+        valuesList.push(Number(ID));
+    else {
+        let idx = valuesList.indexOf(Number(ID));
+        if (idx != -1) valuesList.splice(idx, 1);
+    }
+
+    console.log("valuesList",valuesList);
+
+    this.setState({ [valuesListKey]: valuesList });
+}
+
+toggleSelectUnselectAll(toggle) {
+  console.log("toggle",toggle);
+  this.setState({
+      isAllSelected: toggle,
+      selectedValues: [],
+      unselectedValues: []
+  })
+}
+
+statusUpdate(param) {
+  let limit = 10000;
+  let totalRecords = Number(this.props.DispatchQueueData.pageData.totalRecords) > limit ? String(limit) : this.props.DispatchQueueData.pageData.totalRecords;
+  console.log("totalRecords",this.props.DispatchQueueData.pageData.totalRecords);
+  let selectedRecordsLength = this.state.isAllSelected ? Number(totalRecords) - this.state.unselectedValues.length : this.state.selectedValues.length;
+
+  let confirmationMessage = String(selectedRecordsLength) + '/' + totalRecords + ' Notifications are selected. Are you sure you want to confirm?';
+        if (!confirm(confirmationMessage)) return;
+        this.setState({
+          isReQueued:true
+        })
+
+        if (this.state.isAllSelected ==true) {
+          let request = {
+            id : this.state.unselectedValues,
+            isAllSelected:true
+          }
+          console.log("request0",request);
+          this.props.actions.generalProcess(constants.updateSafLogs, request);
+        }else{
+          let request = {
+            id:this.state.selectedValues,
+            isAllSelected:false
+          }
+          this.props.actions.generalProcess(constants.updateSafLogs, request);
+          console.log("request1",request);
+        }
+
+      // console.log("this.state.isAllSelected",this.state.isAllSelected);
+
+      // console.log("this.state.unselectedValues",this.state.unselectedValues);
+
+      // console.log("this.state.selectedValues",this.state.selectedValues);
+
+
+
+  // let a = this.props.DispatchQueueData.data.searchResult;
+        //   let id = a[index].id;
+        //  delete a[index].payload.Error
+        //   let request = {
+        //     id,
+        //     payload: a[index].payload
+        //   }
+        //   console.log("request",request);
+        //   this.setState({ isReQueued: true }, () => {
+        //     this.props.actions.generalProcess(constants.updateSafLogs, request);
+        //   })
+
+
+
+
+}
+
+
 
   render() {
+    console.log("valddddduesList",this.state.valuesListKey);
 
     if (this.props.DispatchQueueData.data) {
       return (
@@ -243,7 +364,11 @@ class DispatchQueue extends React.Component {
                               <label className="control-label">{utils.getLabelByID("APL_FromDate")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <DateControl id="fromDate" />
+                              <DateTimeField
+                                id="fromDate"
+                                inputFormat='DD/MM/YYYY hh:mm A'
+                                onChange={this.fromDateChange}
+                              />
                             </div>
                           </div>
                           <div className="col-md-6">
@@ -251,7 +376,11 @@ class DispatchQueue extends React.Component {
                               <label className="control-label">{utils.getLabelByID("APL_ToDate")}</label>
                             </div>
                             <div className="form-group col-md-8">
-                              <DateControl id="toDate" />
+                              <DateTimeField
+                                id="toDate"
+                                inputFormat='DD/MM/YYYY hh:mm A'
+                                onChange={this.toDateChange}
+                              />
                             </div>
                           </div>
                         </div>
@@ -296,13 +425,23 @@ class DispatchQueue extends React.Component {
           </div>
 
           <Portlet title={utils.getLabelByID("SAF Queue")} isPermissioned={true}>
+          <button type="submit" className="btn green" style={{float:'right'}}
+                  onClick={this.statusUpdate.bind(this)}>{utils.getLabelByID("ReQueue All")} 
+          </button>
             <Table componentFunction={this.ActionHandlers} fontclass=""
               gridColumns={utils.getGridColumnByName("DispatchQueueDataSAF")}
               gridData={this.props.DispatchQueueData.data.searchResult}
               totalRecords={this.props.DispatchQueueData.pageData.totalRecords}
-              searchCallBack={this.searchCallBack} pageSize={10}
-              pagination={true} pageChanged={this.pageChanged}
-              activePage={this.state.currentPageNo} />
+              TableClass="notification-hit-grid"
+              searchCallBack={this.searchCallBack} 
+              pageSize={10}
+              pagination={true} 
+              pageChanged={this.pageChanged}
+              getCheckedItems={this.getCheckedItems}
+              selectAllItems={this.toggleSelectUnselectAll.bind(this, true)}
+              unselectAllItems={this.toggleSelectUnselectAll.bind(this, false)}
+              activePage={this.state.currentPageNo} 
+              />
 
           </Portlet>
 

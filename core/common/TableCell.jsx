@@ -45,63 +45,63 @@ class TableCell extends React.Component {
         return " badge badge-info badge-roundless";
       default:
         return " badge badge-danger badge-roundless";
-     
+
 
     }
   }
 
 
-  getStyleForRev(type){
+  getStyleForRev(type) {
     switch (type) {
       case "NO CHANGE":
         return {
-          fontWeight:"bold",
-          backgroundColor:"#d4edda",
-          color:"#155724",
-          cursor:"pointer"
+          fontWeight: "bold",
+          backgroundColor: "#d4edda",
+          color: "#155724",
+          cursor: "pointer"
         };
       case "NOT FOUND":
         return {
-          fontWeight:"bold",
-          backgroundColor:"rgb(255 202 193)",
-          color:"rgb(200 76 64)",
-          cursor:"pointer",
+          fontWeight: "bold",
+          backgroundColor: "rgb(255 202 193)",
+          color: "rgb(200 76 64)",
+          cursor: "pointer",
         };
       default:
         return {
-          fontWeight:"bold",
-          backgroundColor:"#fff3cd",
-          color:"#856404",
-          cursor:"pointer"
+          fontWeight: "bold",
+          backgroundColor: "#fff3cd",
+          color: "#856404",
+          cursor: "pointer"
         };
     }
   }
 
-  getStyleForRevField(type){
+  getStyleForRevField(type) {
     switch (type) {
       case "Transaction Date":
         return {
-          fontWeight:"bold",
-          color:"#f89822"
+          fontWeight: "bold",
+          color: "#f89822"
         };
       case "Created By":
         return {
-          fontWeight:"bold",
-          color:"#f89822"
+          fontWeight: "bold",
+          color: "#f89822"
         };
-        case "UUID":
+      case "UUID":
         return {
-          fontWeight:"bold",
-          color:"#f89822"
+          fontWeight: "bold",
+          color: "#f89822"
         };
-        case "Blockchain ID":
+      case "Blockchain ID":
         return {
-           fontWeight:"bold",
-          color:"#f89822"
+          fontWeight: "bold",
+          color: "#f89822"
         };
       default:
         return {
-          fontWeight:"normal",
+          fontWeight: "normal",
         };
     }
   }
@@ -253,7 +253,7 @@ class TableCell extends React.Component {
   }
 
   getCheckedItems(element) {
-    this.props.getCheckedItems(element.ID, element.checked)
+    this.props.getCheckedItems(element.target.value, element.target.checked)
   }
 
 
@@ -318,10 +318,10 @@ class TableCell extends React.Component {
       return (<td>N/A</td>)
   }
 
-  handleCellSelect(){
+  handleCellSelect() {
     var SelectFn = this.props.selectedCell || null;
-    if(SelectFn){
-      SelectFn(this.props.rowData.field,this.props.cellData)
+    if (SelectFn) {
+      SelectFn(this.props.rowData.field, this.props.cellData)
     }
   }
 
@@ -372,16 +372,19 @@ class TableCell extends React.Component {
           style={{ fontSize: "15px!important" }}>{this.props.cellData.value}</span></td>);
       case "image":
         if (this.props.url) {
-          return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+          return (<td className="ent_nme" style={{ width: this.props.columnWidth, textAlign: _.get(this.props, 'cellData.name', '') ? center : undefined }}><img
             width="28px" height="28px"
             src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; <a
-              href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + this.props.cellData.name}</a>
+              href={this.props.url + '/' + this.props.rowData[this.props.recordID]}>{"   " + _.get(this.props, 'cellData.name', '')}</a>
           </td>);
         }
         else {
-          return (<td className="ent_nme" style={{ width: this.props.columnWidth }}><img
+          return (<td className={!_.get(this.props, 'cellData.name', '') ? "text-center" : "ent_nme"} style={{ width: this.props.columnWidth }}><img
             width="28px" height="28px"
-            src={baseUrl + (this.props.cellData.imageURL || "/images/blank.png")} /> &nbsp;&nbsp; {"   " + this.props.cellData.name}
+            src={baseUrl + (_.get(this.props, 'cellData.imageURL', _.get(this.props, 'cellData', '')) || "/images/blank.png")} />
+            {_.get(this.props, 'cellData.name', '') && <span>
+              &nbsp;&nbsp; {"   " + _.get(this.props, 'cellData.name', '')}
+            </span>}
           </td>);
         }
       case "statusLabelBig":
@@ -410,7 +413,7 @@ class TableCell extends React.Component {
       case "cb":
         return (<td><label
           className="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox"
-            className="checkboxes"
+            className="checkboxes"  onClick={this.getCheckedItems.bind(this)}
             value={this.props.rowData[this.props.recordID]} /><span /></label>
         </td>);
       case "cbDisabled":
@@ -478,24 +481,24 @@ class TableCell extends React.Component {
         </td>;
 
       case "revString":
-        return (this.props.rowData.field=="UUID" && this.props.cellData !="no change" && this.props.cellData != "not found"?
-        <td  style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())}>
-        <a href="javascript:;" data-toggle="modal" data-target="#modelWindows" style={{color:"inherit",textDecoration:"none"}}
-        data-id={this.props.cellData}
-        onClick={this.renderPopupBody.bind(this, this.props.cellData)}>{this.props.cellData} </a>
-        </td>
-        :<td style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())} onClick={this.handleCellSelect.bind(this)}  >{this.props.cellData}</td>);
+        return (this.props.rowData.field == "UUID" && this.props.cellData != "no change" && this.props.cellData != "not found" ?
+          <td style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())}>
+            <a href="javascript:;" data-toggle="modal" data-target="#modelWindows" style={{ color: "inherit", textDecoration: "none" }}
+              data-id={this.props.cellData}
+              onClick={this.renderPopupBody.bind(this, this.props.cellData)}>{this.props.cellData} </a>
+          </td>
+          : <td style={this.getStyleForRev(this.props.cellData.toString().toUpperCase())} onClick={this.handleCellSelect.bind(this)}  >{this.props.cellData}</td>);
 
-        case "revLatest":
-          return (
-            this.props.rowData.field=="UUID" && this.props.cellData !="no change" && this.props.cellData != "not found"?
-        <td  style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e",cursor:"pointer"}}>
-        <a href="javascript:;" data-toggle="modal" data-target="#modelWindows" style={{color:"inherit",textDecoration:"none"}}
-        data-id={this.props.cellData}
-        onClick={this.renderPopupBody.bind(this, this.props.cellData)}>{this.props.cellData} </a>
-        </td>:
-          <td style={{fontWeight:"bold",color:"grey",backgroundColor:"#fcfc3f9e",cursor:"pointer"}} onClick={this.handleCellSelect.bind(this)} >{this.props.cellData}</td>);
-      
+      case "revLatest":
+        return (
+          this.props.rowData.field == "UUID" && this.props.cellData != "no change" && this.props.cellData != "not found" ?
+            <td style={{ fontWeight: "bold", color: "grey", backgroundColor: "#fcfc3f9e", cursor: "pointer" }}>
+              <a href="javascript:;" data-toggle="modal" data-target="#modelWindows" style={{ color: "inherit", textDecoration: "none" }}
+                data-id={this.props.cellData}
+                onClick={this.renderPopupBody.bind(this, this.props.cellData)}>{this.props.cellData} </a>
+            </td> :
+            <td style={{ fontWeight: "bold", color: "grey", backgroundColor: "#fcfc3f9e", cursor: "pointer" }} onClick={this.handleCellSelect.bind(this)} >{this.props.cellData}</td>);
+
 
       case "revField":
         return (<td style={this.getStyleForRevField(this.props.cellData.toString())}  >{this.props.cellData}</td>);

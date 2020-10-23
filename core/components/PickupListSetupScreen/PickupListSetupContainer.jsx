@@ -9,7 +9,7 @@ import * as constants from '../../constants/Communication.js';
 import * as requestCreator from '../../common/request.js';
 import Table from '../../common/Datatable.jsx';
 import * as utils from '../../common/utils.js';
-import _ from 'lodash';
+import _, { forEach } from 'lodash';
 import Input from '../../common/Input.jsx';
 import Select from '../../common/Select.jsx';
 import Lable from '../../common/Lable.jsx';
@@ -22,6 +22,7 @@ class PickupListSetupContainer extends React.Component {
     super(props, context);
     this.state = {
       pickupListDetail: [],
+      enumList: {},
       pickupListID: undefined,
       consortiumNames: undefined,
       index: undefined,
@@ -37,10 +38,93 @@ class PickupListSetupContainer extends React.Component {
 
     this.submit = this.submit.bind(this);
     this.generalActionHandler = gen.generalHandler.bind(this);
+
   }
 
   componentWillMount() {
 
+  }
+
+
+
+  addDefaultSrc = e => e.target.src = "/assets/imgs/user.jpg";
+
+  imgDiv() {
+    return (
+      <div className="col-md-12" style={{ textAlign: "center" }}>
+        <img
+          id="UserProfilePic"
+          src={this.state.addForm.profilePic ? constants.baseUrl + this.state.addForm.profilePic : constants.baseUrl + "/images/blank.png"}
+          onError={this.addDefaultSrc}
+          className="img-responsive img-thumbnail" alt="Profile Image" width='105px'
+          height='190px'
+          ref={input => this.profilePic = input}
+        />
+        <br />
+        <span
+          className="label label-primary"
+          style={{ cursor: "pointer" }}
+          disabled={this.state.view}
+          onClick={() => {
+            console.log('Upload Image Clicked.')
+            this.profilePicUploader.click();
+          }}
+        >
+          {"Upload Image"}
+        </span>
+
+        <button
+          className="btn green"
+          style={{ cursor: "pointer", padding: '7px', fontSize: '12px', borderRadius: '0', display: "none" }}
+          onClick={() => {
+            this.profilePicUploader.click();
+          }}
+        >
+          {"Upload Image"}
+        </button>
+
+        <input
+          name="profilePicUploader"
+          id='profilePicUploader'
+          type='file'
+          disabled={this.state.view}
+          style={{ display: 'none' }}
+          ref={input => this.profilePicUploader = input}
+          onChange={(e) => {
+            console.log('Profile pic on change')
+            let reader = new FileReader();
+            let files = e.target.files;
+            let _this = this;
+
+            if (files && files[0]) {
+
+              reader.onload = function (fileReader) {
+                _this.profilePic.setAttribute('src', fileReader.target.result);
+
+                _this.props.actions.generalAjxProcess(constants.uploadImg, requestCreator.createImgUploadRequest({
+                  byteData: fileReader.target.result,
+                  context: {
+                    name: files[0].name,
+                    size: files[0].size,
+                    type: files[0].type
+                  }
+                })).then(result => {
+                  console.log(">>>>>>>>>>>||",JSON.stringify(result))
+                  _this.setState({
+                    addForm:{
+                      ..._this.state.addForm,
+                      profilePic: result.responseMessage.data.entityLogo.sizeSmall,
+                      path: result.responseMessage.data.entityLogo.sizeSmall
+                    }
+                  
+                  })
+                });
+              };
+              reader.readAsDataURL(files[0]);
+            }
+          }} />
+      </div>
+    )
   }
 
   componentDidMount() {
@@ -105,6 +189,7 @@ class PickupListSetupContainer extends React.Component {
         }
       }
       this.setState({
+        enumList: nextProps.enumList,
         eList: eList,
         isForign: isForign,
         typeDataList: nextProps.typeDataList,
@@ -161,7 +246,20 @@ class PickupListSetupContainer extends React.Component {
           let a = [...this.state.pickupListDetail];
           let interm = a[index];
           a.splice(index, 1);
-          this.setState({ pickupListDetail: a, addForm: interm, editmode: true });
+          interm['profilePic']=interm.path;
+
+          let lst = _.get(this.state.enumList, interm.dependent, [])
+          let fLst = []
+          lst.forEach((key) => {
+            fLst.push({
+              "label": key,
+              "value": key
+            });
+          })
+          
+
+
+          this.setState({ pickupListDetail: a,fLst: fLst, addForm: interm, editmode: true });
         }
         break;
       case "Deactivate":
@@ -199,19 +297,24 @@ class PickupListSetupContainer extends React.Component {
         labelAr: this.state.addForm.labelAr,
         dependent: this.state.addForm.dependent,
         value: this.state.addForm.value,
-
+        parentValue: this.state.addForm.parentValue,
+        path: this.state.addForm.path,
         actions: [
           { label: "Delete", iconName: "fa fa-trash", actionType: "COMPONENT_FUNCTION" },
           { label: "Edit", iconName: "fa fa-edit", actionType: "COMPONENT_FUNCTION" }
         ]
       }
+
       this.setState({
         pickupListDetail: [
           ...this.state.pickupListDetail,
           temp
         ],
         editmode: false,
-        addForm: {}
+        addForm: {
+          profilePic: '/images/blank.png',
+          path: '/images/blank.png'
+        }
       });
     }
   }
@@ -231,6 +334,7 @@ class PickupListSetupContainer extends React.Component {
   }
 
   render() {
+    let obj = { list: [] }
     if (!this.state.isLoading) {
       return (
         <div>
@@ -238,16 +342,16 @@ class PickupListSetupContainer extends React.Component {
             <Row>
               <Col>
                 <Lable columns='1' text={utils.getLabelByID("Type Name")} />
-                <Input fieldname='typeName' formname='typeForm' columns='5' style={{}}
+                <Input fieldname='typeName' disabled={!this.state.isNew} formname='typeForm' columns='5' style={{}}
                   state={this.state} actionHandler={this.generalActionHandler} />
-                <Lable columns='1' text={utils.getLabelByID("category")} />
-                <Select fieldname='type' formname='typeForm' columns='5' style={{}}
+                <Lable columns='1' text={utils.getLabelByID("MAU_useCase")} />
+                <Select fieldname='type' disabled={!this.state.isNew} formname='typeForm' columns='5' style={{}}
                   state={this.state} typeName="typeDataList" dataSource={this.state}
                   multiple={false} actionHandler={this.generalActionHandler} />
               </Col>
             </Row>
           </Portlet>
-          <Portlet title={"Pickup List Detail"}>
+          <Portlet title={"label / Vaues Detail"}>
             <Row>
               <Col>
                 <Lable columns='1' text={utils.getLabelByID("Label")} />
@@ -259,10 +363,34 @@ class PickupListSetupContainer extends React.Component {
                 <Lable columns='1' text={utils.getLabelByID("Value")} />
                 <Input fieldname='value' disabled={this.state.editmode} formname='addForm' columns='2' style={{}}
                   state={this.state} actionHandler={this.generalActionHandler} />
-                <Lable columns='1' text={utils.getLabelByID("Dependent")} />
+                <Lable columns='1' text={utils.getLabelByID("Parent")} />
                 <Select fieldname='dependent' formname='addForm' columns='2' style={{}}
                   state={this.state} typeName="eList" dataSource={this.state} isDDL={true}
+                  multiple={false} actionHandler={(formname, fieldname, type, evt) => {
+
+                    let lst = _.get(this.state.enumList, evt.target.value, [])
+                    console.log(JSON.stringify(lst), evt.target.value)
+                    let fLst = []
+                    lst.forEach((key) => {
+                      fLst.push({
+                        "label": key,
+                        "value": key
+                      });
+                    })
+                    let state = this.state[formname];
+                    _.set(state, fieldname, evt.target.value);
+                    this.setState({ fLst: fLst, [formname]: state })
+                    // this.generalActionHandler.call(formname, fieldname, type, evt);
+                  }} />
+                <Lable columns='1' text={utils.getLabelByID("Parant Value")} />
+                <Select fieldname='parentValue' formname='addForm' columns='2' style={{}}
+                  state={this.state} typeName="fLst" dataSource={this.state} isDDL={true}
                   multiple={false} actionHandler={this.generalActionHandler} />
+                {/* <Lable columns='1' text={utils.getLabelByID("Logo")} /> */}
+                {/* <Input fieldname='path' formname='addForm' columns='2' style={{}}
+                  state={this.state} actionHandler={this.generalActionHandler} /> */}
+
+                {this.imgDiv()}
               </Col>
             </Row>
             <br />
@@ -346,5 +474,5 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-PickupListSetupContainer.displayName = "PickupListSetup_Heading";
+PickupListSetupContainer.displayName = "List of Values Setup";
 export default connect(mapStateToProps, mapDispatchToProps)(PickupListSetupContainer);

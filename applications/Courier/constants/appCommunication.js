@@ -17,5 +17,6 @@ module.exports = {
   orgDetailByCode: baseUrl + "/API/UI/orgDetailByCode",
   orgList: baseUrl + "/API/UI/orgList",
   monitoringScreenData : baseUrl + "/API/ECOMMERCE/getB2GMonitoringScreenData",
-  getEndToEndTrackingInformation: baseUrl + "/API/ECOMMERCE/getEndToEndTrackingInformation"
+  getEndToEndTrackingInformation: baseUrl + "/API/ECOMMERCE/getEndToEndTrackingInformation",
+  orderlistInvoice: baseUrl + "/API/ECOMMERCE/getOrderList2"
 };

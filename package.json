@@ -37,7 +37,7 @@
     "chartjs-plugin-datalabels": "^0.6.0",
     "clone-deep": "^4.0.0",
     "crypto": "^1.0.1",
-    "d3": "^4.10.2",
+    "d3": "^4.13.0",
     "d3-sankey": "^0.12.3",
     "d3-tip": "^0.9.1",
     "deep-diff": "^1.0.2",
@@ -96,12 +96,14 @@
     "redux-immutable-state-invariant": "^2.0.0",
     "redux-thunk": "^2.2.0",
     "request-promise-native": "^1.0.5",
+    "styled-components": "^4.0.0",
     "topojson-client": "^3.1.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "unescape-js": "^1.1.1",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2",
     "whatwg-fetch": "^2.0.3",
+    "xlsx": "^0.16.8",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {

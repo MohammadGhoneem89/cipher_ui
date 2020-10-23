@@ -127,6 +127,17 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
               </div>
             </div>
           </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "normal"
+              }}>{utils.getLabelByID("Network Version")}</label>
+              <div className="form-group col-md-8">
+                <input type="text" className="form-control" name="networkVersion" onChange={onInputChange} value={state.networkVersion} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className="row">
@@ -158,6 +169,69 @@ const BLAConfigDefinationForm = ({ onInputChange, onInputChangeOrderer, addPeer,
           </div>
         </div>
       </div>
+
+
+      <div className="row">
+        <div className="col-md-12">
+          <div className="col-md-6">
+            <div className="form-group">
+
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "normal"
+              }}>{utils.getLabelByID("CA Name")}</label>
+              <div className="form-group col-md-8">
+
+                <input type="text" className="form-control" onChange={onInputChange} name="caName" value={state.caName} />
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "normal"
+              }}>{utils.getLabelByID("CA TLS HostName")}</label>
+              <div className="form-group col-md-8">
+                <input type="text" className="form-control" name="caHostname" onChange={onInputChange} value={state.caHostname} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div className="row">
+        <div className="col-md-12">
+        <div className="col-md-6">
+            <div className="form-group">
+
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "normal"
+              }}>{utils.getLabelByID("CA Certificate")}</label>
+              <div className="form-group col-md-8">
+                <textarea type="text" className="form-control" name="caCerts" onChange={onInputChange} value={state.caCerts} rows="6" style={{ fontSize: "12px", resize: "none", width: "100%" }} />
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+
+              <label className="form-group control-label col-md-4" style={{
+                textAlign: "left",
+                fontWeight: "normal"
+              }}>{utils.getLabelByID("CA Domain Name")}</label>
+              <div className="form-group col-md-8">
+                <input type="text" className="form-control" name="caDomainName" onChange={onInputChange} value={state.caDomainName} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <div className="row">
         <div className="col-md-12">

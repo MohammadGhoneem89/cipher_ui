@@ -82,7 +82,7 @@ class orderlistMock extends React.Component {
         });
     }
     handleSubmit(event) {
-        this.props.actions.generalProcess(constants.orderlist, this.getRequest());
+        this.props.actions.generalProcess(constants.orderlistInvoice, this.getRequest());
         // console.log(this.state.searchCriteria, " -----searchCriteria")
         event.preventDefault();
     }
@@ -221,7 +221,7 @@ class orderlistMock extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actions.generalProcess(constants.orderlist, this.getRequest());
+        this.props.actions.generalProcess(constants.orderlistInvoice, this.getRequest());
         this.props.actions.generalProcess(constants.orgList, { action: "entityList", page: { currentPageNo: 1, pageSize: 100 } });
         this.props.actions.generalProcess(coreConstants.getTypeData, requestCreator.createTypeDataRequest(['Order Statuses']));
 
