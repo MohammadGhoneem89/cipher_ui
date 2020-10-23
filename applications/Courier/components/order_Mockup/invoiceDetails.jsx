@@ -883,13 +883,13 @@ class InvoiceDetails extends React.Component {
       return "warning";// warning is basically danger
     }
     else
-    if(label === "EXIT" || label === "DECLARED" || label === "PARTIAL RETURN" || label === "FULL RETURN" || label === "RET_DECLARED" || label === "RET_TRANSPORTED")
+    if(label === "TRANSPORTED" || label === "EXIT" || label === "DECLARED" || label === "PARTIAL RETURN" || label === "FULL RETURN" || label === "RET_DECLARED" || label === "RET_TRANSPORTED")
     {
       return "danger"; // and danger is warning
     }
     return "active";
   }
-
+ 
   render() {
     console.log("state", this.state)
     let statusBarClass = "";
