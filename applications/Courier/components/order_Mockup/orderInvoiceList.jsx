@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router';
 import unescapejs from 'unescape-js';
 import ShadowBox from '../../common/ShadowBox.jsx'
 // import Steps from '../../../../core/common/Steps.jsx';
-import Table from '../../../../core/common/Datatable.jsx';
+import Table from '../../common/Datatable.jsx';
 import * as utils from '../../../../core/common/utils.js';
 import * as actions from '../../../../core/actions/generalAction';
 import * as constants from '../../../../core/constants/Communication.js';
@@ -172,15 +172,16 @@ class OrderInvoiceList extends React.Component {
     clearInterval(interval)
 
   }
-  fetchData() {
-    let request = {
-      "internalid": this.props.params.id
-    }
-    this.props.actions.generalProcess(constants.orderDetails, request);
-  }
+  // fetchData() {
+  //   let request = {
+  //     "internalid": this.props.params.id
+  //   }
+  //   this.props.actions.generalProcess(constants.orderDetails, request);
+  // }
   componentDidMount() {
     window.scrollTo(0, 0);
-    this.fetchData();
+ //   this.fetchData();
+    
     console.log("params : ", this.props.params.id)
     let request = {
       "body" : {
@@ -229,7 +230,7 @@ class OrderInvoiceList extends React.Component {
       orderDetailsContainer.invoices = nextProps.orderInvoiceDetails.invoices;
 
       orderDetailsContainer.invoices.map(item=>{
-        item.orderKey = this.state.orderKey,
+        item.orderKey = this.state.orderKey + "-" + item.id ,
         item.orderId = nextProps.orderInvoiceDetails.orderID;
         item.fzCode = item.fzCode ? item.fzCode : "-";
         item.wareHouse = item.wareHouse ? item.wareHouse : "-";
@@ -255,17 +256,17 @@ class OrderInvoiceList extends React.Component {
   getOrderStatus(label){
     switch (label) {
       case 'FINALIZED':
-        return "#00ae4f"
+        return "badge-success"
       case 'CANCELLED':
-        return "#e80202"
+        return "badge-danger"
       case 'DELIVERED':
-        return "#e80202"
+        return "badge-success"
       case 'UNDELIVERED':
-        return "#e80202"
+        return "badge-danger"
       case 'FULL RETURN':
-        return "#e80202"
+        return "badge-warning"
       case 'PARTIAL RETURN':
-        return "#e80202"
+        return "badge-warning"
       default:
         return "#a5a6af"
     }
@@ -451,7 +452,7 @@ class OrderInvoiceList extends React.Component {
             <div className="form-actions right">
               <div className="form-group col-md-12">
                   <div className="pull-right">
-                    <span style={{ border: "1px solid", padding: "8px 15px 8px 15px", color: "white", letterSpacing: "1px", fontWeight: "600", background: this.getOrderStatus(this.state.orderDetailsContainer.orderStatus) }}>{this.state.orderDetailsContainer.orderStatus}</span>
+                    <span style={{ border: "1px solid", padding: "8px 15px 8px 15px", color: "white", letterSpacing: "1px", fontWeight: "600"  }} className={this.getOrderStatus(this.state.orderDetailsContainer.orderStatus)}>{this.state.orderDetailsContainer.orderStatus}</span>
                   </div>
               </div>
             </div>

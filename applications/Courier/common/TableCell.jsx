@@ -4,6 +4,7 @@ import { baseUrl } from '../constants/appCommunication';
 import { browserHistory } from 'react-router';
 import * as utils from '../../../core/common/utils';
 import * as dates from '../../../core/common/dates';
+import _, { constant } from 'lodash';
 
 
 
@@ -120,6 +121,70 @@ class TableCell extends React.Component {
       default:
         return '';
     }
+  }
+
+  getClassForStatusLabel_Updated(type) {
+    switch (type.toUpperCase()) {
+      case "EXIT":
+        return "badge badge-warning badge-roundless";
+      case "DECLARED":
+        return "badge badge-warning badge-roundless";
+      case "TRANSPORTED":
+        return "badge badge-warning badge-roundless";
+      case "INITIATED":
+        return "badge badge-success badge-roundless";
+      case "CLEARED":
+        return "badge badge-success badge-roundless";
+      case "SUBMITTED":
+        return "badge badge-success badge-roundless";
+      case "DECLINED":
+        return "badge badge-danger badge-roundless";
+      case "RETURN_BY_CUSTOMER":
+        return "badge badge-danger badge-roundless";
+      case "REJECTED":
+        return "badge badge-danger badge-roundless";
+      case "FAIL DISPATCH":
+        return "badge badge-danger badge-roundless";
+      case "CANCELLED":
+        return " badge badge-danger badge-roundless";
+      case "DETAINED":
+        return " badge badge-danger badge-roundless";
+      case "SUSPEND":
+        return " badge badge-danger badge-roundless";
+      case "HAWB CREATED":
+        return " badge badge-warning badge-roundless";
+      case "EXPORT CLEARED":
+        return " badge badge-warning badge-roundless";
+      case "DELIVERED":
+        return " badge badge-success badge-roundless";
+      case "RETURN BY CUSTOMER":
+        return " badge badge-danger badge-roundless";
+      case "UNDELIVERED":
+        return " badge badge-danger badge-roundless";
+      case "FINALIZED":
+        return " badge badge-success badge-roundless";
+      case "IMPORT CLEARED":
+        return " badge badge-warning badge-roundless";
+      case "PARTIAL RETURN":
+        return " badge badge-warning badge-roundless";
+      case "FULL RETURN":
+        return " badge badge-warning badge-roundless";
+      case "CLEARANCE SUBJECT TO INSPECTION":
+        return " badge badge-warning badge-roundless";
+      case "RELEASE FOR INSPECTION":
+        return " badge badge-warning badge-roundless";
+      case "CLEARANCE SUBJECT TO INSPECTION":
+        return " badge badge-warning badge-roundless";  
+      case "RET_TRANSPORTED":
+        return " badge badge-warning badge-roundless";
+      case "RET_DECLARED":
+        return " badge badge-warning badge-roundless";
+        
+      
+      default:
+        return " badge badge-danger badge-roundless";
+
+    }  
   }
 
   renderIcon(type) {
@@ -338,8 +403,8 @@ class TableCell extends React.Component {
           </td>);
         }
       case "statusBox":
-        return (<td><span className={this.getClassForStatusLabel(this.props.cellData)}
-        >{this.props.cellData}</span></td>);
+        return (<td><span className={this.getClassForStatusLabel_Updated(this.props.cellData)}
+        >{this.props.cellData.toUpperCase()}</span></td>);
       case "statusLabelBig":
         return (<td><h3><span className={this.getClassForStatusBig(this.props.cellData.type)}
           style={{ height: "20px" }}>{this.props.cellData.value}</span></h3></td>);
@@ -462,7 +527,7 @@ class TableCell extends React.Component {
         </td>);
       }
       default:
-        return (<td style={{ fontWeight: fontWeightStyle }}> {this.props.cellData} </td>);
+        return (<td style={{ fontWeight: fontWeightStyle }}> {_.upperFirst(this.props.cellData)} </td>);
 
     }
 
