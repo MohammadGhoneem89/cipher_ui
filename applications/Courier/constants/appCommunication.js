@@ -8,6 +8,7 @@ module.exports = {
   getDashboardData: baseUrl + "/API/customs-courier/getDashboardData",
   getWidgetList: baseUrl + "/API/customs-courier/getWidgetList",
   addWidgets: baseUrl + "/API/customs-courier/addWidgets",
+  sendChartEmail: baseUrl + "/API/customs-courier/sendChartEmail",
   getGraphDashboardData: baseUrl + "/API/ECOMMERCE/getWidgetsData",
   orderlist: baseUrl + "/API/customs-courier/getOrderList",
   fileList: baseUrl + "/API/customs-courier/getFileList",

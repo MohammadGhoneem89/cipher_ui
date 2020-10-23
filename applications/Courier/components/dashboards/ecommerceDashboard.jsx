@@ -55,6 +55,7 @@ import GroupedDendogramBarChart from '../../common/charts/groupedDendoGramBarCha
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import ModalBox from '../../../../core/common/ModalBox.jsx';
+import DonutChart from '../../common/charts/d3-dount-chart.jsx';
 
 let interval;
 class EcommerceDashboard extends React.Component {
@@ -1193,15 +1194,75 @@ class EcommerceDashboard extends React.Component {
         if (graphProps.widgetData.widgetType == 'pieChart') {
             let labels = [];
             let values = [];
+            let calculatedScore = 0;
 
             graphProps.widgetData.graphData.data.forEach(data => {
+                calculatedScore += data.count || data.yIndex.value;
+            })
+
+
+            graphProps.widgetData.graphData.data.forEach(data => {
+                if (data.label && data.count) {
                 // console.log(data);
                 labels.push(data.label)
                 values.push(data.count)
+            } else {
+                let value = data.yIndex.value / calculatedScore;
+                labels.push(data.xIndex.value)
+                console.log(value * 100);
+                values.push(Math.round(value * 100))
+            }
             })
             let chart = <PieChart onElementsClick={() => { console.log('Pie Chart Clicked') }} labels={labels} data={values} height={120}
                 // backgroundColor={['#7aa62d', '#18e244', '#95d22a', '#62920d']} />
-                backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3']} />
+                backgroundColor={['#9e9e9e', '#ae8b4b', '#2196f3', '#3ASD43', '#2135f3', '#ae2b4b', '#8B8B8B' ]} />
+
+            let widgetIdNumber = graphProps.widgetData.widgetId.split('');
+            let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
+            this.setState({
+                [graphProps.widgetData.widgetId]: chart,
+                [graphProps.widgetData.widgetId + 'data']: dataArray,
+                [stateLabel]: false
+            })
+        }
+
+        if (graphProps.widgetData.widgetType == 'donutChart') {
+            let labels = [];
+            let keys = [];
+            let values = [];
+            let calculatedScore = 0;
+
+            graphProps.widgetData.graphData.data.forEach(data => {
+                calculatedScore += data.count || data.yIndex.value;
+            })
+
+
+            graphProps.widgetData.graphData.data.forEach(data => {
+                if (data.label && data.count) {
+                // console.log(data);
+                labels.push(data.label)
+                values.push(data.count)
+            } else {
+                let value = data.yIndex.value / calculatedScore;
+                labels.push(data.xIndex.value)
+                console.log(value * 100);
+                values.push(Math.round(value * 100))
+                keys.push(data.xIndex.value)
+            }
+            })
+            
+            let obj = {};
+
+            keys.map((key, index) => {
+                obj = {
+                    ...obj,
+                    [key]: values[index]
+                }
+            })
+            
+            console.log(obj, 'DOBJECT')
+
+            let chart = <DonutChart dataObject={obj} />
 
             let widgetIdNumber = graphProps.widgetData.widgetId.split('');
             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
@@ -1219,6 +1280,7 @@ class EcommerceDashboard extends React.Component {
             let dataArray = [];
             let minRange = 0;
             let maxRange = 0;
+            let values = [];
             if (graphProps.widgetData.widgetId.toggle == 'value') {
                 graphProps.widgetData.graphData.byValue.forEach(data => {
                     // console.log(data);
@@ -1228,12 +1290,12 @@ class EcommerceDashboard extends React.Component {
                 })
             } else {
 
-                let sortedValueArray = graphProps.widgetData.graphData.axisData.yAxis.value.sort((a, b) => a - b);
-                maxRange = sortedValueArray[sortedValueArray.length - 1]
+                
                 graphProps.widgetData.graphData.data.forEach(data => {
                     // console.log(data);
                     x.push(data.xIndex.value)
                     y.push(data.yIndex.value)
+                    values.push(data.yIndex.value)
                     let obj = {
                         entityName: data.xIndex.value,
                         value: data.yIndex.value,
@@ -1243,13 +1305,17 @@ class EcommerceDashboard extends React.Component {
                 this.setState({
                     dataArray
                 })
+                let sortedValueArray = values.sort((a, b) => a - b);
+                maxRange = sortedValueArray[sortedValueArray.length - 1] + sortedValueArray[sortedValueArray.length - 1]
             }
 
             console.log(x);
             console.log(y);
             console.log(dataArray, 'DATAARRRRRRR');
+            let legend = graphProps.widgetData.legend;
+
             let chart = <HorizontalBarChartNew minRange={0} maxRange={maxRange} stepSize={5} height={120}
-                data={dataArray || []} labels={graphProps.widgetData.widgetId == 'widget6' ? ['Countries'] : ['Companies']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} backgroundColors={['#ae8b4b', '#2196f3']}
+                data={dataArray || []} labels={[legend]} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} backgroundColors={['#ae8b4b', '#2196f3']}
                 options={{
                     responsive: true,
                     maintainAspectRatio: true
@@ -1296,6 +1362,7 @@ class EcommerceDashboard extends React.Component {
                     dataArray
                 })
             }
+            let legend = graphProps.widgetData.legend;
 
             console.log(x, '2VAlueX');
             console.log(y, '2ValueY');
@@ -1306,7 +1373,7 @@ class EcommerceDashboard extends React.Component {
             // }
             //     );
             // console.log(valuesArray, 'VAAA');
-            let chart = <VerticalBarChart data={dataArray} labels={['HS']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={["value"]} backgroundColors={['#2196f3']}
+            let chart = <VerticalBarChart data={dataArray} labels={[legend]} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={["value"]} backgroundColors={['#2196f3']}
                 height={120} yAxesLabel={{ display: true, labelString: 'Total Count', fontSize: 14 }} />
             // <HorizontalBarChartNew minRange={10} maxRange={maxRange} stepSize={5} height={180} 
             //     data={dataArray || []} labels={['Companies']} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} backgroundColors={['#ae8b4b', '#2196f3']}
@@ -1512,6 +1579,8 @@ class EcommerceDashboard extends React.Component {
             let sortedColors = dataArray.map(x => x.color);
             let sortedLabels = dataArray.map(x => x.type);
             let chart;
+            let legend = graphProps.widgetData.legend;
+            
             if (graphProps.widgetData.widgetId == 'widget1') {
                 chart = <HorizontalBarChartWithDifferentColors minRange={sortedValueArray[0]} maxRange={maxRange} stepSize={maxRange / 5} height={120}
                     data={dataArray || []} labels={unique} sortedLabels={sortedLabels} sortedColors={sortedColors} stack="multiple" dataLabelsAttribute="entityName" dataValuesAttributes={['value']} separateColors={true} backgroundColors={['#f58709', '#ae8b4b', '#2196f3']}
@@ -1595,6 +1664,7 @@ class EcommerceDashboard extends React.Component {
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
                 [graphProps.widgetData.widgetId + 'data']: dataArray,
+                [graphProps.widgetData.widgetId + 'Props']: graphProps,
                 [stateLabel]: false
             })
         }
@@ -1622,6 +1692,8 @@ class EcommerceDashboard extends React.Component {
             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
+                [graphProps.widgetData.widgetId + 'data']: dataArray,
+                [graphProps.widgetData.widgetId + 'Props']: graphProps,
                 [stateLabel]: false
             })
         }
@@ -1655,6 +1727,8 @@ class EcommerceDashboard extends React.Component {
             let stateLabel = widgetIdNumber.length == 8 ? 'widget' + widgetIdNumber[widgetIdNumber.length - 2] + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading' : 'widget' + widgetIdNumber[widgetIdNumber.length - 1] + 'isLoading';
             this.setState({
                 [graphProps.widgetData.widgetId]: chart,
+                [graphProps.widgetData.widgetId + 'data']: dataArray,
+                [graphProps.widgetData.widgetId + 'Props']: graphProps,
                 [stateLabel]: false
             })
         }
@@ -2189,7 +2263,12 @@ class EcommerceDashboard extends React.Component {
 
             // $(anchorSelector).removeAttr("disabled");
         });
-
+        
+    }
+    openModalBox() {
+        this.setState({
+            showEmailModal: true
+        })
     }
 
     sendAsEmail(data) {
@@ -2207,14 +2286,21 @@ class EcommerceDashboard extends React.Component {
             let imgData = canvas.toDataURL('image/jpeg', 1.0);
             let pdf = new jsPDF('p', 'pt', [pdfWidth, pdfHeight]);
             pdf.addImage(imgData, 'JPG', margin, margin * 2, elementWidth, elementHeight);
+
+            let payload = {
+                from: 'zain.jawwad@avanzainnovations.com',
+                to: 'this',
+                subject: 'no subject',
+                attachment: pdf.output()
+            }
             
-            var email = 'sample@gmail.com';
-            var subject = 'Test';
-            var emailBody = 'Hi Sample,';
-            var attach = 'this is the attachment string';
-            var link = "mailto:"+email+"?subject="+subject+"&body="+emailBody+"?attach="+attach;
-            // console.log(link);
-                window.location.href = link;
+            this.props.actions.generalHandler(constants.sendChartEmail, payload);
+            // var email = 'sample@gmail.com';
+            // var subject = 'Test';
+            // var emailBody = 'Hi Sample,';
+            // var attach = 'this is the attachment string';
+            // var link = "mailto:"+email+"?subject="+subject+"&body="+emailBody+"?attach="+attach;
+            //     window.location.href = link;
         });
 
         // var link = "mailto:me@example.com"
@@ -2225,9 +2311,6 @@ class EcommerceDashboard extends React.Component {
     ;
     
     // window.location.href = link;
-        // this.setState({
-        //     showEmailModal: true
-        // })
     }
 
     changeGraphType(graphType, widgetId, graphProps) {
@@ -2854,7 +2937,7 @@ class EcommerceDashboard extends React.Component {
                                             <li><a onClick={() => this.downloadAsPDF(this.state.widget1data)} >Download as PDF</a></li>
                                             <li><a onClick={() => this.downloadAsCSV(this.state.widget1data)} >Download as CSV</a></li>
                                             <li role="separator" className="divider"></li>
-                                            <li><a onClick={() => this.sendAsEmail(this.state.widget1data)} >Send as Email</a></li>
+                                            <li><a onClick={() => this.openModalBox()} >Send as Email</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -2885,7 +2968,7 @@ class EcommerceDashboard extends React.Component {
                                         
                                     </div>
                                     <div style={{display: 'flex', justifyContent: 'flex-end'}} className="row">
-                                        <button onClick={() => this.setState({ showEmailModal: false})} className="btn green">Send</button>
+                                        <button onClick={() => this.sendAsEmail()} className="btn green">Send</button>
                                     </div>
                                 </Portlet>
                             </ModalBox>
@@ -2909,13 +2992,15 @@ class EcommerceDashboard extends React.Component {
                                             <span className="caret"></span>
                                         </button>
                                         <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                            <li><a onClick={() => this.changeGraphType('2ValueBar-Vertical', 'widget1')} >View as Pie</a></li>
-                                            <li><a onClick={() => this.changeGraphType('bubbleChart', 'widget1')} >View as Bubbles</a></li>
+                                            <li><a onClick={() => this.changeGraphType('donutChart', 'widget2', this.state.widget20Props)} >View as Pie</a></li>
+                                            <li><a onClick={() => this.changeGraphType('2ValueBar-Horizontal', 'widget2', this.state.widget20Props)} >View as Horizontal</a></li>
+                                            <li><a onClick={() => this.changeGraphType('2ValueBar-Vertical', 'widget2', this.state.widget20Props)} >View as Vertical</a></li>
+                                            <li><a onClick={() => this.changeGraphType('3ValueBubble-Vertical', 'widget2', this.state.widget20Props)} >View as Bubbles</a></li>
                                             <li role="separator" className="divider"></li>
-                                            <li><a onClick={() => this.downloadAsPDF(this.state.widget1data)} >Download as PDF</a></li>
-                                            <li><a onClick={() => this.downloadAsCSV(this.state.widget1data)} >Download as CSV</a></li>
+                                            <li><a onClick={() => this.downloadAsPDF(this.state.widget2data)} >Download as PDF</a></li>
+                                            <li><a onClick={() => this.downloadAsCSV(this.state.widget2data)} >Download as CSV</a></li>
                                             <li role="separator" className="divider"></li>
-                                            <li><a onClick={() => this.sendAsEmail(this.state.widget1data)} >Send as Email</a></li>
+                                            <li><a onClick={() => this.openModalBox()} >Send as Email</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -2971,6 +3056,23 @@ class EcommerceDashboard extends React.Component {
                             <Portlet title={"TRANSACTION BY DESTINATION COUNTRY"} noCollapse={false} style={{ height: '250px' }}>
                                 <div className="refresh-img-div">
                                     <img onClick={() => this.refreshSingleWidget(22)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                    <div className="dropup">
+                                        <button className="btn btn-default dropdown-toggle drop-up-button" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i className="fa fa-cogs"></i>
+                                            <span className="caret"></span>
+                                        </button>
+                                        <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                            <li><a onClick={() => this.changeGraphType('donutChart', 'widget22', this.state.widget22Props)} >View as Pie</a></li>
+                                            <li><a onClick={() => this.changeGraphType('2ValueBar-Horizontal', 'widget22', this.state.widget22Props)} >View as Horizontal</a></li>
+                                            <li><a onClick={() => this.changeGraphType('2ValueBar-Vertical', 'widget22', this.state.widget22Props)} >View as Vertical</a></li>
+                                            <li><a onClick={() => this.changeGraphType('3ValueBubble-Vertical', 'widget22', this.state.widget22Props)} >View as Bubbles</a></li>
+                                            <li role="separator" className="divider"></li>
+                                            <li><a onClick={() => this.downloadAsPDF(this.state.widget22data)} >Download as PDF</a></li>
+                                            <li><a onClick={() => this.downloadAsCSV(this.state.widget22data)} >Download as CSV</a></li>
+                                            <li role="separator" className="divider"></li>
+                                            <li><a onClick={() => this.openModalBox()} >Send as Email</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 {this.state.widget22isLoading ? <div className="graphLoader" > {utils.getLabelByID("Loading")}</div>
                                     :
@@ -3150,6 +3252,19 @@ class EcommerceDashboard extends React.Component {
                                     <WorldHeatChart data={heatMapData} />
                                 } */}
                                 <GroupedDendogramBarChart />
+
+                                {/* insert chart here */}
+                            </Portlet>
+                        </div>
+                        <div className="col-md-12">
+                            <Portlet title={"OUTBOUND DISTRIBUTION"} noCollapse={true}>
+                                <div className="refresh-img-div">
+                                    <img onClick={() => this.refreshSingleWidget(21)} className="refresh-img-full" src="\assets\Resources\images\refresh.png" alt="" />
+                                </div>
+                                {/* {heatMapData &&
+                                    <WorldHeatChart data={heatMapData} />
+                                } */}
+                                <DonutChart />
 
                                 {/* insert chart here */}
                             </Portlet>
