@@ -189,7 +189,7 @@ module.exports = {
     { alias: "Message", key: "message", type: 'string' },
     { alias: "Date Time", key: "dateTime", type: "string" },
     { alias: "Sender", key: "senderOrg", type: "string" },
-    { alias: "Status", key: "statusBox", type: "string" },
+    { alias: "Status", key: "status", type: "statusBox" },
     { alias: "Document #", key: "documentNo", type: "string" },
     { alias: "HAWB", key: "HAWB", type: "string" },
     { alias: "Declaration", key: "declarationNo", type: "string" },

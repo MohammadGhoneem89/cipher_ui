@@ -197,6 +197,18 @@ class InvoiceDetails extends React.Component {
           {"label": "RET_DECLARED" , "value": "RET_DECLARED"},
           {"label": "PARTIAL  RETURN", "value": "PARTIAL  RETURN"}
         ] //stage5: RETURN_BY_CUSTOMER and FULL RETURN"
+      ],
+      tabView:[
+        {
+          label: "ORDERLINE",
+          view: "none",
+          active: true
+        },
+        {
+          label: "TRANSPORT",
+          view: "none",
+          active: true
+        }
       ]
     };
     
@@ -993,167 +1005,167 @@ class InvoiceDetails extends React.Component {
             </div>
           </div>
 
-        <div className="row">
-            <div className="col-md-12">
-              <div className="orderno">
-                <img src="/assets/Resources/ordericon.png" width="18px" />
-                <label>{utils.getLabelByID("Invoice_No")}
-                  <span>{this.state.invoiceDetailsContainer.invoiceNumber}</span></label>
-              </div>
-              <div>
-                <label>{utils.getLabelByID("Order_No")}
-                  <span>{this.state.invoiceDetailsContainer.orderID}</span></label>
-              </div>
-              <div className="hashno">
-                <label>{this.state.invoiceDetailsContainer.txID}</label>
+          <div className="row">
+              <div className="col-md-12">
+                <div className="orderno">
+                  <img src="/assets/Resources/ordericon.png" width="18px" />
+                  <label>{utils.getLabelByID("Invoice_No")}
+                    <span>{this.state.invoiceDetailsContainer.invoiceNumber}</span></label>
+                </div>
+                <div>
+                  <label>{utils.getLabelByID("Order_No")}
+                    <span>{this.state.invoiceDetailsContainer.orderID}</span></label>
+                </div>
+                <div className="hashno">
+                  <label>{this.state.invoiceDetailsContainer.txID}</label>
+                </div>
               </div>
             </div>
+
+          <div className="row form-group">
+              <div className="col-md-4">
+                      <div className="form-group">
+                          <div className="col-md-6">
+                          <label>{utils.getLabelByID("InvoiceDate")}</label>
+                          </div>
+                          <div className="col-md-6">
+                              <span>{ this.state.invoiceDetailsContainer.invoiceDate}</span>
+                          </div>
+                      </div>
+              </div>
+              <div className="col-md-4">
+                      <div className="form-group">
+                          <div className="col-md-6">
+                          <label>{utils.getLabelByID("TotalNoofPages")}</label>
+                          </div>
+                          <div className="col-md-6">
+                              <span>{this.state.invoiceDetailsContainer.totalNumberOfInvoicePages}</span>
+                          </div>
+                      </div>
+              </div>
+              <div className="col-md-4">
+                  
+              </div>
+          </div>
+          
+          <div className="row form-group">
+              <div className="col-md-4">
+                      <div className="form-group">
+                          <div className="col-md-6">
+                              <label className="bold">{utils.getLabelByID('Invoice_Type_')}</label>
+                          </div>
+                          <div className="col-md-6">
+                              <span>{this.state.invoiceDetailsContainer.invoiceType}</span>
+                          </div>
+                  </div>
+              </div>
+              <div className="col-md-4">
+                      <div className="form-group">
+                          <div className="col-md-6">
+                              <label className="bold">{utils.getLabelByID('Payment_Type_')}</label>
+                          </div>
+                          <div className="col-md-6">
+                              <span>{this.state.invoiceDetailsContainer.paymentType}</span>
+                          </div>
+                      </div>
+              </div>
+              <div className="col-md-4">
+                  
+              </div>
+          </div>
+          
+          <div className="row form-group">
+              <div className="col-md-4">
+                      <div className="form-group">
+                          <div className="col-md-6">
+                            <label className="bold">{utils.getLabelByID("Total_Value_")}</label>
+                          </div>
+                          <div className="col-md-6">
+                              <span>{this.state.invoiceDetailsContainer.totalValue} {this.state.invoiceDetailsContainer.currency}</span>
+                          </div>
+                  </div>
+              </div>
+              <div className="col-md-4">
+                  
+              </div>
+              <div className="col-md-4">
+                  
+              </div>
           </div>
 
-        <div className="row form-group">
-            <div className="col-md-4">
-                    <div className="form-group">
-                        <div className="col-md-6">
-                        <label>{utils.getLabelByID("InvoiceDate")}</label>
-                        </div>
-                        <div className="col-md-6">
-                            <span>{ this.state.invoiceDetailsContainer.invoiceDate}</span>
-                        </div>
-                    </div>
-            </div>
-            <div className="col-md-4">
-                    <div className="form-group">
-                        <div className="col-md-6">
-                        <label>{utils.getLabelByID("TotalNoofPages")}</label>
-                        </div>
-                        <div className="col-md-6">
-                            <span>{this.state.invoiceDetailsContainer.totalNumberOfInvoicePages}</span>
-                        </div>
-                    </div>
-            </div>
-            <div className="col-md-4">
-                
-            </div>
-        </div>
-        
-        <div className="row form-group">
-            <div className="col-md-4">
-                    <div className="form-group">
-                        <div className="col-md-6">
-                            <label className="bold">{utils.getLabelByID('Invoice_Type_')}</label>
-                        </div>
-                        <div className="col-md-6">
-                            <span>{this.state.invoiceDetailsContainer.invoiceType}</span>
-                        </div>
-                </div>
-            </div>
-            <div className="col-md-4">
-                    <div className="form-group">
-                        <div className="col-md-6">
-                            <label className="bold">{utils.getLabelByID('Payment_Type_')}</label>
-                        </div>
-                        <div className="col-md-6">
-                            <span>{this.state.invoiceDetailsContainer.paymentType}</span>
-                        </div>
-                    </div>
-            </div>
-            <div className="col-md-4">
-                
-            </div>
-        </div>
-        
-        <div className="row form-group">
-            <div className="col-md-4">
-                    <div className="form-group">
-                        <div className="col-md-6">
-                          <label className="bold">{utils.getLabelByID("Total_Value_")}</label>
-                        </div>
-                        <div className="col-md-6">
-                            <span>{this.state.invoiceDetailsContainer.totalValue} {this.state.invoiceDetailsContainer.currency}</span>
-                        </div>
-                </div>
-            </div>
-            <div className="col-md-4">
-                
-            </div>
-            <div className="col-md-4">
-                
-            </div>
-        </div>
+          <div className="row form-group">
+              <div className="col-md-4">
+                      <div className="form-group">
+                          <div className="col-md-6">
+                              <label className="bold">{utils.getLabelByID('INCO_Terms_')}</label>
+                          </div>
+                          <div className="col-md-6">
+                              <span>{this.state.invoiceDetailsContainer.incoTerms}</span>
+                          </div>
+                      </div>
+              </div>
+              <div className="col-md-4">
+                      <div className="form-group">
+                          <div className="col-md-6">
+                              <label className="bold">{utils.getLabelByID('Insurance_Amount_')}</label>
+                          </div>
+                          <div className="col-md-6">
+                            <span>{this.state.invoiceDetailsContainer.insuranceAmount} {this.state.invoiceDetailsContainer.insuranceCurrency}</span>
+                          </div>
+                      </div>
+              </div>
+              <div className="col-md-4">
+                      <div className="form-group">
+                          <div className="col-md-6">
+                              <label className="bold">{utils.getLabelByID("Freight_Amount_")}</label>
+                          </div>
+                          <div className="col-md-6">
+                              <span>{this.state.invoiceDetailsContainer.freightAmount} {this.state.invoiceDetailsContainer.freightCurrency}</span>
+                          </div>
+                      </div>
+              </div>
+          </div>
 
-        <div className="row form-group">
-            <div className="col-md-4">
-                    <div className="form-group">
-                        <div className="col-md-6">
-                            <label className="bold">{utils.getLabelByID('INCO_Terms_')}</label>
-                        </div>
-                        <div className="col-md-6">
-                            <span>{this.state.invoiceDetailsContainer.incoTerms}</span>
-                        </div>
-                    </div>
-            </div>
-            <div className="col-md-4">
-                    <div className="form-group">
-                        <div className="col-md-6">
-                            <label className="bold">{utils.getLabelByID('Insurance_Amount_')}</label>
-                        </div>
-                        <div className="col-md-6">
-                          <span>{this.state.invoiceDetailsContainer.insuranceAmount} {this.state.invoiceDetailsContainer.insuranceCurrency}</span>
-                        </div>
-                    </div>
-            </div>
-            <div className="col-md-4">
-                    <div className="form-group">
-                        <div className="col-md-6">
-                            <label className="bold">{utils.getLabelByID("Freight_Amount_")}</label>
-                        </div>
-                        <div className="col-md-6">
-                            <span>{this.state.invoiceDetailsContainer.freightAmount} {this.state.invoiceDetailsContainer.freightCurrency}</span>
-                        </div>
-                    </div>
-            </div>
-        </div>
-
-        <div className="row form-group">
-            <div className="col-md-4">
-                    <div className="form-group">
-                        <div className="col-md-6">
-                            <label className="bold">{utils.getLabelByID('Exporter_')}</label>
-                        </div>
-                        <div className="col-md-6">
-                            <span>{this.state.invoiceDetailsContainer.exporterCode } {this.state.invoiceDetailsContainer.exporterName }</span>
-                        </div>
-                </div>
-            </div>
-            <div className="col-md-4">
-                    <div className="form-group">
-                        <div className="col-md-6">
-                            <label className="bold">{utils.getLabelByID('Free_Zone_')}</label>
-                        </div>
-                        <div className="col-md-6">
-                            <span>{ this.state.invoiceDetailsContainer.fzCode }</span>
-                        </div>
-                    </div>
-            </div>
-            <div className="col-md-4">
-                    <div className="form-group">
-                        <div className="col-md-6">
-                            <label className="bold">{utils.getLabelByID('Warehouse_')}</label>
-                        </div>
-                        <div className="col-md-6">
-                            <span>{ this.state.invoiceDetailsContainer.wareHouse }</span>
-                        </div>
-                    </div>
-            </div>
-        </div>
+          <div className="row form-group">
+              <div className="col-md-4">
+                      <div className="form-group">
+                          <div className="col-md-6">
+                              <label className="bold">{utils.getLabelByID('Exporter_')}</label>
+                          </div>
+                          <div className="col-md-6">
+                              <span>{this.state.invoiceDetailsContainer.exporterCode } {this.state.invoiceDetailsContainer.exporterName }</span>
+                          </div>
+                  </div>
+              </div>
+              <div className="col-md-4">
+                      <div className="form-group">
+                          <div className="col-md-6">
+                              <label className="bold">{utils.getLabelByID('Free_Zone_')}</label>
+                          </div>
+                          <div className="col-md-6">
+                              <span>{ this.state.invoiceDetailsContainer.fzCode }</span>
+                          </div>
+                      </div>
+              </div>
+              <div className="col-md-4">
+                      <div className="form-group">
+                          <div className="col-md-6">
+                              <label className="bold">{utils.getLabelByID('Warehouse_')}</label>
+                          </div>
+                          <div className="col-md-6">
+                              <span>{ this.state.invoiceDetailsContainer.wareHouse }</span>
+                          </div>
+                      </div>
+              </div>
+          </div>
 
           <div className="row form-group">
             <div className="col-md-12">
               <div className="tab-pane in active">
                 <div className="ui-regulartabs">
                   <ul id="adHocTabs" className="nav nav-tabs">
-                    <li id="filtersTabLink" className="active"><a href="#orderLine" style={{color:"white"}} data-toggle="tab"><span>{utils.getLabelByID('Order_Line')}</span></a></li>
-                    <li id="filtersTabLink"><a href="#transport" style={{color:"white"}} data-toggle="tab"><span> </span>{utils.getLabelByID('Transport')}</a></li>
+                    <li id="filtersTabLink" className="active"><a href="#orderLine" style={ {display: _.find(this.state.tabView, {label:"orderLine"}).view },{color:"white"}} data-toggle="tab"><span>{utils.getLabelByID('Order_Line')}</span></a></li>
+                    <li id="filtersTabLink"><a href="#transport" style={ {color:"white"}} data-toggle="tab"><span> </span>{utils.getLabelByID('Transport')}</a></li>
                     <li id="filtersTabLink"><a href="#exportDeclaration" style={{color:"white"}} data-toggle="tab"><span>{utils.getLabelByID('Outbound_Declaration')}</span></a></li>
                     <li id="filtersTabLink"><a href="#exitConfirmation" style={{color:"white"}} data-toggle="tab"> <span>{utils.getLabelByID('Exit_Confirmation')}</span></a></li>
                     <li id="filtersTabLink"><a href="#delivered" style={{color:"white"}} data-toggle="tab"> <span>{utils.getLabelByID('Delivered')}</span></a></li>
