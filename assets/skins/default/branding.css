@@ -1886,7 +1886,7 @@ text.subunit-label {
 
 /* dendrogram */
 
-.link {
+.dendo-link {
     fill: none;
     stroke: green;
     stroke-opacity: 0.7;
@@ -1896,7 +1896,7 @@ text.subunit-label {
 
 }
 
-.link2 {
+.dendo-link2 {
     fill: none;
     stroke: red;
     stroke-opacity: 1;
@@ -1905,7 +1905,7 @@ text.subunit-label {
     animation: none;
 }
 
-.link3 {
+.dendo-link3 {
     fill: none;
     stroke: green;
     stroke-opacity: 1;
@@ -1914,10 +1914,10 @@ text.subunit-label {
     animation: none;
 }
 
-.text1 {
+.dendo-text1 {
     fill: green !important;
 }
-.text2 {
+.dendo-text2 {
     fill: red !important;
 }
 @keyframes dash {
@@ -1936,7 +1936,7 @@ text.subunit-label {
 
 
 
-text {
+#my_dendogram > text {
     font-family: "Arial Black", Gadget, sans-serif;
     fill: black;
     font-weight: bold;
