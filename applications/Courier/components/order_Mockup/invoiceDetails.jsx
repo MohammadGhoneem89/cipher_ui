@@ -1164,7 +1164,8 @@ class InvoiceDetails extends React.Component {
               <div className="tab-pane in active">
                 <div className="ui-regulartabs">
                   <ul id="adHocTabs" className="nav nav-tabs">
-                    <li id="filtersTabLink" className="active"><a href="#orderLine" style={ {display: _.find(this.state.tabView, {label:"orderLine"}).view },{color:"white"}} data-toggle="tab"><span>{utils.getLabelByID('Order_Line')}</span></a></li>
+                    {/* <li id="filtersTabLink" className="active"><a href="#orderLine" style={ {display: _.find(this.state.tabView, {label:"orderLine"}).view },{color:"white"}} data-toggle="tab"><span>{utils.getLabelByID('Order_Line')}</span></a></li> */}
+                    <li id="filtersTabLink" className="active"><a href="#orderLine" style={{color:"white"}} data-toggle="tab"><span>{utils.getLabelByID('Order_Line')}</span></a></li>
                     <li id="filtersTabLink"><a href="#transport" style={ {color:"white"}} data-toggle="tab"><span> </span>{utils.getLabelByID('Transport')}</a></li>
                     <li id="filtersTabLink"><a href="#exportDeclaration" style={{color:"white"}} data-toggle="tab"><span>{utils.getLabelByID('Outbound_Declaration')}</span></a></li>
                     <li id="filtersTabLink"><a href="#exitConfirmation" style={{color:"white"}} data-toggle="tab"> <span>{utils.getLabelByID('Exit_Confirmation')}</span></a></li>
